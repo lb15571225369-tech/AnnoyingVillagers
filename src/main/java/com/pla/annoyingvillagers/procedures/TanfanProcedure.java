@@ -1,0 +1,254 @@
+package com.pla.annoyingvillagers.procedures;
+
+import java.util.Random;
+import javax.annotation.Nullable;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.TickEvent.Phase;
+import net.minecraftforge.event.TickEvent.ServerTickEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.registries.ForgeRegistries;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
+
+@EventBusSubscriber
+public class TanfanProcedure {
+
+    @SubscribeEvent
+    public static void onEntityAttacked(LivingAttackEvent livingattackevent) {
+        if (livingattackevent != null && livingattackevent.getEntity() != null) {
+            execute(livingattackevent, livingattackevent.getEntity().level, livingattackevent.getEntity().getX(), livingattackevent.getEntity().getY(), livingattackevent.getEntity().getZ(), livingattackevent.getEntity(), livingattackevent.getSource().getEntity());
+        }
+
+    }
+
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity, Entity entity1) {
+        execute((Event) null, levelaccessor, d0, d1, d2, entity, entity1);
+    }
+
+    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity, final Entity entity1) {
+        if (entity != null && entity1 != null) {
+            LivingEntity livingentity;
+
+            if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("minecraft:player")) {
+                float f;
+                LivingEntity livingentity1;
+
+                if (ForgeRegistries.ENTITIES.getKey(entity1.getType()).toString().equals("annoying_villagers:herobrine")) {
+                    if (entity instanceof LivingEntity) {
+                        livingentity = (LivingEntity)entity;
+                        f = livingentity.getHealth();
+                    } else {
+                        f = -1.0F;
+                    }
+
+                    if (f <= 5.0F && entity instanceof LivingEntity) {
+                        livingentity1 = (LivingEntity)entity;
+                        if (!livingentity1.level.isClientSide()) {
+                            livingentity1.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.HEROBRINE_EFFECT.get(), 9999999, 0, false, false));
+                        }
+                    }
+                } else if (ForgeRegistries.ENTITIES.getKey(entity1.getType()).toString().equals("annoying_villagers:herobrine_2")) {
+                    if (entity instanceof LivingEntity) {
+                        livingentity = (LivingEntity)entity;
+                        f = livingentity.getHealth();
+                    } else {
+                        f = -1.0F;
+                    }
+
+                    if (f <= 5.0F && entity instanceof LivingEntity) {
+                        livingentity1 = (LivingEntity)entity;
+                        if (!livingentity1.level.isClientSide()) {
+                            livingentity1.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.HEROBRINE_EFFECT.get(), 9999999, 0, false, false));
+                        }
+                    }
+                }
+            }
+
+            if (ForgeRegistries.ENTITIES.getKey(entity1.getType()).toString().equals("minecraft:player")) {
+                LivingEntity livingentity2;
+
+                if (entity instanceof TamableAnimal) {
+                    TamableAnimal tamableanimal = (TamableAnimal)entity;
+
+                    livingentity2 = tamableanimal.getOwner();
+                } else {
+                    livingentity2 = null;
+                }
+
+                if (livingentity2 == entity1) {
+                    entity.clearFire();
+                } else if (!((<undefinedtype>)(new Object() {
+                    public boolean checkGamemode(Entity entity2) {
+                        if (entity2 instanceof ServerPlayer) {
+                            ServerPlayer serverplayer = (ServerPlayer)entity2;
+
+                            return serverplayer.gameMode.getGameModeForPlayer() == GameType.CREATIVE;
+                        } else if (entity2.level.isClientSide() && entity2 instanceof Player) {
+                            Player player = (Player)entity2;
+
+                            return Minecraft.getInstance().getConnection().getPlayerInfo(player.getGameProfile().getId()) != null && Minecraft.getInstance().getConnection().getPlayerInfo(player.getGameProfile().getId()).getGameMode() == GameType.CREATIVE;
+                        } else {
+                            return false;
+                        }
+                    }
+                })).checkGamemode(entity1) && entity instanceof Mob) {
+                    Mob mob = (Mob)entity;
+
+                    if (entity1 instanceof LivingEntity) {
+                        LivingEntity livingentity3 = (LivingEntity)entity1;
+
+                        mob.setTarget(livingentity3);
+                    }
+                }
+            }
+
+            if (entity.getPersistentData().getBoolean("s_g")) {
+                if (event != null && event.isCancelable()) {
+                    event.setCanceled(true);
+                }
+
+                entity.getPersistentData().putBoolean("s_g", false);
+                if (!entity1.level.isClientSide() && entity1.getServer() != null) {
+                    entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/skill/guard_break1\" 0 1");
+                }
+
+                if (!entity.level.isClientSide() && entity.getServer() != null) {
+                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/combat/tachi_auto2\" 0 1");
+                }
+
+                if (!entity.level.isClientSide() && entity.getServer() != null) {
+                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute at @s run particle annoying_villagersbychentu:spark ^ ^1.5 ^0.8 0 0 0 0.1 100");
+                }
+
+                if (!entity.level.isClientSide() && entity.getServer() != null) {
+                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1");
+                }
+
+                Level level;
+
+                if (levelaccessor instanceof Level) {
+                    level = (Level)levelaccessor;
+                    if (!level.isClientSide()) {
+                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:s_g")), SoundSource.NEUTRAL, 2.0F, 1.0F);
+                    } else {
+                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:s_g")), SoundSource.NEUTRAL, 2.0F, 1.0F, false);
+                    }
+                }
+
+                if (levelaccessor instanceof Level) {
+                    level = (Level)levelaccessor;
+                    if (!level.isClientSide()) {
+                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:s_g_hit")), SoundSource.NEUTRAL, 3.0F, (float)Mth.nextDouble(new Random(), 0.7D, 1.2D));
+                    } else {
+                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:s_g_hit")), SoundSource.NEUTRAL, 3.0F, (float)Mth.nextDouble(new Random(), 0.7D, 1.2D), false);
+                    }
+                }
+
+                entity.getPersistentData().putBoolean("s_g_suss", true);
+                ((<undefinedtype>)(new Object() {
+                    private int ticks = 0;
+                    private float waitTicks;
+                    private LevelAccessor world;
+
+                    public void start(LevelAccessor levelaccessor1, int i) {
+                        this.waitTicks = (float)i;
+                        MinecraftForge.EVENT_BUS.register(this);
+                        this.world = levelaccessor1;
+                    }
+
+                    @SubscribeEvent
+                    public void tick(ServerTickEvent servertickevent) {
+                        if (servertickevent.phase == Phase.END) {
+                            ++this.ticks;
+                            if ((float)this.ticks >= this.waitTicks) {
+                                this.run();
+                            }
+                        }
+
+                    }
+
+                    private void run() {
+                        entity.getPersistentData().putBoolean("s_g_suss", false);
+                        MinecraftForge.EVENT_BUS.unregister(this);
+                    }
+                })).start(levelaccessor, 40);
+            }
+
+            if (entity1.getPersistentData().getBoolean("s_g_suss")) {
+                entity.getPersistentData().putBoolean("s_g_suss", false);
+                boolean flag;
+
+                if (entity1 instanceof LivingEntity) {
+                    livingentity = (LivingEntity)entity1;
+                    flag = livingentity.hasEffect((MobEffect)AnnoyingVillagersModMobEffects.EC.get());
+                } else {
+                    flag = false;
+                }
+
+                if (!flag) {
+                    ((<undefinedtype>)(new Object() {
+                        private int ticks = 0;
+                        private float waitTicks;
+                        private LevelAccessor world;
+
+                        public void start(LevelAccessor levelaccessor1, int i) {
+                            this.waitTicks = (float)i;
+                            MinecraftForge.EVENT_BUS.register(this);
+                            this.world = levelaccessor1;
+                        }
+
+                        @SubscribeEvent
+                        public void tick(ServerTickEvent servertickevent) {
+                            if (servertickevent.phase == Phase.END) {
+                                ++this.ticks;
+                                if ((float)this.ticks >= this.waitTicks) {
+                                    this.run();
+                                }
+                            }
+
+                        }
+
+                        private void run() {
+                            if (entity1 instanceof LivingEntity) {
+                                LivingEntity livingentity4 = (LivingEntity)entity1;
+
+                                if (!livingentity4.level.isClientSide()) {
+                                    livingentity4.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 20, 2, false, false));
+                                }
+                            }
+
+                            Entity entity2 = entity1;
+
+                            if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/skill/grasping_spire_second\" 0 1");
+                            }
+
+                            MinecraftForge.EVENT_BUS.unregister(this);
+                        }
+                    })).start(levelaccessor, 10);
+                }
+            }
+
+        }
+    }
+}
