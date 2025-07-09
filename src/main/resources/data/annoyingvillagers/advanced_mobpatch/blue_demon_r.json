@@ -17,8 +17,8 @@
 		"can_block_projectile": true
 	},
 	"default_livingmotions": {
-		"idle": "annoying_villagers:biped/other/blue_demon_end_skill",
-		"walk": "annoying_villagers:biped/other/blue_demon_end_skill",
+		"idle": "annoyingvillagers:biped/other/blue_demon_start_skill",
+		"walk": "annoyingvillagers:biped/other/blue_demon_start_skill",
 		"chase": "epicfight:biped/living/run",
 		"death": "epicfight:biped/living/death"
 	},
@@ -88,7 +88,9 @@
 	"stun_animations": {
 		"short": "epicfight:biped/combat/hit_short",
 		"long": "epicfight:biped/combat/hit_long",
-		"knockdown": "epicfight:biped/combat/knockdown"
+		"knockdown": "epicfight:biped/combat/knockdown",
+		"fall": "annoyingvillagers:biped/other/blue_demon_start_skill",
+		"landing": "annoyingvillagers:biped/other/blue_demon_start_skill"
 	},
 	"combat_behavior": [
             {
