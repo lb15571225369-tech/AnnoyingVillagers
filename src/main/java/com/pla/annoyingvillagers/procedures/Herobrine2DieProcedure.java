@@ -1,547 +1,169 @@
 package com.pla.annoyingvillagers.procedures;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Random;
+import com.pla.annoyingvillagers.entity.DarkOBFarEntity;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.TickEvent.ServerTickEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
-import com.pla.annoyingvillagers.entity.DarkOBFarEntity;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
+
+import java.util.*;
 
 public class Herobrine2DieProcedure {
+    public static void execute(LevelAccessor world, double x, double y, double z, Entity sourceEntity, Entity targetEntity) {
+        if (sourceEntity == null || targetEntity == null) return;
 
-    public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, Entity entity, Entity entity1) {
-        if (entity != null && entity1 != null) {
-            if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "tag @a remove aim");
-            }
+        if (!sourceEntity.level.isClientSide() && sourceEntity.getServer() != null) {
+            sourceEntity.getServer().getCommands().performCommand(
+                    sourceEntity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
+                    "tag @a remove aim"
+            );
+        }
 
-            if (entity.isVehicle() && ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("minecraft:player")) {
-                Iterator iterator = (new ArrayList(entity.getPassengers())).iterator();
+        if (sourceEntity.isVehicle() && sourceEntity.getType() == EntityType.PLAYER) {
+            for (Entity passenger : new ArrayList<>(sourceEntity.getPassengers())) {
+                if (isSpectatorGamemode(passenger)) {
+                    passenger.getServer().getCommands().performCommand(
+                            passenger.createCommandSourceStack().withSuppressedOutput().withPermission(4),
+                            "tag @s remove sp"
+                    );
 
-                while(iterator.hasNext()) {
-                    Entity entity2 = (Entity)iterator.next();
+                    transferArmor(sourceEntity, passenger);
 
-                    if (((<undefinedtype>)(new Object() {
-                        public boolean checkGamemode(Entity entity3) {
-                            if (entity3 instanceof ServerPlayer) {
-                                ServerPlayer serverplayer = (ServerPlayer)entity3;
+                    if (passenger instanceof LivingEntity living) {
+                        living.removeEffect(AnnoyingVillagersModMobEffects.HEROBRINE_EFFECT.get());
+                    }
 
-                                return serverplayer.gameMode.getGameModeForPlayer() == GameType.SPECTATOR;
-                            } else if (entity3.level.isClientSide() && entity3 instanceof Player) {
-                                Player player = (Player)entity3;
-
-                                return Minecraft.getInstance().getConnection().getPlayerInfo(player.getGameProfile().getId()) != null && Minecraft.getInstance().getConnection().getPlayerInfo(player.getGameProfile().getId()).getGameMode() == GameType.SPECTATOR;
-                            } else {
-                                return false;
-                            }
-                        }
-                    })).checkGamemode(entity2)) {
-                        if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                            entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "tag @s remove sp");
-                        }
-
-                        Player player;
-                        NonNullList nonnulllist;
-                        LivingEntity livingentity;
-                        ItemStack itemstack;
-                        LivingEntity livingentity1;
-                        EquipmentSlot equipmentslot;
-
-                        if (entity2 instanceof Player) {
-                            player = (Player)entity2;
-                            nonnulllist = player.getInventory().armor;
-                            if (entity instanceof LivingEntity) {
-                                livingentity = (LivingEntity)entity;
-                                itemstack = livingentity.getItemBySlot(EquipmentSlot.FEET);
-                            } else {
-                                itemstack = ItemStack.EMPTY;
-                            }
-
-                            nonnulllist.set(0, itemstack);
-                            player.getInventory().setChanged();
-                        } else if (entity2 instanceof LivingEntity) {
-                            livingentity1 = (LivingEntity)entity2;
-                            equipmentslot = EquipmentSlot.FEET;
-                            if (entity instanceof LivingEntity) {
-                                livingentity = (LivingEntity)entity;
-                                itemstack = livingentity.getItemBySlot(EquipmentSlot.FEET);
-                            } else {
-                                itemstack = ItemStack.EMPTY;
-                            }
-
-                            livingentity1.setItemSlot(equipmentslot, itemstack);
-                        }
-
-                        if (entity2 instanceof Player) {
-                            player = (Player)entity2;
-                            nonnulllist = player.getInventory().armor;
-                            if (entity instanceof LivingEntity) {
-                                livingentity = (LivingEntity)entity;
-                                itemstack = livingentity.getItemBySlot(EquipmentSlot.LEGS);
-                            } else {
-                                itemstack = ItemStack.EMPTY;
-                            }
-
-                            nonnulllist.set(1, itemstack);
-                            player.getInventory().setChanged();
-                        } else if (entity2 instanceof LivingEntity) {
-                            livingentity1 = (LivingEntity)entity2;
-                            equipmentslot = EquipmentSlot.LEGS;
-                            if (entity instanceof LivingEntity) {
-                                livingentity = (LivingEntity)entity;
-                                itemstack = livingentity.getItemBySlot(EquipmentSlot.LEGS);
-                            } else {
-                                itemstack = ItemStack.EMPTY;
-                            }
-
-                            livingentity1.setItemSlot(equipmentslot, itemstack);
-                        }
-
-                        if (entity2 instanceof Player) {
-                            player = (Player)entity2;
-                            nonnulllist = player.getInventory().armor;
-                            if (entity instanceof LivingEntity) {
-                                livingentity = (LivingEntity)entity;
-                                itemstack = livingentity.getItemBySlot(EquipmentSlot.CHEST);
-                            } else {
-                                itemstack = ItemStack.EMPTY;
-                            }
-
-                            nonnulllist.set(2, itemstack);
-                            player.getInventory().setChanged();
-                        } else if (entity2 instanceof LivingEntity) {
-                            livingentity1 = (LivingEntity)entity2;
-                            equipmentslot = EquipmentSlot.CHEST;
-                            if (entity instanceof LivingEntity) {
-                                livingentity = (LivingEntity)entity;
-                                itemstack = livingentity.getItemBySlot(EquipmentSlot.CHEST);
-                            } else {
-                                itemstack = ItemStack.EMPTY;
-                            }
-
-                            livingentity1.setItemSlot(equipmentslot, itemstack);
-                        }
-
-                        if (entity2 instanceof Player) {
-                            player = (Player)entity2;
-                            nonnulllist = player.getInventory().armor;
-                            if (entity instanceof LivingEntity) {
-                                livingentity = (LivingEntity)entity;
-                                itemstack = livingentity.getItemBySlot(EquipmentSlot.HEAD);
-                            } else {
-                                itemstack = ItemStack.EMPTY;
-                            }
-
-                            nonnulllist.set(3, itemstack);
-                            player.getInventory().setChanged();
-                        } else if (entity2 instanceof LivingEntity) {
-                            livingentity1 = (LivingEntity)entity2;
-                            equipmentslot = EquipmentSlot.HEAD;
-                            if (entity instanceof LivingEntity) {
-                                livingentity = (LivingEntity)entity;
-                                itemstack = livingentity.getItemBySlot(EquipmentSlot.HEAD);
-                            } else {
-                                itemstack = ItemStack.EMPTY;
-                            }
-
-                            livingentity1.setItemSlot(equipmentslot, itemstack);
-                        }
-
-                        if (entity2 instanceof LivingEntity) {
-                            LivingEntity livingentity2 = (LivingEntity)entity2;
-
-                            livingentity2.removeEffect((MobEffect)AnnoyingVillagersModMobEffects.HEROBRINE_EFFECT.get());
-                        }
-
-                        entity2.stopRiding();
-                        if (entity2 instanceof ServerPlayer) {
-                            ServerPlayer serverplayer = (ServerPlayer)entity2;
-
-                            serverplayer.setGameMode(GameType.SURVIVAL);
-                        }
+                    passenger.stopRiding();
+                    if (passenger instanceof ServerPlayer sp) {
+                        sp.setGameMode(GameType.SURVIVAL);
                     }
                 }
             }
+        }
 
-            Level level = entity.level;
-            Projectile projectile;
+        for (int i = 0; i < 8; i++) {
+            spawnProjectile(world, sourceEntity, 5.0F, i >= 6 ? randomFloat(0.1F, 2.0F) : 1.0F);
+        }
 
-            if (!level.isClientSide()) {
-                projectile = ((<undefinedtype>)(new Object() {
-                    public Projectile getArrow(Level level1, Entity entity3, float f, int i) {
-                        DarkOBFarEntity darkobfarentity = new DarkOBFarEntity((EntityType)AnnoyingVillagersModEntities.DARK_OB_FAR.get(), level1);
-
-                        darkobfarentity.setOwner(entity3);
-                        darkobfarentity.setBaseDamage((double)f);
-                        darkobfarentity.setKnockback(i);
-                        darkobfarentity.setSilent(true);
-                        return darkobfarentity;
-                    }
-                })).getArrow(level, entity, 5.0F, 0);
-                projectile.setPos(entity.getX(), entity.getEyeY() - 0.1D, entity.getZ());
-                projectile.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, 1.0F, 1.0F);
-                level.addFreshEntity(projectile);
+        // Drop loot after 1s
+        new DelayedTask(20) {
+            @Override
+            public void run() {
+                dropLoot(world, x, y, z);
             }
+        };
 
-            level = entity.level;
-            if (!level.isClientSide()) {
-                projectile = ((<undefinedtype>)(new Object() {
-                    public Projectile getArrow(Level level1, Entity entity3, float f, int i) {
-                        DarkOBFarEntity darkobfarentity = new DarkOBFarEntity((EntityType)AnnoyingVillagersModEntities.DARK_OB_FAR.get(), level1);
-
-                        darkobfarentity.setOwner(entity3);
-                        darkobfarentity.setBaseDamage((double)f);
-                        darkobfarentity.setKnockback(i);
-                        darkobfarentity.setSilent(true);
-                        return darkobfarentity;
-                    }
-                })).getArrow(level, entity, 5.0F, 0);
-                projectile.setPos(entity.getX(), entity.getEyeY() - 0.1D, entity.getZ());
-                projectile.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, 1.0F, 1.0F);
-                level.addFreshEntity(projectile);
+        if (Math.random() <= 0.5 && targetEntity instanceof LivingEntity living) {
+            living.removeAllEffects();
+            living.setHealth(4.0F);
+            if (!living.level.isClientSide()) {
+                living.addEffect(new MobEffectInstance(MobEffects.WITHER, 9999, 3, false, false));
             }
+        }
+    }
 
-            level = entity.level;
-            if (!level.isClientSide()) {
-                projectile = ((<undefinedtype>)(new Object() {
-                    public Projectile getArrow(Level level1, Entity entity3, float f, int i) {
-                        DarkOBFarEntity darkobfarentity = new DarkOBFarEntity((EntityType)AnnoyingVillagersModEntities.DARK_OB_FAR.get(), level1);
+    private static void transferArmor(Entity from, Entity to) {
+        if (!(from instanceof LivingEntity fromLiving)) return;
 
-                        darkobfarentity.setOwner(entity3);
-                        darkobfarentity.setBaseDamage((double)f);
-                        darkobfarentity.setKnockback(i);
-                        darkobfarentity.setSilent(true);
-                        return darkobfarentity;
-                    }
-                })).getArrow(level, entity, 5.0F, 0);
-                projectile.setPos(entity.getX(), entity.getEyeY() - 0.1D, entity.getZ());
-                projectile.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, 1.0F, 1.0F);
-                level.addFreshEntity(projectile);
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            if (slot.getType() != EquipmentSlot.Type.ARMOR) continue;
+            ItemStack armor = fromLiving.getItemBySlot(slot);
+            if (to instanceof Player player) {
+                player.getInventory().armor.set(3 - slot.getIndex(), armor); // 0 = boots, 1 = legs, 2 = chest, 3 = head
+                player.getInventory().setChanged();
+            } else if (to instanceof LivingEntity living) {
+                living.setItemSlot(slot, armor);
             }
+        }
+    }
 
-            level = entity.level;
-            if (!level.isClientSide()) {
-                projectile = ((<undefinedtype>)(new Object() {
-                    public Projectile getArrow(Level level1, Entity entity3, float f, int i) {
-                        DarkOBFarEntity darkobfarentity = new DarkOBFarEntity((EntityType)AnnoyingVillagersModEntities.DARK_OB_FAR.get(), level1);
+    private static void spawnProjectile(LevelAccessor world, Entity owner, float damage, float speed) {
+        if (!(world instanceof Level level) || level.isClientSide()) return;
 
-                        darkobfarentity.setOwner(entity3);
-                        darkobfarentity.setBaseDamage((double)f);
-                        darkobfarentity.setKnockback(i);
-                        darkobfarentity.setSilent(true);
-                        return darkobfarentity;
-                    }
-                })).getArrow(level, entity, 5.0F, 0);
-                projectile.setPos(entity.getX(), entity.getEyeY() - 0.1D, entity.getZ());
-                projectile.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, 1.0F, 1.0F);
-                level.addFreshEntity(projectile);
-            }
+        DarkOBFarEntity projectile = new DarkOBFarEntity(AnnoyingVillagersModEntities.DARK_OB_FAR.get(), level);
+        projectile.setOwner(owner);
+        projectile.setBaseDamage(damage);
+        projectile.setKnockback(0);
+        projectile.setSilent(true);
 
-            level = entity.level;
-            if (!level.isClientSide()) {
-                projectile = ((<undefinedtype>)(new Object() {
-                    public Projectile getArrow(Level level1, Entity entity3, float f, int i) {
-                        DarkOBFarEntity darkobfarentity = new DarkOBFarEntity((EntityType)AnnoyingVillagersModEntities.DARK_OB_FAR.get(), level1);
+        projectile.setPos(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
+        projectile.shoot(owner.getLookAngle().x, owner.getLookAngle().y, owner.getLookAngle().z, speed, 1.0F);
 
-                        darkobfarentity.setOwner(entity3);
-                        darkobfarentity.setBaseDamage((double)f);
-                        darkobfarentity.setKnockback(i);
-                        darkobfarentity.setSilent(true);
-                        return darkobfarentity;
-                    }
-                })).getArrow(level, entity, 5.0F, 0);
-                projectile.setPos(entity.getX(), entity.getEyeY() - 0.1D, entity.getZ());
-                projectile.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, 1.0F, 1.0F);
-                level.addFreshEntity(projectile);
-            }
+        level.addFreshEntity(projectile);
+    }
 
-            level = entity.level;
-            if (!level.isClientSide()) {
-                projectile = ((<undefinedtype>)(new Object() {
-                    public Projectile getArrow(Level level1, Entity entity3, float f, int i) {
-                        DarkOBFarEntity darkobfarentity = new DarkOBFarEntity((EntityType)AnnoyingVillagersModEntities.DARK_OB_FAR.get(), level1);
+    private static void dropLoot(LevelAccessor world, double x, double y, double z) {
+        if (!(world instanceof Level level) || level.isClientSide()) return;
 
-                        darkobfarentity.setOwner(entity3);
-                        darkobfarentity.setBaseDamage((double)f);
-                        darkobfarentity.setKnockback(i);
-                        darkobfarentity.setSilent(true);
-                        return darkobfarentity;
-                    }
-                })).getArrow(level, entity, 5.0F, 0);
-                projectile.setPos(entity.getX(), entity.getEyeY() - 0.1D, entity.getZ());
-                projectile.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, (float)Mth.nextDouble(new Random(), 0.1D, 2.0D), 1.0F);
-                level.addFreshEntity(projectile);
-            }
+        Item[] drops = new Item[]{
+                Items.DIAMOND, Items.DIAMOND,
+                Items.MUSIC_DISC_11, Items.IRON_INGOT,
+                Items.WRITABLE_BOOK, Items.EMERALD, Items.EMERALD,
+                Items.ENCHANTED_GOLDEN_APPLE, Items.NETHERITE_INGOT,
+                Items.ENDER_PEARL, Items.ENCHANTED_GOLDEN_APPLE,
+                Items.ENDER_EYE, Items.TNT, Items.TNT
+        };
 
-            level = entity.level;
-            if (!level.isClientSide()) {
-                projectile = ((<undefinedtype>)(new Object() {
-                    public Projectile getArrow(Level level1, Entity entity3, float f, int i) {
-                        DarkOBFarEntity darkobfarentity = new DarkOBFarEntity((EntityType)AnnoyingVillagersModEntities.DARK_OB_FAR.get(), level1);
+        for (Item item : drops) {
+            ItemEntity entity = new ItemEntity(level, x, y, z, new ItemStack(item));
+            entity.setPickUpDelay(10);
+            level.addFreshEntity(entity);
+        }
+    }
 
-                        darkobfarentity.setOwner(entity3);
-                        darkobfarentity.setBaseDamage((double)f);
-                        darkobfarentity.setKnockback(i);
-                        darkobfarentity.setSilent(true);
-                        return darkobfarentity;
-                    }
-                })).getArrow(level, entity, 5.0F, 0);
-                projectile.setPos(entity.getX(), entity.getEyeY() - 0.1D, entity.getZ());
-                projectile.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, (float)Mth.nextDouble(new Random(), 0.1D, 2.0D), 1.0F);
-                level.addFreshEntity(projectile);
-            }
+    private static boolean isSpectatorGamemode(Entity entity) {
+        if (entity instanceof ServerPlayer sp) {
+            return sp.gameMode.getGameModeForPlayer() == GameType.SPECTATOR;
+        } else if (entity instanceof Player player && entity.level.isClientSide()) {
+            var info = Minecraft.getInstance().getConnection().getPlayerInfo(player.getGameProfile().getId());
+            return info != null && info.getGameMode() == GameType.SPECTATOR;
+        }
+        return false;
+    }
 
-            level = entity.level;
-            if (!level.isClientSide()) {
-                projectile = ((<undefinedtype>)(new Object() {
-                    public Projectile getArrow(Level level1, Entity entity3, float f, int i) {
-                        DarkOBFarEntity darkobfarentity = new DarkOBFarEntity((EntityType)AnnoyingVillagersModEntities.DARK_OB_FAR.get(), level1);
+    private static float randomFloat(float min, float max) {
+        return (float) (Math.random() * (max - min) + min);
+    }
 
-                        darkobfarentity.setOwner(entity3);
-                        darkobfarentity.setBaseDamage((double)f);
-                        darkobfarentity.setKnockback(i);
-                        darkobfarentity.setSilent(true);
-                        return darkobfarentity;
-                    }
-                })).getArrow(level, entity, 5.0F, 0);
-                projectile.setPos(entity.getX(), entity.getEyeY() - 0.1D, entity.getZ());
-                projectile.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, (float)Mth.nextDouble(new Random(), 0.1D, 2.0D), 1.0F);
-                level.addFreshEntity(projectile);
-            }
+    // Dummy DelayedTask (replace with your existing one)
+    public abstract static class DelayedTask {
+        private int ticks = 0;
+        private final int waitTicks;
 
-            level = entity.level;
-            if (!level.isClientSide()) {
-                projectile = ((<undefinedtype>)(new Object() {
-                    public Projectile getArrow(Level level1, Entity entity3, float f, int i) {
-                        DarkOBFarEntity darkobfarentity = new DarkOBFarEntity((EntityType)AnnoyingVillagersModEntities.DARK_OB_FAR.get(), level1);
+        public DelayedTask(int waitTicks) {
+            this.waitTicks = waitTicks;
+            MinecraftForge.EVENT_BUS.register(this);
+        }
 
-                        darkobfarentity.setOwner(entity3);
-                        darkobfarentity.setBaseDamage((double)f);
-                        darkobfarentity.setKnockback(i);
-                        darkobfarentity.setSilent(true);
-                        return darkobfarentity;
-                    }
-                })).getArrow(level, entity, 5.0F, 0);
-                projectile.setPos(entity.getX(), entity.getEyeY() - 0.1D, entity.getZ());
-                projectile.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, (float)Mth.nextDouble(new Random(), 0.1D, 2.0D), 1.0F);
-                level.addFreshEntity(projectile);
-            }
-
-            ((<undefinedtype>)(new Object() {
-                private int ticks = 0;
-                private float waitTicks;
-                private LevelAccessor world;
-
-                public void start(LevelAccessor levelaccessor1, int i) {
-                    this.waitTicks = (float)i;
-                    MinecraftForge.EVENT_BUS.register(this);
-                    this.world = levelaccessor1;
-                }
-
-                @SubscribeEvent
-                public void tick(ServerTickEvent servertickevent) {
-                    if (servertickevent.phase == Phase.END) {
-                        ++this.ticks;
-                        if ((float)this.ticks >= this.waitTicks) {
-                            this.run();
-                        }
-                    }
-
-                }
-
-                private void run() {
-                    LevelAccessor levelaccessor1 = this.world;
-                    Level level1;
-                    ItemEntity itementity;
-
-                    if (levelaccessor1 instanceof Level) {
-                        level1 = (Level)levelaccessor1;
-                        if (!level1.isClientSide()) {
-                            itementity = new ItemEntity(level1, d0, d1, d2, new ItemStack(Items.DIAMOND));
-                            itementity.setPickUpDelay(10);
-                            level1.addFreshEntity(itementity);
-                        }
-                    }
-
-                    levelaccessor1 = this.world;
-                    if (levelaccessor1 instanceof Level) {
-                        level1 = (Level)levelaccessor1;
-                        if (!level1.isClientSide()) {
-                            itementity = new ItemEntity(level1, d0, d1, d2, new ItemStack(Items.DIAMOND));
-                            itementity.setPickUpDelay(10);
-                            level1.addFreshEntity(itementity);
-                        }
-                    }
-
-                    levelaccessor1 = this.world;
-                    if (levelaccessor1 instanceof Level) {
-                        level1 = (Level)levelaccessor1;
-                        if (!level1.isClientSide()) {
-                            itementity = new ItemEntity(level1, d0, d1, d2, new ItemStack(Items.MUSIC_DISC_11));
-                            itementity.setPickUpDelay(10);
-                            level1.addFreshEntity(itementity);
-                        }
-                    }
-
-                    levelaccessor1 = this.world;
-                    if (levelaccessor1 instanceof Level) {
-                        level1 = (Level)levelaccessor1;
-                        if (!level1.isClientSide()) {
-                            itementity = new ItemEntity(level1, d0, d1, d2, new ItemStack(Items.IRON_INGOT));
-                            itementity.setPickUpDelay(10);
-                            level1.addFreshEntity(itementity);
-                        }
-                    }
-
-                    levelaccessor1 = this.world;
-                    if (levelaccessor1 instanceof Level) {
-                        level1 = (Level)levelaccessor1;
-                        if (!level1.isClientSide()) {
-                            itementity = new ItemEntity(level1, d0, d1, d2, new ItemStack(Items.WRITABLE_BOOK));
-                            itementity.setPickUpDelay(10);
-                            level1.addFreshEntity(itementity);
-                        }
-                    }
-
-                    levelaccessor1 = this.world;
-                    if (levelaccessor1 instanceof Level) {
-                        level1 = (Level)levelaccessor1;
-                        if (!level1.isClientSide()) {
-                            itementity = new ItemEntity(level1, d0, d1, d2, new ItemStack(Items.EMERALD));
-                            itementity.setPickUpDelay(10);
-                            level1.addFreshEntity(itementity);
-                        }
-                    }
-
-                    levelaccessor1 = this.world;
-                    if (levelaccessor1 instanceof Level) {
-                        level1 = (Level)levelaccessor1;
-                        if (!level1.isClientSide()) {
-                            itementity = new ItemEntity(level1, d0, d1, d2, new ItemStack(Items.EMERALD));
-                            itementity.setPickUpDelay(10);
-                            level1.addFreshEntity(itementity);
-                        }
-                    }
-
-                    levelaccessor1 = this.world;
-                    if (levelaccessor1 instanceof Level) {
-                        level1 = (Level)levelaccessor1;
-                        if (!level1.isClientSide()) {
-                            itementity = new ItemEntity(level1, d0, d1, d2, new ItemStack(Items.ENCHANTED_GOLDEN_APPLE));
-                            itementity.setPickUpDelay(10);
-                            level1.addFreshEntity(itementity);
-                        }
-                    }
-
-                    levelaccessor1 = this.world;
-                    if (levelaccessor1 instanceof Level) {
-                        level1 = (Level)levelaccessor1;
-                        if (!level1.isClientSide()) {
-                            itementity = new ItemEntity(level1, d0, d1, d2, new ItemStack(Items.NETHERITE_INGOT));
-                            itementity.setPickUpDelay(10);
-                            level1.addFreshEntity(itementity);
-                        }
-                    }
-
-                    levelaccessor1 = this.world;
-                    if (levelaccessor1 instanceof Level) {
-                        level1 = (Level)levelaccessor1;
-                        if (!level1.isClientSide()) {
-                            itementity = new ItemEntity(level1, d0, d1, d2, new ItemStack(Items.ENDER_PEARL));
-                            itementity.setPickUpDelay(10);
-                            level1.addFreshEntity(itementity);
-                        }
-                    }
-
-                    levelaccessor1 = this.world;
-                    if (levelaccessor1 instanceof Level) {
-                        level1 = (Level)levelaccessor1;
-                        if (!level1.isClientSide()) {
-                            itementity = new ItemEntity(level1, d0, d1, d2, new ItemStack(Items.ENCHANTED_GOLDEN_APPLE));
-                            itementity.setPickUpDelay(10);
-                            level1.addFreshEntity(itementity);
-                        }
-                    }
-
-                    levelaccessor1 = this.world;
-                    if (levelaccessor1 instanceof Level) {
-                        level1 = (Level)levelaccessor1;
-                        if (!level1.isClientSide()) {
-                            itementity = new ItemEntity(level1, d0, d1, d2, new ItemStack(Items.ENDER_EYE));
-                            itementity.setPickUpDelay(10);
-                            level1.addFreshEntity(itementity);
-                        }
-                    }
-
-                    levelaccessor1 = this.world;
-                    if (levelaccessor1 instanceof Level) {
-                        level1 = (Level)levelaccessor1;
-                        if (!level1.isClientSide()) {
-                            itementity = new ItemEntity(level1, d0, d1, d2, new ItemStack(Blocks.TNT));
-                            itementity.setPickUpDelay(10);
-                            level1.addFreshEntity(itementity);
-                        }
-                    }
-
-                    levelaccessor1 = this.world;
-                    if (levelaccessor1 instanceof Level) {
-                        level1 = (Level)levelaccessor1;
-                        if (!level1.isClientSide()) {
-                            itementity = new ItemEntity(level1, d0, d1, d2, new ItemStack(Blocks.TNT));
-                            itementity.setPickUpDelay(10);
-                            level1.addFreshEntity(itementity);
-                        }
-                    }
-
+        @SubscribeEvent
+        public void onTick(TickEvent.ServerTickEvent event) {
+            if (event.phase == TickEvent.Phase.END) {
+                ticks++;
+                if (ticks >= waitTicks) {
+                    run();
                     MinecraftForge.EVENT_BUS.unregister(this);
                 }
-            })).start(levelaccessor, 20);
-            if (Math.random() <= 0.5D) {
-                LivingEntity livingentity3;
-
-                if (entity1 instanceof LivingEntity) {
-                    livingentity3 = (LivingEntity)entity1;
-                    livingentity3.removeAllEffects();
-                }
-
-                if (entity1 instanceof LivingEntity) {
-                    livingentity3 = (LivingEntity)entity1;
-                    livingentity3.setHealth(4.0F);
-                }
-
-                if (entity1 instanceof LivingEntity) {
-                    livingentity3 = (LivingEntity)entity1;
-                    if (!livingentity3.level.isClientSide()) {
-                        livingentity3.addEffect(new MobEffectInstance(MobEffects.WITHER, 9999, 3, false, false));
-                    }
-                }
             }
-
         }
+
+        public abstract void run();
     }
 }

@@ -5,6 +5,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
+
+import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -19,10 +22,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.TickEvent.ServerTickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import yesman.epicfight.api.animation.types.AttackAnimation;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
@@ -47,9 +46,9 @@ public class BlueDemonDangShiTiGengXinKeShiProcedure {
                     Level level = (Level)levelaccessor;
 
                     if (!level.isClientSide()) {
-                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:electify")), SoundSource.BLOCKS, (float)Mth.nextDouble(new Random(), 0.0D, 0.1D), (float)Mth.nextDouble(new Random(), 0.7D, 1.05D));
+                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":electify")), SoundSource.BLOCKS, (float)Mth.nextDouble(new Random(), 0.0D, 0.1D), (float)Mth.nextDouble(new Random(), 0.7D, 1.05D));
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:electify")), SoundSource.BLOCKS, (float)Mth.nextDouble(new Random(), 0.0D, 0.1D), (float)Mth.nextDouble(new Random(), 0.7D, 1.05D), false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":electify")), SoundSource.BLOCKS, (float)Mth.nextDouble(new Random(), 0.0D, 0.1D), (float)Mth.nextDouble(new Random(), 0.7D, 1.05D), false);
                     }
                 }
             }
@@ -83,9 +82,9 @@ public class BlueDemonDangShiTiGengXinKeShiProcedure {
                         Level level1 = (Level)levelaccessor;
 
                         if (!level1.isClientSide()) {
-                            level1.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:electify")), SoundSource.BLOCKS, (float)Mth.nextDouble(new Random(), 0.0D, 0.15D), (float)Mth.nextDouble(new Random(), 0.7D, 1.05D));
+                            level1.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":electify")), SoundSource.BLOCKS, (float)Mth.nextDouble(new Random(), 0.0D, 0.15D), (float)Mth.nextDouble(new Random(), 0.7D, 1.05D));
                         } else {
-                            level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:electify")), SoundSource.BLOCKS, (float)Mth.nextDouble(new Random(), 0.0D, 0.15D), (float)Mth.nextDouble(new Random(), 0.7D, 1.05D), false);
+                            level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":electify")), SoundSource.BLOCKS, (float)Mth.nextDouble(new Random(), 0.0D, 0.15D), (float)Mth.nextDouble(new Random(), 0.7D, 1.05D), false);
                         }
                     }
                 }
@@ -105,42 +104,19 @@ public class BlueDemonDangShiTiGengXinKeShiProcedure {
                 final DynamicAnimation dynamicanimation = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation)null).getAnimation();
 
                 if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
-                    if (dynamicanimation instanceof KnockdownAnimation) {
-                        ((<undefinedtype>)(new Object() {
-                            private int ticks = 0;
-                            private float waitTicks;
-                            private LevelAccessor world;
-
-                            public void start(LevelAccessor levelaccessor1, int i) {
-                                this.waitTicks = (float)i;
-                                MinecraftForge.EVENT_BUS.register(this);
-                                this.world = levelaccessor1;
-                            }
-
-                            @SubscribeEvent
-                            public void tick(ServerTickEvent servertickevent) {
-                                if (servertickevent.phase == Phase.END) {
-                                    ++this.ticks;
-                                    if ((float)this.ticks >= this.waitTicks) {
-                                        this.run();
-                                    }
+                    new DelayedTask(10) {
+                        @Override
+                        public void run() {
+                            if (dynamicanimation instanceof KnockdownAnimation) {
+                                if (!entity.level.isClientSide() && entity.getServer() != null) {
+                                    entity.getServer().getCommands().performCommand(
+                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
+                                            "indestructible @s play \"epicfight:biped/skill/knockdown_wakeup_left\" 0 1"
+                                    );
                                 }
-
                             }
-
-                            private void run() {
-                                if (dynamicanimation instanceof KnockdownAnimation) {
-                                    Entity entity2 = entity;
-
-                                    if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                        entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/skill/knockdown_wakeup_left\" 0 1");
-                                    }
-                                }
-
-                                MinecraftForge.EVENT_BUS.unregister(this);
-                            }
-                        })).start(levelaccessor, 10);
-                    }
+                        }
+                    };
                 } else {
                     entity.clearFire();
                 }

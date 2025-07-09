@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.network.NetworkEvent.Context;
-import com.pla.annoyingvillagers.AnnoyingVillagersMod;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.procedures.WeaponsMoreAttackAnXiaAnJianShiProcedure;
 
 @EventBusSubscriber(bus = Bus.MOD)
@@ -58,6 +58,6 @@ public class WeaponsMoreAttackMessage {
 
     @SubscribeEvent
     public static void registerMessage(FMLCommonSetupEvent fmlcommonsetupevent) {
-        AnnoyingVillagersMod.addNetworkMessage(WeaponsMoreAttackMessage.class, WeaponsMoreAttackMessage::buffer, WeaponsMoreAttackMessage::new, WeaponsMoreAttackMessage::handler);
+        AnnoyingVillagers.addNetworkMessage(WeaponsMoreAttackMessage.class, WeaponsMoreAttackMessage::buffer, WeaponsMoreAttackMessage::new, WeaponsMoreAttackMessage::handler);
     }
 }

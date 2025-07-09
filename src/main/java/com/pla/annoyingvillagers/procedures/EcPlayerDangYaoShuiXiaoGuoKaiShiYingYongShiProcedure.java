@@ -7,7 +7,7 @@ public class EcPlayerDangYaoShuiXiaoGuoKaiShiYingYongShiProcedure {
     public static void execute(Entity entity) {
         if (entity != null) {
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/combat/execute\" 0 1");
+                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/execute\" 0 1");
             }
 
         }

@@ -1,6 +1,8 @@
 package com.pla.annoyingvillagers.procedures;
 
 import javax.annotation.Nullable;
+
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -147,30 +149,10 @@ public class FireworkuseProcedure {
                             }
                         }
 
-                        ((<undefinedtype>)(new Object() {
-                            private int ticks = 0;
-                            private float waitTicks;
-                            private LevelAccessor world;
-
-                            public void start(LevelAccessor levelaccessor1, int j) {
-                                this.waitTicks = (float)j;
-                                MinecraftForge.EVENT_BUS.register(this);
-                                this.world = levelaccessor1;
-                            }
-
-                            @SubscribeEvent
-                            public void tick(ServerTickEvent servertickevent) {
-                                if (servertickevent.phase == Phase.END) {
-                                    ++this.ticks;
-                                    if ((float)this.ticks >= this.waitTicks) {
-                                        this.run();
-                                    }
-                                }
-
-                            }
-
-                            private void run() {
-                                LevelAccessor levelaccessor1 = this.world;
+                        new DelayedTask(50) {
+                            @Override
+                            public void run() {
+                                LevelAccessor levelaccessor1 = levelaccessor;
 
                                 if (levelaccessor1 instanceof Level) {
                                     Level level1 = (Level)levelaccessor1;
@@ -185,8 +167,8 @@ public class FireworkuseProcedure {
                                 Entity entity1;
 
                                 if (Math.random() <= 0.6D) {
-                                    if (!this.world.isClientSide() && this.world.getServer() != null) {
-                                        this.world.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u6751\u6c11\u4fa6\u5bdf\u5175> What the matter?"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
+                                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u6751\u6c11\u4fa6\u5bdf\u5175> What the matter?"), ChatType.SYSTEM, Util.NIL_UUID);
                                     }
 
                                     entity1 = entity;
@@ -204,8 +186,8 @@ public class FireworkuseProcedure {
                                         entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:lan_cun_qi ~-10 ~5 ~20");
                                     }
                                 } else if (Math.random() <= 0.1D) {
-                                    if (!this.world.isClientSide() && this.world.getServer() != null) {
-                                        this.world.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u6751\u6c11\u84dd\u9a91\u5175> What the matter?"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
+                                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u6751\u6c11\u84dd\u9a91\u5175> What the matter?"), ChatType.SYSTEM, Util.NIL_UUID);
                                     }
 
                                     entity1 = entity;
@@ -223,8 +205,8 @@ public class FireworkuseProcedure {
                                         entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:cun_min_zhen_cha_bing ~ ~5 ~10");
                                     }
                                 } else if (Math.random() <= 0.1D) {
-                                    if (!this.world.isClientSide() && this.world.getServer() != null) {
-                                        this.world.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u6751\u6c11\u7d2b\u9a91\u5175> What the matter?"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
+                                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u6751\u6c11\u7d2b\u9a91\u5175> What the matter?"), ChatType.SYSTEM, Util.NIL_UUID);
                                     }
 
                                     entity1 = entity;
@@ -237,8 +219,8 @@ public class FireworkuseProcedure {
                                         entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:zi_cun_qi ~10 ~5 ~-20");
                                     }
                                 } else if (Math.random() <= 0.1D) {
-                                    if (!this.world.isClientSide() && this.world.getServer() != null) {
-                                        this.world.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u6751\u6c11\u7ea2\u9a91\u5175> What the matter?"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
+                                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u6751\u6c11\u7ea2\u9a91\u5175> What the matter?"), ChatType.SYSTEM, Util.NIL_UUID);
                                     }
 
                                     entity1 = entity;
@@ -256,8 +238,8 @@ public class FireworkuseProcedure {
                                         entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:cun_min_zhen_cha_bing ~ ~5 ~-10");
                                     }
                                 } else {
-                                    if (!this.world.isClientSide() && this.world.getServer() != null) {
-                                        this.world.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u6751\u6c11\u7eff\u9a91\u5175> What the matter?"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
+                                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u6751\u6c11\u7eff\u9a91\u5175> What the matter?"), ChatType.SYSTEM, Util.NIL_UUID);
                                     }
 
                                     entity1 = entity;
@@ -275,10 +257,8 @@ public class FireworkuseProcedure {
                                         entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:lu_cun_qi ~-5 ~5 ~20");
                                     }
                                 }
-
-                                MinecraftForge.EVENT_BUS.unregister(this);
                             }
-                        })).start(levelaccessor, 50);
+                        };
                     }
                 }
             }

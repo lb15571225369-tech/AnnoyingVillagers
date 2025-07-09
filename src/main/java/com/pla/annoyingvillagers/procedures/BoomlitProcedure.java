@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
+
+import com.pla.annoyingvillagers.util.CheckGameMode;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
@@ -80,10 +83,11 @@ public class BoomlitProcedure {
         }
 
         Vec3 vec3 = new Vec3(d0, d1, d2);
+        Vec3 finalVec = vec3;
         List<Entity> list = (List)levelaccessor.getEntitiesOfClass(Entity.class, (new AABB(vec3, vec3)).inflate(3.0D), (entity) -> {
             return true;
         }).stream().sorted(Comparator.comparingDouble((entity) -> {
-            return entity.distanceToSqr(vec3);
+            return entity.distanceToSqr(finalVec);
         })).collect(Collectors.toList());
         Iterator iterator = list.iterator();
 
@@ -217,21 +221,7 @@ public class BoomlitProcedure {
                 f = -1.0F;
             }
 
-            if (f <= 30.0F && entity.isAlive() && !((<undefinedtype>)(new Object() {
-                public boolean checkGamemode(Entity entity1) {
-                    if (entity1 instanceof ServerPlayer) {
-                        ServerPlayer serverplayer = (ServerPlayer)entity1;
-
-                        return serverplayer.gameMode.getGameModeForPlayer() == GameType.SPECTATOR;
-                    } else if (entity1.level.isClientSide() && entity1 instanceof Player) {
-                        Player player = (Player)entity1;
-
-                        return Minecraft.getInstance().getConnection().getPlayerInfo(player.getGameProfile().getId()) != null && Minecraft.getInstance().getConnection().getPlayerInfo(player.getGameProfile().getId()).getGameMode() == GameType.SPECTATOR;
-                    } else {
-                        return false;
-                    }
-                }
-            })).checkGamemode(entity)) {
+            if (f <= 30.0F && entity.isAlive() && !CheckGameMode.isSpectatorGamemode(entity)) {
                 LivingEntityPatch<?> livingentitypatch1 = (LivingEntityPatch)EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 
                 if (livingentitypatch1 != null) {
@@ -255,10 +245,11 @@ public class BoomlitProcedure {
         }
 
         vec3 = new Vec3(d0, d1, d2);
+        Vec3 finalVec1 = vec3;
         list = (List)levelaccessor.getEntitiesOfClass(Entity.class, (new AABB(vec3, vec3)).inflate(10.0D), (entity1) -> {
             return true;
         }).stream().sorted(Comparator.comparingDouble((entity1) -> {
-            return entity1.distanceToSqr(vec3);
+            return entity1.distanceToSqr(finalVec1);
         })).collect(Collectors.toList());
         iterator = list.iterator();
 

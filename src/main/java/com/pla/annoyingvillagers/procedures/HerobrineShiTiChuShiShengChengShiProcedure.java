@@ -2,6 +2,9 @@ package com.pla.annoyingvillagers.procedures;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import com.pla.annoyingvillagers.util.CheckGameMode;
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.NonNullList;
@@ -40,51 +43,16 @@ public class HerobrineShiTiChuShiShengChengShiProcedure {
             if (!entity.level.isClientSide() && entity.getServer() != null) {
                 entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "team join herobrinexintu @s");
             }
-
-            ((<undefinedtype>)(new Object() {
-                private int ticks = 0;
-                private float waitTicks;
-                private LevelAccessor world;
-
-                public void start(LevelAccessor levelaccessor1, int i) {
-                    this.waitTicks = (float)i;
-                    MinecraftForge.EVENT_BUS.register(this);
-                    this.world = levelaccessor1;
-                }
-
-                @SubscribeEvent
-                public void tick(ServerTickEvent servertickevent) {
-                    if (servertickevent.phase == Phase.END) {
-                        ++this.ticks;
-                        if ((float)this.ticks >= this.waitTicks) {
-                            this.run();
-                        }
-                    }
-
-                }
-
-                private void run() {
+            new DelayedTask(1) {
+                @Override
+                public void run() {
                     if (entity.isVehicle()) {
                         Iterator iterator = (new ArrayList(entity.getPassengers())).iterator();
 
                         while(iterator.hasNext()) {
                             Entity entity1 = (Entity)iterator.next();
 
-                            if (ForgeRegistries.ENTITIES.getKey(entity1.getType()).toString().equals("minecraft:player") && ((<undefinedtype>)(new Object() {
-                                public boolean checkGamemode(Entity entity2) {
-                                    if (entity2 instanceof ServerPlayer) {
-                                        ServerPlayer serverplayer = (ServerPlayer)entity2;
-
-                                        return serverplayer.gameMode.getGameModeForPlayer() == GameType.SPECTATOR;
-                                    } else if (entity2.level.isClientSide() && entity2 instanceof Player) {
-                                        Player player = (Player)entity2;
-
-                                        return Minecraft.getInstance().getConnection().getPlayerInfo(player.getGameProfile().getId()) != null && Minecraft.getInstance().getConnection().getPlayerInfo(player.getGameProfile().getId()).getGameMode() == GameType.SPECTATOR;
-                                    } else {
-                                        return false;
-                                    }
-                                }
-                            })).checkGamemode(entity1)) {
+                            if (ForgeRegistries.ENTITIES.getKey(entity1.getType()).toString().equals("minecraft:player") && CheckGameMode.isSpectatorGamemode(entity1)) {
                                 Entity entity2 = entity;
                                 Player player;
                                 NonNullList nonnulllist;
@@ -198,10 +166,8 @@ public class HerobrineShiTiChuShiShengChengShiProcedure {
                             }
                         }
                     }
-
-                    MinecraftForge.EVENT_BUS.unregister(this);
                 }
-            })).start(levelaccessor, 1);
+            };
         }
     }
 }

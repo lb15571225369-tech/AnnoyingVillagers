@@ -1,6 +1,8 @@
 package com.pla.annoyingvillagers.procedures;
 
 import javax.annotation.Nullable;
+
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.common.MinecraftForge;
@@ -38,30 +40,9 @@ public class NpcStandUpProcedure {
 
                 if (livingentitypatch != null) {
                     final DynamicAnimation dynamicanimation = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation)null).getAnimation();
-
-                    ((<undefinedtype>)(new Object() {
-                        private int ticks = 0;
-                        private float waitTicks;
-                        private LevelAccessor world;
-
-                        public void start(LevelAccessor levelaccessor1, int i) {
-                            this.waitTicks = (float)i;
-                            MinecraftForge.EVENT_BUS.register(this);
-                            this.world = levelaccessor1;
-                        }
-
-                        @SubscribeEvent
-                        public void tick(ServerTickEvent servertickevent) {
-                            if (servertickevent.phase == Phase.END) {
-                                ++this.ticks;
-                                if ((float)this.ticks >= this.waitTicks) {
-                                    this.run();
-                                }
-                            }
-
-                        }
-
-                        private void run() {
+                    new DelayedTask(10) {
+                        @Override
+                        public void run() {
                             if (dynamicanimation instanceof KnockdownAnimation) {
                                 Entity entity1;
 
@@ -77,10 +58,8 @@ public class NpcStandUpProcedure {
                                     }
                                 }
                             }
-
-                            MinecraftForge.EVENT_BUS.unregister(this);
                         }
-                    })).start(levelaccessor, 10);
+                    };
                 }
             }
 

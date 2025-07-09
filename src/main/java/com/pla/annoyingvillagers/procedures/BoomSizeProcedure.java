@@ -5,116 +5,36 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Explosion.BlockInteraction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import org.apache.logging.log4j.Logger;
-import com.pla.annoyingvillagers.AnnoyingVillagersMod;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 
 public class BoomSizeProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, final CommandContext<CommandSourceStack> commandcontext) {
-        Level level;
+    public static void execute(LevelAccessor world, CommandContext<CommandSourceStack> context) {
+        if (!(world instanceof Level level)) return;
 
-        if (levelaccessor instanceof Level) {
-            level = (Level)levelaccessor;
-            if (!level.isClientSide()) {
-                level.explode((Entity)null, ((<undefinedtype>)(new Object() {
-                    public double getX() {
-                        try {
-                            return (double)BlockPosArgument.getLoadedBlockPos(commandcontext, "xyz").getX();
-                        } catch (CommandSyntaxException commandsyntaxexception) {
-                            commandsyntaxexception.printStackTrace();
-                            return 0.0D;
-                        }
-                    }
-                })).getX(), ((<undefinedtype>)(new Object() {
-                    public double getY() {
-                        try {
-                            return (double)BlockPosArgument.getLoadedBlockPos(commandcontext, "xyz").getY();
-                        } catch (CommandSyntaxException commandsyntaxexception) {
-                            commandsyntaxexception.printStackTrace();
-                            return 0.0D;
-                        }
-                    }
-                })).getY(), ((<undefinedtype>)(new Object() {
-                    public double getZ() {
-                        try {
-                            return (double)BlockPosArgument.getLoadedBlockPos(commandcontext, "xyz").getZ();
-                        } catch (CommandSyntaxException commandsyntaxexception) {
-                            commandsyntaxexception.printStackTrace();
-                            return 0.0D;
-                        }
-                    }
-                })).getZ(), (float)DoubleArgumentType.getDouble(commandcontext, "size"), BlockInteraction.DESTROY);
-            }
+        BlockPos pos;
+        double size;
+
+        try {
+            pos = BlockPosArgument.getLoadedBlockPos(context, "xyz");
+            size = DoubleArgumentType.getDouble(context, "size");
+        } catch (CommandSyntaxException e) {
+            AnnoyingVillagers.LOGGER.error("Failed to parse explosion command coordinates or size", e);
+            return;
         }
 
-        if (levelaccessor instanceof Level) {
-            level = (Level)levelaccessor;
-            if (!level.isClientSide()) {
-                level.explode((Entity)null, ((<undefinedtype>)(new Object() {
-                    public double getX() {
-                        try {
-                            return (double)BlockPosArgument.getLoadedBlockPos(commandcontext, "xyz").getX();
-                        } catch (CommandSyntaxException commandsyntaxexception) {
-                            commandsyntaxexception.printStackTrace();
-                            return 0.0D;
-                        }
-                    }
-                })).getX(), ((<undefinedtype>)(new Object() {
-                    public double getY() {
-                        try {
-                            return (double)BlockPosArgument.getLoadedBlockPos(commandcontext, "xyz").getY();
-                        } catch (CommandSyntaxException commandsyntaxexception) {
-                            commandsyntaxexception.printStackTrace();
-                            return 0.0D;
-                        }
-                    }
-                })).getY(), ((<undefinedtype>)(new Object() {
-                    public double getZ() {
-                        try {
-                            return (double)BlockPosArgument.getLoadedBlockPos(commandcontext, "xyz").getZ();
-                        } catch (CommandSyntaxException commandsyntaxexception) {
-                            commandsyntaxexception.printStackTrace();
-                            return 0.0D;
-                        }
-                    }
-                })).getZ(), (float)DoubleArgumentType.getDouble(commandcontext, "size"), BlockInteraction.DESTROY);
-            }
+        if (!level.isClientSide()) {
+            // Perform explosion twice as in original (if intentional)
+            level.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) size, Explosion.BlockInteraction.DESTROY);
+            level.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) size, Explosion.BlockInteraction.DESTROY);
         }
 
-        Logger logger = AnnoyingVillagersMod.LOGGER;
-        double d0 = ((<undefinedtype>)(new Object() {
-            public double getX() {
-                try {
-                    return (double)BlockPosArgument.getLoadedBlockPos(commandcontext, "xyz").getX();
-                } catch (CommandSyntaxException commandsyntaxexception) {
-                    commandsyntaxexception.printStackTrace();
-                    return 0.0D;
-                }
-            }
-        })).getX();
-
-        logger.info("\u5df2\u5728" + d0 + " " + ((<undefinedtype>)(new Object() {
-            public double getY() {
-                try {
-                    return (double)BlockPosArgument.getLoadedBlockPos(commandcontext, "xyz").getY();
-                } catch (CommandSyntaxException commandsyntaxexception) {
-                    commandsyntaxexception.printStackTrace();
-                    return 0.0D;
-                }
-            }
-        })).getY() + " " + ((<undefinedtype>)(new Object() {
-            public double getZ() {
-                try {
-                    return (double)BlockPosArgument.getLoadedBlockPos(commandcontext, "xyz").getZ();
-                } catch (CommandSyntaxException commandsyntaxexception) {
-                    commandsyntaxexception.printStackTrace();
-                    return 0.0D;
-                }
-            }
-        })).getZ() + " \u4ea7\u751f\u5927\u5c0f\u4e3a" + DoubleArgumentType.getDouble(commandcontext, "size") + "\u7684boom");
+        Logger logger = AnnoyingVillagers.LOGGER;
+        logger.info("已在 " + pos.getX() + " " + pos.getY() + " " + pos.getZ() + " 产生大小为 " + size + " 的 boom");
     }
 }

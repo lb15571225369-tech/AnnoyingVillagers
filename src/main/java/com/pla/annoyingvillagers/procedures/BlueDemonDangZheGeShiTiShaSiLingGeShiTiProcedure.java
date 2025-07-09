@@ -1,5 +1,7 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
+
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.ChatType;
@@ -27,9 +29,9 @@ public class BlueDemonDangZheGeShiTiShaSiLingGeShiTiProcedure {
                 if (levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:bluedemonsaydontbe")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":bluedemonsaydontbe")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:bluedemonsaydontbe")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":bluedemonsaydontbe")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                     }
                 }
             } else if (Math.random() <= 0.3D) {
@@ -41,9 +43,9 @@ public class BlueDemonDangZheGeShiTiShaSiLingGeShiTiProcedure {
                     if (levelaccessor instanceof Level) {
                         level = (Level) levelaccessor;
                         if (!level.isClientSide()) {
-                            level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:bluedemonsayplayer")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                            level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":bluedemonsayplayer")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                         } else {
-                            level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:bluedemonsayplayer")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                            level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":bluedemonsayplayer")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                         }
                     }
                 }
@@ -55,9 +57,9 @@ public class BlueDemonDangZheGeShiTiShaSiLingGeShiTiProcedure {
                 if (levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:bluedemon_say_you_no_know")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":bluedemon_say_you_no_know")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:bluedemon_say_you_no_know")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":bluedemon_say_you_no_know")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                     }
                 }
             } else if (Math.random() <= 0.2D) {
@@ -68,9 +70,9 @@ public class BlueDemonDangZheGeShiTiShaSiLingGeShiTiProcedure {
                 if (levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:bluedemonsayyc")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":bluedemonsayyc")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:bluedemonsayyc")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":bluedemonsayyc")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                     }
                 }
             }

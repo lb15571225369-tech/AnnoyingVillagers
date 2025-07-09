@@ -1,6 +1,8 @@
 package com.pla.annoyingvillagers.procedures;
 
 import javax.annotation.Nullable;
+
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -61,34 +63,13 @@ public class VillagerHeadSetProcedure {
                             }
 
                             entity.getPersistentData().putBoolean("villager_head_used", true);
-                            ((<undefinedtype>)(new Object() {
-                                private int ticks = 0;
-                                private float waitTicks;
-                                private LevelAccessor world;
-
-                                public void start(LevelAccessor levelaccessor1, int i) {
-                                    this.waitTicks = (float)i;
-                                    MinecraftForge.EVENT_BUS.register(this);
-                                    this.world = levelaccessor1;
-                                }
-
-                                @SubscribeEvent
-                                public void tick(ServerTickEvent servertickevent) {
-                                    if (servertickevent.phase == Phase.END) {
-                                        ++this.ticks;
-                                        if ((float)this.ticks >= this.waitTicks) {
-                                            this.run();
-                                        }
-                                    }
-
-                                }
-
-                                private void run() {
+                            new DelayedTask(200) {
+                                @Override
+                                public void run() {
                                     entity.getPersistentData().putBoolean("villager_head", true);
                                     entity.getPersistentData().putBoolean("villager_head_used", false);
-                                    MinecraftForge.EVENT_BUS.unregister(this);
                                 }
-                            })).start(levelaccessor, 200);
+                            };
                         } else if (entity instanceof Player) {
                             player = (Player)entity;
                             if (!player.level.isClientSide()) {
@@ -109,34 +90,14 @@ public class VillagerHeadSetProcedure {
                             }
 
                             entity.getPersistentData().putBoolean("villager_head_used", true);
-                            ((<undefinedtype>)(new Object() {
-                                private int ticks = 0;
-                                private float waitTicks;
-                                private LevelAccessor world;
-
-                                public void start(LevelAccessor levelaccessor1, int i) {
-                                    this.waitTicks = (float)i;
-                                    MinecraftForge.EVENT_BUS.register(this);
-                                    this.world = levelaccessor1;
-                                }
-
-                                @SubscribeEvent
-                                public void tick(ServerTickEvent servertickevent) {
-                                    if (servertickevent.phase == Phase.END) {
-                                        ++this.ticks;
-                                        if ((float)this.ticks >= this.waitTicks) {
-                                            this.run();
-                                        }
-                                    }
-
-                                }
-
-                                private void run() {
+                            new DelayedTask(200) {
+                                @Override
+                                public void run() {
                                     entity.getPersistentData().putBoolean("villager_head", false);
                                     entity.getPersistentData().putBoolean("villager_head_used", false);
-                                    MinecraftForge.EVENT_BUS.unregister(this);
                                 }
-                            })).start(levelaccessor, 200);
+                            };
+
                         } else if (entity instanceof Player) {
                             player = (Player)entity;
                             if (!player.level.isClientSide()) {

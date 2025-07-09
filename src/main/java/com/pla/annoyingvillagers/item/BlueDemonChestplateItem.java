@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.item;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
@@ -61,7 +62,7 @@ public abstract class BlueDemonChestplateItem extends ArmorItem {
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoying_villagers:textures/models/armor/drowned___layer_1.png";
+            return AnnoyingVillagers.MODID + ":textures/models/armor/drowned___layer_1.png";
         }
 
         public void onArmorTick(ItemStack itemstack, Level level, Player player) {

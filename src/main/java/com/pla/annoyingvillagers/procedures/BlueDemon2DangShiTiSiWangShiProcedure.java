@@ -30,7 +30,7 @@ public class BlueDemon2DangShiTiSiWangShiProcedure {
     public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity) {
         if (entity != null) {
             if (Math.random() < 0.3D) {
-                ((<undefinedtype>)(new Object() {
+                (new Object() {
                     private int ticks = 0;
                     private float waitTicks;
                     private LevelAccessor world;
@@ -60,14 +60,14 @@ public class BlueDemon2DangShiTiSiWangShiProcedure {
                         Entity entity1 = entity;
 
                         if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                            entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "summon annoying_villagers:blue_demon");
+                            entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "summon modid = AnnoyingVillagers.MODID:blue_demon");
                         }
 
                         MinecraftForge.EVENT_BUS.unregister(this);
                     }
-                })).start(levelaccessor, 40);
+                }).start(levelaccessor, 40);
             } else {
-                ((<undefinedtype>)(new Object() {
+                (new Object() {
                     private int ticks = 0;
                     private float waitTicks;
                     private LevelAccessor world;
@@ -102,11 +102,11 @@ public class BlueDemon2DangShiTiSiWangShiProcedure {
                             ThrownTrident throwntrident = new ThrownTrident(EntityType.TRIDENT, serverlevel);
 
                             throwntrident.moveTo(d0, d1 + 16.0D, d2, this.world.getRandom().nextFloat() * 360.0F, 0.0F);
-                            if (throwntrident instanceof Mob) {
-                                Mob mob = (Mob)throwntrident;
-
-                                mob.finalizeSpawn(serverlevel, this.world.getCurrentDifficultyAt(throwntrident.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                            }
+//                            if (throwntrident instanceof Mob) {
+//                                Mob mob = (Mob)throwntrident;
+//
+//                                mob.finalizeSpawn(serverlevel, this.world.getCurrentDifficultyAt(throwntrident.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+//                            }
 
                             this.world.addFreshEntity(throwntrident);
                         }
@@ -135,7 +135,7 @@ public class BlueDemon2DangShiTiSiWangShiProcedure {
 
                         MinecraftForge.EVENT_BUS.unregister(this);
                     }
-                })).start(levelaccessor, 30);
+                }).start(levelaccessor, 30);
             }
 
         }

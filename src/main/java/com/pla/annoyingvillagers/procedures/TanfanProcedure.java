@@ -2,6 +2,8 @@ package com.pla.annoyingvillagers.procedures;
 
 import java.util.Random;
 import javax.annotation.Nullable;
+
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -21,13 +23,13 @@ import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.TickEvent.ServerTickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 
 @EventBusSubscriber
@@ -45,6 +47,16 @@ public class TanfanProcedure {
         execute((Event) null, levelaccessor, d0, d1, d2, entity, entity1);
     }
 
+    private static boolean isCreativeMode(Entity entity) {
+        if (entity instanceof ServerPlayer serverPlayer) {
+            return serverPlayer.gameMode.getGameModeForPlayer() == GameType.CREATIVE;
+        } else if (entity instanceof Player player && player.level.isClientSide()) {
+            var info = Minecraft.getInstance().getConnection().getPlayerInfo(player.getGameProfile().getId());
+            return info != null && info.getGameMode() == GameType.CREATIVE;
+        }
+        return false;
+    }
+
     private static void execute(@Nullable Event event, LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity, final Entity entity1) {
         if (entity != null && entity1 != null) {
             LivingEntity livingentity;
@@ -53,7 +65,7 @@ public class TanfanProcedure {
                 float f;
                 LivingEntity livingentity1;
 
-                if (ForgeRegistries.ENTITIES.getKey(entity1.getType()).toString().equals("annoying_villagers:herobrine")) {
+                if (ForgeRegistries.ENTITIES.getKey(entity1.getType()).toString().equals(AnnoyingVillagers.MODID + ":herobrine")) {
                     if (entity instanceof LivingEntity) {
                         livingentity = (LivingEntity)entity;
                         f = livingentity.getHealth();
@@ -67,7 +79,7 @@ public class TanfanProcedure {
                             livingentity1.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.HEROBRINE_EFFECT.get(), 9999999, 0, false, false));
                         }
                     }
-                } else if (ForgeRegistries.ENTITIES.getKey(entity1.getType()).toString().equals("annoying_villagers:herobrine_2")) {
+                } else if (ForgeRegistries.ENTITIES.getKey(entity1.getType()).toString().equals(AnnoyingVillagers.MODID + ":herobrine_2")) {
                     if (entity instanceof LivingEntity) {
                         livingentity = (LivingEntity)entity;
                         f = livingentity.getHealth();
@@ -97,27 +109,10 @@ public class TanfanProcedure {
 
                 if (livingentity2 == entity1) {
                     entity.clearFire();
-                } else if (!((<undefinedtype>)(new Object() {
-                    public boolean checkGamemode(Entity entity2) {
-                        if (entity2 instanceof ServerPlayer) {
-                            ServerPlayer serverplayer = (ServerPlayer)entity2;
-
-                            return serverplayer.gameMode.getGameModeForPlayer() == GameType.CREATIVE;
-                        } else if (entity2.level.isClientSide() && entity2 instanceof Player) {
-                            Player player = (Player)entity2;
-
-                            return Minecraft.getInstance().getConnection().getPlayerInfo(player.getGameProfile().getId()) != null && Minecraft.getInstance().getConnection().getPlayerInfo(player.getGameProfile().getId()).getGameMode() == GameType.CREATIVE;
-                        } else {
-                            return false;
-                        }
-                    }
-                })).checkGamemode(entity1) && entity instanceof Mob) {
+                } else if (!isCreativeMode(entity1) && entity instanceof Mob) {
                     Mob mob = (Mob)entity;
-
-                    if (entity1 instanceof LivingEntity) {
-                        LivingEntity livingentity3 = (LivingEntity)entity1;
-
-                        mob.setTarget(livingentity3);
+                    if (entity1 instanceof LivingEntity livingTarget) {
+                        mob.setTarget(livingTarget);
                     }
                 }
             }
@@ -149,49 +144,28 @@ public class TanfanProcedure {
                 if (levelaccessor instanceof Level) {
                     level = (Level)levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:s_g")), SoundSource.NEUTRAL, 2.0F, 1.0F);
+                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":s_g")), SoundSource.NEUTRAL, 2.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:s_g")), SoundSource.NEUTRAL, 2.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":s_g")), SoundSource.NEUTRAL, 2.0F, 1.0F, false);
                     }
                 }
 
                 if (levelaccessor instanceof Level) {
                     level = (Level)levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:s_g_hit")), SoundSource.NEUTRAL, 3.0F, (float)Mth.nextDouble(new Random(), 0.7D, 1.2D));
+                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":s_g_hit")), SoundSource.NEUTRAL, 3.0F, (float)Mth.nextDouble(new Random(), 0.7D, 1.2D));
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:s_g_hit")), SoundSource.NEUTRAL, 3.0F, (float)Mth.nextDouble(new Random(), 0.7D, 1.2D), false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":s_g_hit")), SoundSource.NEUTRAL, 3.0F, (float)Mth.nextDouble(new Random(), 0.7D, 1.2D), false);
                     }
                 }
 
                 entity.getPersistentData().putBoolean("s_g_suss", true);
-                ((<undefinedtype>)(new Object() {
-                    private int ticks = 0;
-                    private float waitTicks;
-                    private LevelAccessor world;
-
-                    public void start(LevelAccessor levelaccessor1, int i) {
-                        this.waitTicks = (float)i;
-                        MinecraftForge.EVENT_BUS.register(this);
-                        this.world = levelaccessor1;
-                    }
-
-                    @SubscribeEvent
-                    public void tick(ServerTickEvent servertickevent) {
-                        if (servertickevent.phase == Phase.END) {
-                            ++this.ticks;
-                            if ((float)this.ticks >= this.waitTicks) {
-                                this.run();
-                            }
-                        }
-
-                    }
-
-                    private void run() {
+                new DelayedTask(40) {
+                    @Override
+                    public void run() {
                         entity.getPersistentData().putBoolean("s_g_suss", false);
-                        MinecraftForge.EVENT_BUS.unregister(this);
                     }
-                })).start(levelaccessor, 40);
+                };
             }
 
             if (entity1.getPersistentData().getBoolean("s_g_suss")) {
@@ -206,29 +180,9 @@ public class TanfanProcedure {
                 }
 
                 if (!flag) {
-                    ((<undefinedtype>)(new Object() {
-                        private int ticks = 0;
-                        private float waitTicks;
-                        private LevelAccessor world;
-
-                        public void start(LevelAccessor levelaccessor1, int i) {
-                            this.waitTicks = (float)i;
-                            MinecraftForge.EVENT_BUS.register(this);
-                            this.world = levelaccessor1;
-                        }
-
-                        @SubscribeEvent
-                        public void tick(ServerTickEvent servertickevent) {
-                            if (servertickevent.phase == Phase.END) {
-                                ++this.ticks;
-                                if ((float)this.ticks >= this.waitTicks) {
-                                    this.run();
-                                }
-                            }
-
-                        }
-
-                        private void run() {
+                    new DelayedTask(10) {
+                        @Override
+                        public void run() {
                             if (entity1 instanceof LivingEntity) {
                                 LivingEntity livingentity4 = (LivingEntity)entity1;
 
@@ -245,7 +199,7 @@ public class TanfanProcedure {
 
                             MinecraftForge.EVENT_BUS.unregister(this);
                         }
-                    })).start(levelaccessor, 10);
+                    };
                 }
             }
 

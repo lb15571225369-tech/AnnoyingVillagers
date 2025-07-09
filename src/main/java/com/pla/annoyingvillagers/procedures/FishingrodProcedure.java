@@ -66,15 +66,13 @@ public class FishingrodProcedure {
                     while(iterator.hasNext()) {
                         Entity entity1 = (Entity)iterator.next();
 
-                        if ((Entity)levelaccessor.getEntitiesOfClass(FishingHook.class, AABB.ofSize(new Vec3(d0, d1, d2), 70.0D, 70.0D, 70.0D), (fishinghook) -> {
-                            return true;
-                        }).stream().sorted(((<undefinedtype>)(new Object() {
-                            Comparator<Entity> compareDistOf(double d3, double d4, double d5) {
-                                return Comparator.comparingDouble((entity2) -> {
-                                    return entity2.distanceToSqr(d3, d4, d5);
-                                });
-                            }
-                        })).compareDistOf(d0, d1, d2)).findFirst().orElse((Object)null) == entity1 && entity1.isOnGround()) {
+                        if (levelaccessor.getEntitiesOfClass(FishingHook.class,
+                                        AABB.ofSize(new Vec3(d0, d1, d2), 70.0D, 70.0D, 70.0D),
+                                        fishinghook -> true)
+                                .stream()
+                                .sorted(Comparator.comparingDouble(entity2 -> entity2.distanceToSqr(d0, d1, d2)))
+                                .findFirst()
+                                .orElse(null) == entity1 && entity1.isOnGround()) {
                             entity1.lookAt(Anchor.EYES, new Vec3(entity.getX(), entity.getY(), entity.getZ()));
                             entity.setDeltaMovement(new Vec3(0.0D, 0.9D, 0.0D));
                             if (entity instanceof LivingEntity) {

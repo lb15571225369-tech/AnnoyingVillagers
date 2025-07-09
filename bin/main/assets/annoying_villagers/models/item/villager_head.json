@@ -1,0 +1,7 @@
+{
+  "parent": "annoying_villagers:custom/villagerhead",
+  "textures": {
+    "0": "annoying_villagers:blocks/villagerhead",
+    "particle": "annoying_villagers:items/villagerhead"
+  }
+}

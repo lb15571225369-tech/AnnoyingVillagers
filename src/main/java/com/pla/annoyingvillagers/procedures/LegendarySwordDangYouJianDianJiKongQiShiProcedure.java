@@ -1,5 +1,7 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -14,10 +16,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.TickEvent.ServerTickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class LegendarySwordDangYouJianDianJiKongQiShiProcedure {
@@ -41,15 +39,15 @@ public class LegendarySwordDangYouJianDianJiKongQiShiProcedure {
                                 Level level = (Level)levelaccessor;
 
                                 if (!level.isClientSide()) {
-                                    level.playSound((Player)null, new BlockPos(entity.getX(), entity.getY(), entity.getZ()), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:heavy_attack_legendary_sword")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                    level.playSound((Player)null, new BlockPos(entity.getX(), entity.getY(), entity.getZ()), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":heavy_attack_legendary_sword")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                 } else {
-                                    level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:heavy_attack_legendary_sword")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                    level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":heavy_attack_legendary_sword")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                 }
                             }
 
                             itemstack.getOrCreateTag().putDouble("power", itemstack.getOrCreateTag().getDouble("power") - 25.0D);
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/combat/legendary_sword_wake_up_attack\" 0 1");
+                                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/legendary_sword_wake_up_attack\" 0 1");
                             }
 
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
@@ -84,58 +82,38 @@ public class LegendarySwordDangYouJianDianJiKongQiShiProcedure {
                         }
 
                         itemstack.getOrCreateTag().putDouble("power", itemstack.getOrCreateTag().getDouble("power") - 20.0D);
-                        ((<undefinedtype>)(new Object() {
-                            private int ticks = 0;
-                            private float waitTicks;
-                            private LevelAccessor world;
-
-                            public void start(LevelAccessor levelaccessor1, int i) {
-                                this.waitTicks = (float)i;
-                                MinecraftForge.EVENT_BUS.register(this);
-                                this.world = levelaccessor1;
-                            }
-
-                            @SubscribeEvent
-                            public void tick(ServerTickEvent servertickevent) {
-                                if (servertickevent.phase == Phase.END) {
-                                    ++this.ticks;
-                                    if ((float)this.ticks >= this.waitTicks) {
-                                        this.run();
-                                    }
-                                }
-
-                            }
-
-                            private void run() {
+                        new DelayedTask(8) {
+                            @Override
+                            public void run() {
                                 Entity entity1 = entity;
 
                                 if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                    entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "playsound annoying_villagers:heavy_attack_start neutral @a ~ ~ ~");
+                                    entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "playsound modid = AnnoyingVillagers.MODID:heavy_attack_start neutral @a ~ ~ ~");
                                 }
 
-                                LevelAccessor levelaccessor1 = this.world;
+                                LevelAccessor levelaccessor1 = levelaccessor;
                                 Level level1;
 
                                 if (levelaccessor1 instanceof Level) {
                                     level1 = (Level)levelaccessor1;
                                     if (!level1.isClientSide()) {
-                                        level1.playSound((Player)null, new BlockPos(entity.getX(), entity.getY(), entity.getZ()), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:heavy_attack_legendary_sword")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                        level1.playSound((Player)null, new BlockPos(entity.getX(), entity.getY(), entity.getZ()), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":heavy_attack_legendary_sword")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                     } else {
-                                        level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:heavy_attack_legendary_sword")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                        level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":heavy_attack_legendary_sword")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                     }
                                 }
 
-                                levelaccessor1 = this.world;
+                                levelaccessor1 = levelaccessor;
                                 if (levelaccessor1 instanceof Level) {
                                     level1 = (Level)levelaccessor1;
                                     if (!level1.isClientSide()) {
-                                        level1.playSound((Player)null, new BlockPos(entity.getX(), entity.getY(), entity.getZ()), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:heavy_attack_legendary_sword_2")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                        level1.playSound((Player)null, new BlockPos(entity.getX(), entity.getY(), entity.getZ()), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":heavy_attack_legendary_sword_2")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                     } else {
-                                        level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:heavy_attack_legendary_sword_2")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                        level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":heavy_attack_legendary_sword_2")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                     }
                                 }
 
-                                levelaccessor1 = this.world;
+                                levelaccessor1 = levelaccessor;
                                 if (levelaccessor1 instanceof ServerLevel) {
                                     ServerLevel serverlevel = (ServerLevel)levelaccessor1;
 
@@ -149,12 +127,10 @@ public class LegendarySwordDangYouJianDianJiKongQiShiProcedure {
 
                                 entity1 = entity;
                                 if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                    entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/combat/legendary_sword_heavy_attack\" 0 1");
+                                    entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/legendary_sword_heavy_attack\" 0 1");
                                 }
-
-                                MinecraftForge.EVENT_BUS.unregister(this);
                             }
-                        })).start(levelaccessor, 8);
+                        };
                     } else if (entity instanceof Player) {
                         player = (Player)entity;
                         if (!player.level.isClientSide()) {

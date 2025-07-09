@@ -1,0 +1,147 @@
+{
+    "model": "epicfight:entity/biped_old_texture",
+    "armature": "epicfight:entity/biped",
+    "renderer": "minecraft:zombie",
+    "isHumanoid": true,
+    "faction": "villager",
+    "attributes": {
+        "impact": 300.5,
+        "armor_negation": 4.0,
+        "max_strikes": 8,
+        "chasing_speed": 0.5,
+                "scale": 1.0
+    },
+    "default_livingmotions": {
+        "idle": "epicfight:biped/living/idle",
+        "walk": "epicfight:biped/living/walk",
+        "chase": "epicfight:biped/living/run",
+        "mount": "epicfight:biped/living/mount",
+                "fall": "epicfight:biped/living/fall",
+        "death": "epicfight:biped/living/death"
+    },
+    "humanoid_weapon_motions": [
+        {
+            "weapon_categories": ["sword"],
+            "style":"one_hand",
+            "livingmotions": {
+                "walk": "epicfight:wither_skeleton/walk",
+                "chase": "epicfight:wither_skeleton/chase"
+            }
+        }
+    ],
+    "stun_animations": {
+        "short": "epicfight:biped/skill/guard_dualsword_hit",
+        "long": "epicfight:biped/skill/guard_dualsword_hit",
+        "knockdown": "epicfight:biped/combat/knockdown",
+        "fall": "epicfight:biped/living/landing"
+    },
+    "combat_behavior": [
+        {
+            "weapon_categories": ["fist"],
+            "style": "common",
+            "behavior_series": [
+                {
+                    "weight": 1.0,
+                    "canBeInterrupted": false,
+                    "looping": false,
+                    "behaviors": [
+                        {
+                            "conditions": [
+                                {"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 2.0}
+                            ],
+                            "animation": "epicfight:biped/combat/fist_dash"
+                        },
+                        {
+                            "conditions": [
+                                {"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 2.0}
+                            ],
+                            "animation": "epicfight:biped/combat/fist_auto1"
+                        },
+                        {
+                            "conditions": [
+                                {"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 2.0}
+                            ],
+                            "animation": "epicfight:biped/combat/fist_auto2"
+                        },
+                        {
+                            "conditions": [
+                                {"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 2.0}
+                            ],
+                            "animation": "epicfight:biped/combat/fist_auto3"
+                        },
+                        {
+                            "conditions": [
+                                {"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 2.0}
+                            ],
+                            "animation": "epicfight:biped/combat/fist_auto1"
+                        },
+                        {
+                            "conditions": [
+                                {"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 2.0}
+                            ],
+                            "animation": "epicfight:biped/combat/fist_auto1"
+                        },
+                        {
+                            "conditions": [
+                                {"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 2.0}
+                            ],
+                            "animation": "epicfight:biped/combat/fist_dash"
+        }
+             ]
+               },
+               {
+                    "weight": 0.5,
+                    "canBeInterrupted": false,
+                    "looping": false,
+                    "behaviors": [
+                        {
+                            "conditions": [
+                                {"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 2.0}
+                            ],
+                            "animation": "epicfight:biped/skill/step_left"
+        }
+             ]
+               },
+               {
+                    "weight": 0.5,
+                    "canBeInterrupted": false,
+                    "looping": false,
+                    "behaviors": [
+                        {
+                            "conditions": [
+                                {"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 2.0}
+                            ],
+                            "animation": "epicfight:biped/skill/step_right"
+        }
+             ]
+               },
+               {
+                    "weight": 0.5,
+                    "canBeInterrupted": false,
+                    "looping": false,
+                    "behaviors": [
+                        {
+                            "conditions": [
+                                {"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 2.0}
+                            ],
+                            "animation": "epicfight:biped/skill/step_left"
+        }
+             ]
+               },
+               {
+                    "weight": 0.3,
+                    "canBeInterrupted": false,
+                    "looping": false,
+                    "behaviors": [
+                        {
+                            "conditions": [
+                                {"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 2.0}
+                            ],
+                            "animation": "epicfight:biped/skill/step_forward"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,147 +1,103 @@
 package com.pla.annoyingvillagers.procedures;
 
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.TickEvent.ServerTickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import yesman.epicfight.api.animation.types.AttackAnimation;
-import yesman.epicfight.api.animation.types.DynamicAnimation;
-import yesman.epicfight.api.animation.types.HitAnimation;
-import yesman.epicfight.api.animation.types.KnockdownAnimation;
-import yesman.epicfight.api.animation.types.LongHitAnimation;
+import yesman.epicfight.api.animation.types.*;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class HerobrineDangShiTiGengXinKeShiProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) {
-        if (entity != null) {
-            Vec3 vec3 = new Vec3(d0, d1, d2);
-            List<Entity> list = (List)levelaccessor.getEntitiesOfClass(Entity.class, (new AABB(vec3, vec3)).inflate(16.0D), (entity1) -> {
-                return true;
-            }).stream().sorted(Comparator.comparingDouble((entity1) -> {
-                return entity1.distanceToSqr(vec3);
-            })).collect(Collectors.toList());
-            Iterator iterator = list.iterator();
+    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
+        if (entity == null) return;
 
-            while(iterator.hasNext()) {
-                Entity entity1 = (Entity)iterator.next();
-                LivingEntity livingentity;
+        Vec3 center = new Vec3(x, y, z);
 
-                if (entity instanceof Mob) {
-                    Mob mob = (Mob)entity;
+        List<Entity> nearbyEntities = world.getEntitiesOfClass(Entity.class, new AABB(center, center).inflate(16.0D))
+                .stream()
+                .sorted(Comparator.comparingDouble(e -> e.distanceToSqr(center)))
+                .collect(Collectors.toList());
 
-                    livingentity = mob.getTarget();
-                } else {
-                    livingentity = null;
+        for (Entity target : nearbyEntities) {
+            LivingEntity mobTarget = entity instanceof Mob mob ? mob.getTarget() : null;
+
+            if (target == mobTarget) {
+                if (!target.level.isClientSide() && target.getServer() != null) {
+                    target.getServer().getCommands().performCommand(
+                            target.createCommandSourceStack().withSuppressedOutput().withPermission(4),
+                            "tag @s add aim"
+                    );
+                }
+            } else {
+                // Clear main and offhand
+                if (entity instanceof LivingEntity living) {
+                    clearHand(living, InteractionHand.MAIN_HAND);
+                    clearHand(living, InteractionHand.OFF_HAND);
                 }
 
-                if (entity1 == livingentity) {
-                    if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "tag @s add aim");
-                    }
-                } else {
-                    LivingEntity livingentity1;
-                    ItemStack itemstack;
-                    Player player;
+                if (!target.level.isClientSide() && target.getServer() != null) {
+                    target.getServer().getCommands().performCommand(
+                            target.createCommandSourceStack().withSuppressedOutput().withPermission(4),
+                            "tag @s remove aim"
+                    );
+                }
+            }
+        }
 
-                    if (entity instanceof LivingEntity) {
-                        livingentity1 = (LivingEntity)entity;
-                        itemstack = new ItemStack(Blocks.AIR);
-                        itemstack.setCount(1);
-                        livingentity1.setItemInHand(InteractionHand.MAIN_HAND, itemstack);
-                        if (livingentity1 instanceof Player) {
-                            player = (Player)livingentity1;
-                            player.getInventory().setChanged();
+        if (entity.isPassenger()) {
+            entity.stopRiding();
+        }
+
+        if (!entity.level.isClientSide() && entity.getServer() != null) {
+            entity.getServer().getCommands().performCommand(
+                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
+                    "fill ~-1 ~ ~ ~ ~ ~ minecraft:air replace"
+            );
+        }
+
+        LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+        if (patch != null) {
+            DynamicAnimation currentAnim = patch.getAnimator().getPlayerFor(null).getAnimation();
+
+            if (!(currentAnim instanceof AttackAnimation
+                    || currentAnim instanceof LongHitAnimation
+                    || currentAnim instanceof HitAnimation)) {
+
+                if (currentAnim instanceof KnockdownAnimation) {
+                    new DelayedTask(10) {
+                        @Override
+                        public void run() {
+                            if (!entity.level.isClientSide() && entity.getServer() != null) {
+                                entity.getServer().getCommands().performCommand(
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
+                                        "indestructible @s play \"epicfight:biped/skill/knockdown_wakeup_left\" 0 1"
+                                );
+                            }
                         }
-                    }
-
-                    if (entity instanceof LivingEntity) {
-                        livingentity1 = (LivingEntity)entity;
-                        itemstack = new ItemStack(Blocks.AIR);
-                        itemstack.setCount(1);
-                        livingentity1.setItemInHand(InteractionHand.OFF_HAND, itemstack);
-                        if (livingentity1 instanceof Player) {
-                            player = (Player)livingentity1;
-                            player.getInventory().setChanged();
-                        }
-                    }
-
-                    if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "tag @s remove aim");
-                    }
+                    };
                 }
+
+            } else {
+                entity.clearFire();
             }
+        }
+    }
 
-            if (entity.isPassenger()) {
-                entity.stopRiding();
-            }
-
-            if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "fill ~-1 ~ ~ ~ ~ ~ minecraft:air replace");
-            }
-
-            LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch)EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
-
-            if (livingentitypatch != null) {
-                final DynamicAnimation dynamicanimation = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation)null).getAnimation();
-
-                if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
-                    if (dynamicanimation instanceof KnockdownAnimation) {
-                        ((<undefinedtype>)(new Object() {
-                            private int ticks = 0;
-                            private float waitTicks;
-                            private LevelAccessor world;
-
-                            public void start(LevelAccessor levelaccessor1, int i) {
-                                this.waitTicks = (float)i;
-                                MinecraftForge.EVENT_BUS.register(this);
-                                this.world = levelaccessor1;
-                            }
-
-                            @SubscribeEvent
-                            public void tick(ServerTickEvent servertickevent) {
-                                if (servertickevent.phase == Phase.END) {
-                                    ++this.ticks;
-                                    if ((float)this.ticks >= this.waitTicks) {
-                                        this.run();
-                                    }
-                                }
-
-                            }
-
-                            private void run() {
-                                if (dynamicanimation instanceof KnockdownAnimation) {
-                                    Entity entity2 = entity;
-
-                                    if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                        entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/skill/knockdown_wakeup_left\" 0 1");
-                                    }
-                                }
-
-                                MinecraftForge.EVENT_BUS.unregister(this);
-                            }
-                        })).start(levelaccessor, 10);
-                    }
-                } else {
-                    entity.clearFire();
-                }
-            }
-
+    private static void clearHand(LivingEntity entity, InteractionHand hand) {
+        entity.setItemInHand(hand, new ItemStack(Blocks.AIR));
+        if (entity instanceof Player player) {
+            player.getInventory().setChanged();
         }
     }
 }

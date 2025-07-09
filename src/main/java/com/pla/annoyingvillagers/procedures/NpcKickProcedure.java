@@ -1,6 +1,8 @@
 package com.pla.annoyingvillagers.procedures;
 
 import javax.annotation.Nullable;
+
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -71,112 +73,46 @@ public class NpcKickProcedure {
                             if (dynamicanimation1 instanceof AttackAnimation && (dynamicanimation instanceof HitAnimation || dynamicanimation instanceof DodgeAnimation || dynamicanimation instanceof GuardAnimation)) {
                                 if (entity1.getPersistentData().getDouble("kick") < 1.0D) {
                                     entity1.getPersistentData().putDouble("kick", 2.0D);
-                                    ((<undefinedtype>)(new Object() {
-                                        private int ticks = 0;
-                                        private float waitTicks;
-                                        private LevelAccessor world;
-
-                                        public void start(LevelAccessor levelaccessor1, int i) {
-                                            this.waitTicks = (float)i;
-                                            MinecraftForge.EVENT_BUS.register(this);
-                                            this.world = levelaccessor1;
-                                        }
-
-                                        @SubscribeEvent
-                                        public void tick(ServerTickEvent servertickevent) {
-                                            if (servertickevent.phase == Phase.END) {
-                                                ++this.ticks;
-                                                if ((float)this.ticks >= this.waitTicks) {
-                                                    this.run();
-                                                }
-                                            }
-
-                                        }
-
-                                        private void run() {
+                                    new DelayedTask(10) {
+                                        @Override
+                                        public void run() {
                                             if (entity1.isAlive()) {
                                                 Entity entity2 = entity1;
 
                                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/combat/kick_1\" 0 1");
+                                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/kick_1\" 0 1");
                                                 }
                                             }
-
-                                            MinecraftForge.EVENT_BUS.unregister(this);
                                         }
-                                    })).start(levelaccessor, 10);
+                                    };
                                 } else if (entity1.getPersistentData().getDouble("kick") == 2.0D) {
                                     entity1.getPersistentData().putDouble("kick", 3.0D);
-                                    ((<undefinedtype>)(new Object() {
-                                        private int ticks = 0;
-                                        private float waitTicks;
-                                        private LevelAccessor world;
-
-                                        public void start(LevelAccessor levelaccessor1, int i) {
-                                            this.waitTicks = (float)i;
-                                            MinecraftForge.EVENT_BUS.register(this);
-                                            this.world = levelaccessor1;
-                                        }
-
-                                        @SubscribeEvent
-                                        public void tick(ServerTickEvent servertickevent) {
-                                            if (servertickevent.phase == Phase.END) {
-                                                ++this.ticks;
-                                                if ((float)this.ticks >= this.waitTicks) {
-                                                    this.run();
-                                                }
-                                            }
-
-                                        }
-
-                                        private void run() {
+                                    new DelayedTask(10) {
+                                        @Override
+                                        public void run() {
                                             if (entity1.isAlive()) {
                                                 Entity entity2 = entity1;
 
                                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/combat/kick_2\" 0 1");
+                                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/kick_2\" 0 1");
                                                 }
                                             }
-
-                                            MinecraftForge.EVENT_BUS.unregister(this);
                                         }
-                                    })).start(levelaccessor, 10);
+                                    };
                                 } else if (entity1.getPersistentData().getDouble("kick") == 3.0D) {
                                     entity1.getPersistentData().putDouble("kick", 0.0D);
-                                    ((<undefinedtype>)(new Object() {
-                                        private int ticks = 0;
-                                        private float waitTicks;
-                                        private LevelAccessor world;
-
-                                        public void start(LevelAccessor levelaccessor1, int i) {
-                                            this.waitTicks = (float)i;
-                                            MinecraftForge.EVENT_BUS.register(this);
-                                            this.world = levelaccessor1;
-                                        }
-
-                                        @SubscribeEvent
-                                        public void tick(ServerTickEvent servertickevent) {
-                                            if (servertickevent.phase == Phase.END) {
-                                                ++this.ticks;
-                                                if ((float)this.ticks >= this.waitTicks) {
-                                                    this.run();
-                                                }
-                                            }
-
-                                        }
-
-                                        private void run() {
+                                    new DelayedTask(10) {
+                                        @Override
+                                        public void run() {
                                             if (entity1.isAlive()) {
                                                 Entity entity2 = entity1;
 
                                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/combat/kick_3\" 0 1");
+                                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/kick_3\" 0 1");
                                                 }
                                             }
-
-                                            MinecraftForge.EVENT_BUS.unregister(this);
                                         }
-                                    })).start(levelaccessor, 10);
+                                    };
                                 }
                             }
                         }

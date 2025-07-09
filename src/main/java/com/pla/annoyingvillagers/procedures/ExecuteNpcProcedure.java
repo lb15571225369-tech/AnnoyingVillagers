@@ -1,6 +1,8 @@
 package com.pla.annoyingvillagers.procedures;
 
 import javax.annotation.Nullable;
+
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
@@ -78,29 +80,9 @@ public class ExecuteNpcProcedure {
                                 if ((humanoidmobpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.SWORD || humanoidmobpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.SWORD) && (humanoidmobpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.AXE || humanoidmobpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.AXE) && (humanoidmobpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.TACHI || humanoidmobpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI) && (humanoidmobpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.DAGGER || humanoidmobpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.DAGGER)) {
                                     if (humanoidmobpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.SWORD && humanoidmobpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.AXE && humanoidmobpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.DAGGER && humanoidmobpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.TRIDENT) {
                                         if (humanoidmobpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.SPEAR) {
-                                            ((<undefinedtype>)(new Object() {
-                                                private int ticks = 0;
-                                                private float waitTicks;
-                                                private LevelAccessor world;
-
-                                                public void start(LevelAccessor levelaccessor1, int i) {
-                                                    this.waitTicks = (float)i;
-                                                    MinecraftForge.EVENT_BUS.register(this);
-                                                    this.world = levelaccessor1;
-                                                }
-
-                                                @SubscribeEvent
-                                                public void tick(ServerTickEvent servertickevent) {
-                                                    if (servertickevent.phase == Phase.END) {
-                                                        ++this.ticks;
-                                                        if ((float)this.ticks >= this.waitTicks) {
-                                                            this.run();
-                                                        }
-                                                    }
-
-                                                }
-
-                                                private void run() {
+                                            new DelayedTask(4) {
+                                                @Override
+                                                public void run() {
                                                     if (entity.isAlive() && entity1.isAlive()) {
                                                         Vec3 vec3 = ((LivingEntity)livingentitypatch.getOriginal()).getViewVector(1.0F);
 
@@ -159,35 +141,13 @@ public class ExecuteNpcProcedure {
                                                         humanoidmobpatch.playAnimationSynchronized(WOMAnimations.TORMENT_CHARGED_ATTACK_1, 0.0F);
                                                         livingentitypatch.playAnimationSynchronized(AVAnimations.EXECUTED_SKILL, 0.0F);
                                                     }
-
-                                                    MinecraftForge.EVENT_BUS.unregister(this);
                                                 }
-                                            })).start(levelaccessor, 4);
+                                            };
                                         } else if (humanoidmobpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.LONGSWORD && humanoidmobpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.TACHI) {
                                             if (humanoidmobpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.GREATSWORD) {
-                                                ((<undefinedtype>)(new Object() {
-                                                    private int ticks = 0;
-                                                    private float waitTicks;
-                                                    private LevelAccessor world;
-
-                                                    public void start(LevelAccessor levelaccessor1, int i) {
-                                                        this.waitTicks = (float)i;
-                                                        MinecraftForge.EVENT_BUS.register(this);
-                                                        this.world = levelaccessor1;
-                                                    }
-
-                                                    @SubscribeEvent
-                                                    public void tick(ServerTickEvent servertickevent) {
-                                                        if (servertickevent.phase == Phase.END) {
-                                                            ++this.ticks;
-                                                            if ((float)this.ticks >= this.waitTicks) {
-                                                                this.run();
-                                                            }
-                                                        }
-
-                                                    }
-
-                                                    private void run() {
+                                                new DelayedTask(4) {
+                                                    @Override
+                                                    public void run() {
                                                         if (entity.isAlive() && entity1.isAlive()) {
                                                             Vec3 vec3 = ((LivingEntity)livingentitypatch.getOriginal()).getViewVector(1.0F);
 
@@ -236,7 +196,7 @@ public class ExecuteNpcProcedure {
                                                             Entity entity2 = entity1;
 
                                                             if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                                entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/combat/execute_greatsword\" 0 1");
+                                                                entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/execute_greatsword\" 0 1");
                                                             }
 
                                                             livingentitypatch.playAnimationSynchronized(AVAnimations.EXECUTE_GREATSWORD_HIT, 0.0F);
@@ -251,34 +211,12 @@ public class ExecuteNpcProcedure {
                                                                 entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect give @s epicfight:stun_immunity 6 5 true");
                                                             }
                                                         }
-
-                                                        MinecraftForge.EVENT_BUS.unregister(this);
                                                     }
-                                                })).start(levelaccessor, 4);
+                                                };
                                             } else if (humanoidmobpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.FIST) {
-                                                ((<undefinedtype>)(new Object() {
-                                                    private int ticks = 0;
-                                                    private float waitTicks;
-                                                    private LevelAccessor world;
-
-                                                    public void start(LevelAccessor levelaccessor1, int i) {
-                                                        this.waitTicks = (float)i;
-                                                        MinecraftForge.EVENT_BUS.register(this);
-                                                        this.world = levelaccessor1;
-                                                    }
-
-                                                    @SubscribeEvent
-                                                    public void tick(ServerTickEvent servertickevent) {
-                                                        if (servertickevent.phase == Phase.END) {
-                                                            ++this.ticks;
-                                                            if ((float)this.ticks >= this.waitTicks) {
-                                                                this.run();
-                                                            }
-                                                        }
-
-                                                    }
-
-                                                    private void run() {
+                                                new DelayedTask(4) {
+                                                    @Override
+                                                    public void run() {
                                                         if (entity.isAlive()) {
                                                             float f;
 
@@ -339,7 +277,7 @@ public class ExecuteNpcProcedure {
                                                                     entity.lookAt(Anchor.EYES, new Vec3(entity1.getX(), entity1.getY() + 1.0D, entity1.getZ()));
                                                                     entity2 = entity1;
                                                                     if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                                        entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/combat/execute_boss\" 0 1");
+                                                                        entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/execute_boss\" 0 1");
                                                                     }
 
                                                                     livingentitypatch.playAnimationSynchronized(AVAnimations.BOSS_EXECUTE_HIT, 0.0F);
@@ -392,7 +330,7 @@ public class ExecuteNpcProcedure {
                                                                 entity.lookAt(Anchor.EYES, new Vec3(entity1.getX(), entity1.getY() + 1.0D, entity1.getZ()));
                                                                 entity2 = entity1;
                                                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/combat/wrestling\" 0 1");
+                                                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/wrestling\" 0 1");
                                                                 }
 
                                                                 livingentitypatch.playAnimationSynchronized(AVAnimations.WRESTLING_HIT, 0.0F);
@@ -402,35 +340,13 @@ public class ExecuteNpcProcedure {
                                                                 }
                                                             }
                                                         }
-
-                                                        MinecraftForge.EVENT_BUS.unregister(this);
                                                     }
-                                                })).start(levelaccessor, 4);
+                                                };
                                             }
                                         } else {
-                                            ((<undefinedtype>)(new Object() {
-                                                private int ticks = 0;
-                                                private float waitTicks;
-                                                private LevelAccessor world;
-
-                                                public void start(LevelAccessor levelaccessor1, int i) {
-                                                    this.waitTicks = (float)i;
-                                                    MinecraftForge.EVENT_BUS.register(this);
-                                                    this.world = levelaccessor1;
-                                                }
-
-                                                @SubscribeEvent
-                                                public void tick(ServerTickEvent servertickevent) {
-                                                    if (servertickevent.phase == Phase.END) {
-                                                        ++this.ticks;
-                                                        if ((float)this.ticks >= this.waitTicks) {
-                                                            this.run();
-                                                        }
-                                                    }
-
-                                                }
-
-                                                private void run() {
+                                            new DelayedTask(4) {
+                                                @Override
+                                                public void run() {
                                                     if (entity.isAlive() && entity1.isAlive()) {
                                                         Vec3 vec3 = ((LivingEntity)livingentitypatch.getOriginal()).getViewVector(1.0F);
 
@@ -479,7 +395,7 @@ public class ExecuteNpcProcedure {
                                                         Entity entity2 = entity1;
 
                                                         if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                            entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/combat/execute_longsword\" 0 1");
+                                                            entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/execute_longsword\" 0 1");
                                                         }
 
                                                         livingentitypatch.playAnimationSynchronized(AVAnimations.EXECUTE_LONGSWORD_HIT, 0.0F);
@@ -494,35 +410,13 @@ public class ExecuteNpcProcedure {
                                                             entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect give @s epicfight:stun_immunity 3 5 true");
                                                         }
                                                     }
-
-                                                    MinecraftForge.EVENT_BUS.unregister(this);
                                                 }
-                                            })).start(levelaccessor, 4);
+                                            };
                                         }
                                     } else {
-                                        ((<undefinedtype>)(new Object() {
-                                            private int ticks = 0;
-                                            private float waitTicks;
-                                            private LevelAccessor world;
-
-                                            public void start(LevelAccessor levelaccessor1, int i) {
-                                                this.waitTicks = (float)i;
-                                                MinecraftForge.EVENT_BUS.register(this);
-                                                this.world = levelaccessor1;
-                                            }
-
-                                            @SubscribeEvent
-                                            public void tick(ServerTickEvent servertickevent) {
-                                                if (servertickevent.phase == Phase.END) {
-                                                    ++this.ticks;
-                                                    if ((float)this.ticks >= this.waitTicks) {
-                                                        this.run();
-                                                    }
-                                                }
-
-                                            }
-
-                                            private void run() {
+                                        new DelayedTask(4) {
+                                            @Override
+                                            public void run() {
                                                 if (entity.isAlive() && entity1.isAlive()) {
                                                     Vec3 vec3 = ((LivingEntity)livingentitypatch.getOriginal()).getViewVector(1.0F);
 
@@ -581,43 +475,21 @@ public class ExecuteNpcProcedure {
 
                                                     entity2 = entity1;
                                                     if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                        entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/combat/execute_one_hand\" 0 1");
+                                                        entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/execute_one_hand\" 0 1");
                                                     }
 
                                                     entity2 = entity;
                                                     if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                        entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/combat/execute_dual_hit\" 0 1");
+                                                        entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/execute_dual_hit\" 0 1");
                                                     }
                                                 }
-
-                                                MinecraftForge.EVENT_BUS.unregister(this);
                                             }
-                                        })).start(levelaccessor, 4);
+                                        };
                                     }
                                 } else {
-                                    ((<undefinedtype>)(new Object() {
-                                        private int ticks = 0;
-                                        private float waitTicks;
-                                        private LevelAccessor world;
-
-                                        public void start(LevelAccessor levelaccessor1, int i) {
-                                            this.waitTicks = (float)i;
-                                            MinecraftForge.EVENT_BUS.register(this);
-                                            this.world = levelaccessor1;
-                                        }
-
-                                        @SubscribeEvent
-                                        public void tick(ServerTickEvent servertickevent) {
-                                            if (servertickevent.phase == Phase.END) {
-                                                ++this.ticks;
-                                                if ((float)this.ticks >= this.waitTicks) {
-                                                    this.run();
-                                                }
-                                            }
-
-                                        }
-
-                                        private void run() {
+                                    new DelayedTask(4) {
+                                        @Override
+                                        public void run() {
                                             if (entity.isAlive() && entity1.isAlive()) {
                                                 Vec3 vec3 = ((LivingEntity)livingentitypatch.getOriginal()).getViewVector(1.0F);
 
@@ -671,7 +543,7 @@ public class ExecuteNpcProcedure {
 
                                                 entity2 = entity1;
                                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/combat/execute_dual\" 0 1");
+                                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/execute_dual\" 0 1");
                                                 }
 
                                                 livingentitypatch.playAnimationSynchronized(AVAnimations.EXECUTE_DUAL_HIT, 0.0F);
@@ -680,10 +552,8 @@ public class ExecuteNpcProcedure {
                                                     entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect give @s epicfight:stun_immunity 4 5 true");
                                                 }
                                             }
-
-                                            MinecraftForge.EVENT_BUS.unregister(this);
                                         }
-                                    })).start(levelaccessor, 4);
+                                    };
                                 }
                             }
                         }

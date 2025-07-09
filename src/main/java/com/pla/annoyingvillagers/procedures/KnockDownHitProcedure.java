@@ -53,14 +53,14 @@ public class KnockDownHitProcedure {
                             if (dynamicanimation instanceof KnockdownAnimation || dynamicanimation == AVAnimations.KNOCKDOWN_FORWRAD || dynamicanimation == AVAnimations.KNOCKDOWN_RIGHT || dynamicanimation == AVAnimations.KNOCKDOWN_RIGHT || dynamicanimation == AVAnimations.KNOCKDOWN_LEFT) {
                                 if (Math.random() <= 0.4D) {
                                     if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                        entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/combat/knockdown_right\" 0 1");
+                                        entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/knockdown_right\" 0 1");
                                     }
                                 } else if (Math.random() <= 0.4D) {
                                     if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                        entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/combat/knockdown_left\" 0 1");
+                                        entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/knockdown_left\" 0 1");
                                     }
                                 } else if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/combat/knockdown_forward\" 0 1");
+                                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/knockdown_forward\" 0 1");
                                 }
                             }
                         }
@@ -72,14 +72,14 @@ public class KnockDownHitProcedure {
                         if (dynamicanimation instanceof KnockdownAnimation || dynamicanimation == AVAnimations.KNOCKDOWN_FORWRAD || dynamicanimation == AVAnimations.KNOCKDOWN_RIGHT || dynamicanimation == AVAnimations.KNOCKDOWN_RIGHT || dynamicanimation == AVAnimations.KNOCKDOWN_LEFT) {
                             if (Math.random() <= 0.4D) {
                                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/combat/knockdown_right\" 0 1");
+                                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/knockdown_right\" 0 1");
                                 }
                             } else if (Math.random() <= 0.4D) {
                                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/combat/knockdown_left\" 0 1");
+                                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/knockdown_left\" 0 1");
                                 }
                             } else if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/combat/knockdown_forward\" 0 1");
+                                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/knockdown_forward\" 0 1");
                             }
                         }
                     }

@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "annoying_villagers:blocks/empty",
+    "up": "annoying_villagers:blocks/empty",
+    "north": "annoying_villagers:blocks/empty",
+    "east": "annoying_villagers:blocks/empty",
+    "south": "annoying_villagers:blocks/empty",
+    "west": "annoying_villagers:blocks/empty",
+    "particle": "annoying_villagers:blocks/empty"
+  }
+}

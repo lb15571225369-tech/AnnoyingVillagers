@@ -1,0 +1,13 @@
+{
+  "parent": "annoying_villagers:custom/c4_model__p",
+  "textures": {
+    "all": "annoying_villagers:blocks/c4",
+    "particle": "annoying_villagers:blocks/c4",
+    "0": "annoying_villagers:blocks/c4",
+    "c4": "annoying_villagers:blocks/c4",
+    "timer": "annoying_villagers:blocks/c4_timer",
+    "1": "annoying_villagers:blocks/c4_timer",
+    "2": "annoying_villagers:blocks/c4_buttons",
+    "3": "annoying_villagers:blocks/copper"
+  }
+}

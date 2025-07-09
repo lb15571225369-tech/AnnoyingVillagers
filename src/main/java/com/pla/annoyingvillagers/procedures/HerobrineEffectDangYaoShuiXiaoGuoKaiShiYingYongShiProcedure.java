@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.NonNullList;
@@ -202,38 +203,16 @@ public class HerobrineEffectDangYaoShuiXiaoGuoKaiShiYingYongShiProcedure {
                     }
                 }
 
-                ((<undefinedtype>)(new Object() {
-                    private int ticks = 0;
-                    private float waitTicks;
-                    private LevelAccessor world;
-
-                    public void start(LevelAccessor levelaccessor1, int i) {
-                        this.waitTicks = (float)i;
-                        MinecraftForge.EVENT_BUS.register(this);
-                        this.world = levelaccessor1;
-                    }
-
-                    @SubscribeEvent
-                    public void tick(ServerTickEvent servertickevent) {
-                        if (servertickevent.phase == Phase.END) {
-                            ++this.ticks;
-                            if ((float)this.ticks >= this.waitTicks) {
-                                this.run();
-                            }
-                        }
-
-                    }
-
-                    private void run() {
+                new DelayedTask(20) {
+                    @Override
+                    public void run() {
                         Entity entity2 = entity;
 
                         if (!entity2.level.isClientSide() && entity2.getServer() != null) {
                             entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "title @s title {\"text\":\"\u9000\u51fa\u6e38\u620f\u5c06\u4f1a\u6b7b\u4ea1\",\"color\":\"yellow\"}");
                         }
-
-                        MinecraftForge.EVENT_BUS.unregister(this);
                     }
-                })).start(levelaccessor, 20);
+                };
             }
 
             Minecraft.getInstance().gameRenderer.loadEffect(new ResourceLocation("minecraft:shaders/post/invert.json"));

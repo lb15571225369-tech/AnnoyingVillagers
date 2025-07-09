@@ -1,6 +1,8 @@
 package com.pla.annoyingvillagers.procedures;
 
 import java.util.Comparator;
+
+import com.pla.annoyingvillagers.util.CheckGameMode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;
@@ -26,42 +28,28 @@ public class HerobrineEffectTickProcedure {
             }
 
             entity.setShiftKeyDown(false);
-            if (((<undefinedtype>)(new Object() {
-                public boolean checkGamemode(Entity entity1) {
-                    if (entity1 instanceof ServerPlayer) {
-                        ServerPlayer serverplayer1 = (ServerPlayer)entity1;
-
-                        return serverplayer1.gameMode.getGameModeForPlayer() == GameType.SPECTATOR;
-                    } else if (entity1.level.isClientSide() && entity1 instanceof Player) {
-                        Player player = (Player)entity1;
-
-                        return Minecraft.getInstance().getConnection().getPlayerInfo(player.getGameProfile().getId()) != null && Minecraft.getInstance().getConnection().getPlayerInfo(player.getGameProfile().getId()).getGameMode() == GameType.SPECTATOR;
-                    } else {
-                        return false;
-                    }
-                }
-            })).checkGamemode(entity)) {
+            if (CheckGameMode.isSpectatorGamemode(entity)) {
                 if (!levelaccessor.getEntitiesOfClass(HerobrineEntity.class, AABB.ofSize(new Vec3(d0, d1, d2), 2.0D, 2.0D, 2.0D), (herobrineentity) -> {
                     return true;
                 }).isEmpty()) {
-                    if (((Entity)levelaccessor.getEntitiesOfClass(HerobrineEntity.class, AABB.ofSize(new Vec3(d0, d1, d2), 2.0D, 2.0D, 2.0D), (herobrineentity) -> {
-                        return true;
-                    }).stream().sorted(((<undefinedtype>)(new Object() {
-                        Comparator<Entity> compareDistOf(double d3, double d4, double d5) {
-                            return Comparator.comparingDouble((entity1) -> {
-                                return entity1.distanceToSqr(d3, d4, d5);
-                            });
-                        }
-                    })).compareDistOf(d0, d1, d2)).findFirst().orElse((Object)null)).isAlive()) {
-                        entity.startRiding((Entity)levelaccessor.getEntitiesOfClass(HerobrineEntity.class, AABB.ofSize(new Vec3(d0, d1, d2), 2.0D, 2.0D, 2.0D), (herobrineentity) -> {
-                            return true;
-                        }).stream().sorted(((<undefinedtype>)(new Object() {
-                            Comparator<Entity> compareDistOf(double d3, double d4, double d5) {
-                                return Comparator.comparingDouble((entity1) -> {
-                                    return entity1.distanceToSqr(d3, d4, d5);
-                                });
-                            }
-                        })).compareDistOf(d0, d1, d2)).findFirst().orElse((Object)null));
+                    if (levelaccessor.getEntitiesOfClass(HerobrineEntity.class,
+                                    AABB.ofSize(new Vec3(d0, d1, d2), 2.0D, 2.0D, 2.0D),
+                                    herobrineentity -> true)
+                            .stream()
+                            .sorted(Comparator.comparingDouble(e -> e.distanceToSqr(d0, d1, d2)))
+                            .findFirst()
+                            .map(Entity::isAlive)
+                            .orElse(false)) {
+
+                        entity.startRiding(
+                                levelaccessor.getEntitiesOfClass(HerobrineEntity.class,
+                                                AABB.ofSize(new Vec3(d0, d1, d2), 2.0D, 2.0D, 2.0D),
+                                                herobrineentity -> true)
+                                        .stream()
+                                        .sorted(Comparator.comparingDouble(e -> e.distanceToSqr(d0, d1, d2)))
+                                        .findFirst()
+                                        .orElse(null)
+                        );
                     }
                 } else {
                     if (!entity.level.isClientSide() && entity.getServer() != null) {

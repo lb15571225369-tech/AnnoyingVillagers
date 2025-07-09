@@ -2,6 +2,9 @@ package com.pla.annoyingvillagers.procedures;
 
 import java.util.Random;
 import javax.annotation.Nullable;
+
+import com.pla.annoyingvillagers.AnnoyingVillagers;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -9,7 +12,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,7 +20,6 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -26,6 +27,8 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import static net.minecraft.world.item.enchantment.Enchantments.PROJECTILE_PROTECTION;
 
 @EventBusSubscriber
 public class ProjProProcedure {
@@ -55,7 +58,7 @@ public class ProjProProcedure {
             }
 
             if (d4 != 0.0D) {
-                Enchantment enchantment = Enchantments.PROJECTILE_PROTECTION;
+                Enchantment enchantment = PROJECTILE_PROTECTION;
                 ItemStack itemstack;
 
                 if (entity instanceof LivingEntity) {
@@ -83,7 +86,7 @@ public class ProjProProcedure {
                     }
 
                     itemstack2 = itemstack1;
-                    Enchantment enchantment1 = Enchantments.PROJECTILE_PROTECTION;
+                    Enchantment enchantment1 = PROJECTILE_PROTECTION;
                     ItemStack itemstack3;
 
                     if (entity instanceof LivingEntity) {
@@ -102,9 +105,9 @@ public class ProjProProcedure {
                         Level level = (Level)levelaccessor;
 
                         if (!level.isClientSide()) {
-                            level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:target_block_hit")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                            level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":target_block_hit")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                         } else {
-                            level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:target_block_hit")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                            level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":target_block_hit")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                         }
                     }
 
@@ -112,7 +115,7 @@ public class ProjProProcedure {
                         entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle annoying_villagersbychentu:spark ~ ~ ~ 0 0 0 0.1 10");
                     }
                 } else {
-                    enchantment = Enchantments.PROJECTILE_PROTECTION;
+                    enchantment = PROJECTILE_PROTECTION;
                     if (entity instanceof LivingEntity) {
                         LivingEntity livingentity2 = (LivingEntity)entity;
 
@@ -121,29 +124,28 @@ public class ProjProProcedure {
                         itemstack = ItemStack.EMPTY;
                     }
 
-                    LivingEntity livingentity3;
+                    LivingEntity livingentity3 = (LivingEntity)entity;;
                     MobEffectInstance mobeffectinstance;
                     MobEffect mobeffect;
                     Enchantment enchantment2;
                     ItemStack itemstack4;
 
                     if (EnchantmentHelper.getItemEnchantmentLevel(enchantment, itemstack) != 0) {
-                        if (entity instanceof LivingEntity) {
-                            livingentity3 = (LivingEntity)entity;
-                            if (!livingentity3.level.isClientSide()) {
-                                mobeffectinstance = new MobEffectInstance;
-                                mobeffect = MobEffects.DAMAGE_RESISTANCE;
-                                enchantment2 = Enchantments.PROJECTILE_PROTECTION;
-                                if (entity instanceof LivingEntity) {
-                                    livingentity1 = (LivingEntity)entity;
-                                    itemstack4 = livingentity1.getItemBySlot(EquipmentSlot.CHEST);
-                                } else {
-                                    itemstack4 = ItemStack.EMPTY;
-                                }
+                        if (entity instanceof LivingEntity && !livingentity3.level.isClientSide()) {
+                            ItemStack chestItem = livingentity3.getItemBySlot(EquipmentSlot.CHEST);
+                            int level = net.minecraft.world.item.enchantment.EnchantmentHelper.getItemEnchantmentLevel(
+                                    PROJECTILE_PROTECTION, chestItem
+                            );
 
-                                mobeffectinstance.<init>(mobeffect, 3, EnchantmentHelper.getItemEnchantmentLevel(enchantment2, itemstack4), false, false);
-                                livingentity3.addEffect(mobeffectinstance);
-                            }
+                            MobEffectInstance resistanceEffect = new MobEffectInstance(
+                                    net.minecraft.world.effect.MobEffects.DAMAGE_RESISTANCE,
+                                    3,
+                                    level,
+                                    false,
+                                    false
+                            );
+
+                            livingentity3.addEffect(resistanceEffect);
                         }
 
                         if (entity instanceof LivingEntity) {
@@ -159,7 +161,7 @@ public class ProjProProcedure {
                             itemstack2.setDamageValue(0);
                         }
                     } else {
-                        enchantment = Enchantments.PROJECTILE_PROTECTION;
+                        enchantment = PROJECTILE_PROTECTION;
                         if (entity instanceof LivingEntity) {
                             LivingEntity livingentity4 = (LivingEntity)entity;
 
@@ -169,23 +171,24 @@ public class ProjProProcedure {
                         }
 
                         if (EnchantmentHelper.getItemEnchantmentLevel(enchantment, itemstack) != 0) {
-                            if (entity instanceof LivingEntity) {
-                                livingentity3 = (LivingEntity)entity;
-                                if (!livingentity3.level.isClientSide()) {
-                                    mobeffectinstance = new MobEffectInstance;
-                                    mobeffect = MobEffects.DAMAGE_RESISTANCE;
-                                    enchantment2 = Enchantments.PROJECTILE_PROTECTION;
-                                    if (entity instanceof LivingEntity) {
-                                        livingentity1 = (LivingEntity)entity;
-                                        itemstack4 = livingentity1.getItemBySlot(EquipmentSlot.LEGS);
-                                    } else {
-                                        itemstack4 = ItemStack.EMPTY;
-                                    }
+                            if (entity instanceof LivingEntity && !livingentity3.level.isClientSide()) {
+                                ItemStack legArmor = livingentity3.getItemBySlot(EquipmentSlot.LEGS);
+                                int enchantLevel = net.minecraft.world.item.enchantment.EnchantmentHelper.getItemEnchantmentLevel(
+                                        net.minecraft.world.item.enchantment.Enchantments.PROJECTILE_PROTECTION,
+                                        legArmor
+                                );
 
-                                    mobeffectinstance.<init>(mobeffect, 3, EnchantmentHelper.getItemEnchantmentLevel(enchantment2, itemstack4), false, false);
-                                    livingentity3.addEffect(mobeffectinstance);
-                                }
+                                MobEffectInstance effect = new MobEffectInstance(
+                                        net.minecraft.world.effect.MobEffects.DAMAGE_RESISTANCE,
+                                        3,
+                                        enchantLevel,
+                                        false,
+                                        false
+                                );
+
+                                livingentity3.addEffect(effect);
                             }
+
 
                             if (entity instanceof LivingEntity) {
                                 livingentity1 = (LivingEntity)entity;
@@ -200,7 +203,7 @@ public class ProjProProcedure {
                                 itemstack2.setDamageValue(0);
                             }
                         } else {
-                            enchantment = Enchantments.PROJECTILE_PROTECTION;
+                            enchantment = PROJECTILE_PROTECTION;
                             if (entity instanceof LivingEntity) {
                                 LivingEntity livingentity5 = (LivingEntity)entity;
 
@@ -210,22 +213,22 @@ public class ProjProProcedure {
                             }
 
                             if (EnchantmentHelper.getItemEnchantmentLevel(enchantment, itemstack) != 0) {
-                                if (entity instanceof LivingEntity) {
-                                    livingentity3 = (LivingEntity)entity;
-                                    if (!livingentity3.level.isClientSide()) {
-                                        mobeffectinstance = new MobEffectInstance;
-                                        mobeffect = MobEffects.DAMAGE_RESISTANCE;
-                                        enchantment2 = Enchantments.PROJECTILE_PROTECTION;
-                                        if (entity instanceof LivingEntity) {
-                                            livingentity1 = (LivingEntity)entity;
-                                            itemstack4 = livingentity1.getItemBySlot(EquipmentSlot.FEET);
-                                        } else {
-                                            itemstack4 = ItemStack.EMPTY;
-                                        }
+                                if (entity instanceof LivingEntity livingEntity && !livingEntity.level.isClientSide()) {
+                                    ItemStack boots = livingEntity.getItemBySlot(EquipmentSlot.FEET);
+                                    int enchantLevel = net.minecraft.world.item.enchantment.EnchantmentHelper.getItemEnchantmentLevel(
+                                            net.minecraft.world.item.enchantment.Enchantments.PROJECTILE_PROTECTION,
+                                            boots
+                                    );
 
-                                        mobeffectinstance.<init>(mobeffect, 3, EnchantmentHelper.getItemEnchantmentLevel(enchantment2, itemstack4), false, false);
-                                        livingentity3.addEffect(mobeffectinstance);
-                                    }
+                                    MobEffectInstance effect = new MobEffectInstance(
+                                            net.minecraft.world.effect.MobEffects.DAMAGE_RESISTANCE,
+                                            3,
+                                            enchantLevel,
+                                            false,
+                                            false
+                                    );
+
+                                    livingEntity.addEffect(effect);
                                 }
 
                                 if (entity instanceof LivingEntity) {

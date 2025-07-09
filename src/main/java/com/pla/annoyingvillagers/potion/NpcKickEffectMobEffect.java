@@ -19,7 +19,7 @@ public class NpcKickEffectMobEffect extends MobEffect {
     }
 
     public String getDescriptionId() {
-        return "effect.annoying_villagers.npc_kick_effect";
+        return "effect.modid = AnnoyingVillagers.MODID.npc_kick_effect";
     }
 
     public void removeAttributeModifiers(LivingEntity livingentity, AttributeMap attributemap, int i) {

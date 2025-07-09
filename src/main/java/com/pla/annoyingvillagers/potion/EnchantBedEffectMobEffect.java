@@ -16,7 +16,7 @@ public class EnchantBedEffectMobEffect extends MobEffect {
     }
 
     public String getDescriptionId() {
-        return "effect.annoying_villagers.enchant_bed_effect";
+        return "effect.modid = AnnoyingVillagers.MODID.enchant_bed_effect";
     }
 
     public boolean isDurationEffectTick(int i, int j) {

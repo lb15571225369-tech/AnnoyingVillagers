@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " 1 ",
+    "345",
+    " 7 "
+  ],
+  "key": {
+    "1": {
+      "item": "minecraft:nether_star"
+    },
+    "3": {
+      "item": "minecraft:diamond_block"
+    },
+    "4": {
+      "item": "minecraft:netherite_sword"
+    },
+    "5": {
+      "item": "minecraft:diamond_block"
+    },
+    "7": {
+      "item": "minecraft:heart_of_the_sea"
+    }
+  },
+  "result": {
+    "item": "annoying_villagers:hard_great_sword",
+    "count": 1
+  }
+}

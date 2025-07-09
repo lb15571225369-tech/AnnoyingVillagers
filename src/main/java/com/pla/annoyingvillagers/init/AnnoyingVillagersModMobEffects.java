@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.init;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -14,7 +15,7 @@ import com.pla.annoyingvillagers.potion.NpcKickEffectMobEffect;
 
 public class AnnoyingVillagersModMobEffects {
 
-    public static final DeferredRegister<MobEffect> REGISTRY = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, "annoying_villagers");
+    public static final DeferredRegister<MobEffect> REGISTRY = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, AnnoyingVillagers.MODID);
     public static final RegistryObject<MobEffect> HEROBRINE_EFFECT = AnnoyingVillagersModMobEffects.REGISTRY.register("herobrine_effect", () -> {
         return new HerobrineEffectMobEffect();
     });

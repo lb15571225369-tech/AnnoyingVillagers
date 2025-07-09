@@ -3,6 +3,8 @@ package com.pla.annoyingvillagers.procedures;
 import com.nameless.indestructible.gameasset.GuardAnimations;
 import java.util.List;
 import javax.annotation.Nullable;
+
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -12,9 +14,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.TickEvent.ServerTickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -148,29 +147,9 @@ public class ParryProcedure {
                             if (dynamicanimation3 instanceof AttackAnimation) {
                                 humanoidmobpatch.playSound(EpicFightSounds.NEUTRALIZE_MOBS, -0.05F, 0.1F);
                                 if (entity.isAlive()) {
-                                    ((<undefinedtype>)(new Object() {
-                                        private int ticks = 0;
-                                        private float waitTicks;
-                                        private LevelAccessor world;
-
-                                        public void start(LevelAccessor levelaccessor1, int i) {
-                                            this.waitTicks = (float)i;
-                                            MinecraftForge.EVENT_BUS.register(this);
-                                            this.world = levelaccessor1;
-                                        }
-
-                                        @SubscribeEvent
-                                        public void tick(ServerTickEvent servertickevent) {
-                                            if (servertickevent.phase == Phase.END) {
-                                                ++this.ticks;
-                                                if ((float)this.ticks >= this.waitTicks) {
-                                                    this.run();
-                                                }
-                                            }
-
-                                        }
-
-                                        private void run() {
+                                    new DelayedTask(1) {
+                                        @Override
+                                        public void run() {
                                             if (entity.isAlive()) {
                                                 Entity entity2 = entity;
 
@@ -178,10 +157,8 @@ public class ParryProcedure {
                                                     entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/skill/guard_break1\" 0 10");
                                                 }
                                             }
-
-                                            MinecraftForge.EVENT_BUS.unregister(this);
                                         }
-                                    })).start(levelaccessor, 1);
+                                    };
                                 }
                             }
                         }
@@ -244,29 +221,9 @@ public class ParryProcedure {
 
                             if (dynamicanimation instanceof DashAttackAnimation) {
                                 if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.FIST) {
-                                    ((<undefinedtype>)(new Object() {
-                                        private int ticks = 0;
-                                        private float waitTicks;
-                                        private LevelAccessor world;
-
-                                        public void start(LevelAccessor levelaccessor1, int i) {
-                                            this.waitTicks = (float)i;
-                                            MinecraftForge.EVENT_BUS.register(this);
-                                            this.world = levelaccessor1;
-                                        }
-
-                                        @SubscribeEvent
-                                        public void tick(ServerTickEvent servertickevent) {
-                                            if (servertickevent.phase == Phase.END) {
-                                                ++this.ticks;
-                                                if ((float)this.ticks >= this.waitTicks) {
-                                                    this.run();
-                                                }
-                                            }
-
-                                        }
-
-                                        private void run() {
+                                    new DelayedTask(1) {
+                                        @Override
+                                        public void run() {
                                             Entity entity2 = entity;
 
                                             if (!entity2.level.isClientSide() && entity2.getServer() != null) {
@@ -275,50 +232,27 @@ public class ParryProcedure {
 
                                             entity2 = entity;
                                             if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/combat/guard_break_attack\" 0 10");
+                                                entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/guard_break_attack\" 0 10");
                                             }
 
                                             entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * -0.4D, 0.0D, entity.getLookAngle().z * -0.4D));
-                                            MinecraftForge.EVENT_BUS.unregister(this);
                                         }
-                                    })).start(levelaccessor, 1);
+                                    };
                                 }
                             } else {
                                 PlayerMovement playermovement1 = (PlayerMovement)entity.getCapability(Caps.playerMovement, (Direction)null).resolve().orElseThrow();
 
                                 playermovement1.takeStamina(40, false, false);
-                                ((<undefinedtype>)(new Object() {
-                                    private int ticks = 0;
-                                    private float waitTicks;
-                                    private LevelAccessor world;
-
-                                    public void start(LevelAccessor levelaccessor1, int i) {
-                                        this.waitTicks = (float)i;
-                                        MinecraftForge.EVENT_BUS.register(this);
-                                        this.world = levelaccessor1;
-                                    }
-
-                                    @SubscribeEvent
-                                    public void tick(ServerTickEvent servertickevent) {
-                                        if (servertickevent.phase == Phase.END) {
-                                            ++this.ticks;
-                                            if ((float)this.ticks >= this.waitTicks) {
-                                                this.run();
-                                            }
-                                        }
-
-                                    }
-
-                                    private void run() {
+                                new DelayedTask(1) {
+                                    @Override
+                                    public void run() {
                                         Entity entity2 = entity;
 
                                         if (!entity2.level.isClientSide() && entity2.getServer() != null) {
                                             entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/skill/guard_break1\" 0 10");
                                         }
-
-                                        MinecraftForge.EVENT_BUS.unregister(this);
                                     }
-                                })).start(levelaccessor, 1);
+                                };
                             }
                         }
                     }
@@ -329,8 +263,8 @@ public class ParryProcedure {
 
             livingentitypatch = (LivingEntityPatch)EpicFightCapabilities.getEntityPatch(entity1, LivingEntityPatch.class);
             if (livingentitypatch1 != null && livingentitypatch != null) {
-                dynamicanimation = livingentitypatch1.getAnimator().getPlayerFor((DynamicAnimation)null).getAnimation();
-                dynamicanimation1 = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation)null).getAnimation();
+                dynamicanimation = livingentitypatch1.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
+                dynamicanimation1 = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
                 if (dynamicanimation instanceof KickAttackAnimation) {
                     if (dynamicanimation1 instanceof AttackAnimation) {
                         livingentitypatch1.playSound(EpicFightSounds.NEUTRALIZE_MOBS, -0.05F, 0.1F);
@@ -339,29 +273,9 @@ public class ParryProcedure {
                                 entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect give @s cgm:blinded 1 1 true");
                             }
 
-                            ((<undefinedtype>)(new Object() {
-                                private int ticks = 0;
-                                private float waitTicks;
-                                private LevelAccessor world;
-
-                                public void start(LevelAccessor levelaccessor1, int i) {
-                                    this.waitTicks = (float)i;
-                                    MinecraftForge.EVENT_BUS.register(this);
-                                    this.world = levelaccessor1;
-                                }
-
-                                @SubscribeEvent
-                                public void tick(ServerTickEvent servertickevent) {
-                                    if (servertickevent.phase == Phase.END) {
-                                        ++this.ticks;
-                                        if ((float)this.ticks >= this.waitTicks) {
-                                            this.run();
-                                        }
-                                    }
-
-                                }
-
-                                private void run() {
+                            new DelayedTask(1) {
+                                @Override
+                                public void run() {
                                     if (entity.isAlive()) {
                                         Entity entity2 = entity;
 
@@ -369,101 +283,77 @@ public class ParryProcedure {
                                             entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/skill/guard_break1\" 0 10");
                                         }
                                     }
-
-                                    MinecraftForge.EVENT_BUS.unregister(this);
                                 }
-                            })).start(levelaccessor, 1);
+                            };
                         }
-                    }
-                } else if (dynamicanimation instanceof DashAttackAnimation && dynamicanimation1 instanceof DashAttackAnimation) {
-                    if (event != null && event.isCancelable()) {
-                        event.setCanceled(true);
-                    }
+                    } else if (dynamicanimation instanceof DashAttackAnimation && dynamicanimation1 instanceof DashAttackAnimation) {
+                        if (event != null && event.isCancelable()) {
+                            event.setCanceled(true);
+                        }
 
-                    livingentitypatch1.playSound(EpicFightSounds.NEUTRALIZE_MOBS, -0.05F, 0.1F);
-                    if (!entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "particle epicfight:air_burst ~ ~1.5 ~ 0 0 0 8 1");
-                    }
-
-                    if (livingentitypatch1.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.FIST) {
+                        livingentitypatch1.playSound(EpicFightSounds.NEUTRALIZE_MOBS, -0.05F, 0.1F);
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1");
+                            entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "particle epicfight:air_burst ~ ~1.5 ~ 0 0 0 8 1");
                         }
 
-                        livingentitypatch1.playSound(EpicFightSounds.CLASH, -0.05F, 0.1F);
-                    }
-
-                    entity.lookAt(Anchor.EYES, new Vec3(entity1.getX(), entity1.getY() + 1.0D, entity1.getZ()));
-                    entity1.lookAt(Anchor.EYES, new Vec3(entity.getX(), entity.getY() + 1.0D, entity.getZ()));
-                    entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * -0.2D, 0.0D, entity.getLookAngle().z * -0.2D));
-                    entity1.setDeltaMovement(new Vec3(entity1.getLookAngle().x * -0.2D, 0.0D, entity1.getLookAngle().z * -0.2D));
-                    if (entity instanceof Player) {
-                        if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect give @s cgm:blinded 1 1 true");
-                        }
-
-                        if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "impactful @s shake 15 5 6");
-                        }
-
-                        PlayerMovement playermovement2 = (PlayerMovement)entity.getCapability(Caps.playerMovement, (Direction)null).resolve().orElseThrow();
-
-                        playermovement2.takeStamina(15, false, false);
-                    } else if (!entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle annoying_villagersbychentu:spark ^ ^1.5 ^0.8 0 0 0 0.1 100");
-                    }
-
-                    if (entity1 instanceof Player) {
-                        if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                            entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "impactful @s shake 15 5 6");
-                        }
-
-                        if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                            entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect give @s cgm:blinded 1 1 true");
-                        }
-                    }
-
-                    if (entity.isAlive()) {
-                        ((<undefinedtype>)(new Object() {
-                            private int ticks = 0;
-                            private float waitTicks;
-                            private LevelAccessor world;
-
-                            public void start(LevelAccessor levelaccessor1, int i) {
-                                this.waitTicks = (float)i;
-                                MinecraftForge.EVENT_BUS.register(this);
-                                this.world = levelaccessor1;
+                        if (livingentitypatch1.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.FIST) {
+                            if (!entity.level.isClientSide() && entity.getServer() != null) {
+                                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1");
                             }
 
-                            @SubscribeEvent
-                            public void tick(ServerTickEvent servertickevent) {
-                                if (servertickevent.phase == Phase.END) {
-                                    ++this.ticks;
-                                    if ((float)this.ticks >= this.waitTicks) {
-                                        this.run();
+                            livingentitypatch1.playSound(EpicFightSounds.CLASH, -0.05F, 0.1F);
+                        }
+
+                        entity.lookAt(Anchor.EYES, new Vec3(entity1.getX(), entity1.getY() + 1.0D, entity1.getZ()));
+                        entity1.lookAt(Anchor.EYES, new Vec3(entity.getX(), entity.getY() + 1.0D, entity.getZ()));
+                        entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * -0.2D, 0.0D, entity.getLookAngle().z * -0.2D));
+                        entity1.setDeltaMovement(new Vec3(entity1.getLookAngle().x * -0.2D, 0.0D, entity1.getLookAngle().z * -0.2D));
+                        if (entity instanceof Player) {
+                            if (!entity.level.isClientSide() && entity.getServer() != null) {
+                                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect give @s cgm:blinded 1 1 true");
+                            }
+
+                            if (!entity.level.isClientSide() && entity.getServer() != null) {
+                                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "impactful @s shake 15 5 6");
+                            }
+
+                            PlayerMovement playermovement2 = (PlayerMovement) entity.getCapability(Caps.playerMovement, (Direction) null).resolve().orElseThrow();
+
+                            playermovement2.takeStamina(15, false, false);
+                        } else if (!entity.level.isClientSide() && entity.getServer() != null) {
+                            entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle annoying_villagersbychentu:spark ^ ^1.5 ^0.8 0 0 0 0.1 100");
+                        }
+
+                        if (entity1 instanceof Player) {
+                            if (!entity1.level.isClientSide() && entity1.getServer() != null) {
+                                entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "impactful @s shake 15 5 6");
+                            }
+
+                            if (!entity1.level.isClientSide() && entity1.getServer() != null) {
+                                entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect give @s cgm:blinded 1 1 true");
+                            }
+                        }
+
+                        if (entity.isAlive()) {
+                            new DelayedTask(1) {
+                                @Override
+                                public void run() {
+                                    Entity entity2 = entity;
+
+                                    if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                        entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/guard_break_attack\" 0 10");
+                                    }
+
+                                    entity2 = entity1;
+                                    if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                        entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/guard_break_attack\" 0 10");
                                     }
                                 }
+                            };
+                        }
 
-                            }
-
-                            private void run() {
-                                Entity entity2 = entity;
-
-                                if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/combat/guard_break_attack\" 0 10");
-                                }
-
-                                entity2 = entity1;
-                                if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/combat/guard_break_attack\" 0 10");
-                                }
-
-                                MinecraftForge.EVENT_BUS.unregister(this);
-                            }
-                        })).start(levelaccessor, 1);
+                        ((HitParticleType) EpicFightParticles.AIR_BURST.get()).spawnParticleWithArgument((ServerLevel) entity.level, entity, entity1);
                     }
-
-                    ((HitParticleType)EpicFightParticles.AIR_BURST.get()).spawnParticleWithArgument((ServerLevel)entity.level, entity, entity1);
                 }
             }
 

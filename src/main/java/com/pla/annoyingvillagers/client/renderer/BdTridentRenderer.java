@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.client.renderer;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
@@ -16,6 +17,6 @@ public class BdTridentRenderer extends HumanoidMobRenderer<BdTridentEntity, Huma
     }
 
     public ResourceLocation getTextureLocation(BdTridentEntity bdtridententity) {
-        return new ResourceLocation("annoying_villagers:textures/entities/empty.png");
+        return new ResourceLocation(AnnoyingVillagers.MODID + ":textures/entities/empty.png");
     }
 }

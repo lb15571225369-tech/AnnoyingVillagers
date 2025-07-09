@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.network.NetworkEvent.Context;
-import com.pla.annoyingvillagers.AnnoyingVillagersMod;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.procedures.KickAnXiaAnJianShiProcedure;
 import com.pla.annoyingvillagers.procedures.KickSongKaiAnJianShiProcedure;
 
@@ -63,6 +63,6 @@ public class KickMessage {
 
     @SubscribeEvent
     public static void registerMessage(FMLCommonSetupEvent fmlcommonsetupevent) {
-        AnnoyingVillagersMod.addNetworkMessage(KickMessage.class, KickMessage::buffer, KickMessage::new, KickMessage::handler);
+        AnnoyingVillagers.addNetworkMessage(KickMessage.class, KickMessage::buffer, KickMessage::new, KickMessage::handler);
     }
 }

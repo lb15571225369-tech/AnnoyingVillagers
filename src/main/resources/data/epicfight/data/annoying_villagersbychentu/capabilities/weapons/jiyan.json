@@ -1,0 +1,10 @@
+{
+	"type": "ironfist",
+	"attributes": {
+		"common": {
+			"armor_negation":20.0,
+  			"impact": 200.7,
+                  "speed_bonus": 3.0
+		}
+	}
+}

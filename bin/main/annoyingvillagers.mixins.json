@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "pugilist_steve.Mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "annoyingvillagers.mixins.refmap.json",
+  "mixins": [
+    "NoKnockDownProMixin",
+    "KnockDownCheckMixin",
+    "MoreParryMixin"
+  ],
+  "client": [
+
+  ],
+  "minVersion": "0.8"
+}

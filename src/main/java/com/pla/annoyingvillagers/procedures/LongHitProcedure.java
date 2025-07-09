@@ -41,7 +41,7 @@ public class LongHitProcedure {
                 if (!flag) {
                     if (d0 >= 35.0D) {
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/combat/longest_hit\" 0 10");
+                            entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/longest_hit\" 0 10");
                         }
                     } else if (d0 >= 30.0D && !entity.level.isClientSide() && entity.getServer() != null) {
                         entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10");

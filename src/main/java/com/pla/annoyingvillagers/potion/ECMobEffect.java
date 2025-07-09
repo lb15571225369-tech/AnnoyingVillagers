@@ -21,7 +21,7 @@ public class ECMobEffect extends MobEffect {
     }
 
     public String getDescriptionId() {
-        return "effect.annoying_villagers.ec";
+        return "effect.modid = AnnoyingVillagers.MODID.ec";
     }
 
     public void addAttributeModifiers(LivingEntity livingentity, AttributeMap attributemap, int i) {

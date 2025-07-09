@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " 12",
+    "345",
+    " 7 "
+  ],
+  "key": {
+    "1": {
+      "item": "annoying_villagers:time_bomb"
+    },
+    "2": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "3": {
+      "item": "minecraft:beacon"
+    },
+    "4": {
+      "item": "minecraft:totem_of_undying"
+    },
+    "5": {
+      "item": "minecraft:target"
+    },
+    "7": {
+      "item": "minecraft:brick"
+    }
+  },
+  "result": {
+    "item": "annoying_villagers:bomb_spawn_item",
+    "count": 1
+  }
+}

@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.client.engine;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
@@ -22,7 +23,7 @@ import yesman.epicfight.model.armature.HumanoidArmature;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 @OnlyIn(Dist.CLIENT)
-@EventBusSubscriber(modid = "annoying_villagers", bus = Bus.FORGE)
+@EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Bus.FORGE)
 public class RenderIncinerator extends RenderItemBase {
 
     @OnlyIn(Dist.CLIENT)

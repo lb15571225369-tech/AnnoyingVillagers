@@ -15,7 +15,7 @@ public class HerobrineEffectMobEffect extends MobEffect {
     }
 
     public String getDescriptionId() {
-        return "effect.annoying_villagers.herobrine_effect";
+        return "effect.modid = AnnoyingVillagers.MODID.herobrine_effect";
     }
 
     public void addAttributeModifiers(LivingEntity livingentity, AttributeMap attributemap, int i) {

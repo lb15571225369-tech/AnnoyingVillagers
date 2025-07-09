@@ -12,6 +12,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
@@ -21,7 +23,7 @@ import yesman.epicfight.model.armature.HumanoidArmature;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 @OnlyIn(Dist.CLIENT)
-@EventBusSubscriber(modid = "annoying_villagers", bus = Bus.FORGE)
+@EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Bus.FORGE)
 public class HardGreatSwordRender extends RenderItemBase {
 
     @OnlyIn(Dist.CLIENT)

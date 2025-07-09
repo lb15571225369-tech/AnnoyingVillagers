@@ -1,0 +1,7 @@
+{
+  "parent": "annoying_villagers:custom/yellow_legendary_sword_",
+  "textures": {
+    "0": "annoying_villagers:blocks/yellow_glow_legendary_sword",
+    "particle": "annoying_villagers:items/yellow_glow_legendary_sword"
+  }
+}

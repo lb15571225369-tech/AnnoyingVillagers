@@ -1,0 +1,246 @@
+{
+  "tridentfs_skill": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:b_dsanchajikuanghuanjie",
+        "stream": false
+      }
+    ]
+  },
+  "electify": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:dianhu_10-3",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:dianhu_10-7",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:dianhu_10-8",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:dianhu_10-18",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:dianhu_10-19",
+        "stream": false
+      }
+    ]
+  },
+  "bluedemonsayyc": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:b_dsaynideyucehenhao",
+        "stream": false
+      }
+    ]
+  },
+  "bluedemon_say_player_interesting": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:b_dduomeyouqu",
+        "stream": false
+      }
+    ]
+  },
+  "bluedemon_say_you_no_know": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:b_dsayamhuisbai",
+        "stream": false
+      }
+    ]
+  },
+  "bluedemonsayplayer": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:b_dsaypsit",
+        "stream": false
+      }
+    ]
+  },
+  "bluedemonsaydontbe": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:buyaozida",
+        "stream": false
+      }
+    ]
+  },
+  "smoke_used": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:smoke_used",
+        "stream": false
+      }
+    ]
+  },
+  "ob_place": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:metal1",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:metal2",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:metal3",
+        "stream": false
+      }
+    ]
+  },
+  "metal_hit": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:zi_dan_jin_shu_",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:zi_dan_jin_shu_2",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:zi_dan_jin_shu_3",
+        "stream": false
+      }
+    ]
+  },
+  "target_block_hit": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:target_block_hit_1",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:target_block_hit_2",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:target_block_hit_3",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:target_block_hit_4",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:target_block_hit_5",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:target_block_hit_6",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:target_block_hit_7",
+        "stream": false
+      }
+    ]
+  },
+  "dash_star": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:2",
+        "stream": true
+      }
+    ]
+  },
+  "item_hit": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:item_hit3",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:item_hit2",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:item_hit",
+        "stream": false
+      }
+    ]
+  },
+  "pin": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:pin",
+        "stream": false
+      }
+    ]
+  },
+  "g_hit": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:hit",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:hit2",
+        "stream": false
+      }
+    ]
+  },
+  "dry_fire": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:dry_fire",
+        "stream": false
+      }
+    ]
+  },
+  "s_g": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:s_g",
+        "stream": false
+      }
+    ]
+  },
+  "s_g_hit": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:s_g_hit",
+        "stream": false
+      }
+    ]
+  },
+  "emoji_12": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:emoji_12",
+        "stream": false
+      }
+    ]
+  },
+  "heavy_attack_legendary_sword": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:heavy_attack_legendary_sword",
+        "stream": false
+      }
+    ]
+  },
+  "heavy_attack_legendary_sword_2": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:heavy_attack_legendary_sword_2",
+        "stream": false
+      }
+    ]
+  },
+  "heavy_attack_start": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:heavy_attack_l_g",
+        "stream": false
+      }
+    ]
+  }
+}

@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.client.renderer;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
@@ -18,7 +19,7 @@ public class BlueDemonEndRenderer extends HumanoidMobRenderer<BlueDemonEndEntity
     }
 
     public ResourceLocation getTextureLocation(BlueDemonEndEntity bluedemonendentity) {
-        return new ResourceLocation("annoying_villagers:textures/entities/b_bd.png");
+        return new ResourceLocation(AnnoyingVillagers.MODID + ":textures/entities/b_bd.png");
     }
 
     protected boolean isShaking(BlueDemonEndEntity bluedemonendentity) {

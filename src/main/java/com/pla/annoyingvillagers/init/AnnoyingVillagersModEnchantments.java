@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.init;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.registries.DeferredRegister;
@@ -19,10 +20,10 @@ import com.pla.annoyingvillagers.enchantment.UnknownEnchantment;
 
 public class AnnoyingVillagersModEnchantments {
 
-    public static final DeferredRegister<Enchantment> REGISTRY = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, "annoying_villagers");
-    public static final RegistryObject<Enchantment> FASTSHOT = AnnoyingVillagersModEnchantments.REGISTRY.register("fastshot", () -> {
-        return new FastshotEnchantment(new EquipmentSlot[0]);
-    });
+    public static final DeferredRegister<Enchantment> REGISTRY = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, AnnoyingVillagers.MODID);
+//    public static final RegistryObject<Enchantment> FASTSHOT = AnnoyingVillagersModEnchantments.REGISTRY.register("fastshot", () -> {
+//        return new FastshotEnchantment(new EquipmentSlot[0]);
+//    });
     public static final RegistryObject<Enchantment> BREAK_ARMOR = AnnoyingVillagersModEnchantments.REGISTRY.register("break_armor", () -> {
         return new BreakArmorEnchantment(new EquipmentSlot[0]);
     });

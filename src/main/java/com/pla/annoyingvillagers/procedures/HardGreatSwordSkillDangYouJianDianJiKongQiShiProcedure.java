@@ -1,5 +1,8 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;
@@ -14,87 +17,60 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.TickEvent.ServerTickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 
 public class HardGreatSwordSkillDangYouJianDianJiKongQiShiProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity, ItemStack itemstack) {
-        if (entity != null) {
-            if (entity.isShiftKeyDown()) {
-                if (itemstack.getOrCreateTag().getDouble("power") >= 10.0D) {
-                    itemstack.getOrCreateTag().putDouble("power", itemstack.getOrCreateTag().getDouble("power") - 10.0D);
-                    if (!entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/combat/hard_great_sword_skill\" 0 1");
-                    }
+    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity, ItemStack itemstack) {
+        if (entity == null || !entity.isShiftKeyDown()) return;
 
-                    if (entity instanceof LivingEntity) {
-                        LivingEntity livingentity = (LivingEntity)entity;
+        CompoundTag tag = itemstack.getOrCreateTag();
+        double currentPower = tag.getDouble("power");
 
-                        if (!livingentity.level.isClientSide()) {
-                            livingentity.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.EC_PLAYER.get(), 160, 0, false, false));
-                        }
-                    }
+        if (currentPower >= 10.0D) {
+            // Consume energy
+            tag.putDouble("power", currentPower - 10.0D);
 
-                    ((<undefinedtype>)(new Object() {
-                        private int ticks = 0;
-                        private float waitTicks;
-                        private LevelAccessor world;
-
-                        public void start(LevelAccessor levelaccessor1, int i) {
-                            this.waitTicks = (float)i;
-                            MinecraftForge.EVENT_BUS.register(this);
-                            this.world = levelaccessor1;
-                        }
-
-                        @SubscribeEvent
-                        public void tick(ServerTickEvent servertickevent) {
-                            if (servertickevent.phase == Phase.END) {
-                                ++this.ticks;
-                                if ((float)this.ticks >= this.waitTicks) {
-                                    this.run();
-                                }
-                            }
-
-                        }
-
-                        private void run() {
-                            Entity entity1 = entity;
-
-                            if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle annoying_villagers:red_spark ^ ^1.5 ^1 0 0 0 0.6 35");
-                            }
-
-                            LevelAccessor levelaccessor1 = this.world;
-
-                            if (levelaccessor1 instanceof Level) {
-                                Level level = (Level)levelaccessor1;
-
-                                if (!level.isClientSide()) {
-                                    level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:hard_great_sword_skill")), SoundSource.NEUTRAL, 1.0F, 1.0F);
-                                } else {
-                                    level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:hard_great_sword_skill")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
-                                }
-                            }
-
-                            MinecraftForge.EVENT_BUS.unregister(this);
-                        }
-                    })).start(levelaccessor, 4);
-                } else if (entity instanceof Player) {
-                    Player player = (Player)entity;
-
-                    if (!player.level.isClientSide()) {
-                        CompoundTag compoundtag = itemstack.getOrCreateTag();
-
-                        player.displayClientMessage(new TextComponent("\u80fd\u91cf\u4e0d\u8db3\uff0c\u76ee\u524d\u5145\u80fd" + compoundtag.getDouble("power") + "/10"), true);
-                    }
-                }
+            // Play animation
+            if (!entity.level.isClientSide() && entity.getServer() != null) {
+                entity.getServer().getCommands().performCommand(
+                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
+                        "indestructible @s play \"annoyingvillagers:biped/combat/hard_great_sword_skill\" 0 1"
+                );
             }
 
+            // Apply potion effect
+            if (entity instanceof LivingEntity living && !living.level.isClientSide()) {
+                living.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.EC_PLAYER.get(), 160, 0, false, false));
+            }
+
+            // Delayed effects (particles + sound)
+            new DelayedTask(4) {
+                @Override
+                public void run() {
+                    if (!entity.level.isClientSide() && entity.getServer() != null) {
+                        entity.getServer().getCommands().performCommand(
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
+                                "execute at @s run particle modid = AnnoyingVillagers.MODID:red_spark ^ ^1.5 ^1 0 0 0 0.6 35"
+                        );
+                    }
+
+                    if (world instanceof Level level) {
+                        SoundEvent sound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":hard_great_sword_skill"));
+                        if (!level.isClientSide()) {
+                            level.playSound(null, new BlockPos(x, y, z), sound, SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        } else {
+                            level.playLocalSound(x, y, z, sound, SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                        }
+                    }
+                }
+            };
+
+        } else if (entity instanceof Player player && !player.level.isClientSide()) {
+            player.displayClientMessage(
+                    new TextComponent("能量不足，目前充能 " + currentPower + "/10"),
+                    true
+            );
         }
     }
 }

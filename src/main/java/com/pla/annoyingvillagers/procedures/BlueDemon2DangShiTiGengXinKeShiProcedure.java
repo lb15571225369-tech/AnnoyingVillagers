@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
+
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -47,9 +49,9 @@ public class BlueDemon2DangShiTiGengXinKeShiProcedure {
                     Level level = (Level)levelaccessor;
 
                     if (!level.isClientSide()) {
-                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:electify")), SoundSource.BLOCKS, (float)Mth.nextDouble(new Random(), 0.0D, 0.1D), (float)Mth.nextDouble(new Random(), 0.7D, 1.05D));
+                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":electify")), SoundSource.BLOCKS, (float)Mth.nextDouble(new Random(), 0.0D, 0.1D), (float)Mth.nextDouble(new Random(), 0.7D, 1.05D));
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:electify")), SoundSource.BLOCKS, (float)Mth.nextDouble(new Random(), 0.0D, 0.1D), (float)Mth.nextDouble(new Random(), 0.7D, 1.05D), false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":electify")), SoundSource.BLOCKS, (float)Mth.nextDouble(new Random(), 0.0D, 0.1D), (float)Mth.nextDouble(new Random(), 0.7D, 1.05D), false);
                     }
                 }
             }
@@ -83,9 +85,9 @@ public class BlueDemon2DangShiTiGengXinKeShiProcedure {
                         Level level1 = (Level)levelaccessor;
 
                         if (!level1.isClientSide()) {
-                            level1.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:electify")), SoundSource.BLOCKS, (float)Mth.nextDouble(new Random(), 0.0D, 0.15D), (float)Mth.nextDouble(new Random(), 0.7D, 1.05D));
+                            level1.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":electify")), SoundSource.BLOCKS, (float)Mth.nextDouble(new Random(), 0.0D, 0.15D), (float)Mth.nextDouble(new Random(), 0.7D, 1.05D));
                         } else {
-                            level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:electify")), SoundSource.BLOCKS, (float)Mth.nextDouble(new Random(), 0.0D, 0.15D), (float)Mth.nextDouble(new Random(), 0.7D, 1.05D), false);
+                            level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":electify")), SoundSource.BLOCKS, (float)Mth.nextDouble(new Random(), 0.0D, 0.15D), (float)Mth.nextDouble(new Random(), 0.7D, 1.05D), false);
                         }
                     }
                 }
@@ -95,7 +97,7 @@ public class BlueDemon2DangShiTiGengXinKeShiProcedure {
                 entity.stopRiding();
             }
 
-            ((<undefinedtype>)(new Object() {
+            (new Object() {
                 private int ticks = 0;
                 private float waitTicks;
                 private LevelAccessor world;
@@ -122,7 +124,7 @@ public class BlueDemon2DangShiTiGengXinKeShiProcedure {
                         Entity entity2 = entity;
 
                         if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                            entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "summon annoying_villagers:blue_demon");
+                            entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "summon modid = AnnoyingVillagers.MODID:blue_demon");
                         }
 
                         if (!entity.level.isClientSide()) {
@@ -132,7 +134,7 @@ public class BlueDemon2DangShiTiGengXinKeShiProcedure {
 
                     MinecraftForge.EVENT_BUS.unregister(this);
                 }
-            })).start(levelaccessor, 1800);
+            }).start(levelaccessor, 1800);
             LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch)EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 
             if (livingentitypatch != null) {
@@ -140,7 +142,7 @@ public class BlueDemon2DangShiTiGengXinKeShiProcedure {
 
                 if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
                     if (dynamicanimation instanceof KnockdownAnimation) {
-                        ((<undefinedtype>)(new Object() {
+                        (new Object() {
                             private int ticks = 0;
                             private float waitTicks;
                             private LevelAccessor world;
@@ -173,7 +175,7 @@ public class BlueDemon2DangShiTiGengXinKeShiProcedure {
 
                                 MinecraftForge.EVENT_BUS.unregister(this);
                             }
-                        })).start(levelaccessor, 10);
+                        }).start(levelaccessor, 10);
                     }
                 } else {
                     entity.clearFire();

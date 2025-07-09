@@ -57,7 +57,7 @@ public class BdTridentDangShiTiGengXinKeShiProcedure {
                 }
             }
 
-            ((<undefinedtype>)(new Object() {
+            (new Object() {
                 private int ticks = 0;
                 private float waitTicks;
                 private LevelAccessor world;
@@ -86,7 +86,7 @@ public class BdTridentDangShiTiGengXinKeShiProcedure {
 
                     MinecraftForge.EVENT_BUS.unregister(this);
                 }
-            })).start(levelaccessor, 120);
+            }).start(levelaccessor, 120);
         }
     }
 }

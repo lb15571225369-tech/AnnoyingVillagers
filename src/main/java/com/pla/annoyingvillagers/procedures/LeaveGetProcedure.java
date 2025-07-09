@@ -1,6 +1,8 @@
 package com.pla.annoyingvillagers.procedures;
 
 import java.util.Comparator;
+
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.TextComponent;
@@ -15,15 +17,22 @@ import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.TickEvent.ServerTickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.HerobrineEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 
 public class LeaveGetProcedure {
+    public static boolean isSpectator(Entity entity) {
+        if (entity instanceof ServerPlayer sp) {
+            return sp.gameMode.getGameModeForPlayer() == GameType.SPECTATOR;
+        } else if (entity instanceof Player player && entity.level.isClientSide()) {
+            var info = Minecraft.getInstance().getConnection().getPlayerInfo(player.getGameProfile().getId());
+            return info != null && info.getGameMode() == GameType.SPECTATOR;
+        }
+        return false;
+    }
 
     public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity) {
         if (entity != null) {
@@ -31,22 +40,8 @@ public class LeaveGetProcedure {
             Player player;
 
             if (levelaccessor.players().size() == 1) {
-                if (((<undefinedtype>)(new Object() {
-                    public boolean checkGamemode(Entity entity1) {
-                        if (entity1 instanceof ServerPlayer) {
-                            ServerPlayer serverplayer = (ServerPlayer)entity1;
-
-                            return serverplayer.gameMode.getGameModeForPlayer() == GameType.SPECTATOR;
-                        } else if (entity1.level.isClientSide() && entity1 instanceof Player) {
-                            Player player1 = (Player)entity1;
-
-                            return Minecraft.getInstance().getConnection().getPlayerInfo(player1.getGameProfile().getId()) != null && Minecraft.getInstance().getConnection().getPlayerInfo(player1.getGameProfile().getId()).getGameMode() == GameType.SPECTATOR;
-                        } else {
-                            return false;
-                        }
-                    }
-                })).checkGamemode(entity)) {
-                    if (ForgeRegistries.ENTITIES.getKey(entity.getVehicle().getType()).toString().equals("annoying_villagers:herobrine")) {
+                if (isSpectator(entity)) {
+                    if (ForgeRegistries.ENTITIES.getKey(entity.getVehicle().getType()).toString().equals(AnnoyingVillagers.MODID + ":herobrine")) {
                         Player player1;
                         NonNullList nonnulllist;
                         Entity entity1;
@@ -170,52 +165,29 @@ public class LeaveGetProcedure {
                     }
 
                     entity.stopRiding();
-                    ((<undefinedtype>)(new Object() {
-                        private int ticks = 0;
-                        private float waitTicks;
-                        private LevelAccessor world;
-
-                        public void start(LevelAccessor levelaccessor1, int i) {
-                            this.waitTicks = (float)i;
-                            MinecraftForge.EVENT_BUS.register(this);
-                            this.world = levelaccessor1;
-                        }
-
-                        @SubscribeEvent
-                        public void tick(ServerTickEvent servertickevent) {
-                            if (servertickevent.phase == Phase.END) {
-                                ++this.ticks;
-                                if ((float)this.ticks >= this.waitTicks) {
-                                    this.run();
-                                }
-                            }
-
-                        }
-
-                        private void run() {
-                            Entity entity2 = (Entity)this.world.getEntitiesOfClass(HerobrineEntity.class, AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D), (herobrineentity) -> {
-                                return true;
-                            }).stream().sorted(((<undefinedtype>)(new Object() {
-                                Comparator<Entity> compareDistOf(double d3, double d4, double d5) {
-                                    return Comparator.comparingDouble((entity3) -> {
-                                        return entity3.distanceToSqr(d3, d4, d5);
-                                    });
-                                }
-                            })).compareDistOf(d0, d1, d2)).findFirst().orElse((Object)null);
+                    new DelayedTask(1) {
+                        @Override
+                        public void run() {
+                            Entity entity2 = levelaccessor.getEntitiesOfClass(HerobrineEntity.class,
+                                            AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D),
+                                            herobrineentity -> true)
+                                    .stream()
+                                    .sorted(Comparator.comparingDouble(entity3 -> entity3.distanceToSqr(d0, d1, d2)))
+                                    .findFirst()
+                                    .orElse(null);
 
                             if (!entity2.level.isClientSide() && entity2.getServer() != null) {
                                 entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect clear @s annoying_villagersbychentu:gedang");
                             }
 
-                            entity2 = (Entity)this.world.getEntitiesOfClass(HerobrineEntity.class, AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D), (herobrineentity) -> {
-                                return true;
-                            }).stream().sorted(((<undefinedtype>)(new Object() {
-                                Comparator<Entity> compareDistOf(double d3, double d4, double d5) {
-                                    return Comparator.comparingDouble((entity3) -> {
-                                        return entity3.distanceToSqr(d3, d4, d5);
-                                    });
-                                }
-                            })).compareDistOf(d0, d1, d2)).findFirst().orElse((Object)null);
+                            entity2 = levelaccessor.getEntitiesOfClass(HerobrineEntity.class,
+                                            AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D),
+                                            herobrineentity -> true)
+                                    .stream()
+                                    .sorted(Comparator.comparingDouble(e -> e.distanceToSqr(d0, d1, d2)))
+                                    .findFirst()
+                                    .orElse(null);
+
                             if (!entity2.level.isClientSide() && entity2.getServer() != null) {
                                 entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "kill @s");
                             }
@@ -257,10 +229,8 @@ public class LeaveGetProcedure {
                             if (!entity2.level.isClientSide() && entity2.getServer() != null) {
                                 entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "titles remove @s titles:herobrine");
                             }
-
-                            MinecraftForge.EVENT_BUS.unregister(this);
                         }
-                    })).start(levelaccessor, 1);
+                    };
                 } else if (entity instanceof Player) {
                     player = (Player)entity;
                     if (!player.level.isClientSide()) {
@@ -279,21 +249,7 @@ public class LeaveGetProcedure {
                 }
 
                 if (i >= 10) {
-                    if (((<undefinedtype>)(new Object() {
-                        public boolean checkGamemode(Entity entity2) {
-                            if (entity2 instanceof ServerPlayer) {
-                                ServerPlayer serverplayer = (ServerPlayer)entity2;
-
-                                return serverplayer.gameMode.getGameModeForPlayer() == GameType.SPECTATOR;
-                            } else if (entity2.level.isClientSide() && entity2 instanceof Player) {
-                                Player player3 = (Player)entity2;
-
-                                return Minecraft.getInstance().getConnection().getPlayerInfo(player3.getGameProfile().getId()) != null && Minecraft.getInstance().getConnection().getPlayerInfo(player3.getGameProfile().getId()).getGameMode() == GameType.SPECTATOR;
-                            } else {
-                                return false;
-                            }
-                        }
-                    })).checkGamemode(entity)) {
+                    if (isSpectator(entity)) {
                         if (entity instanceof LivingEntity) {
                             livingentity = (LivingEntity)entity;
                             livingentity.removeEffect((MobEffect)AnnoyingVillagersModMobEffects.HEROBRINE_EFFECT.get());
@@ -305,52 +261,30 @@ public class LeaveGetProcedure {
                         }
 
                         entity.stopRiding();
-                        ((<undefinedtype>)(new Object() {
-                            private int ticks = 0;
-                            private float waitTicks;
-                            private LevelAccessor world;
-
-                            public void start(LevelAccessor levelaccessor1, int j) {
-                                this.waitTicks = (float)j;
-                                MinecraftForge.EVENT_BUS.register(this);
-                                this.world = levelaccessor1;
-                            }
-
-                            @SubscribeEvent
-                            public void tick(ServerTickEvent servertickevent) {
-                                if (servertickevent.phase == Phase.END) {
-                                    ++this.ticks;
-                                    if ((float)this.ticks >= this.waitTicks) {
-                                        this.run();
-                                    }
-                                }
-
-                            }
-
-                            private void run() {
-                                Entity entity2 = (Entity)this.world.getEntitiesOfClass(HerobrineEntity.class, AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D), (herobrineentity) -> {
-                                    return true;
-                                }).stream().sorted(((<undefinedtype>)(new Object() {
-                                    Comparator<Entity> compareDistOf(double d3, double d4, double d5) {
-                                        return Comparator.comparingDouble((entity3) -> {
-                                            return entity3.distanceToSqr(d3, d4, d5);
-                                        });
-                                    }
-                                })).compareDistOf(d0, d1, d2)).findFirst().orElse((Object)null);
+                        new DelayedTask(1) {
+                            @Override
+                            public void run() {
+                                Entity entity2 = levelaccessor.getEntitiesOfClass(HerobrineEntity.class,
+                                                AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D),
+                                                herobrineentity -> true)
+                                        .stream()
+                                        .sorted(Comparator.comparingDouble(e -> e.distanceToSqr(d0, d1, d2)))
+                                        .findFirst()
+                                        .orElse(null);
 
                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
                                     entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect clear @s annoying_villagersbychentu:gedang");
                                 }
 
-                                entity2 = (Entity)this.world.getEntitiesOfClass(HerobrineEntity.class, AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D), (herobrineentity) -> {
-                                    return true;
-                                }).stream().sorted(((<undefinedtype>)(new Object() {
-                                    Comparator<Entity> compareDistOf(double d3, double d4, double d5) {
-                                        return Comparator.comparingDouble((entity3) -> {
-                                            return entity3.distanceToSqr(d3, d4, d5);
-                                        });
-                                    }
-                                })).compareDistOf(d0, d1, d2)).findFirst().orElse((Object)null);
+                                entity2 = levelaccessor.getEntitiesOfClass(
+                                                HerobrineEntity.class,
+                                                AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D),
+                                                e -> true)
+                                        .stream()
+                                        .sorted(Comparator.comparingDouble(e -> e.distanceToSqr(d0, d1, d2)))
+                                        .findFirst()
+                                        .orElse(null);
+
                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
                                     entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "kill @s");
                                 }
@@ -393,9 +327,8 @@ public class LeaveGetProcedure {
                                     entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "title @s title {\"text\":\"\u5df2\u89e3\u8131\",\"color\":\"green\"}");
                                 }
 
-                                MinecraftForge.EVENT_BUS.unregister(this);
                             }
-                        })).start(levelaccessor, 1);
+                        };
                     } else if (entity instanceof Player) {
                         player = (Player)entity;
                         if (!player.level.isClientSide()) {

@@ -11,66 +11,27 @@ import net.minecraft.world.entity.player.Player;
 public class FFireOffUseProcedure {
 
     public static void execute(final CommandContext<CommandSourceStack> commandcontext, Entity entity) {
-        if (entity != null) {
-            if (((<undefinedtype>)(new Object() {
-                public Entity getEntity() {
-                    try {
-                        return EntityArgument.getEntity(commandcontext, "name");
-                    } catch (CommandSyntaxException commandsyntaxexception) {
-                        commandsyntaxexception.printStackTrace();
-                        return null;
-                    }
-                }
-            })).getEntity().getPersistentData().getString(entity.getUUID().toString() + "_f_fire").equals(entity.getUUID().toString())) {
-                ((<undefinedtype>)(new Object() {
-                    public Entity getEntity() {
-                        try {
-                            return EntityArgument.getEntity(commandcontext, "name");
-                        } catch (CommandSyntaxException commandsyntaxexception) {
-                            commandsyntaxexception.printStackTrace();
-                            return null;
-                        }
-                    }
-                })).getEntity().getPersistentData().putString(entity.getUUID().toString() + "_f_fire", "none");
-                Player player;
+        if (entity == null) return;
 
-                if (entity instanceof Player) {
-                    player = (Player)entity;
-                    if (!player.level.isClientSide()) {
-                        Object object = new Object() {
-                            public Entity getEntity() {
-                                try {
-                                    return EntityArgument.getEntity(commandcontext, "name");
-                                } catch (CommandSyntaxException commandsyntaxexception) {
-                                    commandsyntaxexception.printStackTrace();
-                                    return null;
-                                }
-                            }
-                        };
+        Entity targetEntity;
+        try {
+            targetEntity = EntityArgument.getEntity(commandcontext, "name");
+        } catch (CommandSyntaxException e) {
+            e.printStackTrace();
+            return;
+        }
 
-                        player.displayClientMessage(new TextComponent("\u4f60\u5df2\u5f00\u542f\u5bf9" + ((<undefinedtype>)object).getEntity().getDisplayName().getString() + "\u7684\u4f24\u5bb3"), false);
-                    }
-                }
+        String key = entity.getUUID().toString() + "_f_fire";
+        if (targetEntity.getPersistentData().getString(key).equals(entity.getUUID().toString())) {
+            targetEntity.getPersistentData().putString(key, "none");
 
-                Entity entity1 = ((<undefinedtype>)(new Object() {
-                    public Entity getEntity() {
-                        try {
-                            return EntityArgument.getEntity(commandcontext, "name");
-                        } catch (CommandSyntaxException commandsyntaxexception) {
-                            commandsyntaxexception.printStackTrace();
-                            return null;
-                        }
-                    }
-                })).getEntity();
-
-                if (entity1 instanceof Player) {
-                    player = (Player)entity1;
-                    if (!player.level.isClientSide()) {
-                        player.displayClientMessage(new TextComponent(entity.getDisplayName().getString() + "\u5df2\u5bf9\u4f60\u5f00\u542f\u4e86\u4f24\u5bb3"), false);
-                    }
-                }
+            if (entity instanceof Player player && !player.level.isClientSide()) {
+                player.displayClientMessage(new TextComponent("你已开启对 " + targetEntity.getDisplayName().getString() + " 的伤害"), false);
             }
 
+            if (targetEntity instanceof Player targetPlayer && !targetPlayer.level.isClientSide()) {
+                targetPlayer.displayClientMessage(new TextComponent(entity.getDisplayName().getString() + " 已对你开启了伤害"), false);
+            }
         }
     }
 }

@@ -1,0 +1,6 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "annoying_villagers:items/clay_ball"
+  }
+}

@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.network.NetworkEvent.Context;
-import com.pla.annoyingvillagers.AnnoyingVillagersMod;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.procedures.CheckAnXiaAnJianShiProcedure;
 
 @EventBusSubscriber(bus = Bus.MOD)
@@ -58,6 +58,6 @@ public class CheckMessage {
 
     @SubscribeEvent
     public static void registerMessage(FMLCommonSetupEvent fmlcommonsetupevent) {
-        AnnoyingVillagersMod.addNetworkMessage(CheckMessage.class, CheckMessage::buffer, CheckMessage::new, CheckMessage::handler);
+        AnnoyingVillagers.addNetworkMessage(CheckMessage.class, CheckMessage::buffer, CheckMessage::new, CheckMessage::handler);
     }
 }

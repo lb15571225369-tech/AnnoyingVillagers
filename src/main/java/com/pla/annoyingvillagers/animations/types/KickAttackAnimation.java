@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.animations.types;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -111,7 +112,7 @@ public class KickAttackAnimation extends AttackAnimation {
         TypeFlexibleHashMap<StateFactor<?>> typeflexiblehashmap = super.getStatesMap(livingentitypatch, f);
 
         if (!((BooleanValue) ((LivingEntity) livingentitypatch.getOriginal()).level.getGameRules().getRule(EpicFightGamerules.STIFF_COMBO_ATTACKS)).get()) {
-            typeflexiblehashmap.put(EntityState.MOVEMENT_LOCKED, false);
+            typeflexiblehashmap.put(EntityState.MOVEMENT_LOCKED, Optional.of(false));
         }
 
         return typeflexiblehashmap;

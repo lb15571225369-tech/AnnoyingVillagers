@@ -2,6 +2,8 @@ package com.pla.annoyingvillagers.procedures;
 
 import java.util.Map;
 import javax.annotation.Nullable;
+
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.AxeItem;
@@ -127,60 +129,13 @@ public class RightefProcedure {
                     if (!entity.getPersistentData().getBoolean("s_g") && !entity.getPersistentData().getBoolean("coodown")) {
                         entity.getPersistentData().putBoolean("s_g", true);
                         entity.getPersistentData().putBoolean("coodown", true);
-                        ((<undefinedtype>)(new Object() {
-                            private int ticks = 0;
-                            private float waitTicks;
-                            private LevelAccessor world;
-
-                            public void start(LevelAccessor levelaccessor1, int i) {
-                                this.waitTicks = (float)i;
-                                MinecraftForge.EVENT_BUS.register(this);
-                                this.world = levelaccessor1;
+                        new DelayedTask(3) {
+                            @Override
+                            public void run() {
+                                entity.getPersistentData().putBoolean("coodown", false);
                             }
+                        };
 
-                            @SubscribeEvent
-                            public void tick(ServerTickEvent servertickevent) {
-                                if (servertickevent.phase == Phase.END) {
-                                    ++this.ticks;
-                                    if ((float)this.ticks >= this.waitTicks) {
-                                        this.run();
-                                    }
-                                }
-
-                            }
-
-                            private void run() {
-                                entity.getPersistentData().putBoolean("s_g", false);
-                                ((<undefinedtype>)(new Object() {
-                                    private int ticks = 0;
-                                    private float waitTicks;
-                                    private LevelAccessor world;
-
-                                    public void start(LevelAccessor levelaccessor1, int i) {
-                                        this.waitTicks = (float)i;
-                                        MinecraftForge.EVENT_BUS.register(this);
-                                        this.world = levelaccessor1;
-                                    }
-
-                                    @SubscribeEvent
-                                    public void tick(ServerTickEvent servertickevent) {
-                                        if (servertickevent.phase == Phase.END) {
-                                            ++this.ticks;
-                                            if ((float)this.ticks >= this.waitTicks) {
-                                                this.run();
-                                            }
-                                        }
-
-                                    }
-
-                                    private void run() {
-                                        entity.getPersistentData().putBoolean("coodown", false);
-                                        MinecraftForge.EVENT_BUS.unregister(this);
-                                    }
-                                })).start(this.world, 20);
-                                MinecraftForge.EVENT_BUS.unregister(this);
-                            }
-                        })).start(levelaccessor, 2);
                     }
                 } else {
                     if (entity instanceof LivingEntity) {
@@ -193,60 +148,12 @@ public class RightefProcedure {
                     if (itemstack1.getItem() instanceof AxeItem && !entity.getPersistentData().getBoolean("s_g") && !entity.getPersistentData().getBoolean("coodown")) {
                         entity.getPersistentData().putBoolean("s_g", true);
                         entity.getPersistentData().putBoolean("coodown", true);
-                        ((<undefinedtype>)(new Object() {
-                            private int ticks = 0;
-                            private float waitTicks;
-                            private LevelAccessor world;
-
-                            public void start(LevelAccessor levelaccessor1, int i) {
-                                this.waitTicks = (float)i;
-                                MinecraftForge.EVENT_BUS.register(this);
-                                this.world = levelaccessor1;
+                        new DelayedTask(2) {
+                            @Override
+                            public void run() {
+                                entity.getPersistentData().putBoolean("coodown", false);
                             }
-
-                            @SubscribeEvent
-                            public void tick(ServerTickEvent servertickevent) {
-                                if (servertickevent.phase == Phase.END) {
-                                    ++this.ticks;
-                                    if ((float)this.ticks >= this.waitTicks) {
-                                        this.run();
-                                    }
-                                }
-
-                            }
-
-                            private void run() {
-                                entity.getPersistentData().putBoolean("s_g", false);
-                                ((<undefinedtype>)(new Object() {
-                                    private int ticks = 0;
-                                    private float waitTicks;
-                                    private LevelAccessor world;
-
-                                    public void start(LevelAccessor levelaccessor1, int i) {
-                                        this.waitTicks = (float)i;
-                                        MinecraftForge.EVENT_BUS.register(this);
-                                        this.world = levelaccessor1;
-                                    }
-
-                                    @SubscribeEvent
-                                    public void tick(ServerTickEvent servertickevent) {
-                                        if (servertickevent.phase == Phase.END) {
-                                            ++this.ticks;
-                                            if ((float)this.ticks >= this.waitTicks) {
-                                                this.run();
-                                            }
-                                        }
-
-                                    }
-
-                                    private void run() {
-                                        entity.getPersistentData().putBoolean("coodown", false);
-                                        MinecraftForge.EVENT_BUS.unregister(this);
-                                    }
-                                })).start(this.world, 20);
-                                MinecraftForge.EVENT_BUS.unregister(this);
-                            }
-                        })).start(levelaccessor, 3);
+                        };
                     }
                 }
             }

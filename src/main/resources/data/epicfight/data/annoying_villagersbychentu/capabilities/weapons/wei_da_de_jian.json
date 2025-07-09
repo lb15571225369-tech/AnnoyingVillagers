@@ -1,0 +1,10 @@
+{
+	"type": "tachi",
+	"attributes": {
+		"common": {
+  			"impact": 2.7,
+			"max_strikes": 7,
+                  "speed_bonus": 0.5
+		}
+	}
+}

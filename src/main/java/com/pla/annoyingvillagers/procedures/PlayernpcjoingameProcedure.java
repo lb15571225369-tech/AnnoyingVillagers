@@ -1,6 +1,8 @@
 package com.pla.annoyingvillagers.procedures;
 
 import javax.annotation.Nullable;
+
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.Util;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.TextComponent;
@@ -68,30 +70,9 @@ public class PlayernpcjoingameProcedure {
                         livingentity.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 9999999, 0, false, false));
                     }
                 }
-
-                ((<undefinedtype>)(new Object() {
-                    private int ticks = 0;
-                    private float waitTicks;
-                    private LevelAccessor world;
-
-                    public void start(LevelAccessor levelaccessor1, int i) {
-                        this.waitTicks = (float)i;
-                        MinecraftForge.EVENT_BUS.register(this);
-                        this.world = levelaccessor1;
-                    }
-
-                    @SubscribeEvent
-                    public void tick(ServerTickEvent servertickevent) {
-                        if (servertickevent.phase == Phase.END) {
-                            ++this.ticks;
-                            if ((float)this.ticks >= this.waitTicks) {
-                                this.run();
-                            }
-                        }
-
-                    }
-
-                    private void run() {
+                new DelayedTask(5) {
+                    @Override
+                    public void run() {
                         int i;
 
                         if (entity instanceof LivingEntity) {
@@ -124,10 +105,8 @@ public class PlayernpcjoingameProcedure {
                                 entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "tag @s add 4");
                             }
                         }
-
-                        MinecraftForge.EVENT_BUS.unregister(this);
                     }
-                })).start(levelaccessor, 5);
+                };
                 if (Math.random() <= 0.3D) {
                     if (!entity.level.isClientSide() && entity.getServer() != null) {
                         entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "team add player");

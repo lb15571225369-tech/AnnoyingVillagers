@@ -2,7 +2,7 @@ package com.pla.annoyingvillagers.damagesource;
 
 public enum AVStunType {
 
-    LONG("damage_source.annoying_villagers.stun_long", true);
+    LONG("damage_source.modid = AnnoyingVillagers.MODID.stun_long", true);
 
     private String tooltip;
     private boolean fixedStunTime;

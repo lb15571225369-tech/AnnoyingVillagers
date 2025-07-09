@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.client.renderer;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
@@ -16,6 +17,6 @@ public class BlueDemon2Renderer extends HumanoidMobRenderer<BlueDemon2Entity, Hu
     }
 
     public ResourceLocation getTextureLocation(BlueDemon2Entity bluedemon2entity) {
-        return new ResourceLocation("annoying_villagers:textures/entities/blue_dmon.png");
+        return new ResourceLocation(AnnoyingVillagers.MODID + ":textures/entities/blue_dmon.png");
     }
 }

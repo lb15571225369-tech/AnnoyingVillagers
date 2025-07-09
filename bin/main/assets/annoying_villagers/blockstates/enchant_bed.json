@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "annoying_villagers:block/enchant_bed"
+    },
+    "facing=east": {
+      "model": "annoying_villagers:block/enchant_bed",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "annoying_villagers:block/enchant_bed",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "annoying_villagers:block/enchant_bed",
+      "y": 270
+    }
+  }
+}

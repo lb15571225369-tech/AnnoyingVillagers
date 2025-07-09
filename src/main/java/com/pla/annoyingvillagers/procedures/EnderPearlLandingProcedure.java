@@ -61,11 +61,11 @@ public class EnderPearlLandingProcedure {
                         PrimedTnt primedtnt = new PrimedTnt(EntityType.TNT, serverlevel);
 
                         primedtnt.moveTo(d0, d1, d2, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                        if (primedtnt instanceof Mob) {
-                            Mob mob = (Mob) primedtnt;
-
-                            mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(primedtnt.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
-                        }
+//                        if (primedtnt instanceof Mob) {
+//                            Mob mob = (Mob) primedtnt;
+//
+//                            mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(primedtnt.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
+//                        }
 
                         levelaccessor.addFreshEntity(primedtnt);
                     }

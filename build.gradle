@@ -97,6 +97,11 @@ repositories {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.18.2-40.2.21'
     implementation fg.deobf("curse.maven:epic-fight-mod-405076:5593312")
+    implementation fg.deobf("curse.maven:weapons-of-miracles-epicfight-918614:5135428")
+    implementation fg.deobf("curse.maven:epicfight-dual-greatsword-654098:5097177")
+//    implementation fg.deobf("curse.maven:epic-compat-mrcrayfishs-gun-mod-989016:5282493")
+    implementation fg.deobf("curse.maven:paraglider-with-double-stamina-933729:5235478")
+    implementation fg.deobf("curse.maven:epic-fight-indestructible-915201:5990580")
 }
 
 jar {

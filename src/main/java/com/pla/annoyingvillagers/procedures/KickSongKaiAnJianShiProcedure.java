@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -38,33 +39,12 @@ public class KickSongKaiAnJianShiProcedure {
                         }
 
                         entity.getPersistentData().putDouble("dash_auto", 1.0D);
-                        ((<undefinedtype>)(new Object() {
-                            private int ticks = 0;
-                            private float waitTicks;
-                            private LevelAccessor world;
-
-                            public void start(LevelAccessor levelaccessor1, int i) {
-                                this.waitTicks = (float)i;
-                                MinecraftForge.EVENT_BUS.register(this);
-                                this.world = levelaccessor1;
-                            }
-
-                            @SubscribeEvent
-                            public void tick(ServerTickEvent servertickevent) {
-                                if (servertickevent.phase == Phase.END) {
-                                    ++this.ticks;
-                                    if ((float)this.ticks >= this.waitTicks) {
-                                        this.run();
-                                    }
-                                }
-
-                            }
-
-                            private void run() {
+                        new DelayedTask(50) {
+                            @Override
+                            public void run() {
                                 entity.getPersistentData().putDouble("dash_auto", 0.0D);
-                                MinecraftForge.EVENT_BUS.unregister(this);
                             }
-                        })).start(levelaccessor, 50);
+                        };
                     }
                 } else {
                     if (entity instanceof LivingEntity) {
@@ -81,33 +61,12 @@ public class KickSongKaiAnJianShiProcedure {
                         }
 
                         entity.getPersistentData().putDouble("dash_auto", 1.0D);
-                        ((<undefinedtype>)(new Object() {
-                            private int ticks = 0;
-                            private float waitTicks;
-                            private LevelAccessor world;
-
-                            public void start(LevelAccessor levelaccessor1, int i) {
-                                this.waitTicks = (float)i;
-                                MinecraftForge.EVENT_BUS.register(this);
-                                this.world = levelaccessor1;
-                            }
-
-                            @SubscribeEvent
-                            public void tick(ServerTickEvent servertickevent) {
-                                if (servertickevent.phase == Phase.END) {
-                                    ++this.ticks;
-                                    if ((float)this.ticks >= this.waitTicks) {
-                                        this.run();
-                                    }
-                                }
-
-                            }
-
-                            private void run() {
+                        new DelayedTask(50) {
+                            @Override
+                            public void run() {
                                 entity.getPersistentData().putDouble("dash_auto", 0.0D);
-                                MinecraftForge.EVENT_BUS.unregister(this);
                             }
-                        })).start(levelaccessor, 50);
+                        };
                     }
                 }
             }

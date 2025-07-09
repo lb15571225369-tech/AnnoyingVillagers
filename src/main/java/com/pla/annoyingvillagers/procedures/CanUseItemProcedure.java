@@ -43,7 +43,7 @@ public class CanUseItemProcedure {
                     DynamicAnimation dynamicanimation = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
 
                     if (!(dynamicanimation instanceof ActionAnimation) && !entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/combat/tried\" 0 1");
+                        entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/tried\" 0 1");
                     }
                 }
             }

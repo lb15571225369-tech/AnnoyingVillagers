@@ -17,11 +17,11 @@ public class BdTridentDangShiTiSiWangShiProcedure {
             ThrownTrident throwntrident = new ThrownTrident(EntityType.TRIDENT, serverlevel);
 
             throwntrident.moveTo(d0, d1, d2, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-            if (throwntrident instanceof Mob) {
-                Mob mob = (Mob) throwntrident;
-
-                mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(throwntrident.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
-            }
+//            if (throwntrident instanceof Mob) {
+//                Mob mob = (Mob) throwntrident;
+//
+//                mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(throwntrident.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
+//            }
 
             levelaccessor.addFreshEntity(throwntrident);
         }

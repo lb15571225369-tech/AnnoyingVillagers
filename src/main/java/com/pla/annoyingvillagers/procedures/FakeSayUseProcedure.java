@@ -14,30 +14,28 @@ import net.minecraft.world.level.LevelAccessor;
 
 public class FakeSayUseProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, final CommandContext<CommandSourceStack> commandcontext) {
-        if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-            PlayerList playerlist = levelaccessor.getServer().getPlayerList();
-            String s = ((<undefinedtype>)(new Object() {
-                public Entity getEntity() {
-                    try {
-                        return EntityArgument.getEntity(commandcontext, "player");
-                    } catch (CommandSyntaxException commandsyntaxexception) {
-                        commandsyntaxexception.printStackTrace();
-                        return null;
-                    }
-                }
-            })).getEntity().getDisplayName().getString();
+    public static void execute(LevelAccessor world, CommandContext<CommandSourceStack> context) {
+        if (world.isClientSide() || world.getServer() == null) return;
 
-            playerlist.broadcastMessage(new TextComponent("<" + s + "> " + ((<undefinedtype>)(new Object() {
-                public String getMessage() {
-                    try {
-                        return MessageArgument.getMessage(commandcontext, "message").getString();
-                    } catch (CommandSyntaxException commandsyntaxexception) {
-                        return "";
-                    }
-                }
-            })).getMessage()), ChatType.SYSTEM, Util.NIL_UUID);
+        PlayerList playerList = world.getServer().getPlayerList();
+
+        String playerName;
+        String messageText;
+
+        try {
+            Entity targetEntity = EntityArgument.getEntity(context, "player");
+            playerName = targetEntity.getDisplayName().getString();
+        } catch (CommandSyntaxException e) {
+            e.printStackTrace();
+            playerName = "???";
         }
 
+        try {
+            messageText = MessageArgument.getMessage(context, "message").getString();
+        } catch (CommandSyntaxException e) {
+            messageText = "";
+        }
+
+        playerList.broadcastMessage(new TextComponent("<" + playerName + "> " + messageText), ChatType.SYSTEM, Util.NIL_UUID);
     }
 }
