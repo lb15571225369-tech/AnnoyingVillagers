@@ -73,12 +73,12 @@ public class TanfanProcedure {
                         f = -1.0F;
                     }
 
-                    if (f <= 5.0F && entity instanceof LivingEntity) {
-                        livingentity1 = (LivingEntity)entity;
-                        if (!livingentity1.level.isClientSide()) {
-                            livingentity1.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.HEROBRINE_EFFECT.get(), 9999999, 0, false, false));
-                        }
-                    }
+//                    if (f <= 5.0F && entity instanceof LivingEntity) {
+//                        livingentity1 = (LivingEntity)entity;
+//                        if (!livingentity1.level.isClientSide()) {
+//                            livingentity1.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.HEROBRINE_EFFECT.get(), 9999999, 0, false, false));
+//                        }
+//                    }
                 } else if (ForgeRegistries.ENTITIES.getKey(entity1.getType()).toString().equals(AnnoyingVillagers.MODID + ":herobrine_2")) {
                     if (entity instanceof LivingEntity) {
                         livingentity = (LivingEntity)entity;
@@ -87,12 +87,12 @@ public class TanfanProcedure {
                         f = -1.0F;
                     }
 
-                    if (f <= 5.0F && entity instanceof LivingEntity) {
-                        livingentity1 = (LivingEntity)entity;
-                        if (!livingentity1.level.isClientSide()) {
-                            livingentity1.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.HEROBRINE_EFFECT.get(), 9999999, 0, false, false));
-                        }
-                    }
+//                    if (f <= 5.0F && entity instanceof LivingEntity) {
+//                        livingentity1 = (LivingEntity)entity;
+//                        if (!livingentity1.level.isClientSide()) {
+//                            livingentity1.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.HEROBRINE_EFFECT.get(), 9999999, 0, false, false));
+//                        }
+//                    }
                 }
             }
 

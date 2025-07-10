@@ -54,7 +54,7 @@
 //                        Entity entity1 = entity;
 //
 //                        if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-//                            entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "playsound modid = AnnoyingVillagers.MODID:music_box record @s");
+//                            entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "playsound annoyingvillagers:music_box record @s");
 //                        }
 //
 //                        MinecraftForge.EVENT_BUS.unregister(this);

@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.init;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.item.*;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -10,19 +11,6 @@ import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import com.pla.annoyingvillagers.item.BlueDemonChestplateItem;
-import com.pla.annoyingvillagers.item.DarkOBFarItem;
-import com.pla.annoyingvillagers.item.DarkitemlongItem;
-import com.pla.annoyingvillagers.item.DarkobitemItem;
-import com.pla.annoyingvillagers.item.EnchantBedItemItem;
-import com.pla.annoyingvillagers.item.HardGreatSwordItem;
-import com.pla.annoyingvillagers.item.HardGreatSwordSkillItem;
-import com.pla.annoyingvillagers.item.HeavyAttackLegendarySwordItem;
-import com.pla.annoyingvillagers.item.LegendarySwordItem;
-import com.pla.annoyingvillagers.item.NoneItem;
-import com.pla.annoyingvillagers.item.UpdateItem;
-import com.pla.annoyingvillagers.item.VillagerHeadItem;
-import com.pla.annoyingvillagers.item.WakeUpLegendarySwordItem;
 
 public class AnnoyingVillagersModItems {
 
@@ -93,7 +81,12 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> UPDATE = AnnoyingVillagersModItems.REGISTRY.register("update", () -> {
         return new UpdateItem();
     });
-
+    public static final RegistryObject<Item> ANYINGHEIYAOSHIWUQI = AnnoyingVillagersModItems.REGISTRY.register("anyingheiyaoshiwuqi", () -> {
+        return new AnyingheiyaoshiwuqiItem();
+    });
+    public static final RegistryObject<Item> OBSIDIANWEAPONS = AnnoyingVillagersModItems.REGISTRY.register("obsidianweapons", () -> {
+        return new ObsidianweaponsItem();
+    });
     private static RegistryObject<Item> block(RegistryObject<Block> registryobject, CreativeModeTab creativemodetab) {
         return AnnoyingVillagersModItems.REGISTRY.register(registryobject.getId().getPath(), () -> {
             return new BlockItem((Block) registryobject.get(), (new Properties()).tab(creativemodetab));

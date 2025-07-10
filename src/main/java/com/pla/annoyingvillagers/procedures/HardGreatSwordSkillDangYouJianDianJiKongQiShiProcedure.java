@@ -51,7 +51,7 @@ public class HardGreatSwordSkillDangYouJianDianJiKongQiShiProcedure {
                     if (!entity.level.isClientSide() && entity.getServer() != null) {
                         entity.getServer().getCommands().performCommand(
                                 entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                                "execute at @s run particle modid = AnnoyingVillagers.MODID:red_spark ^ ^1.5 ^1 0 0 0 0.6 35"
+                                "execute at @s run particle annoyingvillagers:red_spark ^ ^1.5 ^1 0 0 0 0.6 35"
                         );
                     }
 

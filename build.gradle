@@ -102,6 +102,7 @@ dependencies {
 //    implementation fg.deobf("curse.maven:epic-compat-mrcrayfishs-gun-mod-989016:5282493")
     implementation fg.deobf("curse.maven:paraglider-with-double-stamina-933729:5235478")
     implementation fg.deobf("curse.maven:epic-fight-indestructible-915201:5990580")
+    implementation fg.deobf("curse.maven:jade-324717:5079263")
 }
 
 jar {

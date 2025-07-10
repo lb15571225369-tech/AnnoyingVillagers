@@ -36,14 +36,14 @@ public class HitAnimProcedure {
 
                 if (dynamicanimation instanceof HitAnimation) {
                     if (!entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/combat/hit_left\" 0 1");
+                        entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/hit_left\" 0 1");
                     }
                 } else if (dynamicanimation == AVAnimations.HIT_LEFT) {
                     if (!entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/combat/hit_right\" 0 1");
+                        entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/hit_right\" 0 1");
                     }
                 } else if (dynamicanimation == AVAnimations.HIT_RIGHT && !entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/combat/hit_right\" 0 1");
+                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/hit_right\" 0 1");
                 }
             }
 

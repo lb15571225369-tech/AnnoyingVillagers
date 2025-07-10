@@ -16,7 +16,7 @@ public class GreatSwordExecuteBlockMobEffect extends MobEffect {
     }
 
     public String getDescriptionId() {
-        return "effect.modid = AnnoyingVillagers.MODID.great_sword_execute_block";
+        return "effect.annoyingvillagers.great_sword_execute_block";
     }
 
     public boolean isDurationEffectTick(int i, int j) {

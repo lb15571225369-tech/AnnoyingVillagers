@@ -18,7 +18,7 @@ public class BlueDemonSkillLightingEffectMobEffect extends MobEffect {
     }
 
     public String getDescriptionId() {
-        return "effect.modid = AnnoyingVillagers.MODID.blue_demon_skill_lighting_effect";
+        return "effect.annoyingvillagers.blue_demon_skill_lighting_effect";
     }
 
     public void applyEffectTick(LivingEntity livingentity, int i) {

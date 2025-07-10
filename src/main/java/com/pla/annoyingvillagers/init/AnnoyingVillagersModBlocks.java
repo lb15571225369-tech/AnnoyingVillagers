@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.init;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.block.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -10,11 +11,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import com.pla.annoyingvillagers.block.DarkObSsBlock;
-import com.pla.annoyingvillagers.block.DarkObUpBlock;
-import com.pla.annoyingvillagers.block.DarkobBlock;
-import com.pla.annoyingvillagers.block.EnchantBedBlock;
-import com.pla.annoyingvillagers.block.NoneobBlock;
 
 public class AnnoyingVillagersModBlocks {
 
@@ -39,6 +35,15 @@ public class AnnoyingVillagersModBlocks {
     });
     public static final RegistryObject<Block> DARK_OB_UP = AnnoyingVillagersModBlocks.REGISTRY.register("dark_ob_up", () -> {
         return new DarkObUpBlock();
+    });
+    public static final RegistryObject<Block> ANYINGHEIYAOSHI = AnnoyingVillagersModBlocks.REGISTRY.register("anyingheiyaoshi", () -> {
+        return new AnyingheiyaoshiBlock();
+    });
+    public static final RegistryObject<Block> PUTONGHEIYAOSHI = AnnoyingVillagersModBlocks.REGISTRY.register("putongheiyaoshi", () -> {
+        return new PutongheiyaoshiBlock();
+    });
+    public static final RegistryObject<Block> PUTONGHEIYAOSHI_2 = AnnoyingVillagersModBlocks.REGISTRY.register("putongheiyaoshi_2", () -> {
+        return new Putongheiyaoshi2Block();
     });
 //    public static final RegistryObject<Block> DROP_ALL_ITEM_SPAWN = AnnoyingVillagersModBlocks.REGISTRY.register("drop_all_item_spawn", () -> {
 //        return new DropAllItemSpawnBlock();

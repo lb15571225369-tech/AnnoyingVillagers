@@ -1,6 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
-import com.pla.annoyingvillagers.util.QueuedTaskScheduler;
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.LevelAccessor;
 
@@ -11,47 +11,63 @@ public class NoneobDangShiTiZaiFangKuaiZhongPengZhuangShiProcedure {
             if (!entity.level.isClientSide() && entity.getServer() != null) {
                 entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^ minecraft:air");
             }
-            new QueuedTaskScheduler()
-                    .schedule(() -> {
-                        if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().performCommand(
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                                    "/execute as @s at @s anchored eyes run setblock ^ ^ ^1 modid = AnnoyingVillagers.MODID:darkob"
-                            );
-                        }
-                    }, 20)
-                    .schedule(() -> {
-                        if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().performCommand(
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                                    "/execute as @s at @s anchored eyes run setblock ^ ^ ^ modid = AnnoyingVillagers.MODID:darkob"
-                            );
-                        }
-                    }, 2)
-                    .schedule(() -> {
-                        if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().performCommand(
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                                    "/execute as @s at @s anchored eyes run setblock ^ ^ ^-1 modid = AnnoyingVillagers.MODID:darkob"
-                            );
-                        }
-                    }, 2)
-                    .schedule(() -> {
-                        if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().performCommand(
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                                    "/execute as @s at @s anchored eyes run setblock ^ ^ ^-2 modid = AnnoyingVillagers.MODID:darkob"
-                            );
-                        }
-                    }, 2)
-                    .schedule(() -> {
-                        if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().performCommand(
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                                    "/execute as @s at @s anchored eyes run setblock ^ ^ ^-3 modid = AnnoyingVillagers.MODID:darkob"
-                            );
-                        }
-                    }, 2);
+            new DelayedTask(20) {
+                @Override
+                public void run() {
+                    if (!entity.level.isClientSide() && entity.getServer() != null) {
+                        entity.getServer().getCommands().performCommand(
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
+                                "/execute as @s at @s anchored eyes run setblock ^ ^ ^1 annoyingvillagers:darkob"
+                        );
+                    }
+                }
+            };
+            new DelayedTask(2) {
+                @Override
+                public void run() {
+                    if (!entity.level.isClientSide() && entity.getServer() != null) {
+                        entity.getServer().getCommands().performCommand(
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
+                                "/execute as @s at @s anchored eyes run setblock ^ ^ ^ annoyingvillagers:darkob"
+                        );
+                    }
+                }
+            };
+            new DelayedTask(2) {
+                @Override
+                public void run() {
+                    if (!entity.level.isClientSide() && entity.getServer() != null) {
+                        entity.getServer().getCommands().performCommand(
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
+                                "/execute as @s at @s anchored eyes run setblock ^ ^ ^-1 annoyingvillagers:darkob"
+                        );
+                    }
+                }
+            };
+
+            new DelayedTask(2) {
+                @Override
+                public void run() {
+                    if (!entity.level.isClientSide() && entity.getServer() != null) {
+                        entity.getServer().getCommands().performCommand(
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
+                                "/execute as @s at @s anchored eyes run setblock ^ ^ ^-2 annoyingvillagers:darkob"
+                        );
+                    }
+                }
+            };
+
+            new DelayedTask(2) {
+                @Override
+                public void run() {
+                    if (!entity.level.isClientSide() && entity.getServer() != null) {
+                        entity.getServer().getCommands().performCommand(
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
+                                "/execute as @s at @s anchored eyes run setblock ^ ^ ^-3 annoyingvillagers:darkob"
+                        );
+                    }
+                }
+            };
         }
     }
 }

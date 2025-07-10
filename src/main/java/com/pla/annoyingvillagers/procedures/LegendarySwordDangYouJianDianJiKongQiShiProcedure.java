@@ -88,7 +88,7 @@ public class LegendarySwordDangYouJianDianJiKongQiShiProcedure {
                                 Entity entity1 = entity;
 
                                 if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                    entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "playsound modid = AnnoyingVillagers.MODID:heavy_attack_start neutral @a ~ ~ ~");
+                                    entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "playsound annoyingvillagers:heavy_attack_start neutral @a ~ ~ ~");
                                 }
 
                                 LevelAccessor levelaccessor1 = levelaccessor;

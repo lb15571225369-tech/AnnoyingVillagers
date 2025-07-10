@@ -47,9 +47,9 @@ public class Herobrine2DieProcedure {
 
                     transferArmor(sourceEntity, passenger);
 
-                    if (passenger instanceof LivingEntity living) {
-                        living.removeEffect(AnnoyingVillagersModMobEffects.HEROBRINE_EFFECT.get());
-                    }
+//                    if (passenger instanceof LivingEntity living) {
+//                        living.removeEffect(AnnoyingVillagersModMobEffects.HEROBRINE_EFFECT.get());
+//                    }
 
                     passenger.stopRiding();
                     if (passenger instanceof ServerPlayer sp) {

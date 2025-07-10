@@ -1,4 +1,72 @@
 {
+  "entity.weapon.sword_whoosh": {
+    "category": "master",
+    "subtitle": "entity.weapon.sword_whoosh",
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/weapon/sword_whoosh",
+        "stream": true
+      },
+      {
+        "name": "annoyingvillagers:entity/weapon/sword_whoosh2",
+        "stream": true
+      },
+      {
+        "name": "annoyingvillagers:entity/weapon/sword_whoosh3",
+        "stream": true
+      },
+      {
+        "name": "annoyingvillagers:entity/weapon/sword_whoosh4",
+        "stream": true
+      },
+      {
+        "name": "annoyingvillagers:entity/weapon/sword_whoosh5",
+        "stream": true
+      },
+      {
+        "name": "annoyingvillagers:entity/weapon/sword_whoosh6",
+        "stream": true
+      }
+    ]
+  },
+  "entity.weapon.kick": {
+    "category": "master",
+    "subtitle": "entity.weapon.kick",
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/weapon/kick",
+        "stream": true
+      }
+    ]
+  },
+  "c4click": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:click1",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:click2",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:click3",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:click4",
+        "stream": false
+      }
+    ]
+  },
+  "ca_deep": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:c4_beep",
+        "stream": false
+      }
+    ]
+  },
   "tridentfs_skill": {
     "sounds": [
       {
@@ -111,6 +179,42 @@
       }
     ]
   },
+  "gun_shot": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:shot",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:shot1",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:shot2",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:shot3",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:shot4",
+        "stream": false
+      }
+    ]
+  },
+  "head_shot": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:head_shot",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:head_shot2",
+        "stream": false
+      }
+    ]
+  },
   "target_block_hit": {
     "sounds": [
       {
@@ -143,102 +247,50 @@
       }
     ]
   },
-  "dash_star": {
+  "shiqu": {
     "sounds": [
       {
-        "name": "annoyingvillagers:2",
-        "stream": true
-      }
-    ]
-  },
-  "item_hit": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:item_hit3",
-        "stream": false
-      },
-      {
-        "name": "annoyingvillagers:item_hit2",
-        "stream": false
-      },
-      {
-        "name": "annoyingvillagers:item_hit",
+        "name": "annoyingvillagers:shiqu",
         "stream": false
       }
     ]
   },
-  "pin": {
+  "wusheng": {
     "sounds": [
       {
-        "name": "annoyingvillagers:pin",
+        "name": "annoyingvillagers:wusheng",
         "stream": false
       }
     ]
   },
-  "g_hit": {
+  "fangzhiheiyaoshi": {
     "sounds": [
       {
-        "name": "annoyingvillagers:hit",
-        "stream": false
-      },
-      {
-        "name": "annoyingvillagers:hit2",
+        "name": "annoyingvillagers:block_place",
         "stream": false
       }
     ]
   },
-  "dry_fire": {
+  "pop": {
     "sounds": [
       {
-        "name": "annoyingvillagers:dry_fire",
+        "name": "annoyingvillagers:pop",
         "stream": false
       }
     ]
   },
-  "s_g": {
+  "heiyaoshi_hit": {
     "sounds": [
       {
-        "name": "annoyingvillagers:s_g",
+        "name": "annoyingvillagers:heiyaoshi_hit",
         "stream": false
       }
     ]
   },
-  "s_g_hit": {
+  "heavy_hit": {
     "sounds": [
       {
-        "name": "annoyingvillagers:s_g_hit",
-        "stream": false
-      }
-    ]
-  },
-  "emoji_12": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:emoji_12",
-        "stream": false
-      }
-    ]
-  },
-  "heavy_attack_legendary_sword": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:heavy_attack_legendary_sword",
-        "stream": false
-      }
-    ]
-  },
-  "heavy_attack_legendary_sword_2": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:heavy_attack_legendary_sword_2",
-        "stream": false
-      }
-    ]
-  },
-  "heavy_attack_start": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:heavy_attack_l_g",
+        "name": "annoyingvillagers:break",
         "stream": false
       }
     ]

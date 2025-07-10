@@ -32,7 +32,7 @@
 //        if (entity != null && entity1 != null) {
 //            if (levelaccessor.getLevelData().getGameRules().getBoolean(AnnoyingVillagersModGameRules.MUSIC_BOX) && entity instanceof Player && entity1 instanceof Player) {
 //                if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-//                    entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "stopsound @s record modid = AnnoyingVillagers.MODID:music_box");
+//                    entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "stopsound @s record annoyingvillagers:music_box");
 //                }
 //
 //                ((<undefinedtype>)(new Object() {
@@ -61,7 +61,7 @@
 //                        Entity entity2 = entity1;
 //
 //                        if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-//                            entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "playsound modid = AnnoyingVillagers.MODID:music_box_win record @s");
+//                            entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "playsound annoyingvillagers:music_box_win record @s");
 //                        }
 //
 //                        MinecraftForge.EVENT_BUS.unregister(this);

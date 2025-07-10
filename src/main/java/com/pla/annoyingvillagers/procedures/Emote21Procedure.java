@@ -23,7 +23,7 @@
 //            }
 //
 //            if (!entity.level.isClientSide() && entity.getServer() != null) {
-//                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "stopsound @s neutral modid = AnnoyingVillagers.MODID:emote_21");
+//                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "stopsound @s neutral annoyingvillagers:emote_21");
 //            }
 //
 //            if (!entity.getPersistentData().getBoolean("emote") && levelaccessor instanceof Level) {

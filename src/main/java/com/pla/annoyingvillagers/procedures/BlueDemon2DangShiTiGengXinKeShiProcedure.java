@@ -124,7 +124,7 @@ public class BlueDemon2DangShiTiGengXinKeShiProcedure {
                         Entity entity2 = entity;
 
                         if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                            entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "summon modid = AnnoyingVillagers.MODID:blue_demon");
+                            entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "summon annoyingvillagers:blue_demon");
                         }
 
                         if (!entity.level.isClientSide()) {

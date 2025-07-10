@@ -13,7 +13,7 @@ public class BlueDemonDangShiTiSiWangShiProcedure {
         if (!entity.level.isClientSide() && entity.getServer() != null) {
             entity.getServer().getCommands().performCommand(
                     entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                    "summon modid = AnnoyingVillagers.MODID:blue_demon_r"
+                    "summon annoyingvillagers:blue_demon_r"
             );
         }
 

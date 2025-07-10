@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import com.pla.annoyingvillagers.util.QueuedTaskScheduler;
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -82,499 +82,537 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoying_villagers:biped/other/blue_demon_start_skill\" 0 1");
+                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/other/blue_demon_start_skill\" 0 1");
             }
 
-            new QueuedTaskScheduler()
-                    .schedule(() -> {
-                        LevelAccessor levelaccessor1 = levelaccessor;
+            new DelayedTask(25) {
+                @Override
+                public void run() {
+                    LevelAccessor levelaccessor1 = levelaccessor;
 
-                        if (levelaccessor1 instanceof Level) {
-                            Level level = (Level)levelaccessor1;
+                    if (levelaccessor1 instanceof Level) {
+                        Level level = (Level)levelaccessor1;
 
-                            if (!level.isClientSide()) {
-                                level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:tridentfs_skill")), SoundSource.NEUTRAL, 5.0F, 1.0F);
-                            } else {
-                                level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagers:tridentfs_skill")), SoundSource.NEUTRAL, 5.0F, 1.0F, false);
-                            }
+                        if (!level.isClientSide()) {
+                            level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:tridentfs_skill")), SoundSource.NEUTRAL, 5.0F, 1.0F);
+                        } else {
+                            level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:tridentfs_skill")), SoundSource.NEUTRAL, 5.0F, 1.0F, false);
+                        }
+                    }
+
+                    levelaccessor1 = levelaccessor;
+                    ServerLevel serverlevel;
+                    BdTridentEntity bdtridententity;
+                    Mob mob;
+
+                    if (levelaccessor1 instanceof ServerLevel) {
+                        serverlevel = (ServerLevel)levelaccessor1;
+                        bdtridententity = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel);
+                        bdtridententity.moveTo(d0 + (double)Mth.nextInt(new Random(), -3, 3), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -3, 3), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                        if (bdtridententity instanceof Mob) {
+                            mob = (Mob)bdtridententity;
+                            mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(bdtridententity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
                         }
 
-                        levelaccessor1 = levelaccessor;
-                        ServerLevel serverlevel;
-                        BdTridentEntity bdtridententity;
-                        Mob mob;
+                        levelaccessor.addFreshEntity(bdtridententity);
+                    }
 
-                        if (levelaccessor1 instanceof ServerLevel) {
-                            serverlevel = (ServerLevel)levelaccessor1;
-                            bdtridententity = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel);
-                            bdtridententity.moveTo(d0 + (double)Mth.nextInt(new Random(), -3, 3), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -3, 3), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                            if (bdtridententity instanceof Mob) {
-                                mob = (Mob)bdtridententity;
-                                mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(bdtridententity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                            }
-
-                            levelaccessor.addFreshEntity(bdtridententity);
+                    levelaccessor1 = levelaccessor;
+                    if (levelaccessor1 instanceof ServerLevel) {
+                        serverlevel = (ServerLevel)levelaccessor1;
+                        bdtridententity = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel);
+                        bdtridententity.moveTo(d0 + (double)Mth.nextInt(new Random(), -3, 3), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -3, 3), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                        if (bdtridententity instanceof Mob) {
+                            mob = (Mob)bdtridententity;
+                            mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(bdtridententity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
                         }
 
-                        levelaccessor1 = levelaccessor;
-                        if (levelaccessor1 instanceof ServerLevel) {
-                            serverlevel = (ServerLevel)levelaccessor1;
-                            bdtridententity = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel);
-                            bdtridententity.moveTo(d0 + (double)Mth.nextInt(new Random(), -3, 3), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -3, 3), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                            if (bdtridententity instanceof Mob) {
-                                mob = (Mob)bdtridententity;
-                                mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(bdtridententity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                            }
+                        levelaccessor.addFreshEntity(bdtridententity);
+                    }
 
-                            levelaccessor.addFreshEntity(bdtridententity);
-                        }
-                    }, 25)
-                    .schedule(() -> {
-                        if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                            levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u84dd\u6076\u9b54> \u4e09\u53c9\u621f\u72c2\u6b22\u8282\uff01\uff01\uff01"), ChatType.SYSTEM, Util.NIL_UUID);
-                        }
-
-                        LevelAccessor levelaccessor2 = levelaccessor;
-
-                        if (levelaccessor2 instanceof ServerLevel) {
-                            ServerLevel serverlevel1 = (ServerLevel)levelaccessor2;
-                            BdTridentEntity bdtridententity1 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel1);
-
-                            bdtridententity1.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                            if (bdtridententity1 instanceof Mob) {
-                                Mob mob1 = (Mob)bdtridententity1;
-
-                                mob1.finalizeSpawn(serverlevel1, levelaccessor.getCurrentDifficultyAt(bdtridententity1.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                    new DelayedTask(10) {
+                        @Override
+                        public void run() {
+                            if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
+                                levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u84dd\u6076\u9b54> \u4e09\u53c9\u621f\u72c2\u6b22\u8282\uff01\uff01\uff01"), ChatType.SYSTEM, Util.NIL_UUID);
                             }
 
-                            levelaccessor.addFreshEntity(bdtridententity1);
-                        }
-                    }, 10)
-                    .schedule(() -> {
-                        LevelAccessor levelaccessor3 = levelaccessor;
-                        ServerLevel serverlevel2;
-                        BdTridentEntity bdtridententity2;
-                        Mob mob2;
+                            LevelAccessor levelaccessor2 = levelaccessor;
 
-                        if (levelaccessor3 instanceof ServerLevel) {
-                            serverlevel2 = (ServerLevel)levelaccessor3;
-                            bdtridententity2 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel2);
-                            bdtridententity2.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                            if (bdtridententity2 instanceof Mob) {
-                                mob2 = (Mob)bdtridententity2;
-                                mob2.finalizeSpawn(serverlevel2, levelaccessor.getCurrentDifficultyAt(bdtridententity2.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                            if (levelaccessor2 instanceof ServerLevel) {
+                                ServerLevel serverlevel1 = (ServerLevel)levelaccessor2;
+                                BdTridentEntity bdtridententity1 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel1);
+
+                                bdtridententity1.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                if (bdtridententity1 instanceof Mob) {
+                                    Mob mob1 = (Mob)bdtridententity1;
+
+                                    mob1.finalizeSpawn(serverlevel1, levelaccessor.getCurrentDifficultyAt(bdtridententity1.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                                }
+
+                                levelaccessor.addFreshEntity(bdtridententity1);
+
+                                new DelayedTask(10) {
+                                    @Override
+                                    public void run() {
+                                        LevelAccessor levelaccessor3 = levelaccessor;
+                                        ServerLevel serverlevel2;
+                                        BdTridentEntity bdtridententity2;
+                                        Mob mob2;
+
+                                        if (levelaccessor3 instanceof ServerLevel) {
+                                            serverlevel2 = (ServerLevel)levelaccessor3;
+                                            bdtridententity2 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel2);
+                                            bdtridententity2.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                            if (bdtridententity2 instanceof Mob) {
+                                                mob2 = (Mob)bdtridententity2;
+                                                mob2.finalizeSpawn(serverlevel2, levelaccessor.getCurrentDifficultyAt(bdtridententity2.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                                            }
+
+                                            levelaccessor.addFreshEntity(bdtridententity2);
+                                        }
+
+                                        levelaccessor3 = levelaccessor;
+                                        if (levelaccessor3 instanceof ServerLevel) {
+                                            serverlevel2 = (ServerLevel)levelaccessor3;
+                                            bdtridententity2 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel2);
+                                            bdtridententity2.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                            if (bdtridententity2 instanceof Mob) {
+                                                mob2 = (Mob)bdtridententity2;
+                                                mob2.finalizeSpawn(serverlevel2, levelaccessor.getCurrentDifficultyAt(bdtridententity2.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                                            }
+
+                                            levelaccessor.addFreshEntity(bdtridententity2);
+                                        }
+
+                                        new DelayedTask(10) {
+                                            @Override
+                                            public void run() {
+                                                LevelAccessor levelaccessor4 = levelaccessor;
+                                                ServerLevel serverlevel3;
+                                                BdTridentEntity bdtridententity3;
+                                                Mob mob3;
+
+                                                if (levelaccessor4 instanceof ServerLevel) {
+                                                    serverlevel3 = (ServerLevel)levelaccessor4;
+                                                    bdtridententity3 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel3);
+                                                    bdtridententity3.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                    if (bdtridententity3 instanceof Mob) {
+                                                        mob3 = (Mob)bdtridententity3;
+                                                        mob3.finalizeSpawn(serverlevel3, levelaccessor.getCurrentDifficultyAt(bdtridententity3.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                                                    }
+
+                                                    levelaccessor.addFreshEntity(bdtridententity3);
+                                                }
+
+                                                levelaccessor4 = levelaccessor;
+                                                if (levelaccessor4 instanceof ServerLevel) {
+                                                    serverlevel3 = (ServerLevel)levelaccessor4;
+                                                    bdtridententity3 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel3);
+                                                    bdtridententity3.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                    if (bdtridententity3 instanceof Mob) {
+                                                        mob3 = (Mob)bdtridententity3;
+                                                        mob3.finalizeSpawn(serverlevel3, levelaccessor.getCurrentDifficultyAt(bdtridententity3.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                                                    }
+
+                                                    levelaccessor.addFreshEntity(bdtridententity3);
+                                                }
+
+                                                new DelayedTask(5) {
+                                                    @Override
+                                                    public void run() {
+                                                        LevelAccessor levelaccessor5 = levelaccessor;
+                                                        ServerLevel serverlevel4;
+                                                        BdTridentEntity bdtridententity4;
+                                                        Mob mob4;
+
+                                                        if (levelaccessor5 instanceof ServerLevel) {
+                                                            serverlevel4 = (ServerLevel)levelaccessor5;
+                                                            bdtridententity4 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel4);
+                                                            bdtridententity4.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                            if (bdtridententity4 instanceof Mob) {
+                                                                mob4 = (Mob)bdtridententity4;
+                                                                mob4.finalizeSpawn(serverlevel4, levelaccessor.getCurrentDifficultyAt(bdtridententity4.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                                                            }
+
+                                                            levelaccessor.addFreshEntity(bdtridententity4);
+                                                        }
+
+                                                        levelaccessor5 = levelaccessor;
+                                                        if (levelaccessor5 instanceof ServerLevel) {
+                                                            serverlevel4 = (ServerLevel)levelaccessor5;
+                                                            bdtridententity4 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel4);
+                                                            bdtridententity4.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), 3, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                            if (bdtridententity4 instanceof Mob) {
+                                                                mob4 = (Mob)bdtridententity4;
+                                                                mob4.finalizeSpawn(serverlevel4, levelaccessor.getCurrentDifficultyAt(bdtridententity4.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                                                            }
+
+                                                            levelaccessor.addFreshEntity(bdtridententity4);
+                                                        }
+
+                                                        levelaccessor5 = levelaccessor;
+                                                        if (levelaccessor5 instanceof ServerLevel) {
+                                                            serverlevel4 = (ServerLevel)levelaccessor5;
+                                                            bdtridententity4 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel4);
+                                                            bdtridententity4.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), 3, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                            if (bdtridententity4 instanceof Mob) {
+                                                                mob4 = (Mob)bdtridententity4;
+                                                                mob4.finalizeSpawn(serverlevel4, levelaccessor.getCurrentDifficultyAt(bdtridententity4.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                                                            }
+
+                                                            levelaccessor.addFreshEntity(bdtridententity4);
+                                                        }
+
+                                                        new DelayedTask(5) {
+                                                            @Override
+                                                            public void run() {
+                                                                LevelAccessor levelaccessor6 = levelaccessor;
+                                                                ServerLevel serverlevel5;
+                                                                BdTridentEntity bdtridententity5;
+                                                                Mob mob5;
+
+                                                                if (levelaccessor6 instanceof ServerLevel) {
+                                                                    serverlevel5 = (ServerLevel)levelaccessor6;
+                                                                    bdtridententity5 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel5);
+                                                                    bdtridententity5.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                    if (bdtridententity5 instanceof Mob) {
+                                                                        mob5 = (Mob)bdtridententity5;
+                                                                        mob5.finalizeSpawn(serverlevel5, levelaccessor.getCurrentDifficultyAt(bdtridententity5.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                                                                    }
+
+                                                                    levelaccessor.addFreshEntity(bdtridententity5);
+                                                                }
+
+                                                                levelaccessor6 = levelaccessor;
+                                                                if (levelaccessor6 instanceof ServerLevel) {
+                                                                    serverlevel5 = (ServerLevel)levelaccessor6;
+                                                                    bdtridententity5 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel5);
+                                                                    bdtridententity5.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), 3, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                    if (bdtridententity5 instanceof Mob) {
+                                                                        mob5 = (Mob)bdtridententity5;
+                                                                        mob5.finalizeSpawn(serverlevel5, levelaccessor.getCurrentDifficultyAt(bdtridententity5.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                                                                    }
+
+                                                                    levelaccessor.addFreshEntity(bdtridententity5);
+                                                                }
+
+                                                                new DelayedTask(5) {
+                                                                    @Override
+                                                                    public void run() {
+                                                                        LevelAccessor levelaccessor7 = levelaccessor;
+                                                                        ServerLevel serverlevel6;
+                                                                        BdTridentEntity bdtridententity6;
+                                                                        Mob mob6;
+
+                                                                        if (levelaccessor7 instanceof ServerLevel) {
+                                                                            serverlevel6 = (ServerLevel)levelaccessor7;
+                                                                            bdtridententity6 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel6);
+                                                                            bdtridententity6.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                            if (bdtridententity6 instanceof Mob) {
+                                                                                mob6 = (Mob)bdtridententity6;
+                                                                                mob6.finalizeSpawn(serverlevel6, levelaccessor.getCurrentDifficultyAt(bdtridententity6.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                                                                            }
+
+                                                                            levelaccessor.addFreshEntity(bdtridententity6);
+                                                                        }
+
+                                                                        levelaccessor7 = levelaccessor;
+                                                                        if (levelaccessor7 instanceof ServerLevel) {
+                                                                            serverlevel6 = (ServerLevel)levelaccessor7;
+                                                                            bdtridententity6 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel6);
+                                                                            bdtridententity6.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                            if (bdtridententity6 instanceof Mob) {
+                                                                                mob6 = (Mob)bdtridententity6;
+                                                                                mob6.finalizeSpawn(serverlevel6, levelaccessor.getCurrentDifficultyAt(bdtridententity6.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                                                                            }
+
+                                                                            levelaccessor.addFreshEntity(bdtridententity6);
+                                                                        }
+
+                                                                        levelaccessor7 = levelaccessor;
+                                                                        if (levelaccessor7 instanceof ServerLevel) {
+                                                                            serverlevel6 = (ServerLevel)levelaccessor7;
+                                                                            bdtridententity6 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel6);
+                                                                            bdtridententity6.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                            if (bdtridententity6 instanceof Mob) {
+                                                                                mob6 = (Mob)bdtridententity6;
+                                                                                mob6.finalizeSpawn(serverlevel6, levelaccessor.getCurrentDifficultyAt(bdtridententity6.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                                                                            }
+
+                                                                            levelaccessor.addFreshEntity(bdtridententity6);
+                                                                        }
+
+                                                                        levelaccessor7 = levelaccessor;
+                                                                        if (levelaccessor7 instanceof ServerLevel) {
+                                                                            serverlevel6 = (ServerLevel)levelaccessor7;
+                                                                            bdtridententity6 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel6);
+                                                                            bdtridententity6.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                            if (bdtridententity6 instanceof Mob) {
+                                                                                mob6 = (Mob)bdtridententity6;
+                                                                                mob6.finalizeSpawn(serverlevel6, levelaccessor.getCurrentDifficultyAt(bdtridententity6.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                                                                            }
+
+                                                                            levelaccessor.addFreshEntity(bdtridententity6);
+                                                                        }
+
+                                                                        new DelayedTask(10) {
+                                                                            @Override
+                                                                            public void run() {
+                                                                                LevelAccessor levelaccessor8 = levelaccessor;
+                                                                                ServerLevel serverlevel7;
+                                                                                BdTridentEntity bdtridententity7;
+                                                                                Mob mob7;
+
+                                                                                if (levelaccessor8 instanceof ServerLevel) {
+                                                                                    serverlevel7 = (ServerLevel)levelaccessor8;
+                                                                                    bdtridententity7 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel7);
+                                                                                    bdtridententity7.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                                    if (bdtridententity7 instanceof Mob) {
+                                                                                        mob7 = (Mob)bdtridententity7;
+                                                                                        mob7.finalizeSpawn(serverlevel7, levelaccessor.getCurrentDifficultyAt(bdtridententity7.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                                                                                    }
+
+                                                                                    levelaccessor.addFreshEntity(bdtridententity7);
+                                                                                }
+
+                                                                                levelaccessor8 = levelaccessor;
+                                                                                if (levelaccessor8 instanceof ServerLevel) {
+                                                                                    serverlevel7 = (ServerLevel)levelaccessor8;
+                                                                                    bdtridententity7 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel7);
+                                                                                    bdtridententity7.moveTo(d0 + (double)Mth.nextInt(new Random(), -20, -20), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -20, -20), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                                    if (bdtridententity7 instanceof Mob) {
+                                                                                        mob7 = (Mob)bdtridententity7;
+                                                                                        mob7.finalizeSpawn(serverlevel7, levelaccessor.getCurrentDifficultyAt(bdtridententity7.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                                                                                    }
+
+                                                                                    levelaccessor.addFreshEntity(bdtridententity7);
+                                                                                }
+
+                                                                                levelaccessor8 = levelaccessor;
+                                                                                if (levelaccessor8 instanceof ServerLevel) {
+                                                                                    serverlevel7 = (ServerLevel)levelaccessor8;
+                                                                                    bdtridententity7 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel7);
+                                                                                    bdtridententity7.moveTo(d0 + (double)Mth.nextInt(new Random(), -20, -20), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -20, -20), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                                    if (bdtridententity7 instanceof Mob) {
+                                                                                        mob7 = (Mob)bdtridententity7;
+                                                                                        mob7.finalizeSpawn(serverlevel7, levelaccessor.getCurrentDifficultyAt(bdtridententity7.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                                                                                    }
+
+                                                                                    levelaccessor.addFreshEntity(bdtridententity7);
+                                                                                }
+
+                                                                                levelaccessor8 = levelaccessor;
+                                                                                if (levelaccessor8 instanceof ServerLevel) {
+                                                                                    serverlevel7 = (ServerLevel)levelaccessor8;
+                                                                                    bdtridententity7 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel7);
+                                                                                    bdtridententity7.moveTo(d0 + (double)Mth.nextInt(new Random(), -20, -20), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -20, -20), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                                    if (bdtridententity7 instanceof Mob) {
+                                                                                        mob7 = (Mob)bdtridententity7;
+                                                                                        mob7.finalizeSpawn(serverlevel7, levelaccessor.getCurrentDifficultyAt(bdtridententity7.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                                                                                    }
+
+                                                                                    levelaccessor.addFreshEntity(bdtridententity7);
+                                                                                }
+
+                                                                                levelaccessor8 = levelaccessor;
+                                                                                if (levelaccessor8 instanceof ServerLevel) {
+                                                                                    serverlevel7 = (ServerLevel)levelaccessor8;
+                                                                                    bdtridententity7 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel7);
+                                                                                    bdtridententity7.moveTo(d0 + (double)Mth.nextInt(new Random(), -20, -20), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -20, -20), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                                    if (bdtridententity7 instanceof Mob) {
+                                                                                        mob7 = (Mob)bdtridententity7;
+                                                                                        mob7.finalizeSpawn(serverlevel7, levelaccessor.getCurrentDifficultyAt(bdtridententity7.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                                                                                    }
+
+                                                                                    levelaccessor.addFreshEntity(bdtridententity7);
+                                                                                }
+
+                                                                                new DelayedTask(10) {
+                                                                                    @Override
+                                                                                    public void run() {
+                                                                                        LevelAccessor levelaccessor9 = levelaccessor;
+                                                                                        ServerLevel serverlevel8;
+                                                                                        LightningBolt lightningbolt;
+
+                                                                                        if (levelaccessor9 instanceof ServerLevel) {
+                                                                                            serverlevel8 = (ServerLevel)levelaccessor9;
+                                                                                            lightningbolt = (LightningBolt)EntityType.LIGHTNING_BOLT.create(serverlevel8);
+                                                                                            lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos(d0 + (double)Mth.nextInt(new Random(), -25, 25), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -25, 25))));
+                                                                                            lightningbolt.setVisualOnly(true);
+                                                                                            serverlevel8.addFreshEntity(lightningbolt);
+                                                                                        }
+
+                                                                                        levelaccessor9 = levelaccessor;
+                                                                                        if (levelaccessor9 instanceof ServerLevel) {
+                                                                                            serverlevel8 = (ServerLevel)levelaccessor9;
+                                                                                            lightningbolt = (LightningBolt)EntityType.LIGHTNING_BOLT.create(serverlevel8);
+                                                                                            lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos(d0 + (double)Mth.nextInt(new Random(), -25, 25), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -25, 25))));
+                                                                                            lightningbolt.setVisualOnly(true);
+                                                                                            serverlevel8.addFreshEntity(lightningbolt);
+                                                                                        }
+
+                                                                                        levelaccessor9 = levelaccessor;
+                                                                                        if (levelaccessor9 instanceof ServerLevel) {
+                                                                                            serverlevel8 = (ServerLevel)levelaccessor9;
+                                                                                            lightningbolt = (LightningBolt)EntityType.LIGHTNING_BOLT.create(serverlevel8);
+                                                                                            lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos(d0 + (double)Mth.nextInt(new Random(), -25, 25), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -25, 25))));
+                                                                                            lightningbolt.setVisualOnly(true);
+                                                                                            serverlevel8.addFreshEntity(lightningbolt);
+                                                                                        }
+
+                                                                                        levelaccessor9 = levelaccessor;
+                                                                                        if (levelaccessor9 instanceof ServerLevel) {
+                                                                                            serverlevel8 = (ServerLevel)levelaccessor9;
+                                                                                            lightningbolt = (LightningBolt)EntityType.LIGHTNING_BOLT.create(serverlevel8);
+                                                                                            lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos(d0 + (double)Mth.nextInt(new Random(), -25, 25), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -25, 25))));
+                                                                                            lightningbolt.setVisualOnly(true);
+                                                                                            serverlevel8.addFreshEntity(lightningbolt);
+                                                                                        }
+
+                                                                                        levelaccessor9 = levelaccessor;
+                                                                                        BdTridentEntity bdtridententity8;
+                                                                                        Mob mob8;
+
+                                                                                        if (levelaccessor9 instanceof ServerLevel) {
+                                                                                            serverlevel8 = (ServerLevel)levelaccessor9;
+                                                                                            bdtridententity8 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel8);
+                                                                                            bdtridententity8.moveTo(d0 + (double)Mth.nextInt(new Random(), -25, 25), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -25, 25), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                                            if (bdtridententity8 instanceof Mob) {
+                                                                                                mob8 = (Mob)bdtridententity8;
+                                                                                                mob8.finalizeSpawn(serverlevel8, levelaccessor.getCurrentDifficultyAt(bdtridententity8.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                                                                                            }
+
+                                                                                            levelaccessor.addFreshEntity(bdtridententity8);
+                                                                                        }
+
+                                                                                        levelaccessor9 = levelaccessor;
+                                                                                        if (levelaccessor9 instanceof ServerLevel) {
+                                                                                            serverlevel8 = (ServerLevel)levelaccessor9;
+                                                                                            bdtridententity8 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel8);
+                                                                                            bdtridententity8.moveTo(d0 + (double)Mth.nextInt(new Random(), -25, -25), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -25, -25), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                                            if (bdtridententity8 instanceof Mob) {
+                                                                                                mob8 = (Mob)bdtridententity8;
+                                                                                                mob8.finalizeSpawn(serverlevel8, levelaccessor.getCurrentDifficultyAt(bdtridententity8.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                                                                                            }
+
+                                                                                            levelaccessor.addFreshEntity(bdtridententity8);
+                                                                                        }
+
+                                                                                        levelaccessor9 = levelaccessor;
+                                                                                        if (levelaccessor9 instanceof ServerLevel) {
+                                                                                            serverlevel8 = (ServerLevel)levelaccessor9;
+                                                                                            bdtridententity8 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel8);
+                                                                                            bdtridententity8.moveTo(d0 + (double)Mth.nextInt(new Random(), -25, -25), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -25, -25), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                                            if (bdtridententity8 instanceof Mob) {
+                                                                                                mob8 = (Mob)bdtridententity8;
+                                                                                                mob8.finalizeSpawn(serverlevel8, levelaccessor.getCurrentDifficultyAt(bdtridententity8.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                                                                                            }
+
+                                                                                            levelaccessor.addFreshEntity(bdtridententity8);
+                                                                                        }
+
+                                                                                        levelaccessor9 = levelaccessor;
+                                                                                        if (levelaccessor9 instanceof ServerLevel) {
+                                                                                            serverlevel8 = (ServerLevel)levelaccessor9;
+                                                                                            bdtridententity8 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel8);
+                                                                                            bdtridententity8.moveTo(d0 + (double)Mth.nextInt(new Random(), -25, -25), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -25, -25), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                                            if (bdtridententity8 instanceof Mob) {
+                                                                                                mob8 = (Mob)bdtridententity8;
+                                                                                                mob8.finalizeSpawn(serverlevel8, levelaccessor.getCurrentDifficultyAt(bdtridententity8.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                                                                                            }
+
+                                                                                            levelaccessor.addFreshEntity(bdtridententity8);
+                                                                                        }
+
+                                                                                        levelaccessor9 = levelaccessor;
+                                                                                        if (levelaccessor9 instanceof ServerLevel) {
+                                                                                            serverlevel8 = (ServerLevel)levelaccessor9;
+                                                                                            bdtridententity8 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel8);
+                                                                                            bdtridententity8.moveTo(d0 + (double)Mth.nextInt(new Random(), -25, -25), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -25, -25), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                                            if (bdtridententity8 instanceof Mob) {
+                                                                                                mob8 = (Mob)bdtridententity8;
+                                                                                                mob8.finalizeSpawn(serverlevel8, levelaccessor.getCurrentDifficultyAt(bdtridententity8.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                                                                                            }
+
+                                                                                            levelaccessor.addFreshEntity(bdtridententity8);
+                                                                                        }
+
+                                                                                        Entity entity2 = entity;
+
+                                                                                        if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                                                                            entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect clear @e annoying_villagersbychentu:gedang");
+                                                                                        }
+
+                                                                                        levelaccessor9 = levelaccessor;
+                                                                                        Level level1;
+
+                                                                                        if (levelaccessor9 instanceof Level) {
+                                                                                            level1 = (Level)levelaccessor9;
+                                                                                            if (!level1.isClientSide()) {
+                                                                                                level1.explode((Entity)null, d0, d1 + 3.0D, d2, 60.0F, BlockInteraction.DESTROY);
+                                                                                            }
+                                                                                        }
+
+                                                                                        levelaccessor9 = levelaccessor;
+                                                                                        if (levelaccessor9 instanceof Level) {
+                                                                                            level1 = (Level)levelaccessor9;
+                                                                                            if (!level1.isClientSide()) {
+                                                                                                level1.explode((Entity)null, d0, d1 + 1.0D, d2, 0.0F, BlockInteraction.NONE);
+                                                                                            }
+                                                                                        }
+
+                                                                                        levelaccessor9 = levelaccessor;
+                                                                                        if (levelaccessor9 instanceof Level) {
+                                                                                            level1 = (Level)levelaccessor9;
+                                                                                            if (!level1.isClientSide()) {
+                                                                                                level1.explode((Entity)null, d0, d1 + 1.0D, d2, 0.0F, BlockInteraction.NONE);
+                                                                                            }
+                                                                                        }
+
+                                                                                        if (!entity2.level.isClientSide()) {
+                                                                                            entity2.discard();
+                                                                                        }
+
+                                                                                        new DelayedTask(1) {
+                                                                                            @Override
+                                                                                            public void run() {
+                                                                                                LevelAccessor levelaccessor10 = levelaccessor;
+
+                                                                                                if (levelaccessor10 instanceof ServerLevel) {
+                                                                                                    ServerLevel serverlevel9 = (ServerLevel)levelaccessor10;
+                                                                                                    BlueDemonEndEntity bluedemonendentity = new BlueDemonEndEntity((EntityType)AnnoyingVillagersModEntities.BLUE_DEMON_END.get(), serverlevel9);
+
+                                                                                                    bluedemonendentity.moveTo(d0, d1, d2, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                                                    if (bluedemonendentity instanceof Mob) {
+                                                                                                        Mob mob9 = (Mob)bluedemonendentity;
+
+                                                                                                        mob9.finalizeSpawn(serverlevel9, levelaccessor.getCurrentDifficultyAt(bluedemonendentity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                                                                                                    }
+
+                                                                                                    levelaccessor.addFreshEntity(bluedemonendentity);
+                                                                                                }
+                                                                                            }
+                                                                                        };
+                                                                                    }
+                                                                                };
+                                                                            }
+                                                                        };
+                                                                    }
+                                                                };
+                                                            }
+                                                        };
+                                                    }
+                                                };
+                                            }
+                                        };
+                                    }
+                                };
                             }
-
-                            levelaccessor.addFreshEntity(bdtridententity2);
                         }
-
-                        levelaccessor3 = levelaccessor;
-                        if (levelaccessor3 instanceof ServerLevel) {
-                            serverlevel2 = (ServerLevel)levelaccessor3;
-                            bdtridententity2 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel2);
-                            bdtridententity2.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                            if (bdtridententity2 instanceof Mob) {
-                                mob2 = (Mob)bdtridententity2;
-                                mob2.finalizeSpawn(serverlevel2, levelaccessor.getCurrentDifficultyAt(bdtridententity2.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                            }
-
-                            levelaccessor.addFreshEntity(bdtridententity2);
-                        }
-                    }, 10)
-                    .schedule(() -> {
-                        LevelAccessor levelaccessor4 = levelaccessor;
-                        ServerLevel serverlevel3;
-                        BdTridentEntity bdtridententity3;
-                        Mob mob3;
-
-                        if (levelaccessor4 instanceof ServerLevel) {
-                            serverlevel3 = (ServerLevel)levelaccessor4;
-                            bdtridententity3 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel3);
-                            bdtridententity3.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                            if (bdtridententity3 instanceof Mob) {
-                                mob3 = (Mob)bdtridententity3;
-                                mob3.finalizeSpawn(serverlevel3, levelaccessor.getCurrentDifficultyAt(bdtridententity3.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                            }
-
-                            levelaccessor.addFreshEntity(bdtridententity3);
-                        }
-
-                        levelaccessor4 = levelaccessor;
-                        if (levelaccessor4 instanceof ServerLevel) {
-                            serverlevel3 = (ServerLevel)levelaccessor4;
-                            bdtridententity3 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel3);
-                            bdtridententity3.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                            if (bdtridententity3 instanceof Mob) {
-                                mob3 = (Mob)bdtridententity3;
-                                mob3.finalizeSpawn(serverlevel3, levelaccessor.getCurrentDifficultyAt(bdtridententity3.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                            }
-
-                            levelaccessor.addFreshEntity(bdtridententity3);
-                        }
-                    }, 10)
-                    .schedule(() -> {
-                        LevelAccessor levelaccessor5 = levelaccessor;
-                        ServerLevel serverlevel4;
-                        BdTridentEntity bdtridententity4;
-                        Mob mob4;
-
-                        if (levelaccessor5 instanceof ServerLevel) {
-                            serverlevel4 = (ServerLevel)levelaccessor5;
-                            bdtridententity4 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel4);
-                            bdtridententity4.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                            if (bdtridententity4 instanceof Mob) {
-                                mob4 = (Mob)bdtridententity4;
-                                mob4.finalizeSpawn(serverlevel4, levelaccessor.getCurrentDifficultyAt(bdtridententity4.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                            }
-
-                            levelaccessor.addFreshEntity(bdtridententity4);
-                        }
-
-                        levelaccessor5 = levelaccessor;
-                        if (levelaccessor5 instanceof ServerLevel) {
-                            serverlevel4 = (ServerLevel)levelaccessor5;
-                            bdtridententity4 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel4);
-                            bdtridententity4.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), 3, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                            if (bdtridententity4 instanceof Mob) {
-                                mob4 = (Mob)bdtridententity4;
-                                mob4.finalizeSpawn(serverlevel4, levelaccessor.getCurrentDifficultyAt(bdtridententity4.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                            }
-
-                            levelaccessor.addFreshEntity(bdtridententity4);
-                        }
-
-                        levelaccessor5 = levelaccessor;
-                        if (levelaccessor5 instanceof ServerLevel) {
-                            serverlevel4 = (ServerLevel)levelaccessor5;
-                            bdtridententity4 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel4);
-                            bdtridententity4.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), 3, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                            if (bdtridententity4 instanceof Mob) {
-                                mob4 = (Mob)bdtridententity4;
-                                mob4.finalizeSpawn(serverlevel4, levelaccessor.getCurrentDifficultyAt(bdtridententity4.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                            }
-
-                            levelaccessor.addFreshEntity(bdtridententity4);
-                        }
-                    }, 5)
-                    .schedule(() -> {
-                        LevelAccessor levelaccessor6 = levelaccessor;
-                        ServerLevel serverlevel5;
-                        BdTridentEntity bdtridententity5;
-                        Mob mob5;
-
-                        if (levelaccessor6 instanceof ServerLevel) {
-                            serverlevel5 = (ServerLevel)levelaccessor6;
-                            bdtridententity5 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel5);
-                            bdtridententity5.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                            if (bdtridententity5 instanceof Mob) {
-                                mob5 = (Mob)bdtridententity5;
-                                mob5.finalizeSpawn(serverlevel5, levelaccessor.getCurrentDifficultyAt(bdtridententity5.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                            }
-
-                            levelaccessor.addFreshEntity(bdtridententity5);
-                        }
-
-                        levelaccessor6 = levelaccessor;
-                        if (levelaccessor6 instanceof ServerLevel) {
-                            serverlevel5 = (ServerLevel)levelaccessor6;
-                            bdtridententity5 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel5);
-                            bdtridententity5.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), 3, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                            if (bdtridententity5 instanceof Mob) {
-                                mob5 = (Mob)bdtridententity5;
-                                mob5.finalizeSpawn(serverlevel5, levelaccessor.getCurrentDifficultyAt(bdtridententity5.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                            }
-
-                            levelaccessor.addFreshEntity(bdtridententity5);
-                        }
-                    }, 5)
-                    .schedule(() -> {
-                        LevelAccessor levelaccessor7 = levelaccessor;
-                        ServerLevel serverlevel6;
-                        BdTridentEntity bdtridententity6;
-                        Mob mob6;
-
-                        if (levelaccessor7 instanceof ServerLevel) {
-                            serverlevel6 = (ServerLevel)levelaccessor7;
-                            bdtridententity6 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel6);
-                            bdtridententity6.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                            if (bdtridententity6 instanceof Mob) {
-                                mob6 = (Mob)bdtridententity6;
-                                mob6.finalizeSpawn(serverlevel6, levelaccessor.getCurrentDifficultyAt(bdtridententity6.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                            }
-
-                            levelaccessor.addFreshEntity(bdtridententity6);
-                        }
-
-                        levelaccessor7 = levelaccessor;
-                        if (levelaccessor7 instanceof ServerLevel) {
-                            serverlevel6 = (ServerLevel)levelaccessor7;
-                            bdtridententity6 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel6);
-                            bdtridententity6.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                            if (bdtridententity6 instanceof Mob) {
-                                mob6 = (Mob)bdtridententity6;
-                                mob6.finalizeSpawn(serverlevel6, levelaccessor.getCurrentDifficultyAt(bdtridententity6.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                            }
-
-                            levelaccessor.addFreshEntity(bdtridententity6);
-                        }
-
-                        levelaccessor7 = levelaccessor;
-                        if (levelaccessor7 instanceof ServerLevel) {
-                            serverlevel6 = (ServerLevel)levelaccessor7;
-                            bdtridententity6 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel6);
-                            bdtridententity6.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                            if (bdtridententity6 instanceof Mob) {
-                                mob6 = (Mob)bdtridententity6;
-                                mob6.finalizeSpawn(serverlevel6, levelaccessor.getCurrentDifficultyAt(bdtridententity6.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                            }
-
-                            levelaccessor.addFreshEntity(bdtridententity6);
-                        }
-
-                        levelaccessor7 = levelaccessor;
-                        if (levelaccessor7 instanceof ServerLevel) {
-                            serverlevel6 = (ServerLevel)levelaccessor7;
-                            bdtridententity6 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel6);
-                            bdtridententity6.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                            if (bdtridententity6 instanceof Mob) {
-                                mob6 = (Mob)bdtridententity6;
-                                mob6.finalizeSpawn(serverlevel6, levelaccessor.getCurrentDifficultyAt(bdtridententity6.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                            }
-
-                            levelaccessor.addFreshEntity(bdtridententity6);
-                        }
-                    }, 5)
-                    .schedule(() -> {
-                        LevelAccessor levelaccessor8 = levelaccessor;
-                        ServerLevel serverlevel7;
-                        BdTridentEntity bdtridententity7;
-                        Mob mob7;
-
-                        if (levelaccessor8 instanceof ServerLevel) {
-                            serverlevel7 = (ServerLevel)levelaccessor8;
-                            bdtridententity7 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel7);
-                            bdtridententity7.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                            if (bdtridententity7 instanceof Mob) {
-                                mob7 = (Mob)bdtridententity7;
-                                mob7.finalizeSpawn(serverlevel7, levelaccessor.getCurrentDifficultyAt(bdtridententity7.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                            }
-
-                            levelaccessor.addFreshEntity(bdtridententity7);
-                        }
-
-                        levelaccessor8 = levelaccessor;
-                        if (levelaccessor8 instanceof ServerLevel) {
-                            serverlevel7 = (ServerLevel)levelaccessor8;
-                            bdtridententity7 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel7);
-                            bdtridententity7.moveTo(d0 + (double)Mth.nextInt(new Random(), -20, -20), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -20, -20), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                            if (bdtridententity7 instanceof Mob) {
-                                mob7 = (Mob)bdtridententity7;
-                                mob7.finalizeSpawn(serverlevel7, levelaccessor.getCurrentDifficultyAt(bdtridententity7.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                            }
-
-                            levelaccessor.addFreshEntity(bdtridententity7);
-                        }
-
-                        levelaccessor8 = levelaccessor;
-                        if (levelaccessor8 instanceof ServerLevel) {
-                            serverlevel7 = (ServerLevel)levelaccessor8;
-                            bdtridententity7 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel7);
-                            bdtridententity7.moveTo(d0 + (double)Mth.nextInt(new Random(), -20, -20), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -20, -20), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                            if (bdtridententity7 instanceof Mob) {
-                                mob7 = (Mob)bdtridententity7;
-                                mob7.finalizeSpawn(serverlevel7, levelaccessor.getCurrentDifficultyAt(bdtridententity7.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                            }
-
-                            levelaccessor.addFreshEntity(bdtridententity7);
-                        }
-
-                        levelaccessor8 = levelaccessor;
-                        if (levelaccessor8 instanceof ServerLevel) {
-                            serverlevel7 = (ServerLevel)levelaccessor8;
-                            bdtridententity7 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel7);
-                            bdtridententity7.moveTo(d0 + (double)Mth.nextInt(new Random(), -20, -20), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -20, -20), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                            if (bdtridententity7 instanceof Mob) {
-                                mob7 = (Mob)bdtridententity7;
-                                mob7.finalizeSpawn(serverlevel7, levelaccessor.getCurrentDifficultyAt(bdtridententity7.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                            }
-
-                            levelaccessor.addFreshEntity(bdtridententity7);
-                        }
-
-                        levelaccessor8 = levelaccessor;
-                        if (levelaccessor8 instanceof ServerLevel) {
-                            serverlevel7 = (ServerLevel)levelaccessor8;
-                            bdtridententity7 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel7);
-                            bdtridententity7.moveTo(d0 + (double)Mth.nextInt(new Random(), -20, -20), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -20, -20), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                            if (bdtridententity7 instanceof Mob) {
-                                mob7 = (Mob)bdtridententity7;
-                                mob7.finalizeSpawn(serverlevel7, levelaccessor.getCurrentDifficultyAt(bdtridententity7.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                            }
-
-                            levelaccessor.addFreshEntity(bdtridententity7);
-                        }
-                    }, 10)
-                    .schedule(() -> {
-                        LevelAccessor levelaccessor9 = levelaccessor;
-                        ServerLevel serverlevel8;
-                        LightningBolt lightningbolt;
-
-                        if (levelaccessor9 instanceof ServerLevel) {
-                            serverlevel8 = (ServerLevel)levelaccessor9;
-                            lightningbolt = (LightningBolt)EntityType.LIGHTNING_BOLT.create(serverlevel8);
-                            lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos(d0 + (double)Mth.nextInt(new Random(), -25, 25), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -25, 25))));
-                            lightningbolt.setVisualOnly(true);
-                            serverlevel8.addFreshEntity(lightningbolt);
-                        }
-
-                        levelaccessor9 = levelaccessor;
-                        if (levelaccessor9 instanceof ServerLevel) {
-                            serverlevel8 = (ServerLevel)levelaccessor9;
-                            lightningbolt = (LightningBolt)EntityType.LIGHTNING_BOLT.create(serverlevel8);
-                            lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos(d0 + (double)Mth.nextInt(new Random(), -25, 25), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -25, 25))));
-                            lightningbolt.setVisualOnly(true);
-                            serverlevel8.addFreshEntity(lightningbolt);
-                        }
-
-                        levelaccessor9 = levelaccessor;
-                        if (levelaccessor9 instanceof ServerLevel) {
-                            serverlevel8 = (ServerLevel)levelaccessor9;
-                            lightningbolt = (LightningBolt)EntityType.LIGHTNING_BOLT.create(serverlevel8);
-                            lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos(d0 + (double)Mth.nextInt(new Random(), -25, 25), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -25, 25))));
-                            lightningbolt.setVisualOnly(true);
-                            serverlevel8.addFreshEntity(lightningbolt);
-                        }
-
-                        levelaccessor9 = levelaccessor;
-                        if (levelaccessor9 instanceof ServerLevel) {
-                            serverlevel8 = (ServerLevel)levelaccessor9;
-                            lightningbolt = (LightningBolt)EntityType.LIGHTNING_BOLT.create(serverlevel8);
-                            lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos(d0 + (double)Mth.nextInt(new Random(), -25, 25), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -25, 25))));
-                            lightningbolt.setVisualOnly(true);
-                            serverlevel8.addFreshEntity(lightningbolt);
-                        }
-
-                        levelaccessor9 = levelaccessor;
-                        BdTridentEntity bdtridententity8;
-                        Mob mob8;
-
-                        if (levelaccessor9 instanceof ServerLevel) {
-                            serverlevel8 = (ServerLevel)levelaccessor9;
-                            bdtridententity8 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel8);
-                            bdtridententity8.moveTo(d0 + (double)Mth.nextInt(new Random(), -25, 25), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -25, 25), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                            if (bdtridententity8 instanceof Mob) {
-                                mob8 = (Mob)bdtridententity8;
-                                mob8.finalizeSpawn(serverlevel8, levelaccessor.getCurrentDifficultyAt(bdtridententity8.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                            }
-
-                            levelaccessor.addFreshEntity(bdtridententity8);
-                        }
-
-                        levelaccessor9 = levelaccessor;
-                        if (levelaccessor9 instanceof ServerLevel) {
-                            serverlevel8 = (ServerLevel)levelaccessor9;
-                            bdtridententity8 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel8);
-                            bdtridententity8.moveTo(d0 + (double)Mth.nextInt(new Random(), -25, -25), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -25, -25), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                            if (bdtridententity8 instanceof Mob) {
-                                mob8 = (Mob)bdtridententity8;
-                                mob8.finalizeSpawn(serverlevel8, levelaccessor.getCurrentDifficultyAt(bdtridententity8.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                            }
-
-                            levelaccessor.addFreshEntity(bdtridententity8);
-                        }
-
-                        levelaccessor9 = levelaccessor;
-                        if (levelaccessor9 instanceof ServerLevel) {
-                            serverlevel8 = (ServerLevel)levelaccessor9;
-                            bdtridententity8 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel8);
-                            bdtridententity8.moveTo(d0 + (double)Mth.nextInt(new Random(), -25, -25), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -25, -25), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                            if (bdtridententity8 instanceof Mob) {
-                                mob8 = (Mob)bdtridententity8;
-                                mob8.finalizeSpawn(serverlevel8, levelaccessor.getCurrentDifficultyAt(bdtridententity8.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                            }
-
-                            levelaccessor.addFreshEntity(bdtridententity8);
-                        }
-
-                        levelaccessor9 = levelaccessor;
-                        if (levelaccessor9 instanceof ServerLevel) {
-                            serverlevel8 = (ServerLevel)levelaccessor9;
-                            bdtridententity8 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel8);
-                            bdtridententity8.moveTo(d0 + (double)Mth.nextInt(new Random(), -25, -25), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -25, -25), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                            if (bdtridententity8 instanceof Mob) {
-                                mob8 = (Mob)bdtridententity8;
-                                mob8.finalizeSpawn(serverlevel8, levelaccessor.getCurrentDifficultyAt(bdtridententity8.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                            }
-
-                            levelaccessor.addFreshEntity(bdtridententity8);
-                        }
-
-                        levelaccessor9 = levelaccessor;
-                        if (levelaccessor9 instanceof ServerLevel) {
-                            serverlevel8 = (ServerLevel)levelaccessor9;
-                            bdtridententity8 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel8);
-                            bdtridententity8.moveTo(d0 + (double)Mth.nextInt(new Random(), -25, -25), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -25, -25), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                            if (bdtridententity8 instanceof Mob) {
-                                mob8 = (Mob)bdtridententity8;
-                                mob8.finalizeSpawn(serverlevel8, levelaccessor.getCurrentDifficultyAt(bdtridententity8.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                            }
-
-                            levelaccessor.addFreshEntity(bdtridententity8);
-                        }
-
-                        Entity entity2 = entity;
-
-                        if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                            entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect clear @e annoying_villagersbychentu:gedang");
-                        }
-
-                        levelaccessor9 = levelaccessor;
-                        Level level1;
-
-                        if (levelaccessor9 instanceof Level) {
-                            level1 = (Level)levelaccessor9;
-                            if (!level1.isClientSide()) {
-                                level1.explode((Entity)null, d0, d1 + 3.0D, d2, 60.0F, BlockInteraction.DESTROY);
-                            }
-                        }
-
-                        levelaccessor9 = levelaccessor;
-                        if (levelaccessor9 instanceof Level) {
-                            level1 = (Level)levelaccessor9;
-                            if (!level1.isClientSide()) {
-                                level1.explode((Entity)null, d0, d1 + 1.0D, d2, 0.0F, BlockInteraction.NONE);
-                            }
-                        }
-
-                        levelaccessor9 = levelaccessor;
-                        if (levelaccessor9 instanceof Level) {
-                            level1 = (Level)levelaccessor9;
-                            if (!level1.isClientSide()) {
-                                level1.explode((Entity)null, d0, d1 + 1.0D, d2, 0.0F, BlockInteraction.NONE);
-                            }
-                        }
-
-                        if (!entity2.level.isClientSide()) {
-                            entity2.discard();
-                        }
-                    }, 10)
-                    .schedule(() -> {
-                        LevelAccessor levelaccessor10 = levelaccessor;
-
-                        if (levelaccessor10 instanceof ServerLevel) {
-                            ServerLevel serverlevel9 = (ServerLevel)levelaccessor10;
-                            BlueDemonEndEntity bluedemonendentity = new BlueDemonEndEntity((EntityType)AnnoyingVillagersModEntities.BLUE_DEMON_END.get(), serverlevel9);
-
-                            bluedemonendentity.moveTo(d0, d1, d2, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                            if (bluedemonendentity instanceof Mob) {
-                                Mob mob9 = (Mob)bluedemonendentity;
-
-                                mob9.finalizeSpawn(serverlevel9, levelaccessor.getCurrentDifficultyAt(bluedemonendentity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                            }
-
-                            levelaccessor.addFreshEntity(bluedemonendentity);
-                        }
-                    }, 1);
+                    };
+                }
+            };
         }
     }
 }

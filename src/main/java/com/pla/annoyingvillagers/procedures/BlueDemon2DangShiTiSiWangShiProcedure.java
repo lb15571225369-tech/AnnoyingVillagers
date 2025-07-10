@@ -60,7 +60,7 @@ public class BlueDemon2DangShiTiSiWangShiProcedure {
                         Entity entity1 = entity;
 
                         if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                            entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "summon modid = AnnoyingVillagers.MODID:blue_demon");
+                            entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "summon annoyingvillagers:blue_demon");
                         }
 
                         MinecraftForge.EVENT_BUS.unregister(this);

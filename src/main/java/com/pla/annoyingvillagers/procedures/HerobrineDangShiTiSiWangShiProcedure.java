@@ -45,9 +45,9 @@ public class HerobrineDangShiTiSiWangShiProcedure {
 
                     transferArmor(source, passenger);
 
-                    if (passenger instanceof LivingEntity living) {
-                        living.removeEffect(AnnoyingVillagersModMobEffects.HEROBRINE_EFFECT.get());
-                    }
+//                    if (passenger instanceof LivingEntity living) {
+//                        living.removeEffect(AnnoyingVillagersModMobEffects.HEROBRINE_EFFECT.get());
+//                    }
 
                     passenger.stopRiding();
                     if (passenger instanceof ServerPlayer sp) {

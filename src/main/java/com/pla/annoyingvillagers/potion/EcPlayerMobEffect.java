@@ -18,7 +18,7 @@ public class EcPlayerMobEffect extends MobEffect {
     }
 
     public String getDescriptionId() {
-        return "effect.modid = AnnoyingVillagers.MODID.ec_player";
+        return "effect.annoyingvillagers.MODID.ec_player";
     }
 
     public void applyEffectTick(LivingEntity livingentity, int i) {

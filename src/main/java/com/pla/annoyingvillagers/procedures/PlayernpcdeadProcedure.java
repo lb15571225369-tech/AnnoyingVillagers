@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.util.DelayedTask;
-import com.pla.annoyingvillagers.util.QueuedTaskScheduler;
 import net.minecraft.Util;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
@@ -31,8 +30,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.TickEvent.ServerTickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -557,35 +554,45 @@ public class PlayernpcdeadProcedure {
                                     entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "tellraw @a [{\"text\":\"<\"},{\"selector\":\"@s\"},{\"text\":\"> \u522b\u8d70\uff0c\u6211\u53eb\u51e0\u4e2a\u4eba\ud83d\ude21\ud83d\ude21\ud83d\ude21\"}]");
                                 }
 
-                                new QueuedTaskScheduler()
-                                        .schedule(() -> {
-                                            // first task
-                                            entity.getServer().getCommands().performCommand(
-                                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                                                    "summon player_mobs:player_mob"
-                                            );
-                                        }, 50)
-                                        .schedule(() -> {
-                                            // second task
-                                            entity.getServer().getCommands().performCommand(
-                                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                                                    "summon player_mobs:player_mob"
-                                            );
-                                        }, 20)
-                                        .schedule(() -> {
-                                            // third task
-                                            entity.getServer().getCommands().performCommand(
-                                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                                                    "summon player_mobs:player_mob"
-                                            );
-                                        }, 20)
-                                        .schedule(() -> {
-                                            // final task
-                                            entity.getServer().getCommands().performCommand(
-                                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                                                    "tellraw @a [{\"text\":\"<\"},{\"selector\":\"@s\"},{\"text\":\"> 来了哼，哥们🤓\"}]"
-                                            );
-                                        }, 20);
+                                new DelayedTask(50) {
+                                    @Override
+                                    public void run() {
+                                        entity.getServer().getCommands().performCommand(
+                                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
+                                                "summon player_mobs:player_mob"
+                                        );
+                                    }
+                                };
+
+                                new DelayedTask(20) {
+                                    @Override
+                                    public void run() {
+                                        entity.getServer().getCommands().performCommand(
+                                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
+                                                "summon player_mobs:player_mob"
+                                        );
+                                    }
+                                };
+
+                                new DelayedTask(20) {
+                                    @Override
+                                    public void run() {
+                                        entity.getServer().getCommands().performCommand(
+                                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
+                                                "summon player_mobs:player_mob"
+                                        );
+                                    }
+                                };
+
+                                new DelayedTask(20) {
+                                    @Override
+                                    public void run() {
+                                        entity.getServer().getCommands().performCommand(
+                                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
+                                                "tellraw @a [{\"text\":\"<\"},{\"selector\":\"@s\"},{\"text\":\"> 来了哼，哥们🤓\"}]"
+                                        );
+                                    }
+                                };
                             } else if (Math.random() <= 0.05D && !levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                                 playerlist1 = levelaccessor.getServer().getPlayerList();
                                 s1 = entity.getDisplayName().getString();

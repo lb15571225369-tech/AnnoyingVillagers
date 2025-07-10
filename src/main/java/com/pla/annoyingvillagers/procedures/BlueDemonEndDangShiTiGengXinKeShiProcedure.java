@@ -14,8 +14,8 @@ public class BlueDemonEndDangShiTiGengXinKeShiProcedure {
             public void run() {
                 if (entity.isAlive()) {
                     String command = Math.random() <= 0.4D
-                            ? "summon modid = AnnoyingVillagers.MODID:blue_demon"
-                            : "summon modid = AnnoyingVillagers.MODID:blue_demon_2";
+                            ? "summon annoyingvillagers:blue_demon"
+                            : "summon annoyingvillagers:blue_demon_2";
 
                     if (!entity.level.isClientSide() && entity.getServer() != null) {
                         entity.getServer().getCommands().performCommand(

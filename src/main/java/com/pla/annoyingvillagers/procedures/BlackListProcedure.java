@@ -40,7 +40,7 @@
 //            }
 //
 //            if (!entity.level.isClientSide() && entity.getServer() != null) {
-//                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "epicfight skill add @s passive1 modid = AnnoyingVillagers.MODID:clash");
+//                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "epicfight skill add @s passive1 annoyingvillagers:clash");
 //            }
 //
 //            int i;
