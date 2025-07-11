@@ -3,6 +3,8 @@ package com.pla.annoyingvillagers.gameasset;
 import java.util.Set;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.module.efdg.skill.DualGreatswordSkill;
+import com.pla.annoyingvillagers.module.efdg.skill.EarthquakeSkill;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -27,11 +29,15 @@ public class AVSkill {
     public static Skill DUAL_DANCING_EDGE;
     public static Skill SPINNING_DEATH;
     public static Skill CLASH;
+    public static Skill EARTHQUAKE;
+    public static Skill DUALGREATSWORD;
 
     public static void registerSkills() {
         SkillManager.register(SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(new ResourceLocation(AnnoyingVillagers.MODID, "biped/combat/dancing_edge")), AnnoyingVillagers.MODID, "dual_dancing_edge");
         SkillManager.register(SpinningDeath::new, SpinningDeath.createWeaponInnateBuilder().setCreativeTab(EpicFightCreativeTabs.ITEMS), AnnoyingVillagers.MODID, "spinning_death");
         SkillManager.register(Clash::new, PassiveSkill.createPassiveBuilder().setCreativeTab(EpicFightCreativeTabs.ITEMS), AnnoyingVillagers.MODID, "clash");
+        SkillManager.register(EarthquakeSkill::new, EarthquakeSkill.createWeaponInnateBuilder().setCreativeTab(EpicFightCreativeTabs.ITEMS), AnnoyingVillagers.MODID, "earthquake");
+        SkillManager.register(DualGreatswordSkill::new, PassiveSkill.createPassiveBuilder().setCreativeTab(EpicFightCreativeTabs.ITEMS), AnnoyingVillagers.MODID, "dualgreatsword");
     }
 
     @SubscribeEvent
@@ -42,5 +48,8 @@ public class AVSkill {
         AVSkill.DUAL_DANCING_EDGE = weaponinnateskill;
         AVSkill.SPINNING_DEATH = skillbuildevent.build(AnnoyingVillagers.MODID, "spinning_death");
         AVSkill.CLASH = skillbuildevent.build(AnnoyingVillagers.MODID, "clash");
+
+        AVSkill.EARTHQUAKE = skillbuildevent.build(AnnoyingVillagers.MODID, "earthquake");
+        AVSkill.DUALGREATSWORD = skillbuildevent.build(AnnoyingVillagers.MODID, "dualgreatsword");
     }
 }

@@ -7,9 +7,12 @@ import java.util.Random;
 import java.util.Set;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.module.efdg.animation.SpecialAttackAnimation;
+import com.pla.annoyingvillagers.module.efdg.skill.EarthquakeSkill;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -26,7 +29,6 @@ import com.pla.annoyingvillagers.animations.types.AttackBreakAnimation;
 import com.pla.annoyingvillagers.animations.types.ExecuteAttackAnimation;
 import com.pla.annoyingvillagers.animations.types.HeavyAttackAnimation;
 import com.pla.annoyingvillagers.animations.types.KickAttackAnimation;
-import net.minecraftforge.registries.RegistryObject;
 import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
 import reascer.wom.gameasset.WOMColliders;
 import reascer.wom.particle.WOMParticles;
@@ -66,7 +68,7 @@ import yesman.epicfight.gameasset.ColliderPreset;
 import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.model.armature.HumanoidArmature;
 import yesman.epicfight.particle.EpicFightParticles;
-import yesman.epicfight.particle.HitParticleType;
+import yesman.epicfight.skill.SkillSlots;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.damagesource.ExtraDamageInstance;
@@ -76,21 +78,6 @@ import yesman.epicfight.world.damagesource.StunType;
 public class AVAnimations {
 
     public static StaticAnimation COUNTER;
-    public static StaticAnimation EMOJI4;
-    public static StaticAnimation EMOJI5;
-    public static StaticAnimation EMOJI6;
-    public static StaticAnimation EMOJI7;
-    public static StaticAnimation EMOJI8;
-    public static StaticAnimation EMOJI9;
-    public static StaticAnimation EMOJI10;
-    public static StaticAnimation EMOJI11;
-    public static StaticAnimation EMOJI12;
-    public static StaticAnimation EMOJI13;
-    public static StaticAnimation EMOJI14;
-    public static StaticAnimation EMOJI15;
-    public static StaticAnimation EMOJI16;
-    public static StaticAnimation EMOJI17;
-    public static StaticAnimation EMOJI18;
     public static StaticAnimation BOMB_SET;
     public static StaticAnimation BOMB_AFTER;
     public static StaticAnimation FIST_GUARD;
@@ -245,6 +232,22 @@ public class AVAnimations {
     public static StaticAnimation DUAL_E_END;
     public static StaticAnimation AXE_FUN_SKILL;
     public static StaticAnimation EXECUTE_ONE_HAND;
+
+
+    // Dual great sword
+    public static StaticAnimation GREATSWORD_TWOHAND_AUTO_1;
+    public static StaticAnimation GREATSWORD_TWOHAND_AUTO_2;
+    public static StaticAnimation GREATSWORD_TWOHAND_AUTO_3;
+    public static StaticAnimation GREATSWORD_DUAL_AUTO_1;
+    public static StaticAnimation GREATSWORD_DUAL_AUTO_2;
+    public static StaticAnimation GREATSWORD_DUAL_AUTO_3;
+    public static StaticAnimation GREATSWORD_DUAL_AUTO_4;
+    public static StaticAnimation GREATSWORD_DUAL_DASH;
+    public static StaticAnimation GREATSWORD_DUAL_AIRSLASH;
+    public static StaticAnimation GREATSWORD_DUAL_EARTHQUAKE;
+    public static StaticAnimation GREATSWORD_DUAL_IDLE;
+    public static StaticAnimation GREATSWORD_DUAL_WALK;
+    public static StaticAnimation GREATSWORD_DUAL_RUN;
 
     @SubscribeEvent
     public static void registerAnimations(AnimationRegistryEvent animationregistryevent) {
@@ -435,6 +438,36 @@ public class AVAnimations {
         AVAnimations.DUAL_E_END = (new ActionAnimation(0.2F, Float.MAX_VALUE, "biped/combat/dual_e_end", humanoidarmature)).addState(EntityState.CAN_SKILL_EXECUTION, false).addState(EntityState.CAN_BASIC_ATTACK, true).addState(EntityState.TURNING_LOCKED, true).addState(EntityState.LOCKON_ROTATE, true).addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE);
         AVAnimations.AXE_FUN_SKILL = (new BasicAttackAnimation(0.05F, "biped/combat/axe_fun_skill", humanoidarmature, new Phase[]{(new Phase(0.0F, 0.1F, 0.25F, 0.25F, 0.25F, humanoidarmature.toolR, (Collider) null)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.6F)).addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(0.0F)).addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10.0F)), (new Phase(0.25F, 0.25F, 0.4F, 0.5F, 0.5F, humanoidarmature.toolR, (Collider) null)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.6F)).addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(0.0F)).addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10.0F)), (new Phase(0.5F, 0.5F, 0.6F, 0.6F, 0.6F, humanoidarmature.toolR, (Collider) null)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.6F)).addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(0.0F)).addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10.0F)), (new Phase(0.6F, 0.6F, 0.75F, 0.75F, 0.75F, humanoidarmature.toolR, (Collider) null)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.6F)).addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(0.0F)).addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10.0F)), (new Phase(0.75F, 0.75F, 0.8F, 0.9F, 0.9F, humanoidarmature.toolR, (Collider) null)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.6F)).addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(0.0F)).addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10.0F)), (new Phase(0.9F, 0.9F, 1.0F, 1.0F, 1.0F, humanoidarmature.toolR, (Collider) null)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.6F)).addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(0.0F)).addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10.0F)), (new Phase(1.0F, 1.0F, 1.1F, 1.1F, 1.1F, humanoidarmature.toolR, (Collider) null)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.6F)).addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(0.0F)).addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10.0F)), (new Phase(1.1F, 1.1F, 1.22F, 1.22F, 1.22F, humanoidarmature.toolR, (Collider) null)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.6F)).addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(0.0F)).addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10.0F)), (new Phase(1.22F, 1.22F, 1.35F, 1.35F, 1.35F, humanoidarmature.toolR, (Collider) null)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.6F)).addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(0.0F)).addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10.0F)), (new Phase(1.35F, 1.35F, 1.42F, 1.42F, 1.42F, humanoidarmature.toolR, (Collider) null)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.6F)).addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(0.0F)).addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10.0F)), (new Phase(1.42F, 1.42F, 1.5F, 1.5F, 1.5F, humanoidarmature.toolR, (Collider) null)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.6F)).addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(0.0F)).addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10.0F)), (new Phase(1.5F, 1.5F, 1.55F, 1.55F, 1.55F, humanoidarmature.toolR, (Collider) null)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.6F)).addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(0.0F)).addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10.0F)), (new Phase(1.55F, 1.6F, 1.7F, Float.MAX_VALUE, Float.MAX_VALUE, humanoidarmature.toolR, (Collider) null)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.3F)).addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10.0F)).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)})).addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true).addProperty(ActionAnimationProperty.STOP_MOVEMENT, true).addState(EntityState.CAN_SKILL_EXECUTION, false).addState(EntityState.CAN_BASIC_ATTACK, false).addState(EntityState.MOVEMENT_LOCKED, true).addState(EntityState.TURNING_LOCKED, false).addState(EntityState.LOCKON_ROTATE, false).addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE);
         AVAnimations.EXECUTE_ONE_HAND = (new ExecuteAttackAnimation(0.05F, "biped/combat/execute_one_hand", humanoidarmature, new Phase[]{(new Phase(0.0F, 0.4F, 0.6F, 0.6F, 1.1F, humanoidarmature.toolR, AVCollider.EXECUTE)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.01F)).addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(0.0F)).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE).addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(4.0F)), (new Phase(1.0F, 1.2F, 1.4F, Float.MAX_VALUE, Float.MAX_VALUE, humanoidarmature.toolR, AVCollider.EXECUTE_SECOND)).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE).addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.EVISCERATE).addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.BLADE_RUSH_SKILL).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2.7F)).addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(4.0F)).addProperty(AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.setter(100.0F))})).addProperty(ActionAnimationProperty.STOP_MOVEMENT, true).addState(EntityState.CAN_SKILL_EXECUTION, false).addState(EntityState.CAN_BASIC_ATTACK, false).addState(EntityState.MOVEMENT_LOCKED, true).addState(EntityState.TURNING_LOCKED, true).addState(EntityState.LOCKON_ROTATE, true).addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE);
+
+        // Dual great sword
+        AVAnimations.GREATSWORD_DUAL_AUTO_1 = (new com.pla.annoyingvillagers.module.efdg.animation.BasicMultipleAttackAnimation(0.25F, "biped/combat/greatsword_dual_auto_1", humanoidarmature, new Phase[]{new Phase(0.0F, 0.2F, 0.4F, 0.45F, 0.45F, InteractionHand.OFF_HAND, humanoidarmature.toolL, (Collider) null), new Phase(0.45F, 0.5F, 0.7F, 0.8F, Float.MAX_VALUE, humanoidarmature.toolR, (Collider) null)})).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.7F)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.7F), 1).addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.05F);
+        AVAnimations.GREATSWORD_DUAL_AUTO_2 = (new com.pla.annoyingvillagers.module.efdg.animation.BasicMultipleAttackAnimation(0.15F, 0.35F, 0.85F, 0.85F, AVCollider.GREATSWORD_DOUBLESWING, humanoidarmature.toolR, "biped/combat/greatsword_dual_auto_2", humanoidarmature)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.5F)).addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(0.8F)).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.FALL).addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.05F).addEvents(new TimeStampedEvent[]{TimeStampedEvent.create(0.85F, AVAnimations.ReuseableEvents.GROUNDSLAM_SMALL, Side.CLIENT)});
+        AVAnimations.GREATSWORD_DUAL_AUTO_3 = (new com.pla.annoyingvillagers.module.efdg.animation.BasicMultipleAttackAnimation(0.15F, "biped/combat/greatsword_dual_auto_3", humanoidarmature, new Phase[]{new Phase(0.0F, 0.2F, 0.4F, 0.45F, 0.45F, humanoidarmature.toolR, (Collider) null), new Phase(0.45F, 0.55F, 0.7F, 0.7F, Float.MAX_VALUE, InteractionHand.OFF_HAND, humanoidarmature.toolL, (Collider) null)})).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.6F)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.0F), 1).addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.5F), 1).addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.05F).addEvents(new TimeStampedEvent[]{TimeStampedEvent.create(0.45F, AVAnimations.ReuseableEvents.GROUNDSLAM_SMALL, Side.CLIENT)});
+        AVAnimations.GREATSWORD_DUAL_AUTO_4 = (new com.pla.annoyingvillagers.module.efdg.animation.BasicMultipleAttackAnimation(0.1F, 0.8F, 1.0F, 1.25F, InteractionHand.OFF_HAND, AVCollider.GREATSWORD_DUAL, humanoidarmature.rootJoint, "biped/combat/greatsword_dual_auto_4", humanoidarmature)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.8F)).addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.75F);
+        AVAnimations.GREATSWORD_DUAL_DASH = (new com.pla.annoyingvillagers.module.efdg.animation.BasicMultipleAttackAnimation(0.05F, 0.1F, 0.4F, 0.4F, AVCollider.SHOULDER_BUMP, humanoidarmature.rootJoint, "biped/combat/greatsword_dual_dash", humanoidarmature)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.2F)).addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.5F)).addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT).addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD).addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, false).addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.05F);
+        AVAnimations.GREATSWORD_DUAL_AIRSLASH = (new com.pla.annoyingvillagers.module.efdg.animation.BasicMultipleAttackAnimation(0.05F, 0.25F, 0.4F, 0.45F, InteractionHand.OFF_HAND, AVCollider.AIRSLAM, humanoidarmature.rootJoint, "biped/combat/greatsword_dual_airslash", humanoidarmature)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.8F)).addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.05F).addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false).addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(new float[]{0.0F, 0.2F})).addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, (dynamicanimation, livingentitypatch, f, f1) -> {
+            if (f1 >= 0.2F && f1 < 0.35F) {
+                float f2 = (float) ((LivingEntity) livingentitypatch.getOriginal()).getX();
+                float f3 = (float) ((LivingEntity) livingentitypatch.getOriginal()).getY();
+                float f4 = (float) ((LivingEntity) livingentitypatch.getOriginal()).getZ();
+
+                for (BlockState blockstate = ((LivingEntity) livingentitypatch.getOriginal()).level.getBlockState(new BlockPos(new Vec3((double) f2, (double) f3, (double) f4))); (blockstate.getBlock() instanceof BushBlock || blockstate.isAir()) && !blockstate.is(Blocks.VOID_AIR); blockstate = ((LivingEntity) livingentitypatch.getOriginal()).level.getBlockState(new BlockPos(new Vec3((double) f2, (double) f3, (double) f4)))) {
+                    --f3;
+                }
+
+                float f5 = (float) Math.max(Math.abs(((LivingEntity) livingentitypatch.getOriginal()).getY() - (double) f3) - 1.0D, 0.0D);
+
+                return 1.0F - (1.0F / (-f5 - 1.0F) + 1.0F);
+            } else {
+                return 1.0F;
+            }
+        }).addEvents(new TimeStampedEvent[]{TimeStampedEvent.create(0.4F, AVAnimations.ReuseableEvents.GROUNDSLAM_SMALL, Side.CLIENT)});
+        AVAnimations.GREATSWORD_DUAL_EARTHQUAKE = (new SpecialAttackAnimation(0.15F, "biped/skill/greatsword_dual_earthquake", humanoidarmature, new Phase[]{new Phase(0.0F, 1.1F, 1.1F, 1.25F, 1.25F, humanoidarmature.toolR, AVCollider.GREATSWORD_DOUBLESWING), new Phase(1.25F, 1.3F, 1.4F, 1.5F, Float.MAX_VALUE, humanoidarmature.rootJoint, AVCollider.GREATSWORD_DUAL)})).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.2F)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2.4F), 1).addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(2.0F), 1).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.SHORT, 1).addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.05F).addEvents(new TimeStampedEvent[]{TimeStampedEvent.create(1.25F, AVAnimations.ReuseableEvents.GROUNDSLAM_SMALL, Side.CLIENT), TimeStampedEvent.create(1.45F, (livingentitypatch, staticanimation, aobject) -> {
+            ((PlayerPatch) livingentitypatch).getSkill(SkillSlots.WEAPON_INNATE).getDataManager().setDataSync(EarthquakeSkill.SUPERARMOR, false, (ServerPlayer) livingentitypatch.getOriginal());
+        }, Side.SERVER)});
+        AVAnimations.GREATSWORD_DUAL_IDLE = new StaticAnimation(0.1F, true, "biped/living/greatsword_dual_idle", humanoidarmature);
+        AVAnimations.GREATSWORD_DUAL_WALK = new MovementAnimation(0.1F, true, "biped/living/greatsword_dual_walk", humanoidarmature);
+        AVAnimations.GREATSWORD_DUAL_RUN = new MovementAnimation(0.1F, true, "biped/living/greatsword_dual_run", humanoidarmature);
     }
 
     private static class ReuseableEvents {

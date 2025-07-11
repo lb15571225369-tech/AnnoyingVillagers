@@ -668,7 +668,7 @@
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
-							"animation": "efdg:biped/combat/greatsword_dual_auto_1",
+							"animation": "annoyingvillagers:biped/combat/greatsword_dual_auto_1",
 							"play_speed": 1.8
 						},
 						{
@@ -682,7 +682,7 @@
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
-							"animation": "efdg:biped/combat/greatsword_dual_auto_2",
+							"animation": "annoyingvillagers:biped/combat/greatsword_dual_auto_2",
 							"play_speed": 1.9
 						},
 						{
@@ -696,7 +696,7 @@
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
-							"animation": "efdg:biped/combat/greatsword_dual_auto_3",
+							"animation": "annoyingvillagers:biped/combat/greatsword_dual_auto_3",
 							"play_speed": 2.3
 						},
 						{
@@ -760,35 +760,35 @@
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
-							"animation": "efdg:biped/combat/greatsword_dual_auto_1",
+							"animation": "annoyingvillagers:biped/combat/greatsword_dual_auto_1",
 							"play_speed": 1.8
 						},
 						{
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
-							"animation": "efdg:biped/combat/greatsword_dual_auto_2",
+							"animation": "annoyingvillagers:biped/combat/greatsword_dual_auto_2",
 							"play_speed": 1.9
 						},
 						{
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
-							"animation": "efdg:biped/combat/greatsword_dual_auto_3",
+							"animation": "annoyingvillagers:biped/combat/greatsword_dual_auto_3",
 							"play_speed": 2.0
 						},
 						{
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
-							"animation": "efdg:biped/combat/greatsword_dual_airslash",
+							"animation": "annoyingvillagers:biped/combat/greatsword_dual_airslash",
 							"play_speed": 2.78
 						},
 						{
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
-							"animation": "efdg:biped/combat/greatsword_dual_auto_3",
+							"animation": "annoyingvillagers:biped/combat/greatsword_dual_auto_3",
 							"play_speed": 2.2
 						},
 						{
@@ -975,35 +975,35 @@
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
-							"animation": "efdg:biped/combat/greatsword_dual_auto_1",
+							"animation": "annoyingvillagers:biped/combat/greatsword_dual_auto_1",
 							"play_speed": 1.8
 						},
 						{
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
-							"animation": "efdg:biped/combat/greatsword_dual_auto_2",
+							"animation": "annoyingvillagers:biped/combat/greatsword_dual_auto_2",
 							"play_speed": 1.9
 						},
 						{
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
-							"animation": "efdg:biped/combat/greatsword_dual_auto_3",
+							"animation": "annoyingvillagers:biped/combat/greatsword_dual_auto_3",
 							"play_speed": 2.0
 						},
 						{
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
-							"animation": "efdg:biped/combat/greatsword_dual_airslash",
+							"animation": "annoyingvillagers:biped/combat/greatsword_dual_airslash",
 							"play_speed": 2.78
 						},
 						{
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
-							"animation": "efdg:biped/combat/greatsword_dual_auto_3",
+							"animation": "annoyingvillagers:biped/combat/greatsword_dual_auto_3",
 							"play_speed": 2.7
 						},
 						{

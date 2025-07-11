@@ -1,0 +1,18 @@
+package com.pla.annoyingvillagers.module.efdg.animation;
+
+import yesman.epicfight.api.animation.LivingMotion;
+
+public enum EFLivingMotions implements LivingMotion {
+
+    EATING;
+
+    final int id;
+
+    private EFLivingMotions() {
+        this.id = LivingMotion.ENUM_MANAGER.assign(this);
+    }
+
+    public int universalOrdinal() {
+        return this.id;
+    }
+}
