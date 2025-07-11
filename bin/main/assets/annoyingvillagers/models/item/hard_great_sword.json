@@ -1,0 +1,7 @@
+{
+  "parent": "annoyingvillagers:custom/hard_great_sword",
+  "textures": {
+    "0": "annoyingvillagers:blocks/hard_great_sword",
+    "particle": "annoyingvillagers:items/hard_great_sword"
+  }
+}

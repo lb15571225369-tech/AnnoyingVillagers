@@ -64,5 +64,10 @@ public class AnnoyingVillagersModSounds {
         AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "pop"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "pop")));
         AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "heiyaoshi_hit"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "heiyaoshi_hit")));
         AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "heavy_hit"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "heavy_hit")));
+        AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "woosh_hard"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "woosh_hard")));
+        AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "humchuanqi"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "humchuanqi")));
+        AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "wing"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "wing")));
+        AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "l_g_wake_up"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "l_g_wake_up")));
+        AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "zhanshenzhirenjuexing"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "zhanshenzhirenjuexing")));
     }
 }

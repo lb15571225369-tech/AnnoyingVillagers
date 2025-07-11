@@ -1,0 +1,10 @@
+{
+	"type": "longsword",
+	"attributes": {
+		"common": {
+  			"impact": 1.7,
+			"max_strikes": 7,
+                  "speed_bonus": 0.0
+		}
+	}
+}

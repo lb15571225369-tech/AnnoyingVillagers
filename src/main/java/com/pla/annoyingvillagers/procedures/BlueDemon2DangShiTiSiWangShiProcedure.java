@@ -29,44 +29,6 @@ public class BlueDemon2DangShiTiSiWangShiProcedure {
 
     public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity) {
         if (entity != null) {
-            if (Math.random() < 0.3D) {
-                (new Object() {
-                    private int ticks = 0;
-                    private float waitTicks;
-                    private LevelAccessor world;
-
-                    public void start(LevelAccessor levelaccessor1, int i) {
-                        this.waitTicks = (float)i;
-                        MinecraftForge.EVENT_BUS.register(this);
-                        this.world = levelaccessor1;
-                    }
-
-                    @SubscribeEvent
-                    public void tick(ServerTickEvent servertickevent) {
-                        if (servertickevent.phase == Phase.END) {
-                            ++this.ticks;
-                            if ((float)this.ticks >= this.waitTicks) {
-                                this.run();
-                            }
-                        }
-
-                    }
-
-                    private void run() {
-                        if (!this.world.isClientSide() && this.world.getServer() != null) {
-                            this.world.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u84dd\u6076\u9b54> \u6211\u8fd8\u6ca1\u6b7b\u5462"), ChatType.SYSTEM, Util.NIL_UUID);
-                        }
-
-                        Entity entity1 = entity;
-
-                        if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                            entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "summon annoyingvillagers:blue_demon");
-                        }
-
-                        MinecraftForge.EVENT_BUS.unregister(this);
-                    }
-                }).start(levelaccessor, 40);
-            } else {
                 (new Object() {
                     private int ticks = 0;
                     private float waitTicks;
@@ -137,7 +99,5 @@ public class BlueDemon2DangShiTiSiWangShiProcedure {
                     }
                 }).start(levelaccessor, 30);
             }
-
-        }
     }
 }

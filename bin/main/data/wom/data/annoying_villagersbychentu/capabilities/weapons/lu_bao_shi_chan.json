@@ -1,0 +1,10 @@
+{
+	"type": "herrscher",
+	"attributes": {
+		"common": {
+  			"impact": 2.7,
+			"max_strikes": 2,
+                  "speed_bonus": 1.1
+		}
+	}
+}

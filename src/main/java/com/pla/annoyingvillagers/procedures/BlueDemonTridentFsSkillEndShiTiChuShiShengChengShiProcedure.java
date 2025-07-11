@@ -22,8 +22,8 @@ public class BlueDemonTridentFsSkillEndShiTiChuShiShengChengShiProcedure {
         // Run commands
         if (!entity.level.isClientSide() && entity.getServer() != null) {
             String[] commands = new String[] {
-                    "item replace entity @s weapon.mainhand with annoying_villagersbychentu:bluedemontrident",
-                    "item replace entity @s weapon.offhand with annoying_villagersbychentu:bluedemontrident",
+                    "item replace entity @s weapon.mainhand with annoyingvillagers:bluedemontrident",
+                    "item replace entity @s weapon.offhand with annoyingvillagers:bluedemontrident",
                     "effect give @s annoyingvillagers:fulu 20000 0 true",
                     "indestructible @s play \"annoyingvillagers:biped/other/blue_demon_end_skill\" 0 1"
             };
@@ -37,14 +37,12 @@ public class BlueDemonTridentFsSkillEndShiTiChuShiShengChengShiProcedure {
         }
 
         // Schedule transformation after 400 ticks
-        new DelayedTask(400) {
+        new DelayedTask(100) {
             @Override
             public void run() {
                 if (!entity.isAlive()) return;
 
-                String summonCommand = Math.random() <= 0.37
-                        ? "summon annoyingvillagers:blue_demon"
-                        : "summon annoyingvillagers:blue_demon_2";
+                String summonCommand = "summon annoyingvillagers:blue_demon_2";
 
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
                     entity.getServer().getCommands().performCommand(

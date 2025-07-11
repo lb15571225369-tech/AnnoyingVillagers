@@ -74,11 +74,11 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "item replace entity @s weapon.mainhand with annoying_villagersbychentu:bluedemontrident");
+                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "item replace entity @s weapon.mainhand with annoyingvillagers:bluedemontrident");
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "item replace entity @s weapon.offhand with annoying_villagersbychentu:bluedemontrident");
+                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "item replace entity @s weapon.offhand with annoyingvillagers:bluedemontrident");
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {

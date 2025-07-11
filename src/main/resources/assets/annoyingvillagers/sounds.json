@@ -294,5 +294,89 @@
         "stream": false
       }
     ]
+  },
+  "woosh_hard": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:blunt_swing1",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:blunt_swing2",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:blunt_swing3",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:blunt_swing4",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:blunt_swing5",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:swoosh1",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:swoosh2",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:swoosh3",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:swoosh4",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:swoosh5",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:swoosh6",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:swoosh7",
+        "stream": false
+      }
+    ]
+  },
+  "humchuanqi": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:himchuanqi",
+        "stream": false
+      }
+    ]
+  },
+  "wing": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:wing",
+        "stream": false
+      }
+    ]
+  },
+  "l_g_w_u": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:l_g_wake_up",
+        "stream": false
+      }
+    ]
+  },
+  "zhanshenzhirenjuexing": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:zhanshenzhurenjuexing",
+        "stream": false
+      }
+    ]
   }
 }

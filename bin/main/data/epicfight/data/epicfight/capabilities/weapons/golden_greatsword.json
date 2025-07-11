@@ -1,0 +1,12 @@
+{
+	"attributes":
+	{
+		"common":
+		{
+			"impact":30.8,
+			"max_strikes":8,
+                  "speed_bonus": 1.5
+		}
+	},
+	"type":"greatsword"
+}

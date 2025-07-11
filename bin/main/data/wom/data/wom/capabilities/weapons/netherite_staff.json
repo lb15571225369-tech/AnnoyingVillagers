@@ -1,0 +1,12 @@
+{
+	"attributes":
+	{
+		"two_hand":
+		{
+			"impact":3.6,
+			"max_strikes":3,
+                  "damage_bonus": -4.0
+		}
+	},
+	"type":"staff"
+}

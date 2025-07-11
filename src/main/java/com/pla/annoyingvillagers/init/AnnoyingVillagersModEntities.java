@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.init;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.entity.*;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityType.Builder;
@@ -13,14 +14,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import com.pla.annoyingvillagers.entity.BdTridentEntity;
-import com.pla.annoyingvillagers.entity.BlueDemon2Entity;
-import com.pla.annoyingvillagers.entity.BlueDemonEndEntity;
-import com.pla.annoyingvillagers.entity.BlueDemonEntity;
-import com.pla.annoyingvillagers.entity.BlueDemonREntity;
-import com.pla.annoyingvillagers.entity.DarkOBFarEntity;
-import com.pla.annoyingvillagers.entity.Herobrine2Entity;
-import com.pla.annoyingvillagers.entity.HerobrineEntity;
 
 @EventBusSubscriber(bus = Bus.MOD)
 public class AnnoyingVillagersModEntities {
@@ -34,6 +27,7 @@ public class AnnoyingVillagersModEntities {
     public static final RegistryObject<EntityType<BlueDemonEndEntity>> BLUE_DEMON_END = register("blue_demon_end", Builder.<BlueDemonEndEntity>of(BlueDemonEndEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(126).setUpdateInterval(3).setCustomClientFactory(BlueDemonEndEntity::new).fireImmune().sized(0.0F, 1.8F));
     public static final RegistryObject<EntityType<DarkOBFarEntity>> DARK_OB_FAR = register("projectile_dark_ob_far", Builder.<DarkOBFarEntity>of(DarkOBFarEntity::new, MobCategory.MISC).setCustomClientFactory(DarkOBFarEntity::new).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).sized(0.5F, 0.5F));
     public static final RegistryObject<EntityType<BdTridentEntity>> BD_TRIDENT = register("bd_trident", Builder.<BdTridentEntity>of(BdTridentEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(BdTridentEntity::new).fireImmune().sized(0.0F, 1.8F));
+    public static final RegistryObject<EntityType<BluedemontridentEntity>> BLUEDEMONTRIDENT = register("projectile_bluedemontrident", Builder.<BluedemontridentEntity>of(BluedemontridentEntity::new, MobCategory.MISC).setCustomClientFactory(BluedemontridentEntity::new).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).sized(0.5F, 0.5F));
 
     private static <T extends Entity> RegistryObject<EntityType<T>> register(String s, Builder<T> builder) {
         return AnnoyingVillagersModEntities.REGISTRY.register(s, () -> {
