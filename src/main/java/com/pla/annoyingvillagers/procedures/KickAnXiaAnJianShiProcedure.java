@@ -11,14 +11,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.TickEvent.ServerTickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import com.pla.annoyingvillagers.animations.types.AttackBreakAnimation;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
-import tictim.paraglider.capabilities.Caps;
-import tictim.paraglider.capabilities.PlayerMovement;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.LongHitAnimation;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
@@ -51,17 +45,13 @@ public class KickAnXiaAnJianShiProcedure {
                 }
 
                 if (!flag) {
-                    PlayerMovement playermovement = (PlayerMovement)entity.getCapability(Caps.playerMovement, (Direction)null).resolve().orElseThrow();
-
-                    if (playermovement.canAction() && !entity.getPersistentData().getBoolean("kick_x")) {
+                    if (!entity.getPersistentData().getBoolean("kick_x")) {
                         LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch)EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 
                         if (livingentitypatch != null) {
                             DynamicAnimation dynamicanimation = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation)null).getAnimation();
 
                             if (!(dynamicanimation instanceof AttackBreakAnimation)) {
-                                PlayerMovement playermovement1;
-
                                 if (!(dynamicanimation instanceof LongHitAnimation)) {
                                     entity.getPersistentData().putBoolean("kick_x", true);
                                     new DelayedTask(6) {
@@ -81,8 +71,6 @@ public class KickAnXiaAnJianShiProcedure {
                                             entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/kick_h\" 0 1");
                                         }
                                     } else {
-                                        playermovement1 = (PlayerMovement)entity.getCapability(Caps.playerMovement, (Direction)null).resolve().orElseThrow();
-                                        playermovement1.takeStamina(30, false, false);
                                         if (entity.isSprinting()) {
                                             if (entity.getPersistentData().getDouble("air_kick") != 1.0D) {
                                                 entity.getPersistentData().putDouble("air_kick", 1.0D);
@@ -168,9 +156,6 @@ public class KickAnXiaAnJianShiProcedure {
                                     if (!entity.level.isClientSide() && entity.getServer() != null) {
                                         entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/skill/roll_backward\" 0 1");
                                     }
-
-                                    playermovement1 = (PlayerMovement)entity.getCapability(Caps.playerMovement, (Direction)null).resolve().orElseThrow();
-                                    playermovement1.takeStamina(80, false, false);
                                 }
                             }
                         }

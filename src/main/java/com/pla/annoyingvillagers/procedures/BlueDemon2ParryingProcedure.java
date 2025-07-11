@@ -11,7 +11,7 @@ public class BlueDemon2ParryingProcedure {
     public static void execute(Entity entity) {
         if (entity != null) {
             if (Math.random() <= 0.2D && !entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect give @s annoying_villagersbychentu:gedang 1 0 true");
+                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect give @s annoyingvillagers:gedang 1 0 true");
             }
 
             if (entity instanceof LivingEntity) {

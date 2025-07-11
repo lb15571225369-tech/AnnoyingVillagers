@@ -2,19 +2,15 @@ package com.pla.annoyingvillagers.skill;
 
 import java.util.List;
 import java.util.Map;
-import net.minecraft.core.Direction;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
-import tictim.paraglider.capabilities.Caps;
-import tictim.paraglider.capabilities.PlayerMovement;
 import yesman.epicfight.api.animation.LivingMotions;
 import yesman.epicfight.api.animation.types.EntityState;
 import yesman.epicfight.api.animation.types.StaticAnimation;
-import yesman.epicfight.skill.Skill.Builder;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
@@ -40,14 +36,8 @@ public class SpinningDeath extends WeaponInnateSkill {
     }
 
     public void executeOnServer(ServerPlayerPatch serverplayerpatch, FriendlyByteBuf friendlybytebuf) {
-        PlayerMovement playermovement = (PlayerMovement) ((ServerPlayer) serverplayerpatch.getOriginal()).getCapability(Caps.playerMovement, (Direction) null).resolve().orElseThrow();
-
-        if (playermovement.canAction()) {
-            serverplayerpatch.playAnimationSynchronized(this.attackAnimation, 0.0F);
-            playermovement.takeStamina(100, false, false);
-            super.executeOnServer(serverplayerpatch, friendlybytebuf);
-        }
-
+        serverplayerpatch.playAnimationSynchronized(this.attackAnimation, 0.0F);
+        super.executeOnServer(serverplayerpatch, friendlybytebuf);
     }
 
     public List<Component> getTooltipOnItem(ItemStack itemstack, CapabilityItem capabilityitem, PlayerPatch<?> playerpatch) {

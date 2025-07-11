@@ -24,7 +24,7 @@ public class BlueDemonTridentFsSkillEndShiTiChuShiShengChengShiProcedure {
             String[] commands = new String[] {
                     "item replace entity @s weapon.mainhand with annoying_villagersbychentu:bluedemontrident",
                     "item replace entity @s weapon.offhand with annoying_villagersbychentu:bluedemontrident",
-                    "effect give @s annoying_villagersbychentu:fulu 20000 0 true",
+                    "effect give @s annoyingvillagers:fulu 20000 0 true",
                     "indestructible @s play \"annoyingvillagers:biped/other/blue_demon_end_skill\" 0 1"
             };
 

@@ -112,7 +112,7 @@ public class ProjProProcedure {
                     }
 
                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle annoying_villagersbychentu:spark ~ ~ ~ 0 0 0 0.1 10");
+                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle annoyingvillagers:spark ~ ~ ~ 0 0 0 0.1 10");
                     }
                 } else {
                     enchantment = PROJECTILE_PROTECTION;

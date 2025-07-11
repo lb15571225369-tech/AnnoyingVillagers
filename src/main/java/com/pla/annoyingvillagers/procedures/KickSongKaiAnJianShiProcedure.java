@@ -1,27 +1,18 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.pla.annoyingvillagers.util.DelayedTask;
-import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.TickEvent.ServerTickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import tictim.paraglider.capabilities.Caps;
-import tictim.paraglider.capabilities.PlayerMovement;
 
 public class KickSongKaiAnJianShiProcedure {
 
     public static void execute(LevelAccessor levelaccessor, final Entity entity) {
         if (entity != null) {
-            PlayerMovement playermovement = (PlayerMovement)entity.getCapability(Caps.playerMovement, (Direction)null).resolve().orElseThrow();
-
-            if (playermovement.canAction() && entity.isShiftKeyDown() && entity.isSprinting()) {
+            if (entity.isShiftKeyDown() && entity.isSprinting()) {
                 ItemStack itemstack;
 
                 if (entity instanceof LivingEntity) {

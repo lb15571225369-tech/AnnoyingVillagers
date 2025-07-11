@@ -22,7 +22,7 @@ public class BlueDemonSkillLightingEffectZaiXiaoGuoChiXuShiMeiKeFaShengProcedure
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect clear @s annoying_villagersbychentu:gedang");
+                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect clear @s annoyingvillagers:gedang");
             }
 
         }

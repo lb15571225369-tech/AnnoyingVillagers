@@ -14,8 +14,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import com.pla.annoyingvillagers.capabilities.AVCategories;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
-import tictim.paraglider.capabilities.Caps;
-import tictim.paraglider.capabilities.PlayerMovement;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.utils.AttackResult.ResultType;
@@ -80,13 +78,6 @@ public class Clash extends PassiveSkill {
                     }
 
                     serverplayer.setDeltaMovement(new Vec3(serverplayer.getLookAngle().x * -0.2D, 0.0D, serverplayer.getLookAngle().z * -0.2D));
-                    PlayerMovement playermovement = (PlayerMovement) serverplayer.getCapability(Caps.playerMovement, (Direction) null).resolve().orElseThrow();
-
-                    if (!playermovement.canAction()) {
-                        playerpatch.playAnimationSynchronized(Animations.BIPED_COMMON_NEUTRALIZED, 0.0F);
-                        playerpatch.playSound(EpicFightSounds.NEUTRALIZE_MOBS, -0.05F, 0.1F);
-                    }
-
                     if (serverplayer.level instanceof ServerLevel) {
                         ((HitParticleType) EpicFightParticles.HIT_BLUNT.get()).spawnParticleWithArgument((ServerLevel) serverplayer.level, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, serverplayer, damagesource.getEntity());
                     }
@@ -95,7 +86,7 @@ public class Clash extends PassiveSkill {
                     ItemStack itemstack1 = serverplayer.getOffhandItem();
 
                     if (!serverplayer.level.isClientSide() && serverplayer.getServer() != null) {
-                        serverplayer.getServer().getCommands().performCommand(serverplayer.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute at @s run particle annoying_villagersbychentu:spark ^ ^1.5 ^0.8 0 0 0 0.1 100");
+                        serverplayer.getServer().getCommands().performCommand(serverplayer.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100");
                     }
 
                     serverplayer.getServer().getCommands().performCommand(serverplayer.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/impactful @s shake 15 10 10");

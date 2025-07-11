@@ -23,8 +23,6 @@ import com.pla.annoyingvillagers.animations.types.HeavyAttackAnimation;
 import com.pla.annoyingvillagers.animations.types.KickAttackAnimation;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import reascer.wom.gameasset.WOMAnimations;
-import tictim.paraglider.capabilities.Caps;
-import tictim.paraglider.capabilities.PlayerMovement;
 import yesman.epicfight.api.animation.types.AttackAnimation;
 import yesman.epicfight.api.animation.types.DashAttackAnimation;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
@@ -97,7 +95,7 @@ public class ParryProcedure {
                                         }
 
                                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                            entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle annoying_villagersbychentu:spark ^ ^1.5 ^0.8 0 0 0 0.1 100");
+                                            entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100");
                                         }
 
                                         humanoidmobpatch1.playSound(EpicFightSounds.CLASH, -0.05F, 0.1F);
@@ -128,7 +126,7 @@ public class ParryProcedure {
                                             }
 
                                             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle annoying_villagersbychentu:spark ^ ^1.5 ^0.8 0 0 0 0.1 100");
+                                                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100");
                                             }
 
                                             humanoidmobpatch1.playSound(EpicFightSounds.CLASH, -0.05F, 0.1F);
@@ -189,17 +187,13 @@ public class ParryProcedure {
                                 if (event != null && event.isCancelable()) {
                                     event.setCanceled(true);
                                 }
-
-                                PlayerMovement playermovement = (PlayerMovement)entity.getCapability(Caps.playerMovement, (Direction)null).resolve().orElseThrow();
-
-                                playermovement.takeStamina(100, false, false);
                                 playerpatch.playSound(EpicFightSounds.CLASH, -0.05F, 0.1F);
                                 if (!entity.level.isClientSide() && entity.getServer() != null) {
                                     entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "impactful @s shake 15 5 6");
                                 }
 
                                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle annoying_villagersbychentu:spark ^ ^1.5 ^0.8 0 0 0 0.1 100");
+                                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100");
                                 }
 
                                 if (!entity.level.isClientSide() && entity.getServer() != null) {
@@ -240,9 +234,6 @@ public class ParryProcedure {
                                     };
                                 }
                             } else {
-                                PlayerMovement playermovement1 = (PlayerMovement)entity.getCapability(Caps.playerMovement, (Direction)null).resolve().orElseThrow();
-
-                                playermovement1.takeStamina(40, false, false);
                                 new DelayedTask(1) {
                                     @Override
                                     public void run() {
@@ -316,12 +307,8 @@ public class ParryProcedure {
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
                                 entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "impactful @s shake 15 5 6");
                             }
-
-                            PlayerMovement playermovement2 = (PlayerMovement) entity.getCapability(Caps.playerMovement, (Direction) null).resolve().orElseThrow();
-
-                            playermovement2.takeStamina(15, false, false);
                         } else if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle annoying_villagersbychentu:spark ^ ^1.5 ^0.8 0 0 0 0.1 100");
+                            entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100");
                         }
 
                         if (entity1 instanceof Player) {

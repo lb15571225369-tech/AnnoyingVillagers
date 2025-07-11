@@ -1,17 +1,13 @@
 package com.pla.annoyingvillagers.init;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.potion.*;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import com.pla.annoyingvillagers.potion.BlueDemonSkillLightingEffectMobEffect;
-import com.pla.annoyingvillagers.potion.ECMobEffect;
-import com.pla.annoyingvillagers.potion.EcPlayerMobEffect;
-import com.pla.annoyingvillagers.potion.EnchantBedEffectMobEffect;
-import com.pla.annoyingvillagers.potion.GreatSwordExecuteBlockMobEffect;
 //import com.pla.annoyingvillagers.potion.HerobrineEffectMobEffect;
-import com.pla.annoyingvillagers.potion.NpcKickEffectMobEffect;
+
 
 public class AnnoyingVillagersModMobEffects {
 
@@ -36,5 +32,14 @@ public class AnnoyingVillagersModMobEffects {
     });
     public static final RegistryObject<MobEffect> NPC_KICK_EFFECT = AnnoyingVillagersModMobEffects.REGISTRY.register("npc_kick_effect", () -> {
         return new NpcKickEffectMobEffect();
+    });
+    public static final RegistryObject<MobEffect> ELECTIFY = AnnoyingVillagersModMobEffects.REGISTRY.register("electify", () -> {
+        return new ElectifyMobEffect();
+    });
+    public static final RegistryObject<MobEffect> GEDANG = AnnoyingVillagersModMobEffects.REGISTRY.register("gedang", () -> {
+        return new GedangMobEffect();
+    });
+    public static final RegistryObject<MobEffect> FULU = AnnoyingVillagersModMobEffects.REGISTRY.register("fulu", () -> {
+        return new FuluMobEffect();
     });
 }

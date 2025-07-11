@@ -31,9 +31,9 @@ public class PutongheiyaoshiFangZhiFangKuaiShiProcedure {
         if (levelaccessor instanceof Level) {
             level = (Level)levelaccessor;
             if (!level.isClientSide()) {
-                level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagersbychentu:obplace")), SoundSource.BLOCKS, (float)Mth.nextDouble(new Random(), 0.2D, 0.6D), 1.0F);
+                level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:obplace")), SoundSource.BLOCKS, (float)Mth.nextDouble(new Random(), 0.2D, 0.6D), 1.0F);
             } else {
-                level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoying_villagersbychentu:obplace")), SoundSource.BLOCKS, (float)Mth.nextDouble(new Random(), 0.2D, 0.6D), 1.0F, false);
+                level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:obplace")), SoundSource.BLOCKS, (float)Mth.nextDouble(new Random(), 0.2D, 0.6D), 1.0F, false);
             }
         }
         new DelayedTask(25) {

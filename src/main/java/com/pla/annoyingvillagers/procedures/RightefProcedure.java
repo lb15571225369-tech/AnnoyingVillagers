@@ -49,7 +49,7 @@ public class RightefProcedure {
             }
 
             if (EnchantmentHelper.getItemEnchantmentLevel(enchantment, itemstack) != 0 && !entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect give @s annoying_villagersbychentu:electify 4 0 true");
+                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect give @s annoyingvillagers:electify 4 0 true");
             }
 
             enchantment = Enchantments.FIRE_ASPECT;

@@ -22,8 +22,6 @@ import com.pla.annoyingvillagers.capabilities.AVCategories;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import reascer.wom.gameasset.WOMAnimations;
-import tictim.paraglider.capabilities.Caps;
-import tictim.paraglider.capabilities.PlayerMovement;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.LongHitAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
@@ -105,13 +103,10 @@ public class Execute {
 
     private static void handleExecution(ServerPlayer serverplayer, LivingEntityPatch<?> livingentitypatch, PlayerPatch<?> playerpatch) {
         if (!((LivingEntity) livingentitypatch.getOriginal()).hasEffect((MobEffect) AnnoyingVillagersModMobEffects.EC.get()) && !serverplayer.getPersistentData().getBoolean("kick_x")) {
-            PlayerMovement playermovement = (PlayerMovement) serverplayer.getCapability(Caps.playerMovement, (Direction) null).resolve().orElseThrow();
-
-            if (playermovement.canAction() && ((LivingEntity) livingentitypatch.getOriginal()).isAlive()) {
+            if (((LivingEntity) livingentitypatch.getOriginal()).isAlive()) {
                 Vec3 vec3;
 
                 if ((playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.SWORD || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.SHIELD) && (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.AXE || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.SHIELD) && (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.DAGGER || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.SHIELD) && (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.LONGSWORD || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.SHIELD)) {
-                    PlayerMovement playermovement1;
 
                     if ((playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.TACHI || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI) && (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.TACHI || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.SWORD) && (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.SWORD || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI) && (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.TACHI || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.AXE) && (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.SWORD || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.SWORD) && (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.DAGGER || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.DAGGER)) {
                         if ((playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.AXE || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.AXE) && (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.AXE || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI) && (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.AXE || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.SWORD)) {
@@ -132,8 +127,6 @@ public class Execute {
                                     serverplayer.teleportTo(((LivingEntity) livingentitypatch.getOriginal()).getX() + vec3.x * 1.4D, ((LivingEntity) livingentitypatch.getOriginal()).getY(), ((LivingEntity) livingentitypatch.getOriginal()).getZ() + vec3.z * 1.4D);
                                     serverplayer.lookAt(Anchor.EYES, new Vec3(((LivingEntity) livingentitypatch.getOriginal()).getX(), ((LivingEntity) livingentitypatch.getOriginal()).getY() + 1.0D, ((LivingEntity) livingentitypatch.getOriginal()).getZ()));
                                     ((LivingEntity) livingentitypatch.getOriginal()).lookAt(Anchor.EYES, new Vec3(serverplayer.getX(), serverplayer.getY() + 1.0D, serverplayer.getZ()));
-                                    playermovement1 = (PlayerMovement) serverplayer.getCapability(Caps.playerMovement, (Direction) null).resolve().orElseThrow();
-                                    playermovement1.takeStamina(100, false, false);
                                     playerpatch.playAnimationSynchronized(AVAnimations.EXECUTE_ONE_HAND, 0.0F);
                                     livingentitypatch.playAnimationSynchronized(AVAnimations.EXECUTE_DUAL_HIT, 0.0F);
                                 } else {
@@ -161,8 +154,6 @@ public class Execute {
                             serverplayer.teleportTo(((LivingEntity) livingentitypatch.getOriginal()).getX() + vec3.x * 1.85D, ((LivingEntity) livingentitypatch.getOriginal()).getY(), ((LivingEntity) livingentitypatch.getOriginal()).getZ() + vec3.z * 1.85D);
                             serverplayer.lookAt(Anchor.EYES, new Vec3(((LivingEntity) livingentitypatch.getOriginal()).getX(), ((LivingEntity) livingentitypatch.getOriginal()).getY() + 1.0D, ((LivingEntity) livingentitypatch.getOriginal()).getZ()));
                             ((LivingEntity) livingentitypatch.getOriginal()).lookAt(Anchor.EYES, new Vec3(serverplayer.getX(), serverplayer.getY() + 1.0D, serverplayer.getZ()));
-                            playermovement1 = (PlayerMovement) serverplayer.getCapability(Caps.playerMovement, (Direction) null).resolve().orElseThrow();
-                            playermovement1.takeStamina(100, false, false);
                             playerpatch.playAnimationSynchronized(AVAnimations.EXECUTE_DUAL_AXE, 0.0F);
                             livingentitypatch.playAnimationSynchronized(AVAnimations.EXECUTE_DUAL_AXE_HIT, 0.0F);
                         }
@@ -183,8 +174,6 @@ public class Execute {
                         serverplayer.teleportTo(((LivingEntity) livingentitypatch.getOriginal()).getX() + vec3.x * 1.9D, ((LivingEntity) livingentitypatch.getOriginal()).getY(), ((LivingEntity) livingentitypatch.getOriginal()).getZ() + vec3.z * 1.9D);
                         serverplayer.lookAt(Anchor.EYES, new Vec3(((LivingEntity) livingentitypatch.getOriginal()).getX(), ((LivingEntity) livingentitypatch.getOriginal()).getY() + 1.0D, ((LivingEntity) livingentitypatch.getOriginal()).getZ()));
                         ((LivingEntity) livingentitypatch.getOriginal()).lookAt(Anchor.EYES, new Vec3(serverplayer.getX(), serverplayer.getY() + 1.0D, serverplayer.getZ()));
-                        playermovement1 = (PlayerMovement) serverplayer.getCapability(Caps.playerMovement, (Direction) null).resolve().orElseThrow();
-                        playermovement1.takeStamina(100, false, false);
                         playerpatch.playAnimationSynchronized(AVAnimations.EXECUTE_DUAL, 0.0F);
                         livingentitypatch.playAnimationSynchronized(AVAnimations.EXECUTE_DUAL_HIT, 0.0F);
                     }
@@ -207,16 +196,12 @@ public class Execute {
                                 serverplayer.teleportTo(((LivingEntity) livingentitypatch.getOriginal()).getX() + vec3.x * 1.35D, ((LivingEntity) livingentitypatch.getOriginal()).getY(), ((LivingEntity) livingentitypatch.getOriginal()).getZ() + vec3.z * 1.35D);
                                 serverplayer.lookAt(Anchor.EYES, new Vec3(((LivingEntity) livingentitypatch.getOriginal()).getX(), ((LivingEntity) livingentitypatch.getOriginal()).getY() + 1.0D, ((LivingEntity) livingentitypatch.getOriginal()).getZ()));
                                 ((LivingEntity) livingentitypatch.getOriginal()).lookAt(Anchor.EYES, new Vec3(serverplayer.getX(), serverplayer.getY() + 1.0D, serverplayer.getZ()));
-                                playermovement1 = (PlayerMovement) serverplayer.getCapability(Caps.playerMovement, (Direction) null).resolve().orElseThrow();
-                                playermovement1.takeStamina(100, false, false);
                                 playerpatch.playAnimationSynchronized(WOMAnimations.TORMENT_CHARGED_ATTACK_1, 0.0F);
                                 livingentitypatch.playAnimationSynchronized(AVAnimations.EXECUTED_SKILL, 0.0F);
                             }
                         } else {
                             serverplayer.getPersistentData().putBoolean("kick_x", true);
                             vec3 = ((LivingEntity) livingentitypatch.getOriginal()).getViewVector(1.0F);
-                            playermovement1 = (PlayerMovement) serverplayer.getCapability(Caps.playerMovement, (Direction) null).resolve().orElseThrow();
-                            playermovement1.takeStamina(100, false, false);
                             playerpatch.setGrapplingTarget((LivingEntity) livingentitypatch.getOriginal());
                             serverplayer.addEffect(new MobEffectInstance((MobEffect) EpicFightMobEffects.STUN_IMMUNITY.get(), 100, 0, false, false));
                             serverplayer.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 50, 10, false, false));
@@ -249,8 +234,6 @@ public class Execute {
                         serverplayer.teleportTo(((LivingEntity) livingentitypatch.getOriginal()).getX() + vec3.x * 1.5D, ((LivingEntity) livingentitypatch.getOriginal()).getY(), ((LivingEntity) livingentitypatch.getOriginal()).getZ() + vec3.z * 1.5D);
                         serverplayer.lookAt(Anchor.EYES, new Vec3(((LivingEntity) livingentitypatch.getOriginal()).getX(), ((LivingEntity) livingentitypatch.getOriginal()).getY() + 1.0D, ((LivingEntity) livingentitypatch.getOriginal()).getZ()));
                         ((LivingEntity) livingentitypatch.getOriginal()).lookAt(Anchor.EYES, new Vec3(serverplayer.getX(), serverplayer.getY() + 1.0D, serverplayer.getZ()));
-                        playermovement1 = (PlayerMovement) serverplayer.getCapability(Caps.playerMovement, (Direction) null).resolve().orElseThrow();
-                        playermovement1.takeStamina(100, false, false);
                         playerpatch.playAnimationSynchronized(AVAnimations.EXECUTE_GREATSWORD, 0.0F);
                         livingentitypatch.playAnimationSynchronized(AVAnimations.EXECUTE_GREATSWORD_HIT, 0.0F);
                     }

@@ -42,7 +42,7 @@ public class BlueDemon2DangShiTiGengXinKeShiProcedure {
                 return true;
             }).isEmpty() && Math.random() <= 0.02D) {
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @e[type=minecraft:trident] run particle annoying_villagersbychentu:dianhu ^ ^ ^0.1 0.2 0.2 0.1 0 1");
+                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @e[type=minecraft:trident] run particle annoyingvillagers:dianhu ^ ^ ^0.1 0.2 0.2 0.1 0 1");
                 }
 
                 if (levelaccessor instanceof Level) {
@@ -78,7 +78,7 @@ public class BlueDemon2DangShiTiGengXinKeShiProcedure {
 
                 if (entity1 == livingentity && Math.random() <= 0.12D) {
                     if (!entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute at @s run particle annoying_villagersbychentu:dianhu ^ ^ ^ 0.3 1.2 0.3 0 1");
+                        entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute at @s run particle annoyingvillagers:dianhu ^ ^ ^ 0.3 1.2 0.3 0 1");
                     }
 
                     if (Math.random() <= 0.8D && levelaccessor instanceof Level) {

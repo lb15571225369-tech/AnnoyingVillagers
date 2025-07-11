@@ -16,6 +16,7 @@ import yesman.epicfight.api.data.reloader.SkillManager;
 import yesman.epicfight.api.forgeevent.SkillBuildEvent;
 import yesman.epicfight.api.utils.math.ValueModifier;
 import yesman.epicfight.skill.Skill;
+import yesman.epicfight.skill.SkillCategory;
 import yesman.epicfight.skill.passive.PassiveSkill;
 import yesman.epicfight.skill.weaponinnate.SimpleWeaponInnateSkill;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
@@ -32,12 +33,30 @@ public class AVSkill {
     public static Skill EARTHQUAKE;
     public static Skill DUALGREATSWORD;
 
+    public static final SkillCategory INTERNAL_ONLY = new SkillCategory() {
+        @Override
+        public int universalOrdinal() { return 0; }
+
+        @Override
+        public boolean shouldSave() { return false; }
+
+        @Override
+        public boolean shouldSynchronize() { return false; }
+
+        @Override
+        public boolean learnable() { return false; }
+
+        @Override
+        public String toString() { return "internal_only"; }
+    };
+
+
     public static void registerSkills() {
         SkillManager.register(SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(new ResourceLocation(AnnoyingVillagers.MODID, "biped/combat/dancing_edge")), AnnoyingVillagers.MODID, "dual_dancing_edge");
         SkillManager.register(SpinningDeath::new, SpinningDeath.createWeaponInnateBuilder().setCreativeTab(EpicFightCreativeTabs.ITEMS), AnnoyingVillagers.MODID, "spinning_death");
         SkillManager.register(Clash::new, PassiveSkill.createPassiveBuilder().setCreativeTab(EpicFightCreativeTabs.ITEMS), AnnoyingVillagers.MODID, "clash");
-        SkillManager.register(EarthquakeSkill::new, EarthquakeSkill.createWeaponInnateBuilder().setCreativeTab(EpicFightCreativeTabs.ITEMS), AnnoyingVillagers.MODID, "earthquake");
-        SkillManager.register(DualGreatswordSkill::new, PassiveSkill.createPassiveBuilder().setCreativeTab(EpicFightCreativeTabs.ITEMS), AnnoyingVillagers.MODID, "dualgreatsword");
+        SkillManager.register(EarthquakeSkill::new, EarthquakeSkill.createWeaponInnateBuilder().setCategory(INTERNAL_ONLY), AnnoyingVillagers.MODID, "earthquake");
+        SkillManager.register(DualGreatswordSkill::new, PassiveSkill.createPassiveBuilder().setCategory(INTERNAL_ONLY), AnnoyingVillagers.MODID, "dualgreatsword");
     }
 
     @SubscribeEvent

@@ -11,8 +11,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
-import tictim.paraglider.capabilities.Caps;
-import tictim.paraglider.capabilities.PlayerMovement;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.LongHitAnimation;
 import yesman.epicfight.gameasset.Animations;
@@ -35,9 +33,6 @@ public class WeaponsMoreAttackAnXiaAnJianShiProcedure {
     public static void execute(LevelAccessor world, Entity entity) {
         if (entity == null || isSpectatorGamemode(entity)) return;
 
-        PlayerMovement movement = entity.getCapability(Caps.playerMovement, null).resolve().orElseThrow();
-        if (!movement.canAction()) return;
-
         LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
         if (patch == null) return;
 
@@ -53,8 +48,6 @@ public class WeaponsMoreAttackAnXiaAnJianShiProcedure {
             }
         };
         PlayerPatch<?> playerpatch = (PlayerPatch) EpicFightCapabilities.getEntityPatch(entity, PlayerPatch.class);
-        PlayerMovement playermovement1;
-
         if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.SWORD && playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.TACHI && playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.LONGSWORD && playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.UCHIGATANA) {
             if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.AXE) {
                 if (playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE) {
@@ -62,12 +55,7 @@ public class WeaponsMoreAttackAnXiaAnJianShiProcedure {
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
                             entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/spinning_death\" 0 1");
                         }
-
-                        playermovement1 = entity.getCapability(Caps.playerMovement, null).resolve().orElseThrow();
-                        playermovement1.takeStamina(40, false, false);
                     } else {
-                        playermovement1 = entity.getCapability(Caps.playerMovement, null).resolve().orElseThrow();
-                        playermovement1.takeStamina(40, false, false);
                         if (entity.getPersistentData().getDouble("axe_a") < 1.0D) {
                             entity.getPersistentData().putDouble("axe_a", 1.5D);
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
@@ -138,8 +126,6 @@ public class WeaponsMoreAttackAnXiaAnJianShiProcedure {
                         }
                     }
                 } else {
-                    playermovement1 = entity.getCapability(Caps.playerMovement, null).resolve().orElseThrow();
-                    playermovement1.takeStamina(50, false, false);
                     if (entity.getPersistentData().getDouble("axe_a") > 2.0D) {
                         entity.getPersistentData().putDouble("axe_a", 0.0D);
                     }
@@ -175,8 +161,6 @@ public class WeaponsMoreAttackAnXiaAnJianShiProcedure {
                     }
                 }
             } else if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.FIST && !entity.getPersistentData().getBoolean("fist_a")) {
-                playermovement1 = entity.getCapability(Caps.playerMovement, null).resolve().orElseThrow();
-                playermovement1.takeStamina(30, false, false);
                 if (entity.isSprinting()) {
                     if (entity.isShiftKeyDown()) {
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
@@ -277,8 +261,6 @@ public class WeaponsMoreAttackAnXiaAnJianShiProcedure {
                 }
             }
         } else if ((playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.SWORD || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.SWORD) && (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.TACHI || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI) && (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.TACHI || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.SWORD) && (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.SWORD || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI)) {
-            playermovement1 = entity.getCapability(Caps.playerMovement, null).resolve().orElseThrow();
-            playermovement1.takeStamina(40, false, false);
             if (entity.getPersistentData().getDouble("sword_a") > 3.5D) {
                 entity.getPersistentData().putDouble("sword_a", 0.0D);
             } else if (entity.getPersistentData().getDouble("sword_a") == 0.0D) {
@@ -317,14 +299,10 @@ public class WeaponsMoreAttackAnXiaAnJianShiProcedure {
                 };
             }
         } else {
-            playermovement1 = entity.getCapability(Caps.playerMovement, null).resolve().orElseThrow();
-            playermovement1.takeStamina(40, false, false);
             if (dynamicanimation == Animations.DANCING_EDGE) {
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
                     entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/dual_sword_skill\" 0 1");
                 }
-
-                playermovement1.takeStamina(100, false, false);
             } else {
                 if (entity.getPersistentData().getDouble("sword_a") < 1.0D) {
                     entity.getPersistentData().putDouble("sword_a", 1.0D);
@@ -383,8 +361,6 @@ public class WeaponsMoreAttackAnXiaAnJianShiProcedure {
         }
 
         if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.GREATSWORD || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.LEGENDARYSWORD || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.HARDGREATSWORD) {
-            playermovement1 = entity.getCapability(Caps.playerMovement, null).resolve().orElseThrow();
-            playermovement1.takeStamina(60, false, false);
             LivingEntityPatch<?> livingentitypatch1 = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
             DynamicAnimation dynamicanimation2 = livingentitypatch1.getAnimator().getPlayerFor(null).getAnimation();
 
@@ -422,8 +398,6 @@ public class WeaponsMoreAttackAnXiaAnJianShiProcedure {
         }
 
         if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.SPEAR) {
-            playermovement1 = entity.getCapability(Caps.playerMovement, null).resolve().orElseThrow();
-            playermovement1.takeStamina(45, false, false);
             if (entity.getPersistentData().getDouble("sword_a") < 1.0D) {
                 entity.getPersistentData().putDouble("sword_a", 1.5D);
                 if (!entity.level.isClientSide() && entity.getServer() != null) {

@@ -32,8 +32,6 @@ import com.pla.annoyingvillagers.animations.types.KickAttackAnimation;
 import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
 import reascer.wom.gameasset.WOMColliders;
 import reascer.wom.particle.WOMParticles;
-import tictim.paraglider.capabilities.Caps;
-import tictim.paraglider.capabilities.PlayerMovement;
 import yesman.epicfight.api.animation.Joint;
 import yesman.epicfight.api.animation.property.AnimationEvent.AnimationEventConsumer;
 import yesman.epicfight.api.animation.property.AnimationEvent.Side;
@@ -544,13 +542,7 @@ public class AVAnimations {
         };
         private static final AnimationEventConsumer END_ATTACK = (livingentitypatch, staticanimation, aobject) -> {
             if (livingentitypatch instanceof PlayerPatch) {
-                PlayerMovement playermovement = (PlayerMovement) ((LivingEntity) livingentitypatch.getOriginal()).getCapability(Caps.playerMovement, (Direction) null).resolve().orElseThrow();
-
-                if (playermovement.canAction()) {
-                    livingentitypatch.playAnimationSynchronized(AVAnimations.DUAL_END, 0.1F);
-                } else {
-                    livingentitypatch.playAnimationSynchronized(AVAnimations.TRIED, 0.1F);
-                }
+                livingentitypatch.playAnimationSynchronized(AVAnimations.DUAL_END, 0.1F);
             }
 
         };

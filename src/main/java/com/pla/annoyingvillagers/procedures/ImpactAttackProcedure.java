@@ -47,7 +47,7 @@ public class ImpactAttackProcedure {
             if (entity1 instanceof ThrownTrident && entity2 instanceof BlueDemonEntity) {
                 entity.hurt(DamageSource.MAGIC, (float) (d0 * 7.0D));
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect give @s annoying_villagersbychentu:electify 5 0 true");
+                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect give @s annoyingvillagers:electify 5 0 true");
                 }
             }
 

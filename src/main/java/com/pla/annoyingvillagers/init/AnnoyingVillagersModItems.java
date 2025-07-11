@@ -63,9 +63,9 @@ public class AnnoyingVillagersModItems {
     });
 //    public static final RegistryObject<Item> DROP_ALL_ITEM_SPAWN = block(AnnoyingVillagersModBlocks.DROP_ALL_ITEM_SPAWN, (CreativeModeTab) null);
 //    public static final RegistryObject<Item> C_4SPAWN = block(AnnoyingVillagersModBlocks.C_4SPAWN, (CreativeModeTab) null);
-    public static final RegistryObject<Item> NONE = AnnoyingVillagersModItems.REGISTRY.register("none", () -> {
-        return new NoneItem();
-    });
+//    public static final RegistryObject<Item> NONE = AnnoyingVillagersModItems.REGISTRY.register("none", () -> {
+//        return new NoneItem();
+//    });
     public static final RegistryObject<Item> HEAVY_ATTACK_LEGENDARY_SWORD = AnnoyingVillagersModItems.REGISTRY.register("heavy_attack_legendary_sword", () -> {
         return new HeavyAttackLegendarySwordItem();
     });
@@ -78,9 +78,9 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> WAKE_UP_LEGENDARY_SWORD = AnnoyingVillagersModItems.REGISTRY.register("wake_up_legendary_sword", () -> {
         return new WakeUpLegendarySwordItem();
     });
-    public static final RegistryObject<Item> UPDATE = AnnoyingVillagersModItems.REGISTRY.register("update", () -> {
-        return new UpdateItem();
-    });
+//    public static final RegistryObject<Item> UPDATE = AnnoyingVillagersModItems.REGISTRY.register("update", () -> {
+//        return new UpdateItem();
+//    });
     public static final RegistryObject<Item> ANYINGHEIYAOSHIWUQI = AnnoyingVillagersModItems.REGISTRY.register("anyingheiyaoshiwuqi", () -> {
         return new AnyingheiyaoshiwuqiItem();
     });
