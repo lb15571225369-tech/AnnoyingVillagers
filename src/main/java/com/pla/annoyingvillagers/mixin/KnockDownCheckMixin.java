@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.Mixin;
+package com.pla.annoyingvillagers.mixin;
 
 import net.minecraft.world.damagesource.DamageSource;
 import org.spongepowered.asm.mixin.Mixin;

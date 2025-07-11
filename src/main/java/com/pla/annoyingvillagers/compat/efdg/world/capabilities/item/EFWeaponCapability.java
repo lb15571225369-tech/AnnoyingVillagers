@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.module.efdg.world.capabilities.item;
+package com.pla.annoyingvillagers.compat.efdg.world.capabilities.item;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;

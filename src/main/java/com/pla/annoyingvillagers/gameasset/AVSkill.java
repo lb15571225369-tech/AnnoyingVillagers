@@ -3,8 +3,8 @@ package com.pla.annoyingvillagers.gameasset;
 import java.util.Set;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.module.efdg.skill.DualGreatswordSkill;
-import com.pla.annoyingvillagers.module.efdg.skill.EarthquakeSkill;
+import com.pla.annoyingvillagers.compat.efdg.skill.DualGreatswordSkill;
+import com.pla.annoyingvillagers.compat.efdg.skill.EarthquakeSkill;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;

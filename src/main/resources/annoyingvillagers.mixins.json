@@ -1,12 +1,13 @@
 {
   "required": true,
-  "package": "pugilist_steve.Mixin",
+  "package": "com.pla.annoyingvillagers.mixin",
   "compatibilityLevel": "JAVA_17",
   "refmap": "annoyingvillagers.mixins.refmap.json",
   "mixins": [
     "NoKnockDownProMixin",
     "KnockDownCheckMixin",
-    "MoreParryMixin"
+    "MoreParryMixin",
+    "PlayerMobTargetMixin"
   ],
   "client": [
 

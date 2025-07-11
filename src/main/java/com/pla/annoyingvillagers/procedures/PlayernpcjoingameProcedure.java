@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.procedures;
 import javax.annotation.Nullable;
 
 import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.util.EquipmentDataLoader;
 import net.minecraft.Util;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.TextComponent;
@@ -15,14 +16,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.TickEvent.ServerTickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Random;
 
 @EventBusSubscriber
 public class PlayernpcjoingameProcedure {
@@ -45,6 +47,15 @@ public class PlayernpcjoingameProcedure {
             LivingEntity livingentity;
 
             if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("player_mobs:player_mob")) {
+                if (!entity.level.isClientSide() && entity.getServer() != null) {
+                    List<String> commands = EquipmentDataLoader.getEquipCommands(0.5f);
+                    for (String cmd : commands) {
+                        entity.getServer().getCommands().performCommand(
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
+                                cmd
+                        );
+                    }
+                }
                 ((LivingEntity)entity).getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0D);
                 ((LivingEntity)entity).getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(1.0D);
                 ((LivingEntity)entity).getAttribute(Attributes.ARMOR).setBaseValue(0.0D);
@@ -57,9 +68,6 @@ public class PlayernpcjoingameProcedure {
 
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
                     entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "team modify villagers friendlyFire false");
-                }
-
-                if (!entity.level.isClientSide() && entity.getServer() != null) {
                     entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "data merge entity @s {CanPickUpLoot: 1b}");
                 }
 
@@ -144,7 +152,7 @@ public class PlayernpcjoingameProcedure {
             }
 
             if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("epicfight:dodge_left") && !entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "playsound annoying_villagersbychentu:whoosh neutral @p");
+                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "playsound annoyingvillagers:whoosh neutral @p");
             }
 
         }

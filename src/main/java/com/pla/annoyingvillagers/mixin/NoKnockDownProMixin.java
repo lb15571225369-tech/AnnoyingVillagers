@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.Mixin;
+package com.pla.annoyingvillagers.mixin;
 
 import java.util.UUID;
 import org.spongepowered.asm.mixin.Final;

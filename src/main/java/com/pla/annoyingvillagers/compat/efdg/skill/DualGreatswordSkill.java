@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.module.efdg.skill;
+package com.pla.annoyingvillagers.compat.efdg.skill;
 
 import yesman.epicfight.skill.Skill;
 import yesman.epicfight.skill.passive.PassiveSkill;

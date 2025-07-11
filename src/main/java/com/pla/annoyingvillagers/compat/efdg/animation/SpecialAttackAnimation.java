@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.module.efdg.animation;
+package com.pla.annoyingvillagers.compat.efdg.animation;
 
 import java.util.Iterator;
 import java.util.List;
@@ -26,7 +26,6 @@ import yesman.epicfight.api.animation.property.AnimationProperty.AttackAnimation
 import yesman.epicfight.api.animation.property.AnimationProperty.AttackPhaseProperty;
 import yesman.epicfight.api.animation.property.MoveCoordFunctions;
 import yesman.epicfight.api.animation.types.AttackAnimation;
-import yesman.epicfight.api.animation.types.AttackAnimation.Phase;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.EntityState;
 import yesman.epicfight.api.animation.types.EntityState.StateFactor;

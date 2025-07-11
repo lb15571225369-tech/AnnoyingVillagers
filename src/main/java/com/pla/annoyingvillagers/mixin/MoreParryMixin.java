@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.Mixin;
+package com.pla.annoyingvillagers.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -11,7 +11,6 @@ import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.guard.GuardSkill;
-import yesman.epicfight.skill.guard.GuardSkill.Builder;
 import yesman.epicfight.skill.guard.ParryingSkill;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.Styles;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
