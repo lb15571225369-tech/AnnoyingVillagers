@@ -51,7 +51,6 @@ public class EquipmentDataLoader extends SimpleJsonResourceReloadListener {
 
             String itemId = pool.get(RANDOM.nextInt(pool.size()));
             int damage = RANDOM.nextInt(25);
-
             cmds.add(String.format("item replace entity @s %s with %s{Damage:%d}", mapSlot(slot), itemId, damage));
         }
 
