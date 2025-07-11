@@ -2,7 +2,6 @@ package com.pla.annoyingvillagers.animations.types;
 
 import yesman.epicfight.api.animation.property.AnimationProperty.ActionAnimationProperty;
 import yesman.epicfight.api.animation.types.AttackAnimation;
-import yesman.epicfight.api.animation.types.AttackAnimation.Phase;
 import yesman.epicfight.api.animation.types.EntityState;
 import yesman.epicfight.api.animation.types.StateSpectrum;
 import yesman.epicfight.api.animation.types.StateSpectrum.Blueprint;

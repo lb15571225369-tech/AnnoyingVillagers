@@ -12,9 +12,6 @@ import net.minecraftforge.registries.RegistryObject;
 public class AnnoyingVillagersModMobEffects {
 
     public static final DeferredRegister<MobEffect> REGISTRY = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, AnnoyingVillagers.MODID);
-//    public static final RegistryObject<MobEffect> HEROBRINE_EFFECT = AnnoyingVillagersModMobEffects.REGISTRY.register("herobrine_effect", () -> {
-//        return new HerobrineEffectMobEffect();
-//    });
     public static final RegistryObject<MobEffect> ENCHANT_BED_EFFECT = AnnoyingVillagersModMobEffects.REGISTRY.register("enchant_bed_effect", () -> {
         return new EnchantBedEffectMobEffect();
     });

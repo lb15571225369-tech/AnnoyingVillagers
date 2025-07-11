@@ -15,12 +15,6 @@ import net.minecraftforge.registries.RegistryObject;
 public class AnnoyingVillagersModBlocks {
 
     public static final DeferredRegister<Block> REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCKS, AnnoyingVillagers.MODID);
-//    public static final RegistryObject<Block> C_4 = AnnoyingVillagersModBlocks.REGISTRY.register("c_4", () -> {
-//        return new C4Block();
-//    });
-//    public static final RegistryObject<Block> C_4DAMAGE = AnnoyingVillagersModBlocks.REGISTRY.register("c_4damage", () -> {
-//        return new C4damageBlock();
-//    });
     public static final RegistryObject<Block> ENCHANT_BED = AnnoyingVillagersModBlocks.REGISTRY.register("enchant_bed", () -> {
         return new EnchantBedBlock();
     });
@@ -45,27 +39,17 @@ public class AnnoyingVillagersModBlocks {
     public static final RegistryObject<Block> PUTONGHEIYAOSHI_2 = AnnoyingVillagersModBlocks.REGISTRY.register("putongheiyaoshi_2", () -> {
         return new Putongheiyaoshi2Block();
     });
-//    public static final RegistryObject<Block> DROP_ALL_ITEM_SPAWN = AnnoyingVillagersModBlocks.REGISTRY.register("drop_all_item_spawn", () -> {
-//        return new DropAllItemSpawnBlock();
-//    });
-//    public static final RegistryObject<Block> C_4SPAWN = AnnoyingVillagersModBlocks.REGISTRY.register("c_4spawn", () -> {
-//        return new C4spawnBlock();
-//    });
 
     @EventBusSubscriber(bus = Bus.MOD, value = {Dist.CLIENT})
     public static class ClientSideHandler {
 
         @SubscribeEvent
         public static void clientSetup(FMLClientSetupEvent fmlclientsetupevent) {
-//            C4Block.registerRenderLayer();
-//            C4damageBlock.registerRenderLayer();
             EnchantBedBlock.registerRenderLayer();
             DarkObSsBlock.registerRenderLayer();
             NoneobBlock.registerRenderLayer();
             DarkobBlock.registerRenderLayer();
             DarkObUpBlock.registerRenderLayer();
-//            DropAllItemSpawnBlock.registerRenderLayer();
-//            C4spawnBlock.registerRenderLayer();
         }
 
         @SubscribeEvent
