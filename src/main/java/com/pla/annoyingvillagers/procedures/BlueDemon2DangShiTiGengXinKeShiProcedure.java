@@ -7,6 +7,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -96,30 +97,9 @@ public class BlueDemon2DangShiTiGengXinKeShiProcedure {
             if (entity.isPassenger()) {
                 entity.stopRiding();
             }
-
-            (new Object() {
-                private int ticks = 0;
-                private float waitTicks;
-                private LevelAccessor world;
-
-                public void start(LevelAccessor levelaccessor1, int i) {
-                    this.waitTicks = (float)i;
-                    MinecraftForge.EVENT_BUS.register(this);
-                    this.world = levelaccessor1;
-                }
-
-                @SubscribeEvent
-                public void tick(ServerTickEvent servertickevent) {
-                    if (servertickevent.phase == Phase.END) {
-                        ++this.ticks;
-                        if ((float)this.ticks >= this.waitTicks) {
-                            this.run();
-                        }
-                    }
-
-                }
-
-                private void run() {
+            new DelayedTask(1800) {
+                @Override
+                public void run() {
                     if (entity.isAlive()) {
                         Entity entity2 = entity;
 
@@ -131,10 +111,8 @@ public class BlueDemon2DangShiTiGengXinKeShiProcedure {
                             entity.discard();
                         }
                     }
-
-                    MinecraftForge.EVENT_BUS.unregister(this);
                 }
-            }).start(levelaccessor, 1800);
+            };
             LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch)EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 
             if (livingentitypatch != null) {
@@ -142,29 +120,9 @@ public class BlueDemon2DangShiTiGengXinKeShiProcedure {
 
                 if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
                     if (dynamicanimation instanceof KnockdownAnimation) {
-                        (new Object() {
-                            private int ticks = 0;
-                            private float waitTicks;
-                            private LevelAccessor world;
-
-                            public void start(LevelAccessor levelaccessor1, int i) {
-                                this.waitTicks = (float)i;
-                                MinecraftForge.EVENT_BUS.register(this);
-                                this.world = levelaccessor1;
-                            }
-
-                            @SubscribeEvent
-                            public void tick(ServerTickEvent servertickevent) {
-                                if (servertickevent.phase == Phase.END) {
-                                    ++this.ticks;
-                                    if ((float)this.ticks >= this.waitTicks) {
-                                        this.run();
-                                    }
-                                }
-
-                            }
-
-                            private void run() {
+                        new DelayedTask(10) {
+                            @Override
+                            public void run() {
                                 if (dynamicanimation instanceof KnockdownAnimation) {
                                     Entity entity2 = entity;
 
@@ -172,10 +130,8 @@ public class BlueDemon2DangShiTiGengXinKeShiProcedure {
                                         entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/skill/knockdown_wakeup_left\" 0 1");
                                     }
                                 }
-
-                                MinecraftForge.EVENT_BUS.unregister(this);
                             }
-                        }).start(levelaccessor, 10);
+                        };
                     }
                 } else {
                     entity.clearFire();

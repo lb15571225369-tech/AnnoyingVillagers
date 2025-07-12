@@ -77,6 +77,9 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> DAN_SHOU_ZHAN_SHEN_ZHI_REN = AnnoyingVillagersModItems.REGISTRY.register("dan_shou_zhan_shen_zhi_ren", () -> {
         return new DanShouZhanShenZhiRenItem();
     });
+    public static final RegistryObject<Item> ZUAN_SHI_CHANG_MAO = AnnoyingVillagersModItems.REGISTRY.register("zuan_shi_chang_mao", () -> {
+        return new ZuanShiChangMaoItem();
+    });
     private static RegistryObject<Item> block(RegistryObject<Block> registryobject, CreativeModeTab creativemodetab) {
         return AnnoyingVillagersModItems.REGISTRY.register(registryobject.getId().getPath(), () -> {
             return new BlockItem((Block) registryobject.get(), (new Properties()).tab(creativemodetab));

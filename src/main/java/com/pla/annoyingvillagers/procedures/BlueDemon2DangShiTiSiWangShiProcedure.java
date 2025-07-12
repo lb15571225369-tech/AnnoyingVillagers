@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -29,75 +30,47 @@ public class BlueDemon2DangShiTiSiWangShiProcedure {
 
     public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity) {
         if (entity != null) {
-                (new Object() {
-                    private int ticks = 0;
-                    private float waitTicks;
-                    private LevelAccessor world;
-
-                    public void start(LevelAccessor levelaccessor1, int i) {
-                        this.waitTicks = (float)i;
-                        MinecraftForge.EVENT_BUS.register(this);
-                        this.world = levelaccessor1;
+            new DelayedTask(30) {
+                @Override
+                public void run() {
+                    if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
+                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u84dd\u6076\u9b54> \u7ec8\u7a76\u9876\u4e0d\u4f4f\u8fd9\u66b4\u4e71\u4e16\u754c\u7684\u538b\u529b\u2026\u2026"), ChatType.SYSTEM, Util.NIL_UUID);
                     }
 
-                    @SubscribeEvent
-                    public void tick(ServerTickEvent servertickevent) {
-                        if (servertickevent.phase == Phase.END) {
-                            ++this.ticks;
-                            if ((float)this.ticks >= this.waitTicks) {
-                                this.run();
-                            }
-                        }
+                    LevelAccessor levelaccessor1 = levelaccessor;
+                    ServerLevel serverlevel;
 
+                    if (levelaccessor1 instanceof ServerLevel) {
+                        serverlevel = (ServerLevel)levelaccessor1;
+                        ThrownTrident throwntrident = new ThrownTrident(EntityType.TRIDENT, serverlevel);
+
+                        throwntrident.moveTo(d0, d1 + 16.0D, d2, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                        levelaccessor.addFreshEntity(throwntrident);
                     }
 
-                    private void run() {
-                        if (!this.world.isClientSide() && this.world.getServer() != null) {
-                            this.world.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u84dd\u6076\u9b54> \u7ec8\u7a76\u9876\u4e0d\u4f4f\u8fd9\u66b4\u4e71\u4e16\u754c\u7684\u538b\u529b\u2026\u2026"), ChatType.SYSTEM, Util.NIL_UUID);
-                        }
+                    levelaccessor1 = levelaccessor;
+                    if (levelaccessor1 instanceof ServerLevel) {
+                        serverlevel = (ServerLevel)levelaccessor1;
+                        LightningBolt lightningbolt = (LightningBolt)EntityType.LIGHTNING_BOLT.create(serverlevel);
 
-                        LevelAccessor levelaccessor1 = this.world;
-                        ServerLevel serverlevel;
-
-                        if (levelaccessor1 instanceof ServerLevel) {
-                            serverlevel = (ServerLevel)levelaccessor1;
-                            ThrownTrident throwntrident = new ThrownTrident(EntityType.TRIDENT, serverlevel);
-
-                            throwntrident.moveTo(d0, d1 + 16.0D, d2, this.world.getRandom().nextFloat() * 360.0F, 0.0F);
-//                            if (throwntrident instanceof Mob) {
-//                                Mob mob = (Mob)throwntrident;
-//
-//                                mob.finalizeSpawn(serverlevel, this.world.getCurrentDifficultyAt(throwntrident.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-//                            }
-
-                            this.world.addFreshEntity(throwntrident);
-                        }
-
-                        levelaccessor1 = this.world;
-                        if (levelaccessor1 instanceof ServerLevel) {
-                            serverlevel = (ServerLevel)levelaccessor1;
-                            LightningBolt lightningbolt = (LightningBolt)EntityType.LIGHTNING_BOLT.create(serverlevel);
-
-                            lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos(d0, d1, d2)));
-                            lightningbolt.setVisualOnly(true);
-                            serverlevel.addFreshEntity(lightningbolt);
-                        }
-
-                        levelaccessor1 = this.world;
-                        if (levelaccessor1 instanceof Level) {
-                            Level level = (Level)levelaccessor1;
-
-                            if (!level.isClientSide()) {
-                                ItemEntity itementity = new ItemEntity(level, d0, d1, d2, new ItemStack((ItemLike)AnnoyingVillagersModItems.BLUE_DEMON_CHESTPLATE_CHESTPLATE.get()));
-
-                                itementity.setPickUpDelay(10);
-                                level.addFreshEntity(itementity);
-                            }
-                        }
-
-                        MinecraftForge.EVENT_BUS.unregister(this);
+                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos(d0, d1, d2)));
+                        lightningbolt.setVisualOnly(true);
+                        serverlevel.addFreshEntity(lightningbolt);
                     }
-                }).start(levelaccessor, 30);
-            }
+
+                    levelaccessor1 = levelaccessor;
+                    if (levelaccessor1 instanceof Level) {
+                        Level level = (Level)levelaccessor1;
+
+                        if (!level.isClientSide()) {
+                            ItemEntity itementity = new ItemEntity(level, d0, d1, d2, new ItemStack((ItemLike)AnnoyingVillagersModItems.BLUE_DEMON_CHESTPLATE_CHESTPLATE.get()));
+
+                            itementity.setPickUpDelay(10);
+                            level.addFreshEntity(itementity);
+                        }
+                    }
+                }
+            };
+        }
     }
 }

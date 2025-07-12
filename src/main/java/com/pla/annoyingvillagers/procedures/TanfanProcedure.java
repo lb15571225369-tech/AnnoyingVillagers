@@ -196,8 +196,6 @@ public class TanfanProcedure {
                             if (!entity2.level.isClientSide() && entity2.getServer() != null) {
                                 entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/skill/grasping_spire_second\" 0 1");
                             }
-
-                            MinecraftForge.EVENT_BUS.unregister(this);
                         }
                     };
                 }

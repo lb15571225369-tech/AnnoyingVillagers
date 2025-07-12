@@ -378,5 +378,45 @@
         "stream": false
       }
     ]
+  },
+  "whoosh": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:whoosh",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:whoosh2",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:whoosh3",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:whoosh4",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:whoosh5",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:whoosh6",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:whoosh7",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:whoosh8",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:whoosh9",
+        "stream": false
+      }
+    ]
   }
 }

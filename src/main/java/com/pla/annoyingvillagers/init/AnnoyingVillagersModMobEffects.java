@@ -42,4 +42,7 @@ public class AnnoyingVillagersModMobEffects {
     public static final RegistryObject<MobEffect> NAILI = AnnoyingVillagersModMobEffects.REGISTRY.register("naili", () -> {
         return new NailiMobEffect();
     });
+    public static final RegistryObject<MobEffect> BLEED = AnnoyingVillagersModMobEffects.REGISTRY.register("bleed", () -> {
+        return new BleedMobEffect();
+    });
 }

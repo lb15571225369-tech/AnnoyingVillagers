@@ -7,7 +7,7 @@
     "NoKnockDownProMixin",
     "KnockDownCheckMixin",
     "MoreParryMixin",
-    "PlayerMobTargetMixin"
+    "PlayerMobMixin"
   ],
   "client": [
 

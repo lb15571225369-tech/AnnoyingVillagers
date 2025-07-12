@@ -41,7 +41,6 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 
 @Mod(AnnoyingVillagers.MODID)
 public class AnnoyingVillagers {
-
     public static final Logger LOGGER = LogManager.getLogger(AnnoyingVillagers.class);
     public static final String MODID = "annoyingvillagers";
     private static final String PROTOCOL_VERSION = "1";

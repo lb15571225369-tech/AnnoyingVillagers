@@ -10,7 +10,7 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 8,
+          "weight": 5,
           "name": "minecraft:golden_apple"
         },
         {
@@ -145,22 +145,22 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 8,
+          "weight": 3,
           "name": "minecraft:enchanted_golden_apple"
         },
         {
           "type": "minecraft:item",
-          "weight": 8,
+          "weight": 4,
           "name": "minecraft:ender_pearl"
         },
         {
           "type": "minecraft:item",
-          "weight": 8,
+          "weight": 4,
           "name": "minecraft:ender_pearl"
         },
         {
           "type": "minecraft:item",
-          "weight": 20,
+          "weight": 2,
           "name": "minecraft:ender_pearl"
         },
         {

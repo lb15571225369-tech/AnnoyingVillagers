@@ -6,6 +6,9 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -50,7 +53,15 @@ public class EquipmentDataLoader extends SimpleJsonResourceReloadListener {
             if (!alwaysEquip && RANDOM.nextFloat() > equipChanceArmor) continue;
 
             String itemId = pool.get(RANDOM.nextInt(pool.size()));
-            int damage = RANDOM.nextInt(25);
+            Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemId));
+            if (item == null) continue;
+            int damage = 0;
+            if (item.canBeDepleted()) {
+                int maxDamage = new ItemStack(item).getMaxDamage();
+                int min = maxDamage / 3;
+                int max = maxDamage * 3 / 4;
+                damage = RANDOM.nextInt(max - min + 1) + min;
+            }
             cmds.add(String.format("item replace entity @s %s with %s{Damage:%d}", mapSlot(slot), itemId, damage));
         }
 

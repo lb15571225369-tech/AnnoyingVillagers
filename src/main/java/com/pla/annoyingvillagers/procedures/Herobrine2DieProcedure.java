@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.procedures;
 import com.pla.annoyingvillagers.entity.DarkOBFarEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerPlayer;
@@ -62,8 +63,7 @@ public class Herobrine2DieProcedure {
         for (int i = 0; i < 8; i++) {
             spawnProjectile(world, sourceEntity, 5.0F, i >= 6 ? randomFloat(0.1F, 2.0F) : 1.0F);
         }
-
-        // Drop loot after 1s
+        
         new DelayedTask(20) {
             @Override
             public void run() {
@@ -141,29 +141,5 @@ public class Herobrine2DieProcedure {
 
     private static float randomFloat(float min, float max) {
         return (float) (Math.random() * (max - min) + min);
-    }
-
-    // Dummy DelayedTask (replace with your existing one)
-    public abstract static class DelayedTask {
-        private int ticks = 0;
-        private final int waitTicks;
-
-        public DelayedTask(int waitTicks) {
-            this.waitTicks = waitTicks;
-            MinecraftForge.EVENT_BUS.register(this);
-        }
-
-        @SubscribeEvent
-        public void onTick(TickEvent.ServerTickEvent event) {
-            if (event.phase == TickEvent.Phase.END) {
-                ticks++;
-                if (ticks >= waitTicks) {
-                    run();
-                    MinecraftForge.EVENT_BUS.unregister(this);
-                }
-            }
-        }
-
-        public abstract void run();
     }
 }

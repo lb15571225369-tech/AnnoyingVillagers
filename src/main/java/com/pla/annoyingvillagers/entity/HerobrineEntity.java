@@ -52,6 +52,7 @@ import com.pla.annoyingvillagers.procedures.HerobrineDangShiTiZhuiLuoShiProcedur
 import com.pla.annoyingvillagers.procedures.HerobrineDangZheGeShiTiShaSiLingGeShiTiProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineShiTiChuShiShengChengShiProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineZiRanShiTiShengProcedure;
+import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
 @EventBusSubscriber
 public class HerobrineEntity extends Monster {
@@ -94,6 +95,7 @@ public class HerobrineEntity extends Monster {
             }
         });
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, Player.class, true, true));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal(this, PlayerMobEntity.class, true, true));
         this.goalSelector.addGoal(3, new RandomStrollGoal(this, 1.0D));
         this.targetSelector.addGoal(4, (new HurtByTargetGoal(this, new Class[0])).setAlertOthers(new Class[0]));
     }

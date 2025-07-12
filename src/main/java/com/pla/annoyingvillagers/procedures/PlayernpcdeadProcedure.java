@@ -189,8 +189,6 @@ public class PlayernpcdeadProcedure {
                                 levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity1.getDisplayName().getString() + "> \u4f60\u4e5f\u5c31\u53ea\u4f1a\u5de6\u952e\u6441\u6b7b\u4e86\ud83e\udd13"), ChatType.SYSTEM, Util.NIL_UUID);
                             }
                         }
-
-                        MinecraftForge.EVENT_BUS.unregister(this);
                     }
                 };
             }
@@ -424,8 +422,6 @@ public class PlayernpcdeadProcedure {
                                 level.addFreshEntity(itementity);
                             }
                         }
-
-                        MinecraftForge.EVENT_BUS.unregister(this);
                     }
                 };
                 new DelayedTask(Mth.nextInt(new Random(), 40, 80)) {
