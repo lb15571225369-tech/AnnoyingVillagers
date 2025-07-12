@@ -8,6 +8,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,19 +28,28 @@ public class EquipmentDataLoader extends SimpleJsonResourceReloadListener {
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> map, ResourceManager manager, ProfilerFiller profiler) {
         EQUIP_ITEMS.clear();
-        map.forEach((id, json) -> {
-            JsonObject root = GsonHelper.convertToJsonObject(json, "equipments.json");
+        for (Map.Entry<ResourceLocation, JsonElement> entry : map.entrySet()) {
+            ResourceLocation fileId = entry.getKey();
+            JsonObject root = GsonHelper.convertToJsonObject(entry.getValue(), "equipment");
+
+            String modId = fileId.getPath().replace(".json", "");
+
+            if (!ModList.get().isLoaded(modId)) {
+                continue;
+            }
 
             for (String slot : List.of("MAINHAND", "OFFHAND", "HEAD", "CHEST", "LEGS", "FEET")) {
                 if (!root.has(slot)) continue;
+
                 JsonArray array = root.getAsJsonArray(slot);
-                List<String> items = new ArrayList<>();
+                List<String> items = EQUIP_ITEMS.computeIfAbsent(slot, k -> new ArrayList<>());
+
                 for (JsonElement el : array) {
-                    items.add(el.getAsString());
+                    String itemName = el.getAsString();
+                    items.add(modId + ":" + itemName);
                 }
-                EQUIP_ITEMS.put(slot, items);
             }
-        });
+        }
     }
 
     public static List<String> getEquipCommands(float equipChanceArmor) {
