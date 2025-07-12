@@ -10,13 +10,13 @@ authors="pla_is_me"
 description='''
 Pla ported this mod from annoying villlagers modpack Chinese version.
 '''
-[[dependencies.examplemod]]
+[[dependencies.annoyingvillagers]]
     modId="forge"
     mandatory=true
     versionRange="[40,)"
     ordering="NONE"
     side="BOTH"
-[[dependencies.examplemod]]
+[[dependencies.annoyingvillagers]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.18.2]"

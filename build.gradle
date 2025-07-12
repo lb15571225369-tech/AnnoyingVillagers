@@ -4,6 +4,7 @@ plugins {
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '5.1.+'
     id 'org.spongepowered.mixin' version '0.7.+'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 version = '1.0'
@@ -92,7 +93,7 @@ mixin {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.2-40.2.21'
+    minecraft 'net.minecraftforge:forge:1.18.2-40.3.0'
     implementation fg.deobf("curse.maven:epic-fight-mod-405076:5593312")
     implementation fg.deobf("curse.maven:weapons-of-miracles-epicfight-918614:5135428")
     implementation fg.deobf("curse.maven:epic-fight-indestructible-915201:5990580")
@@ -114,8 +115,6 @@ jar {
         ])
     }
 }
-
-jar.finalizedBy('reobfJar')
 
 publishing {
     publications {
