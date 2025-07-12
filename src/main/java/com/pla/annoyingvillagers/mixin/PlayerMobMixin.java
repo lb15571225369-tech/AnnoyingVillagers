@@ -39,12 +39,12 @@ public class PlayerMobMixin {
 
         switch (role) {
             case "hostile_hunt" -> {
-                self.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(self, Monster.class, true));
-                self.targetSelector.addGoal(6, new NearestAttackableTargetGoal<>(self, PlayerMobEntity.class, true));
+                self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Monster.class, true));
+                self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, PlayerMobEntity.class, true));
             }
             case "passive_hunt" -> {
-                self.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(self, Villager.class, true));
-                self.targetSelector.addGoal(6, new NearestAttackableTargetGoal<>(self, Animal.class, true));
+                self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Villager.class, true));
+                self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Animal.class, true));
             }
         }
     }

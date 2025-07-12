@@ -39,34 +39,6 @@
       }
     ]
   },
-  "c4click": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:click1",
-        "stream": false
-      },
-      {
-        "name": "annoyingvillagers:click2",
-        "stream": false
-      },
-      {
-        "name": "annoyingvillagers:click3",
-        "stream": false
-      },
-      {
-        "name": "annoyingvillagers:click4",
-        "stream": false
-      }
-    ]
-  },
-  "ca_deep": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:c4_beep",
-        "stream": false
-      }
-    ]
-  },
   "tridentfs_skill": {
     "sounds": [
       {
