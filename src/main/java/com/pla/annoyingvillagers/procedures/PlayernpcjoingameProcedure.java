@@ -12,6 +12,8 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.AABB;
@@ -21,6 +23,7 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.registries.ForgeRegistries;
+import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
 import java.io.IOException;
 import java.util.List;
@@ -56,9 +59,9 @@ public class PlayernpcjoingameProcedure {
                         );
                     }
                 }
-                ((LivingEntity)entity).getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0D);
-                ((LivingEntity)entity).getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(1.0D);
-                ((LivingEntity)entity).getAttribute(Attributes.ARMOR).setBaseValue(0.0D);
+                ((LivingEntity) entity).getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0D);
+                ((LivingEntity) entity).getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(1.0D);
+                ((LivingEntity) entity).getAttribute(Attributes.ARMOR).setBaseValue(0.0D);
                 entity.setCustomNameVisible(true);
                 if (!levelaccessor.getEntitiesOfClass(Player.class, AABB.ofSize(new Vec3(d0, d1, d2), 64.0D, 64.0D, 64.0D), (player) -> {
                     return true;
@@ -71,9 +74,9 @@ public class PlayernpcjoingameProcedure {
                     entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "data merge entity @s {CanPickUpLoot: 1b}");
                 }
 
-                ((LivingEntity)entity).getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0D);
+                ((LivingEntity) entity).getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0D);
                 if (entity instanceof LivingEntity) {
-                    livingentity = (LivingEntity)entity;
+                    livingentity = (LivingEntity) entity;
                     if (!livingentity.level.isClientSide()) {
                         livingentity.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 9999999, 0, false, false));
                     }
@@ -84,7 +87,7 @@ public class PlayernpcjoingameProcedure {
                         int i;
 
                         if (entity instanceof LivingEntity) {
-                            LivingEntity livingentity1 = (LivingEntity)entity;
+                            LivingEntity livingentity1 = (LivingEntity) entity;
 
                             i = livingentity1.getArmorValue();
                         } else {
@@ -153,6 +156,14 @@ public class PlayernpcjoingameProcedure {
 
             if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("epicfight:dodge_left") && !entity.level.isClientSide() && entity.getServer() != null) {
                 entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "playsound annoyingvillagers:whoosh neutral @p");
+            }
+
+            if ((entity instanceof Monster monster) && !entity.level.isClientSide() && entity.getServer() != null) {
+                monster.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(
+                        monster,
+                        PlayerMobEntity.class,
+                        true
+                ));
             }
 
         }

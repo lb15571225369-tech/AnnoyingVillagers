@@ -88,7 +88,6 @@ public class Herobrine2Entity extends Monster {
             }
         });
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, Player.class, true, true));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal(this, PlayerMobEntity.class, true, true));
         this.targetSelector.addGoal(3, (new HurtByTargetGoal(this, new Class[0])).setAlertOthers(new Class[0]));
     }
 
