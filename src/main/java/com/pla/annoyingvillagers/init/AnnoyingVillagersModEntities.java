@@ -28,6 +28,12 @@ public class AnnoyingVillagersModEntities {
     public static final RegistryObject<EntityType<DarkOBFarEntity>> DARK_OB_FAR = register("projectile_dark_ob_far", Builder.<DarkOBFarEntity>of(DarkOBFarEntity::new, MobCategory.MISC).setCustomClientFactory(DarkOBFarEntity::new).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).sized(0.5F, 0.5F));
     public static final RegistryObject<EntityType<BdTridentEntity>> BD_TRIDENT = register("bd_trident", Builder.<BdTridentEntity>of(BdTridentEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(BdTridentEntity::new).fireImmune().sized(0.0F, 1.8F));
     public static final RegistryObject<EntityType<BluedemontridentEntity>> BLUEDEMONTRIDENT = register("projectile_bluedemontrident", Builder.<BluedemontridentEntity>of(BluedemontridentEntity::new, MobCategory.MISC).setCustomClientFactory(BluedemontridentEntity::new).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).sized(0.5F, 0.5F));
+    public static final RegistryObject<EntityType<CczdzEntity>> CCZDZ = register("cczdz", Builder.<CczdzEntity>of(CczdzEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(CczdzEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<CunMinZhenChaBingEntity>> CUN_MIN_ZHEN_CHA_BING = register("cun_min_zhen_cha_bing", Builder.of(CunMinZhenChaBingEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(CunMinZhenChaBingEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<LanCunQiEntity>> LAN_CUN_QI = register("lan_cun_qi", Builder.of(LanCunQiEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(LanCunQiEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<LuCunQiEntity>> LU_CUN_QI = register("lu_cun_qi", Builder.of(LuCunQiEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(LuCunQiEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<HongCunQiEntity>> HONG_CUN_QI = register("hong_cun_qi", Builder.of(HongCunQiEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(HongCunQiEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<ZiCunQiEntity>> ZI_CUN_QI = register("zi_cun_qi", Builder.of(ZiCunQiEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(ZiCunQiEntity::new).fireImmune().sized(0.6F, 1.8F));
     private static <T extends Entity> RegistryObject<EntityType<T>> register(String s, Builder<T> builder) {
         return AnnoyingVillagersModEntities.REGISTRY.register(s, () -> {
             return builder.build(s);
@@ -44,6 +50,12 @@ public class AnnoyingVillagersModEntities {
             BlueDemon2Entity.init();
             BlueDemonEndEntity.init();
             BdTridentEntity.init();
+            CczdzEntity.init();
+            CunMinZhenChaBingEntity.init();
+            LanCunQiEntity.init();
+            LuCunQiEntity.init();
+            HongCunQiEntity.init();
+            ZiCunQiEntity.init();
         });
     }
 
@@ -56,5 +68,11 @@ public class AnnoyingVillagersModEntities {
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.BLUE_DEMON_2.get(), BlueDemon2Entity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.BLUE_DEMON_END.get(), BlueDemonEndEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.BD_TRIDENT.get(), BdTridentEntity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.CCZDZ.get(), CczdzEntity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.CUN_MIN_ZHEN_CHA_BING.get(), CunMinZhenChaBingEntity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.LAN_CUN_QI.get(), LanCunQiEntity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.LU_CUN_QI.get(), LuCunQiEntity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.HONG_CUN_QI.get(), HongCunQiEntity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.ZI_CUN_QI.get(), ZiCunQiEntity.createAttributes().build());
     }
 }

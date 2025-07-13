@@ -51,7 +51,7 @@ public class PlayernpcjoingameProcedure {
 
             if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("player_mobs:player_mob")) {
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    List<String> commands = EquipmentDataLoader.getEquipCommands(0.5f);
+                    List<String> commands = EquipmentDataLoader.getEquipCommands(0.7f);
                     for (String cmd : commands) {
                         entity.getServer().getCommands().performCommand(
                                 entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
