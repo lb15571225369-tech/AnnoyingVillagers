@@ -87,8 +87,6 @@ public class LanCunQiDangShiTiShouShangShiProcedure {
                                         projectile1.shoot(entity2.getLookAngle().x, entity2.getLookAngle().y, entity2.getLookAngle().z, 1.7F, 0.0F);
                                         level1.addFreshEntity(projectile1);
                                     }
-
-                                    MinecraftForge.EVENT_BUS.unregister(this);
                                 }
                             };
                         }
@@ -249,8 +247,6 @@ public class LanCunQiDangShiTiShouShangShiProcedure {
                                     projectile1.shoot(entity2.getLookAngle().x, entity2.getLookAngle().y, entity2.getLookAngle().z, 1.0F, 0.0F);
                                     level1.addFreshEntity(projectile1);
                                 }
-
-                                MinecraftForge.EVENT_BUS.unregister(this);
                             }
                         };
                     }
@@ -443,8 +439,6 @@ public class LanCunQiDangShiTiShouShangShiProcedure {
                                                 itemstack5.enchant(Enchantments.MENDING, 5);
                                             }
                                         }
-
-                                        MinecraftForge.EVENT_BUS.unregister(this);
                                     }
                                 };
                             }

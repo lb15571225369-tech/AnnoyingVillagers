@@ -213,8 +213,6 @@ public class LuCunQiDangShiTiSiWangShiProcedure {
                             level.addFreshEntity(itementity);
                         }
                     }
-
-                    MinecraftForge.EVENT_BUS.unregister(this);
                 }
             };
             if (Math.random() <= 0.11D) {
@@ -246,8 +244,6 @@ public class LuCunQiDangShiTiSiWangShiProcedure {
                         if (!entity1.level.isClientSide() && entity1.getServer() != null) {
                             entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:lan_cun_qi ^10 ^ ^20");
                         }
-
-                        MinecraftForge.EVENT_BUS.unregister(this);
                     }
                 };
             }

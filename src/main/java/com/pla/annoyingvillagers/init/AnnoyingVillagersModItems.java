@@ -238,6 +238,9 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> ZI_CUN_QI_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("zi_cun_qi_spawn_egg", () -> {
         return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.ZI_CUN_QI, -3407668, -6710887, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
     });
+    public static final RegistryObject<Item> FUMOMOYINGZHENZHU = AnnoyingVillagersModItems.REGISTRY.register("fumomoyingzhenzhu", () -> {
+        return new FumomoyingzhenzhuItem();
+    });
     private static RegistryObject<Item> block(RegistryObject<Block> registryobject, CreativeModeTab creativemodetab) {
         return AnnoyingVillagersModItems.REGISTRY.register(registryobject.getId().getPath(), () -> {
             return new BlockItem((Block) registryobject.get(), (new Properties()).tab(creativemodetab));

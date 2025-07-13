@@ -220,8 +220,6 @@ public class LanCunQiDangShiTiGengXinKeShiProcedure {
                                                         level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.arrow.shoot")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                     }
                                                 }
-
-                                                MinecraftForge.EVENT_BUS.unregister(this);
                                             }
                                         };
                                     }
@@ -314,8 +312,6 @@ public class LanCunQiDangShiTiGengXinKeShiProcedure {
                                                             level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.arrow.shoot")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                         }
                                                     }
-
-                                                    MinecraftForge.EVENT_BUS.unregister(this);
                                                 }
                                             };
                                         }

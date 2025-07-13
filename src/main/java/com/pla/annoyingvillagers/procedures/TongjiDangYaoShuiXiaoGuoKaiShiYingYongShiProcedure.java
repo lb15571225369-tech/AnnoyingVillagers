@@ -80,8 +80,6 @@ public class TongjiDangYaoShuiXiaoGuoKaiShiYingYongShiProcedure {
                         if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                             levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u6751\u6c11\u4fa6\u5bdf\u5175> \u627e\u5230\u4e86\uff0c\u8fd9\u91cc\u6709\u901a\u7f09\u72af\uff01"), ChatType.SYSTEM, Util.NIL_UUID);
                         }
-
-                        MinecraftForge.EVENT_BUS.unregister(this);
                     }
                 };
             }

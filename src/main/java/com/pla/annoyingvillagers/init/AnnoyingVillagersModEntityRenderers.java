@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.init;
 
 import com.pla.annoyingvillagers.client.renderer.*;
 import com.pla.annoyingvillagers.entity.DarkOBFarEntity;
+import com.pla.annoyingvillagers.entity.FumomoyingzhenzhuEntity;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.api.distmarker.Dist;
@@ -30,5 +31,6 @@ public class AnnoyingVillagersModEntityRenderers {
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.LU_CUN_QI.get(), LuCunQiRenderer::new);
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.HONG_CUN_QI.get(), HongCunQiRenderer::new);
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.ZI_CUN_QI.get(), ZiCunQiRenderer::new);
+        registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.FUMOMOYINGZHENZHU.get(), context -> new ThrownItemRenderer<FumomoyingzhenzhuEntity>(context));
     }
 }

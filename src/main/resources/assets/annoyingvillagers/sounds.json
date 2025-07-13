@@ -390,5 +390,41 @@
         "stream": false
       }
     ]
+  },
+  "get_out": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:jump1",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:jump2",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:jump3",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:jump4",
+        "stream": false
+      }
+    ]
+  },
+  "throw": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:throw",
+        "stream": false
+      }
+    ]
+  },
+  "cooldown": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:roll_cooldown_ready",
+        "stream": false
+      }
+    ]
   }
 }

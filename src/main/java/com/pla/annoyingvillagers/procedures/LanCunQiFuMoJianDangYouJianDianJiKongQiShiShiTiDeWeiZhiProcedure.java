@@ -85,7 +85,6 @@ public class LanCunQiFuMoJianDangYouJianDianJiKongQiShiShiTiDeWeiZhiProcedure {
                                 }
 
                                 entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * 2.0D, entity.getLookAngle().y * 2.0D, entity.getLookAngle().z * 2.0D));
-                                MinecraftForge.EVENT_BUS.unregister(this);
                             }
                         };
                         if (entity instanceof Player) {
