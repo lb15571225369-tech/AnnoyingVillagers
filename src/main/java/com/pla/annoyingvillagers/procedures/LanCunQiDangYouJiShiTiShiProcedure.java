@@ -123,7 +123,7 @@ public class LanCunQiDangYouJiShiTiShiProcedure {
                                     AABB.ofSize(new Vec3(d0, d1, d2), 5.0D, 5.0D, 5.0D),
                                     player -> true)
                             .stream()
-                            .sorted(Comparator.comparingDouble(entity -> entity.distanceToSqr(d0, d1, d2)))
+                            .sorted(Comparator.comparingDouble(e -> e.distanceToSqr(d0, d1, d2)))
                             .findFirst()
                             .orElse(null);
 

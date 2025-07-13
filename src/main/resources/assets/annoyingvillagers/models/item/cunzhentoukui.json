@@ -1,0 +1,7 @@
+{
+  "parent": "annoyingvillagers:custom/cunzhentoukui",
+  "textures": {
+    "0": "annoyingvillagers:blocks/cztk",
+    "particle": "annoyingvillagers:items/cztk"
+  }
+}

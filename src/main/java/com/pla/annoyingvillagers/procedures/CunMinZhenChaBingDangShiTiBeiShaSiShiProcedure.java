@@ -20,7 +20,7 @@ public class CunMinZhenChaBingDangShiTiBeiShaSiShiProcedure {
     public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity) {
         if (entity != null) {
             if (Math.random() <= 0.2D && !entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/effect give @p annoying_villagersbychentu:tongji 600 0");
+                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/effect give @p annoyingvillagers:tongji 600 0");
             }
 
             new DelayedTask(20) {
@@ -388,17 +388,17 @@ public class CunMinZhenChaBingDangShiTiBeiShaSiShiProcedure {
                                 Entity entity2 = entity;
 
                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:cun_min_zhen_cha_bing ^ ^ ^10");
+                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:cun_min_zhen_cha_bing ^ ^ ^10");
                                 }
 
                                 entity2 = entity;
                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:cun_min_zhen_cha_bing ^ ^ ^15");
+                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:cun_min_zhen_cha_bing ^ ^ ^15");
                                 }
 
                                 entity2 = entity;
                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:lan_cun_qi ^10 ^ ^20");
+                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:lan_cun_qi ^10 ^ ^20");
                                 }
                             }
                         };

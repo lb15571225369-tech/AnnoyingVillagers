@@ -1,0 +1,7 @@
+{
+  "parent": "annoyingvillagers:custom/zuan_shi_bi_shou_",
+  "textures": {
+    "0": "annoyingvillagers:blocks/zuan_shi_bi_shou_",
+    "particle": "annoyingvillagers:items/zuan_shi_bi_shou_"
+  }
+}

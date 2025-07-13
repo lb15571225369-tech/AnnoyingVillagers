@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.Util;
 import net.minecraft.network.chat.ChatType;
@@ -20,7 +21,7 @@ public class LuCunQiDangShiTiSiWangShiProcedure {
         if (entity != null) {
             new DelayedTask(20) {
                 public void run() {
-                    LevelAccessor levelaccessor1 = this.world;
+                    LevelAccessor levelaccessor1 = levelaccessor;
                     Level level;
                     ItemEntity itementity;
 
@@ -33,7 +34,7 @@ public class LuCunQiDangShiTiSiWangShiProcedure {
                         }
                     }
 
-                    levelaccessor1 = this.world;
+                    levelaccessor1 = levelaccessor;
                     if (levelaccessor1 instanceof Level) {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
@@ -43,7 +44,7 @@ public class LuCunQiDangShiTiSiWangShiProcedure {
                         }
                     }
 
-                    levelaccessor1 = this.world;
+                    levelaccessor1 = levelaccessor;
                     if (levelaccessor1 instanceof Level) {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
@@ -53,7 +54,7 @@ public class LuCunQiDangShiTiSiWangShiProcedure {
                         }
                     }
 
-                    levelaccessor1 = this.world;
+                    levelaccessor1 = levelaccessor;
                     if (levelaccessor1 instanceof Level) {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
@@ -63,7 +64,7 @@ public class LuCunQiDangShiTiSiWangShiProcedure {
                         }
                     }
 
-                    levelaccessor1 = this.world;
+                    levelaccessor1 = levelaccessor;
                     if (levelaccessor1 instanceof Level) {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
@@ -73,7 +74,7 @@ public class LuCunQiDangShiTiSiWangShiProcedure {
                         }
                     }
 
-                    levelaccessor1 = this.world;
+                    levelaccessor1 = levelaccessor;
                     if (levelaccessor1 instanceof Level) {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
@@ -83,7 +84,7 @@ public class LuCunQiDangShiTiSiWangShiProcedure {
                         }
                     }
 
-                    levelaccessor1 = this.world;
+                    levelaccessor1 = levelaccessor;
                     if (levelaccessor1 instanceof Level) {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
@@ -93,7 +94,7 @@ public class LuCunQiDangShiTiSiWangShiProcedure {
                         }
                     }
 
-                    levelaccessor1 = this.world;
+                    levelaccessor1 = levelaccessor;
                     if (levelaccessor1 instanceof Level) {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
@@ -103,7 +104,7 @@ public class LuCunQiDangShiTiSiWangShiProcedure {
                         }
                     }
 
-                    levelaccessor1 = this.world;
+                    levelaccessor1 = levelaccessor;
                     if (levelaccessor1 instanceof Level) {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
@@ -113,17 +114,17 @@ public class LuCunQiDangShiTiSiWangShiProcedure {
                         }
                     }
 
-                    levelaccessor1 = this.world;
+                    levelaccessor1 = levelaccessor;
                     if (levelaccessor1 instanceof Level) {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
-                            itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack((ItemLike)AnnoyingVillagersbychentuModItems.CUNZHENTOUKUI.get()));
+                            itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack((ItemLike) AnnoyingVillagersModItems.CUNZHENTOUKUI.get()));
                             itementity.setPickUpDelay(10);
                             level.addFreshEntity(itementity);
                         }
                     }
 
-                    levelaccessor1 = this.world;
+                    levelaccessor1 = levelaccessor;
                     if (levelaccessor1 instanceof Level) {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
@@ -133,7 +134,7 @@ public class LuCunQiDangShiTiSiWangShiProcedure {
                         }
                     }
 
-                    levelaccessor1 = this.world;
+                    levelaccessor1 = levelaccessor;
                     if (levelaccessor1 instanceof Level) {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
@@ -143,7 +144,7 @@ public class LuCunQiDangShiTiSiWangShiProcedure {
                         }
                     }
 
-                    levelaccessor1 = this.world;
+                    levelaccessor1 = levelaccessor;
                     if (levelaccessor1 instanceof Level) {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
@@ -153,7 +154,7 @@ public class LuCunQiDangShiTiSiWangShiProcedure {
                         }
                     }
 
-                    levelaccessor1 = this.world;
+                    levelaccessor1 = levelaccessor;
                     if (levelaccessor1 instanceof Level) {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
@@ -163,7 +164,7 @@ public class LuCunQiDangShiTiSiWangShiProcedure {
                         }
                     }
 
-                    levelaccessor1 = this.world;
+                    levelaccessor1 = levelaccessor;
                     if (levelaccessor1 instanceof Level) {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
@@ -173,7 +174,7 @@ public class LuCunQiDangShiTiSiWangShiProcedure {
                         }
                     }
 
-                    levelaccessor1 = this.world;
+                    levelaccessor1 = levelaccessor;
                     if (levelaccessor1 instanceof Level) {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
@@ -183,7 +184,7 @@ public class LuCunQiDangShiTiSiWangShiProcedure {
                         }
                     }
 
-                    levelaccessor1 = this.world;
+                    levelaccessor1 = levelaccessor;
                     if (levelaccessor1 instanceof Level) {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
@@ -193,7 +194,7 @@ public class LuCunQiDangShiTiSiWangShiProcedure {
                         }
                     }
 
-                    levelaccessor1 = this.world;
+                    levelaccessor1 = levelaccessor;
                     if (levelaccessor1 instanceof Level) {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
@@ -203,7 +204,7 @@ public class LuCunQiDangShiTiSiWangShiProcedure {
                         }
                     }
 
-                    levelaccessor1 = this.world;
+                    levelaccessor1 = levelaccessor;
                     if (levelaccessor1 instanceof Level) {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
@@ -233,17 +234,17 @@ public class LuCunQiDangShiTiSiWangShiProcedure {
                         Entity entity1 = entity;
 
                         if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                            entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:cun_min_zhen_cha_bing ^ ^ ^10");
+                            entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:cun_min_zhen_cha_bing ^ ^ ^10");
                         }
 
                         entity1 = entity;
                         if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                            entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:cun_min_zhen_cha_bing ^ ^ ^15");
+                            entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:cun_min_zhen_cha_bing ^ ^ ^15");
                         }
 
                         entity1 = entity;
                         if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                            entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:lan_cun_qi ^10 ^ ^20");
+                            entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:lan_cun_qi ^10 ^ ^20");
                         }
 
                         MinecraftForge.EVENT_BUS.unregister(this);

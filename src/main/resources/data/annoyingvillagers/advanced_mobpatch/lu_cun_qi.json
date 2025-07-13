@@ -28,7 +28,7 @@
 			"weapon_categories": ["axe", "hoe", "pickaxe", "shovel", "sword"],
 			"style":"common",
 			"livingmotions": {
-				"chase": "annoying_villagers:biped/other/run_hold",
+				"chase": "annoyingvillagers:biped/other/run_hold",
                 "walk": "epicfight:biped/living/walk"
 			}
 		  },

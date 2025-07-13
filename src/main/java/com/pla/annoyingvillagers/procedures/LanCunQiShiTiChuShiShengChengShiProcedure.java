@@ -224,7 +224,7 @@ public class LanCunQiShiTiChuShiShengChengShiProcedure {
                                 AABB.ofSize(new Vec3(d0, d1, d2), 2.0D, 2.0D, 2.0D),
                                 cow -> true) // or use specific filter if needed
                         .stream()
-                        .sorted(Comparator.comparingDouble(entity -> entity.distanceToSqr(d0, d1, d2)))
+                        .sorted(Comparator.comparingDouble(e -> e.distanceToSqr(d0, d1, d2)))
                         .findFirst()
                         .orElse(null);
 

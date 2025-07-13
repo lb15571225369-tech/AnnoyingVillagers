@@ -90,7 +90,7 @@ public class VillagersAssistanceProcedure {
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
                                 entity.getServer().getCommands().performCommand(
                                         entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                                        String.format("/summon annoying_villagersbychentu:%s ~%.1f ~%.1f ~%.1f", type, dx, dy, dz)
+                                        String.format("/summon annoyingvillagers:%s ~%.1f ~%.1f ~%.1f", type, dx, dy, dz)
                                 );
                             }
                         }

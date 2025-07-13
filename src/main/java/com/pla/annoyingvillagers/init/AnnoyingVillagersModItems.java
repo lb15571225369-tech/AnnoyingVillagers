@@ -139,6 +139,120 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> MUMEN = AnnoyingVillagersModItems.REGISTRY.register("mumen", () -> {
         return new MumenItem();
     });
+    public static final RegistryObject<Item> CUNZHENTOUKUI = AnnoyingVillagersModItems.REGISTRY.register("cunzhentoukui", () -> {
+        return new CunzhentoukuiItem();
+    });
+    public static final RegistryObject<Item> CLASSICGOLDENA_CHESTPLATE = AnnoyingVillagersModItems.REGISTRY.register("classicgoldena_chestplate", () -> {
+        return new ClassicgoldenaItem.Chestplate();
+    });
+    public static final RegistryObject<Item> CLASSICGOLDENA_LEGGINGS = AnnoyingVillagersModItems.REGISTRY.register("classicgoldena_leggings", () -> {
+        return new ClassicgoldenaItem.Leggings();
+    });
+    public static final RegistryObject<Item> CLASSICGOLDENA_BOOTS = AnnoyingVillagersModItems.REGISTRY.register("classicgoldena_boots", () -> {
+        return new ClassicgoldenaItem.Boots();
+    });
+    public static final RegistryObject<Item> HONGCUNQITOUKUI = AnnoyingVillagersModItems.REGISTRY.register("hongcunqitoukui", () -> {
+        return new HongcunqitoukuiItem();
+    });
+    public static final RegistryObject<Item> HONG_CUN_QIHELMET_HELMET = AnnoyingVillagersModItems.REGISTRY.register("hong_cun_qihelmet_helmet", () -> {
+        return new HongCunQihelmetItem.Helmet();
+    });
+    public static final RegistryObject<Item> HONG_CUN_QIHELMET_CHESTPLATE = AnnoyingVillagersModItems.REGISTRY.register("hong_cun_qihelmet_chestplate", () -> {
+        return new HongCunQihelmetItem.Chestplate();
+    });
+    public static final RegistryObject<Item> HONG_CUN_QIHELMET_LEGGINGS = AnnoyingVillagersModItems.REGISTRY.register("hong_cun_qihelmet_leggings", () -> {
+        return new HongCunQihelmetItem.Leggings();
+    });
+    public static final RegistryObject<Item> HONG_CUN_QIHELMET_BOOTS = AnnoyingVillagersModItems.REGISTRY.register("hong_cun_qihelmet_boots", () -> {
+        return new HongCunQihelmetItem.Boots();
+    });
+    public static final RegistryObject<Item> ZUAN_SHI_DAO_PIAN = AnnoyingVillagersModItems.REGISTRY.register("zuan_shi_dao_pian", () -> {
+        return new ZuanShiDaoPianItem();
+    });
+    public static final RegistryObject<Item> ZUAN_SHI_BI_SHOU = AnnoyingVillagersModItems.REGISTRY.register("zuan_shi_bi_shou", () -> {
+        return new ZuanShiBiShouItem();
+    });
+    public static final RegistryObject<Item> ZUAN_SHI_DAO = AnnoyingVillagersModItems.REGISTRY.register("zuan_shi_dao", () -> {
+        return new ZuanShiDaoItem();
+    });
+    public static final RegistryObject<Item> GOU_ZHUANG_ZUAN_SHI_JIAN = AnnoyingVillagersModItems.REGISTRY.register("gou_zhuang_zuan_shi_jian", () -> {
+        return new GouZhuangZuanShiJianItem();
+    });
+    public static final RegistryObject<Item> LANCUNQITOUKUI = AnnoyingVillagersModItems.REGISTRY.register("lancunqitoukui", () -> {
+        return new LancunqitoukuiItem();
+    });
+    public static final RegistryObject<Item> LAN_CUN_QIARMOR_HELMET = AnnoyingVillagersModItems.REGISTRY.register("lan_cun_qiarmor_helmet", () -> {
+        return new LanCunQiarmorItem.Helmet();
+    });
+    public static final RegistryObject<Item> LAN_CUN_QIARMOR_CHESTPLATE = AnnoyingVillagersModItems.REGISTRY.register("lan_cun_qiarmor_chestplate", () -> {
+        return new LanCunQiarmorItem.Chestplate();
+    });
+    public static final RegistryObject<Item> LAN_CUN_QIARMOR_LEGGINGS = AnnoyingVillagersModItems.REGISTRY.register("lan_cun_qiarmor_leggings", () -> {
+        return new LanCunQiarmorItem.Leggings();
+    });
+    public static final RegistryObject<Item> LAN_CUN_QIARMOR_BOOTS = AnnoyingVillagersModItems.REGISTRY.register("lan_cun_qiarmor_boots", () -> {
+        return new LanCunQiarmorItem.Boots();
+    });
+    public static final RegistryObject<Item> LAN_CUN_QI_FU_MO_JIAN = AnnoyingVillagersModItems.REGISTRY.register("lan_cun_qi_fu_mo_jian", () -> {
+        return new LanCunQiFuMoJianItem();
+    });
+    public static final RegistryObject<Item> GREENKNIGHTARMOR_HELMET = AnnoyingVillagersModItems.REGISTRY.register("greenknightarmor_helmet", () -> {
+        return new GreenknightarmorItem.Helmet();
+    });
+    public static final RegistryObject<Item> GREENKNIGHTARMOR_CHESTPLATE = AnnoyingVillagersModItems.REGISTRY.register("greenknightarmor_chestplate", () -> {
+        return new GreenknightarmorItem.Chestplate();
+    });
+    public static final RegistryObject<Item> GREENKNIGHTARMOR_LEGGINGS = AnnoyingVillagersModItems.REGISTRY.register("greenknightarmor_leggings", () -> {
+        return new GreenknightarmorItem.Leggings();
+    });
+    public static final RegistryObject<Item> GREENKNIGHTARMOR_BOOTS = AnnoyingVillagersModItems.REGISTRY.register("greenknightarmor_boots", () -> {
+        return new GreenknightarmorItem.Boots();
+    });
+    public static final RegistryObject<Item> ZICUNQITOUKUI = AnnoyingVillagersModItems.REGISTRY.register("zicunqitoukui", () -> {
+        return new ZicunqitoukuiItem();
+    });
+    public static final RegistryObject<Item> ZI_CUN_QI_KUI_JIA_HELMET = AnnoyingVillagersModItems.REGISTRY.register("zi_cun_qi_kui_jia_helmet", () -> {
+        return new ZiCunQiKuiJiaItem.Helmet();
+    });
+    public static final RegistryObject<Item> ZI_CUN_QI_KUI_JIA_CHESTPLATE = AnnoyingVillagersModItems.REGISTRY.register("zi_cun_qi_kui_jia_chestplate", () -> {
+        return new ZiCunQiKuiJiaItem.Chestplate();
+    });
+    public static final RegistryObject<Item> ZI_CUN_QI_KUI_JIA_LEGGINGS = AnnoyingVillagersModItems.REGISTRY.register("zi_cun_qi_kui_jia_leggings", () -> {
+        return new ZiCunQiKuiJiaItem.Leggings();
+    });
+    public static final RegistryObject<Item> ZI_CUN_QI_KUI_JIA_BOOTS = AnnoyingVillagersModItems.REGISTRY.register("zi_cun_qi_kui_jia_boots", () -> {
+        return new ZiCunQiKuiJiaItem.Boots();
+    });
+    public static final RegistryObject<Item> UNLIGHTDIAMOND_HELMET = AnnoyingVillagersModItems.REGISTRY.register("unlightdiamond_helmet", () -> {
+        return new UnlightdiamondItem.Helmet();
+    });
+    public static final RegistryObject<Item> UNLIGHTDIAMOND_CHESTPLATE = AnnoyingVillagersModItems.REGISTRY.register("unlightdiamond_chestplate", () -> {
+        return new UnlightdiamondItem.Chestplate();
+    });
+    public static final RegistryObject<Item> UNLIGHTDIAMOND_LEGGINGS = AnnoyingVillagersModItems.REGISTRY.register("unlightdiamond_leggings", () -> {
+        return new UnlightdiamondItem.Leggings();
+    });
+    public static final RegistryObject<Item> UNLIGHTDIAMOND_BOOTS = AnnoyingVillagersModItems.REGISTRY.register("unlightdiamond_boots", () -> {
+        return new UnlightdiamondItem.Boots();
+    });
+    public static final RegistryObject<Item> CUN_MIN_ZHEN_CHA_BING_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("cun_min_zhen_cha_bing_spawn_egg", () -> {
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.CUN_MIN_ZHEN_CHA_BING, -205, -26317, (new Properties()).tab(CreativeModeTab.TAB_MISC));
+    });
+    public static final RegistryObject<Item> CCZDZ_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("cczdz_spawn_egg", () -> {
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.CCZDZ, -1, -1, (new Properties()).tab(CreativeModeTab.TAB_MISC));
+    });
+    public static final RegistryObject<Item> LAN_CUN_QI_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("lan_cun_qi_spawn_egg", () -> {
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.LAN_CUN_QI, -16711681, -6710887, (new Properties()).tab(CreativeModeTab.TAB_MISC));
+    });
+    public static final RegistryObject<Item> LU_CUN_QI_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("lu_cun_qi_spawn_egg", () -> {
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.LU_CUN_QI, -16724992, -1, (new Properties()).tab(CreativeModeTab.TAB_MISC));
+    });
+    public static final RegistryObject<Item> HONG_CUN_QI_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("hong_cun_qi_spawn_egg", () -> {
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.HONG_CUN_QI, -3407821, -13421773, (new Properties()).tab(CreativeModeTab.TAB_MISC));
+    });
+    public static final RegistryObject<Item> ZI_CUN_QI_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("zi_cun_qi_spawn_egg", () -> {
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.ZI_CUN_QI, -3407668, -6710887, (new Properties()).tab(CreativeModeTab.TAB_MISC));
+    });
     private static RegistryObject<Item> block(RegistryObject<Block> registryobject, CreativeModeTab creativemodetab) {
         return AnnoyingVillagersModItems.REGISTRY.register(registryobject.getId().getPath(), () -> {
             return new BlockItem((Block) registryobject.get(), (new Properties()).tab(creativemodetab));

@@ -89,10 +89,11 @@ public class LanCunQiDangShiTiGengXinKeShiProcedure {
 
 
             Vec3 vec3 = new Vec3(d0, d1, d2);
+            Vec3 finalVec1 = vec3;
             List<Entity> list = (List)levelaccessor.getEntitiesOfClass(Entity.class, (new AABB(vec3, vec3)).inflate(20.0D), (entity1) -> {
                 return true;
             }).stream().sorted(Comparator.comparingDouble((entity1) -> {
-                return entity1.distanceToSqr(vec3);
+                return entity1.distanceToSqr(finalVec1);
             })).collect(Collectors.toList());
             Iterator iterator = list.iterator();
 

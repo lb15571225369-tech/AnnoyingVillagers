@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.procedures;
 
 import javax.annotation.Nullable;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -23,9 +24,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.TickEvent.ServerTickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -149,6 +147,8 @@ public class FireworkuseProcedure {
                             }
                         }
 
+                        AnnoyingVillagers.LOGGER.info("Right-click detected with firework by {} 3", entity.getName().getString());
+
                         new DelayedTask(50) {
                             @Override
                             public void run() {
@@ -173,17 +173,17 @@ public class FireworkuseProcedure {
 
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:cun_min_zhen_cha_bing ~ ~5 ~10");
+                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:cun_min_zhen_cha_bing ~ ~5 ~10");
                                     }
 
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:cun_min_zhen_cha_bing ~10 ~5 ~-5");
+                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:cun_min_zhen_cha_bing ~10 ~5 ~-5");
                                     }
 
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:lan_cun_qi ~-10 ~5 ~20");
+                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:lan_cun_qi ~-10 ~5 ~20");
                                     }
                                 } else if (Math.random() <= 0.1D) {
                                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
@@ -192,17 +192,17 @@ public class FireworkuseProcedure {
 
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:lan_cun_qi ~10 ~5 ~-20");
+                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:lan_cun_qi ~10 ~5 ~-20");
                                     }
 
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:lan_cun_qi ~-5 ~5 ~20");
+                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:lan_cun_qi ~-5 ~5 ~20");
                                     }
 
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:cun_min_zhen_cha_bing ~ ~5 ~10");
+                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:cun_min_zhen_cha_bing ~ ~5 ~10");
                                     }
                                 } else if (Math.random() <= 0.1D) {
                                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
@@ -211,12 +211,12 @@ public class FireworkuseProcedure {
 
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:zi_cun_qi ~-5 ~5 ~20");
+                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:zi_cun_qi ~-5 ~5 ~20");
                                     }
 
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:zi_cun_qi ~10 ~5 ~-20");
+                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:zi_cun_qi ~10 ~5 ~-20");
                                     }
                                 } else if (Math.random() <= 0.1D) {
                                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
@@ -225,17 +225,17 @@ public class FireworkuseProcedure {
 
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:hong_cun_qi ~10 ~5 ~20");
+                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:hong_cun_qi ~10 ~5 ~20");
                                     }
 
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:hong_cun_qi ~5 ~5 ~-20");
+                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:hong_cun_qi ~5 ~5 ~-20");
                                     }
 
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:cun_min_zhen_cha_bing ~ ~5 ~-10");
+                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:cun_min_zhen_cha_bing ~ ~5 ~-10");
                                     }
                                 } else {
                                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
@@ -244,17 +244,17 @@ public class FireworkuseProcedure {
 
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:cun_min_zhen_cha_bing ~ ~5 ~-10");
+                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:cun_min_zhen_cha_bing ~ ~5 ~-10");
                                     }
 
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:lan_cun_qi ~10 ~5 ~20");
+                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:lan_cun_qi ~10 ~5 ~20");
                                     }
 
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:lu_cun_qi ~-5 ~5 ~20");
+                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:lu_cun_qi ~-5 ~5 ~20");
                                     }
                                 }
                             }

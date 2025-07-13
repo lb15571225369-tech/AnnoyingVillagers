@@ -28,7 +28,7 @@
 			"weapon_categories": ["axe", "hoe", "pickaxe", "shovel", "sword"],
 			"style":"common",
 			"livingmotions": {
-				"chase": "annoying_villagers:biped/other/run_hold",
+				"chase": "annoyingvillagers:biped/other/run_hold",
                 "walk": "epicfight:biped/living/walk"
 			}
 		  },
@@ -67,7 +67,7 @@
                   "weapon_categories": ["katana"],
                   "style":"common", 
                   "guard": "indestructible:guard/guard_katana",
-				  "counter": "annoying_villagers:biped/guard/counter",
+				  "counter": "annoyingvillagers:biped/guard/counter",
 				  "speed": 1
             },
 			{ 
@@ -140,7 +140,7 @@
 							"conditions": [
 								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.0}
 							],
-							"animation": "annoying_villagers:biped/combat/sweeping_edge",
+							"animation": "annoyingvillagers:biped/combat/sweeping_edge",
 							"play_speed": 1.2
 						},
 						{

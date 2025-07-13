@@ -534,17 +534,17 @@ public class ZiCunQiDangShiTiBeiShaSiShiProcedure {
                         Entity entity1 = entity;
 
                         if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                            entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:cun_min_zhen_cha_bing ^ ^ ^10");
+                            entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:cun_min_zhen_cha_bing ^ ^ ^10");
                         }
 
                         entity1 = entity;
                         if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                            entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:cun_min_zhen_cha_bing ^ ^ ^20");
+                            entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:cun_min_zhen_cha_bing ^ ^ ^20");
                         }
 
                         entity1 = entity;
                         if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                            entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:lan_cun_qi ^10 ^ ^20");
+                            entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:lan_cun_qi ^10 ^ ^20");
                         }
 
                         MinecraftForge.EVENT_BUS.unregister(this);
