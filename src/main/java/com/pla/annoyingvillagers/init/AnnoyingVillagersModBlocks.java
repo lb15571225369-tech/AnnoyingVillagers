@@ -36,9 +36,6 @@ public class AnnoyingVillagersModBlocks {
     public static final RegistryObject<Block> PUTONGHEIYAOSHI = AnnoyingVillagersModBlocks.REGISTRY.register("putongheiyaoshi", () -> {
         return new PutongheiyaoshiBlock();
     });
-    public static final RegistryObject<Block> PUTONGHEIYAOSHI_2 = AnnoyingVillagersModBlocks.REGISTRY.register("putongheiyaoshi_2", () -> {
-        return new Putongheiyaoshi2Block();
-    });
 
     @EventBusSubscriber(bus = Bus.MOD, value = {Dist.CLIENT})
     public static class ClientSideHandler {

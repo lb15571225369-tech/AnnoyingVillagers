@@ -70,7 +70,6 @@ public class AnnoyingVillagersModItems {
     });
     public static final RegistryObject<Item> ANYINGHEIYAOSHI = block(AnnoyingVillagersModBlocks.ANYINGHEIYAOSHI, (CreativeModeTab) null);
     public static final RegistryObject<Item> PUTONGHEIYAOSHI = block(AnnoyingVillagersModBlocks.PUTONGHEIYAOSHI, (CreativeModeTab) null);
-    public static final RegistryObject<Item> PUTONGHEIYAOSHI_2 = block(AnnoyingVillagersModBlocks.PUTONGHEIYAOSHI_2, (CreativeModeTab) null);
     public static final RegistryObject<Item> BLUEDEMONTRIDENT = AnnoyingVillagersModItems.REGISTRY.register("bluedemontrident", () -> {
         return new BluedemontridentItem();
     });
@@ -130,6 +129,15 @@ public class AnnoyingVillagersModItems {
     });
     public static final RegistryObject<Item> LAN_CUN_QI_JIAN = AnnoyingVillagersModItems.REGISTRY.register("lan_cun_qi_jian", () -> {
         return new LanCunQiJianItem();
+    });
+    public static final RegistryObject<Item> GGONGZUOTAI = AnnoyingVillagersModItems.REGISTRY.register("ggongzuotai", () -> {
+        return new GgongzuotaiItem();
+    });
+    public static final RegistryObject<Item> FUMOMUMEN = AnnoyingVillagersModItems.REGISTRY.register("fumomumen", () -> {
+        return new FumomumenItem();
+    });
+    public static final RegistryObject<Item> MUMEN = AnnoyingVillagersModItems.REGISTRY.register("mumen", () -> {
+        return new MumenItem();
     });
     private static RegistryObject<Item> block(RegistryObject<Block> registryobject, CreativeModeTab creativemodetab) {
         return AnnoyingVillagersModItems.REGISTRY.register(registryobject.getId().getPath(), () -> {

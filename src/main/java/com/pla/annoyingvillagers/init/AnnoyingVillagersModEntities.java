@@ -28,7 +28,6 @@ public class AnnoyingVillagersModEntities {
     public static final RegistryObject<EntityType<DarkOBFarEntity>> DARK_OB_FAR = register("projectile_dark_ob_far", Builder.<DarkOBFarEntity>of(DarkOBFarEntity::new, MobCategory.MISC).setCustomClientFactory(DarkOBFarEntity::new).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).sized(0.5F, 0.5F));
     public static final RegistryObject<EntityType<BdTridentEntity>> BD_TRIDENT = register("bd_trident", Builder.<BdTridentEntity>of(BdTridentEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(BdTridentEntity::new).fireImmune().sized(0.0F, 1.8F));
     public static final RegistryObject<EntityType<BluedemontridentEntity>> BLUEDEMONTRIDENT = register("projectile_bluedemontrident", Builder.<BluedemontridentEntity>of(BluedemontridentEntity::new, MobCategory.MISC).setCustomClientFactory(BluedemontridentEntity::new).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).sized(0.5F, 0.5F));
-
     private static <T extends Entity> RegistryObject<EntityType<T>> register(String s, Builder<T> builder) {
         return AnnoyingVillagersModEntities.REGISTRY.register(s, () -> {
             return builder.build(s);
