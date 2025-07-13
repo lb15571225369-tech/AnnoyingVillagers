@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.item;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.procedures.KkxtsProcedure;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -57,7 +58,7 @@ public abstract class LlbstzItem extends ArmorItem {
     public static class Boots extends LlbstzItem {
 
         public Boots() {
-            super(EquipmentSlot.FEET, (new Properties()).tab(CreativeModeTab.TAB_COMBAT));
+            super(EquipmentSlot.FEET, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
@@ -72,7 +73,7 @@ public abstract class LlbstzItem extends ArmorItem {
     public static class Leggings extends LlbstzItem {
 
         public Leggings() {
-            super(EquipmentSlot.LEGS, (new Properties()).tab(CreativeModeTab.TAB_COMBAT));
+            super(EquipmentSlot.LEGS, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
@@ -87,7 +88,7 @@ public abstract class LlbstzItem extends ArmorItem {
     public static class Chestplate extends LlbstzItem {
 
         public Chestplate() {
-            super(EquipmentSlot.CHEST, (new Properties()).tab(CreativeModeTab.TAB_COMBAT));
+            super(EquipmentSlot.CHEST, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
@@ -102,7 +103,7 @@ public abstract class LlbstzItem extends ArmorItem {
     public static class Helmet extends LlbstzItem {
 
         public Helmet() {
-            super(EquipmentSlot.HEAD, (new Properties()).tab(CreativeModeTab.TAB_COMBAT).fireResistant());
+            super(EquipmentSlot.HEAD, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB).fireResistant());
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {

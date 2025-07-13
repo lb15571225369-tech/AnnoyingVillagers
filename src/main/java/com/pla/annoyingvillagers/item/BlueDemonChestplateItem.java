@@ -58,7 +58,7 @@ public abstract class BlueDemonChestplateItem extends ArmorItem {
     public static class Chestplate extends BlueDemonChestplateItem {
 
         public Chestplate() {
-            super(EquipmentSlot.CHEST, (new Properties()).tab(CreativeModeTab.TAB_COMBAT).fireResistant());
+            super(EquipmentSlot.CHEST, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB).fireResistant());
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {

@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.item;
 
 import java.util.List;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.procedures.CchunduzuanshiDangWuPinBeiHeChengHuoShaoLianShiProcedure;
 import com.pla.annoyingvillagers.procedures.CchunduzuanshiDangWuPinYouWanJiaDiaoLuoProcedure;
 import net.minecraft.network.chat.Component;
@@ -17,7 +18,7 @@ import net.minecraft.world.level.Level;
 public class CchunduzuanshiItem extends Item {
 
     public CchunduzuanshiItem() {
-        super((new Properties()).tab(CreativeModeTab.TAB_MISC).stacksTo(64).rarity(Rarity.EPIC));
+        super((new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB).stacksTo(64).rarity(Rarity.EPIC));
     }
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {

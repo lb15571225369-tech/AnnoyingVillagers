@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.item;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.GgedangProcedure;
 import net.minecraft.world.InteractionHand;
@@ -43,7 +44,7 @@ public class GgongzuotaiItem extends AxeItem {
             public Ingredient getRepairIngredient() {
                 return Ingredient.of(new ItemStack[]{new ItemStack(Items.STICK), new ItemStack(Blocks.STRIPPED_OAK_WOOD), new ItemStack((ItemLike) AnnoyingVillagersModItems.GGONGZUOTAI.get())});
             }
-        }, 1.0F, -2.8F, (new Properties()).tab(CreativeModeTab.TAB_COMBAT));
+        }, 1.0F, -2.8F, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
     }
 
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {

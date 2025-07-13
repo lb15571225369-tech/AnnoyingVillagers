@@ -15,6 +15,8 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -65,6 +67,12 @@ public class AnnoyingVillagers {
         MinecraftForge.EVENT_BUS.register(new NpcGearLoad());
     }
 
+    public static final CreativeModeTab ANNOYINGVILLAGERS_TAB = new CreativeModeTab(MODID) {
+        @Override
+        public ItemStack makeIcon() {
+            return AnnoyingVillagersModItems.LEGENDARY_SWORD.get().getDefaultInstance();
+        }
+    };
 
     public static <T> void addNetworkMessage(Class<T> oclass, BiConsumer<T, FriendlyByteBuf> biconsumer, Function<FriendlyByteBuf, T> function, BiConsumer<T, Supplier<Context>> biconsumer1) {
         AnnoyingVillagers.PACKET_HANDLER.registerMessage(AnnoyingVillagers.messageID, oclass, biconsumer, function, biconsumer1);

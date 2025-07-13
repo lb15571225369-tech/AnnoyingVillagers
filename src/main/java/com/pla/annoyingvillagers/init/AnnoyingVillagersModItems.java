@@ -16,13 +16,13 @@ public class AnnoyingVillagersModItems {
 
     public static final DeferredRegister<Item> REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, AnnoyingVillagers.MODID);
     public static final RegistryObject<Item> HEROBRINE_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("herobrine_spawn_egg", () -> {
-        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.HEROBRINE, -10066330, -13421773, (new Properties()).tab(CreativeModeTab.TAB_MISC));
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.HEROBRINE, -10066330, -13421773, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
     });
     public static final RegistryObject<Item> BLUE_DEMON_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("blue_demon_spawn_egg", () -> {
-        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.BLUE_DEMON, -16737895, -16777216, (new Properties()).tab(CreativeModeTab.TAB_MISC));
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.BLUE_DEMON, -16737895, -16777216, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
     });
     public static final RegistryObject<Item> HEROBRINE_2_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("herobrine_2_spawn_egg", () -> {
-        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.HEROBRINE_2, -10066330, -13421773, (new Properties()).tab(CreativeModeTab.TAB_MISC));
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.HEROBRINE_2, -10066330, -13421773, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
     });
     public static final RegistryObject<Item> ENCHANT_BED_ITEM = AnnoyingVillagersModItems.REGISTRY.register("enchant_bed_item", () -> {
         return new EnchantBedItemItem();
@@ -236,22 +236,22 @@ public class AnnoyingVillagersModItems {
         return new UnlightdiamondItem.Boots();
     });
     public static final RegistryObject<Item> CUN_MIN_ZHEN_CHA_BING_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("cun_min_zhen_cha_bing_spawn_egg", () -> {
-        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.CUN_MIN_ZHEN_CHA_BING, -205, -26317, (new Properties()).tab(CreativeModeTab.TAB_MISC));
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.CUN_MIN_ZHEN_CHA_BING, -205, -26317, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
     });
     public static final RegistryObject<Item> CCZDZ_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("cczdz_spawn_egg", () -> {
-        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.CCZDZ, -1, -1, (new Properties()).tab(CreativeModeTab.TAB_MISC));
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.CCZDZ, -1, -1, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
     });
     public static final RegistryObject<Item> LAN_CUN_QI_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("lan_cun_qi_spawn_egg", () -> {
-        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.LAN_CUN_QI, -16711681, -6710887, (new Properties()).tab(CreativeModeTab.TAB_MISC));
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.LAN_CUN_QI, -16711681, -6710887, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
     });
     public static final RegistryObject<Item> LU_CUN_QI_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("lu_cun_qi_spawn_egg", () -> {
-        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.LU_CUN_QI, -16724992, -1, (new Properties()).tab(CreativeModeTab.TAB_MISC));
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.LU_CUN_QI, -16724992, -1, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
     });
     public static final RegistryObject<Item> HONG_CUN_QI_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("hong_cun_qi_spawn_egg", () -> {
-        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.HONG_CUN_QI, -3407821, -13421773, (new Properties()).tab(CreativeModeTab.TAB_MISC));
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.HONG_CUN_QI, -3407821, -13421773, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
     });
     public static final RegistryObject<Item> ZI_CUN_QI_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("zi_cun_qi_spawn_egg", () -> {
-        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.ZI_CUN_QI, -3407668, -6710887, (new Properties()).tab(CreativeModeTab.TAB_MISC));
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.ZI_CUN_QI, -3407668, -6710887, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
     });
     private static RegistryObject<Item> block(RegistryObject<Block> registryobject, CreativeModeTab creativemodetab) {
         return AnnoyingVillagersModItems.REGISTRY.register(registryobject.getId().getPath(), () -> {

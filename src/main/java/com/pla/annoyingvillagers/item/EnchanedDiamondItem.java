@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.item;
 
 import java.util.List;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.procedures.CchunduzuanshiDangWuPinBeiHeChengHuoShaoLianShiProcedure;
 import com.pla.annoyingvillagers.procedures.CchunduzuanshiDangWuPinYouWanJiaDiaoLuoProcedure;
 import net.minecraft.network.chat.Component;
@@ -20,7 +21,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class EnchanedDiamondItem extends Item {
 
     public EnchanedDiamondItem() {
-        super((new Properties()).tab(CreativeModeTab.TAB_MISC).stacksTo(64).rarity(Rarity.EPIC));
+        super((new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB).stacksTo(64).rarity(Rarity.EPIC));
     }
 
     @OnlyIn(Dist.CLIENT)

@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.item;
 
 import java.util.List;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.procedures.LanCunQiFuMoJianDangShiTiBeiGongJuJiZhongShiProcedure;
 import com.pla.annoyingvillagers.procedures.LanCunQiFuMoJianDangYouJianDianJiKongQiShiShiTiDeWeiZhiProcedure;
 import net.minecraft.network.chat.Component;
@@ -45,7 +46,7 @@ public class LanCunQiFuMoJianItem extends SwordItem {
             public Ingredient getRepairIngredient() {
                 return Ingredient.of(new ItemStack[]{new ItemStack(Items.DIAMOND)});
             }
-        }, 3, -2.8F, (new Properties()).tab(CreativeModeTab.TAB_COMBAT).fireResistant());
+        }, 3, -2.8F, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB).fireResistant());
     }
 
     public boolean hurtEnemy(ItemStack itemstack, LivingEntity livingentity, LivingEntity livingentity1) {

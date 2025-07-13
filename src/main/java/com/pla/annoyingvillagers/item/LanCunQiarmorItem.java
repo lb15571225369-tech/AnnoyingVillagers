@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.client.model.ModelKnightH;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
@@ -62,7 +63,7 @@ public abstract class LanCunQiarmorItem extends ArmorItem {
     public static class Boots extends LanCunQiarmorItem {
 
         public Boots() {
-            super(EquipmentSlot.FEET, (new Properties()).tab(CreativeModeTab.TAB_COMBAT));
+            super(EquipmentSlot.FEET, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
@@ -73,7 +74,7 @@ public abstract class LanCunQiarmorItem extends ArmorItem {
     public static class Leggings extends LanCunQiarmorItem {
 
         public Leggings() {
-            super(EquipmentSlot.LEGS, (new Properties()).tab(CreativeModeTab.TAB_COMBAT));
+            super(EquipmentSlot.LEGS, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
@@ -84,7 +85,7 @@ public abstract class LanCunQiarmorItem extends ArmorItem {
     public static class Chestplate extends LanCunQiarmorItem {
 
         public Chestplate() {
-            super(EquipmentSlot.CHEST, (new Properties()).tab(CreativeModeTab.TAB_COMBAT));
+            super(EquipmentSlot.CHEST, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
@@ -95,7 +96,7 @@ public abstract class LanCunQiarmorItem extends ArmorItem {
     public static class Helmet extends LanCunQiarmorItem {
 
         public Helmet() {
-            super(EquipmentSlot.HEAD, (new Properties()).tab(CreativeModeTab.TAB_COMBAT));
+            super(EquipmentSlot.HEAD, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
         }
 
         public void initializeClient(Consumer<IItemRenderProperties> consumer) {

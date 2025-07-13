@@ -1,6 +1,8 @@
 package com.pla.annoyingvillagers.item;
 
 import java.util.List;
+
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
@@ -21,7 +23,7 @@ import com.pla.annoyingvillagers.procedures.VillagerHeadDangYouJianDianJiKongQiS
 public class VillagerHeadItem extends Item {
 
     public VillagerHeadItem() {
-        super((new Properties()).tab(CreativeModeTab.TAB_TOOLS).stacksTo(1).rarity(Rarity.COMMON));
+        super((new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB).stacksTo(1).rarity(Rarity.COMMON));
     }
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {

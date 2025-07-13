@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.item;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
@@ -54,7 +55,7 @@ public abstract class UnlightdiamondItem extends ArmorItem {
     public static class Boots extends UnlightdiamondItem {
 
         public Boots() {
-            super(EquipmentSlot.FEET, (new Properties()).tab(CreativeModeTab.TAB_COMBAT).fireResistant());
+            super(EquipmentSlot.FEET, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB).fireResistant());
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
@@ -65,7 +66,7 @@ public abstract class UnlightdiamondItem extends ArmorItem {
     public static class Leggings extends UnlightdiamondItem {
 
         public Leggings() {
-            super(EquipmentSlot.LEGS, (new Properties()).tab(CreativeModeTab.TAB_COMBAT).fireResistant());
+            super(EquipmentSlot.LEGS, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB).fireResistant());
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
@@ -76,7 +77,7 @@ public abstract class UnlightdiamondItem extends ArmorItem {
     public static class Chestplate extends UnlightdiamondItem {
 
         public Chestplate() {
-            super(EquipmentSlot.CHEST, (new Properties()).tab(CreativeModeTab.TAB_COMBAT).fireResistant());
+            super(EquipmentSlot.CHEST, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB).fireResistant());
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
@@ -87,7 +88,7 @@ public abstract class UnlightdiamondItem extends ArmorItem {
     public static class Helmet extends UnlightdiamondItem {
 
         public Helmet() {
-            super(EquipmentSlot.HEAD, (new Properties()).tab(CreativeModeTab.TAB_COMBAT).fireResistant());
+            super(EquipmentSlot.HEAD, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB).fireResistant());
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {

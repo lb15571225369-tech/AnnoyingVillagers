@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.item;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.procedures.ZuanShiJuJianDangShiTiBeiGongJuJiZhongShiProcedure;
 import com.pla.annoyingvillagers.procedures.ZuanShiJuJianDangYouJianDianJiKongQiShiShiTiDeWeiZhiProcedure;
 import net.minecraft.world.InteractionHand;
@@ -42,7 +43,7 @@ public class ZuanShiJuJianItem extends SwordItem {
             public Ingredient getRepairIngredient() {
                 return Ingredient.of(new ItemStack[]{new ItemStack(Items.DIAMOND)});
             }
-        }, 3, -2.8F, (new Properties()).tab(CreativeModeTab.TAB_COMBAT));
+        }, 3, -2.8F, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
     }
 
     public boolean hurtEnemy(ItemStack itemstack, LivingEntity livingentity, LivingEntity livingentity1) {

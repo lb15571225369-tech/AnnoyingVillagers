@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.item;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item.Properties;
@@ -37,6 +38,6 @@ public class ZuanShiChangJianItem extends SwordItem {
             public Ingredient getRepairIngredient() {
                 return Ingredient.of(new ItemStack[]{new ItemStack(Items.DIAMOND), new ItemStack((ItemLike) AnnoyingVillagersModItems.CCHUNDUZUANSHI.get())});
             }
-        }, 3, -2.6F, (new Properties()).tab(CreativeModeTab.TAB_COMBAT));
+        }, 3, -2.6F, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
     }
 }
