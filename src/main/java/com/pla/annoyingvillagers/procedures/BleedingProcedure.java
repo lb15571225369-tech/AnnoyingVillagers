@@ -859,7 +859,7 @@ public class BleedingProcedure {
                             }
                         }
 
-                        if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("minecraft:zombie")) {
+                        if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("minecraft:zombie") || ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("minecraft:husk") || ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("minecraft:skeleton")) {
                             if (entity instanceof LivingEntity zombie && zombie.getHealth() <= 18.0F && entity.isAlive()) {
                                 new DelayedTask(50) {
                                     @Override
@@ -874,8 +874,8 @@ public class BleedingProcedure {
                                                     DynamicAnimation dynamicanimation3 = livingentitypatch2.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
 
                                                     if (!(dynamicanimation3 instanceof AttackAnimation) && !(dynamicanimation3 instanceof LongHitAnimation) && !(dynamicanimation3 instanceof HitAnimation)) {
-                                                        if (!zombie.getPersistentData().getBoolean("zombie_healing")) {
-                                                            zombie.getPersistentData().putBoolean("zombie_healing", true);
+                                                        if (!zombie.getPersistentData().getBoolean("hostile_healing")) {
+                                                            zombie.getPersistentData().putBoolean("hostile_healing", true);
                                                             LivingEntity livingentity2;
 
                                                             if (entity instanceof LivingEntity) {
@@ -1151,7 +1151,7 @@ public class BleedingProcedure {
                                                                                                                                 }
                                                                                                                             }
 
-                                                                                                                            entity.getPersistentData().putBoolean("zombie_healing", false);
+                                                                                                                            entity.getPersistentData().putBoolean("hostile_healing", false);
                                                                                                                         }
                                                                                                                     };
                                                                                                                 }
