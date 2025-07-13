@@ -166,6 +166,29 @@ public class PlayernpcjoingameProcedure {
                 ));
             }
 
+            if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("minecraft:zombie") && !entity.level.isClientSide() && entity.getServer() != null) {
+                if (!entity.level.isClientSide() && entity.getServer() != null) {
+                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "data merge entity @s {CanPickUpLoot: 1b}");
+                    if (entity.level.getRandom().nextFloat() < 0.5f) {
+                        List<String> commands = EquipmentDataLoader.getEquipCommands(0.0f);
+                        for (String cmd : commands) {
+                            entity.getServer().getCommands().performCommand(
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
+                                    cmd
+                            );
+                        }
+                    }
+                    if (entity.level.getRandom().nextFloat() < 0.4f) {
+                        EquipmentDataLoader.getRandomSpecificSlot("CHEST").ifPresent(cmd -> {
+                            entity.getServer().getCommands().performCommand(
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
+                                    cmd
+                            );
+                        });
+                    }
+                }
+            }
+
         }
     }
 }

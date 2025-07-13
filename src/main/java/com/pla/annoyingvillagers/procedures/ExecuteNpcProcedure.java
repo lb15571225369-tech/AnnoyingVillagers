@@ -138,8 +138,10 @@ public class ExecuteNpcProcedure {
                                                             entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect give @s epicfight:stun_immunity 4 5 true");
                                                         }
 
-                                                        humanoidmobpatch.playAnimationSynchronized(WOMAnimations.TORMENT_CHARGED_ATTACK_1, 0.0F);
-                                                        livingentitypatch.playAnimationSynchronized(AVAnimations.EXECUTED_SKILL, 0.0F);
+                                                        if (!entity.level.isClientSide()) {
+                                                            humanoidmobpatch.playAnimationSynchronized(WOMAnimations.TORMENT_CHARGED_ATTACK_1, 0.0F);
+                                                            livingentitypatch.playAnimationSynchronized(AVAnimations.EXECUTED_SKILL, 0.0F);
+                                                        }
                                                     }
                                                 }
                                             };
@@ -198,8 +200,11 @@ public class ExecuteNpcProcedure {
                                                             if (!entity2.level.isClientSide() && entity2.getServer() != null) {
                                                                 entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/execute_greatsword\" 0 1");
                                                             }
+                                                            if (!entity.level.isClientSide()) {
+                                                                livingentitypatch.playAnimationSynchronized(AVAnimations.EXECUTE_GREATSWORD_HIT, 0.0F);
+                                                            }
 
-                                                            livingentitypatch.playAnimationSynchronized(AVAnimations.EXECUTE_GREATSWORD_HIT, 0.0F);
+
                                                             ((LivingEntity)livingentitypatch.getOriginal()).addEffect(new MobEffectInstance((MobEffect)EpicFightMobEffects.STUN_IMMUNITY.get(), 60, 0, false, false));
                                                             entity2 = entity1;
                                                             if (!entity2.level.isClientSide() && entity2.getServer() != null) {
@@ -279,8 +284,10 @@ public class ExecuteNpcProcedure {
                                                                     if (!entity2.level.isClientSide() && entity2.getServer() != null) {
                                                                         entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/execute_boss\" 0 1");
                                                                     }
+                                                                    if (!entity.level.isClientSide()) {
+                                                                        livingentitypatch.playAnimationSynchronized(AVAnimations.BOSS_EXECUTE_HIT, 0.0F);
+                                                                    }
 
-                                                                    livingentitypatch.playAnimationSynchronized(AVAnimations.BOSS_EXECUTE_HIT, 0.0F);
                                                                     entity2 = entity1;
                                                                     if (!entity2.level.isClientSide() && entity2.getServer() != null) {
                                                                         entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect give @s epicfight:stun_immunity 3 5 true");
@@ -332,8 +339,9 @@ public class ExecuteNpcProcedure {
                                                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
                                                                     entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/wrestling\" 0 1");
                                                                 }
-
-                                                                livingentitypatch.playAnimationSynchronized(AVAnimations.WRESTLING_HIT, 0.0F);
+                                                                if (!entity.level.isClientSide()) {
+                                                                    livingentitypatch.playAnimationSynchronized(AVAnimations.WRESTLING_HIT, 0.0F);
+                                                                }
                                                                 entity2 = entity1;
                                                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
                                                                     entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect give @s epicfight:stun_immunity 3 5 true");
@@ -397,8 +405,10 @@ public class ExecuteNpcProcedure {
                                                         if (!entity2.level.isClientSide() && entity2.getServer() != null) {
                                                             entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/execute_longsword\" 0 1");
                                                         }
+                                                        if (!entity.level.isClientSide()) {
+                                                            livingentitypatch.playAnimationSynchronized(AVAnimations.EXECUTE_LONGSWORD_HIT, 0.0F);
+                                                        }
 
-                                                        livingentitypatch.playAnimationSynchronized(AVAnimations.EXECUTE_LONGSWORD_HIT, 0.0F);
                                                         ((LivingEntity)livingentitypatch.getOriginal()).addEffect(new MobEffectInstance((MobEffect)EpicFightMobEffects.STUN_IMMUNITY.get(), 60, 0, false, false));
                                                         entity2 = entity1;
                                                         if (!entity2.level.isClientSide() && entity2.getServer() != null) {
@@ -546,7 +556,9 @@ public class ExecuteNpcProcedure {
                                                     entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/execute_dual\" 0 1");
                                                 }
 
-                                                livingentitypatch.playAnimationSynchronized(AVAnimations.EXECUTE_DUAL_HIT, 0.0F);
+                                                if (!entity.level.isClientSide()) {
+                                                    livingentitypatch.playAnimationSynchronized(AVAnimations.EXECUTE_DUAL_HIT, 0.0F);
+                                                }
                                                 entity2 = entity;
                                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
                                                     entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect give @s epicfight:stun_immunity 4 5 true");

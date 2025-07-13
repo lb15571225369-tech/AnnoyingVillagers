@@ -22,7 +22,7 @@ public class EquipmentDataLoader extends SimpleJsonResourceReloadListener {
     private static final Logger LOGGER = LogManager.getLogger();
 
     public EquipmentDataLoader() {
-        super(GSON, "player_mobs_equipment");
+        super(GSON, "mobs_equipment");
     }
 
     @Override
@@ -54,6 +54,7 @@ public class EquipmentDataLoader extends SimpleJsonResourceReloadListener {
 
     public static List<String> getEquipCommands(float equipChanceArmor) {
         List<String> cmds = new ArrayList<>();
+        String mainHandSwordId = null;
 
         for (String slot : List.of("MAINHAND", "OFFHAND", "HEAD", "CHEST", "LEGS", "FEET")) {
             List<String> pool = EQUIP_ITEMS.getOrDefault(slot, List.of());
@@ -62,7 +63,12 @@ public class EquipmentDataLoader extends SimpleJsonResourceReloadListener {
             boolean alwaysEquip = slot.equals("MAINHAND") || slot.equals("OFFHAND");
             if (!alwaysEquip && RANDOM.nextFloat() > equipChanceArmor) continue;
 
-            String itemId = pool.get(RANDOM.nextInt(pool.size()));
+            String itemId;
+            if (slot.equals("OFFHAND") && mainHandSwordId != null && RANDOM.nextFloat() < 0.5f) {
+                itemId = mainHandSwordId;
+            } else {
+                itemId = pool.get(RANDOM.nextInt(pool.size()));
+            }
             Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemId));
             if (item == null) continue;
             int damage = 0;
@@ -73,9 +79,33 @@ public class EquipmentDataLoader extends SimpleJsonResourceReloadListener {
                 damage = RANDOM.nextInt(max - min + 1) + min;
             }
             cmds.add(String.format("item replace entity @s %s with %s{Damage:%d}", mapSlot(slot), itemId, damage));
+
+            if (slot.equals("MAINHAND") && item.getDescriptionId().contains("sword")) {
+                mainHandSwordId = itemId;
+            }
         }
 
         return cmds;
+    }
+
+    public static Optional<String> getRandomSpecificSlot(String slot) {
+        List<String> pool = EQUIP_ITEMS.getOrDefault(slot, List.of());
+        if (pool.isEmpty()) return Optional.empty();
+
+        String itemId = pool.get(RANDOM.nextInt(pool.size()));
+        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemId));
+        if (item == null) return Optional.empty();
+
+        int damage = 0;
+        if (item.canBeDepleted()) {
+            int maxDamage = new ItemStack(item).getMaxDamage();
+            int min = maxDamage / 3;
+            int max = maxDamage * 3 / 4;
+            damage = RANDOM.nextInt(max - min + 1) + min;
+        }
+
+        String command = String.format("item replace entity @s %s with %s{Damage:%d}", mapSlot(slot), itemId, damage);
+        return Optional.of(command);
     }
 
     private static String mapSlot(String slot) {

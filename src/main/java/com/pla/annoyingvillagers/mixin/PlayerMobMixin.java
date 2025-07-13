@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.mixin;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.MobSpawnType;
@@ -99,13 +100,14 @@ public class PlayerMobMixin {
     private void teleportToSurfaceIfUnderground(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag, CallbackInfoReturnable<SpawnGroupData> cir) {
         Entity self = (Entity) (Object) this;
 
-        BlockPos pos = self.blockPosition();
-        int currentY = pos.getY();
-        int surfaceY = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, pos).getY();
-
-        if (currentY < surfaceY - 5 && world.getRandom().nextFloat() < 0.6F) {
-            BlockPos surfacePos = new BlockPos(pos.getX(), surfaceY, pos.getZ());
-            self.setPos(surfacePos.getX() + 0.5, surfacePos.getY(), surfacePos.getZ() + 0.5);
+        if (world instanceof ServerLevel level && level.isDay()) {
+            BlockPos pos = self.blockPosition();
+            int currentY = pos.getY();
+            int surfaceY = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, pos).getY();
+            if (currentY < surfaceY - 5 && world.getRandom().nextFloat() < 0.6F) {
+                BlockPos surfacePos = new BlockPos(pos.getX(), surfaceY, pos.getZ());
+                self.setPos(surfacePos.getX() + 0.5, surfacePos.getY(), surfacePos.getZ() + 0.5);
+            }
         }
     }
 }
