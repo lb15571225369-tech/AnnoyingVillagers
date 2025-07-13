@@ -97,21 +97,6 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> ZUAN_SHI_CHANG_JIAN = AnnoyingVillagersModItems.REGISTRY.register("zuan_shi_chang_jian", () -> {
         return new ZuanShiChangJianItem();
     });
-    public static final RegistryObject<Item> CHUNCUIDEMOFAZUANSHI_HELMET = AnnoyingVillagersModItems.REGISTRY.register("chuncuidemofazuanshi_helmet", () -> {
-        return new ChuncuidemofazuanshiItem.Helmet();
-    });
-    public static final RegistryObject<Item> CHUNCUIDEMOFAZUANSHI_CHESTPLATE = AnnoyingVillagersModItems.REGISTRY.register("chuncuidemofazuanshi_chestplate", () -> {
-        return new ChuncuidemofazuanshiItem.Chestplate();
-    });
-    public static final RegistryObject<Item> CHUNCUIDEMOFAZUANSHI_LEGGINGS = AnnoyingVillagersModItems.REGISTRY.register("chuncuidemofazuanshi_leggings", () -> {
-        return new ChuncuidemofazuanshiItem.Leggings();
-    });
-    public static final RegistryObject<Item> CHUNCUIDEMOFAZUANSHI_BOOTS = AnnoyingVillagersModItems.REGISTRY.register("chuncuidemofazuanshi_boots", () -> {
-        return new ChuncuidemofazuanshiItem.Boots();
-    });
-    public static final RegistryObject<Item> ENCHANED_DIAMOND = AnnoyingVillagersModItems.REGISTRY.register("enchaned_diamond", () -> {
-        return new EnchanedDiamondItem();
-    });
     public static final RegistryObject<Item> ZUAN_SHI_JU_JIAN = AnnoyingVillagersModItems.REGISTRY.register("zuan_shi_ju_jian", () -> {
         return new ZuanShiJuJianItem();
     });
