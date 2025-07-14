@@ -497,7 +497,7 @@ public class BleedingProcedure {
                             }
                         }
 
-                        if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("player_mobs:player_mob")) {
+                        if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("player_mobs:player_mob")  || ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("guardvillagers:guard")) {
                             entity1.getPersistentData().putDouble("hit_npc", entity1.getPersistentData().getDouble("hit_npc") + 1.0D);
                             entity.getPersistentData().putDouble("hit_npc", entity.getPersistentData().getDouble("hit_npc") + 1.0D);
                             entity1.getPersistentData().putBoolean("dont_kill", false);
@@ -859,7 +859,7 @@ public class BleedingProcedure {
                             }
                         }
 
-                        if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("minecraft:zombie") || ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("minecraft:husk") || ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("minecraft:skeleton")) {
+                        if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("minecraft:zombie") || ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("minecraft:husk") || ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("minecraft:skeleton") || ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("minecraft:wither_skeleton")) {
                             if (entity instanceof LivingEntity zombie && zombie.getHealth() <= 18.0F && entity.isAlive()) {
                                 new DelayedTask(50) {
                                     @Override
