@@ -127,9 +127,6 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> CUNZHENTOUKUI = AnnoyingVillagersModItems.REGISTRY.register("cunzhentoukui", () -> {
         return new CunzhentoukuiItem();
     });
-    public static final RegistryObject<Item> VILLAGERSCOUTHELMET_HELMET  = AnnoyingVillagersModItems.REGISTRY.register("villagerscouthelmet_helmet", () -> {
-        return new ClassicgoldenaItem.Helmet();
-    });
     public static final RegistryObject<Item> CLASSICGOLDENA_CHESTPLATE = AnnoyingVillagersModItems.REGISTRY.register("classicgoldena_chestplate", () -> {
         return new ClassicgoldenaItem.Chestplate();
     });
