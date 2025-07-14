@@ -241,6 +241,9 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> FUMOMOYINGZHENZHU = AnnoyingVillagersModItems.REGISTRY.register("fumomoyingzhenzhu", () -> {
         return new FumomoyingzhenzhuItem();
     });
+    public static final RegistryObject<Item> VILLAGERSCOUTHELMET_HELMET = AnnoyingVillagersModItems.REGISTRY.register("villagerscouthelmet_helmet", () -> {
+        return new VillagerscouthelmetItem.Helmet();
+    });
     private static RegistryObject<Item> block(RegistryObject<Block> registryobject, CreativeModeTab creativemodetab) {
         return AnnoyingVillagersModItems.REGISTRY.register(registryobject.getId().getPath(), () -> {
             return new BlockItem((Block) registryobject.get(), (new Properties()).tab(creativemodetab));

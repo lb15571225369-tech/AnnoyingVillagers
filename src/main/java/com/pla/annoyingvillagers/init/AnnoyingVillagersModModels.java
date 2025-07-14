@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.init;
 
 import com.pla.annoyingvillagers.client.model.ModelKnightH;
+import com.pla.annoyingvillagers.client.model.ModelScoutH;
 import com.pla.annoyingvillagers.client.model.Modelbluedemontrident;
 import com.pla.annoyingvillagers.client.model.Modelgreenknight_armor;
 import net.minecraftforge.api.distmarker.Dist;
@@ -15,5 +16,6 @@ public class AnnoyingVillagersModModels {
         registerlayerdefinitions.registerLayerDefinition(Modelbluedemontrident.LAYER_LOCATION, Modelbluedemontrident::createBodyLayer);
         registerlayerdefinitions.registerLayerDefinition(Modelgreenknight_armor.LAYER_LOCATION, Modelgreenknight_armor::createBodyLayer);
         registerlayerdefinitions.registerLayerDefinition(ModelKnightH.LAYER_LOCATION, ModelKnightH::createBodyLayer);
+        registerlayerdefinitions.registerLayerDefinition(ModelScoutH.LAYER_LOCATION, ModelScoutH::createBodyLayer);
     }
 }
