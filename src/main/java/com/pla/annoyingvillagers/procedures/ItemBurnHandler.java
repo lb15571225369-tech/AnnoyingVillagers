@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.procedures;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.util.BurnItemScheduler;
 import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.util.TaskScheduler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Mob;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -28,7 +29,13 @@ public class ItemBurnHandler {
         if (mob.getTarget() != null) return;
         CompoundTag data = mob.getPersistentData();
         if (!data.contains("backup_main_hand")) {
-            new BurnItemScheduler(mob);
+            TaskScheduler.schedule(() -> {
+                try {
+                    new BurnItemScheduler(mob).run();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }, 20);
         }
     }
 }

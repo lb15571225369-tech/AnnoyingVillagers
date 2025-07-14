@@ -60,7 +60,7 @@ public class PlayerMobMixin {
             case "hostile_hunter" -> {
                 self.targetSelector.addGoal(1, new HurtByTargetGoal(self));
                 self.goalSelector.addGoal(2, new MeleeAttackGoal(self, 1.2D, false));
-                self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, Monster.class, true));
+                self.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(self, Monster.class, true));
                 self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, Player.class, true));
             }
             case "village_hunter" -> {

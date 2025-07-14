@@ -21,11 +21,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class BurnItemScheduler extends DelayedTask {
+public class BurnItemScheduler {
     private final Mob mob;
     private final CompoundTag data;
     public BurnItemScheduler(Mob mob) {
-        super(20);
         this.mob = mob;
         this.data = mob.getPersistentData();
     }
@@ -112,7 +111,6 @@ public class BurnItemScheduler extends DelayedTask {
         }
     }
 
-    @Override
     public void run() throws CommandSyntaxException {
         if (!(mob.level instanceof ServerLevel serverLevel)) return;
 
@@ -185,7 +183,13 @@ public class BurnItemScheduler extends DelayedTask {
                     );
                 }
             }
-            new BurnItemScheduler(mob);
+            TaskScheduler.schedule(() -> {
+                try {
+                    new BurnItemScheduler(mob).run();
+                } catch (CommandSyntaxException e) {
+                    e.printStackTrace();
+                }
+            }, 20);
         } else {
             resetItem();
         }
