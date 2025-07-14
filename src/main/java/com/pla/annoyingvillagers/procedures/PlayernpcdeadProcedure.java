@@ -75,7 +75,7 @@ public class PlayernpcdeadProcedure {
                             }
                         } else if (Math.random() <= 0.05D) {
                             if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity1.getDisplayName().getString() + "> Poet’s grasp"), ChatType.SYSTEM, Util.NIL_UUID);
+                                levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity1.getDisplayName().getString() + "> Poet's grasp"), ChatType.SYSTEM, Util.NIL_UUID);
                             }
                         } else {
                             PlayerList playerlist;
@@ -85,7 +85,7 @@ public class PlayernpcdeadProcedure {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                                     playerlist = levelaccessor.getServer().getPlayerList();
                                     s = entity1.getDisplayName().getString();
-                                    playerlist.broadcastMessage(new TextComponent("<" + s + "> " + entity.getDisplayName().getString() + ", is that all the strength you’ve got?"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    playerlist.broadcastMessage(new TextComponent("<" + s + "> " + entity.getDisplayName().getString() + ", is that all the strength you've got?"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.1D) {
                                 if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("minecraft:player") && !levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
@@ -139,7 +139,7 @@ public class PlayernpcdeadProcedure {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                                     playerlist = levelaccessor.getServer().getPlayerList();
                                     s = entity1.getDisplayName().getString();
-                                    playerlist.broadcastMessage(new TextComponent("<" + s + "> " + entity.getDisplayName().getString() + ", weren’t you acting all tough, bro?"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    playerlist.broadcastMessage(new TextComponent("<" + s + "> " + entity.getDisplayName().getString() + ", weren't you acting all tough, bro?"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
@@ -198,7 +198,7 @@ public class PlayernpcdeadProcedure {
                     PlayerList playerlist = levelaccessor.getServer().getPlayerList();
                     String s = entity.getDisplayName().getString();
 
-                    playerlist.broadcastMessage(new TextComponent(s + " was killed by" + entity1.getDisplayName().getString()), ChatType.SYSTEM, Util.NIL_UUID);
+                    playerlist.broadcastMessage(new TextComponent(s + " was killed by " + entity1.getDisplayName().getString()), ChatType.SYSTEM, Util.NIL_UUID);
                 }
 
                 new DelayedTask(5) {
@@ -432,7 +432,7 @@ public class PlayernpcdeadProcedure {
                         if (Math.random() <= 0.05D) {
                             entity2 = entity;
                             if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "tellraw @a [{\"text\":\"<\"},{\"selector\":\"@s\"},{\"text\":\"> " + entity1.getDisplayName().getString() + " Bro, I’ll remember you for this\ud83d\ude21\"}]");
+                                entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "tellraw @a [{\"text\":\"<\"},{\"selector\":\"@s\"},{\"text\":\"> " + entity1.getDisplayName().getString() + " Bro, I'll remember you for this\ud83d\ude21\"}]");
                             }
                         } else if (Math.random() <= 0.05D) {
                             if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
@@ -516,7 +516,7 @@ public class PlayernpcdeadProcedure {
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity.getDisplayName().getString() + "> I haven’t even gotten serious yet"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity.getDisplayName().getString() + "> I haven't even gotten serious yet"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
@@ -547,7 +547,7 @@ public class PlayernpcdeadProcedure {
                             } else if (Math.random() <= 0.05D) {
                                 entity2 = entity;
                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "tellraw @a [{\"text\":\"<\"},{\"selector\":\"@s\"},{\"text\":\"> Don’t leave, I’m calling some people\ud83d\ude21\ud83d\ude21\ud83d\ude21\"}]");
+                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "tellraw @a [{\"text\":\"<\"},{\"selector\":\"@s\"},{\"text\":\"> Don't leave, I'm calling some people\ud83d\ude21\ud83d\ude21\ud83d\ude21\"}]");
                                 }
 
                                 new DelayedTask(50) {

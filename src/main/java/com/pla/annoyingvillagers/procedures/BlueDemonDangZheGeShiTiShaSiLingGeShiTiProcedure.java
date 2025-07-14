@@ -23,7 +23,7 @@ public class BlueDemonDangZheGeShiTiShaSiLingGeShiTiProcedure {
 
             if (Math.random() <= 0.2D) {
                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<Blue Demon> Don’t be arrogant."), ChatType.SYSTEM, Util.NIL_UUID);
+                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<Blue Demon> Don't be arrogant."), ChatType.SYSTEM, Util.NIL_UUID);
                 }
 
                 if (levelaccessor instanceof Level) {

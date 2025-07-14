@@ -44,7 +44,7 @@ public class BlueDemonDangShiTiShouShangShiProcedure {
                     new DelayedTask(20) {
                         @Override
                         public void run() {
-                            broadcast(world, "<Blue Demon> You’re way too predictable.");
+                            broadcast(world, "<Blue Demon> You're way too predictable.");
                             playSound(world, x, y, z, AnnoyingVillagers.MODID + ":bluedemonsayyc");
                             applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 3);
                             applyEffect(entity1, MobEffects.BLINDNESS, 80, 3);
@@ -64,7 +64,7 @@ public class BlueDemonDangShiTiShouShangShiProcedure {
                     new DelayedTask(20) {
                         @Override
                         public void run() {
-                            broadcast(world, "<Blue Demon> Don’t be arrogant.");
+                            broadcast(world, "<Blue Demon> Don't be arrogant.");
 
                             new DelayedTask(20) {
                                 @Override

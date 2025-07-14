@@ -33,8 +33,8 @@ public class BurnItemScheduler extends DelayedTask {
     private static final List<String> burnMessages = Arrays.asList(
             "I burned a %s",
             "I destroyed a %s",
-            "Trash item removed: %s",
-            "No room for this garbage: %s",
+            "Trash item removed, %s",
+            "No room for this garbage, %s",
             "Away with this worthless %s",
             "This %s? Pathetic.",
             "I have no use for this %s",
@@ -70,21 +70,21 @@ public class BurnItemScheduler extends DelayedTask {
             "Who dropped this excuse of a %s?",
             "I refuse to carry this %s any longer.",
             "Only peasants use a %s",
-            "Cursed %s—gone.",
-            "Trash fire activated: %s",
+            "Cursed %s gone.",
+            "Trash fire activated, %s",
             "Firing up the pit for a %s",
             "Look what I found… a disgusting %s",
             "I clean the world of %s like this",
-            "Into the fire, you go: %s",
+            "Into the fire, you go, %s",
             "Burning this %s makes me stronger",
             "This %s is a disgrace to all gear",
             "Flames, take this %s from my sight",
-            "An offering to the lava gods: %s",
+            "An offering to the lava gods, %s",
             "You call this a %s? Please.",
-            "Throwing away this %s like it’s nothing",
-            "A toddler’s toy? No, it’s just a %s",
+            "Throwing away this %s like it's nothing",
+            "A toddler's toy? No, it's just a %s",
             "This %s was a mistake to create",
-            "Forged in mediocrity: %s",
+            "Forged in mediocrity, %s",
             "This %s makes me lose brain cells",
             "The %s has been sentenced to fire"
     );
@@ -173,9 +173,9 @@ public class BurnItemScheduler extends DelayedTask {
 
                 String rawName = targetItem.getItem().getDisplayName().getString();
                 if (rawName.startsWith("[") && rawName.endsWith("]")) {
-                    rawName = rawName.substring(1, rawName.length() - 1);
+                    rawName = rawName.substring(1, rawName.length() - 1).toLowerCase();;
                 }
-                if (new Random().nextFloat() < 0.1f) {
+                if (new Random().nextFloat() < 0.05f) {
                     String message = "<" + mob.getDisplayName().getString() + "> " +
                             getRandomBurnMessage(rawName);
                     serverLevel.getServer().getPlayerList().broadcastMessage(
