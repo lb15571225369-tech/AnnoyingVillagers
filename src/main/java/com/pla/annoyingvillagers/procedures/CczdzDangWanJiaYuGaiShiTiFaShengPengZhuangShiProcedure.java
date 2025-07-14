@@ -42,7 +42,7 @@ public class CczdzDangWanJiaYuGaiShiTiFaShengPengZhuangShiProcedure {
                             itemstack1 = ItemStack.EMPTY;
                         }
 
-                        itemstack1.enchant(Enchantments.POWER_ARROWS, 5);
+                        itemstack1.enchant(Enchantments.POWER_ARROWS, 3);
                         if (entity instanceof LivingEntity) {
                             livingentity = (LivingEntity)entity;
                             itemstack1 = livingentity.getOffhandItem();
@@ -50,7 +50,7 @@ public class CczdzDangWanJiaYuGaiShiTiFaShengPengZhuangShiProcedure {
                             itemstack1 = ItemStack.EMPTY;
                         }
 
-                        itemstack1.enchant(Enchantments.PUNCH_ARROWS, 2);
+                        itemstack1.enchant(Enchantments.PUNCH_ARROWS, 3);
                     }
                 };
             }

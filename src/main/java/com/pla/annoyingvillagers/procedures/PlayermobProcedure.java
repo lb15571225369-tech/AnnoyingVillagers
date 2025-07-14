@@ -182,7 +182,7 @@ public class PlayermobProcedure {
                                         itemstack1 = ItemStack.EMPTY;
                                     }
 
-                                    itemstack1.enchant(Enchantments.POWER_ARROWS, 5);
+                                    itemstack1.enchant(Enchantments.POWER_ARROWS, 3);
                                     new DelayedTask(20) {
                                         @Override
                                         public void run() {
@@ -203,7 +203,7 @@ public class PlayermobProcedure {
                                         itemstack1 = ItemStack.EMPTY;
                                     }
 
-                                    itemstack1.enchant(Enchantments.PUNCH_ARROWS, 5);
+                                    itemstack1.enchant(Enchantments.PUNCH_ARROWS, 3);
 
                                     new DelayedTask(80) {
                                         @Override
@@ -242,7 +242,7 @@ public class PlayermobProcedure {
                                                 itemstack3 = ItemStack.EMPTY;
                                             }
 
-                                            itemstack3.enchant(Enchantments.SHARPNESS, 5);
+                                            itemstack3.enchant(Enchantments.SHARPNESS, 3);
                                             if (entity instanceof LivingEntity) {
                                                 livingentity5 = (LivingEntity)entity;
                                                 itemstack3 = livingentity5.getMainHandItem();
@@ -250,7 +250,7 @@ public class PlayermobProcedure {
                                                 itemstack3 = ItemStack.EMPTY;
                                             }
 
-                                            itemstack3.enchant(Enchantments.MENDING, 5);
+                                            itemstack3.enchant(Enchantments.KNOCKBACK, 2);
                                             if (Math.random() <= 0.2D) {
                                                 if (entity instanceof LivingEntity) {
                                                     livingentity5 = (LivingEntity)entity;
@@ -270,7 +270,7 @@ public class PlayermobProcedure {
                                                     itemstack3 = ItemStack.EMPTY;
                                                 }
 
-                                                itemstack3.enchant(Enchantments.SHARPNESS, 5);
+                                                itemstack3.enchant(Enchantments.SHARPNESS, 3);
                                                 if (entity instanceof LivingEntity) {
                                                     livingentity5 = (LivingEntity)entity;
                                                     itemstack3 = livingentity5.getMainHandItem();
@@ -278,7 +278,7 @@ public class PlayermobProcedure {
                                                     itemstack3 = ItemStack.EMPTY;
                                                 }
 
-                                                itemstack3.enchant(Enchantments.MENDING, 5);
+                                                itemstack3.enchant(Enchantments.KNOCKBACK, 2);
                                             }
 
                                             if (Math.random() <= 0.1D) {
@@ -300,7 +300,7 @@ public class PlayermobProcedure {
                                                     itemstack3 = ItemStack.EMPTY;
                                                 }
 
-                                                itemstack3.enchant(Enchantments.SHARPNESS, 5);
+                                                itemstack3.enchant(Enchantments.SHARPNESS, 3);
                                                 if (entity instanceof LivingEntity) {
                                                     livingentity5 = (LivingEntity)entity;
                                                     itemstack3 = livingentity5.getMainHandItem();
@@ -308,7 +308,7 @@ public class PlayermobProcedure {
                                                     itemstack3 = ItemStack.EMPTY;
                                                 }
 
-                                                itemstack3.enchant(Enchantments.MENDING, 5);
+                                                itemstack3.enchant(Enchantments.KNOCKBACK, 2);
                                             }
                                         }
                                     };
@@ -435,7 +435,7 @@ public class PlayermobProcedure {
                                         itemstack1 = ItemStack.EMPTY;
                                     }
 
-                                    itemstack1.enchant(Enchantments.POWER_ARROWS, 6);
+                                    itemstack1.enchant(Enchantments.POWER_ARROWS, 3);
                                     if (entity instanceof LivingEntity) {
                                         livingentity4 = (LivingEntity)entity;
                                         itemstack1 = livingentity4.getMainHandItem();
@@ -443,7 +443,7 @@ public class PlayermobProcedure {
                                         itemstack1 = ItemStack.EMPTY;
                                     }
 
-                                    itemstack1.enchant(Enchantments.PUNCH_ARROWS, 5);
+                                    itemstack1.enchant(Enchantments.PUNCH_ARROWS, 3);
                                     new DelayedTask(80) {
                                         public void run() {
                                             Entity entity3 = entity;
@@ -496,7 +496,7 @@ public class PlayermobProcedure {
                                                 itemstack3 = ItemStack.EMPTY;
                                             }
 
-                                            itemstack3.enchant(Enchantments.SHARPNESS, 5);
+                                            itemstack3.enchant(Enchantments.SHARPNESS, 3);
                                             if (entity instanceof LivingEntity) {
                                                 livingentity6 = (LivingEntity)entity;
                                                 itemstack3 = livingentity6.getMainHandItem();
@@ -504,7 +504,7 @@ public class PlayermobProcedure {
                                                 itemstack3 = ItemStack.EMPTY;
                                             }
 
-                                            itemstack3.enchant(Enchantments.MENDING, 5);
+                                            itemstack3.enchant(Enchantments.KNOCKBACK, 2);
                                             if (Math.random() <= 0.2D) {
                                                 if (entity instanceof LivingEntity) {
                                                     livingentity6 = (LivingEntity)entity;
@@ -524,7 +524,7 @@ public class PlayermobProcedure {
                                                     itemstack3 = ItemStack.EMPTY;
                                                 }
 
-                                                itemstack3.enchant(Enchantments.SHARPNESS, 5);
+                                                itemstack3.enchant(Enchantments.SHARPNESS, 3);
                                                 if (entity instanceof LivingEntity) {
                                                     livingentity6 = (LivingEntity)entity;
                                                     itemstack3 = livingentity6.getMainHandItem();
@@ -532,7 +532,7 @@ public class PlayermobProcedure {
                                                     itemstack3 = ItemStack.EMPTY;
                                                 }
 
-                                                itemstack3.enchant(Enchantments.MENDING, 5);
+                                                itemstack3.enchant(Enchantments.KNOCKBACK, 2);
                                             }
 
                                             if (Math.random() <= 0.2D) {
@@ -554,7 +554,7 @@ public class PlayermobProcedure {
                                                     itemstack3 = ItemStack.EMPTY;
                                                 }
 
-                                                itemstack3.enchant(Enchantments.SHARPNESS, 5);
+                                                itemstack3.enchant(Enchantments.SHARPNESS, 3);
                                                 if (entity instanceof LivingEntity) {
                                                     livingentity6 = (LivingEntity)entity;
                                                     itemstack3 = livingentity6.getMainHandItem();
@@ -562,7 +562,7 @@ public class PlayermobProcedure {
                                                     itemstack3 = ItemStack.EMPTY;
                                                 }
 
-                                                itemstack3.enchant(Enchantments.MENDING, 5);
+                                                itemstack3.enchant(Enchantments.KNOCKBACK, 2);
                                             }
 
                                             if (Math.random() <= 0.2D) {
@@ -584,7 +584,7 @@ public class PlayermobProcedure {
                                                     itemstack3 = ItemStack.EMPTY;
                                                 }
 
-                                                itemstack3.enchant(Enchantments.SHARPNESS, 5);
+                                                itemstack3.enchant(Enchantments.SHARPNESS, 3);
                                                 if (entity instanceof LivingEntity) {
                                                     livingentity6 = (LivingEntity)entity;
                                                     itemstack3 = livingentity6.getMainHandItem();
@@ -592,7 +592,7 @@ public class PlayermobProcedure {
                                                     itemstack3 = ItemStack.EMPTY;
                                                 }
 
-                                                itemstack3.enchant(Enchantments.MENDING, 5);
+                                                itemstack3.enchant(Enchantments.KNOCKBACK, 2);
                                             }
                                         }
                                     };

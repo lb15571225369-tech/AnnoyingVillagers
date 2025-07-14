@@ -7,7 +7,6 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.OpenDoorGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
@@ -17,7 +16,6 @@ import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.ZombifiedPiglin;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -31,55 +29,54 @@ import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Random;
 
 @Mixin(value = {PlayerMobEntity.class}, remap = false)
 public class PlayerMobMixin {
     @Inject(method = "addBehaviourGoals", at = @At("HEAD"), cancellable = true)
     private void injectTargetingAI(CallbackInfo ci) {
         PlayerMobEntity self = (PlayerMobEntity) (Object) this;
-
-        self.goalSelector.addGoal(3, new MeleeAttackGoal(self, 1.2D, false));
-        self.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(self, 1.0D));
-        self.goalSelector.addGoal(1, new OpenDoorGoal(self, true));
+        self.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(self, 1.0D));
+        self.goalSelector.addGoal(3, new OpenDoorGoal(self, true));
         ((GroundPathNavigation) self.getNavigation()).setCanOpenDoors(true);
-        self.targetSelector.addGoal(1, new HurtByTargetGoal(self, ZombifiedPiglin.class));
 
         CompoundTag data = self.getPersistentData();
         String role;
 
-        if (!data.contains("av_hunt_target")) {
+        if (!data.contains("behavior")) {
             List<String> roles = List.of(
                     "monster_hunter",
                     "player_hunter",
                     "hostile_hunt",
                     "passive_hunt",
-                    "friendly"
+                    "animal_hunter"
             );
             role = roles.get(self.getRandom().nextInt(roles.size()));
-            data.putString("av_hunt_target", role);
+            data.putString("behavior", role);
         } else {
-            role = data.getString("av_hunt_target");
+            role = data.getString("behavior");
         }
 
         switch (role) {
-            case "hostile_hunt" -> {
+            case "hostile_hunter" -> {
+                self.targetSelector.addGoal(1, new HurtByTargetGoal(self));
+                self.goalSelector.addGoal(2, new MeleeAttackGoal(self, 1.2D, false));
                 self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, Monster.class, true));
-                self.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(self, Player.class, true));
+                self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, Player.class, true));
             }
-            case "passive_hunt" -> {
-                self.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(self, Villager.class, true));
-                self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, Animal.class, true));
-                self.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(self, IronGolem.class, true));
+            case "village_hunter" -> {
+                self.targetSelector.addGoal(1, new HurtByTargetGoal(self));
+                self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Villager.class, true));
+                self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, IronGolem.class, true));
+                self.goalSelector.addGoal(3, new MeleeAttackGoal(self, 1.2D, false));
             }
             case "monster_hunter" -> {
-                self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Monster.class, true));
+                self.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(self, Monster.class, true));
             }
             case "player_hunter" -> {
-                self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Player.class, true));
+                self.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(self, Player.class, true));
             }
-            case "friendly" -> {
-                self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Animal.class, true));
+            case "animal_hunter" -> {
+                self.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(self, Animal.class, true));
             }
         }
 

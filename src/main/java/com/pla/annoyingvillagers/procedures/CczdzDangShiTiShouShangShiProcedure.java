@@ -266,7 +266,7 @@ public class CczdzDangShiTiShouShangShiProcedure {
                                     itemstack3 = ItemStack.EMPTY;
                                 }
 
-                                itemstack3.enchant(Enchantments.POWER_ARROWS, 5);
+                                itemstack3.enchant(Enchantments.POWER_ARROWS, 3);
                                 if (entity instanceof LivingEntity) {
                                     livingentity4 = (LivingEntity)entity;
                                     itemstack3 = livingentity4.getMainHandItem();
@@ -274,7 +274,7 @@ public class CczdzDangShiTiShouShangShiProcedure {
                                     itemstack3 = ItemStack.EMPTY;
                                 }
 
-                                itemstack3.enchant(Enchantments.PUNCH_ARROWS, 5);
+                                itemstack3.enchant(Enchantments.PUNCH_ARROWS, 3);
                                 new DelayedTask(80) {
                                     public void run() {
                                         Entity entity3 = entity;
@@ -312,7 +312,7 @@ public class CczdzDangShiTiShouShangShiProcedure {
                                                 itemstack5 = ItemStack.EMPTY;
                                             }
 
-                                            itemstack5.enchant(Enchantments.SHARPNESS, 5);
+                                            itemstack5.enchant(Enchantments.SHARPNESS, 3);
                                         } else {
                                             if (entity instanceof LivingEntity) {
                                                 livingentity5 = (LivingEntity)entity;
@@ -332,7 +332,7 @@ public class CczdzDangShiTiShouShangShiProcedure {
                                                 itemstack5 = ItemStack.EMPTY;
                                             }
 
-                                            itemstack5.enchant(Enchantments.SHARPNESS, 5);
+                                            itemstack5.enchant(Enchantments.SHARPNESS, 3);
                                             if (entity instanceof LivingEntity) {
                                                 livingentity5 = (LivingEntity)entity;
                                                 itemstack5 = livingentity5.getMainHandItem();
@@ -340,7 +340,7 @@ public class CczdzDangShiTiShouShangShiProcedure {
                                                 itemstack5 = ItemStack.EMPTY;
                                             }
 
-                                            itemstack5.enchant(Enchantments.MENDING, 5);
+                                            itemstack5.enchant(Enchantments.KNOCKBACK, 2);
                                         }
                                     }
                                 };

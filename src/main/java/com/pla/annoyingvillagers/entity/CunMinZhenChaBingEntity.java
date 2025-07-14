@@ -108,12 +108,12 @@ public class CunMinZhenChaBingEntity extends PathfinderMob {
             }
         });
         this.targetSelector.addGoal(20, new NearestAttackableTargetGoal(this, Player.class, true, true));
-        this.goalSelector.addGoal(21, new RandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(22, new FollowMobGoal(this, 1.2D, 20.0F, 15.0F));
-        this.goalSelector.addGoal(23, new OpenDoorGoal(this, true));
-        this.goalSelector.addGoal(24, new OpenDoorGoal(this, false));
-        this.goalSelector.addGoal(25, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(26, new FloatGoal(this));
+        this.goalSelector.addGoal(22, new RandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(23, new FollowMobGoal(this, 1.2D, 20.0F, 15.0F));
+        this.goalSelector.addGoal(24, new OpenDoorGoal(this, true));
+        this.goalSelector.addGoal(25, new OpenDoorGoal(this, false));
+        this.goalSelector.addGoal(26, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(27, new FloatGoal(this));
 //        this.targetSelector.addGoal(19, new NearestAttackableTargetGoal(this, Steve2Entity.class, true, false));
 //        this.targetSelector.addGoal(27, new NearestAttackableTargetGoal(this, CunZhenFuLuEntity.class, true, true));
 //        this.targetSelector.addGoal(28, new NearestAttackableTargetGoal(this, LanCunQiFuLuEntity.class, true, true));

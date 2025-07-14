@@ -111,7 +111,7 @@ public class LuCunQiShiTiChuShiShengChengShiProcedure {
                     itemstack = ItemStack.EMPTY;
                 }
 
-                itemstack.enchant(Enchantments.POWER_ARROWS, 5);
+                itemstack.enchant(Enchantments.POWER_ARROWS, 3);
             }
 
             if (Math.random() <= 0.28D) {
@@ -133,7 +133,7 @@ public class LuCunQiShiTiChuShiShengChengShiProcedure {
                     itemstack = ItemStack.EMPTY;
                 }
 
-                itemstack.enchant(Enchantments.POWER_ARROWS, 5);
+                itemstack.enchant(Enchantments.POWER_ARROWS, 3);
                 if (levelaccessor instanceof ServerLevel) {
                     ServerLevel serverlevel = (ServerLevel)levelaccessor;
                     Cow cow = new Cow(EntityType.COW, serverlevel);

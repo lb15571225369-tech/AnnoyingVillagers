@@ -304,7 +304,7 @@ public class LanCunQiDangShiTiShouShangShiProcedure {
                                     itemstack3 = ItemStack.EMPTY;
                                 }
 
-                                itemstack3.enchant(Enchantments.POWER_ARROWS, 5);
+                                itemstack3.enchant(Enchantments.POWER_ARROWS, 3);
                                 if (entity instanceof LivingEntity) {
                                     livingentity4 = (LivingEntity)entity;
                                     itemstack3 = livingentity4.getMainHandItem();
@@ -312,7 +312,7 @@ public class LanCunQiDangShiTiShouShangShiProcedure {
                                     itemstack3 = ItemStack.EMPTY;
                                 }
 
-                                itemstack3.enchant(Enchantments.PUNCH_ARROWS, 5);
+                                itemstack3.enchant(Enchantments.PUNCH_ARROWS, 3);
                                 new DelayedTask(80) {
                                     public void run() {
                                         Entity entity3 = entity;
@@ -370,7 +370,7 @@ public class LanCunQiDangShiTiShouShangShiProcedure {
                                                 itemstack5 = ItemStack.EMPTY;
                                             }
 
-                                            itemstack5.enchant(Enchantments.SHARPNESS, 5);
+                                            itemstack5.enchant(Enchantments.SHARPNESS, 3);
                                             if (entity instanceof LivingEntity) {
                                                 livingentity5 = (LivingEntity)entity;
                                                 itemstack5 = livingentity5.getMainHandItem();
@@ -378,7 +378,7 @@ public class LanCunQiDangShiTiShouShangShiProcedure {
                                                 itemstack5 = ItemStack.EMPTY;
                                             }
 
-                                            itemstack5.enchant(Enchantments.MENDING, 5);
+                                            itemstack5.enchant(Enchantments.KNOCKBACK, 2);
                                             if (Math.random() <= 0.2D) {
                                                 if (entity instanceof LivingEntity) {
                                                     livingentity5 = (LivingEntity)entity;
@@ -398,7 +398,7 @@ public class LanCunQiDangShiTiShouShangShiProcedure {
                                                     itemstack5 = ItemStack.EMPTY;
                                                 }
 
-                                                itemstack5.enchant(Enchantments.SHARPNESS, 5);
+                                                itemstack5.enchant(Enchantments.SHARPNESS, 3);
                                                 if (entity instanceof LivingEntity) {
                                                     livingentity5 = (LivingEntity)entity;
                                                     itemstack5 = livingentity5.getMainHandItem();
@@ -406,7 +406,7 @@ public class LanCunQiDangShiTiShouShangShiProcedure {
                                                     itemstack5 = ItemStack.EMPTY;
                                                 }
 
-                                                itemstack5.enchant(Enchantments.MENDING, 5);
+                                                itemstack5.enchant(Enchantments.KNOCKBACK, 2);
                                             }
 
                                             if (Math.random() <= 0.1D) {
@@ -428,7 +428,7 @@ public class LanCunQiDangShiTiShouShangShiProcedure {
                                                     itemstack5 = ItemStack.EMPTY;
                                                 }
 
-                                                itemstack5.enchant(Enchantments.SHARPNESS, 5);
+                                                itemstack5.enchant(Enchantments.SHARPNESS, 3);
                                                 if (entity instanceof LivingEntity) {
                                                     livingentity5 = (LivingEntity)entity;
                                                     itemstack5 = livingentity5.getMainHandItem();
@@ -436,7 +436,7 @@ public class LanCunQiDangShiTiShouShangShiProcedure {
                                                     itemstack5 = ItemStack.EMPTY;
                                                 }
 
-                                                itemstack5.enchant(Enchantments.MENDING, 5);
+                                                itemstack5.enchant(Enchantments.KNOCKBACK, 2);
                                             }
                                         }
                                     }

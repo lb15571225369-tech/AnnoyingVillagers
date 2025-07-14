@@ -5,16 +5,20 @@ import javax.annotation.Nullable;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.util.EquipmentDataLoader;
 import net.minecraft.Util;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -51,7 +55,7 @@ public class PlayernpcjoingameProcedure {
 
             if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("player_mobs:player_mob")) {
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    List<String> commands = EquipmentDataLoader.getEquipCommands(0.7f);
+                    List<String> commands = EquipmentDataLoader.getEquipCommands(0.7f, entity);
                     for (String cmd : commands) {
                         entity.getServer().getCommands().performCommand(
                                 entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
@@ -175,7 +179,7 @@ public class PlayernpcjoingameProcedure {
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
                     entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "data merge entity @s {CanPickUpLoot: 1b}");
                     if (entity.level.getRandom().nextFloat() < 0.5f) {
-                        List<String> commands = EquipmentDataLoader.getEquipCommands(0.0f);
+                        List<String> commands = EquipmentDataLoader.getEquipCommands(0.0f, entity);
                         for (String cmd : commands) {
                             entity.getServer().getCommands().performCommand(
                                     entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),

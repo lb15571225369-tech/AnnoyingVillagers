@@ -107,11 +107,11 @@ public class CczdzEntity extends PathfinderMob {
             }
         });
         this.targetSelector.addGoal(17, new NearestAttackableTargetGoal(this, Player.class, true, false));
-        this.goalSelector.addGoal(18, new RandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(19, new OpenDoorGoal(this, true));
-        this.goalSelector.addGoal(20, new OpenDoorGoal(this, false));
-        this.goalSelector.addGoal(21, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(22, new FloatGoal(this));
+        this.goalSelector.addGoal(19, new RandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(20, new OpenDoorGoal(this, true));
+        this.goalSelector.addGoal(21, new OpenDoorGoal(this, false));
+        this.goalSelector.addGoal(22, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(23, new FloatGoal(this));
 //        this.targetSelector.addGoal(23, new NearestAttackableTargetGoal(this, CunZhenFuLuEntity.class, true, true));
 //        this.targetSelector.addGoal(24, new NearestAttackableTargetGoal(this, LanCunQiFuLuEntity.class, true, true));
 //        this.targetSelector.addGoal(25, new NearestAttackableTargetGoal(this, LvcunqifuluEntity.class, true, true));

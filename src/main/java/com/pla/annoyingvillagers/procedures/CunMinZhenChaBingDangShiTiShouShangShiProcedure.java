@@ -243,7 +243,7 @@ public class CunMinZhenChaBingDangShiTiShouShangShiProcedure {
                                     itemstack2 = ItemStack.EMPTY;
                                 }
 
-                                itemstack2.enchant(Enchantments.POWER_ARROWS, 5);
+                                itemstack2.enchant(Enchantments.POWER_ARROWS, 3);
                                 new DelayedTask(20) {
                                     @Override
                                     public void run() {
@@ -259,7 +259,7 @@ public class CunMinZhenChaBingDangShiTiShouShangShiProcedure {
                                     itemstack2 = ItemStack.EMPTY;
                                 }
 
-                                itemstack2.enchant(Enchantments.PUNCH_ARROWS, 5);
+                                itemstack2.enchant(Enchantments.PUNCH_ARROWS, 3);
                                 new DelayedTask(80) {
                                     @Override
                                     public void run() {
@@ -318,7 +318,7 @@ public class CunMinZhenChaBingDangShiTiShouShangShiProcedure {
                                                 itemstack4 = ItemStack.EMPTY;
                                             }
 
-                                            itemstack4.enchant(Enchantments.SHARPNESS, 5);
+                                            itemstack4.enchant(Enchantments.SHARPNESS, 3);
                                             if (entity instanceof LivingEntity) {
                                                 livingentity5 = (LivingEntity)entity;
                                                 itemstack4 = livingentity5.getMainHandItem();
@@ -326,7 +326,7 @@ public class CunMinZhenChaBingDangShiTiShouShangShiProcedure {
                                                 itemstack4 = ItemStack.EMPTY;
                                             }
 
-                                            itemstack4.enchant(Enchantments.MENDING, 5);
+                                            itemstack4.enchant(Enchantments.KNOCKBACK, 2);
                                         }
                                     }
                                 };

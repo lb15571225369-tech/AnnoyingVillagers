@@ -1,17 +1,30 @@
 package com.pla.annoyingvillagers.util;
 
 import com.google.gson.*;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraftforge.common.capabilities.CapabilityProvider;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import yesman.epicfight.api.forgeevent.WeaponCapabilityPresetRegistryEvent;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.capabilities.item.CapabilityItem;
+import yesman.epicfight.world.capabilities.item.Style;
+import yesman.epicfight.world.capabilities.item.WeaponCapability;
+import yesman.epicfight.world.capabilities.item.WeaponCategory;
 
 import java.util.*;
 
@@ -52,9 +65,20 @@ public class EquipmentDataLoader extends SimpleJsonResourceReloadListener {
         }
     }
 
-    public static List<String> getEquipCommands(float equipChanceArmor) {
+    public static boolean isOneHanded(ItemStack stack, LivingEntityPatch<?> patch) {
+        CapabilityItem cap = EpicFightCapabilities.getItemStackCapability(stack);
+
+        if (cap instanceof WeaponCapability weaponCap) {
+            Style style = weaponCap.getStyle(patch);
+            return style == CapabilityItem.Styles.ONE_HAND;
+        }
+
+        return false;
+    }
+
+    public static List<String> getEquipCommands(float equipChanceArmor, Entity entity) {
         List<String> cmds = new ArrayList<>();
-        String mainHandSwordId = null;
+        String oneHandWeaponInMainHand = null;
 
         for (String slot : List.of("MAINHAND", "OFFHAND", "HEAD", "CHEST", "LEGS", "FEET")) {
             List<String> pool = EQUIP_ITEMS.getOrDefault(slot, List.of());
@@ -64,8 +88,12 @@ public class EquipmentDataLoader extends SimpleJsonResourceReloadListener {
             if (!alwaysEquip && RANDOM.nextFloat() > equipChanceArmor) continue;
 
             String itemId;
-            if (slot.equals("OFFHAND") && mainHandSwordId != null && RANDOM.nextFloat() < 0.5f) {
-                itemId = mainHandSwordId;
+            if (slot.equals("OFFHAND") && oneHandWeaponInMainHand != null) {
+                if (new Random().nextBoolean()) {
+                    itemId = oneHandWeaponInMainHand;
+                } else {
+                    itemId = pool.get(RANDOM.nextInt(pool.size()));
+                }
             } else {
                 itemId = pool.get(RANDOM.nextInt(pool.size()));
             }
@@ -80,8 +108,12 @@ public class EquipmentDataLoader extends SimpleJsonResourceReloadListener {
             }
             cmds.add(String.format("item replace entity @s %s with %s{Damage:%d}", mapSlot(slot), itemId, damage));
 
-            if (slot.equals("MAINHAND") && item.getDescriptionId().contains("sword")) {
-                mainHandSwordId = itemId;
+            ItemStack itemStack = new ItemStack(item);
+            if (slot.equals("MAINHAND")) {
+                LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                if (isOneHanded(itemStack, patch)) {
+                    oneHandWeaponInMainHand = itemId;
+                }
             }
         }
 

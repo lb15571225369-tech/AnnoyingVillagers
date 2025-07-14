@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.util;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.ServerTickEvent;
@@ -15,7 +16,7 @@ public abstract class DelayedTask {
     }
 
     @SubscribeEvent
-    public void onTick(ServerTickEvent event) {
+    public void onTick(ServerTickEvent event) throws CommandSyntaxException {
         if (event.phase == TickEvent.Phase.END) {
             ticks++;
             if (ticks >= waitTicks) {
@@ -25,5 +26,5 @@ public abstract class DelayedTask {
         }
     }
 
-    public abstract void run();
+    public abstract void run() throws CommandSyntaxException;
 }
