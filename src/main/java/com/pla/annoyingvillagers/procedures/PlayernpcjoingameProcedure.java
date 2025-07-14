@@ -166,6 +166,11 @@ public class PlayernpcjoingameProcedure {
                 ));
             }
 
+            if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("guardvillagers:guard") && !entity.level.isClientSide() && entity.getServer() != null) {
+                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "team join villagers @s");
+                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "data merge entity @s {CanPickUpLoot: 1b}");
+            }
+
             if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("minecraft:zombie") && !entity.level.isClientSide() && entity.getServer() != null) {
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
                     entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "data merge entity @s {CanPickUpLoot: 1b}");

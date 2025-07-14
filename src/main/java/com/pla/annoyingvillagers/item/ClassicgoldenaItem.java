@@ -54,7 +54,7 @@ public abstract class ClassicgoldenaItem extends ArmorItem {
     public static class Boots extends ClassicgoldenaItem {
 
         public Boots() {
-            super(EquipmentSlot.FEET, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
+            super(EquipmentSlot.FEET, (new Properties()).tab((CreativeModeTab) null));
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
@@ -65,7 +65,7 @@ public abstract class ClassicgoldenaItem extends ArmorItem {
     public static class Leggings extends ClassicgoldenaItem {
 
         public Leggings() {
-            super(EquipmentSlot.LEGS, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
+            super(EquipmentSlot.LEGS, (new Properties()).tab((CreativeModeTab) null));
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
@@ -76,7 +76,7 @@ public abstract class ClassicgoldenaItem extends ArmorItem {
     public static class Chestplate extends ClassicgoldenaItem {
 
         public Chestplate() {
-            super(EquipmentSlot.CHEST, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
+            super(EquipmentSlot.CHEST, (new Properties()).tab((CreativeModeTab) null));
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
@@ -87,7 +87,7 @@ public abstract class ClassicgoldenaItem extends ArmorItem {
     public static class Helmet extends ClassicgoldenaItem {
 
         public Helmet() {
-            super(EquipmentSlot.HEAD, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
+            super(EquipmentSlot.HEAD, (new Properties()).tab((CreativeModeTab) null));
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
