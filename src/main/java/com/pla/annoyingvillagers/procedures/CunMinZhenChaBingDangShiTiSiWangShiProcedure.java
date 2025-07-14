@@ -205,12 +205,12 @@ public class CunMinZhenChaBingDangShiTiSiWangShiProcedure {
                 }
 
                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u6751\u6c11\u4fa6\u67e5\u5175> \u8bf7\u6c42\u652f\u63f4\uff01"), ChatType.SYSTEM, Util.NIL_UUID);
+                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<Villager Scout> Requesting backup!"), ChatType.SYSTEM, Util.NIL_UUID);
                 }
                 new DelayedTask(400) {
                     public void run() {
                         if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                            levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u6751\u6c11\u4fa6\u5bdf\u5175> \u63f4\u519b\u5230\u4e86\uff01"), ChatType.SYSTEM, Util.NIL_UUID);
+                            levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<Villager Scout> Reinforcements have arrived!"), ChatType.SYSTEM, Util.NIL_UUID);
                         }
 
                         Entity entity1 = entity;

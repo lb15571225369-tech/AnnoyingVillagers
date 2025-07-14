@@ -134,7 +134,7 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
                         @Override
                         public void run() {
                             if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u84dd\u6076\u9b54> \u4e09\u53c9\u621f\u72c2\u6b22\u8282\uff01\uff01\uff01"), ChatType.SYSTEM, Util.NIL_UUID);
+                                levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<Blue Demon> Trident Carnival!!!"), ChatType.SYSTEM, Util.NIL_UUID);
                             }
 
                             LevelAccessor levelaccessor2 = levelaccessor;

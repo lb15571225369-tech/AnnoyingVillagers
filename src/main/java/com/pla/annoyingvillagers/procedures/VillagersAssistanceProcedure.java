@@ -50,7 +50,7 @@ public class VillagersAssistanceProcedure {
 
                 if (serverlevel.isRaided(new BlockPos(d0, d1, d2)) && Math.random() <= 0.2D) {
                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u6751\u6c11> Help !"), ChatType.SYSTEM, Util.NIL_UUID);
+                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<Villager> Help !"), ChatType.SYSTEM, Util.NIL_UUID);
                     }
 
                     new DelayedTask(11) {
@@ -98,7 +98,7 @@ public class VillagersAssistanceProcedure {
                         public void run() {
                             if (entity instanceof LivingEntity living) {
                                 if (living.hasEffect(MobEffects.MOVEMENT_SPEED)) {
-                                    broadcast("村民", "Help me!");
+                                    broadcast("Villager", "Help me!");
                                     return;
                                 }
                             }
@@ -118,28 +118,28 @@ public class VillagersAssistanceProcedure {
                                         playSound(levelaccessor, d0, d1, d2, "entity.experience_orb.pickup");
 
                                         if (Math.random() <= 0.6) {
-                                            broadcast("村民侦察兵", "What the matter?");
+                                            broadcast("Villager Scout", "What the matter?");
                                             summon(entity, "cun_min_zhen_cha_bing", 0, 5, 10);
                                             summon(entity, "cun_min_zhen_cha_bing", 10, 5, -5);
                                             summon(entity, "lan_cun_qi", -10, 5, 20);
                                         } else if (Math.random() <= 0.1) {
-                                            broadcast("村民蓝骑兵", "What the matter?");
+                                            broadcast("Villager Blue General", "What the matter?");
                                             summon(entity, "lan_cun_qi", 10, 5, -20);
                                             summon(entity, "lan_cun_qi", -5, 5, 20);
                                             summon(entity, "cun_min_zhen_cha_bing", 0, 5, 10);
                                         } else if (Math.random() <= 0.1) {
-                                            broadcast("村民紫骑兵", "What the matter?");
+                                            broadcast("Villager Purple General", "What the matter?");
                                             summon(entity, "zi_cun_qi", -5, 5, 20);
                                             summon(entity, "zi_cun_qi", 10, 5, -20);
                                         } else if (Math.random() <= 0.1) {
-                                            broadcast("村民红骑兵", "What the matter?");
+                                            broadcast("Villager Red General", "What the matter?");
                                             summon(entity, "hong_cun_qi", 10, 5, 20);
                                             summon(entity, "hong_cun_qi", 5, 5, -20);
                                             summon(entity, "cun_min_zhen_cha_bing", 0, 5, -10);
                                         } else {
-                                            broadcast("村民绿骑兵", "What the matter?");
+                                            broadcast("Villager Green General", "What the matter?");
                                             summon(entity, "cun_min_zhen_cha_bing", 0, 5, -10);
-                                            summon(entity, "lan_cun_qi", 10, 5, 20);
+                                            summon(entity, "lu_cun_qi", 10, 5, 20);
                                             summon(entity, "lu_cun_qi", -5, 5, 20);
                                         }
                                     }

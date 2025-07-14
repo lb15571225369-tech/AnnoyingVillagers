@@ -23,7 +23,7 @@ public class BlueDemonDangZheGeShiTiShaSiLingGeShiTiProcedure {
 
             if (Math.random() <= 0.2D) {
                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u84dd\u6076\u9b54> \u4e0d\u8981\u81ea\u5927"), ChatType.SYSTEM, Util.NIL_UUID);
+                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<Blue Demon> Don’t be arrogant."), ChatType.SYSTEM, Util.NIL_UUID);
                 }
 
                 if (levelaccessor instanceof Level) {
@@ -37,7 +37,7 @@ public class BlueDemonDangZheGeShiTiShaSiLingGeShiTiProcedure {
             } else if (Math.random() <= 0.3D) {
                 if (entity instanceof Player) {
                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u84dd\u6076\u9b54> \u5e7d\u9ed8\uff0c\u8650\u73a9\u5bb6\u771f\u6709\u610f\u601d"), ChatType.SYSTEM, Util.NIL_UUID);
+                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<Blue Demon> Amusing. Torturing players is really fun."), ChatType.SYSTEM, Util.NIL_UUID);
                     }
 
                     if (levelaccessor instanceof Level) {
@@ -51,7 +51,7 @@ public class BlueDemonDangZheGeShiTiShaSiLingGeShiTiProcedure {
                 }
             } else if (Math.random() <= 0.2D) {
                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u84dd\u6076\u9b54> \u5c0f\u770b\u522b\u4eba\u53ea\u4f1a\u7a81\u51fa\u4f60\u6709\u591a\u4e48\u65e0\u77e5"), ChatType.SYSTEM, Util.NIL_UUID);
+                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<Blue Demon> Underestimating others only shows how ignorant you are."), ChatType.SYSTEM, Util.NIL_UUID);
                 }
 
                 if (levelaccessor instanceof Level) {
@@ -64,7 +64,7 @@ public class BlueDemonDangZheGeShiTiShaSiLingGeShiTiProcedure {
                 }
             } else if (Math.random() <= 0.2D) {
                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u84dd\u6076\u9b54> \u4f60\u6025\u4e86"), ChatType.SYSTEM, Util.NIL_UUID);
+                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<Blue Demon> You're getting nervous."), ChatType.SYSTEM, Util.NIL_UUID);
                 }
 
                 if (levelaccessor instanceof Level) {

@@ -70,7 +70,7 @@ public class PlayernpcjoingameProcedure {
                 if (!levelaccessor.getEntitiesOfClass(Player.class, AABB.ofSize(new Vec3(d0, d1, d2), 64.0D, 64.0D, 64.0D), (player) -> {
                     return true;
                 }).isEmpty() && !levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("\u00a7e" + entity.getDisplayName().getString() + "\u00a7e\u52a0\u5165\u4e86\u6e38\u620f"), ChatType.SYSTEM, Util.NIL_UUID);
+                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("\u00a7e" + entity.getDisplayName().getString() + "\u00a7e has joined the game"), ChatType.SYSTEM, Util.NIL_UUID);
                 }
 
                 if (!entity.level.isClientSide() && entity.getServer() != null) {

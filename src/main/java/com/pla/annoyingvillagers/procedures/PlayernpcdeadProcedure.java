@@ -63,7 +63,7 @@ public class PlayernpcdeadProcedure {
                             }
                         } else if (Math.random() <= 0.05D) {
                             if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity1.getDisplayName().getString() + "> \u5c31\u8fd9\uff1f"), ChatType.SYSTEM, Util.NIL_UUID);
+                                levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity1.getDisplayName().getString() + "> Is that all ?"), ChatType.SYSTEM, Util.NIL_UUID);
                             }
                         } else if (Math.random() <= 0.05D) {
                             if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
@@ -71,11 +71,11 @@ public class PlayernpcdeadProcedure {
                             }
                         } else if (Math.random() <= 0.05D) {
                             if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity1.getDisplayName().getString() + "> \u54ce\u4f60\u600e\u4e48\u4f3c\u4e86\uff1f"), ChatType.SYSTEM, Util.NIL_UUID);
+                                levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity1.getDisplayName().getString() + "> Hey, what happened to you?"), ChatType.SYSTEM, Util.NIL_UUID);
                             }
                         } else if (Math.random() <= 0.05D) {
                             if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity1.getDisplayName().getString() + "> \u8bd7\u4eba\u63e1\u6301"), ChatType.SYSTEM, Util.NIL_UUID);
+                                levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity1.getDisplayName().getString() + "> Poet’s grasp"), ChatType.SYSTEM, Util.NIL_UUID);
                             }
                         } else {
                             PlayerList playerlist;
@@ -85,61 +85,61 @@ public class PlayernpcdeadProcedure {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                                     playerlist = levelaccessor.getServer().getPlayerList();
                                     s = entity1.getDisplayName().getString();
-                                    playerlist.broadcastMessage(new TextComponent("<" + s + "> " + entity.getDisplayName().getString() + "\u4f60\u5c31\u8fd9\u70b9\u5b9e\u529b\u5417\uff1f"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    playerlist.broadcastMessage(new TextComponent("<" + s + "> " + entity.getDisplayName().getString() + ", is that all the strength you’ve got?"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.1D) {
                                 if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("minecraft:player") && !levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                                     playerlist = levelaccessor.getServer().getPlayerList();
                                     s = entity1.getDisplayName().getString();
-                                    playerlist.broadcastMessage(new TextComponent("<" + s + "> " + entity.getDisplayName().getString() + "\u5c0f\u54c8\u57fa\u4eba\u5c31\u8fd9\uff1f"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    playerlist.broadcastMessage(new TextComponent("<" + s + "> " + entity.getDisplayName().getString() + ", that's all the Little Hajiki can do?"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("minecraft:player") && !levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                                     playerlist = levelaccessor.getServer().getPlayerList();
                                     s = entity1.getDisplayName().getString();
-                                    playerlist.broadcastMessage(new TextComponent("<" + s + "> " + entity.getDisplayName().getString() + "\u4f60\u4e5f\u662f\u4e2a\u795e\u4eba\u4e86"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    playerlist.broadcastMessage(new TextComponent("<" + s + "> " + entity.getDisplayName().getString() + ", you're godlike too"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                                     playerlist = levelaccessor.getServer().getPlayerList();
                                     s = entity1.getDisplayName().getString();
-                                    playerlist.broadcastMessage(new TextComponent("<" + s + "> \u54c8\u54c8\u54c8\ud83d\ude02\u771f\u597d\u7b11\uff0c\u4e00\u4e2a" + entity.getDisplayName().getString() + "\u8eba\u5728\u5e8a\u4e0a\uff0c\u5634\u91cc\u6709\u8282\u594f\u5730\u5ff5\u7740\u7740\u76d6\u4f26\uff5e\u53d1\u53d1"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    playerlist.broadcastMessage(new TextComponent("<" + s + "> Hahaha \uD83D\uDE02 so funny, a " + entity.getDisplayName().getString() + " is lying in bed, rhythmically chanting “Garen~ fafah”"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                                     playerlist = levelaccessor.getServer().getPlayerList();
                                     s = entity1.getDisplayName().getString();
-                                    playerlist.broadcastMessage(new TextComponent("<" + s + "> " + entity.getDisplayName().getString() + "\u6ca1\u5b9e\u529b\u5c31\u522b\u56a3\u5f20"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    playerlist.broadcastMessage(new TextComponent("<" + s + "> " + entity.getDisplayName().getString() + ", don't act tough if you're weak"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                                     playerlist = levelaccessor.getServer().getPlayerList();
                                     s = entity1.getDisplayName().getString();
-                                    playerlist.broadcastMessage(new TextComponent("<" + s + "> " + entity.getDisplayName().getString() + "\u4eba\u673a\u64cd\u4f5c"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    playerlist.broadcastMessage(new TextComponent("<" + s + "> " + entity.getDisplayName().getString() + " plays like a bot"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                                     playerlist = levelaccessor.getServer().getPlayerList();
                                     s = entity1.getDisplayName().getString();
-                                    playerlist.broadcastMessage(new TextComponent("<" + s + "> " + entity.getDisplayName().getString() + "\u7b11\u6b7b\u6211\u4e86\u7eaf\ud83e\udd21\u4e00\u4e2a"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    playerlist.broadcastMessage(new TextComponent("<" + s + "> " + entity.getDisplayName().getString() + ", I'm dying of laughter, a total \uD83E\uDD21"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                                     playerlist = levelaccessor.getServer().getPlayerList();
                                     s = entity1.getDisplayName().getString();
-                                    playerlist.broadcastMessage(new TextComponent("<" + s + "> \u62fc\u5c3d\u5168\u529b\u4e5f\u65e0\u6cd5\u6218\u80dc\u6211\u5417\uff1f\u54c8\u57fa" + entity.getDisplayName().getString() + "\u4f60\u8fd9\u5bb6\u4f19"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    playerlist.broadcastMessage(new TextComponent("<" + s + "> Even giving it your all, you still can't defeat me? Haki " + entity.getDisplayName().getString() + ", you bastard!"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                                     playerlist = levelaccessor.getServer().getPlayerList();
                                     s = entity1.getDisplayName().getString();
-                                    playerlist.broadcastMessage(new TextComponent("<" + s + "> \u4e50\u5b50" + entity.getDisplayName().getString()), ChatType.SYSTEM, Util.NIL_UUID);
+                                    playerlist.broadcastMessage(new TextComponent("<" + s + "> joke" + entity.getDisplayName().getString()), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                                     playerlist = levelaccessor.getServer().getPlayerList();
                                     s = entity1.getDisplayName().getString();
-                                    playerlist.broadcastMessage(new TextComponent("<" + s + "> " + entity.getDisplayName().getString() + "\u4e0d\u662f\u633a\u80fd\u88c5\u7684\u5417\u8001\u5f1f\uff1f"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    playerlist.broadcastMessage(new TextComponent("<" + s + "> " + entity.getDisplayName().getString() + ", weren’t you acting all tough, bro?"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
@@ -149,25 +149,25 @@ public class PlayernpcdeadProcedure {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                                     playerlist = levelaccessor.getServer().getPlayerList();
                                     s = entity1.getDisplayName().getString();
-                                    playerlist.broadcastMessage(new TextComponent("<" + s + "> " + entity.getDisplayName().getString() + "\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\u6ca1\u5b9e\u529b"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    playerlist.broadcastMessage(new TextComponent("<" + s + "> " + entity.getDisplayName().getString() + "\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95 So weak!"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                                     playerlist = levelaccessor.getServer().getPlayerList();
                                     s = entity1.getDisplayName().getString();
-                                    playerlist.broadcastMessage(new TextComponent("<" + s + "> " + entity.getDisplayName().getString() + "\u83dc\u5c31\u591a\u7ec3\uff0c\u5c0f\u8001\u5f1f"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    playerlist.broadcastMessage(new TextComponent("<" + s + "> " + entity.getDisplayName().getString() + ", if you're bad, just practice more, little bro"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity1.getDisplayName().getString() + "> \u5510\u5b8c\u4e86"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity1.getDisplayName().getString() + "> It's over"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity1.getDisplayName().getString() + "> \u54c8\u54c8\uff0c\u6025\u4e86"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity1.getDisplayName().getString() + "> Haha, you're getting mad"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity1.getDisplayName().getString() + "> \u597d\u4f3c"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity1.getDisplayName().getString() + "> Oh really?"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
@@ -175,18 +175,18 @@ public class PlayernpcdeadProcedure {
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity1.getDisplayName().getString() + "> \u88ab\u6211\u6309\u5728\u5730\u4e0a\u6253\u54c8\u54c8"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity1.getDisplayName().getString() + "> I pinned you to the ground and beat you up, haha"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity1.getDisplayName().getString() + "> \u8fd9\u4e48\u83dc\uff1f\u4e0d\u4f1a\u662f\u539f\u795e\u73a9\u591a\u4e86\u5bfc\u81f4\u7684\u5427\uff1f\ud83d\ude05"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity1.getDisplayName().getString() + "> So bad? Could it be that you've played too much Genshin Impact?\ud83d\ude05"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity1.getDisplayName().getString() + "> \u73a9\u4e0d\u8d77\uff0c\u6025\u4e86\u54c8\u54c8"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity1.getDisplayName().getString() + "> Desperate now?"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D && !levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity1.getDisplayName().getString() + "> \u4f60\u4e5f\u5c31\u53ea\u4f1a\u5de6\u952e\u6441\u6b7b\u4e86\ud83e\udd13"), ChatType.SYSTEM, Util.NIL_UUID);
+                                levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity1.getDisplayName().getString() + ">, all you can do is spam left-click to death\ud83e\udd13"), ChatType.SYSTEM, Util.NIL_UUID);
                             }
                         }
                     }
@@ -198,7 +198,7 @@ public class PlayernpcdeadProcedure {
                     PlayerList playerlist = levelaccessor.getServer().getPlayerList();
                     String s = entity.getDisplayName().getString();
 
-                    playerlist.broadcastMessage(new TextComponent(s + "\u88ab" + entity1.getDisplayName().getString() + "\u6740\u6b7b\u4e86"), ChatType.SYSTEM, Util.NIL_UUID);
+                    playerlist.broadcastMessage(new TextComponent(s + " was killed by" + entity1.getDisplayName().getString()), ChatType.SYSTEM, Util.NIL_UUID);
                 }
 
                 new DelayedTask(5) {
@@ -432,11 +432,11 @@ public class PlayernpcdeadProcedure {
                         if (Math.random() <= 0.05D) {
                             entity2 = entity;
                             if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "tellraw @a [{\"text\":\"<\"},{\"selector\":\"@s\"},{\"text\":\"> " + entity1.getDisplayName().getString() + "\u54e5\u4eec\u6211\u8bb0\u4f4f\u4f60\u4e86\ud83d\ude21\"}]");
+                                entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "tellraw @a [{\"text\":\"<\"},{\"selector\":\"@s\"},{\"text\":\"> " + entity1.getDisplayName().getString() + " Bro, I’ll remember you for this\ud83d\ude21\"}]");
                             }
                         } else if (Math.random() <= 0.05D) {
                             if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity.getDisplayName().getString() + "> \u5d29\u6e83\u4e86\ud83d\ude2d"), ChatType.SYSTEM, Util.NIL_UUID);
+                                levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity.getDisplayName().getString() + "> I'm breaking down\ud83d\ude2d"), ChatType.SYSTEM, Util.NIL_UUID);
                             }
                         } else {
                             PlayerList playerlist1;
@@ -446,108 +446,108 @@ public class PlayernpcdeadProcedure {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                                     playerlist1 = levelaccessor.getServer().getPlayerList();
                                     s1 = entity.getDisplayName().getString();
-                                    playerlist1.broadcastMessage(new TextComponent("<" + s1 + "> " + entity1.getDisplayName().getString() + "\u6211\u64cd\u4f60\u5988"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    playerlist1.broadcastMessage(new TextComponent("<" + s1 + "> " + entity1.getDisplayName().getString() + ", f** you"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity.getDisplayName().getString() + "> \u771f\u65e0\u8bed\ud83d\ude05"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity.getDisplayName().getString() + "> So speechless\ud83d\ude05"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity.getDisplayName().getString() + "> 666\u8fd9\u4e2a\u5165\u662f\u6842"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity.getDisplayName().getString() + "> 666 this guy is a boss"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity.getDisplayName().getString() + "> \u96be\u7ef7\ud83d\ude05"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity.getDisplayName().getString() + "> That was tough\ud83d\ude05"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity.getDisplayName().getString() + "> \u6211\u771f\u670d\u4e86\ud83d\ude2d"), ChatType.SYSTEM, Util.NIL_UUID);
-                                }
-                            } else if (Math.random() <= 0.05D) {
-                                if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                    playerlist1 = levelaccessor.getServer().getPlayerList();
-                                    s1 = entity.getDisplayName().getString();
-                                    playerlist1.broadcastMessage(new TextComponent("<" + s1 + "> " + entity1.getDisplayName().getString() + "\u4f60\u5988\u6b7b\u4e86\uff0c\u6211\u64cd\u4f60\u5988\u7684"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity.getDisplayName().getString() + "> I really give up\ud83d\ude2d"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                                     playerlist1 = levelaccessor.getServer().getPlayerList();
                                     s1 = entity.getDisplayName().getString();
-                                    playerlist1.broadcastMessage(new TextComponent("<" + s1 + "> " + entity1.getDisplayName().getString() + "\u5144\u5f1f\uff0c\u8bf4\u5b9e\u8bdd\uff0c\u4f60\u662f\u4e0d\u662f\u5f00\u4e86\uff1f\ud83d\ude05"), ChatType.SYSTEM, Util.NIL_UUID);
-                                }
-                            } else if (Math.random() <= 0.05D) {
-                                if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity.getDisplayName().getString() + "> \u73a9\u725b\u9b54\uff0c\u88c5\u5907\u5168\u6ca1\u4e86\ud83d\ude05"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    playerlist1.broadcastMessage(new TextComponent("<" + s1 + "> " + entity1.getDisplayName().getString() + " , your mom is dead. F** your mom"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                                     playerlist1 = levelaccessor.getServer().getPlayerList();
                                     s1 = entity.getDisplayName().getString();
-                                    playerlist1.broadcastMessage(new TextComponent("<" + s1 + "> " + entity1.getDisplayName().getString() + "\u4f60\u7b49\u7740\ud83d\ude21"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    playerlist1.broadcastMessage(new TextComponent("<" + s1 + "> " + entity1.getDisplayName().getString() + " bro, be honest, are you hacking?\ud83d\ude05"), ChatType.SYSTEM, Util.NIL_UUID);
+                                }
+                            } else if (Math.random() <= 0.05D) {
+                                if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
+                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity.getDisplayName().getString() + "> Played as Bull Demon, lost all my gear\ud83d\ude05"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                                     playerlist1 = levelaccessor.getServer().getPlayerList();
                                     s1 = entity.getDisplayName().getString();
-                                    playerlist1.broadcastMessage(new TextComponent("<" + s1 + "> " + entity1.getDisplayName().getString() + "\u9a6c\u4e0a\u62a5\u590d\u4f60\ud83d\ude21"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    playerlist1.broadcastMessage(new TextComponent("<" + s1 + "> " + entity1.getDisplayName().getString() + ", I'll get you later\ud83d\ude21"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                                     playerlist1 = levelaccessor.getServer().getPlayerList();
                                     s1 = entity.getDisplayName().getString();
-                                    playerlist1.broadcastMessage(new TextComponent("<" + s1 + "> " + entity1.getDisplayName().getString() + "\u64cd\u4f60\u5988\uff0c\u6562\u4e0d\u6562\u88c5\u5907\u516c\u5e73\u5355\u6311\uff1f\ud83d\ude21"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    playerlist1.broadcastMessage(new TextComponent("<" + s1 + "> " + entity1.getDisplayName().getString() + ", I will take revenge on you soon\ud83d\ude21"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                                     playerlist1 = levelaccessor.getServer().getPlayerList();
                                     s1 = entity.getDisplayName().getString();
-                                    playerlist1.broadcastMessage(new TextComponent("<" + s1 + "> " + entity1.getDisplayName().getString() + "\u4f60\u6b7b\u5b9a\u4e86"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    playerlist1.broadcastMessage(new TextComponent("<" + s1 + "> " + entity1.getDisplayName().getString() + ", f*** your mom! Dare to fight fair with proper gear?\ud83d\ude21"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                                     playerlist1 = levelaccessor.getServer().getPlayerList();
                                     s1 = entity.getDisplayName().getString();
-                                    playerlist1.broadcastMessage(new TextComponent("<" + s1 + "> " + entity1.getDisplayName().getString() + "\u4f60\u628a\u6211\u5c31\u8fd9\u6837\u6740\u4e86\uff0c\u4f60\u9ad8\u5174\u4e86\u662f\u5427\ud83d\ude05"), ChatType.SYSTEM, Util.NIL_UUID);
-                                }
-                            } else if (Math.random() <= 0.05D) {
-                                if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity.getDisplayName().getString() + "> \uff1f\uff1f\uff1f\uff1f\uff1f\uff1f\uff1f\uff1f\uff1f\uff1f\uff1f\uff1f\uff1f\uff1f\uff1f\uff1f"), ChatType.SYSTEM, Util.NIL_UUID);
-                                }
-                            } else if (Math.random() <= 0.05D) {
-                                if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity.getDisplayName().getString() + "> \u6211\u8fd8\u6ca1\u8ba4\u771f\u5462"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    playerlist1.broadcastMessage(new TextComponent("<" + s1 + "> " + entity1.getDisplayName().getString() + ", you're dead for sure"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                                     playerlist1 = levelaccessor.getServer().getPlayerList();
                                     s1 = entity.getDisplayName().getString();
-                                    playerlist1.broadcastMessage(new TextComponent("<" + s1 + "> " + entity1.getDisplayName().getString() + "\u4e0b\u6b21\u518d\u4f1a\u4f1a\u4f60\ud83d\ude21"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    playerlist1.broadcastMessage(new TextComponent("<" + s1 + "> " + entity1.getDisplayName().getString() + ", you just killed me like that. Are you happy now?\ud83d\ude05"), ChatType.SYSTEM, Util.NIL_UUID);
+                                }
+                            } else if (Math.random() <= 0.05D) {
+                                if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
+                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity.getDisplayName().getString() + "> ????????????????????????????????"), ChatType.SYSTEM, Util.NIL_UUID);
+                                }
+                            } else if (Math.random() <= 0.05D) {
+                                if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
+                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity.getDisplayName().getString() + "> I haven’t even gotten serious yet"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                                     playerlist1 = levelaccessor.getServer().getPlayerList();
                                     s1 = entity.getDisplayName().getString();
-                                    playerlist1.broadcastMessage(new TextComponent("<" + s1 + "> " + entity1.getDisplayName().getString() + "\u4f60\u662f\u771f\u7684\ud83d\udc36"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    playerlist1.broadcastMessage(new TextComponent("<" + s1 + "> " + entity1.getDisplayName().getString() + ", I'll get you next time\ud83d\ude21"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                                     playerlist1 = levelaccessor.getServer().getPlayerList();
                                     s1 = entity.getDisplayName().getString();
-                                    playerlist1.broadcastMessage(new TextComponent("<" + s1 + "> " + entity1.getDisplayName().getString() + "\u4f60\u8fd9\u6837\u5077\u88ad\u6211\u4e00\u4e2a\u666e\u901a\u73a9\u5bb6\uff0c\u8fd9\u597d\u5417\uff1f\u8fd9\u4e0d\u597d\ud83d\udc4e"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    playerlist1.broadcastMessage(new TextComponent("<" + s1 + "> " + entity1.getDisplayName().getString() + ", you are really a \ud83d\udc36"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity.getDisplayName().getString() + "> \u2026\u2026"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    playerlist1 = levelaccessor.getServer().getPlayerList();
+                                    s1 = entity.getDisplayName().getString();
+                                    playerlist1.broadcastMessage(new TextComponent("<" + s1 + "> " + entity1.getDisplayName().getString() + " , ambushing an ordinary player like me, is this okay? No, it's not\ud83d\udc4e"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity.getDisplayName().getString() + "> \u50bb\u903c\u64cd\u4f60\u5988\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity.getDisplayName().getString() + "> ......"), ChatType.SYSTEM, Util.NIL_UUID);
+                                }
+                            } else if (Math.random() <= 0.05D) {
+                                if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
+                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<" + entity.getDisplayName().getString() + "> Idiot, f** your mom\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 entity2 = entity;
                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "tellraw @a [{\"text\":\"<\"},{\"selector\":\"@s\"},{\"text\":\"> \u522b\u8d70\uff0c\u6211\u53eb\u51e0\u4e2a\u4eba\ud83d\ude21\ud83d\ude21\ud83d\ude21\"}]");
+                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "tellraw @a [{\"text\":\"<\"},{\"selector\":\"@s\"},{\"text\":\"> Don’t leave, I’m calling some people\ud83d\ude21\ud83d\ude21\ud83d\ude21\"}]");
                                 }
 
                                 new DelayedTask(50) {
@@ -585,14 +585,14 @@ public class PlayernpcdeadProcedure {
                                     public void run() {
                                         entity.getServer().getCommands().performCommand(
                                                 entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                                                "tellraw @a [{\"text\":\"<\"},{\"selector\":\"@s\"},{\"text\":\"> 来了哼，哥们🤓\"}]"
+                                                "tellraw @a [{\"text\":\"<\"},{\"selector\":\"@s\"},{\"text\":\"> Hmmm, you’re here… bro.🤓\"}]"
                                         );
                                     }
                                 };
                             } else if (Math.random() <= 0.05D && !levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                                 playerlist1 = levelaccessor.getServer().getPlayerList();
                                 s1 = entity.getDisplayName().getString();
-                                playerlist1.broadcastMessage(new TextComponent("<" + s1 + "> " + entity1.getDisplayName().getString() + "\u7528\u4f60\u90a3\u8f6e\u6905\u6b66\u5668\uff0c\u5f88\u597d\u73a9\u662f\u5417\uff1f\ud83d\ude05"), ChatType.SYSTEM, Util.NIL_UUID);
+                                playerlist1.broadcastMessage(new TextComponent("<" + s1 + "> " + entity1.getDisplayName().getString() + ", using your OP weapon, is that fun for you?\ud83d\ude05"), ChatType.SYSTEM, Util.NIL_UUID);
                             }
                         }
 
@@ -600,7 +600,7 @@ public class PlayernpcdeadProcedure {
                             @Override
                             public void run() {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("\u00a7e" + entity.getDisplayName().getString() + "\u00a7e\u9000\u51fa\u4e86\u6e38\u620f"), ChatType.SYSTEM, Util.NIL_UUID);
+                                    levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("\u00a7e" + entity.getDisplayName().getString() + "\u00a7e has left the game"), ChatType.SYSTEM, Util.NIL_UUID);
                                 }
                             }
                         };

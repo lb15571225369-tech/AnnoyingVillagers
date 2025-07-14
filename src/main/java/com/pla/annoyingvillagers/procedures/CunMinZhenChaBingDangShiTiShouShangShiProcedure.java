@@ -248,7 +248,7 @@ public class CunMinZhenChaBingDangShiTiShouShangShiProcedure {
                                     @Override
                                     public void run() {
                                         if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                            levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u6751\u6c11\u4fa6\u67e5\u5175> Fire\uff01"), ChatType.SYSTEM, Util.NIL_UUID);
+                                            levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<Villager Scout> Fire!"), ChatType.SYSTEM, Util.NIL_UUID);
                                         }
                                     }
                                 };

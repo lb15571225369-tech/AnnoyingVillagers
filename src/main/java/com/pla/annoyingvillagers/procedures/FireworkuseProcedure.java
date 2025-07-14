@@ -168,7 +168,7 @@ public class FireworkuseProcedure {
 
                                 if (Math.random() <= 0.6D) {
                                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u6751\u6c11\u4fa6\u5bdf\u5175> What the matter?"), ChatType.SYSTEM, Util.NIL_UUID);
+                                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<Villager Scout> What the matter?"), ChatType.SYSTEM, Util.NIL_UUID);
                                     }
 
                                     entity1 = entity;
@@ -187,7 +187,7 @@ public class FireworkuseProcedure {
                                     }
                                 } else if (Math.random() <= 0.1D) {
                                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u6751\u6c11\u84dd\u9a91\u5175> What the matter?"), ChatType.SYSTEM, Util.NIL_UUID);
+                                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<Villager Blue General> What the matter?"), ChatType.SYSTEM, Util.NIL_UUID);
                                     }
 
                                     entity1 = entity;
@@ -206,7 +206,7 @@ public class FireworkuseProcedure {
                                     }
                                 } else if (Math.random() <= 0.1D) {
                                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u6751\u6c11\u7d2b\u9a91\u5175> What the matter?"), ChatType.SYSTEM, Util.NIL_UUID);
+                                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<Villager Purple General> What the matter?"), ChatType.SYSTEM, Util.NIL_UUID);
                                     }
 
                                     entity1 = entity;
@@ -220,7 +220,7 @@ public class FireworkuseProcedure {
                                     }
                                 } else if (Math.random() <= 0.1D) {
                                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u6751\u6c11\u7ea2\u9a91\u5175> What the matter?"), ChatType.SYSTEM, Util.NIL_UUID);
+                                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<Villager Red General> What the matter?"), ChatType.SYSTEM, Util.NIL_UUID);
                                     }
 
                                     entity1 = entity;
@@ -239,7 +239,7 @@ public class FireworkuseProcedure {
                                     }
                                 } else {
                                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u6751\u6c11\u7eff\u9a91\u5175> What the matter?"), ChatType.SYSTEM, Util.NIL_UUID);
+                                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<Villager Green General> What the matter?"), ChatType.SYSTEM, Util.NIL_UUID);
                                     }
 
                                     entity1 = entity;

@@ -1,6 +1,8 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.util.BurnItemScheduler;
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Mob;
 import net.minecraftforge.event.entity.living.LivingEvent;

@@ -29,7 +29,7 @@ public class HerobrineShiTiChuShiShengChengShiProcedure {
     public static void execute(LevelAccessor levelaccessor, final Entity entity) {
         if (entity != null) {
             if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("Herobrine\u5df2\u8bde\u751f\u65b0\u7684\u9644\u8eab\u4f53"), ChatType.SYSTEM, Util.NIL_UUID);
+                levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("Herobrine has spawned a new possessed body."), ChatType.SYSTEM, Util.NIL_UUID);
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {

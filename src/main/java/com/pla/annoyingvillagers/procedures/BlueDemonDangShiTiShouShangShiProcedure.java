@@ -44,7 +44,7 @@ public class BlueDemonDangShiTiShouShangShiProcedure {
                     new DelayedTask(20) {
                         @Override
                         public void run() {
-                            broadcast(world, "<蓝恶魔> 你也太好预测了");
+                            broadcast(world, "<Blue Demon> You’re way too predictable.");
                             playSound(world, x, y, z, AnnoyingVillagers.MODID + ":bluedemonsayyc");
                             applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 3);
                             applyEffect(entity1, MobEffects.BLINDNESS, 80, 3);
@@ -64,7 +64,7 @@ public class BlueDemonDangShiTiShouShangShiProcedure {
                     new DelayedTask(20) {
                         @Override
                         public void run() {
-                            broadcast(world, "<蓝恶魔> 不要自大");
+                            broadcast(world, "<Blue Demon> Don’t be arrogant.");
 
                             new DelayedTask(20) {
                                 @Override
@@ -83,7 +83,7 @@ public class BlueDemonDangShiTiShouShangShiProcedure {
                             new DelayedTask(20) {
                                 @Override
                                 public void run() {
-                                    broadcast(world, "<蓝恶魔> 一味地小看我们这些亡灵生物只会突显你到底是有多么的无知");
+                                    broadcast(world, "<Blue Demon> Looking down on us undead creatures only highlights how ignorant you are.");
                                     playSound(world, x, y, z, AnnoyingVillagers.MODID + ":bluedemon_say_you_no_know");
                                     applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 10);
                                     runParticle(entity);
@@ -99,7 +99,7 @@ public class BlueDemonDangShiTiShouShangShiProcedure {
                             new DelayedTask(20) {
                                 @Override
                                 public void run() {
-                                    broadcast(world, "<蓝恶魔> 真有意思，不过我很想知道你的动机是什么");
+                                    broadcast(world, "<Blue Demon> How interesting. But I really want to know what is your motive?");
                                     playSound(world, x, y, z, AnnoyingVillagers.MODID + ":bluedemon_say_player_interesting");
                                     runParticle(entity);
                                     applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 5);

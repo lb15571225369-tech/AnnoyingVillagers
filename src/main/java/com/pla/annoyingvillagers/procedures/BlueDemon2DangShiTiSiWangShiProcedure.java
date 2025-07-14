@@ -34,7 +34,7 @@ public class BlueDemon2DangShiTiSiWangShiProcedure {
                 @Override
                 public void run() {
                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<\u84dd\u6076\u9b54> \u7ec8\u7a76\u9876\u4e0d\u4f4f\u8fd9\u66b4\u4e71\u4e16\u754c\u7684\u538b\u529b\u2026\u2026"), ChatType.SYSTEM, Util.NIL_UUID);
+                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<Blue Demon> Ultimately couldn’t withstand the pressure of this chaotic world..."), ChatType.SYSTEM, Util.NIL_UUID);
                     }
 
                     LevelAccessor levelaccessor1 = levelaccessor;
