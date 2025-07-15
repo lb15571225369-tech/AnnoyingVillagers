@@ -190,11 +190,6 @@ public class AVAnimations {
     public static StaticAnimation FUNNY_IDLE;
     public static StaticAnimation FIST_TRY;
     public static StaticAnimation FISTING;
-    public static StaticAnimation EMOTE_20;
-    public static StaticAnimation EMOTE_21;
-    public static StaticAnimation EMOTE_22_TRY;
-    public static StaticAnimation EMOTE_22;
-    public static StaticAnimation EMOTE_22_B;
     public static StaticAnimation GIANT_WHIRLWIND;
     public static StaticAnimation DUAL_SWORD_DANCING_EDGE;
     public static StaticAnimation GIANT_WHIRLWIND_2;
@@ -208,15 +203,11 @@ public class AVAnimations {
     public static StaticAnimation EXECUTE_DUAL_AXE;
     public static StaticAnimation EXECUTE_DUAL_AXE_HIT;
     public static StaticAnimation WHIRLWIND_KICK_LEFT;
-    public static StaticAnimation EMOTE_23;
-    public static StaticAnimation EMOTE_24;
-    public static StaticAnimation EMOTE_25;
-    public static StaticAnimation EMOTE_26;
     public static StaticAnimation SUPER_PUNCH;
-    public static StaticAnimation EMOTE_27;
-    public static StaticAnimation EMOTE_28;
     public static StaticAnimation EMOTE_29;
-    public static StaticAnimation EMOTE_30;
+    public static StaticAnimation EMOJI15;
+    public static StaticAnimation EMOJI6;
+    public static StaticAnimation EMOJI14;
     public static StaticAnimation GUARD_BREAK_ATTACK;
     public static StaticAnimation SWORD_DASH;
     public static StaticAnimation TACHI_DASH;
@@ -253,23 +244,11 @@ public class AVAnimations {
 
     private static void build() {
         HumanoidArmature humanoidarmature = Armatures.BIPED;
-
-//        AVAnimations.EMOJI4 = new StaticAnimation(true, "biped/emoji/emoji_4", humanoidarmature);
-//        AVAnimations.EMOJI5 = new StaticAnimation(true, "biped/emoji/emoji_5", humanoidarmature);
-//        AVAnimations.EMOJI6 = new StaticAnimation(true, "biped/emoji/emoji_6", humanoidarmature);
-//        AVAnimations.EMOJI7 = new StaticAnimation(false, "biped/emoji/emoji_7", humanoidarmature);
-//        AVAnimations.EMOJI8 = new StaticAnimation(false, "biped/emoji/emoji_8", humanoidarmature);
-//        AVAnimations.EMOJI9 = new StaticAnimation(true, "biped/emoji/emoji_9", humanoidarmature);
-//        AVAnimations.EMOJI10 = new StaticAnimation(true, "biped/emoji/emoji_10", humanoidarmature);
-//        AVAnimations.EMOJI11 = new StaticAnimation(true, "biped/emoji/emoji_11", humanoidarmature);
-//        AVAnimations.EMOJI12 = new StaticAnimation(true, "biped/emoji/emoji_12", humanoidarmature);
+        AVAnimations.EMOJI6 = new StaticAnimation(true, "biped/emoji/emoji_6", humanoidarmature);
+        AVAnimations.EMOJI15 = new StaticAnimation(true, "biped/emoji/emoji_15", humanoidarmature);
         AVAnimations.COUNTER = (new BasicMultipleAttackAnimation(0.3F, 0.08F, 0.1F, 0.15F, 0.525F, ColliderPreset.FIST, humanoidarmature.legR, "biped/guard/counter", humanoidarmature)).addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH).addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT).addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT).addProperty(AttackPhaseProperty.SOURCE_TAG, Set.of(SourceTags.COUNTER)).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG).addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(1.0F)).addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(0.5F)).addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.AIR_BURST).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(1.0F));
-//        AVAnimations.EMOJI13 = new StaticAnimation(false, "biped/emoji/emoji_13", humanoidarmature);
-//        AVAnimations.EMOJI14 = new StaticAnimation(true, "biped/emoji/emoji_14", humanoidarmature);
-//        AVAnimations.EMOJI15 = new StaticAnimation(true, "biped/emoji/emoji_15", humanoidarmature);
-//        AVAnimations.EMOJI16 = new StaticAnimation(true, "biped/emoji/emoji_16", humanoidarmature);
-//        AVAnimations.EMOJI17 = new StaticAnimation(true, "biped/emoji/emoji_17", humanoidarmature);
-//        AVAnimations.EMOJI18 = new StaticAnimation(true, "biped/emoji/emoji_18", humanoidarmature);
+        AVAnimations.EMOJI14 = new StaticAnimation(true, "biped/emoji/emoji_14", humanoidarmature);
+        AVAnimations.EMOTE_29 = new StaticAnimation(true, "biped/emoji/emote_29", humanoidarmature);
         AVAnimations.BOMB_SET = new StaticAnimation(false, "biped/other/bomb_set", humanoidarmature);
         AVAnimations.BOMB_AFTER = new StaticAnimation(false, "biped/other/bomb_after", humanoidarmature);
         AVAnimations.FIST_GUARD = new StaticAnimation(true, "biped/guard/fist_guard", humanoidarmature);
@@ -414,15 +393,7 @@ public class AVAnimations {
         AVAnimations.EXECUTE_DUAL_AXE = (new ExecuteAttackAnimation(0.05F, "biped/combat/execute_dual_axe", humanoidarmature, new Phase[]{(new Phase(0.0F, 0.3F, 0.5F, 0.8F, 0.8F, humanoidarmature.rootJoint, WOMColliders.TORMENT_BERSERK_AIRSLAM)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.01F)).addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(0.0F)).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE).addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(4.0F)), (new Phase(0.8F, 1.05F, 1.3F, 1.8F, Float.MAX_VALUE, humanoidarmature.rootJoint, AVCollider.EXECUTE_SECOND)).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN).addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT_HARD).addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.AIR_BURST).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2.8F)).addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(4.0F)).addProperty(AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.setter(100.0F))})).addProperty(ActionAnimationProperty.STOP_MOVEMENT, true).addState(EntityState.CAN_SKILL_EXECUTION, false).addState(EntityState.CAN_BASIC_ATTACK, false).addState(EntityState.MOVEMENT_LOCKED, true).addState(EntityState.TURNING_LOCKED, true).addState(EntityState.LOCKON_ROTATE, true).addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE);
         AVAnimations.EXECUTE_DUAL_AXE_HIT = (new LongHitAnimation(0.1F, "biped/combat/execute_dual_axe_hit", humanoidarmature)).addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false).addProperty(ActionAnimationProperty.STOP_MOVEMENT, true).addProperty(ActionAnimationProperty.MOVE_VERTICAL, false).addState(EntityState.MOVEMENT_LOCKED, true).addState(EntityState.TURNING_LOCKED, true).addState(EntityState.LOCKON_ROTATE, true).addState(EntityState.CAN_SKILL_EXECUTION, false).addState(EntityState.CAN_BASIC_ATTACK, false).addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE);
         AVAnimations.WHIRLWIND_KICK_LEFT = (new KickAttackAnimation(0.1F, 0.3F, 0.7F, 0.9F, Float.MAX_VALUE, ColliderPreset.BIPED_BODY_COLLIDER, humanoidarmature.legL, "biped/combat/whirlwind_kick_left", humanoidarmature)).addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT).addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.AIR_BURST).addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH).addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT_HARD).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(10.8F)).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN).addEvents(new TimeStampedEvent[]{TimeStampedEvent.create(0.23F, ReusableSources.PLAY_SOUND, Side.SERVER).params(new Object[]{EpicFightSounds.WHOOSH})}).addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE);
-//        AVAnimations.EMOTE_23 = (new ActionAnimation(0.05F, Float.MAX_VALUE, "biped/emoji/emote_23", humanoidarmature)).addState(EntityState.CAN_SKILL_EXECUTION, false).addState(EntityState.CAN_BASIC_ATTACK, true).addState(EntityState.TURNING_LOCKED, true).addState(EntityState.LOCKON_ROTATE, true).addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE);
-//        AVAnimations.EMOTE_24 = new StaticAnimation(true, "biped/emoji/emote_24", humanoidarmature);
-//        AVAnimations.EMOTE_25 = new StaticAnimation(true, "biped/emoji/emote_25", humanoidarmature);
-//        AVAnimations.EMOTE_26 = new StaticAnimation(true, "biped/emoji/emote_26", humanoidarmature);
         AVAnimations.SUPER_PUNCH = (new KickAttackAnimation(0.05F, 1.0F, 1.25F, 1.4F, Float.MAX_VALUE, ColliderPreset.BIPED_BODY_COLLIDER, humanoidarmature.toolR, "biped/combat/super_punch", humanoidarmature)).addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH).addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.AIR_BURST).addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT_HARD).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(11.8F)).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN).addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE);
-//        AVAnimations.EMOTE_27 = new StaticAnimation(true, "biped/emoji/emote_27", humanoidarmature);
-//        AVAnimations.EMOTE_28 = new StaticAnimation(true, "biped/emoji/emote_28", humanoidarmature);
-//        AVAnimations.EMOTE_29 = new StaticAnimation(true, "biped/emoji/emote_29", humanoidarmature);
-//        AVAnimations.EMOTE_30 = new StaticAnimation(false, "biped/emoji/emote_30", humanoidarmature);
         AVAnimations.GUARD_BREAK_ATTACK = new AttackBreakAnimation(0.05F, "biped/combat/guard_break_attack", humanoidarmature);
         AVAnimations.SWORD_DASH = (new DashAttackAnimation(0.12F, 0.1F, 0.25F, 0.4F, 0.65F, (Collider) null, humanoidarmature.toolR, "biped/combat/sword_dash", humanoidarmature)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.2F)).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG).addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6F);
         AVAnimations.TACHI_DASH = (new DashAttackAnimation(0.15F, 0.1F, 0.2F, 0.45F, 0.7F, (Collider) null, humanoidarmature.toolR, "biped/combat/tachi_dash", humanoidarmature)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.2F)).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG);

@@ -14,7 +14,6 @@ public class AttachCapabilitiesHandler {
     @SubscribeEvent
     public static void onAttachCapabilitiesEntity(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof PlayerMobEntity) {
-            AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: onAttachCapabilitiesEntity() is called");
             event.addCapability(new ResourceLocation(AnnoyingVillagers.MODID, "player_mob_inventory"),
                     new PlayerMobInventoryProvider());
         }

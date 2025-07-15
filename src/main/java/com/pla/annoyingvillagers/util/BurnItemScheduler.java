@@ -96,8 +96,8 @@ public class BurnItemScheduler {
     }
 
     private void resetItem() throws CommandSyntaxException {
-        if (data.contains("backup_main_hand")) {
-            CompoundTag fullTag = TagParser.parseTag(data.getString("backup_main_hand"));
+        if (data.contains("av_idle_burn_backup_main_hand")) {
+            CompoundTag fullTag = TagParser.parseTag(data.getString("av_idle_burn_backup_main_hand"));
             String id = fullTag.getString("id");
             String nbtPart = fullTag.contains("tag") ? fullTag.getCompound("tag").toString() : "";
             String cmd = "item replace entity @s weapon.mainhand with " + id;
@@ -108,7 +108,7 @@ public class BurnItemScheduler {
                     mob.createCommandSourceStack().withSuppressedOutput().withPermission(4),
                     cmd
             );
-            data.remove("backup_main_hand");
+            data.remove("av_idle_burn_backup_main_hand");
         }
     }
 
@@ -127,15 +127,6 @@ public class BurnItemScheduler {
                 .orElse(null);
 
         if (targetItem != null) {
-            if (!data.contains("backup_main_hand")) {
-                ItemStack held = mob.getMainHandItem();
-                if (!held.isEmpty() && held.getItem() != Items.FLINT_AND_STEEL) {
-                    CompoundTag tag = new CompoundTag();
-                    held.save(tag);
-                    data.putString("backup_main_hand", tag.toString());
-                }
-            }
-
             if (mob.getMainHandItem().getItem() != Items.FLINT_AND_STEEL) {
                 mob.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.FLINT_AND_STEEL));
             }

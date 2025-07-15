@@ -79,13 +79,16 @@ public class PlayerMobMixin {
                 self.goalSelector.addGoal(3, new MeleeAttackGoal(self, 1.2D, false));
             }
             case "monster_hunter" -> {
-                self.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(self, Monster.class, true));
+                self.targetSelector.addGoal(1, new HurtByTargetGoal(self));
+                self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Monster.class, true));
             }
             case "player_hunter" -> {
-                self.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(self, Player.class, true));
+                self.targetSelector.addGoal(1, new HurtByTargetGoal(self));
+                self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Player.class, true));
             }
             case "animal_hunter" -> {
-                self.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(self, Animal.class, true));
+                self.targetSelector.addGoal(1, new HurtByTargetGoal(self));
+                self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Animal.class, true));
             }
         }
 
@@ -119,7 +122,6 @@ public class PlayerMobMixin {
 
     @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
     private void addInventorySaveData(CompoundTag compound, CallbackInfo ci) {
-        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: addInventorySaveData() is called");
         PlayerMobEntity self = (PlayerMobEntity) (Object) this;
         self.getCapability(ModCapabilities.PLAYER_MOB_INVENTORY).ifPresent(cap -> {
             compound.put("CustomInventory", cap.getInventory().serializeNBT());
@@ -128,7 +130,6 @@ public class PlayerMobMixin {
 
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
     private void readInventorySaveData(CompoundTag compound, CallbackInfo ci) {
-        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: readInventorySaveData() is called");
         PlayerMobEntity self = (PlayerMobEntity) (Object) this;
         self.getCapability(ModCapabilities.PLAYER_MOB_INVENTORY).ifPresent(cap -> {
             cap.getInventory().deserializeNBT(compound.getCompound("CustomInventory"));
@@ -145,32 +146,31 @@ public class PlayerMobMixin {
                 if (!item.hasPickUpDelay() && !item.isRemoved()) {
                     final ItemEntity itemEntity = item;
                     self.getCapability(ModCapabilities.PLAYER_MOB_INVENTORY).ifPresent(cap -> {
-                        itemEntity.setDeltaMovement(
-                                (self.getX() - itemEntity.getX()) * 0.25,
-                                (self.getY() + 1.0 - itemEntity.getY()) * 0.25,
-                                (self.getZ() - itemEntity.getZ()) * 0.25
-                        );
-                        itemEntity.setPickUpDelay(0);
-                        new DelayedTask(5) {
-                            @Override
-                            public void run() throws CommandSyntaxException {
-                                ItemStackHandler inv = cap.getInventory();
-                                ItemStack stack = itemEntity.getItem();
-                                ItemStack remaining = stack.copy();
+                        ItemStackHandler inv = cap.getInventory();
+                        ItemStack stack = itemEntity.getItem();
+                        ItemStack remaining = stack.copy();
 
-                                for (int i = 0; i < inv.getSlots(); i++) {
-                                    remaining = inv.insertItem(i, remaining, false);
-                                    if (remaining.isEmpty()) break;
-                                }
-
-                                if (remaining.isEmpty()) {
+                        for (int i = 0; i < inv.getSlots(); i++) {
+                            remaining = inv.insertItem(i, remaining, false);
+                            if (remaining.isEmpty()) break;
+                        }
+                        if (remaining.isEmpty()) {
+                            itemEntity.setDeltaMovement(
+                                    (self.getX() - itemEntity.getX()) * 0.25,
+                                    (self.getY() + 1.0 - itemEntity.getY()) * 0.25,
+                                    (self.getZ() - itemEntity.getZ()) * 0.25
+                            );
+                            itemEntity.setPickUpDelay(0);
+                            new DelayedTask(5) {
+                                @Override
+                                public void run() throws CommandSyntaxException {
                                     itemEntity.discard();
                                     self.level.playSound(null, self.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.HOSTILE, 0.2F, 1.0F);
-                                } else {
-                                    itemEntity.setItem(remaining);
                                 }
-                            }
-                        };
+                            };
+                        } else {
+                            itemEntity.setItem(remaining);
+                        }
                     });
                 }
             }

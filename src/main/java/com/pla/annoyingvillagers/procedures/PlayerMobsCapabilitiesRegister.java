@@ -10,7 +10,6 @@ import net.minecraftforge.fml.common.Mod;
 public class PlayerMobsCapabilitiesRegister {
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: registerCapabilities() is called");
         event.register(IPlayerMobInventory.class);
     }
 }

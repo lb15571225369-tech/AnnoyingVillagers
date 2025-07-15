@@ -8,7 +8,8 @@
     "KnockDownCheckMixin",
     "MoreParryMixin",
     "PlayerMobMixin",
-    "MobMixin"
+    "MobMixin",
+    "EntityMixin"
   ],
   "client": [
 
