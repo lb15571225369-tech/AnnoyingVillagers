@@ -20,6 +20,7 @@ public class ItemBurnHandler {
                 && !mob.level.isClientSide()
                 && (ForgeRegistries.ENTITIES.getKey(event.getEntity().getType()).toString().equals("player_mobs:player_mob")
                 || ForgeRegistries.ENTITIES.getKey(event.getEntity().getType()).toString().equals("minecraft:zombie")
+                || ForgeRegistries.ENTITIES.getKey(event.getEntity().getType()).toString().equals("minecraft:skeleton")
                 || ForgeRegistries.ENTITIES.getKey(event.getEntity().getType()).toString().equals("annoyingvillagers:cun_min_zhen_cha_bing"))) {
             handleItemBurning((Mob) event.getEntity());
         }

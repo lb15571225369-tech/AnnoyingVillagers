@@ -22,3 +22,33 @@ Pla ported this mod from annoying villlagers modpack Chinese version.
     versionRange="[1.18.2]"
     ordering="NONE"
     side="BOTH"
+[[dependencies.annoyingvillagers]]
+    modId="epicfight"
+    mandatory=true
+    versionRange="[18.5, )"
+    ordering="AFTER"
+    side="BOTH"
+[[dependencies.annoyingvillagers]]
+    modId="wom"
+    mandatory=true
+    versionRange="[18.1, )"
+    ordering="AFTER"
+    side="BOTH"
+[[dependencies.annoyingvillagers]]
+    modId="falchionmoveset"
+    mandatory=true
+    versionRange="[18.0, )"
+    ordering="AFTER"
+    side="BOTH"
+[[dependencies.annoyingvillagers]]
+    modId="indestructible"
+    mandatory=true
+    versionRange="[18.5, )"
+    ordering="AFTER"
+    side="BOTH"
+[[dependencies.annoyingvillagers]]
+    modId="player_mobs"
+    mandatory=true
+    versionRange="[2.2, )"
+    ordering="NONE"
+    side="BOTH"

@@ -187,8 +187,30 @@ public class PlayernpcjoingameProcedure {
                             );
                         }
                     }
-                    if (entity.level.getRandom().nextFloat() < 0.4f) {
+                    if (entity.level.getRandom().nextFloat() < 0.5f) {
                         EquipmentDataLoader.getRandomSpecificSlot("CHEST").ifPresent(cmd -> {
+                            entity.getServer().getCommands().performCommand(
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
+                                    cmd
+                            );
+                        });
+                    }
+                }
+            }
+
+            if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("minecraft:skeleton") && !entity.level.isClientSide() && entity.getServer() != null) {
+                if (!entity.level.isClientSide() && entity.getServer() != null) {
+                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "data merge entity @s {CanPickUpLoot: 1b}");
+                    if (entity.level.getRandom().nextFloat() < 0.6f) {
+                        EquipmentDataLoader.getRandomSpecificSlot("CHEST").ifPresent(cmd -> {
+                            entity.getServer().getCommands().performCommand(
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
+                                    cmd
+                            );
+                        });
+                    }
+                    if (entity.level.getRandom().nextFloat() < 0.6f) {
+                        EquipmentDataLoader.getRandomSpecificSlot("HEAD").ifPresent(cmd -> {
                             entity.getServer().getCommands().performCommand(
                                     entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
                                     cmd

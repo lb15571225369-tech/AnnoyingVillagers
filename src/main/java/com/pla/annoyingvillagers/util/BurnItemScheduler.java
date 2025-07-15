@@ -16,6 +16,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Arrays;
 import java.util.List;
@@ -173,7 +174,8 @@ public class BurnItemScheduler {
                 if (rawName.startsWith("[") && rawName.endsWith("]")) {
                     rawName = rawName.substring(1, rawName.length() - 1).toLowerCase();;
                 }
-                if (new Random().nextFloat() < 0.05f) {
+                if (!(ForgeRegistries.ENTITIES.getKey(mob.getType()).toString().equals("minecraft:zombie") || ForgeRegistries.ENTITIES.getKey(mob.getType()).toString().equals("minecraft:skeleton"))
+                        && new Random().nextFloat() < 0.05f) {
                     String message = "<" + mob.getDisplayName().getString() + "> " +
                             getRandomBurnMessage(rawName);
                     serverLevel.getServer().getPlayerList().broadcastMessage(

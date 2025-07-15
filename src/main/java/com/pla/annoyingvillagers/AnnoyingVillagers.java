@@ -9,6 +9,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import com.pla.annoyingvillagers.init.*;
 import com.pla.annoyingvillagers.procedures.NpcGearLoad;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
@@ -34,12 +35,6 @@ import com.pla.annoyingvillagers.capabilities.LegendarySwordCapability;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkill;
 import com.pla.annoyingvillagers.gameasset.AVSounds;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModEnchantments;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 
 @Mod(AnnoyingVillagers.MODID)
 public class AnnoyingVillagers {
