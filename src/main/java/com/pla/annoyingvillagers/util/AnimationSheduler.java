@@ -191,6 +191,8 @@ public class AnimationSheduler {
         mob.getNavigation().stop();
         mob.setDeltaMovement(0, 0, 0);
         mob.setYRot(mob.getYHeadRot());
+        mob.setYBodyRot(mob.getYHeadRot());
+        mob.setYHeadRot(mob.getYRot());
 
         if (!checkOnly) {
             if (!mob.getMainHandItem().isEmpty()) {
