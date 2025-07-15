@@ -7,12 +7,14 @@
 - Modelbluedemontrident -> ModelBlueDemonTrident
 - Modelgreenknight_armor -> ModelGreenVillagerGeneralArmor
 - ModelKnightH -> ModelVillagerGeneralArmor
-- 
+
+
 - BluesparkParticle -> BlueSparkParticle
 - Dianhu2Particle -> ElectricSpark2Particle
 - DianhuParticle -> ElectricSparkParticle
 - GlowingeyesParticle -> GlowingEyesParticle
 - GreensparkParticle -> GreenSparkParticle
+
 
 - CczdzRenderer -> VillagerScoutCaptainRenderer
 - CunMinZhenChaBingRenderer -> VillagerScoutRenderer
@@ -23,6 +25,7 @@
 - LanCunQiRenderer -> BlueVillagerGeneralRenderer
 - LuCunQiRenderer -> PurpleVillagerGeneralRenderer
 - ZiCunQiRenderer -> GreenVillagerGeneralRenderer
+
 
 - BdTridentEntity -> BlueDemonTridentParticleEntity
 - BlueDemonEndEntity -> BlueDemonEndStagingEntity
@@ -35,6 +38,7 @@
 - LanCunQiEntity -> BlueVillagerGeneralEntity
 - LuCunQiEntity -> PurpleVillagerGeneralEntity
 - ZiCunQiEntity -> GreenVillagerGeneralEntity
+
 
 - AnyingheiyaoshiwuqiItem -> ShadowObsidianWeaponItem
 - CchunduzuanshiItem -> CompressedDiamondItem
@@ -68,7 +72,9 @@
 - ZuanShiDaoPianItem -> DiamondBladeItem
 - ZuanShiJuJianItem -> DiamondGreatSwordItem
 
+
 - TouzhiMoyingzhenzhuMessage -> ThrowingEnderPearlMessage
+
 
 - ECMobEffect -> EcMobEffect
 - FuluMobEffect -> CaptiveMobEffect
