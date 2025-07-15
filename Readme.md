@@ -3,17 +3,17 @@
 ## File Name Mappings
 - AnyingheiyaoshiBlock ->ShadowObsidianBlock
 - PutongheiyaoshiBlock -> ObsidianBlock
-  <br>
+
 - Modelbluedemontrident -> ModelBlueDemonTrident
 - Modelgreenknight_armor -> ModelGreenVillagerGeneralArmor
 - ModelKnightH -> ModelVillagerGeneralArmor
-  <br>
+
 - BluesparkParticle -> BlueSparkParticle
 - Dianhu2Particle -> ElectricSpark2Particle
 - DianhuParticle -> ElectricSparkParticle
 - GlowingeyesParticle -> GlowingEyesParticle
 - GreensparkParticle -> GreenSparkParticle
-  <br>
+
 - CczdzRenderer -> VillagerScoutCaptainRenderer
 - CunMinZhenChaBingRenderer -> VillagerScoutRenderer
 - BdTridentRenderer -> BlueDemonTridentParticleRenderer
@@ -23,7 +23,7 @@
 - LanCunQiRenderer -> BlueVillagerGeneralRenderer
 - LuCunQiRenderer -> PurpleVillagerGeneralRenderer
 - ZiCunQiRenderer -> GreenVillagerGeneralRenderer
-  <br>
+
 - BdTridentEntity -> BlueDemonTridentParticleEntity
 - BlueDemonEndEntity -> BlueDemonEndStagingEntity
 - BlueDemonREntity -> BlueDemonStagingEntity
@@ -35,7 +35,7 @@
 - LanCunQiEntity -> BlueVillagerGeneralEntity
 - LuCunQiEntity -> PurpleVillagerGeneralEntity
 - ZiCunQiEntity -> GreenVillagerGeneralEntity
-  <br>
+
 - AnyingheiyaoshiwuqiItem -> ShadowObsidianWeaponItem
 - CchunduzuanshiItem -> CompressedDiamondItem
 - CchunzuantaoItem -> CompressedDiamondArmorItem
@@ -67,15 +67,15 @@
 - ZuanShiDaoItem -> DiamondSwordItem
 - ZuanShiDaoPianItem -> DiamondBladeItem
 - ZuanShiJuJianItem -> DiamondGreatSwordItem
-  <br>
+
 - TouzhiMoyingzhenzhuMessage -> ThrowingEnderPearlMessage
-  <br>
+
 - ECMobEffect -> EcMobEffect
 - FuluMobEffect -> CaptiveMobEffect
 - GedangMobEffect -> BlockMobEffect
 - NailiMobEffect -> EnduranceMobEffect
 - TongjiMobEffect -> CriticalStrikeMobEffect
-  <br>
+
 ---
 
 ## Id Mappings
