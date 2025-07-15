@@ -96,9 +96,9 @@ public class IdleHandler {
                         data.putString("av_idle_animate_backup_main_hand", tag.toString());
                     }
                     IdleAnimation idleAnimation = IdleAnimation.values()[RANDOM.nextInt(IdleAnimation.values().length)];
-                    TaskScheduler.schedule(() -> {
-                        try {
-                            new AnimationSheduler(mob).run(idleAnimation, false, false);
+                    new DelayedTask(20) {
+                        @Override
+                        public void run() throws CommandSyntaxException {
                             TaskScheduler.schedule(() -> {
                                 try {
                                     new AnimationSheduler(mob).run(idleAnimation, false, false);
@@ -107,7 +107,14 @@ public class IdleHandler {
                                             new AnimationSheduler(mob).run(idleAnimation, false, false);
                                             TaskScheduler.schedule(() -> {
                                                 try {
-                                                    new AnimationSheduler(mob).run(idleAnimation, false, true);
+                                                    new AnimationSheduler(mob).run(idleAnimation, false, false);
+                                                    TaskScheduler.schedule(() -> {
+                                                        try {
+                                                            new AnimationSheduler(mob).run(idleAnimation, false, true);
+                                                        } catch (CommandSyntaxException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    }, 5);
                                                 } catch (CommandSyntaxException e) {
                                                     e.printStackTrace();
                                                 }
@@ -120,10 +127,8 @@ public class IdleHandler {
                                     e.printStackTrace();
                                 }
                             }, 5);
-                        } catch (CommandSyntaxException e) {
-                            e.printStackTrace();
                         }
-                    }, 5);
+                    };
                 }
             }
         }
