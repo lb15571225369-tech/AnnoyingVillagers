@@ -1,25 +1,25 @@
 ### 📦 Rename Mapping
 
 ## File Name Mappings
-[enchanted_diamond]: # "renamed to: enchanted_diamond"
-[b]: # "renamed to: b"
-[c]: # "renamed to: c"
+- ZUAN_SHI_CHANG_MAO → enchanted_diamond
+- iron_sword_old → iron_sword_refined
+- ancient_scroll → mystic_scroll
 ---
 
 ## Id Mappings
-[enchanted_diamond]: # "renamed to: enchanted_diamond"
-[b]: # "renamed to: b"
-[c]: # "renamed to: c"
+- a → b
+- b → c
+- zombie_knight → dark_knight
 ---
 
 ## Variable Mappings
-[enchanted_diamond]: # "renamed to: enchanted_diamond"
-[b]: # "renamed to: b"
-[c]: # "renamed to: c"
+- tempItem → finalItem
+- countOld → countNew
+- damageVal → durabilityValue
 ---
 
 ## Resource Path Mappings
-[enchanted_diamond]: # "renamed to: enchanted_diamond"
-[b]: # "renamed to: b"
-[c]: # "renamed to: c"
+- textures/item/old/blade → textures/item/new/blade
+- sounds/entity/old_idle → sounds/entity/new_idle
+- models/armor/ancient → models/armor/modern
 ---
