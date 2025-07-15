@@ -3,7 +3,7 @@ package com.pla.annoyingvillagers.item;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Multimap;
-import com.pla.annoyingvillagers.entity.BluedemontridentEntity;
+import com.pla.annoyingvillagers.entity.BlueDemonTridentEntity;
 import com.pla.annoyingvillagers.procedures.BluedemontridentDangYuanChengWuPinShiYongShiProcedure;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -61,7 +61,7 @@ public class BluedemontridentItem extends Item {
             double d0 = serverplayer.getX();
             double d1 = serverplayer.getY();
             double d2 = serverplayer.getZ();
-            BluedemontridentEntity bluedemontridententity = BluedemontridentEntity.shoot(level, serverplayer, level.getRandom(), 1.1F, 9.0D, 4);
+            BlueDemonTridentEntity bluedemontridententity = BlueDemonTridentEntity.shoot(level, serverplayer, level.getRandom(), 1.1F, 9.0D, 4);
 
             itemstack.hurtAndBreak(1, serverplayer, (serverplayer1) -> {
                 serverplayer1.broadcastBreakEvent(serverplayer.getUsedItemHand());

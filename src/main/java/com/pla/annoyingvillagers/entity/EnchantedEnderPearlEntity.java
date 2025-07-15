@@ -1,0 +1,114 @@
+package com.pla.annoyingvillagers.entity;
+
+import java.util.Random;
+
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.procedures.FumomoyingzhenzhuDangTouSheWuSheZhongCiFangKuaiProcedure;
+import com.pla.annoyingvillagers.procedures.FumomoyingzhenzhuDangTouZhiWuJiZhongShiTiShiProcedure;
+import com.pla.annoyingvillagers.procedures.FumomoyingzhenzhuTouZhiWuFeiXingKeProcedure;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.ItemSupplier;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PlayMessages.SpawnEntity;
+import net.minecraftforge.registries.ForgeRegistries;
+
+@OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
+public class EnchantedEnderPearlEntity extends AbstractArrow implements ItemSupplier {
+
+    public EnchantedEnderPearlEntity(SpawnEntity spawnentity, Level level) {
+        super((EntityType) AnnoyingVillagersModEntities.FUMOMOYINGZHENZHU.get(), level);
+    }
+
+    public EnchantedEnderPearlEntity(EntityType<? extends EnchantedEnderPearlEntity> entitytype, Level level) {
+        super(entitytype, level);
+    }
+
+    public EnchantedEnderPearlEntity(EntityType<? extends EnchantedEnderPearlEntity> entitytype, double d0, double d1, double d2, Level level) {
+        super(entitytype, d0, d1, d2, level);
+    }
+
+    public EnchantedEnderPearlEntity(EntityType<? extends EnchantedEnderPearlEntity> entitytype, LivingEntity livingentity, Level level) {
+        super(entitytype, livingentity, level);
+    }
+
+    public Packet<?> getAddEntityPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public ItemStack getItem() {
+        return new ItemStack((ItemLike) AnnoyingVillagersModItems.FUMOMOYINGZHENZHU.get());
+    }
+
+    protected ItemStack getPickupItem() {
+        return ItemStack.EMPTY;
+    }
+
+    protected void doPostHurtEffects(LivingEntity livingentity) {
+        super.doPostHurtEffects(livingentity);
+        livingentity.setArrowCount(livingentity.getArrowCount() - 1);
+    }
+
+    public void onHitEntity(EntityHitResult entityhitresult) {
+        super.onHitEntity(entityhitresult);
+        FumomoyingzhenzhuDangTouZhiWuJiZhongShiTiShiProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this.getOwner());
+    }
+
+    public void onHitBlock(BlockHitResult blockhitresult) {
+        super.onHitBlock(blockhitresult);
+        FumomoyingzhenzhuDangTouSheWuSheZhongCiFangKuaiProcedure.execute(this.level, (double) blockhitresult.getBlockPos().getX(), (double) blockhitresult.getBlockPos().getY(), (double) blockhitresult.getBlockPos().getZ(), this.getOwner());
+    }
+
+    public void tick() {
+        super.tick();
+        FumomoyingzhenzhuTouZhiWuFeiXingKeProcedure.execute(this.level, this.getX(), this.getY(), this.getZ());
+        if (this.inGround) {
+            this.discard();
+        }
+
+    }
+
+    public static EnchantedEnderPearlEntity shoot(Level level, LivingEntity livingentity, Random random, float f, double d0, int i) {
+        EnchantedEnderPearlEntity fumomoyingzhenzhuentity = new EnchantedEnderPearlEntity((EntityType) AnnoyingVillagersModEntities.FUMOMOYINGZHENZHU.get(), livingentity, level);
+
+        fumomoyingzhenzhuentity.shoot(livingentity.getViewVector(1.0F).x, livingentity.getViewVector(1.0F).y, livingentity.getViewVector(1.0F).z, f * 2.0F, 0.0F);
+        fumomoyingzhenzhuentity.setSilent(true);
+        fumomoyingzhenzhuentity.setCritArrow(false);
+        fumomoyingzhenzhuentity.setBaseDamage(d0);
+        fumomoyingzhenzhuentity.setKnockback(i);
+        level.addFreshEntity(fumomoyingzhenzhuentity);
+        level.playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:throw")), SoundSource.PLAYERS, 1.0F, 1.0F / (random.nextFloat() * 0.5F + 1.0F) + f / 2.0F);
+        return fumomoyingzhenzhuentity;
+    }
+
+    public static EnchantedEnderPearlEntity shoot(LivingEntity livingentity, LivingEntity livingentity1) {
+        EnchantedEnderPearlEntity fumomoyingzhenzhuentity = new EnchantedEnderPearlEntity((EntityType) AnnoyingVillagersModEntities.FUMOMOYINGZHENZHU.get(), livingentity, livingentity.level);
+        double d0 = livingentity1.getX() - livingentity.getX();
+        double d1 = livingentity1.getY() + (double) livingentity1.getEyeHeight() - 1.1D;
+        double d2 = livingentity1.getZ() - livingentity.getZ();
+
+        fumomoyingzhenzhuentity.shoot(d0, d1 - fumomoyingzhenzhuentity.getY() + Math.hypot(d0, d2) * 0.20000000298023224D, d2, 2.6F, 12.0F);
+        fumomoyingzhenzhuentity.setSilent(true);
+        fumomoyingzhenzhuentity.setBaseDamage(0.0D);
+        fumomoyingzhenzhuentity.setKnockback(0);
+        fumomoyingzhenzhuentity.setCritArrow(false);
+        livingentity.level.addFreshEntity(fumomoyingzhenzhuentity);
+        livingentity.level.playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:throw")), SoundSource.PLAYERS, 1.0F, 1.0F / ((new Random()).nextFloat() * 0.5F + 1.0F));
+        return fumomoyingzhenzhuentity;
+    }
+}

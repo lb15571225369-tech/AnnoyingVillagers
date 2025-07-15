@@ -10,7 +10,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.pla.annoyingvillagers.init.*;
-import com.pla.annoyingvillagers.procedures.NpcGearLoad;
+import com.pla.annoyingvillagers.procedures.NpcGearLoadProcedure;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
@@ -59,7 +59,7 @@ public class AnnoyingVillagers {
         AnnoyingVillagersModParticleTypes.REGISTRY.register(ieventbus);
         AVSkill.registerSkills();
         AVSounds.SOUNDS.register(ieventbus);
-        MinecraftForge.EVENT_BUS.register(new NpcGearLoad());
+        MinecraftForge.EVENT_BUS.register(new NpcGearLoadProcedure());
     }
 
     public static final CreativeModeTab ANNOYINGVILLAGERS_TAB = new CreativeModeTab(MODID) {

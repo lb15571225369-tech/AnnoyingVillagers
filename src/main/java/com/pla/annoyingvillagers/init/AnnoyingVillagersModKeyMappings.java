@@ -1,6 +1,6 @@
 package com.pla.annoyingvillagers.init;
 
-import com.pla.annoyingvillagers.network.TouzhiMoyingzhenzhuMessage;
+import com.pla.annoyingvillagers.network.ThrowingEnderPearlMessage;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
@@ -56,8 +56,8 @@ public class AnnoyingVillagersModKeyMappings {
         public void setDown(boolean flag) {
             super.setDown(flag);
             if (this.isDownOld != flag && flag) {
-                AnnoyingVillagers.PACKET_HANDLER.sendToServer(new TouzhiMoyingzhenzhuMessage(0, 0));
-                TouzhiMoyingzhenzhuMessage.pressAction(Minecraft.getInstance().player, 0, 0);
+                AnnoyingVillagers.PACKET_HANDLER.sendToServer(new ThrowingEnderPearlMessage(0, 0));
+                ThrowingEnderPearlMessage.pressAction(Minecraft.getInstance().player, 0, 0);
             }
 
             this.isDownOld = flag;

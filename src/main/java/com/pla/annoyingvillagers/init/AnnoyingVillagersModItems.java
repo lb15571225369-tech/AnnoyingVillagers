@@ -53,7 +53,7 @@ public class AnnoyingVillagersModItems {
         return new VillagerHeadItem();
     });
     public static final RegistryObject<Item> FUMOMOYINGZHENZHU = AnnoyingVillagersModItems.REGISTRY.register("fumomoyingzhenzhu", () -> {
-        return new FumomoyingzhenzhuItem();
+        return new EnchantedEnderPearlItem();
     });
     // ------------------------------
 
@@ -65,46 +65,43 @@ public class AnnoyingVillagersModItems {
         return new HardGreatSwordItem();
     });
     public static final RegistryObject<Item> ANYINGHEIYAOSHIWUQI = AnnoyingVillagersModItems.REGISTRY.register("anyingheiyaoshiwuqi", () -> {
-        return new AnyingheiyaoshiwuqiItem();
+        return new ShadowObsidianWeaponItem();
     });
     public static final RegistryObject<Item> OBSIDIANWEAPONS = AnnoyingVillagersModItems.REGISTRY.register("obsidianweapons", () -> {
-        return new ObsidianweaponsItem();
+        return new ObsidianWeaponItem();
     });
     public static final RegistryObject<Item> ZUAN_SHI_CHANG_MAO = AnnoyingVillagersModItems.REGISTRY.register("zuan_shi_chang_mao", () -> {
-        return new ZuanShiChangMaoItem();
+        return new DiamondSpearItem();
     });
     public static final RegistryObject<Item> ZUAN_SHI_CHANG_JIAN = AnnoyingVillagersModItems.REGISTRY.register("zuan_shi_chang_jian", () -> {
-        return new ZuanShiChangJianItem();
+        return new DiamondLongSwordItem();
     });
     public static final RegistryObject<Item> ZUAN_SHI_JU_JIAN = AnnoyingVillagersModItems.REGISTRY.register("zuan_shi_ju_jian", () -> {
-        return new ZuanShiJuJianItem();
-    });
-    public static final RegistryObject<Item> LAN_CUN_QI_JIAN = AnnoyingVillagersModItems.REGISTRY.register("lan_cun_qi_jian", () -> {
-        return new LanCunQiJianItem();
+        return new DiamondGreatSwordItem();
     });
     public static final RegistryObject<Item> GGONGZUOTAI = AnnoyingVillagersModItems.REGISTRY.register("ggongzuotai", () -> {
-        return new GgongzuotaiItem();
+        return new CraftingTableItem();
     });
     public static final RegistryObject<Item> FUMOMUMEN = AnnoyingVillagersModItems.REGISTRY.register("fumomumen", () -> {
-        return new FumomumenItem();
+        return new EnchantedWoodenDoorItem();
     });
     public static final RegistryObject<Item> MUMEN = AnnoyingVillagersModItems.REGISTRY.register("mumen", () -> {
-        return new MumenItem();
+        return new WoodenDoorItem();
     });
     public static final RegistryObject<Item> ZUAN_SHI_DAO_PIAN = AnnoyingVillagersModItems.REGISTRY.register("zuan_shi_dao_pian", () -> {
-        return new ZuanShiDaoPianItem();
+        return new DiamondBladeItem();
     });
     public static final RegistryObject<Item> ZUAN_SHI_BI_SHOU = AnnoyingVillagersModItems.REGISTRY.register("zuan_shi_bi_shou", () -> {
-        return new ZuanShiBiShouItem();
+        return new DiamondDaggerItem();
     });
     public static final RegistryObject<Item> ZUAN_SHI_DAO = AnnoyingVillagersModItems.REGISTRY.register("zuan_shi_dao", () -> {
-        return new ZuanShiDaoItem();
+        return new DiamondSwordItem();
     });
     public static final RegistryObject<Item> GOU_ZHUANG_ZUAN_SHI_JIAN = AnnoyingVillagersModItems.REGISTRY.register("gou_zhuang_zuan_shi_jian", () -> {
-        return new GouZhuangZuanShiJianItem();
+        return new HookedDiamondSwordItem();
     });
     public static final RegistryObject<Item> LAN_CUN_QI_FU_MO_JIAN = AnnoyingVillagersModItems.REGISTRY.register("lan_cun_qi_fu_mo_jian", () -> {
-        return new LanCunQiFuMoJianItem();
+        return new WoopieTheSwordItem();
     });
     // ------------------------------
 
@@ -115,10 +112,10 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> NONEOB = block(AnnoyingVillagersModBlocks.NONEOB, (CreativeModeTab) null);
     public static final RegistryObject<Item> DARKOB = block(AnnoyingVillagersModBlocks.DARKOB, (CreativeModeTab) null);
     public static final RegistryObject<Item> DARKOBITEM = AnnoyingVillagersModItems.REGISTRY.register("darkobitem", () -> {
-        return new DarkobitemItem();
+        return new DarkOBItem();
     });
     public static final RegistryObject<Item> DARKITEMLONG = AnnoyingVillagersModItems.REGISTRY.register("darkitemlong", () -> {
-        return new DarkitemlongItem();
+        return new DarkOBLongItem();
     });
     public static final RegistryObject<Item> DARK_OB_UP = block(AnnoyingVillagersModBlocks.DARK_OB_UP, (CreativeModeTab) null);
     public static final RegistryObject<Item> DARK_OB_FAR = AnnoyingVillagersModItems.REGISTRY.register("dark_ob_far", () -> {
@@ -141,119 +138,119 @@ public class AnnoyingVillagersModItems {
         return new BluedemontridentItem();
     });
     public static final RegistryObject<Item> DAN_SHOU_ZHAN_SHEN_ZHI_REN = AnnoyingVillagersModItems.REGISTRY.register("dan_shou_zhan_shen_zhi_ren", () -> {
-        return new DanShouZhanShenZhiRenItem();
+        return new LegendarySwordMobItem();
     });
 
     public static final RegistryObject<Item> BLUE_DEMON_CHESTPLATE_CHESTPLATE = AnnoyingVillagersModItems.REGISTRY.register("blue_demon_chestplate_chestplate", () -> {
         return new BlueDemonChestplateItem.Chestplate();
     });
     public static final RegistryObject<Item> CCHUNZUANTAO_HELMET = AnnoyingVillagersModItems.REGISTRY.register("cchunzuantao_helmet", () -> {
-        return new CchunzuantaoItem.Helmet();
+        return new CompressedDiamondArmorItem.Helmet();
     });
     public static final RegistryObject<Item> CCHUNZUANTAO_CHESTPLATE = AnnoyingVillagersModItems.REGISTRY.register("cchunzuantao_chestplate", () -> {
-        return new CchunzuantaoItem.Chestplate();
+        return new CompressedDiamondArmorItem.Chestplate();
     });
     public static final RegistryObject<Item> CCHUNZUANTAO_LEGGINGS = AnnoyingVillagersModItems.REGISTRY.register("cchunzuantao_leggings", () -> {
-        return new CchunzuantaoItem.Leggings();
+        return new CompressedDiamondArmorItem.Leggings();
     });
     public static final RegistryObject<Item> CCHUNZUANTAO_BOOTS = AnnoyingVillagersModItems.REGISTRY.register("cchunzuantao_boots", () -> {
-        return new CchunzuantaoItem.Boots();
+        return new CompressedDiamondArmorItem.Boots();
     });
     public static final RegistryObject<Item> CCHUNDUZUANSHI = AnnoyingVillagersModItems.REGISTRY.register("cchunduzuanshi", () -> {
-        return new CchunduzuanshiItem();
+        return new CompressedDiamondItem();
     });
     public static final RegistryObject<Item> LLBSTZ_HELMET = AnnoyingVillagersModItems.REGISTRY.register("llbstz_helmet", () -> {
-        return new LlbstzItem.Helmet();
+        return new EmeraldArmorItem.Helmet();
     });
     public static final RegistryObject<Item> LLBSTZ_CHESTPLATE = AnnoyingVillagersModItems.REGISTRY.register("llbstz_chestplate", () -> {
-        return new LlbstzItem.Chestplate();
+        return new EmeraldArmorItem.Chestplate();
     });
     public static final RegistryObject<Item> LLBSTZ_LEGGINGS = AnnoyingVillagersModItems.REGISTRY.register("llbstz_leggings", () -> {
-        return new LlbstzItem.Leggings();
+        return new EmeraldArmorItem.Leggings();
     });
     public static final RegistryObject<Item> LLBSTZ_BOOTS = AnnoyingVillagersModItems.REGISTRY.register("llbstz_boots", () -> {
-        return new LlbstzItem.Boots();
+        return new EmeraldArmorItem.Boots();
     });
     public static final RegistryObject<Item> CUNZHENTOUKUI = AnnoyingVillagersModItems.REGISTRY.register("cunzhentoukui", () -> {
-        return new CunzhentoukuiItem();
+        return new VillagerScoutHelmetWearingItem();
     });
     public static final RegistryObject<Item> CLASSICGOLDENA_CHESTPLATE = AnnoyingVillagersModItems.REGISTRY.register("classicgoldena_chestplate", () -> {
-        return new ClassicgoldenaItem.Chestplate();
+        return new ClassicGoldenArmorItem.Chestplate();
     });
     public static final RegistryObject<Item> CLASSICGOLDENA_LEGGINGS = AnnoyingVillagersModItems.REGISTRY.register("classicgoldena_leggings", () -> {
-        return new ClassicgoldenaItem.Leggings();
+        return new ClassicGoldenArmorItem.Leggings();
     });
     public static final RegistryObject<Item> CLASSICGOLDENA_BOOTS = AnnoyingVillagersModItems.REGISTRY.register("classicgoldena_boots", () -> {
-        return new ClassicgoldenaItem.Boots();
+        return new ClassicGoldenArmorItem.Boots();
     });
     public static final RegistryObject<Item> HONGCUNQITOUKUI = AnnoyingVillagersModItems.REGISTRY.register("hongcunqitoukui", () -> {
-        return new HongcunqitoukuiItem();
+        return new RedVillagerGeneralHelmetWearingItem();
     });
     public static final RegistryObject<Item> HONG_CUN_QIHELMET_HELMET = AnnoyingVillagersModItems.REGISTRY.register("hong_cun_qihelmet_helmet", () -> {
-        return new HongCunQihelmetItem.Helmet();
+        return new RedVillagerGeneralArmorItem.Armor();
     });
     public static final RegistryObject<Item> HONG_CUN_QIHELMET_CHESTPLATE = AnnoyingVillagersModItems.REGISTRY.register("hong_cun_qihelmet_chestplate", () -> {
-        return new HongCunQihelmetItem.Chestplate();
+        return new RedVillagerGeneralArmorItem.Chestplate();
     });
     public static final RegistryObject<Item> HONG_CUN_QIHELMET_LEGGINGS = AnnoyingVillagersModItems.REGISTRY.register("hong_cun_qihelmet_leggings", () -> {
-        return new HongCunQihelmetItem.Leggings();
+        return new RedVillagerGeneralArmorItem.Leggings();
     });
     public static final RegistryObject<Item> HONG_CUN_QIHELMET_BOOTS = AnnoyingVillagersModItems.REGISTRY.register("hong_cun_qihelmet_boots", () -> {
-        return new HongCunQihelmetItem.Boots();
+        return new RedVillagerGeneralArmorItem.Boots();
     });
     public static final RegistryObject<Item> LANCUNQITOUKUI = AnnoyingVillagersModItems.REGISTRY.register("lancunqitoukui", () -> {
-        return new LancunqitoukuiItem();
+        return new BlueVillagerGeneralHelmetWearingItem();
     });
     public static final RegistryObject<Item> LAN_CUN_QIARMOR_HELMET = AnnoyingVillagersModItems.REGISTRY.register("lan_cun_qiarmor_helmet", () -> {
-        return new LanCunQiarmorItem.Helmet();
+        return new BlueVillagerGeneralArmorItem.Helmet();
     });
     public static final RegistryObject<Item> LAN_CUN_QIARMOR_CHESTPLATE = AnnoyingVillagersModItems.REGISTRY.register("lan_cun_qiarmor_chestplate", () -> {
-        return new LanCunQiarmorItem.Chestplate();
+        return new BlueVillagerGeneralArmorItem.Chestplate();
     });
     public static final RegistryObject<Item> LAN_CUN_QIARMOR_LEGGINGS = AnnoyingVillagersModItems.REGISTRY.register("lan_cun_qiarmor_leggings", () -> {
-        return new LanCunQiarmorItem.Leggings();
+        return new BlueVillagerGeneralArmorItem.Leggings();
     });
     public static final RegistryObject<Item> LAN_CUN_QIARMOR_BOOTS = AnnoyingVillagersModItems.REGISTRY.register("lan_cun_qiarmor_boots", () -> {
-        return new LanCunQiarmorItem.Boots();
+        return new BlueVillagerGeneralArmorItem.Boots();
     });
     public static final RegistryObject<Item> GREENKNIGHTARMOR_HELMET = AnnoyingVillagersModItems.REGISTRY.register("greenknightarmor_helmet", () -> {
-        return new GreenknightarmorItem.Helmet();
+        return new GreenVillagerGeneralArmorItem.Helmet();
     });
     public static final RegistryObject<Item> GREENKNIGHTARMOR_CHESTPLATE = AnnoyingVillagersModItems.REGISTRY.register("greenknightarmor_chestplate", () -> {
-        return new GreenknightarmorItem.Chestplate();
+        return new GreenVillagerGeneralArmorItem.Chestplate();
     });
     public static final RegistryObject<Item> GREENKNIGHTARMOR_LEGGINGS = AnnoyingVillagersModItems.REGISTRY.register("greenknightarmor_leggings", () -> {
-        return new GreenknightarmorItem.Leggings();
+        return new GreenVillagerGeneralArmorItem.Leggings();
     });
     public static final RegistryObject<Item> GREENKNIGHTARMOR_BOOTS = AnnoyingVillagersModItems.REGISTRY.register("greenknightarmor_boots", () -> {
-        return new GreenknightarmorItem.Boots();
+        return new GreenVillagerGeneralArmorItem.Boots();
     });
     public static final RegistryObject<Item> ZICUNQITOUKUI = AnnoyingVillagersModItems.REGISTRY.register("zicunqitoukui", () -> {
-        return new ZicunqitoukuiItem();
+        return new PurpleVillagerGeneralHelmetWearingItem();
     });
     public static final RegistryObject<Item> ZI_CUN_QI_KUI_JIA_HELMET = AnnoyingVillagersModItems.REGISTRY.register("zi_cun_qi_kui_jia_helmet", () -> {
-        return new ZiCunQiKuiJiaItem.Helmet();
+        return new PurpleVillagerGeneralArmorItem.Helmet();
     });
     public static final RegistryObject<Item> ZI_CUN_QI_KUI_JIA_CHESTPLATE = AnnoyingVillagersModItems.REGISTRY.register("zi_cun_qi_kui_jia_chestplate", () -> {
-        return new ZiCunQiKuiJiaItem.Chestplate();
+        return new PurpleVillagerGeneralArmorItem.Chestplate();
     });
     public static final RegistryObject<Item> ZI_CUN_QI_KUI_JIA_LEGGINGS = AnnoyingVillagersModItems.REGISTRY.register("zi_cun_qi_kui_jia_leggings", () -> {
-        return new ZiCunQiKuiJiaItem.Leggings();
+        return new PurpleVillagerGeneralArmorItem.Leggings();
     });
     public static final RegistryObject<Item> ZI_CUN_QI_KUI_JIA_BOOTS = AnnoyingVillagersModItems.REGISTRY.register("zi_cun_qi_kui_jia_boots", () -> {
-        return new ZiCunQiKuiJiaItem.Boots();
+        return new PurpleVillagerGeneralArmorItem.Boots();
     });
     public static final RegistryObject<Item> UNLIGHTDIAMOND_HELMET = AnnoyingVillagersModItems.REGISTRY.register("unlightdiamond_helmet", () -> {
-        return new UnlightdiamondItem.Helmet();
+        return new UnlightDiamondArmorItem.Helmet();
     });
     public static final RegistryObject<Item> UNLIGHTDIAMOND_CHESTPLATE = AnnoyingVillagersModItems.REGISTRY.register("unlightdiamond_chestplate", () -> {
-        return new UnlightdiamondItem.Chestplate();
+        return new UnlightDiamondArmorItem.Chestplate();
     });
     public static final RegistryObject<Item> UNLIGHTDIAMOND_LEGGINGS = AnnoyingVillagersModItems.REGISTRY.register("unlightdiamond_leggings", () -> {
-        return new UnlightdiamondItem.Leggings();
+        return new UnlightDiamondArmorItem.Leggings();
     });
     public static final RegistryObject<Item> UNLIGHTDIAMOND_BOOTS = AnnoyingVillagersModItems.REGISTRY.register("unlightdiamond_boots", () -> {
-        return new UnlightdiamondItem.Boots();
+        return new UnlightDiamondArmorItem.Boots();
     });
     private static RegistryObject<Item> block(RegistryObject<Block> registryobject, CreativeModeTab creativemodetab) {
         return AnnoyingVillagersModItems.REGISTRY.register(registryobject.getId().getPath(), () -> {

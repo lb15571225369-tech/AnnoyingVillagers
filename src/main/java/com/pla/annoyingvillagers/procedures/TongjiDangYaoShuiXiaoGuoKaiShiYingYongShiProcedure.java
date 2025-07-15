@@ -1,7 +1,7 @@
 package com.pla.annoyingvillagers.procedures;
 
-import com.pla.annoyingvillagers.entity.CczdzEntity;
-import com.pla.annoyingvillagers.entity.CunMinZhenChaBingEntity;
+import com.pla.annoyingvillagers.entity.VillagerScoutCaptainEntity;
+import com.pla.annoyingvillagers.entity.VillagerScoutEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.Util;
@@ -16,7 +16,6 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraftforge.common.MinecraftForge;
 
 public class TongjiDangYaoShuiXiaoGuoKaiShiYingYongShiProcedure {
 
@@ -35,12 +34,12 @@ public class TongjiDangYaoShuiXiaoGuoKaiShiYingYongShiProcedure {
                     public void run() {
                         LevelAccessor levelaccessor1 = levelaccessor;
                         ServerLevel serverlevel;
-                        CczdzEntity cczdzentity;
+                        VillagerScoutCaptainEntity cczdzentity;
                         Mob mob;
 
                         if (levelaccessor1 instanceof ServerLevel) {
                             serverlevel = (ServerLevel)levelaccessor1;
-                            cczdzentity = new CczdzEntity((EntityType) AnnoyingVillagersModEntities.CCZDZ.get(), serverlevel);
+                            cczdzentity = new VillagerScoutCaptainEntity((EntityType) AnnoyingVillagersModEntities.CCZDZ.get(), serverlevel);
                             cczdzentity.moveTo(d0, d1, d2 + 10.0D, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                             if (cczdzentity instanceof Mob) {
                                 mob = (Mob)cczdzentity;
@@ -53,7 +52,7 @@ public class TongjiDangYaoShuiXiaoGuoKaiShiYingYongShiProcedure {
                         levelaccessor1 = levelaccessor;
                         if (levelaccessor1 instanceof ServerLevel) {
                             serverlevel = (ServerLevel)levelaccessor1;
-                            cczdzentity = new CczdzEntity((EntityType)AnnoyingVillagersModEntities.CCZDZ.get(), serverlevel);
+                            cczdzentity = new VillagerScoutCaptainEntity((EntityType)AnnoyingVillagersModEntities.CCZDZ.get(), serverlevel);
                             cczdzentity.moveTo(d0, d1, d2 + 8.0D, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                             if (cczdzentity instanceof Mob) {
                                 mob = (Mob)cczdzentity;
@@ -66,7 +65,7 @@ public class TongjiDangYaoShuiXiaoGuoKaiShiYingYongShiProcedure {
                         levelaccessor1 = levelaccessor;
                         if (levelaccessor1 instanceof ServerLevel) {
                             serverlevel = (ServerLevel)levelaccessor1;
-                            CunMinZhenChaBingEntity cunminzhenchabingentity = new CunMinZhenChaBingEntity((EntityType)AnnoyingVillagersModEntities.CUN_MIN_ZHEN_CHA_BING.get(), serverlevel);
+                            VillagerScoutEntity cunminzhenchabingentity = new VillagerScoutEntity((EntityType)AnnoyingVillagersModEntities.CUN_MIN_ZHEN_CHA_BING.get(), serverlevel);
 
                             cunminzhenchabingentity.moveTo(d0, d1, d2 + 5.0D, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                             if (cunminzhenchabingentity instanceof Mob) {

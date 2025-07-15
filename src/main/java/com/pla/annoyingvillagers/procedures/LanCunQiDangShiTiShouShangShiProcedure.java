@@ -103,7 +103,7 @@ public class LanCunQiDangShiTiShouShangShiProcedure {
 
                     if (entity instanceof LivingEntity) {
                         livingentity2 = (LivingEntity)entity;
-                        ItemStack itemstack = new ItemStack((ItemLike) AnnoyingVillagersModItems.LAN_CUN_QI_JIAN.get());
+                        ItemStack itemstack = new ItemStack((ItemLike) AnnoyingVillagersModItems.LAN_CUN_QI_FU_MO_JIAN.get());
 
                         itemstack.setCount(1);
                         livingentity2.setItemInHand(InteractionHand.MAIN_HAND, itemstack);

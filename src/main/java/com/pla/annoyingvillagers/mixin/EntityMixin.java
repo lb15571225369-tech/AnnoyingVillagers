@@ -16,5 +16,8 @@ public class EntityMixin {
         if (data.contains("av_idle_animate_backup_main_hand")) {
             data.remove("av_idle_animate_backup_main_hand");
         }
+        if (data.contains("idle_message_broadcasted")) {
+            data.remove("idle_message_broadcasted");
+        }
     }
 }

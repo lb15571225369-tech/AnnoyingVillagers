@@ -31,10 +31,10 @@ public class AnnoyingVillagersModBlocks {
         return new DarkObUpBlock();
     });
     public static final RegistryObject<Block> ANYINGHEIYAOSHI = AnnoyingVillagersModBlocks.REGISTRY.register("anyingheiyaoshi", () -> {
-        return new AnyingheiyaoshiBlock();
+        return new ShadowObsidianBlock();
     });
     public static final RegistryObject<Block> PUTONGHEIYAOSHI = AnnoyingVillagersModBlocks.REGISTRY.register("putongheiyaoshi", () -> {
-        return new PutongheiyaoshiBlock();
+        return new ObsidianBlock();
     });
 
     @EventBusSubscriber(bus = Bus.MOD, value = {Dist.CLIENT})

@@ -177,6 +177,9 @@ public class AnimationSheduler {
             if (data.contains("av_idle_action")) {
                 data.remove("av_idle_action");
             }
+            if (data.contains("idle_message_broadcasted")) {
+                data.remove("idle_message_broadcasted");
+            }
         }
     }
 
@@ -213,7 +216,7 @@ public class AnimationSheduler {
                 );
             }
 
-            if (reTry) {
+            if (reTry && !data.contains("idle_message_broadcasted")) {
                 // reTry is false meaning temp call so no message
                 String message = "<" + mob.getDisplayName().getString() + "> " + idleMessages
                         .getOrDefault(idleAnimation, List.of("..."))
@@ -223,6 +226,7 @@ public class AnimationSheduler {
                         ChatType.SYSTEM,
                         Util.NIL_UUID
                 );
+                data.putBoolean("idle_message_broadcasted", true);
             }
 
         }

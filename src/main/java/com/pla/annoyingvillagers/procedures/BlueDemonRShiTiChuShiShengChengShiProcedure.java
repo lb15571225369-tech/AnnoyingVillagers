@@ -34,8 +34,8 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
-import com.pla.annoyingvillagers.entity.BdTridentEntity;
-import com.pla.annoyingvillagers.entity.BlueDemonEndEntity;
+import com.pla.annoyingvillagers.entity.BlueDemonTridentParticleEntity;
+import com.pla.annoyingvillagers.entity.BlueDemonEndStagingEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 
 public class BlueDemonRShiTiChuShiShengChengShiProcedure {
@@ -102,12 +102,12 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
 
                     levelaccessor1 = levelaccessor;
                     ServerLevel serverlevel;
-                    BdTridentEntity bdtridententity;
+                    BlueDemonTridentParticleEntity bdtridententity;
                     Mob mob;
 
                     if (levelaccessor1 instanceof ServerLevel) {
                         serverlevel = (ServerLevel)levelaccessor1;
-                        bdtridententity = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel);
+                        bdtridententity = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel);
                         bdtridententity.moveTo(d0 + (double)Mth.nextInt(new Random(), -3, 3), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -3, 3), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                         if (bdtridententity instanceof Mob) {
                             mob = (Mob)bdtridententity;
@@ -120,7 +120,7 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
                     levelaccessor1 = levelaccessor;
                     if (levelaccessor1 instanceof ServerLevel) {
                         serverlevel = (ServerLevel)levelaccessor1;
-                        bdtridententity = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel);
+                        bdtridententity = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel);
                         bdtridententity.moveTo(d0 + (double)Mth.nextInt(new Random(), -3, 3), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -3, 3), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                         if (bdtridententity instanceof Mob) {
                             mob = (Mob)bdtridententity;
@@ -141,7 +141,7 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
 
                             if (levelaccessor2 instanceof ServerLevel) {
                                 ServerLevel serverlevel1 = (ServerLevel)levelaccessor2;
-                                BdTridentEntity bdtridententity1 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel1);
+                                BlueDemonTridentParticleEntity bdtridententity1 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel1);
 
                                 bdtridententity1.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                 if (bdtridententity1 instanceof Mob) {
@@ -157,12 +157,12 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
                                     public void run() {
                                         LevelAccessor levelaccessor3 = levelaccessor;
                                         ServerLevel serverlevel2;
-                                        BdTridentEntity bdtridententity2;
+                                        BlueDemonTridentParticleEntity bdtridententity2;
                                         Mob mob2;
 
                                         if (levelaccessor3 instanceof ServerLevel) {
                                             serverlevel2 = (ServerLevel)levelaccessor3;
-                                            bdtridententity2 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel2);
+                                            bdtridententity2 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel2);
                                             bdtridententity2.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                             if (bdtridententity2 instanceof Mob) {
                                                 mob2 = (Mob)bdtridententity2;
@@ -175,7 +175,7 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
                                         levelaccessor3 = levelaccessor;
                                         if (levelaccessor3 instanceof ServerLevel) {
                                             serverlevel2 = (ServerLevel)levelaccessor3;
-                                            bdtridententity2 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel2);
+                                            bdtridententity2 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel2);
                                             bdtridententity2.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                             if (bdtridententity2 instanceof Mob) {
                                                 mob2 = (Mob)bdtridententity2;
@@ -190,12 +190,12 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
                                             public void run() {
                                                 LevelAccessor levelaccessor4 = levelaccessor;
                                                 ServerLevel serverlevel3;
-                                                BdTridentEntity bdtridententity3;
+                                                BlueDemonTridentParticleEntity bdtridententity3;
                                                 Mob mob3;
 
                                                 if (levelaccessor4 instanceof ServerLevel) {
                                                     serverlevel3 = (ServerLevel)levelaccessor4;
-                                                    bdtridententity3 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel3);
+                                                    bdtridententity3 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel3);
                                                     bdtridententity3.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                     if (bdtridententity3 instanceof Mob) {
                                                         mob3 = (Mob)bdtridententity3;
@@ -208,7 +208,7 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
                                                 levelaccessor4 = levelaccessor;
                                                 if (levelaccessor4 instanceof ServerLevel) {
                                                     serverlevel3 = (ServerLevel)levelaccessor4;
-                                                    bdtridententity3 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel3);
+                                                    bdtridententity3 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel3);
                                                     bdtridententity3.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                     if (bdtridententity3 instanceof Mob) {
                                                         mob3 = (Mob)bdtridententity3;
@@ -223,12 +223,12 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
                                                     public void run() {
                                                         LevelAccessor levelaccessor5 = levelaccessor;
                                                         ServerLevel serverlevel4;
-                                                        BdTridentEntity bdtridententity4;
+                                                        BlueDemonTridentParticleEntity bdtridententity4;
                                                         Mob mob4;
 
                                                         if (levelaccessor5 instanceof ServerLevel) {
                                                             serverlevel4 = (ServerLevel)levelaccessor5;
-                                                            bdtridententity4 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel4);
+                                                            bdtridententity4 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel4);
                                                             bdtridententity4.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                             if (bdtridententity4 instanceof Mob) {
                                                                 mob4 = (Mob)bdtridententity4;
@@ -241,7 +241,7 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
                                                         levelaccessor5 = levelaccessor;
                                                         if (levelaccessor5 instanceof ServerLevel) {
                                                             serverlevel4 = (ServerLevel)levelaccessor5;
-                                                            bdtridententity4 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel4);
+                                                            bdtridententity4 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel4);
                                                             bdtridententity4.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), 3, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                             if (bdtridententity4 instanceof Mob) {
                                                                 mob4 = (Mob)bdtridententity4;
@@ -254,7 +254,7 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
                                                         levelaccessor5 = levelaccessor;
                                                         if (levelaccessor5 instanceof ServerLevel) {
                                                             serverlevel4 = (ServerLevel)levelaccessor5;
-                                                            bdtridententity4 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel4);
+                                                            bdtridententity4 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel4);
                                                             bdtridententity4.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), 3, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                             if (bdtridententity4 instanceof Mob) {
                                                                 mob4 = (Mob)bdtridententity4;
@@ -269,12 +269,12 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
                                                             public void run() {
                                                                 LevelAccessor levelaccessor6 = levelaccessor;
                                                                 ServerLevel serverlevel5;
-                                                                BdTridentEntity bdtridententity5;
+                                                                BlueDemonTridentParticleEntity bdtridententity5;
                                                                 Mob mob5;
 
                                                                 if (levelaccessor6 instanceof ServerLevel) {
                                                                     serverlevel5 = (ServerLevel)levelaccessor6;
-                                                                    bdtridententity5 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel5);
+                                                                    bdtridententity5 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel5);
                                                                     bdtridententity5.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                     if (bdtridententity5 instanceof Mob) {
                                                                         mob5 = (Mob)bdtridententity5;
@@ -287,7 +287,7 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
                                                                 levelaccessor6 = levelaccessor;
                                                                 if (levelaccessor6 instanceof ServerLevel) {
                                                                     serverlevel5 = (ServerLevel)levelaccessor6;
-                                                                    bdtridententity5 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel5);
+                                                                    bdtridententity5 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel5);
                                                                     bdtridententity5.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), 3, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                     if (bdtridententity5 instanceof Mob) {
                                                                         mob5 = (Mob)bdtridententity5;
@@ -302,12 +302,12 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
                                                                     public void run() {
                                                                         LevelAccessor levelaccessor7 = levelaccessor;
                                                                         ServerLevel serverlevel6;
-                                                                        BdTridentEntity bdtridententity6;
+                                                                        BlueDemonTridentParticleEntity bdtridententity6;
                                                                         Mob mob6;
 
                                                                         if (levelaccessor7 instanceof ServerLevel) {
                                                                             serverlevel6 = (ServerLevel)levelaccessor7;
-                                                                            bdtridententity6 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel6);
+                                                                            bdtridententity6 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel6);
                                                                             bdtridententity6.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                             if (bdtridententity6 instanceof Mob) {
                                                                                 mob6 = (Mob)bdtridententity6;
@@ -320,7 +320,7 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
                                                                         levelaccessor7 = levelaccessor;
                                                                         if (levelaccessor7 instanceof ServerLevel) {
                                                                             serverlevel6 = (ServerLevel)levelaccessor7;
-                                                                            bdtridententity6 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel6);
+                                                                            bdtridententity6 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel6);
                                                                             bdtridententity6.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                             if (bdtridententity6 instanceof Mob) {
                                                                                 mob6 = (Mob)bdtridententity6;
@@ -333,7 +333,7 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
                                                                         levelaccessor7 = levelaccessor;
                                                                         if (levelaccessor7 instanceof ServerLevel) {
                                                                             serverlevel6 = (ServerLevel)levelaccessor7;
-                                                                            bdtridententity6 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel6);
+                                                                            bdtridententity6 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel6);
                                                                             bdtridententity6.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                             if (bdtridententity6 instanceof Mob) {
                                                                                 mob6 = (Mob)bdtridententity6;
@@ -346,7 +346,7 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
                                                                         levelaccessor7 = levelaccessor;
                                                                         if (levelaccessor7 instanceof ServerLevel) {
                                                                             serverlevel6 = (ServerLevel)levelaccessor7;
-                                                                            bdtridententity6 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel6);
+                                                                            bdtridententity6 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel6);
                                                                             bdtridententity6.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                             if (bdtridententity6 instanceof Mob) {
                                                                                 mob6 = (Mob)bdtridententity6;
@@ -361,12 +361,12 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
                                                                             public void run() {
                                                                                 LevelAccessor levelaccessor8 = levelaccessor;
                                                                                 ServerLevel serverlevel7;
-                                                                                BdTridentEntity bdtridententity7;
+                                                                                BlueDemonTridentParticleEntity bdtridententity7;
                                                                                 Mob mob7;
 
                                                                                 if (levelaccessor8 instanceof ServerLevel) {
                                                                                     serverlevel7 = (ServerLevel)levelaccessor8;
-                                                                                    bdtridententity7 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel7);
+                                                                                    bdtridententity7 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel7);
                                                                                     bdtridententity7.moveTo(d0 + (double)Mth.nextInt(new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                                     if (bdtridententity7 instanceof Mob) {
                                                                                         mob7 = (Mob)bdtridententity7;
@@ -379,7 +379,7 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
                                                                                 levelaccessor8 = levelaccessor;
                                                                                 if (levelaccessor8 instanceof ServerLevel) {
                                                                                     serverlevel7 = (ServerLevel)levelaccessor8;
-                                                                                    bdtridententity7 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel7);
+                                                                                    bdtridententity7 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel7);
                                                                                     bdtridententity7.moveTo(d0 + (double)Mth.nextInt(new Random(), -20, -20), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -20, -20), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                                     if (bdtridententity7 instanceof Mob) {
                                                                                         mob7 = (Mob)bdtridententity7;
@@ -392,7 +392,7 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
                                                                                 levelaccessor8 = levelaccessor;
                                                                                 if (levelaccessor8 instanceof ServerLevel) {
                                                                                     serverlevel7 = (ServerLevel)levelaccessor8;
-                                                                                    bdtridententity7 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel7);
+                                                                                    bdtridententity7 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel7);
                                                                                     bdtridententity7.moveTo(d0 + (double)Mth.nextInt(new Random(), -20, -20), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -20, -20), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                                     if (bdtridententity7 instanceof Mob) {
                                                                                         mob7 = (Mob)bdtridententity7;
@@ -405,7 +405,7 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
                                                                                 levelaccessor8 = levelaccessor;
                                                                                 if (levelaccessor8 instanceof ServerLevel) {
                                                                                     serverlevel7 = (ServerLevel)levelaccessor8;
-                                                                                    bdtridententity7 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel7);
+                                                                                    bdtridententity7 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel7);
                                                                                     bdtridententity7.moveTo(d0 + (double)Mth.nextInt(new Random(), -20, -20), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -20, -20), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                                     if (bdtridententity7 instanceof Mob) {
                                                                                         mob7 = (Mob)bdtridententity7;
@@ -418,7 +418,7 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
                                                                                 levelaccessor8 = levelaccessor;
                                                                                 if (levelaccessor8 instanceof ServerLevel) {
                                                                                     serverlevel7 = (ServerLevel)levelaccessor8;
-                                                                                    bdtridententity7 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel7);
+                                                                                    bdtridententity7 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel7);
                                                                                     bdtridententity7.moveTo(d0 + (double)Mth.nextInt(new Random(), -20, -20), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -20, -20), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                                     if (bdtridententity7 instanceof Mob) {
                                                                                         mob7 = (Mob)bdtridententity7;
@@ -471,12 +471,12 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
                                                                                         }
 
                                                                                         levelaccessor9 = levelaccessor;
-                                                                                        BdTridentEntity bdtridententity8;
+                                                                                        BlueDemonTridentParticleEntity bdtridententity8;
                                                                                         Mob mob8;
 
                                                                                         if (levelaccessor9 instanceof ServerLevel) {
                                                                                             serverlevel8 = (ServerLevel)levelaccessor9;
-                                                                                            bdtridententity8 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel8);
+                                                                                            bdtridententity8 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel8);
                                                                                             bdtridententity8.moveTo(d0 + (double)Mth.nextInt(new Random(), -25, 25), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -25, 25), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                                             if (bdtridententity8 instanceof Mob) {
                                                                                                 mob8 = (Mob)bdtridententity8;
@@ -489,7 +489,7 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
                                                                                         levelaccessor9 = levelaccessor;
                                                                                         if (levelaccessor9 instanceof ServerLevel) {
                                                                                             serverlevel8 = (ServerLevel)levelaccessor9;
-                                                                                            bdtridententity8 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel8);
+                                                                                            bdtridententity8 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel8);
                                                                                             bdtridententity8.moveTo(d0 + (double)Mth.nextInt(new Random(), -25, -25), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -25, -25), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                                             if (bdtridententity8 instanceof Mob) {
                                                                                                 mob8 = (Mob)bdtridententity8;
@@ -502,7 +502,7 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
                                                                                         levelaccessor9 = levelaccessor;
                                                                                         if (levelaccessor9 instanceof ServerLevel) {
                                                                                             serverlevel8 = (ServerLevel)levelaccessor9;
-                                                                                            bdtridententity8 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel8);
+                                                                                            bdtridententity8 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel8);
                                                                                             bdtridententity8.moveTo(d0 + (double)Mth.nextInt(new Random(), -25, -25), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -25, -25), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                                             if (bdtridententity8 instanceof Mob) {
                                                                                                 mob8 = (Mob)bdtridententity8;
@@ -515,7 +515,7 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
                                                                                         levelaccessor9 = levelaccessor;
                                                                                         if (levelaccessor9 instanceof ServerLevel) {
                                                                                             serverlevel8 = (ServerLevel)levelaccessor9;
-                                                                                            bdtridententity8 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel8);
+                                                                                            bdtridententity8 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel8);
                                                                                             bdtridententity8.moveTo(d0 + (double)Mth.nextInt(new Random(), -25, -25), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -25, -25), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                                             if (bdtridententity8 instanceof Mob) {
                                                                                                 mob8 = (Mob)bdtridententity8;
@@ -528,7 +528,7 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
                                                                                         levelaccessor9 = levelaccessor;
                                                                                         if (levelaccessor9 instanceof ServerLevel) {
                                                                                             serverlevel8 = (ServerLevel)levelaccessor9;
-                                                                                            bdtridententity8 = new BdTridentEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel8);
+                                                                                            bdtridententity8 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel8);
                                                                                             bdtridententity8.moveTo(d0 + (double)Mth.nextInt(new Random(), -25, -25), d1 - 1.0D, d2 + (double)Mth.nextInt(new Random(), -25, -25), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                                             if (bdtridententity8 instanceof Mob) {
                                                                                                 mob8 = (Mob)bdtridententity8;
@@ -581,7 +581,7 @@ public class BlueDemonRShiTiChuShiShengChengShiProcedure {
 
                                                                                                 if (levelaccessor10 instanceof ServerLevel) {
                                                                                                     ServerLevel serverlevel9 = (ServerLevel)levelaccessor10;
-                                                                                                    BlueDemonEndEntity bluedemonendentity = new BlueDemonEndEntity((EntityType)AnnoyingVillagersModEntities.BLUE_DEMON_END.get(), serverlevel9);
+                                                                                                    BlueDemonEndStagingEntity bluedemonendentity = new BlueDemonEndStagingEntity((EntityType)AnnoyingVillagersModEntities.BLUE_DEMON_END.get(), serverlevel9);
 
                                                                                                     bluedemonendentity.moveTo(d0, d1, d2, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                                                     if (bluedemonendentity instanceof Mob) {

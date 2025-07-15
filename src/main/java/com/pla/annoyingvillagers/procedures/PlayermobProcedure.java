@@ -478,7 +478,7 @@ public class PlayermobProcedure {
 
                                             if (entity instanceof LivingEntity) {
                                                 livingentity6 = (LivingEntity)entity;
-                                                itemstack2 = new ItemStack((ItemLike)AnnoyingVillagersModItems.LAN_CUN_QI_JIAN.get());
+                                                itemstack2 = new ItemStack((ItemLike)AnnoyingVillagersModItems.LAN_CUN_QI_FU_MO_JIAN.get());
                                                 itemstack2.setCount(1);
                                                 livingentity6.setItemInHand(InteractionHand.MAIN_HAND, itemstack2);
                                                 if (livingentity6 instanceof Player) {

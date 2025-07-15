@@ -37,7 +37,7 @@ public class HongCunQiShiTiChuShiShengChengShiProcedure {
             if (Math.random() < 0.2D) {
                 if (entity instanceof LivingEntity) {
                     livingentity = (LivingEntity)entity;
-                    itemstack = new ItemStack((ItemLike) AnnoyingVillagersModItems.LAN_CUN_QI_JIAN.get());
+                    itemstack = new ItemStack((ItemLike) AnnoyingVillagersModItems.LAN_CUN_QI_FU_MO_JIAN.get());
                     itemstack.setCount(1);
                     livingentity.setItemInHand(InteractionHand.MAIN_HAND, itemstack);
                     if (livingentity instanceof Player) {

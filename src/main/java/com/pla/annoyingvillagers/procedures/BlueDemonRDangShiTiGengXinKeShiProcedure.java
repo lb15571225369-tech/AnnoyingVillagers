@@ -26,7 +26,7 @@ public class BlueDemonRDangShiTiGengXinKeShiProcedure {
 
             if (Math.random() <= 0.2D) {
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute at @s run particle annannoyingvillagersoying_villagersbychentu:dianhu_2 ^ ^ ^ 5 1.5 5 0 10");
+                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute at @s run particle annoyingvillagers:dianhu_2 ^ ^ ^ 5 1.5 5 0 10");
                 }
 
                 if (!entity.level.isClientSide() && entity.getServer() != null) {

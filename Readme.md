@@ -1,19 +1,92 @@
 ### 📦 Rename Mapping
 
 ## File Name Mappings
-- ZUAN_SHI_CHANG_MAO → enchanted_diamond
-- iron_sword_old → iron_sword_refined
-- ancient_scroll → mystic_scroll
+- AnyingheiyaoshiBlock ->ShadowObsidianBlock
+- PutongheiyaoshiBlock -> ObsidianBlock
+
+- Modelbluedemontrident -> ModelBlueDemonTrident
+- Modelgreenknight_armor -> ModelGreenVillagerGeneralArmor
+- ModelKnightH -> ModelVillagerGeneralArmor
+- 
+- BluesparkParticle -> BlueSparkParticle
+- Dianhu2Particle -> ElectricSpark2Particle
+- DianhuParticle -> ElectricSparkParticle
+- GlowingeyesParticle -> GlowingEyesParticle
+- GreensparkParticle -> GreenSparkParticle
+
+- CczdzRenderer -> VillagerScoutCaptainRenderer
+- CunMinZhenChaBingRenderer -> VillagerScoutRenderer
+- BdTridentRenderer -> BlueDemonTridentParticleRenderer
+- BlueDemonRRenderer -> BlueDemonStagingRenderer
+- BlueDemonEndRenderer -> BlueDemonEndStagingRenderer
+- HongCunQiRenderer -> RedVillagerGeneralRenderer
+- LanCunQiRenderer -> BlueVillagerGeneralRenderer
+- LuCunQiRenderer -> PurpleVillagerGeneralRenderer
+- ZiCunQiRenderer -> GreenVillagerGeneralRenderer
+
+- BdTridentEntity -> BlueDemonTridentParticleEntity
+- BlueDemonEndEntity -> BlueDemonEndStagingEntity
+- BlueDemonREntity -> BlueDemonStagingEntity
+- BluedemontridentEntity -> BlueDemonTridentEntity
+- CczdzEntity -> VillagerScoutCaptainEntity
+- CunMinZhenChaBingEntity -> VillagerScoutEntity
+- FumomoyingzhenzhuEntity -> EnchantedEnderPearlEntity
+- HongCunQiEntity -> RedVillagerGeneralEntity
+- LanCunQiEntity -> BlueVillagerGeneralEntity
+- LuCunQiEntity -> PurpleVillagerGeneralEntity
+- ZiCunQiEntity -> GreenVillagerGeneralEntity
+
+- AnyingheiyaoshiwuqiItem -> ShadowObsidianWeaponItem
+- CchunduzuanshiItem -> CompressedDiamondItem
+- CchunzuantaoItem -> CompressedDiamondArmorItem
+- ClassicgoldenaItem -> ClassicGoldenArmorItem
+- CunzhentoukuiItem -> VillagerScoutHelmetWearingItem
+- DanShouZhanShenZhiRenItem -> LegendarySwordMobItem
+- DarkitemlongItem -> DarkOBLongItem
+- DarkobitemItem -> DarkOBItem
+- FumomoyingzhenzhuItem -> EnchantedEnderPearlItem
+- FumomumenItem -> EnchantedWoodenDoorItem
+- GgongzuotaiItem -> CraftingTableItem
+- GouZhuangZuanShiJianItem -> HookedDiamondSwordItem
+- GreenknightarmorItem -> GreenVillagerGeneralArmorItem
+- HongCunQihelmetItem -> RedVillagerGeneralArmorItem
+- HongcunqitoukuiItem -> RedVillagerGeneralHelmetWearingItem
+- LanCunQiarmorItem -> BlueVillagerGeneralArmorItem
+- LanCunQiFuMoJianItem -> WoopieTheSwordItem
+- LanCunQiJianItem -> REMOVED
+- LancunqitoukuiItem -> BlueVillagerGeneralHelmetWearingItem
+- LlbstzItem -> EmeraldArmorItem
+- MumenItem -> WoodenDoorItem
+- ObsidianweaponsItem -> ObsidianWeaponItem
+- UnlightdiamondItem -> UnlightDiamondArmorItem
+- ZiCunQiKuiJiaItem -> PurpleVillagerGeneralArmorItem
+- ZicunqitoukuiItem -> PurpleVillagerGeneralHelmetWearingItem
+- ZuanShiBiShouItem -> DiamondDaggerItem
+- ZuanShiChangJianItem -> DiamondLongSwordItem
+- ZuanShiChangMaoItem -> DiamondSpearItem
+- ZuanShiDaoItem -> DiamondSwordItem
+- ZuanShiDaoPianItem -> DiamondBladeItem
+- ZuanShiJuJianItem -> DiamondGreatSwordItem
+
+- TouzhiMoyingzhenzhuMessage -> ThrowingEnderPearlMessage
+
+- ECMobEffect -> EcMobEffect
+- FuluMobEffect -> CaptiveMobEffect
+- GedangMobEffect -> BlockMobEffect
+- NailiMobEffect -> EnduranceMobEffect
+- TongjiMobEffect -> CriticalStrikeMobEffect
+
+
 ---
 
 ## Id Mappings
-- a → b
+- lan_cun_qi_jian -> REMOVED
 - b → c
-- zombie_knight → dark_knight
+- c → d
 ---
 
 ## Variable Mappings
-- tempItem → finalItem
+- LAN_CUN_QI_JIAN -> LanCunQiFuMoJianItem
 - countOld → countNew
 - damageVal → durabilityValue
 ---

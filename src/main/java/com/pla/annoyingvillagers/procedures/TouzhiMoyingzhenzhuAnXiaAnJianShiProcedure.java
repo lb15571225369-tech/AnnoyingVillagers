@@ -1,6 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
-import com.pla.annoyingvillagers.entity.FumomoyingzhenzhuEntity;
+import com.pla.annoyingvillagers.entity.EnchantedEnderPearlEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.util.DelayedTask;
@@ -43,10 +43,10 @@ public class TouzhiMoyingzhenzhuAnXiaAnJianShiProcedure {
                                 entity.getPersistentData().putBoolean("ender_pearl_used", true);
                                 level = entity.level;
                                 if (!level.isClientSide()) {
-                                    projectile = new FumomoyingzhenzhuEntity((EntityType) AnnoyingVillagersModEntities.FUMOMOYINGZHENZHU.get(), level);
+                                    projectile = new EnchantedEnderPearlEntity((EntityType) AnnoyingVillagersModEntities.FUMOMOYINGZHENZHU.get(), level);
                                     projectile.setOwner(entity);
-                                    ((FumomoyingzhenzhuEntity) projectile).setBaseDamage((double)0.0F);
-                                    ((FumomoyingzhenzhuEntity) projectile).setKnockback(0);
+                                    ((EnchantedEnderPearlEntity) projectile).setBaseDamage((double)0.0F);
+                                    ((EnchantedEnderPearlEntity) projectile).setKnockback(0);
                                     projectile.setSilent(true);
                                     projectile.setPos(entity.getX(), entity.getEyeY() - 0.1D, entity.getZ());
                                     projectile.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, 1.5F, 0.0F);
