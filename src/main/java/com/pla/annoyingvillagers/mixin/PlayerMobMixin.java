@@ -1,8 +1,8 @@
 package com.pla.annoyingvillagers.mixin;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.compat.player_mobs.ModCapabilities;
+import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -10,7 +10,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
@@ -75,6 +74,12 @@ public class PlayerMobMixin {
             case "village_hunter" -> {
                 self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Villager.class, true));
                 self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, IronGolem.class, true));
+                self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, VillagerScoutEntity.class, true));
+                self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, VillagerScoutCaptainEntity.class, true));
+                self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, RedVillagerGeneralEntity.class, true));
+                self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, BlueVillagerGeneralEntity.class, true));
+                self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, GreenVillagerGeneralEntity.class, true));
+                self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, PurpleVillagerGeneralEntity.class, true));
                 self.goalSelector.addGoal(3, new MeleeAttackGoal(self, 1.2D, false));
             }
             case "monster_hunter" -> {

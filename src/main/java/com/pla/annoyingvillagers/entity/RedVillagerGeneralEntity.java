@@ -49,6 +49,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
+import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
 @EventBusSubscriber
 public class RedVillagerGeneralEntity extends PathfinderMob {
@@ -104,6 +105,7 @@ public class RedVillagerGeneralEntity extends PathfinderMob {
 //        this.targetSelector.addGoal(17, new NearestAttackableTargetGoal(this, Mrcolder2Entity.class, true, false));
 //        this.targetSelector.addGoal(18, new NearestAttackableTargetGoal(this, EnchanterEntity.class, true, false));
 //        this.targetSelector.addGoal(19, new NearestAttackableTargetGoal(this, ZaiEZhiWangEntity.class, true, false));
+        this.targetSelector.addGoal(6, new NearestAttackableTargetGoal(this, PlayerMobEntity.class, true, false));
         this.targetSelector.addGoal(7, new NearestAttackableTargetGoal(this, Zombie.class, true, false));
         this.targetSelector.addGoal(20, new NearestAttackableTargetGoal(this, Player.class, true, false));
         this.goalSelector.addGoal(21, new OpenDoorGoal(this, true));

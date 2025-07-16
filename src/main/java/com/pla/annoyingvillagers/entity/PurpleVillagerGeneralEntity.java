@@ -50,6 +50,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
+import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
 @EventBusSubscriber
 public class PurpleVillagerGeneralEntity extends PathfinderMob {
@@ -103,6 +104,7 @@ public class PurpleVillagerGeneralEntity extends PathfinderMob {
                 return (double) (this.mob.getBbWidth() * this.mob.getBbWidth() + livingentity.getBbWidth());
             }
         });
+        this.targetSelector.addGoal(6, new NearestAttackableTargetGoal(this, PlayerMobEntity.class, true, false));
         this.targetSelector.addGoal(17, new NearestAttackableTargetGoal(this, Player.class, true, false));
         this.goalSelector.addGoal(18, new RandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(19, new RandomLookAroundGoal(this));
