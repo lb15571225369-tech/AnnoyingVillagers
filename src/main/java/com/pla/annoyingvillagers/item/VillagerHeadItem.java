@@ -26,7 +26,7 @@ public class VillagerHeadItem extends Item {
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(new TextComponent("\u4f2a\u88c5\u6751\u6c11\u7684\u5de5\u5177\uff0c\u53f3\u952e\u4f69\u6234\uff0c\u4e0b\u8e72+\u53f3\u952e\u5207\u6362\u4f2a\u88c5/\u653b\u51fb\u6a21\u5f0f"));
+        list.add(new TextComponent("A tool for disguising as a villager. Right-click to equip. Sneak + Right-click to toggle Disguise/Attack mode."));
     }
 
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {

@@ -35,7 +35,7 @@ public class EnchantedEnderPearlItem extends Item {
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(new TextComponent("\u8fd9\u662f\u4e00\u4e2a\u62e5\u6709\u65e0\u89c6\u6454\u843d\u4f24\u5bb3\u9b54\u5492\u7684\u672b\u5f71\u73cd\u73e0"));
+        list.add(new TextComponent("This is an Ender Pearl enchanted to ignore fall damage"));
     }
 
     public UseAnim getUseAnimation(ItemStack itemstack) {

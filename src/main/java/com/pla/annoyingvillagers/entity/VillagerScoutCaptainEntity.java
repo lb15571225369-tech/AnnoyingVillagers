@@ -68,7 +68,7 @@ public class VillagerScoutCaptainEntity extends PathfinderMob {
         this.maxUpStep = 2.5F;
         this.xpReward = 0;
         this.setNoAi(false);
-        this.setCustomName(new TextComponent("\u6751\u6c11\u4fa6\u5bdf\u5175\u961f\u957f"));
+        this.setCustomName(new TextComponent("Villager Scout Captain"));
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.DIAMOND_SWORD));

@@ -47,7 +47,7 @@ public class BlueDemonStagingEntity extends Monster {
         this.maxUpStep = 3.0F;
         this.xpReward = 0;
         this.setNoAi(false);
-        this.setCustomName(new TextComponent("\u84dd\u6076\u9b54"));
+        this.setCustomName(new TextComponent("Blue Demon"));
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.TRIDENT));

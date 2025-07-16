@@ -31,7 +31,7 @@ public class EnchantBedItemItem extends Item {
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(new TextComponent("\u53f3\u952e\u4e00\u6b21\u9644\u9b54\u5e8a\u4ee5\u4fdd\u5b58\u91cd\u751f\u70b9\uff0c\u6b7b\u4ea1\u5c06\u4e0d\u4f1a\u6389\u843d\u8eab\u4e0a\u7684\u7269\u54c1\uff0c\u6bcf\u6b21\u7528\u5b8c\u4e00\u6b21\u9700\u8981\u518d\u6b21\u53f3\u952e\u9644\u9b54\u5e8a\u624d\u8d77\u6548\uff0c\u4e0e\u4e0d\u6b7b\u56fe\u817e\u76f8\u51b2\u7a81"));
+        list.add(new TextComponent("Right-click the Enchanted Bed once to save your respawn point. Upon death, you will not drop your items. After each use, you must right-click the bed again to reactivate the effect. Conflicts with the Totem of Undying."));
     }
 
     public InteractionResult useOn(UseOnContext useoncontext) {

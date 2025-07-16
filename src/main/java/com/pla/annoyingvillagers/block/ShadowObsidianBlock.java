@@ -55,7 +55,7 @@ public class ShadowObsidianBlock extends Block {
 
     public void appendHoverText(ItemStack itemstack, BlockGetter blockgetter, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, blockgetter, list, tooltipflag);
-        list.add(new TextComponent("\u6697\u5f71him\u5206\u8eab\u53d1\u5c04\u7684\u6697\u5f71\u9ed1\u66dc\u77f3"));
+        list.add(new TextComponent("Shadow Obsidian Fired by Shadow Herobrine's Clone"));
     }
 
     public int getLightBlock(BlockState blockstate, BlockGetter blockgetter, BlockPos blockpos) {

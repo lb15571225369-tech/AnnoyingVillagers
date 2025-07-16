@@ -71,7 +71,7 @@ public class LegendarySwordMobItem extends SwordItem {
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(new TextComponent("\u4f20\u8bf4\u4e2d\u7684\u6b66\u5668\u4e4b\u4e00"));
+        list.add(new TextComponent("One of the Legendary Weapons"));
     }
 
     public void onCraftedBy(ItemStack itemstack, Level level, Player player) {

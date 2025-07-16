@@ -111,7 +111,7 @@ public class WoodenDoorItem extends TieredItem {
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(new TextComponent("\u975e\u5e38\u5947\u8469\u7684\u6728\u95e8\uff0c\u83dc\u9e1f\u7528\u4e86\u90fd\u8bf4\u597d"));
+        list.add(new TextComponent("An incredibly quirky wooden door, even noobs say it’s great"));
     }
 }
 
