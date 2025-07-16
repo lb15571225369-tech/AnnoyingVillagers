@@ -4,8 +4,8 @@ import java.util.Random;
 
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.procedures.BluedemontridentDangTouSheWuSheZhongCiFangKuaiProcedure;
-import com.pla.annoyingvillagers.procedures.BluedemontridentDangTouZhiWuJiZhongShiTiShiProcedure;
+import com.pla.annoyingvillagers.procedures.BlueDemonTridentOnProjectileHitBlockProcedure;
+import com.pla.annoyingvillagers.procedures.BlueDemonTridentOnProjectileHitEntityProcedure;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -66,12 +66,12 @@ public class BlueDemonTridentEntity extends AbstractArrow implements ItemSupplie
 
     public void onHitEntity(EntityHitResult entityhitresult) {
         super.onHitEntity(entityhitresult);
-        BluedemontridentDangTouZhiWuJiZhongShiTiShiProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), entityhitresult.getEntity());
+        BlueDemonTridentOnProjectileHitEntityProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), entityhitresult.getEntity());
     }
 
     public void onHitBlock(BlockHitResult blockhitresult) {
         super.onHitBlock(blockhitresult);
-        BluedemontridentDangTouSheWuSheZhongCiFangKuaiProcedure.execute(this.level, (double) blockhitresult.getBlockPos().getX(), (double) blockhitresult.getBlockPos().getY(), (double) blockhitresult.getBlockPos().getZ());
+        BlueDemonTridentOnProjectileHitBlockProcedure.execute(this.level, (double) blockhitresult.getBlockPos().getX(), (double) blockhitresult.getBlockPos().getY(), (double) blockhitresult.getBlockPos().getZ());
     }
 
     public void tick() {

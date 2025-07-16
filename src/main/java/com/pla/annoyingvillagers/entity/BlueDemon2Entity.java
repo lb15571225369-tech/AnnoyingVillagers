@@ -36,11 +36,11 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.procedures.BlueDemon2DangShiTiGengXinKeShiProcedure;
-import com.pla.annoyingvillagers.procedures.BlueDemon2DangShiTiSiWangShiProcedure;
+import com.pla.annoyingvillagers.procedures.BlueDemon2OnEntityUpdateProcedure;
+import com.pla.annoyingvillagers.procedures.BlueDemon2OnEntityDeathProcedure;
 import com.pla.annoyingvillagers.procedures.BlueDemon2ParryingProcedure;
-import com.pla.annoyingvillagers.procedures.BlueDemon2ShiTiChuShiShengChengShiProcedure;
-import com.pla.annoyingvillagers.procedures.BlueDemonDangZheGeShiTiShaSiLingGeShiTiProcedure;
+import com.pla.annoyingvillagers.procedures.BlueDemon2OnEntityInitialSpawnProcedure;
+import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityKillOtherEntityProcedure;
 
 public class BlueDemon2Entity extends Monster {
 
@@ -107,24 +107,24 @@ public class BlueDemon2Entity extends Monster {
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
-        BlueDemon2DangShiTiSiWangShiProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
+        BlueDemon2OnEntityDeathProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
 
-        BlueDemon2ShiTiChuShiShengChengShiProcedure.execute(this);
+        BlueDemon2OnEntityInitialSpawnProcedure.execute(this);
         return spawngroupdata1;
     }
 
     public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
         super.awardKillScore(entity, i, damagesource);
-        BlueDemonDangZheGeShiTiShaSiLingGeShiTiProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), entity);
+        BlueDemonOnEntityKillOtherEntityProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), entity);
     }
 
     public void baseTick() {
         super.baseTick();
-        BlueDemon2DangShiTiGengXinKeShiProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
+        BlueDemon2OnEntityUpdateProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
     }
 
     public static void init() {}

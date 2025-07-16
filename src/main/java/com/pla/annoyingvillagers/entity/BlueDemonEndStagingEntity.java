@@ -32,8 +32,8 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.procedures.BlueDemonEndDangShiTiGengXinKeShiProcedure;
-import com.pla.annoyingvillagers.procedures.BlueDemonTridentFsSkillEndShiTiChuShiShengChengShiProcedure;
+import com.pla.annoyingvillagers.procedures.BlueDemonEndStagingOnEntityUpdateProcedure;
+import com.pla.annoyingvillagers.procedures.BlueDemonTridentFsSkillEndOnEntityInitialSpawnProcedure;
 
 public class BlueDemonEndStagingEntity extends Monster {
 
@@ -90,13 +90,13 @@ public class BlueDemonEndStagingEntity extends Monster {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
 
-        BlueDemonTridentFsSkillEndShiTiChuShiShengChengShiProcedure.execute(serverlevelaccessor, this);
+        BlueDemonTridentFsSkillEndOnEntityInitialSpawnProcedure.execute(serverlevelaccessor, this);
         return spawngroupdata1;
     }
 
     public void baseTick() {
         super.baseTick();
-        BlueDemonEndDangShiTiGengXinKeShiProcedure.execute(this.level, this);
+        BlueDemonEndStagingOnEntityUpdateProcedure.execute(this.level, this);
     }
 
     public boolean isPushable() {

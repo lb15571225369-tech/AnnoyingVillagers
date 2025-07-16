@@ -22,8 +22,8 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.procedures.DarkOBFarDangTouSheWuSheZhongZheGeFangKuaiProcedure;
-import com.pla.annoyingvillagers.procedures.DarkOBFarDangTouZhiWuJiZhongShiTiShiProcedure;
+import com.pla.annoyingvillagers.procedures.DarkObFarEntityOnHitBlockProcedure;
+import com.pla.annoyingvillagers.procedures.DarkObFarEntityOnHitEntityProcedure;
 
 @OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
 public class DarkOBFarEntity extends AbstractArrow implements ItemSupplier {
@@ -64,12 +64,12 @@ public class DarkOBFarEntity extends AbstractArrow implements ItemSupplier {
 
     public void onHitEntity(EntityHitResult entityhitresult) {
         super.onHitEntity(entityhitresult);
-        DarkOBFarDangTouZhiWuJiZhongShiTiShiProcedure.execute(this.level, this.getX(), this.getY(), this.getZ());
+        DarkObFarEntityOnHitEntityProcedure.execute(this.level, this.getX(), this.getY(), this.getZ());
     }
 
     public void onHitBlock(BlockHitResult blockhitresult) {
         super.onHitBlock(blockhitresult);
-        DarkOBFarDangTouSheWuSheZhongZheGeFangKuaiProcedure.execute(this.level, (double) blockhitresult.getBlockPos().getX(), (double) blockhitresult.getBlockPos().getY(), (double) blockhitresult.getBlockPos().getZ(), this.getOwner());
+        DarkObFarEntityOnHitBlockProcedure.execute(this.level, (double) blockhitresult.getBlockPos().getX(), (double) blockhitresult.getBlockPos().getY(), (double) blockhitresult.getBlockPos().getZ(), this.getOwner());
     }
 
     public void tick() {

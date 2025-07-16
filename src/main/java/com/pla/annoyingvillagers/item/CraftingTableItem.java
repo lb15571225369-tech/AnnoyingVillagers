@@ -2,7 +2,7 @@ package com.pla.annoyingvillagers.item;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.procedures.GgedangProcedure;
+import com.pla.annoyingvillagers.procedures.CraftingTableOnUseProcedure;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -48,7 +48,7 @@ public class CraftingTableItem extends AxeItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {
         InteractionResultHolder<ItemStack> interactionresultholder = super.use(level, player, interactionhand);
 
-        GgedangProcedure.execute(player, (ItemStack) interactionresultholder.getObject());
+        CraftingTableOnUseProcedure.execute(player, (ItemStack) interactionresultholder.getObject());
         return interactionresultholder;
     }
 }

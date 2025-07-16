@@ -3,8 +3,8 @@ package com.pla.annoyingvillagers.item;
 import java.util.List;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.procedures.CchunduzuanshiDangWuPinBeiHeChengHuoShaoLianShiProcedure;
-import com.pla.annoyingvillagers.procedures.CchunduzuanshiDangWuPinYouWanJiaDiaoLuoProcedure;
+import com.pla.annoyingvillagers.procedures.CompressedDiamondOnCraftedProcedure;
+import com.pla.annoyingvillagers.procedures.CompressedDiamondOnDroppedProcedure;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.player.Player;
@@ -27,11 +27,11 @@ public class CompressedDiamondItem extends Item {
 
     public void onCraftedBy(ItemStack itemstack, Level level, Player player) {
         super.onCraftedBy(itemstack, level, player);
-        CchunduzuanshiDangWuPinBeiHeChengHuoShaoLianShiProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, itemstack);
+        CompressedDiamondOnCraftedProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, itemstack);
     }
 
     public boolean onDroppedByPlayer(ItemStack itemstack, Player player) {
-        CchunduzuanshiDangWuPinYouWanJiaDiaoLuoProcedure.execute(player.level, player);
+        CompressedDiamondOnDroppedProcedure.execute(player.level, player);
         return true;
     }
 }

@@ -35,7 +35,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.procedures.EnchantBedZaiFangKuaiShangYouJianProcedure;
+import com.pla.annoyingvillagers.procedures.EnchantBedRightClickOnBlockProcedure;
 
 public class EnchantBedBlock extends Block {
 
@@ -123,7 +123,7 @@ public class EnchantBedBlock extends Block {
         double d2 = blockhitresult.getLocation().z;
         Direction direction = blockhitresult.getDirection();
 
-        EnchantBedZaiFangKuaiShangYouJianProcedure.execute(level, (double) i, (double) j, (double) k, player);
+        EnchantBedRightClickOnBlockProcedure.execute(level, (double) i, (double) j, (double) k, player);
         return InteractionResult.SUCCESS;
     }
 

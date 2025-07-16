@@ -9,16 +9,14 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import com.pla.annoyingvillagers.procedures.VillagerHeadDangWuPinYouWanJiaDiaoLuoProcedure;
-import com.pla.annoyingvillagers.procedures.VillagerHeadDangWuPinZaiBeiBaoZhongMeiKeFaShengProcedure;
-import com.pla.annoyingvillagers.procedures.VillagerHeadDangYouJianDianJiKongQiShiProcedure;
+import com.pla.annoyingvillagers.procedures.VillagerHeadWhenDroppedByPlayerProcedure;
+import com.pla.annoyingvillagers.procedures.VillagerHeadEveryTickInInventoryProcedure;
+import com.pla.annoyingvillagers.procedures.VillagerHeadRightOnUseProcedure;
 
 public class VillagerHeadItem extends Item {
 
@@ -38,17 +36,17 @@ public class VillagerHeadItem extends Item {
         double d1 = player.getY();
         double d2 = player.getZ();
 
-        VillagerHeadDangYouJianDianJiKongQiShiProcedure.execute(player);
+        VillagerHeadRightOnUseProcedure.execute(player);
         return interactionresultholder;
     }
 
     public void inventoryTick(ItemStack itemstack, Level level, Entity entity, int i, boolean flag) {
         super.inventoryTick(itemstack, level, entity, i, flag);
-        VillagerHeadDangWuPinZaiBeiBaoZhongMeiKeFaShengProcedure.execute(entity);
+        VillagerHeadEveryTickInInventoryProcedure.execute(entity);
     }
 
     public boolean onDroppedByPlayer(ItemStack itemstack, Player player) {
-        VillagerHeadDangWuPinYouWanJiaDiaoLuoProcedure.execute(player);
+        VillagerHeadWhenDroppedByPlayerProcedure.execute(player);
         return true;
     }
 }

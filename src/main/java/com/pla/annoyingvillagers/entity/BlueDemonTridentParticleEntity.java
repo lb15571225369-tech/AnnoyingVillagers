@@ -23,8 +23,8 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.procedures.BdTridentDangShiTiGengXinKeShiProcedure;
-import com.pla.annoyingvillagers.procedures.BdTridentDangShiTiSiWangShiProcedure;
+import com.pla.annoyingvillagers.procedures.BlueDemonTridentParticleOnEntityUpdate;
+import com.pla.annoyingvillagers.procedures.BlueDemonTridentParticleWhenEntityDiesProcedure;
 
 public class BlueDemonTridentParticleEntity extends PathfinderMob {
 
@@ -71,12 +71,12 @@ public class BlueDemonTridentParticleEntity extends PathfinderMob {
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
-        BdTridentDangShiTiSiWangShiProcedure.execute(this.level, this.getX(), this.getY(), this.getZ());
+        BlueDemonTridentParticleWhenEntityDiesProcedure.execute(this.level, this.getX(), this.getY(), this.getZ());
     }
 
     public void baseTick() {
         super.baseTick();
-        BdTridentDangShiTiGengXinKeShiProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
+        BlueDemonTridentParticleOnEntityUpdate.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
     }
 
     public boolean isPushable() {

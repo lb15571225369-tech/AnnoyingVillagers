@@ -26,8 +26,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.ForgeSoundType;
-import com.pla.annoyingvillagers.procedures.AnyingheiyaoshiDangShiTiZaiFangKuaiZhongPengZhuangShiProcedure;
-import com.pla.annoyingvillagers.procedures.PutongheiyaoshiFangZhiFangKuaiShiProcedure;
+import com.pla.annoyingvillagers.procedures.ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure;
+import com.pla.annoyingvillagers.procedures.ObsidianBlockPlaceBlockProcedure;
 
 public class ObsidianBlock extends Block {
 
@@ -78,12 +78,12 @@ public class ObsidianBlock extends Block {
 
     public void onPlace(BlockState blockstate, Level level, BlockPos blockpos, BlockState blockstate1, boolean flag) {
         super.onPlace(blockstate, level, blockpos, blockstate1, flag);
-        PutongheiyaoshiFangZhiFangKuaiShiProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ());
+        ObsidianBlockPlaceBlockProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ());
     }
 
     public void entityInside(BlockState blockstate, Level level, BlockPos blockpos, Entity entity) {
         super.entityInside(blockstate, level, blockpos, entity);
-        AnyingheiyaoshiDangShiTiZaiFangKuaiZhongPengZhuangShiProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), entity);
+        ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), entity);
     }
 
     @OnlyIn(Dist.CLIENT)

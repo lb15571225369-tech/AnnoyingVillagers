@@ -9,7 +9,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.client.EffectRenderer;
-import com.pla.annoyingvillagers.procedures.EcPlayerZaiXiaoGuoChiXuShiMeiKeFaShengProcedure;
+import com.pla.annoyingvillagers.procedures.EcPlayerDuringEffectEveryTickProcedure;
 
 public class EcPlayerMobEffect extends MobEffect {
 
@@ -22,7 +22,7 @@ public class EcPlayerMobEffect extends MobEffect {
     }
 
     public void applyEffectTick(LivingEntity livingentity, int i) {
-        EcPlayerZaiXiaoGuoChiXuShiMeiKeFaShengProcedure.execute(livingentity);
+        EcPlayerDuringEffectEveryTickProcedure.execute(livingentity);
     }
 
     public boolean isDurationEffectTick(int i, int j) {

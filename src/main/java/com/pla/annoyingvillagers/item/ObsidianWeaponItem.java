@@ -13,8 +13,8 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import com.pla.annoyingvillagers.procedures.ObsidianweaponsDangShiTiHuiDongWuPinShiProcedure;
-import com.pla.annoyingvillagers.procedures.ObsidianweaponsDangYouJianDianJiKongQiShiShiTiDeWeiZhiProcedure;
+import com.pla.annoyingvillagers.procedures.ObsidianWeaponsWhenSwingingProcedure;
+import com.pla.annoyingvillagers.procedures.ObsidianWeaponsOnUseProcedure;
 
 public class ObsidianWeaponItem extends SwordItem {
 
@@ -49,20 +49,20 @@ public class ObsidianWeaponItem extends SwordItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {
         InteractionResultHolder<ItemStack> interactionresultholder = super.use(level, player, interactionhand);
 
-        ObsidianweaponsDangYouJianDianJiKongQiShiShiTiDeWeiZhiProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
+        ObsidianWeaponsOnUseProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
         return interactionresultholder;
     }
 
     public InteractionResult useOn(UseOnContext useoncontext) {
         super.useOn(useoncontext);
-        ObsidianweaponsDangYouJianDianJiKongQiShiShiTiDeWeiZhiProcedure.execute(useoncontext.getLevel(), (double) useoncontext.getClickedPos().getX(), (double) useoncontext.getClickedPos().getY(), (double) useoncontext.getClickedPos().getZ(), useoncontext.getPlayer(), useoncontext.getItemInHand());
+        ObsidianWeaponsOnUseProcedure.execute(useoncontext.getLevel(), (double) useoncontext.getClickedPos().getX(), (double) useoncontext.getClickedPos().getY(), (double) useoncontext.getClickedPos().getZ(), useoncontext.getPlayer(), useoncontext.getItemInHand());
         return InteractionResult.SUCCESS;
     }
 
     public boolean onEntitySwing(ItemStack itemstack, LivingEntity livingentity) {
         boolean flag = super.onEntitySwing(itemstack, livingentity);
 
-        ObsidianweaponsDangShiTiHuiDongWuPinShiProcedure.execute(livingentity.level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity);
+        ObsidianWeaponsWhenSwingingProcedure.execute(livingentity.level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity);
         return flag;
     }
 }

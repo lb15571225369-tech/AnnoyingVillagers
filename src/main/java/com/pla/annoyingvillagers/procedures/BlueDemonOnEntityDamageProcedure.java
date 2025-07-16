@@ -1,0 +1,166 @@
+package com.pla.annoyingvillagers.procedures;
+
+import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
+import com.pla.annoyingvillagers.util.DelayedTask;
+import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.ChatType;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.level.Explosion.BlockInteraction;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraftforge.registries.ForgeRegistries;
+
+public class BlueDemonOnEntityDamageProcedure {
+
+    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity, Entity entity1) {
+        if (entity == null || entity1 == null || world == null) return;
+
+        if (!entity.getPersistentData().getBoolean("kick_x")) {
+            if (entity instanceof LivingEntity living) {
+                if (!living.level.isClientSide()) {
+                    living.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.NPC_KICK_EFFECT.get(), 11, 0, false, false));
+                }
+            }
+
+            if (entity instanceof Mob mob && mob.getTarget() == entity1) {
+                if (Math.random() <= 0.2 && !entity.level.isClientSide() && entity.getServer() != null) {
+                    entity.getServer().getCommands().performCommand(
+                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
+                            "effect give @s annoyingvillagers:gedang 1 0 true"
+                    );
+                }
+
+                if (Math.random() <= 0.01) {
+                    new DelayedTask(20) {
+                        @Override
+                        public void run() {
+                            broadcast(world, "<Blue Demon> You're way too predictable.");
+                            playSound(world, x, y, z, AnnoyingVillagers.MODID + ":bluedemonsayyc");
+                            applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 3);
+                            applyEffect(entity1, MobEffects.BLINDNESS, 80, 3);
+                            applyEffect(entity1, MobEffects.MOVEMENT_SLOWDOWN, 80, 2);
+                            runParticle(entity);
+                        }
+                    };
+                } else if (Math.random() <= 0.01) {
+                    new DelayedTask(20) {
+                        @Override
+                        public void run() {
+                            applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 10);
+                            runParticle(entity);
+                        }
+                    };
+                } else if (Math.random() <= 0.01) {
+                    new DelayedTask(20) {
+                        @Override
+                        public void run() {
+                            broadcast(world, "<Blue Demon> Don't be arrogant.");
+
+                            new DelayedTask(20) {
+                                @Override
+                                public void run() {
+                                    applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 40);
+                                    applyEffect(entity1, MobEffects.MOVEMENT_SLOWDOWN, 80, 2);
+                                    runParticle(entity);
+                                }
+                            };
+                        }
+                    };
+                } else if (Math.random() <= 0.01) {
+                    new DelayedTask(20) {
+                        @Override
+                        public void run() {
+                            new DelayedTask(20) {
+                                @Override
+                                public void run() {
+                                    broadcast(world, "<Blue Demon> Looking down on us undead creatures only highlights how ignorant you are.");
+                                    playSound(world, x, y, z, AnnoyingVillagers.MODID + ":bluedemon_say_you_no_know");
+                                    applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 10);
+                                    runParticle(entity);
+                                    runCommand(entity1, "effect clear @s annoyingvillagers:gedang");
+                                }
+                            };
+                        }
+                    };
+                } else if (Math.random() <= 0.01) {
+                    new DelayedTask(30) {
+                        @Override
+                        public void run() {
+                            new DelayedTask(20) {
+                                @Override
+                                public void run() {
+                                    broadcast(world, "<Blue Demon> How interesting. But I really want to know what is your motive?");
+                                    playSound(world, x, y, z, AnnoyingVillagers.MODID + ":bluedemon_say_player_interesting");
+                                    runParticle(entity);
+                                    applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 5);
+                                    applyEffect(entity1, MobEffects.MOVEMENT_SLOWDOWN, 80, 2);
+
+                                    if (world instanceof Level level && !level.isClientSide()) {
+                                        level.explode(null, entity1.getX(), entity1.getY(), entity1.getZ(), 2.0F, BlockInteraction.DESTROY);
+                                    }
+                                }
+                            };
+                        }
+                    };
+                }
+            }
+        }
+    }
+
+    private static void applyEffect(Entity entity, net.minecraft.world.effect.MobEffect effect, int duration) {
+        if (entity instanceof LivingEntity living && !living.level.isClientSide()) {
+            living.addEffect(new MobEffectInstance(effect, duration, 0, false, false));
+        }
+    }
+
+    private static void applyEffect(Entity entity, net.minecraft.world.effect.MobEffect effect, int duration, int amplifier) {
+        if (entity instanceof LivingEntity living && !living.level.isClientSide()) {
+            living.addEffect(new MobEffectInstance(effect, duration, amplifier, false, false));
+        }
+    }
+
+    private static void broadcast(LevelAccessor world, String message) {
+        if (!world.isClientSide() && world.getServer() != null) {
+            world.getServer().getPlayerList().broadcastMessage(new TextComponent(message), ChatType.SYSTEM, Util.NIL_UUID);
+        }
+    }
+
+    private static void playSound(LevelAccessor world, double x, double y, double z, String soundName) {
+        if (world instanceof Level level) {
+            SoundEvent sound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(soundName));
+            if (!level.isClientSide()) {
+                level.playSound(null, new BlockPos(x, y, z), sound, SoundSource.NEUTRAL, 1.0F, 1.0F);
+            } else {
+                level.playLocalSound(x, y, z, sound, SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+            }
+        }
+    }
+
+    private static void runParticle(Entity entity) {
+        if (!entity.level.isClientSide() && entity.getServer() != null) {
+            entity.getServer().getCommands().performCommand(
+                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
+                    "execute at @s run particle annoyingvillagers:dianhu_2 ^ ^ ^ 5 1.5 5 0 10"
+            );
+        }
+    }
+
+    private static void runCommand(Entity entity, String command) {
+        if (!entity.level.isClientSide() && entity.getServer() != null) {
+            entity.getServer().getCommands().performCommand(
+                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
+                    command
+            );
+        }
+    }
+}

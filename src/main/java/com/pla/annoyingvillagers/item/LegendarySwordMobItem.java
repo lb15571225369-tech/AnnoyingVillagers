@@ -3,9 +3,9 @@ package com.pla.annoyingvillagers.item;
 import java.util.List;
 
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.procedures.DanShouZhanShenZhiRenDangShiTiBeiGongJuJiZhongShiProcedure;
-import com.pla.annoyingvillagers.procedures.DanShouZhanShenZhiRenDangShiTiHuiDongWuPinShiProcedure;
-import com.pla.annoyingvillagers.procedures.DanShouZhanShenZhiRenDangYouJianDianJiKongQiShiShiTiDeWeiZhiProcedure;
+import com.pla.annoyingvillagers.procedures.LegendarySwordMobItemOnHurtEnemyProcedure;
+import com.pla.annoyingvillagers.procedures.LegendarySwordMobItemOnEntityWingProcedure;
+import com.pla.annoyingvillagers.procedures.LegendarySwordMobItemOnUseProcedure;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
@@ -58,14 +58,14 @@ public class LegendarySwordMobItem extends SwordItem {
     public boolean hurtEnemy(ItemStack itemstack, LivingEntity livingentity, LivingEntity livingentity1) {
         boolean flag = super.hurtEnemy(itemstack, livingentity, livingentity1);
 
-        DanShouZhanShenZhiRenDangShiTiBeiGongJuJiZhongShiProcedure.execute(livingentity.level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity);
+        LegendarySwordMobItemOnHurtEnemyProcedure.execute(livingentity.level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity);
         return flag;
     }
 
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {
         InteractionResultHolder<ItemStack> interactionresultholder = super.use(level, player, interactionhand);
 
-        DanShouZhanShenZhiRenDangYouJianDianJiKongQiShiShiTiDeWeiZhiProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
+        LegendarySwordMobItemOnUseProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
         return interactionresultholder;
     }
 
@@ -81,7 +81,7 @@ public class LegendarySwordMobItem extends SwordItem {
     public boolean onEntitySwing(ItemStack itemstack, LivingEntity livingentity) {
         boolean flag = super.onEntitySwing(itemstack, livingentity);
 
-        DanShouZhanShenZhiRenDangShiTiHuiDongWuPinShiProcedure.execute(livingentity.level, livingentity.getX(), livingentity.getY(), livingentity.getZ());
+        LegendarySwordMobItemOnEntityWingProcedure.execute(livingentity.level, livingentity.getX(), livingentity.getY(), livingentity.getZ());
         return flag;
     }
 

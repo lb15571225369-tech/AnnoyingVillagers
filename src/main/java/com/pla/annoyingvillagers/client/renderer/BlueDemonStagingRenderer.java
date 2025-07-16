@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import com.pla.annoyingvillagers.entity.BlueDemonStagingEntity;
-import com.pla.annoyingvillagers.procedures.BlueDemonRShiTiZhanDouTiaoJianProcedure;
+import com.pla.annoyingvillagers.procedures.BlueDemonStagingCombatConditionProcedure;
 
 public class BlueDemonStagingRenderer extends HumanoidMobRenderer<BlueDemonStagingEntity, HumanoidModel<BlueDemonStagingEntity>> {
 
@@ -28,6 +28,6 @@ public class BlueDemonStagingRenderer extends HumanoidMobRenderer<BlueDemonStagi
         double d1 = bluedemonrentity.getY();
         double d2 = bluedemonrentity.getZ();
 
-        return BlueDemonRShiTiZhanDouTiaoJianProcedure.execute(bluedemonrentity);
+        return BlueDemonStagingCombatConditionProcedure.execute(bluedemonrentity);
     }
 }

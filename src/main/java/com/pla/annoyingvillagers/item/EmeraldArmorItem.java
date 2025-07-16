@@ -1,7 +1,7 @@
 package com.pla.annoyingvillagers.item;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.procedures.KkxtsProcedure;
+import com.pla.annoyingvillagers.procedures.EmeraldArmorJumpBootProcedure;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
@@ -64,7 +64,7 @@ public abstract class EmeraldArmorItem extends ArmorItem {
         }
 
         public void onArmorTick(ItemStack itemstack, Level level, Player player) {
-            KkxtsProcedure.execute(player);
+            EmeraldArmorJumpBootProcedure.execute(player);
         }
     }
 
@@ -79,7 +79,7 @@ public abstract class EmeraldArmorItem extends ArmorItem {
         }
 
         public void onArmorTick(ItemStack itemstack, Level level, Player player) {
-            KkxtsProcedure.execute(player);
+            EmeraldArmorJumpBootProcedure.execute(player);
         }
     }
 
@@ -94,7 +94,7 @@ public abstract class EmeraldArmorItem extends ArmorItem {
         }
 
         public void onArmorTick(ItemStack itemstack, Level level, Player player) {
-            KkxtsProcedure.execute(player);
+            EmeraldArmorJumpBootProcedure.execute(player);
         }
     }
 
@@ -109,7 +109,7 @@ public abstract class EmeraldArmorItem extends ArmorItem {
         }
 
         public void onArmorTick(ItemStack itemstack, Level level, Player player) {
-            KkxtsProcedure.execute(player);
+            EmeraldArmorJumpBootProcedure.execute(player);
         }
     }
 }

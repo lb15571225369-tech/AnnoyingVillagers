@@ -1,0 +1,20 @@
+package com.pla.annoyingvillagers.procedures;
+
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+
+public class EnchantedEnderPearlWhenItemUsedProcedure {
+
+    public static void execute(Entity entity, ItemStack itemstack) {
+        if (entity != null) {
+            if (entity instanceof Player) {
+                Player player = (Player) entity;
+
+                player.getCooldowns().addCooldown(itemstack.getItem(), 20);
+            }
+
+        }
+    }
+}
+

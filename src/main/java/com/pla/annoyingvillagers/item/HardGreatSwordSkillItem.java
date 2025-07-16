@@ -4,13 +4,12 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import com.pla.annoyingvillagers.procedures.HardGreatSwordSkillDangYouJianDianJiKongQiShiProcedure;
+import com.pla.annoyingvillagers.procedures.HardGreatSwordSkillRightClickInAirProcedure;
 
 public class HardGreatSwordSkillItem extends SwordItem {
 
@@ -45,7 +44,7 @@ public class HardGreatSwordSkillItem extends SwordItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {
         InteractionResultHolder<ItemStack> interactionresultholder = super.use(level, player, interactionhand);
 
-        HardGreatSwordSkillDangYouJianDianJiKongQiShiProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
+        HardGreatSwordSkillRightClickInAirProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
         return interactionresultholder;
     }
 }

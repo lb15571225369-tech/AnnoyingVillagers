@@ -19,10 +19,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
-import com.pla.annoyingvillagers.procedures.DarkObSsDangShiTiZaiFangKuaiZhongPengZhuangShiProcedure;
-import com.pla.annoyingvillagers.procedures.DarkObSsDangWanJiaKaiShiPoPiShiProcedure;
-import com.pla.annoyingvillagers.procedures.DarkObSsDangYouXiKeGengXinShiProcedure;
-import com.pla.annoyingvillagers.procedures.DarkObSsFangZhiFangKuaiShiProcedure;
+import com.pla.annoyingvillagers.procedures.DarkObSsOnEntityInsideProcedure;
+import com.pla.annoyingvillagers.procedures.DarkObSsOnAttackProcedure;
+import com.pla.annoyingvillagers.procedures.DarkObSsOnTickProcedure;
+import com.pla.annoyingvillagers.procedures.DarkObSsOnPlaceProcedure;
 
 public class DarkObUpBlock extends Block {
 
@@ -59,7 +59,7 @@ public class DarkObUpBlock extends Block {
     public void onPlace(BlockState blockstate, Level level, BlockPos blockpos, BlockState blockstate1, boolean flag) {
         super.onPlace(blockstate, level, blockpos, blockstate1, flag);
         level.scheduleTick(blockpos, this, 20);
-        DarkObSsFangZhiFangKuaiShiProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ());
+        DarkObSsOnPlaceProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ());
     }
 
     public void tick(BlockState blockstate, ServerLevel serverlevel, BlockPos blockpos, Random random) {
@@ -68,18 +68,18 @@ public class DarkObUpBlock extends Block {
         int j = blockpos.getY();
         int k = blockpos.getZ();
 
-        DarkObSsDangYouXiKeGengXinShiProcedure.execute(serverlevel, (double) i, (double) j, (double) k);
+        DarkObSsOnTickProcedure.execute(serverlevel, (double) i, (double) j, (double) k);
         serverlevel.scheduleTick(blockpos, this, 20);
     }
 
     public void attack(BlockState blockstate, Level level, BlockPos blockpos, Player player) {
         super.attack(blockstate, level, blockpos, player);
-        DarkObSsDangWanJiaKaiShiPoPiShiProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), player);
+        DarkObSsOnAttackProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), player);
     }
 
     public void entityInside(BlockState blockstate, Level level, BlockPos blockpos, Entity entity) {
         super.entityInside(blockstate, level, blockpos, entity);
-        DarkObSsDangShiTiZaiFangKuaiZhongPengZhuangShiProcedure.execute(level, entity);
+        DarkObSsOnEntityInsideProcedure.execute(level, entity);
     }
 
     @OnlyIn(Dist.CLIENT)

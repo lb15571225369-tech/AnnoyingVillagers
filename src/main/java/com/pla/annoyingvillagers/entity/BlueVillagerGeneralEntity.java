@@ -143,19 +143,19 @@ public class BlueVillagerGeneralEntity extends PathfinderMob {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        LanCunQiDangShiTiShouShangShiProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
+        BlueVillagerGeneralOnHurtProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
         return damagesource == DamageSource.FALL ? false : (damagesource == DamageSource.CACTUS ? false : (damagesource == DamageSource.DRAGON_BREATH ? false : super.hurt(damagesource, f)));
     }
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
-        LanCunQiDangShiTiBeiShaSiShiProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
+        BlueVillagerGeneralOnDeathProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
 
-        LanCunQiShiTiChuShiShengChengShiProcedure.execute(serverlevelaccessor, this.getX(), this.getY(), this.getZ(), this);
+        BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure.execute(serverlevelaccessor, this.getX(), this.getY(), this.getZ(), this);
         return spawngroupdata1;
     }
 
@@ -169,7 +169,7 @@ public class BlueVillagerGeneralEntity extends PathfinderMob {
         double d2 = this.getZ();
         Level level = this.level;
 
-        LanCunQiDangYouJiShiTiShiProcedure.execute(level, d0, d1, d2, this);
+        BlueVillagerGeneralOnAttackingEntityProcedure.execute(level, d0, d1, d2, this);
         return interactionresult;
     }
 
@@ -179,7 +179,7 @@ public class BlueVillagerGeneralEntity extends PathfinderMob {
 
     public void baseTick() {
         super.baseTick();
-        LanCunQiDangShiTiGengXinKeShiProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
+        BlueVillagerGeneralOnTickProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
     }
 
     public static void init() {

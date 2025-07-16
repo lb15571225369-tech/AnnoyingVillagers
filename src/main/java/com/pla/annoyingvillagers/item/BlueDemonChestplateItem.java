@@ -8,14 +8,12 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
-import com.pla.annoyingvillagers.procedures.BlueDemonChestplateXiongJiaShiJianProcedure;
+import com.pla.annoyingvillagers.procedures.BlueDemonChestplateEventProcedure;
 
 public abstract class BlueDemonChestplateItem extends ArmorItem {
 
@@ -66,7 +64,7 @@ public abstract class BlueDemonChestplateItem extends ArmorItem {
         }
 
         public void onArmorTick(ItemStack itemstack, Level level, Player player) {
-            BlueDemonChestplateXiongJiaShiJianProcedure.execute(player);
+            BlueDemonChestplateEventProcedure.execute(player);
         }
     }
 }

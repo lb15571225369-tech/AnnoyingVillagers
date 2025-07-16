@@ -10,8 +10,8 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.network.NetworkEvent.Context;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.procedures.KickAnXiaAnJianShiProcedure;
-import com.pla.annoyingvillagers.procedures.KickSongKaiAnJianShiProcedure;
+import com.pla.annoyingvillagers.procedures.KickOnKeyPressedProcedure;
+import com.pla.annoyingvillagers.procedures.KickOnKeyReleasedProcedure;
 
 @EventBusSubscriber(bus = Bus.MOD)
 public class KickMessage {
@@ -51,11 +51,11 @@ public class KickMessage {
 
         if (level.hasChunkAt(player.blockPosition())) {
             if (i == 0) {
-                KickAnXiaAnJianShiProcedure.execute(level, player);
+                KickOnKeyPressedProcedure.execute(level, player);
             }
 
             if (i == 1) {
-                KickSongKaiAnJianShiProcedure.execute(level, player);
+                KickOnKeyReleasedProcedure.execute(level, player);
             }
 
         }

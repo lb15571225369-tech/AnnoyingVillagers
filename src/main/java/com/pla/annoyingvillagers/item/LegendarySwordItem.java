@@ -6,8 +6,6 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SwordItem;
@@ -16,10 +14,10 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import com.pla.annoyingvillagers.procedures.LegendarySwordDangGongJuChuXianZaiShouZhongShiProcedure;
-import com.pla.annoyingvillagers.procedures.LegendarySwordDangGongJuChuXianZaiWuPinLanShiProcedure;
-import com.pla.annoyingvillagers.procedures.LegendarySwordDangShiTiBeiGongJuJiZhongShiProcedure;
-import com.pla.annoyingvillagers.procedures.LegendarySwordDangYouJianDianJiKongQiShiProcedure;
+import com.pla.annoyingvillagers.procedures.LegendarySwordWhenInHandProcedure;
+import com.pla.annoyingvillagers.procedures.LegendarySwordWhenInInventoryProcedure;
+import com.pla.annoyingvillagers.procedures.LegendarySwordOnEntityHitProcedure;
+import com.pla.annoyingvillagers.procedures.LegendarySwordUseProcedure;
 
 public class LegendarySwordItem extends SwordItem {
 
@@ -54,14 +52,14 @@ public class LegendarySwordItem extends SwordItem {
     public boolean hurtEnemy(ItemStack itemstack, LivingEntity livingentity, LivingEntity livingentity1) {
         boolean flag = super.hurtEnemy(itemstack, livingentity, livingentity1);
 
-        LegendarySwordDangShiTiBeiGongJuJiZhongShiProcedure.execute(livingentity, itemstack);
+        LegendarySwordOnEntityHitProcedure.execute(livingentity, itemstack);
         return flag;
     }
 
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {
         InteractionResultHolder<ItemStack> interactionresultholder = super.use(level, player, interactionhand);
 
-        LegendarySwordDangYouJianDianJiKongQiShiProcedure.execute(level, player, (ItemStack) interactionresultholder.getObject());
+        LegendarySwordUseProcedure.execute(level, player, (ItemStack) interactionresultholder.getObject());
         return interactionresultholder;
     }
 
@@ -80,10 +78,10 @@ public class LegendarySwordItem extends SwordItem {
     public void inventoryTick(ItemStack itemstack, Level level, Entity entity, int i, boolean flag) {
         super.inventoryTick(itemstack, level, entity, i, flag);
         if (flag) {
-            LegendarySwordDangGongJuChuXianZaiShouZhongShiProcedure.execute(entity);
+            LegendarySwordWhenInHandProcedure.execute(entity);
         }
 
-        LegendarySwordDangGongJuChuXianZaiWuPinLanShiProcedure.execute(entity, itemstack);
+        LegendarySwordWhenInInventoryProcedure.execute(entity, itemstack);
     }
 
     @OnlyIn(Dist.CLIENT)

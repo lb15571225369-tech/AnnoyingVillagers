@@ -1,6 +1,6 @@
 package com.pla.annoyingvillagers.item;
 
-import com.pla.annoyingvillagers.procedures.CunzhentoukuiDangWuPinZaiBeiBaoZhongMeiKeFaShengProcedure;
+import com.pla.annoyingvillagers.procedures.VillagerScoutHelmetWearingItemOnInventoryTick;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -16,6 +16,6 @@ public class VillagerScoutHelmetWearingItem extends Item {
 
     public void inventoryTick(ItemStack itemstack, Level level, Entity entity, int i, boolean flag) {
         super.inventoryTick(itemstack, level, entity, i, flag);
-        CunzhentoukuiDangWuPinZaiBeiBaoZhongMeiKeFaShengProcedure.execute(entity);
+        VillagerScoutHelmetWearingItemOnInventoryTick.execute(entity);
     }
 }

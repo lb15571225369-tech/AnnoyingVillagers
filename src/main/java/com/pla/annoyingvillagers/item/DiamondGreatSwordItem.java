@@ -1,8 +1,8 @@
 package com.pla.annoyingvillagers.item;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.procedures.ZuanShiJuJianDangShiTiBeiGongJuJiZhongShiProcedure;
-import com.pla.annoyingvillagers.procedures.ZuanShiJuJianDangYouJianDianJiKongQiShiShiTiDeWeiZhiProcedure;
+import com.pla.annoyingvillagers.procedures.DiamondGreatSwordItemOnHurtProcedure;
+import com.pla.annoyingvillagers.procedures.DiamondGreatSwordItemOnUseProcedure;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -47,14 +47,14 @@ public class DiamondGreatSwordItem extends SwordItem {
     public boolean hurtEnemy(ItemStack itemstack, LivingEntity livingentity, LivingEntity livingentity1) {
         boolean flag = super.hurtEnemy(itemstack, livingentity, livingentity1);
 
-        ZuanShiJuJianDangShiTiBeiGongJuJiZhongShiProcedure.execute(itemstack);
+        DiamondGreatSwordItemOnHurtProcedure.execute(itemstack);
         return flag;
     }
 
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {
         InteractionResultHolder<ItemStack> interactionresultholder = super.use(level, player, interactionhand);
 
-        ZuanShiJuJianDangYouJianDianJiKongQiShiShiTiDeWeiZhiProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
+        DiamondGreatSwordItemOnUseProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
         return interactionresultholder;
     }
 }

@@ -1,6 +1,6 @@
 package com.pla.annoyingvillagers.potion;
 
-import com.pla.annoyingvillagers.procedures.NailiZaiXiaoGuoChiXuShiMeiKeFaShengProcedure;
+import com.pla.annoyingvillagers.procedures.EnduranceMobEffectEveryTickProcedure;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,7 +16,7 @@ public class EnduranceMobEffect extends MobEffect {
     }
 
     public void applyEffectTick(LivingEntity livingentity, int i) {
-        NailiZaiXiaoGuoChiXuShiMeiKeFaShengProcedure.execute(livingentity);
+        EnduranceMobEffectEveryTickProcedure.execute(livingentity);
     }
 
     public boolean isDurationEffectTick(int i, int j) {

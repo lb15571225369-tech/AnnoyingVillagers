@@ -4,9 +4,9 @@ import java.util.Random;
 
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.procedures.FumomoyingzhenzhuDangTouSheWuSheZhongCiFangKuaiProcedure;
-import com.pla.annoyingvillagers.procedures.FumomoyingzhenzhuDangTouZhiWuJiZhongShiTiShiProcedure;
-import com.pla.annoyingvillagers.procedures.FumomoyingzhenzhuTouZhiWuFeiXingKeProcedure;
+import com.pla.annoyingvillagers.procedures.EnchantedEnderPearlOnProjectileHitBlockProcedure;
+import com.pla.annoyingvillagers.procedures.EnchantedEnderPearlOnProjectileHitEntityProcedure;
+import com.pla.annoyingvillagers.procedures.EnchantedEnderPearlProjectileFlightProcedure;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -66,17 +66,17 @@ public class EnchantedEnderPearlEntity extends AbstractArrow implements ItemSupp
 
     public void onHitEntity(EntityHitResult entityhitresult) {
         super.onHitEntity(entityhitresult);
-        FumomoyingzhenzhuDangTouZhiWuJiZhongShiTiShiProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this.getOwner());
+        EnchantedEnderPearlOnProjectileHitEntityProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this.getOwner());
     }
 
     public void onHitBlock(BlockHitResult blockhitresult) {
         super.onHitBlock(blockhitresult);
-        FumomoyingzhenzhuDangTouSheWuSheZhongCiFangKuaiProcedure.execute(this.level, (double) blockhitresult.getBlockPos().getX(), (double) blockhitresult.getBlockPos().getY(), (double) blockhitresult.getBlockPos().getZ(), this.getOwner());
+        EnchantedEnderPearlOnProjectileHitBlockProcedure.execute(this.level, (double) blockhitresult.getBlockPos().getX(), (double) blockhitresult.getBlockPos().getY(), (double) blockhitresult.getBlockPos().getZ(), this.getOwner());
     }
 
     public void tick() {
         super.tick();
-        FumomoyingzhenzhuTouZhiWuFeiXingKeProcedure.execute(this.level, this.getX(), this.getY(), this.getZ());
+        EnchantedEnderPearlProjectileFlightProcedure.execute(this.level, this.getX(), this.getY(), this.getZ());
         if (this.inGround) {
             this.discard();
         }

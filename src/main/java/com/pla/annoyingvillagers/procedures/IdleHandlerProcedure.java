@@ -59,6 +59,9 @@ public class IdleHandlerProcedure {
             if (data.contains("av_idle_animation_playing")) {
                 data.remove("av_idle_animation_playing");
             }
+            if (data.contains("av_idle_animate_backup_main_hand")) {
+                data.remove("av_idle_animate_backup_main_hand");
+            }
             return;
         }
         switch (action) {
@@ -95,7 +98,7 @@ public class IdleHandlerProcedure {
                         data.putString("av_idle_animate_backup_main_hand", tag.toString());
                     }
                     IdleAnimation idleAnimation = IdleAnimation.values()[RANDOM.nextInt(IdleAnimation.values().length)];
-                    new DelayedTask(20) {
+                    new DelayedTask(60) {
                         @Override
                         public void run() throws CommandSyntaxException {
                             TaskScheduler.schedule(() -> {

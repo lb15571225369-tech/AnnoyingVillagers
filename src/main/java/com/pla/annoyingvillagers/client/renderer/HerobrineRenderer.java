@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import com.pla.annoyingvillagers.entity.HerobrineEntity;
-import com.pla.annoyingvillagers.procedures.HerobrinelowProcedure;
+import com.pla.annoyingvillagers.procedures.HerobrineLowProcedure;
 
 public class HerobrineRenderer extends HumanoidMobRenderer<HerobrineEntity, HumanoidModel<HerobrineEntity>> {
 
@@ -28,6 +28,6 @@ public class HerobrineRenderer extends HumanoidMobRenderer<HerobrineEntity, Huma
         double d1 = herobrineentity.getY();
         double d2 = herobrineentity.getZ();
 
-        return HerobrinelowProcedure.execute(herobrineentity);
+        return HerobrineLowProcedure.execute(herobrineentity);
     }
 }

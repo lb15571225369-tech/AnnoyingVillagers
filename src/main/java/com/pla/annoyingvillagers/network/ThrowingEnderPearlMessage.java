@@ -3,7 +3,7 @@ package com.pla.annoyingvillagers.network;
 import java.util.function.Supplier;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.procedures.TouzhiMoyingzhenzhuAnXiaAnJianShiProcedure;
+import com.pla.annoyingvillagers.procedures.ThrowingPearlKeyPressedProcedure;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -51,7 +51,7 @@ public class ThrowingEnderPearlMessage {
 
         if (level.hasChunkAt(player.blockPosition())) {
             if (i == 0) {
-                TouzhiMoyingzhenzhuAnXiaAnJianShiProcedure.execute(level, player);
+                ThrowingPearlKeyPressedProcedure.execute(level, player);
             }
 
         }

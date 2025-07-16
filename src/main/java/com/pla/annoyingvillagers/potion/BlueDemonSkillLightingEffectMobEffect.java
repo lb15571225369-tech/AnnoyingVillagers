@@ -9,7 +9,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.client.EffectRenderer;
-import com.pla.annoyingvillagers.procedures.BlueDemonSkillLightingEffectZaiXiaoGuoChiXuShiMeiKeFaShengProcedure;
+import com.pla.annoyingvillagers.procedures.BlueDemonSkillLightingEffectDuringDurationProcedure;
 
 public class BlueDemonSkillLightingEffectMobEffect extends MobEffect {
 
@@ -22,7 +22,7 @@ public class BlueDemonSkillLightingEffectMobEffect extends MobEffect {
     }
 
     public void applyEffectTick(LivingEntity livingentity, int i) {
-        BlueDemonSkillLightingEffectZaiXiaoGuoChiXuShiMeiKeFaShengProcedure.execute(livingentity.level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity);
+        BlueDemonSkillLightingEffectDuringDurationProcedure.execute(livingentity.level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity);
     }
 
     public boolean isDurationEffectTick(int i, int j) {

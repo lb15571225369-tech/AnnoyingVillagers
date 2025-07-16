@@ -46,11 +46,11 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.procedures.BlueDemonDangShiTiGengXinKeShiProcedure;
-import com.pla.annoyingvillagers.procedures.BlueDemonDangShiTiShouShangShiProcedure;
-import com.pla.annoyingvillagers.procedures.BlueDemonDangShiTiSiWangShiProcedure;
-import com.pla.annoyingvillagers.procedures.BlueDemonDangZheGeShiTiShaSiLingGeShiTiProcedure;
-import com.pla.annoyingvillagers.procedures.BlueDemonShiTiChuShiShengChengShiProcedure;
+import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityUpdateProcedure;
+import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityDamageProcedure;
+import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityDeathProcedure;
+import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityKillOtherEntityProcedure;
+import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityInitialSpawnProcedure;
 
 @EventBusSubscriber
 public class BlueDemonEntity extends Monster {
@@ -118,30 +118,30 @@ public class BlueDemonEntity extends Monster {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        BlueDemonDangShiTiShouShangShiProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
+        BlueDemonOnEntityDamageProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
         return damagesource.getDirectEntity() instanceof AbstractArrow ? false : (damagesource == DamageSource.FALL ? false : (damagesource == DamageSource.CACTUS ? false : (damagesource == DamageSource.DROWN ? false : (damagesource == DamageSource.LIGHTNING_BOLT ? false : (damagesource.isExplosion() ? false : (damagesource.getMsgId().equals("trident") ? false : (damagesource == DamageSource.WITHER ? false : (damagesource.getMsgId().equals("witherSkull") ? false : super.hurt(damagesource, f)))))))));
     }
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
-        BlueDemonDangShiTiSiWangShiProcedure.execute(this.level, this, damagesource.getEntity());
+        BlueDemonOnEntityDeathProcedure.execute(this.level, this, damagesource.getEntity());
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
 
-        BlueDemonShiTiChuShiShengChengShiProcedure.execute(this);
+        BlueDemonOnEntityInitialSpawnProcedure.execute(this);
         return spawngroupdata1;
     }
 
     public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
         super.awardKillScore(entity, i, damagesource);
-        BlueDemonDangZheGeShiTiShaSiLingGeShiTiProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), entity);
+        BlueDemonOnEntityKillOtherEntityProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), entity);
     }
 
     public void baseTick() {
         super.baseTick();
-        BlueDemonDangShiTiGengXinKeShiProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
+        BlueDemonOnEntityUpdateProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
     }
 
     public static void init() {

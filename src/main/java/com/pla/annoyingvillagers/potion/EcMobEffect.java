@@ -10,9 +10,9 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraftforge.client.EffectRenderer;
-import com.pla.annoyingvillagers.procedures.ECDangXiaoGuoJieShuShiProcedure;
-import com.pla.annoyingvillagers.procedures.ECDangYaoShuiXiaoGuoKaiShiYingYongShiProcedure;
-import com.pla.annoyingvillagers.procedures.ECZaiXiaoGuoChiXuShiMeiKeFaShengProcedure;
+import com.pla.annoyingvillagers.procedures.ECEffectOnEndProcedure;
+import com.pla.annoyingvillagers.procedures.ECEffectOnStartProcedure;
+import com.pla.annoyingvillagers.procedures.ECDuringEffectEveryTickProcedure;
 
 public class EcMobEffect extends MobEffect {
 
@@ -25,16 +25,16 @@ public class EcMobEffect extends MobEffect {
     }
 
     public void addAttributeModifiers(LivingEntity livingentity, AttributeMap attributemap, int i) {
-        ECDangYaoShuiXiaoGuoKaiShiYingYongShiProcedure.execute(livingentity);
+        ECEffectOnStartProcedure.execute(livingentity);
     }
 
     public void applyEffectTick(LivingEntity livingentity, int i) {
-        ECZaiXiaoGuoChiXuShiMeiKeFaShengProcedure.execute(livingentity);
+        ECDuringEffectEveryTickProcedure.execute(livingentity);
     }
 
     public void removeAttributeModifiers(LivingEntity livingentity, AttributeMap attributemap, int i) {
         super.removeAttributeModifiers(livingentity, attributemap, i);
-        ECDangXiaoGuoJieShuShiProcedure.execute(livingentity);
+        ECEffectOnEndProcedure.execute(livingentity);
     }
 
     public boolean isDurationEffectTick(int i, int j) {

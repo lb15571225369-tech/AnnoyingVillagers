@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Multimap;
 import com.pla.annoyingvillagers.entity.BlueDemonTridentEntity;
-import com.pla.annoyingvillagers.procedures.BluedemontridentDangYuanChengWuPinShiYongShiProcedure;
+import com.pla.annoyingvillagers.procedures.BlueDemonTridentOnRangedItemUseProcedure;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -67,7 +67,7 @@ public class BluedemontridentItem extends Item {
                 serverplayer1.broadcastBreakEvent(serverplayer.getUsedItemHand());
             });
             bluedemontridententity.pickup = Pickup.DISALLOWED;
-            BluedemontridentDangYuanChengWuPinShiYongShiProcedure.execute(level, d0, d1, d2, serverplayer);
+            BlueDemonTridentOnRangedItemUseProcedure.execute(level, d0, d1, d2, serverplayer);
         }
 
     }

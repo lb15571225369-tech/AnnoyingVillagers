@@ -10,7 +10,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraftforge.client.EffectRenderer;
-import com.pla.annoyingvillagers.procedures.NpcKickEffectDangXiaoGuoJieShuShiProcedure;
+import com.pla.annoyingvillagers.procedures.NpcKickEffectOnEndProcedure;
 
 public class NpcKickEffectMobEffect extends MobEffect {
 
@@ -24,7 +24,7 @@ public class NpcKickEffectMobEffect extends MobEffect {
 
     public void removeAttributeModifiers(LivingEntity livingentity, AttributeMap attributemap, int i) {
         super.removeAttributeModifiers(livingentity, attributemap, i);
-        NpcKickEffectDangXiaoGuoJieShuShiProcedure.execute(livingentity);
+        NpcKickEffectOnEndProcedure.execute(livingentity);
     }
 
     public boolean isDurationEffectTick(int i, int j) {

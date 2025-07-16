@@ -41,13 +41,12 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.procedures.Herobrine2DieProcedure;
-import com.pla.annoyingvillagers.procedures.HerobrineDangShiTiGengXinKeShiProcedure;
-import com.pla.annoyingvillagers.procedures.HerobrineDangShiTiShouShangShiProcedure;
-import com.pla.annoyingvillagers.procedures.HerobrineDangShiTiZhuiLuoShiProcedure;
-import com.pla.annoyingvillagers.procedures.HerobrineDangZheGeShiTiShaSiLingGeShiTiProcedure;
-import com.pla.annoyingvillagers.procedures.HerobrineShiTiChuShiShengChengShiProcedure;
-import com.pla.annoyingvillagers.procedures.HerobrineZiRanShiTiShengProcedure;
-import se.gory_moon.player_mobs.entity.PlayerMobEntity;
+import com.pla.annoyingvillagers.procedures.HerobrineOnEntityTickUpdateProcedure;
+import com.pla.annoyingvillagers.procedures.HerobrineOnHurtProcedure;
+import com.pla.annoyingvillagers.procedures.HerobrineWhenEntityFallsProcedure;
+import com.pla.annoyingvillagers.procedures.HerobrineOnAwardKillScoreProcedure;
+import com.pla.annoyingvillagers.procedures.HerobrineOnInitialSpawnProcedure;
+import com.pla.annoyingvillagers.procedures.HerobrineNaturalSpawnProcedure;
 
 @EventBusSubscriber
 public class Herobrine2Entity extends Monster {
@@ -117,12 +116,12 @@ public class Herobrine2Entity extends Monster {
     }
 
     public boolean causeFallDamage(float f, float f1, DamageSource damagesource) {
-        HerobrineDangShiTiZhuiLuoShiProcedure.execute();
+        HerobrineWhenEntityFallsProcedure.execute();
         return super.causeFallDamage(f, f1, damagesource);
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        HerobrineDangShiTiShouShangShiProcedure.execute(this);
+        HerobrineOnHurtProcedure.execute(this);
         return damagesource == DamageSource.FALL ? false : (damagesource == DamageSource.DROWN ? false : (damagesource == DamageSource.WITHER ? false : (damagesource.getMsgId().equals("witherSkull") ? false : super.hurt(damagesource, f))));
     }
 
@@ -134,18 +133,18 @@ public class Herobrine2Entity extends Monster {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
 
-        HerobrineShiTiChuShiShengChengShiProcedure.execute(serverlevelaccessor, this);
+        HerobrineOnInitialSpawnProcedure.execute(serverlevelaccessor, this);
         return spawngroupdata1;
     }
 
     public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
         super.awardKillScore(entity, i, damagesource);
-        HerobrineDangZheGeShiTiShaSiLingGeShiTiProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), entity);
+        HerobrineOnAwardKillScoreProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), entity);
     }
 
     public void baseTick() {
         super.baseTick();
-        HerobrineDangShiTiGengXinKeShiProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
+        HerobrineOnEntityTickUpdateProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
     }
 
     public static void init() {
@@ -154,7 +153,7 @@ public class Herobrine2Entity extends Monster {
             int j = blockpos.getY();
             int k = blockpos.getZ();
 
-            return HerobrineZiRanShiTiShengProcedure.execute(serverlevelaccessor, (double) i, (double) j, (double) k);
+            return HerobrineNaturalSpawnProcedure.execute(serverlevelaccessor, (double) i, (double) j, (double) k);
         });
         DungeonHooks.addDungeonMob((EntityType) AnnoyingVillagersModEntities.HEROBRINE_2.get(), 180);
     }

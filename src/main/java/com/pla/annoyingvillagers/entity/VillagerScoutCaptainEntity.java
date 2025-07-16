@@ -144,19 +144,19 @@ public class VillagerScoutCaptainEntity extends PathfinderMob {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        CczdzDangShiTiShouShangShiProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
+        VillagerScoutCaptainOnHurtProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
         return damagesource == DamageSource.FALL ? false : (damagesource == DamageSource.CACTUS ? false : super.hurt(damagesource, f));
     }
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
-        CunMinZhenChaBingDangShiTiBeiShaSiShiProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
+        VillagerScoutCaptainOnEntityDeathProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
 
-        CunZhenDuiChangShiTiChuShiShengChengShiProcedure.execute(serverlevelaccessor, this.getX(), this.getY(), this.getZ(), this);
+        VillagerScoutCaptainOnEntityInitialSpawnProcedure.execute(serverlevelaccessor, this.getX(), this.getY(), this.getZ(), this);
         return spawngroupdata1;
     }
 
@@ -170,18 +170,18 @@ public class VillagerScoutCaptainEntity extends PathfinderMob {
         double d2 = this.getZ();
         Level level = this.level;
 
-        CunMinZhenChaBingDangYouJiShiTiShiProcedure.execute(level, d0, d1, d2, this);
+        VillagerScoutOnInteractProcedure.execute(level, d0, d1, d2, this);
         return interactionresult;
     }
 
     public void baseTick() {
         super.baseTick();
-        CunMinZhenChabingsmartskillProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
+        VillagerScoutSmartSkillProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
     }
 
     public void playerTouch(Player player) {
         super.playerTouch(player);
-        CczdzDangWanJiaYuGaiShiTiFaShengPengZhuangShiProcedure.execute(this.level, this);
+        VillagerScoutCaptainOnPlayerTouchProcedure.execute(this.level, this);
     }
 
     public static void init() {

@@ -7,9 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
@@ -17,8 +15,8 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import com.pla.annoyingvillagers.procedures.EnchantBedItemDangWuPinZaiShouShangMeiKeFaShengProcedure;
-import com.pla.annoyingvillagers.procedures.EnchantBedItemDangYouJianDianJiFangKuaiShiProcedure;
+import com.pla.annoyingvillagers.procedures.EnchantBedItemWhenHeldEveryTickProcedure;
+import com.pla.annoyingvillagers.procedures.EnchantBedItemOnRightClickBlockProcedure;
 
 public class EnchantBedItemItem extends Item {
 
@@ -38,14 +36,14 @@ public class EnchantBedItemItem extends Item {
 
     public InteractionResult useOn(UseOnContext useoncontext) {
         super.useOn(useoncontext);
-        EnchantBedItemDangYouJianDianJiFangKuaiShiProcedure.execute(useoncontext.getLevel(), (double) useoncontext.getClickedPos().getX(), (double) useoncontext.getClickedPos().getY(), (double) useoncontext.getClickedPos().getZ(), useoncontext.getPlayer());
+        EnchantBedItemOnRightClickBlockProcedure.execute(useoncontext.getLevel(), (double) useoncontext.getClickedPos().getX(), (double) useoncontext.getClickedPos().getY(), (double) useoncontext.getClickedPos().getZ(), useoncontext.getPlayer());
         return InteractionResult.SUCCESS;
     }
 
     public void inventoryTick(ItemStack itemstack, Level level, Entity entity, int i, boolean flag) {
         super.inventoryTick(itemstack, level, entity, i, flag);
         if (flag) {
-            EnchantBedItemDangWuPinZaiShouShangMeiKeFaShengProcedure.execute(entity);
+            EnchantBedItemWhenHeldEveryTickProcedure.execute(entity);
         }
 
     }

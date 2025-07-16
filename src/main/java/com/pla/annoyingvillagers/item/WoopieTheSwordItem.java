@@ -3,8 +3,8 @@ package com.pla.annoyingvillagers.item;
 import java.util.List;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.procedures.LanCunQiFuMoJianDangShiTiBeiGongJuJiZhongShiProcedure;
-import com.pla.annoyingvillagers.procedures.LanCunQiFuMoJianDangYouJianDianJiKongQiShiShiTiDeWeiZhiProcedure;
+import com.pla.annoyingvillagers.procedures.WoopieTheSwordItemOnEntityHitProcedure;
+import com.pla.annoyingvillagers.procedures.WoopieTheSwordItemOnUseProcedure;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
@@ -51,14 +51,14 @@ public class WoopieTheSwordItem extends SwordItem {
     public boolean hurtEnemy(ItemStack itemstack, LivingEntity livingentity, LivingEntity livingentity1) {
         boolean flag = super.hurtEnemy(itemstack, livingentity, livingentity1);
 
-        LanCunQiFuMoJianDangShiTiBeiGongJuJiZhongShiProcedure.execute(itemstack);
+        WoopieTheSwordItemOnEntityHitProcedure.execute(itemstack);
         return flag;
     }
 
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {
         InteractionResultHolder<ItemStack> interactionresultholder = super.use(level, player, interactionhand);
 
-        LanCunQiFuMoJianDangYouJianDianJiKongQiShiShiTiDeWeiZhiProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
+        WoopieTheSwordItemOnUseProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
         return interactionresultholder;
     }
 

@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.EnchantedEnderPearlEntity;
-import com.pla.annoyingvillagers.procedures.FumomoyingzhenzhuDangYuanChengWuPinShiYongShiProcedure;
+import com.pla.annoyingvillagers.procedures.EnchantedEnderPearlWhenItemUsedProcedure;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;
@@ -63,7 +63,7 @@ public class EnchantedEnderPearlItem extends Item {
                 serverplayer1.broadcastBreakEvent(serverplayer.getUsedItemHand());
             });
             fumomoyingzhenzhuentity.pickup = Pickup.DISALLOWED;
-            FumomoyingzhenzhuDangYuanChengWuPinShiYongShiProcedure.execute(serverplayer, itemstack);
+            EnchantedEnderPearlWhenItemUsedProcedure.execute(serverplayer, itemstack);
         }
 
     }

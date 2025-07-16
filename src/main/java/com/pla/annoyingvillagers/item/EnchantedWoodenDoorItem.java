@@ -6,7 +6,7 @@ import com.google.common.collect.Multimap;
 import java.util.List;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.procedures.FumomumenDangYouJianDianJiKongQiShiShiTiDeWeiZhiProcedure;
+import com.pla.annoyingvillagers.procedures.EnchantedWoodenDoorOnUseProcedure;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -107,7 +107,7 @@ public class EnchantedWoodenDoorItem extends TieredItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {
         InteractionResultHolder<ItemStack> interactionresultholder = super.use(level, player, interactionhand);
 
-        FumomumenDangYouJianDianJiKongQiShiShiTiDeWeiZhiProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player);
+        EnchantedWoodenDoorOnUseProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player);
         return interactionresultholder;
     }
 

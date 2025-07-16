@@ -22,10 +22,10 @@ public class AnnoyingVillagersModBlocks {
         return new DarkObSsBlock();
     });
     public static final RegistryObject<Block> NONEOB = AnnoyingVillagersModBlocks.REGISTRY.register("noneob", () -> {
-        return new NoneobBlock();
+        return new NoneObBlock();
     });
     public static final RegistryObject<Block> DARKOB = AnnoyingVillagersModBlocks.REGISTRY.register("darkob", () -> {
-        return new DarkobBlock();
+        return new DarkObBlock();
     });
     public static final RegistryObject<Block> DARK_OB_UP = AnnoyingVillagersModBlocks.REGISTRY.register("dark_ob_up", () -> {
         return new DarkObUpBlock();
@@ -44,14 +44,14 @@ public class AnnoyingVillagersModBlocks {
         public static void clientSetup(FMLClientSetupEvent fmlclientsetupevent) {
             EnchantBedBlock.registerRenderLayer();
             DarkObSsBlock.registerRenderLayer();
-            NoneobBlock.registerRenderLayer();
-            DarkobBlock.registerRenderLayer();
+            NoneObBlock.registerRenderLayer();
+            DarkObBlock.registerRenderLayer();
             DarkObUpBlock.registerRenderLayer();
         }
 
         @SubscribeEvent
         public static void blockColorLoad(net.minecraftforge.client.event.ColorHandlerEvent.Block net_minecraftforge_client_event_colorhandlerevent_block) {
-            NoneobBlock.blockColorLoad(net_minecraftforge_client_event_colorhandlerevent_block);
+            NoneObBlock.blockColorLoad(net_minecraftforge_client_event_colorhandlerevent_block);
         }
     }
 }
