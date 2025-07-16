@@ -581,7 +581,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
 
                                                                                                 if (levelaccessor10 instanceof ServerLevel) {
                                                                                                     ServerLevel serverlevel9 = (ServerLevel)levelaccessor10;
-                                                                                                    BlueDemonEndStagingEntity bluedemonendentity = new BlueDemonEndStagingEntity((EntityType)AnnoyingVillagersModEntities.BLUE_DEMON_END.get(), serverlevel9);
+                                                                                                    BlueDemonEndStagingEntity bluedemonendentity = new BlueDemonEndStagingEntity((EntityType)AnnoyingVillagersModEntities.BLUE_DEMON_END_STAGING.get(), serverlevel9);
 
                                                                                                     bluedemonendentity.moveTo(d0, d1, d2, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                                                     if (bluedemonendentity instanceof Mob) {

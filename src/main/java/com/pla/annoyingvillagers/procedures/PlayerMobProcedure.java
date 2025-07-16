@@ -66,7 +66,7 @@ public class PlayerMobProcedure {
                         if (Math.random() <= 0.3D && entity instanceof LivingEntity) {
                             livingentity1 = (LivingEntity)entity;
                             if (!livingentity1.level.isClientSide()) {
-                                livingentity1.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.GEDANG.get(), 1, 1, false, false));
+                                livingentity1.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 1, 1, false, false));
                             }
                         }
 
@@ -321,7 +321,7 @@ public class PlayerMobProcedure {
                         if (Math.random() <= 0.35D && entity instanceof LivingEntity) {
                             livingentity1 = (LivingEntity)entity;
                             if (!livingentity1.level.isClientSide()) {
-                                livingentity1.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.GEDANG.get(), 1, 1, false, false));
+                                livingentity1.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.BLOCK.get(), 1, 1, false, false));
                             }
                         }
 

@@ -72,7 +72,7 @@ public class BlueVillagerGeneralOnTickProcedure {
                 if (!livingentity1.level.isClientSide()) {
                     livingentity1.addEffect(
                             new MobEffectInstance(
-                                    AnnoyingVillagersModMobEffects.GEDANG.get(),
+                                    AnnoyingVillagersModMobEffects.BLOCK.get(),
                                     10,
                                     1,
                                     false,

@@ -56,11 +56,11 @@ public class VillagerScoutCaptainEntity extends PathfinderMob {
 
     @SubscribeEvent
     public static void addLivingEntityToBiomes(BiomeLoadingEvent biomeloadingevent) {
-        biomeloadingevent.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData((EntityType) AnnoyingVillagersModEntities.CCZDZ.get(), 6, 1, 2));
+        biomeloadingevent.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData((EntityType) AnnoyingVillagersModEntities.VILLAGER_SCOUT_CAPTAIN.get(), 6, 1, 2));
     }
 
     public VillagerScoutCaptainEntity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.CCZDZ.get(), level);
+        this((EntityType) AnnoyingVillagersModEntities.VILLAGER_SCOUT_CAPTAIN.get(), level);
     }
 
     public VillagerScoutCaptainEntity(EntityType<VillagerScoutCaptainEntity> entitytype, Level level) {
@@ -185,7 +185,7 @@ public class VillagerScoutCaptainEntity extends PathfinderMob {
     }
 
     public static void init() {
-        SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.CCZDZ.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
+        SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.VILLAGER_SCOUT_CAPTAIN.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
             return serverlevelaccessor.getBlockState(blockpos.below()).getMaterial() == Material.GRASS && serverlevelaccessor.getRawBrightness(blockpos, 0) > 8;
         });
     }

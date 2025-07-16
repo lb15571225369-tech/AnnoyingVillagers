@@ -39,7 +39,7 @@ import com.pla.annoyingvillagers.procedures.BlueDemonStagingOnEntityInitialSpawn
 public class BlueDemonStagingEntity extends Monster {
 
     public BlueDemonStagingEntity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.BLUE_DEMON_R.get(), level);
+        this((EntityType) AnnoyingVillagersModEntities.BLUE_DEMON_STAGING.get(), level);
     }
 
     public BlueDemonStagingEntity(EntityType<BlueDemonStagingEntity> entitytype, Level level) {

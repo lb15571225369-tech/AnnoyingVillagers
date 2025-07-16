@@ -15,8 +15,8 @@ public class AnnoyingVillagersModParticles {
     @SubscribeEvent
     public static void registerParticles(ParticleFactoryRegisterEvent particlefactoryregisterevent) {
         Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.RED_SPARK.get(), RedSparkParticle::provider);
-        Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.DIANHU.get(), ElectricSparkParticle::provider);
-        Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.DIANHU_2.get(), ElectricSpark2Particle::provider);
+        Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.ELECTRIC_SPARK.get(), ElectricSparkParticle::provider);
+        Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.ELECTRIC_SPARK_2.get(), ElectricSpark2Particle::provider);
         Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.SPARK.get(), SparkParticle::provider);
         Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.PE.get(), PeParticle::provider);
         Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.GLOWINGEYES.get(), GlowingEyesParticle::provider);

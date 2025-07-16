@@ -153,7 +153,7 @@ public class VillagerScoutCaptainOnHurtProcedure {
                     if (Math.random() <= 0.29D && entity instanceof LivingEntity) {
                         livingentity2 = (LivingEntity)entity;
                         if (!livingentity2.level.isClientSide()) {
-                            livingentity2.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.GEDANG.get(), 1, 1, false, false));
+                            livingentity2.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 1, 1, false, false));
                         }
                     }
 

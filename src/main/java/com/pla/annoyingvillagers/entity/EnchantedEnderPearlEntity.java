@@ -31,7 +31,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class EnchantedEnderPearlEntity extends AbstractArrow implements ItemSupplier {
 
     public EnchantedEnderPearlEntity(SpawnEntity spawnentity, Level level) {
-        super((EntityType) AnnoyingVillagersModEntities.FUMOMOYINGZHENZHU.get(), level);
+        super((EntityType) AnnoyingVillagersModEntities.ENCHANTED_ENDER_PEARL_PROJECTILE.get(), level);
     }
 
     public EnchantedEnderPearlEntity(EntityType<? extends EnchantedEnderPearlEntity> entitytype, Level level) {
@@ -84,7 +84,7 @@ public class EnchantedEnderPearlEntity extends AbstractArrow implements ItemSupp
     }
 
     public static EnchantedEnderPearlEntity shoot(Level level, LivingEntity livingentity, Random random, float f, double d0, int i) {
-        EnchantedEnderPearlEntity fumomoyingzhenzhuentity = new EnchantedEnderPearlEntity((EntityType) AnnoyingVillagersModEntities.FUMOMOYINGZHENZHU.get(), livingentity, level);
+        EnchantedEnderPearlEntity fumomoyingzhenzhuentity = new EnchantedEnderPearlEntity((EntityType) AnnoyingVillagersModEntities.ENCHANTED_ENDER_PEARL_PROJECTILE.get(), livingentity, level);
 
         fumomoyingzhenzhuentity.shoot(livingentity.getViewVector(1.0F).x, livingentity.getViewVector(1.0F).y, livingentity.getViewVector(1.0F).z, f * 2.0F, 0.0F);
         fumomoyingzhenzhuentity.setSilent(true);
@@ -97,7 +97,7 @@ public class EnchantedEnderPearlEntity extends AbstractArrow implements ItemSupp
     }
 
     public static EnchantedEnderPearlEntity shoot(LivingEntity livingentity, LivingEntity livingentity1) {
-        EnchantedEnderPearlEntity fumomoyingzhenzhuentity = new EnchantedEnderPearlEntity((EntityType) AnnoyingVillagersModEntities.FUMOMOYINGZHENZHU.get(), livingentity, livingentity.level);
+        EnchantedEnderPearlEntity fumomoyingzhenzhuentity = new EnchantedEnderPearlEntity((EntityType) AnnoyingVillagersModEntities.ENCHANTED_ENDER_PEARL_PROJECTILE.get(), livingentity, livingentity.level);
         double d0 = livingentity1.getX() - livingentity.getX();
         double d1 = livingentity1.getY() + (double) livingentity1.getEyeHeight() - 1.1D;
         double d2 = livingentity1.getZ() - livingentity.getZ();

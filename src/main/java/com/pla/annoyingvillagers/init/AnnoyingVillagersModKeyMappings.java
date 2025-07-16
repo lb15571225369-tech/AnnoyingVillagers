@@ -50,7 +50,7 @@ public class AnnoyingVillagersModKeyMappings {
     };
     private static long KICK_LASTPRESS = 0L;
 
-    public static final KeyMapping TOUZHI_MOYINGZHENZHU = new KeyMapping("key.annoyingvillagers.touzhi_moyingzhenzhu", 70, "key.categories.misc") {
+    public static final KeyMapping THROW_ENDER_PEARL = new KeyMapping("key.annoyingvillagers.touzhi_moyingzhenzhu", 70, "key.categories.misc") {
         private boolean isDownOld = false;
 
         public void setDown(boolean flag) {
@@ -68,7 +68,7 @@ public class AnnoyingVillagersModKeyMappings {
     public static void registerKeyBindings(FMLClientSetupEvent fmlclientsetupevent) {
         ClientRegistry.registerKeyBinding(AnnoyingVillagersModKeyMappings.KICK);
         ClientRegistry.registerKeyBinding(AnnoyingVillagersModKeyMappings.WEAPONS_MORE_ATTACK);
-        ClientRegistry.registerKeyBinding(AnnoyingVillagersModKeyMappings.TOUZHI_MOYINGZHENZHU);
+        ClientRegistry.registerKeyBinding(AnnoyingVillagersModKeyMappings.THROW_ENDER_PEARL);
     }
 
     @EventBusSubscriber({Dist.CLIENT})
@@ -79,7 +79,7 @@ public class AnnoyingVillagersModKeyMappings {
             if (Minecraft.getInstance().screen == null) {
                 AnnoyingVillagersModKeyMappings.KICK.consumeClick();
                 AnnoyingVillagersModKeyMappings.WEAPONS_MORE_ATTACK.consumeClick();
-                AnnoyingVillagersModKeyMappings.TOUZHI_MOYINGZHENZHU.consumeClick();
+                AnnoyingVillagersModKeyMappings.THROW_ENDER_PEARL.consumeClick();
             }
 
         }

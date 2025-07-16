@@ -124,7 +124,7 @@ public class LegendarySwordMobItemOnUseProcedure {
                 if (entity instanceof LivingEntity) {
                     livingentity2 = (LivingEntity)entity;
                     if (!livingentity2.level.isClientSide()) {
-                        livingentity2.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.NAILI.get(), 50, 1, false, false));
+                        livingentity2.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.ENDURANCE.get(), 50, 1, false, false));
                     }
                 }
 

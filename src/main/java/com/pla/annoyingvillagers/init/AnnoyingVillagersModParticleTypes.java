@@ -13,10 +13,10 @@ public class AnnoyingVillagersModParticleTypes {
     public static final RegistryObject<ParticleType<?>> RED_SPARK = AnnoyingVillagersModParticleTypes.REGISTRY.register("red_spark", () -> {
         return new SimpleParticleType(true);
     });
-    public static final RegistryObject<ParticleType<?>> DIANHU = AnnoyingVillagersModParticleTypes.REGISTRY.register("dianhu", () -> {
+    public static final RegistryObject<ParticleType<?>> ELECTRIC_SPARK = AnnoyingVillagersModParticleTypes.REGISTRY.register("dianhu", () -> {
         return new SimpleParticleType(false);
     });
-    public static final RegistryObject<ParticleType<?>> DIANHU_2 = AnnoyingVillagersModParticleTypes.REGISTRY.register("dianhu_2", () -> {
+    public static final RegistryObject<ParticleType<?>> ELECTRIC_SPARK_2 = AnnoyingVillagersModParticleTypes.REGISTRY.register("dianhu_2", () -> {
         return new SimpleParticleType(false);
     });
     public static final RegistryObject<ParticleType<?>> SPARK = AnnoyingVillagersModParticleTypes.REGISTRY.register("spark", () -> {

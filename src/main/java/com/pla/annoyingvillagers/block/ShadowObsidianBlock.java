@@ -88,7 +88,7 @@ public class ShadowObsidianBlock extends Block {
 
     @OnlyIn(Dist.CLIENT)
     public static void registerRenderLayer() {
-        ItemBlockRenderTypes.setRenderLayer((Block) AnnoyingVillagersModBlocks.ANYINGHEIYAOSHI.get(), (rendertype) -> {
+        ItemBlockRenderTypes.setRenderLayer((Block) AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get(), (rendertype) -> {
             return rendertype == RenderType.cutoutMipped();
         });
     }

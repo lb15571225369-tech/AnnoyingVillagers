@@ -55,11 +55,11 @@ public class RedVillagerGeneralEntity extends PathfinderMob {
 
     @SubscribeEvent
     public static void addLivingEntityToBiomes(BiomeLoadingEvent biomeloadingevent) {
-        biomeloadingevent.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData((EntityType) AnnoyingVillagersModEntities.HONG_CUN_QI.get(), 4, 1, 3));
+        biomeloadingevent.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData((EntityType) AnnoyingVillagersModEntities.RED_VILLAGER_GENERAL.get(), 4, 1, 3));
     }
 
     public RedVillagerGeneralEntity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.HONG_CUN_QI.get(), level);
+        this((EntityType) AnnoyingVillagersModEntities.RED_VILLAGER_GENERAL.get(), level);
     }
 
     public RedVillagerGeneralEntity(EntityType<RedVillagerGeneralEntity> entitytype, Level level) {
@@ -175,7 +175,7 @@ public class RedVillagerGeneralEntity extends PathfinderMob {
     }
 
     public static void init() {
-        SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.HONG_CUN_QI.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
+        SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.RED_VILLAGER_GENERAL.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
             return serverlevelaccessor.getBlockState(blockpos.below()).getMaterial() == Material.GRASS && serverlevelaccessor.getRawBrightness(blockpos, 0) > 8;
         });
     }

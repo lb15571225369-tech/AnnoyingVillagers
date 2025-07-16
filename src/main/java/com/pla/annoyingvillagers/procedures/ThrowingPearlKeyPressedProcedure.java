@@ -43,7 +43,7 @@ public class ThrowingPearlKeyPressedProcedure {
                                 entity.getPersistentData().putBoolean("ender_pearl_used", true);
                                 level = entity.level;
                                 if (!level.isClientSide()) {
-                                    projectile = new EnchantedEnderPearlEntity((EntityType) AnnoyingVillagersModEntities.FUMOMOYINGZHENZHU.get(), level);
+                                    projectile = new EnchantedEnderPearlEntity((EntityType) AnnoyingVillagersModEntities.ENCHANTED_ENDER_PEARL_PROJECTILE.get(), level);
                                     projectile.setOwner(entity);
                                     ((EnchantedEnderPearlEntity) projectile).setBaseDamage((double)0.0F);
                                     ((EnchantedEnderPearlEntity) projectile).setKnockback(0);

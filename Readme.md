@@ -211,9 +211,23 @@
 ---
 
 ## Variable Mappings
-- LAN_CUN_QI_JIAN -> LanCunQiFuMoJianItem
-- countOld → countNew
-- damageVal → durabilityValue
+- AnnoyingVillagersModBlocks.ANYINGHEIYAOSHI -> AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK
+- AnnoyingVillagersModBlocks.PUTONGHEIYAOSHI -> AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK
+- AnnoyingVillagersModKeyMappings.TOUZHI_MOYINGZHENZHU -> AnnoyingVillagersModKeyMappings.THROW_ENDER_PEARL
+- AnnoyingVillagersModMobEffects.GEDANG -> AnnoyingVillagersModMobEffects.BLOCK
+- AnnoyingVillagersModMobEffects.FULU -> AnnoyingVillagersModMobEffects.CAPTIVE
+- AnnoyingVillagersModMobEffects.NAILI -> AnnoyingVillagersModMobEffects.ENDURANCE
+- AnnoyingVillagersModMobEffects.TONGJI -> AnnoyingVillagersModMobEffects.CRITICAL_STRIKE
+- AnnoyingVillagersModParticleTypes.DIANHU -> AnnoyingVillagersModParticleTypes.ELECTRIC_SPARK
+- AnnoyingVillagersModEntities.BLUE_DEMON_R -> AnnoyingVillagersModEntities.BLUE_DEMON_STAGING
+- AnnoyingVillagersModEntities.BLUE_DEMON_END_STAGING -> AnnoyingVillagersModEntities.BLUE_DEMON_END_STAGING_STAGING
+- AnnoyingVillagersModEntities.CCZDZ -> AnnoyingVillagersModEntities.VILLAGER_SCOUT_CAPTAIN
+- AnnoyingVillagersModEntities.CUN_MIN_ZHEN_CHA_BING -> AnnoyingVillagersModEntities.VILLAGER_SCOUT
+- AnnoyingVillagersModEntities.LAN_CUN_QI -> AnnoyingVillagersModEntities.BLUE_VILLAGER_GENERAL
+- AnnoyingVillagersModEntities.LU_CUN_QI -> AnnoyingVillagersModEntities.PURPLE_VILLAGER_GENERAL
+- AnnoyingVillagersModEntities.HONG_CUN_QI -> AnnoyingVillagersModEntities.RED_VILLAGER_GENERAL
+- AnnoyingVillagersModEntities.ZI_CUN_QI -> AnnoyingVillagersModEntities.GREEN_VILLAGER_GENERAL
+- AnnoyingVillagersModEntities.FUMOMOYINGZHENZHU -> AnnoyingVillagersModEntities.ENCHANTED_ENDER_PEARL_PROJECTILE
 ---
 
 ## Resource Path Mappings

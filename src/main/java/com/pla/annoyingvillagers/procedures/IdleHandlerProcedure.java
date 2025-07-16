@@ -98,7 +98,7 @@ public class IdleHandlerProcedure {
                         data.putString("av_idle_animate_backup_main_hand", tag.toString());
                     }
                     IdleAnimation idleAnimation = IdleAnimation.values()[RANDOM.nextInt(IdleAnimation.values().length)];
-                    new DelayedTask(60) {
+                    new DelayedTask(40) {
                         @Override
                         public void run() throws CommandSyntaxException {
                             TaskScheduler.schedule(() -> {
@@ -112,7 +112,35 @@ public class IdleHandlerProcedure {
                                                     new AnimationSheduler(mob).run(idleAnimation, false, false);
                                                     TaskScheduler.schedule(() -> {
                                                         try {
-                                                            new AnimationSheduler(mob).run(idleAnimation, false, true);
+                                                            new AnimationSheduler(mob).run(idleAnimation, false, false);
+                                                            TaskScheduler.schedule(() -> {
+                                                                try {
+                                                                    new AnimationSheduler(mob).run(idleAnimation, false, false);
+                                                                    TaskScheduler.schedule(() -> {
+                                                                        try {
+                                                                            new AnimationSheduler(mob).run(idleAnimation, false, false);
+                                                                            TaskScheduler.schedule(() -> {
+                                                                                try {
+                                                                                    new AnimationSheduler(mob).run(idleAnimation, false, false);
+                                                                                    TaskScheduler.schedule(() -> {
+                                                                                        try {
+                                                                                            new AnimationSheduler(mob).run(idleAnimation, false, true);
+                                                                                        } catch (CommandSyntaxException e) {
+                                                                                            e.printStackTrace();
+                                                                                        }
+                                                                                    }, 5);
+                                                                                } catch (CommandSyntaxException e) {
+                                                                                    e.printStackTrace();
+                                                                                }
+                                                                            }, 5);
+                                                                        } catch (CommandSyntaxException e) {
+                                                                            e.printStackTrace();
+                                                                        }
+                                                                    }, 5);
+                                                                } catch (CommandSyntaxException e) {
+                                                                    e.printStackTrace();
+                                                                }
+                                                            }, 5);
                                                         } catch (CommandSyntaxException e) {
                                                             e.printStackTrace();
                                                         }

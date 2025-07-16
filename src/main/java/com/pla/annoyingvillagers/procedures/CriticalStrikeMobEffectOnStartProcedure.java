@@ -39,7 +39,7 @@ public class CriticalStrikeMobEffectOnStartProcedure {
 
                         if (levelaccessor1 instanceof ServerLevel) {
                             serverlevel = (ServerLevel)levelaccessor1;
-                            cczdzentity = new VillagerScoutCaptainEntity((EntityType) AnnoyingVillagersModEntities.CCZDZ.get(), serverlevel);
+                            cczdzentity = new VillagerScoutCaptainEntity((EntityType) AnnoyingVillagersModEntities.VILLAGER_SCOUT_CAPTAIN.get(), serverlevel);
                             cczdzentity.moveTo(d0, d1, d2 + 10.0D, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                             if (cczdzentity instanceof Mob) {
                                 mob = (Mob)cczdzentity;
@@ -52,7 +52,7 @@ public class CriticalStrikeMobEffectOnStartProcedure {
                         levelaccessor1 = levelaccessor;
                         if (levelaccessor1 instanceof ServerLevel) {
                             serverlevel = (ServerLevel)levelaccessor1;
-                            cczdzentity = new VillagerScoutCaptainEntity((EntityType)AnnoyingVillagersModEntities.CCZDZ.get(), serverlevel);
+                            cczdzentity = new VillagerScoutCaptainEntity((EntityType)AnnoyingVillagersModEntities.VILLAGER_SCOUT_CAPTAIN.get(), serverlevel);
                             cczdzentity.moveTo(d0, d1, d2 + 8.0D, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                             if (cczdzentity instanceof Mob) {
                                 mob = (Mob)cczdzentity;
@@ -65,7 +65,7 @@ public class CriticalStrikeMobEffectOnStartProcedure {
                         levelaccessor1 = levelaccessor;
                         if (levelaccessor1 instanceof ServerLevel) {
                             serverlevel = (ServerLevel)levelaccessor1;
-                            VillagerScoutEntity cunminzhenchabingentity = new VillagerScoutEntity((EntityType)AnnoyingVillagersModEntities.CUN_MIN_ZHEN_CHA_BING.get(), serverlevel);
+                            VillagerScoutEntity cunminzhenchabingentity = new VillagerScoutEntity((EntityType)AnnoyingVillagersModEntities.VILLAGER_SCOUT.get(), serverlevel);
 
                             cunminzhenchabingentity.moveTo(d0, d1, d2 + 5.0D, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                             if (cunminzhenchabingentity instanceof Mob) {

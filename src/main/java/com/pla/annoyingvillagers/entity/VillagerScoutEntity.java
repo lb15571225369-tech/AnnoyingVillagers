@@ -58,11 +58,11 @@ public class VillagerScoutEntity extends PathfinderMob {
 
     @SubscribeEvent
     public static void addLivingEntityToBiomes(BiomeLoadingEvent biomeloadingevent) {
-        biomeloadingevent.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData((EntityType) AnnoyingVillagersModEntities.CUN_MIN_ZHEN_CHA_BING.get(), 13, 1, 4));
+        biomeloadingevent.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData((EntityType) AnnoyingVillagersModEntities.VILLAGER_SCOUT.get(), 13, 1, 4));
     }
 
     public VillagerScoutEntity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.CUN_MIN_ZHEN_CHA_BING.get(), level);
+        this((EntityType) AnnoyingVillagersModEntities.VILLAGER_SCOUT.get(), level);
     }
 
     public VillagerScoutEntity(EntityType<VillagerScoutEntity> entitytype, Level level) {
@@ -183,7 +183,7 @@ public class VillagerScoutEntity extends PathfinderMob {
     }
 
     public static void init() {
-        SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.CUN_MIN_ZHEN_CHA_BING.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
+        SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.VILLAGER_SCOUT.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
             return serverlevelaccessor.getBlockState(blockpos.below()).getMaterial() == Material.GRASS && serverlevelaccessor.getRawBrightness(blockpos, 0) > 8;
         });
     }

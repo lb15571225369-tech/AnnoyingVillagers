@@ -33,19 +33,19 @@ public class AnnoyingVillagersModMobEffects {
     public static final RegistryObject<MobEffect> ELECTIFY = AnnoyingVillagersModMobEffects.REGISTRY.register("electify", () -> {
         return new ElectifyMobEffect();
     });
-    public static final RegistryObject<MobEffect> GEDANG = AnnoyingVillagersModMobEffects.REGISTRY.register("gedang", () -> {
+    public static final RegistryObject<MobEffect> BLOCK = AnnoyingVillagersModMobEffects.REGISTRY.register("gedang", () -> {
         return new BlockMobEffect();
     });
-    public static final RegistryObject<MobEffect> FULU = AnnoyingVillagersModMobEffects.REGISTRY.register("fulu", () -> {
+    public static final RegistryObject<MobEffect> CAPTIVE = AnnoyingVillagersModMobEffects.REGISTRY.register("fulu", () -> {
         return new CaptiveMobEffect();
     });
-    public static final RegistryObject<MobEffect> NAILI = AnnoyingVillagersModMobEffects.REGISTRY.register("naili", () -> {
+    public static final RegistryObject<MobEffect> ENDURANCE = AnnoyingVillagersModMobEffects.REGISTRY.register("naili", () -> {
         return new EnduranceMobEffect();
     });
     public static final RegistryObject<MobEffect> BLEED = AnnoyingVillagersModMobEffects.REGISTRY.register("bleed", () -> {
         return new BleedMobEffect();
     });
-    public static final RegistryObject<MobEffect> TONGJI = AnnoyingVillagersModMobEffects.REGISTRY.register("tongji", () -> {
+    public static final RegistryObject<MobEffect> CRITICAL_STRIKE = AnnoyingVillagersModMobEffects.REGISTRY.register("tongji", () -> {
         return new CriticalStrikeMobEffect();
     });
 }

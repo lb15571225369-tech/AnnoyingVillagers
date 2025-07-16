@@ -38,7 +38,7 @@ import com.pla.annoyingvillagers.procedures.BlueDemonTridentFsSkillEndOnEntityIn
 public class BlueDemonEndStagingEntity extends Monster {
 
     public BlueDemonEndStagingEntity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.BLUE_DEMON_END.get(), level);
+        this((EntityType) AnnoyingVillagersModEntities.BLUE_DEMON_END_STAGING.get(), level);
     }
 
     public BlueDemonEndStagingEntity(EntityType<BlueDemonEndStagingEntity> entitytype, Level level) {

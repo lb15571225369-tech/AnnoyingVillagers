@@ -30,10 +30,10 @@ public class AnnoyingVillagersModBlocks {
     public static final RegistryObject<Block> DARK_OB_UP = AnnoyingVillagersModBlocks.REGISTRY.register("dark_ob_up", () -> {
         return new DarkObUpBlock();
     });
-    public static final RegistryObject<Block> ANYINGHEIYAOSHI = AnnoyingVillagersModBlocks.REGISTRY.register("anyingheiyaoshi", () -> {
+    public static final RegistryObject<Block> SHADOW_OBSIDIAN_BLOCK = AnnoyingVillagersModBlocks.REGISTRY.register("anyingheiyaoshi", () -> {
         return new ShadowObsidianBlock();
     });
-    public static final RegistryObject<Block> PUTONGHEIYAOSHI = AnnoyingVillagersModBlocks.REGISTRY.register("putongheiyaoshi", () -> {
+    public static final RegistryObject<Block> OBSIDIAN_BLOCK = AnnoyingVillagersModBlocks.REGISTRY.register("putongheiyaoshi", () -> {
         return new ObsidianBlock();
     });
 

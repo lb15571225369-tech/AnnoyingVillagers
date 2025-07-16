@@ -58,11 +58,11 @@ public class BlueVillagerGeneralEntity extends PathfinderMob {
 
     @SubscribeEvent
     public static void addLivingEntityToBiomes(BiomeLoadingEvent biomeloadingevent) {
-        biomeloadingevent.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData((EntityType) AnnoyingVillagersModEntities.LAN_CUN_QI.get(), 5, 1, 3));
+        biomeloadingevent.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData((EntityType) AnnoyingVillagersModEntities.BLUE_VILLAGER_GENERAL.get(), 5, 1, 3));
     }
 
     public BlueVillagerGeneralEntity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.LAN_CUN_QI.get(), level);
+        this((EntityType) AnnoyingVillagersModEntities.BLUE_VILLAGER_GENERAL.get(), level);
     }
 
     public BlueVillagerGeneralEntity(EntityType<BlueVillagerGeneralEntity> entitytype, Level level) {
@@ -183,7 +183,7 @@ public class BlueVillagerGeneralEntity extends PathfinderMob {
     }
 
     public static void init() {
-        SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.LAN_CUN_QI.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
+        SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.BLUE_VILLAGER_GENERAL.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
             return serverlevelaccessor.getBlockState(blockpos.below()).getMaterial() == Material.GRASS && serverlevelaccessor.getRawBrightness(blockpos, 0) > 8;
         });
     }
