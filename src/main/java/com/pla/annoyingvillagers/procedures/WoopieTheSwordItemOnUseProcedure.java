@@ -37,7 +37,7 @@ public class WoopieTheSwordItemOnUseProcedure {
 
                     Player player;
 
-                    if (itemstack1.getItem() == AnnoyingVillagersModItems.LAN_CUN_QI_FU_MO_JIAN.get()) {
+                    if (itemstack1.getItem() == AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get()) {
                         itemstack.getOrCreateTag().putDouble("woopie_dash", itemstack.getOrCreateTag().getDouble("woopie_dash") - 1.0D);
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
                             entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/rush_sword\" 0 1");
@@ -85,7 +85,7 @@ public class WoopieTheSwordItemOnUseProcedure {
                         };
                         if (entity instanceof Player) {
                             player = (Player)entity;
-                            player.getCooldowns().addCooldown((Item)AnnoyingVillagersModItems.LAN_CUN_QI_FU_MO_JIAN.get(), 25);
+                            player.getCooldowns().addCooldown((Item)AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get(), 25);
                         }
                     } else {
                         if (entity instanceof LivingEntity) {
@@ -96,7 +96,7 @@ public class WoopieTheSwordItemOnUseProcedure {
                             itemstack1 = ItemStack.EMPTY;
                         }
 
-                        if (itemstack1.getItem() == AnnoyingVillagersModItems.LAN_CUN_QI_FU_MO_JIAN.get()) {
+                        if (itemstack1.getItem() == AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get()) {
                             if (entity instanceof LivingEntity) {
                                 LivingEntity livingentity2 = (LivingEntity)entity;
 
@@ -132,7 +132,7 @@ public class WoopieTheSwordItemOnUseProcedure {
                             entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * 2.0D, entity.getLookAngle().y * 2.0D, entity.getLookAngle().z * 2.0D));
                             if (entity instanceof Player) {
                                 player = (Player)entity;
-                                player.getCooldowns().addCooldown((Item) AnnoyingVillagersModItems.LAN_CUN_QI_FU_MO_JIAN.get(), 25);
+                                player.getCooldowns().addCooldown((Item) AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get(), 25);
                             }
                         }
                     }

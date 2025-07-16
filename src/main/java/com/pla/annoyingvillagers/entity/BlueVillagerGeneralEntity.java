@@ -70,12 +70,12 @@ public class BlueVillagerGeneralEntity extends PathfinderMob {
         this.maxUpStep = 2.0F;
         this.xpReward = 10;
         this.setNoAi(false);
-        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.LAN_CUN_QI_FU_MO_JIAN.get()));
+        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get()));
         this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.ENDER_PEARL));
-        this.setItemSlot(EquipmentSlot.HEAD, new ItemStack((ItemLike) AnnoyingVillagersModItems.LANCUNQITOUKUI.get()));
-        this.setItemSlot(EquipmentSlot.CHEST, new ItemStack((ItemLike) AnnoyingVillagersModItems.LAN_CUN_QIARMOR_CHESTPLATE.get()));
-        this.setItemSlot(EquipmentSlot.LEGS, new ItemStack((ItemLike) AnnoyingVillagersModItems.LAN_CUN_QIARMOR_LEGGINGS.get()));
-        this.setItemSlot(EquipmentSlot.FEET, new ItemStack((ItemLike) AnnoyingVillagersModItems.LAN_CUN_QIARMOR_BOOTS.get()));
+        this.setItemSlot(EquipmentSlot.HEAD, new ItemStack((ItemLike) AnnoyingVillagersModItems.BLUE_VILLAGER_GENERAL_HELMET_WEARING.get()));
+        this.setItemSlot(EquipmentSlot.CHEST, new ItemStack((ItemLike) AnnoyingVillagersModItems.BLUE_VILLAGER_GENERAL_CHESTPLATE.get()));
+        this.setItemSlot(EquipmentSlot.LEGS, new ItemStack((ItemLike) AnnoyingVillagersModItems.BLUE_VILLAGER_GENERAL_LEGGINGS.get()));
+        this.setItemSlot(EquipmentSlot.FEET, new ItemStack((ItemLike) AnnoyingVillagersModItems.BLUE_VILLAGER_GENERAL_BOOTS.get()));
     }
 
     public Packet<?> getAddEntityPacket() {

@@ -52,7 +52,7 @@ public class BlueDemonStagingEntity extends Monster {
         this.setPersistenceRequired();
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.TRIDENT));
         this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.TRIDENT));
-        this.setItemSlot(EquipmentSlot.CHEST, new ItemStack((ItemLike) AnnoyingVillagersModItems.BLUE_DEMON_CHESTPLATE_CHESTPLATE.get()));
+        this.setItemSlot(EquipmentSlot.CHEST, new ItemStack((ItemLike) AnnoyingVillagersModItems.BLUE_DEMON_CHESTPLATE.get()));
     }
 
     public Packet<?> getAddEntityPacket() {

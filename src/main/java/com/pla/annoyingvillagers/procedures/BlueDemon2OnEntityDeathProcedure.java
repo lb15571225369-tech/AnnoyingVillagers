@@ -55,7 +55,7 @@ public class BlueDemon2OnEntityDeathProcedure {
                         Level level = (Level)levelaccessor1;
 
                         if (!level.isClientSide()) {
-                            ItemEntity itementity = new ItemEntity(level, d0, d1, d2, new ItemStack((ItemLike)AnnoyingVillagersModItems.BLUE_DEMON_CHESTPLATE_CHESTPLATE.get()));
+                            ItemEntity itementity = new ItemEntity(level, d0, d1, d2, new ItemStack((ItemLike)AnnoyingVillagersModItems.BLUE_DEMON_CHESTPLATE.get()));
 
                             itementity.setPickUpDelay(10);
                             level.addFreshEntity(itementity);

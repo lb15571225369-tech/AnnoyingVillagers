@@ -90,7 +90,7 @@ public class LegendarySwordMobItem extends SwordItem {
         if (entity != null) {
             if (entity instanceof Player) {
                 Player player = (Player) entity;
-                ItemStack item = new ItemStack((ItemLike) AnnoyingVillagersModItems.DAN_SHOU_ZHAN_SHEN_ZHI_REN.get());
+                ItemStack item = new ItemStack((ItemLike) AnnoyingVillagersModItems.LEGENDARY_SWORD_MOB.get());
 
                 player.getInventory().clearOrCountMatchingItems((it) -> {
                     return item.getItem() == it.getItem();

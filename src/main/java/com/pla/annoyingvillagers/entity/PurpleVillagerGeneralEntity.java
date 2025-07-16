@@ -56,7 +56,7 @@ public class PurpleVillagerGeneralEntity extends PathfinderMob {
 
     @SubscribeEvent
     public static void addLivingEntityToBiomes(BiomeLoadingEvent biomeloadingevent) {
-        biomeloadingevent.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData((EntityType) AnnoyingVillagersModEntities.PURPLE_VILLAGER_GENERAL.get(), 3, 1, 2));
+        biomeloadingevent.getSpawns().getSpawner(MobCategory.CREATURE).add(new SpawnerData((EntityType) AnnoyingVillagersModEntities.PURPLE_VILLAGER_GENERAL.get(), 3, 1, 1));
     }
 
     public PurpleVillagerGeneralEntity(SpawnEntity spawnentity, Level level) {
@@ -65,15 +65,15 @@ public class PurpleVillagerGeneralEntity extends PathfinderMob {
 
     public PurpleVillagerGeneralEntity(EntityType<PurpleVillagerGeneralEntity> entitytype, Level level) {
         super(entitytype, level);
-        this.maxUpStep = 3.0F;
+        this.maxUpStep = 2.0F;
         this.xpReward = 0;
         this.setNoAi(false);
-        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.LAN_CUN_QI_FU_MO_JIAN.get()));
+        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get()));
         this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.ENDER_PEARL));
-        this.setItemSlot(EquipmentSlot.HEAD, new ItemStack((ItemLike) AnnoyingVillagersModItems.GREENKNIGHTARMOR_HELMET.get()));
-        this.setItemSlot(EquipmentSlot.CHEST, new ItemStack((ItemLike) AnnoyingVillagersModItems.GREENKNIGHTARMOR_CHESTPLATE.get()));
-        this.setItemSlot(EquipmentSlot.LEGS, new ItemStack((ItemLike) AnnoyingVillagersModItems.GREENKNIGHTARMOR_LEGGINGS.get()));
-        this.setItemSlot(EquipmentSlot.FEET, new ItemStack((ItemLike) AnnoyingVillagersModItems.GREENKNIGHTARMOR_BOOTS.get()));
+        this.setItemSlot(EquipmentSlot.HEAD, new ItemStack((ItemLike) AnnoyingVillagersModItems.PURPLE_VILLAGER_GENERAL_HELMET_WEARING.get()));
+        this.setItemSlot(EquipmentSlot.CHEST, new ItemStack((ItemLike) AnnoyingVillagersModItems.PURPLE_VILLAGER_GENERAL_CHESTPLATE.get()));
+        this.setItemSlot(EquipmentSlot.LEGS, new ItemStack((ItemLike) AnnoyingVillagersModItems.PURPLE_VILLAGER_GENERAL_LEGGINGS.get()));
+        this.setItemSlot(EquipmentSlot.FEET, new ItemStack((ItemLike) AnnoyingVillagersModItems.PURPLE_VILLAGER_GENERAL_BOOTS.get()));
     }
 
     public Packet<?> getAddEntityPacket() {
@@ -85,35 +85,36 @@ public class PurpleVillagerGeneralEntity extends PathfinderMob {
         this.getNavigation().getNodeEvaluator().setCanOpenDoors(true);
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this, new Class[0])).setAlertOthers(new Class[0]));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, Monster.class, true, false));
-//        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal(this, HbGaoJiFenShenEntity.class, true, false));
-//        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, LingZhiEntity.class, true, false));
+        this.targetSelector.addGoal(6, new NearestAttackableTargetGoal(this, BlueDemonEntity.class, true, false));
+        this.targetSelector.addGoal(12, new NearestAttackableTargetGoal(this, Player.class, true, false));
+//        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal(this, Herobrine7Entity.class, true, false));
+//        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, HbGaoJiFenShenEntity.class, true, false));
 //        this.targetSelector.addGoal(5, new NearestAttackableTargetGoal(this, DiJiherobrineEntity.class, true, false));
-//        this.targetSelector.addGoal(6, new NearestAttackableTargetGoal(this, Herobrine7Entity.class, true, false));
-//        this.targetSelector.addGoal(7, new NearestAttackableTargetGoal(this, GraveEntity.class, true, false));
-//        this.targetSelector.addGoal(8, new NearestAttackableTargetGoal(this, MrcolderEntity.class, true, false));
-//        this.targetSelector.addGoal(9, new NearestAttackableTargetGoal(this, SteveEntity.class, true, false));
-//        this.targetSelector.addGoal(10, new NearestAttackableTargetGoal(this, ShiTi303Entity.class, true, false));
-//        this.targetSelector.addGoal(11, new NearestAttackableTargetGoal(this, KeLiSiEntity.class, true, false));
-//        this.targetSelector.addGoal(12, new NearestAttackableTargetGoal(this, GeLeiGeEntity.class, true, false));
-//        this.targetSelector.addGoal(13, new NearestAttackableTargetGoal(this, JianbingguoziEntity.class, true, false));
-//        this.targetSelector.addGoal(14, new NearestAttackableTargetGoal(this, WanJia1Entity.class, true, false));
-//        this.targetSelector.addGoal(15, new NearestAttackableTargetGoal(this, ZaiEZhiWangEntity.class, true, false));
-        this.goalSelector.addGoal(16, new MeleeAttackGoal(this, 1.5D, true) {
+//        this.targetSelector.addGoal(7, new NearestAttackableTargetGoal(this, SteveEntity.class, true, false));
+//        this.targetSelector.addGoal(8, new NearestAttackableTargetGoal(this, ShiTi303Entity.class, true, false));
+//        this.targetSelector.addGoal(9, new NearestAttackableTargetGoal(this, KeLiSiEntity.class, true, false));
+//        this.targetSelector.addGoal(10, new NearestAttackableTargetGoal(this, GeLeiGeEntity.class, true, false));
+//        this.targetSelector.addGoal(11, new NearestAttackableTargetGoal(this, JianbingguoziEntity.class, true, false));
+//        this.targetSelector.addGoal(13, new NearestAttackableTargetGoal(this, GraveEntity.class, true, false));
+//        this.targetSelector.addGoal(14, new NearestAttackableTargetGoal(this, MrcolderEntity.class, true, false));
+//        this.targetSelector.addGoal(15, new NearestAttackableTargetGoal(this, MrMudgeMonkeyEntity.class, true, false));
+//        this.targetSelector.addGoal(16, new NearestAttackableTargetGoal(this, LingZhiEntity.class, true, false));
+//        this.targetSelector.addGoal(17, new NearestAttackableTargetGoal(this, ZaiEZhiWangEntity.class, true, false));
+        this.goalSelector.addGoal(18, new MeleeAttackGoal(this, 1.5D, false) {
             protected double getAttackReachSqr(LivingEntity livingentity) {
                 return (double) (this.mob.getBbWidth() * this.mob.getBbWidth() + livingentity.getBbWidth());
             }
         });
-        this.targetSelector.addGoal(17, new NearestAttackableTargetGoal(this, Player.class, true, false));
-        this.goalSelector.addGoal(18, new RandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(19, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(20, new FloatGoal(this));
-        this.goalSelector.addGoal(21, new OpenDoorGoal(this, true));
-        this.goalSelector.addGoal(22, new OpenDoorGoal(this, false));
-//        this.targetSelector.addGoal(23, new NearestAttackableTargetGoal(this, CunZhenFuLuEntity.class, true, true));
-//        this.targetSelector.addGoal(24, new NearestAttackableTargetGoal(this, LanCunQiFuLuEntity.class, true, true));
-//        this.targetSelector.addGoal(25, new NearestAttackableTargetGoal(this, LvcunqifuluEntity.class, true, true));
-//        this.targetSelector.addGoal(26, new NearestAttackableTargetGoal(this, HongCunQiFuLuEntity.class, true, true));
-//        this.targetSelector.addGoal(27, new NearestAttackableTargetGoal(this, ZiCunQiFuLuEntity.class, true, true));
+        this.goalSelector.addGoal(19, new RandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(20, new OpenDoorGoal(this, true));
+        this.goalSelector.addGoal(21, new OpenDoorGoal(this, false));
+        this.goalSelector.addGoal(22, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(23, new FloatGoal(this));
+//        this.targetSelector.addGoal(24, new NearestAttackableTargetGoal(this, CunZhenFuLuEntity.class, true, true));
+//        this.targetSelector.addGoal(25, new NearestAttackableTargetGoal(this, LanCunQiFuLuEntity.class, true, true));
+//        this.targetSelector.addGoal(26, new NearestAttackableTargetGoal(this, LvcunqifuluEntity.class, true, true));
+//        this.targetSelector.addGoal(27, new NearestAttackableTargetGoal(this, HongCunQiFuLuEntity.class, true, true));
+//        this.targetSelector.addGoal(28, new NearestAttackableTargetGoal(this, ZiCunQiFuLuEntity.class, true, true));
     }
 
     public MobType getMobType() {
@@ -185,12 +186,11 @@ public class PurpleVillagerGeneralEntity extends PathfinderMob {
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();
 
-        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.26D);
+        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.25D);
         builder = builder.add(Attributes.MAX_HEALTH, 20.0D);
-        builder = builder.add(Attributes.ARMOR, 1.0D);
-        builder = builder.add(Attributes.ATTACK_DAMAGE, 1.0D);
+        builder = builder.add(Attributes.ARMOR, 8.0D);
+        builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 128.0D);
         return builder;
     }
 }
-

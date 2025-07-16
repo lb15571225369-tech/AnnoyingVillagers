@@ -38,7 +38,7 @@ public class ThrowingPearlKeyPressedProcedure {
                     if (entity instanceof Player) {
                         Player player = (Player)entity;
 
-                        if (player.getInventory().contains(new ItemStack((ItemLike) AnnoyingVillagersModItems.FUMOMOYINGZHENZHU.get()))) {
+                        if (player.getInventory().contains(new ItemStack((ItemLike) AnnoyingVillagersModItems.ENCHANTED_ENDER_PEARL.get()))) {
                             if (!entity.getPersistentData().getBoolean("ender_pearl_used")) {
                                 entity.getPersistentData().putBoolean("ender_pearl_used", true);
                                 level = entity.level;

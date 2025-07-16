@@ -27,7 +27,7 @@ public class RedVillageGeneralOnDeathProcedure {
                     if (levelaccessor1 instanceof Level) {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
-                            itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack((ItemLike)AnnoyingVillagersModItems.GOU_ZHUANG_ZUAN_SHI_JIAN.get()));
+                            itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack((ItemLike)AnnoyingVillagersModItems.HOOKED_DIAMOND_SWORD.get()));
                             itementity.setPickUpDelay(10);
                             level.addFreshEntity(itementity);
                         }
@@ -157,7 +157,7 @@ public class RedVillageGeneralOnDeathProcedure {
                     if (levelaccessor1 instanceof Level) {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
-                            itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack((ItemLike) AnnoyingVillagersModItems.CCHUNDUZUANSHI.get()));
+                            itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack((ItemLike) AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get()));
                             itementity.setPickUpDelay(10);
                             level.addFreshEntity(itementity);
                         }

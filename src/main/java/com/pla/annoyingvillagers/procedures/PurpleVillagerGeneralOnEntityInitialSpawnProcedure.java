@@ -72,7 +72,7 @@ public class PurpleVillagerGeneralOnEntityInitialSpawnProcedure {
 
             if (Math.random() <= 0.1D && entity instanceof LivingEntity) {
                 livingentity = (LivingEntity)entity;
-                itemstack1 = new ItemStack((ItemLike) AnnoyingVillagersModItems.ZUAN_SHI_DAO_PIAN.get());
+                itemstack1 = new ItemStack((ItemLike) AnnoyingVillagersModItems.DIAMOND_BLADE.get());
                 itemstack1.setCount(1);
                 livingentity.setItemInHand(InteractionHand.MAIN_HAND, itemstack1);
                 if (livingentity instanceof Player) {
@@ -83,7 +83,7 @@ public class PurpleVillagerGeneralOnEntityInitialSpawnProcedure {
 
             if (Math.random() <= 0.1D && entity instanceof LivingEntity) {
                 livingentity = (LivingEntity)entity;
-                itemstack1 = new ItemStack((ItemLike)AnnoyingVillagersModItems.ZUAN_SHI_DAO.get());
+                itemstack1 = new ItemStack((ItemLike)AnnoyingVillagersModItems.DIAMOND_SWORD.get());
                 itemstack1.setCount(1);
                 livingentity.setItemInHand(InteractionHand.MAIN_HAND, itemstack1);
                 if (livingentity instanceof Player) {

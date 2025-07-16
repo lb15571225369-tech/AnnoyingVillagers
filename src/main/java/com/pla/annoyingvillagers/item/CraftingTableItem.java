@@ -40,7 +40,7 @@ public class CraftingTableItem extends AxeItem {
             }
 
             public Ingredient getRepairIngredient() {
-                return Ingredient.of(new ItemStack[]{new ItemStack(Items.STICK), new ItemStack(Blocks.STRIPPED_OAK_WOOD), new ItemStack((ItemLike) AnnoyingVillagersModItems.GGONGZUOTAI.get())});
+                return Ingredient.of(new ItemStack[]{new ItemStack(Items.STICK), new ItemStack(Blocks.STRIPPED_OAK_WOOD), new ItemStack((ItemLike) AnnoyingVillagersModItems.CRAFTING_TABLE.get())});
             }
         }, 1.0F, -2.8F, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
     }

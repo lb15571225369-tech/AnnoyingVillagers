@@ -23,9 +23,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 
-public class BluedemontridentItem extends Item {
+public class BlueDemonTridentItem extends Item {
 
-    public BluedemontridentItem() {
+    public BlueDemonTridentItem() {
         super((new Properties()).tab((CreativeModeTab) null).durability(2031));
     }
 
@@ -47,8 +47,8 @@ public class BluedemontridentItem extends Item {
             Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
 
             builder.putAll(super.getDefaultAttributeModifiers(equipmentslot));
-            builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BluedemontridentItem.BASE_ATTACK_DAMAGE_UUID, "Ranged item modifier", 6.4D, Operation.ADDITION));
-            builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BluedemontridentItem.BASE_ATTACK_SPEED_UUID, "Ranged item modifier", -2.4D, Operation.ADDITION));
+            builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BlueDemonTridentItem.BASE_ATTACK_DAMAGE_UUID, "Ranged item modifier", 6.4D, Operation.ADDITION));
+            builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BlueDemonTridentItem.BASE_ATTACK_SPEED_UUID, "Ranged item modifier", -2.4D, Operation.ADDITION));
             return builder.build();
         } else {
             return super.getDefaultAttributeModifiers(equipmentslot);

@@ -341,7 +341,7 @@ public class BlueVillagerGeneralOnTickProcedure {
                 if (entity1 == livingentity2) {
                     if (entity instanceof LivingEntity) {
                         LivingEntity livingentity9 = (LivingEntity)entity;
-                        ItemStack itemstack2 = new ItemStack((ItemLike) AnnoyingVillagersModItems.LAN_CUN_QI_FU_MO_JIAN.get());
+                        ItemStack itemstack2 = new ItemStack((ItemLike) AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get());
 
                         itemstack2.setCount(1);
                         livingentity9.setItemInHand(InteractionHand.MAIN_HAND, itemstack2);

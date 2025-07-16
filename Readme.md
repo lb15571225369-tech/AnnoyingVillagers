@@ -69,6 +69,7 @@
 - ZuanShiDaoItem -> DiamondSwordItem
 - ZuanShiDaoPianItem -> DiamondBladeItem
 - ZuanShiJuJianItem -> DiamondGreatSwordItem
+- BluedemontridentItem -> BlueDemonTridentItem
 
 - TouzhiMoyingzhenzhuMessage -> ThrowingEnderPearlMessage
 
@@ -204,12 +205,6 @@
 - NpcKickEffectDangXiaoGuoJieShuShiProcedure -> NpcKickEffectOnEndProcedure
 ---
 
-## Id Mappings
-- lan_cun_qi_jian -> REMOVED
-- b → c
-- c → d
----
-
 ## Variable Mappings
 - AnnoyingVillagersModBlocks.ANYINGHEIYAOSHI -> AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK
 - AnnoyingVillagersModBlocks.PUTONGHEIYAOSHI -> AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK
@@ -228,6 +223,12 @@
 - AnnoyingVillagersModEntities.HONG_CUN_QI -> AnnoyingVillagersModEntities.RED_VILLAGER_GENERAL
 - AnnoyingVillagersModEntities.ZI_CUN_QI -> AnnoyingVillagersModEntities.GREEN_VILLAGER_GENERAL
 - AnnoyingVillagersModEntities.FUMOMOYINGZHENZHU -> AnnoyingVillagersModEntities.ENCHANTED_ENDER_PEARL_PROJECTILE
+---
+
+## Id Mappings
+- lan_cun_qi_jian -> REMOVED
+- b → c
+- c → d
 ---
 
 ## Resource Path Mappings

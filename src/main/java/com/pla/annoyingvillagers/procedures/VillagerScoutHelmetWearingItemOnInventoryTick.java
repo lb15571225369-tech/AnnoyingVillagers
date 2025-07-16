@@ -12,7 +12,7 @@ public class VillagerScoutHelmetWearingItemOnInventoryTick {
         if (entity != null) {
             if (entity instanceof Player) {
                 Player player = (Player) entity;
-                ItemStack itemstack = new ItemStack((ItemLike) AnnoyingVillagersModItems.CUNZHENTOUKUI.get());
+                ItemStack itemstack = new ItemStack((ItemLike) AnnoyingVillagersModItems.VILLAGER_SCOUT_HELMET_WEARING.get());
 
                 player.getInventory().clearOrCountMatchingItems((itemstack1) -> {
                     return itemstack.getItem() == itemstack1.getItem();

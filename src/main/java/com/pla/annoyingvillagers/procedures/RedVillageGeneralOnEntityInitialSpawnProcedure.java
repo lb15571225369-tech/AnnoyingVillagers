@@ -37,7 +37,7 @@ public class RedVillageGeneralOnEntityInitialSpawnProcedure {
             if (Math.random() < 0.2D) {
                 if (entity instanceof LivingEntity) {
                     livingentity = (LivingEntity)entity;
-                    itemstack = new ItemStack((ItemLike) AnnoyingVillagersModItems.LAN_CUN_QI_FU_MO_JIAN.get());
+                    itemstack = new ItemStack((ItemLike) AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get());
                     itemstack.setCount(1);
                     livingentity.setItemInHand(InteractionHand.MAIN_HAND, itemstack);
                     if (livingentity instanceof Player) {
@@ -59,7 +59,7 @@ public class RedVillageGeneralOnEntityInitialSpawnProcedure {
             if (Math.random() < 0.2D) {
                 if (entity instanceof LivingEntity) {
                     livingentity = (LivingEntity)entity;
-                    itemstack = new ItemStack((ItemLike)AnnoyingVillagersModItems.ZUAN_SHI_DAO_PIAN.get());
+                    itemstack = new ItemStack((ItemLike)AnnoyingVillagersModItems.DIAMOND_BLADE.get());
                     itemstack.setCount(1);
                     livingentity.setItemInHand(InteractionHand.MAIN_HAND, itemstack);
                     if (livingentity instanceof Player) {
@@ -81,7 +81,7 @@ public class RedVillageGeneralOnEntityInitialSpawnProcedure {
             if (Math.random() < 0.2D) {
                 if (entity instanceof LivingEntity) {
                     livingentity = (LivingEntity)entity;
-                    itemstack = new ItemStack((ItemLike)AnnoyingVillagersModItems.ZUAN_SHI_BI_SHOU.get());
+                    itemstack = new ItemStack((ItemLike)AnnoyingVillagersModItems.DIAMOND_DAGGER.get());
                     itemstack.setCount(1);
                     livingentity.setItemInHand(InteractionHand.MAIN_HAND, itemstack);
                     if (livingentity instanceof Player) {

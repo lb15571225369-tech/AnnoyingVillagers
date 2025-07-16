@@ -69,10 +69,10 @@ public class RedVillagerGeneralEntity extends PathfinderMob {
         this.setNoAi(false);
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.DIAMOND_SWORD));
         this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.ENDER_PEARL));
-        this.setItemSlot(EquipmentSlot.HEAD, new ItemStack((ItemLike) AnnoyingVillagersModItems.HONGCUNQITOUKUI.get()));
-        this.setItemSlot(EquipmentSlot.CHEST, new ItemStack((ItemLike) AnnoyingVillagersModItems.HONG_CUN_QIHELMET_CHESTPLATE.get()));
-        this.setItemSlot(EquipmentSlot.LEGS, new ItemStack((ItemLike) AnnoyingVillagersModItems.HONG_CUN_QIHELMET_LEGGINGS.get()));
-        this.setItemSlot(EquipmentSlot.FEET, new ItemStack((ItemLike) AnnoyingVillagersModItems.HONG_CUN_QIHELMET_BOOTS.get()));
+        this.setItemSlot(EquipmentSlot.HEAD, new ItemStack((ItemLike) AnnoyingVillagersModItems.RED_VILLAGER_GENERAL_HELMET_WEARING.get()));
+        this.setItemSlot(EquipmentSlot.CHEST, new ItemStack((ItemLike) AnnoyingVillagersModItems.RED_VILLAGER_GENERAL_CHESTPLATE.get()));
+        this.setItemSlot(EquipmentSlot.LEGS, new ItemStack((ItemLike) AnnoyingVillagersModItems.RED_VILLAGER_GENERAL_LEGGINGS.get()));
+        this.setItemSlot(EquipmentSlot.FEET, new ItemStack((ItemLike) AnnoyingVillagersModItems.RED_VILLAGER_GENERAL_BOOTS.get()));
     }
 
     public Packet<?> getAddEntityPacket() {

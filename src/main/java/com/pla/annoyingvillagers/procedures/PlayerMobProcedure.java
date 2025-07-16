@@ -254,7 +254,7 @@ public class PlayerMobProcedure {
                                             if (Math.random() <= 0.2D) {
                                                 if (entity instanceof LivingEntity) {
                                                     livingentity5 = (LivingEntity)entity;
-                                                    itemstack2 = new ItemStack((ItemLike) AnnoyingVillagersModItems.ZUAN_SHI_CHANG_MAO.get());
+                                                    itemstack2 = new ItemStack((ItemLike) AnnoyingVillagersModItems.DIAMOND_SPEAR.get());
                                                     itemstack2.setCount(1);
                                                     livingentity5.setItemInHand(InteractionHand.MAIN_HAND, itemstack2);
                                                     if (livingentity5 instanceof Player) {
@@ -478,7 +478,7 @@ public class PlayerMobProcedure {
 
                                             if (entity instanceof LivingEntity) {
                                                 livingentity6 = (LivingEntity)entity;
-                                                itemstack2 = new ItemStack((ItemLike)AnnoyingVillagersModItems.LAN_CUN_QI_FU_MO_JIAN.get());
+                                                itemstack2 = new ItemStack((ItemLike)AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get());
                                                 itemstack2.setCount(1);
                                                 livingentity6.setItemInHand(InteractionHand.MAIN_HAND, itemstack2);
                                                 if (livingentity6 instanceof Player) {
@@ -508,7 +508,7 @@ public class PlayerMobProcedure {
                                             if (Math.random() <= 0.2D) {
                                                 if (entity instanceof LivingEntity) {
                                                     livingentity6 = (LivingEntity)entity;
-                                                    itemstack2 = new ItemStack((ItemLike)AnnoyingVillagersModItems.ZUAN_SHI_BI_SHOU.get());
+                                                    itemstack2 = new ItemStack((ItemLike)AnnoyingVillagersModItems.DIAMOND_DAGGER.get());
                                                     itemstack2.setCount(1);
                                                     livingentity6.setItemInHand(InteractionHand.MAIN_HAND, itemstack2);
                                                     if (livingentity6 instanceof Player) {
@@ -538,7 +538,7 @@ public class PlayerMobProcedure {
                                             if (Math.random() <= 0.2D) {
                                                 if (entity instanceof LivingEntity) {
                                                     livingentity6 = (LivingEntity)entity;
-                                                    itemstack2 = new ItemStack((ItemLike)AnnoyingVillagersModItems.ZUAN_SHI_DAO_PIAN.get());
+                                                    itemstack2 = new ItemStack((ItemLike)AnnoyingVillagersModItems.DIAMOND_BLADE.get());
                                                     itemstack2.setCount(1);
                                                     livingentity6.setItemInHand(InteractionHand.MAIN_HAND, itemstack2);
                                                     if (livingentity6 instanceof Player) {
@@ -568,7 +568,7 @@ public class PlayerMobProcedure {
                                             if (Math.random() <= 0.2D) {
                                                 if (entity instanceof LivingEntity) {
                                                     livingentity6 = (LivingEntity)entity;
-                                                    itemstack2 = new ItemStack((ItemLike)AnnoyingVillagersModItems.GOU_ZHUANG_ZUAN_SHI_JIAN.get());
+                                                    itemstack2 = new ItemStack((ItemLike)AnnoyingVillagersModItems.HOOKED_DIAMOND_SWORD.get());
                                                     itemstack2.setCount(1);
                                                     livingentity6.setItemInHand(InteractionHand.MAIN_HAND, itemstack2);
                                                     if (livingentity6 instanceof Player) {

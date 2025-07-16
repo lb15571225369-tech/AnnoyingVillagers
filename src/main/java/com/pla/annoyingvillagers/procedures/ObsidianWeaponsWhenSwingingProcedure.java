@@ -39,7 +39,7 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                     Level level;
                     Entity entity1;
 
-                    if (itemstack.getItem() == AnnoyingVillagersModItems.OBSIDIANWEAPONS.get()) {
+                    if (itemstack.getItem() == AnnoyingVillagersModItems.OBSIDIAN_WEAPONS.get()) {
                         if (entity instanceof LivingEntity) {
                             livingentity1 = (LivingEntity) entity;
                             itemstack = livingentity1.getMainHandItem();
@@ -212,7 +212,7 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                             itemstack = ItemStack.EMPTY;
                         }
 
-                        if (itemstack.getItem() == AnnoyingVillagersModItems.OBSIDIANWEAPONS.get()) {
+                        if (itemstack.getItem() == AnnoyingVillagersModItems.OBSIDIAN_WEAPONS.get()) {
                             if (entity instanceof LivingEntity) {
                                 livingentity1 = (LivingEntity) entity;
                                 itemstack = livingentity1.getOffhandItem();

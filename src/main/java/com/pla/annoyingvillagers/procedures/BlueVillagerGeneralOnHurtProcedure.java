@@ -99,7 +99,7 @@ public class BlueVillagerGeneralOnHurtProcedure {
 
                     if (entity instanceof LivingEntity) {
                         livingentity2 = (LivingEntity)entity;
-                        ItemStack itemstack = new ItemStack((ItemLike) AnnoyingVillagersModItems.LAN_CUN_QI_FU_MO_JIAN.get());
+                        ItemStack itemstack = new ItemStack((ItemLike) AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get());
 
                         itemstack.setCount(1);
                         livingentity2.setItemInHand(InteractionHand.MAIN_HAND, itemstack);
@@ -330,7 +330,7 @@ public class BlueVillagerGeneralOnHurtProcedure {
                                         if (Math.random() <= 0.2D) {
                                             if (entity instanceof LivingEntity) {
                                                 livingentity5 = (LivingEntity)entity;
-                                                itemstack4 = new ItemStack((ItemLike)AnnoyingVillagersModItems.ZUAN_SHI_DAO_PIAN.get());
+                                                itemstack4 = new ItemStack((ItemLike)AnnoyingVillagersModItems.DIAMOND_BLADE.get());
                                                 itemstack4.setCount(1);
                                                 livingentity5.setItemInHand(InteractionHand.MAIN_HAND, itemstack4);
                                                 if (livingentity5 instanceof Player) {
@@ -378,7 +378,7 @@ public class BlueVillagerGeneralOnHurtProcedure {
                                             if (Math.random() <= 0.2D) {
                                                 if (entity instanceof LivingEntity) {
                                                     livingentity5 = (LivingEntity)entity;
-                                                    itemstack4 = new ItemStack((ItemLike)AnnoyingVillagersModItems.ZUAN_SHI_BI_SHOU.get());
+                                                    itemstack4 = new ItemStack((ItemLike)AnnoyingVillagersModItems.DIAMOND_DAGGER.get());
                                                     itemstack4.setCount(1);
                                                     livingentity5.setItemInHand(InteractionHand.MAIN_HAND, itemstack4);
                                                     if (livingentity5 instanceof Player) {

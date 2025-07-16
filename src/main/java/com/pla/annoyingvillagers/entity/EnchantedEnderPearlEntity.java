@@ -52,7 +52,7 @@ public class EnchantedEnderPearlEntity extends AbstractArrow implements ItemSupp
 
     @OnlyIn(Dist.CLIENT)
     public ItemStack getItem() {
-        return new ItemStack((ItemLike) AnnoyingVillagersModItems.FUMOMOYINGZHENZHU.get());
+        return new ItemStack((ItemLike) AnnoyingVillagersModItems.ENCHANTED_ENDER_PEARL.get());
     }
 
     protected ItemStack getPickupItem() {
