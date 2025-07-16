@@ -382,5 +382,30 @@
         "stream": false
       }
     ]
+  },
+  "himsayenough": {
+    "subtitle": "subtitles.himsayenough",
+    "sounds": [
+      {
+        "name": "annoyingvillagers:himgoule",
+        "stream": false
+      }
+    ]
+  },
+  "himattack": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:attack",
+        "stream": false
+      }
+    ]
+  },
+  "himattack2": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:himattack",
+        "stream": false
+      }
+    ]
   }
 }

@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.Util;
 import net.minecraft.network.chat.ChatType;
@@ -11,6 +12,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
@@ -259,6 +261,16 @@ public class BlueVillagerGeneralOnDeathProcedure {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
                             itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack(Items.GOLD_INGOT));
+                            itementity.setPickUpDelay(10);
+                            level.addFreshEntity(itementity);
+                        }
+                    }
+
+                    levelaccessor1 = levelaccessor;
+                    if (levelaccessor1 instanceof Level) {
+                        level = (Level)levelaccessor1;
+                        if (!level.isClientSide()) {
+                            itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack((ItemLike) AnnoyingVillagersModItems.BLUE_VILLAGER_GENERAL_HELMET_WEARING.get()));
                             itementity.setPickUpDelay(10);
                             level.addFreshEntity(itementity);
                         }

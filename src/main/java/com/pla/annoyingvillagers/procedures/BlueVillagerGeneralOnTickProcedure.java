@@ -261,7 +261,7 @@ public class BlueVillagerGeneralOnTickProcedure {
                                             livingentity7 = null;
                                         }
 
-                                        new Vec3(d3, d4, livingentity7.getZ());
+                                        vec31 = new Vec3(d3, d4, livingentity7.getZ());
                                         entity.lookAt(anchor, vec31);
                                         if (entity instanceof LivingEntity) {
                                             livingentity3 = (LivingEntity)entity;

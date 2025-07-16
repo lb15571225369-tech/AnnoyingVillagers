@@ -207,6 +207,9 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> BLUE_VILLAGER_GENERAL_CHESTPLATE = AnnoyingVillagersModItems.REGISTRY.register("blue_villager_general_chestplate", () -> {
         return new BlueVillagerGeneralArmorItem.Chestplate();
     });
+    public static final RegistryObject<Item> GREEN_VILLAGER_GENERAL_HELMET_WEARING = AnnoyingVillagersModItems.REGISTRY.register("green_villager_general_helmet_wearing", () -> {
+        return new GreenVillagerGeneralHelmetWearingItem();
+    });
     public static final RegistryObject<Item> GREEN_VILLAGER_GENERAL_HELMET = AnnoyingVillagersModItems.REGISTRY.register("green_villager_general_helmet", () -> {
         return new GreenVillagerGeneralArmorItem.Helmet();
     });

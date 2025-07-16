@@ -67,5 +67,8 @@ public class AnnoyingVillagersModSounds {
         AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "l_g_wake_up"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "l_g_wake_up")));
         AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "legendary_sword_awakening"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "legendary_sword_awakening")));
         AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "whoosh"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "whoosh")));
+        AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "himsayenough"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "himsayenough")));
+        AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "himattack"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "himattack")));
+        AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "himattack2"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "himattack2")));
     }
 }
