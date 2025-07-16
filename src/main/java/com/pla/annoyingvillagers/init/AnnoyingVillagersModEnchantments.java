@@ -21,7 +21,7 @@ import com.pla.annoyingvillagers.enchantment.UnknownEnchantment;
 public class AnnoyingVillagersModEnchantments {
 
     public static final DeferredRegister<Enchantment> REGISTRY = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, AnnoyingVillagers.MODID);
-    public static final RegistryObject<Enchantment> FASTSHOT = AnnoyingVillagersModEnchantments.REGISTRY.register("fastshot", () -> {
+    public static final RegistryObject<Enchantment> FAST_SHOT = AnnoyingVillagersModEnchantments.REGISTRY.register("fast_shot", () -> {
         return new FastshotEnchantment(new EquipmentSlot[0]);
     });
     public static final RegistryObject<Enchantment> BREAK_ARMOR = AnnoyingVillagersModEnchantments.REGISTRY.register("break_armor", () -> {

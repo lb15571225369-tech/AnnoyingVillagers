@@ -38,11 +38,8 @@ public class AnnoyingVillagersModSounds {
         AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "bluedemon_say_you_no_know"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "bluedemon_say_you_no_know")));
         AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "bluedemonsayplayer"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "bluedemonsayplayer")));
         AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "bluedemonsaydontbe"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "bluedemonsaydontbe")));
-        AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "smoke_used"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "smoke_used")));
         AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "ob_place"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "ob_place")));
         AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "metal_hit"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "metal_hit")));
-        AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "gun_shot"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "gun_shot")));
-        AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "head_shot"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "head_shot")));
         AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "target_block_hit"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "target_block_hit")));
         AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "dash_star"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "dash_star")));
         AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "item_hit"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "item_hit")));
@@ -58,17 +55,17 @@ public class AnnoyingVillagersModSounds {
         AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "music_box_win"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "music_box_win")));
         AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "hard_great_sword_skill"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "hard_great_sword_skill")));
         AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "fight_music"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "fight_music")));
-        AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "shiqu"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "shiqu")));
-        AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "wusheng"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "wusheng")));
-        AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "fangzhiheiyaoshi"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "fangzhiheiyaoshi")));
+        AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "lost"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "lost")));
+        AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "silent"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "silent")));
+        AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "obsidian_place"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "obsidian_place")));
         AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "pop"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "pop")));
-        AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "heiyaoshi_hit"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "heiyaoshi_hit")));
+        AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "obsidian_hit"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "obsidian_hit")));
         AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "heavy_hit"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "heavy_hit")));
         AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "woosh_hard"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "woosh_hard")));
-        AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "humchuanqi"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "humchuanqi")));
+        AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "soul_legend"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "soul_legend")));
         AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "wing"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "wing")));
         AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "l_g_wake_up"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "l_g_wake_up")));
-        AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "zhanshenzhirenjuexing"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "zhanshenzhirenjuexing")));
+        AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "legendary_sword_awakening"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "legendary_sword_awakening")));
         AnnoyingVillagersModSounds.REGISTRY.put(new ResourceLocation(AnnoyingVillagers.MODID, "whoosh"), new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, "whoosh")));
     }
 }

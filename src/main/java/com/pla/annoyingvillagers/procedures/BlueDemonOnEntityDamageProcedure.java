@@ -36,7 +36,7 @@ public class BlueDemonOnEntityDamageProcedure {
                 if (Math.random() <= 0.2 && !entity.level.isClientSide() && entity.getServer() != null) {
                     entity.getServer().getCommands().performCommand(
                             entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                            "effect give @s annoyingvillagers:gedang 1 0 true"
+                            "effect give @s annoyingvillagers:block 1 0 true"
                     );
                 }
 
@@ -87,7 +87,7 @@ public class BlueDemonOnEntityDamageProcedure {
                                     playSound(world, x, y, z, AnnoyingVillagers.MODID + ":bluedemon_say_you_no_know");
                                     applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 10);
                                     runParticle(entity);
-                                    runCommand(entity1, "effect clear @s annoyingvillagers:gedang");
+                                    runCommand(entity1, "effect clear @s annoyingvillagers:block");
                                 }
                             };
                         }
@@ -150,7 +150,7 @@ public class BlueDemonOnEntityDamageProcedure {
         if (!entity.level.isClientSide() && entity.getServer() != null) {
             entity.getServer().getCommands().performCommand(
                     entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                    "execute at @s run particle annoyingvillagers:dianhu_2 ^ ^ ^ 5 1.5 5 0 10"
+                    "execute at @s run particle annoyingvillagers:electric_spark_2 ^ ^ ^ 5 1.5 5 0 10"
             );
         }
     }

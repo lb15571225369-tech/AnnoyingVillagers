@@ -51,7 +51,7 @@ public class LegendarySwordUseProcedure {
                             }
 
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute at @s run particle annoyingvillagers:bluespark ~ ~1 ~ 0 0 0 0.1 500");
+                                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute at @s run particle annoyingvillagers:blue_spark ~ ~1 ~ 0 0 0 0.1 500");
                             }
 
                             entity.setDeltaMovement(new Vec3(0.0D, 0.2D, 0.0D));

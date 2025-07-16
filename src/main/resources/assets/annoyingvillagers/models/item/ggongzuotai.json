@@ -1,7 +1,0 @@
-{
-  "parent": "annoyingvillagers:custom/gong_zuo_tai_",
-  "textures": {
-    "0": "annoyingvillagers:blocks/gong_zuo_tai_",
-    "particle": "annoyingvillagers:items/gong_zuo_tai_"
-  }
-}

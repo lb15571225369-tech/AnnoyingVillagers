@@ -55,7 +55,7 @@ public class WoopieTheSwordItemOnUseProcedure {
                                 Entity entity1 = entity;
 
                                 if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                    entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute at @s run particle annoyingvillagers:bluespark ~ ~1 ~ 0 0 0 0.1 500");
+                                    entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute at @s run particle annoyingvillagers:blue_spark ~ ~1 ~ 0 0 0 0.1 500");
                                 }
 
                                 LevelAccessor levelaccessor1 = levelaccessor;
@@ -106,7 +106,7 @@ public class WoopieTheSwordItemOnUseProcedure {
                             }
 
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute at @s run particle annoyingvillagers:bluespark ~ ~1 ~ 0 0 0 0.1 500");
+                                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute at @s run particle annoyingvillagers:blue_spark ~ ~1 ~ 0 0 0 0.1 500");
                             }
 
                             Level level;

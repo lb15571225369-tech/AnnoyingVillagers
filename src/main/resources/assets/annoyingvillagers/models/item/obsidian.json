@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "annoyingvillagers:blocks/obsidian",
+    "up": "annoyingvillagers:blocks/obsidian",
+    "north": "annoyingvillagers:blocks/obsidian",
+    "east": "annoyingvillagers:blocks/obsidian",
+    "south": "annoyingvillagers:blocks/obsidian",
+    "west": "annoyingvillagers:blocks/obsidian",
+    "particle": "annoyingvillagers:blocks/obsidian"
+  }
+}

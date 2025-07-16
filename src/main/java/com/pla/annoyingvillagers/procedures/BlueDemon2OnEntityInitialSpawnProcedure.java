@@ -11,7 +11,7 @@ public class BlueDemon2OnEntityInitialSpawnProcedure {
     public static void execute(Entity entity) {
         if (entity != null) {
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "item replace entity @s weapon.mainhand with annoyingvillagers:dan_shou_zhan_shen_zhi_ren");
+                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "item replace entity @s weapon.mainhand with annoyingvillagers:legendary_sword_mob");
             }
 
             ItemStack itemstack;

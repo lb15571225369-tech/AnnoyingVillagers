@@ -70,7 +70,7 @@ public class FastbowProcedure {
                 Player player = (Player)entity;
 
                 if (player.getInventory().contains(new ItemStack(Items.ARROW))) {
-                    Enchantment enchantment = (Enchantment)AnnoyingVillagersModEnchantments.FASTSHOT.get();
+                    Enchantment enchantment = (Enchantment)AnnoyingVillagersModEnchantments.FAST_SHOT.get();
                     ItemStack itemstack1;
 
                     if (entity instanceof LivingEntity) {
@@ -85,7 +85,7 @@ public class FastbowProcedure {
                         Level level = entity.level;
 
                         if (!level.isClientSide()) {
-                            Enchantment enchantment1 = (Enchantment)AnnoyingVillagersModEnchantments.FASTSHOT.get();
+                            Enchantment enchantment1 = (Enchantment)AnnoyingVillagersModEnchantments.FAST_SHOT.get();
                             LivingEntity livingentity2;
                             ItemStack itemstack2;
 
@@ -103,7 +103,7 @@ public class FastbowProcedure {
                             double d3 = entity.getLookAngle().x;
                             double d4 = entity.getLookAngle().y;
                             double d5 = entity.getLookAngle().z;
-                            Enchantment enchantment2 = (Enchantment)AnnoyingVillagersModEnchantments.FASTSHOT.get();
+                            Enchantment enchantment2 = (Enchantment)AnnoyingVillagersModEnchantments.FAST_SHOT.get();
                             ItemStack itemstack3;
 
                             if (entity instanceof LivingEntity) {
@@ -146,7 +146,7 @@ public class FastbowProcedure {
                         }
 
                         ItemStack itemstack5 = itemstack;
-                        Enchantment enchantment3 = (Enchantment)AnnoyingVillagersModEnchantments.FASTSHOT.get();
+                        Enchantment enchantment3 = (Enchantment)AnnoyingVillagersModEnchantments.FAST_SHOT.get();
                         ItemStack itemstack6;
 
                         if (entity instanceof LivingEntity) {

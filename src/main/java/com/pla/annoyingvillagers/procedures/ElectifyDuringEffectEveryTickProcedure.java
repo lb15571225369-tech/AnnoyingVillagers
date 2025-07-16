@@ -19,7 +19,7 @@ public class ElectifyDuringEffectEveryTickProcedure {
         if (entity != null) {
             if (Math.random() <= 0.1D) {
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute at @s run particle annoyingvillagers:dianhu ^ ^ ^ 0.3 1.2 0.3 0 1");
+                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute at @s run particle annoyingvillagers:electric_spark ^ ^ ^ 0.3 1.2 0.3 0 1");
                 }
 
                 if (Math.random() <= 0.8D && levelaccessor instanceof Level) {

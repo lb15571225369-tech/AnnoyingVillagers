@@ -119,28 +119,28 @@ public class VillagersAssistanceProcedure {
 
                                         if (Math.random() <= 0.6) {
                                             broadcast("Villager Scout", "What the matter?");
-                                            summon(entity, "cun_min_zhen_cha_bing", 0, 5, 10);
-                                            summon(entity, "cun_min_zhen_cha_bing", 10, 5, -5);
-                                            summon(entity, "lan_cun_qi", -10, 5, 20);
+                                            summon(entity, "villager_scout", 0, 5, 10);
+                                            summon(entity, "villager_scout", 10, 5, -5);
+                                            summon(entity, "blue_villager_general", -10, 5, 20);
                                         } else if (Math.random() <= 0.1) {
                                             broadcast("Villager Blue General", "What the matter?");
-                                            summon(entity, "lan_cun_qi", 10, 5, -20);
-                                            summon(entity, "lan_cun_qi", -5, 5, 20);
-                                            summon(entity, "cun_min_zhen_cha_bing", 0, 5, 10);
+                                            summon(entity, "blue_villager_general", 10, 5, -20);
+                                            summon(entity, "blue_villager_general", -5, 5, 20);
+                                            summon(entity, "villager_scout", 0, 5, 10);
                                         } else if (Math.random() <= 0.1) {
                                             broadcast("Villager Purple General", "What the matter?");
-                                            summon(entity, "zi_cun_qi", -5, 5, 20);
-                                            summon(entity, "zi_cun_qi", 10, 5, -20);
+                                            summon(entity, "purple_villager_general", -5, 5, 20);
+                                            summon(entity, "purple_villager_general", 10, 5, -20);
                                         } else if (Math.random() <= 0.1) {
                                             broadcast("Villager Red General", "What the matter?");
-                                            summon(entity, "hong_cun_qi", 10, 5, 20);
-                                            summon(entity, "hong_cun_qi", 5, 5, -20);
-                                            summon(entity, "cun_min_zhen_cha_bing", 0, 5, -10);
+                                            summon(entity, "red_villager_general", 10, 5, 20);
+                                            summon(entity, "red_villager_general", 5, 5, -20);
+                                            summon(entity, "villager_scout", 0, 5, -10);
                                         } else {
                                             broadcast("Villager Green General", "What the matter?");
-                                            summon(entity, "cun_min_zhen_cha_bing", 0, 5, -10);
-                                            summon(entity, "lu_cun_qi", 10, 5, 20);
-                                            summon(entity, "lu_cun_qi", -5, 5, 20);
+                                            summon(entity, "villager_scout", 0, 5, -10);
+                                            summon(entity, "green_villager_general", 10, 5, 20);
+                                            summon(entity, "green_villager_general", -5, 5, 20);
                                         }
                                     }
                                 };

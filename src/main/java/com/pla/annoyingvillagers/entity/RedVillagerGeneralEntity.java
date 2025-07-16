@@ -71,8 +71,8 @@ public class RedVillagerGeneralEntity extends PathfinderMob {
         this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.ENDER_PEARL));
         this.setItemSlot(EquipmentSlot.HEAD, new ItemStack((ItemLike) AnnoyingVillagersModItems.RED_VILLAGER_GENERAL_HELMET_WEARING.get()));
         this.setItemSlot(EquipmentSlot.CHEST, new ItemStack((ItemLike) AnnoyingVillagersModItems.RED_VILLAGER_GENERAL_CHESTPLATE.get()));
-        this.setItemSlot(EquipmentSlot.LEGS, new ItemStack((ItemLike) AnnoyingVillagersModItems.RED_VILLAGER_GENERAL_LEGGINGS.get()));
-        this.setItemSlot(EquipmentSlot.FEET, new ItemStack((ItemLike) AnnoyingVillagersModItems.RED_VILLAGER_GENERAL_BOOTS.get()));
+        this.setItemSlot(EquipmentSlot.LEGS, new ItemStack((ItemLike) AnnoyingVillagersModItems.VILLAGER_GENERAL_LEGGINGS.get()));
+        this.setItemSlot(EquipmentSlot.FEET, new ItemStack((ItemLike) AnnoyingVillagersModItems.VILLAGER_GENERAL_BOOTS.get()));
     }
 
     public Packet<?> getAddEntityPacket() {

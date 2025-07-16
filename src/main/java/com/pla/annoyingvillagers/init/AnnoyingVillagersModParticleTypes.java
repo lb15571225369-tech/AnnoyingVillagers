@@ -13,10 +13,10 @@ public class AnnoyingVillagersModParticleTypes {
     public static final RegistryObject<ParticleType<?>> RED_SPARK = AnnoyingVillagersModParticleTypes.REGISTRY.register("red_spark", () -> {
         return new SimpleParticleType(true);
     });
-    public static final RegistryObject<ParticleType<?>> ELECTRIC_SPARK = AnnoyingVillagersModParticleTypes.REGISTRY.register("dianhu", () -> {
+    public static final RegistryObject<ParticleType<?>> ELECTRIC_SPARK = AnnoyingVillagersModParticleTypes.REGISTRY.register("electric_spark", () -> {
         return new SimpleParticleType(false);
     });
-    public static final RegistryObject<ParticleType<?>> ELECTRIC_SPARK_2 = AnnoyingVillagersModParticleTypes.REGISTRY.register("dianhu_2", () -> {
+    public static final RegistryObject<ParticleType<?>> ELECTRIC_SPARK_2 = AnnoyingVillagersModParticleTypes.REGISTRY.register("electric_spark_2", () -> {
         return new SimpleParticleType(false);
     });
     public static final RegistryObject<ParticleType<?>> SPARK = AnnoyingVillagersModParticleTypes.REGISTRY.register("spark", () -> {
@@ -25,16 +25,16 @@ public class AnnoyingVillagersModParticleTypes {
     public static final RegistryObject<ParticleType<?>> PE = AnnoyingVillagersModParticleTypes.REGISTRY.register("pe", () -> {
         return new SimpleParticleType(false);
     });
-    public static final RegistryObject<ParticleType<?>> GLOWINGEYES = AnnoyingVillagersModParticleTypes.REGISTRY.register("glowingeyes", () -> {
+    public static final RegistryObject<ParticleType<?>> GLOWINGEYES = AnnoyingVillagersModParticleTypes.REGISTRY.register("glowing_eyes", () -> {
         return new SimpleParticleType(true);
     });
     public static final RegistryObject<ParticleType<?>> LIGHT = AnnoyingVillagersModParticleTypes.REGISTRY.register("light", () -> {
         return new SimpleParticleType(true);
     });
-    public static final RegistryObject<ParticleType<?>> BLUESPARK = AnnoyingVillagersModParticleTypes.REGISTRY.register("bluespark", () -> {
+    public static final RegistryObject<ParticleType<?>> BLUESPARK = AnnoyingVillagersModParticleTypes.REGISTRY.register("blue_spark", () -> {
         return new SimpleParticleType(true);
     });
-    public static final RegistryObject<ParticleType<?>> GREENSPARK = AnnoyingVillagersModParticleTypes.REGISTRY.register("greenspark", () -> {
+    public static final RegistryObject<ParticleType<?>> GREENSPARK = AnnoyingVillagersModParticleTypes.REGISTRY.register("green_spark", () -> {
         return new SimpleParticleType(true);
     });
     public static final RegistryObject<ParticleType<?>> ENDER = AnnoyingVillagersModParticleTypes.REGISTRY.register("ender", () -> {

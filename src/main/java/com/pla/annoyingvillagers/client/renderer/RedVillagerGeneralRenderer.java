@@ -16,7 +16,7 @@ public class RedVillagerGeneralRenderer extends HumanoidMobRenderer<RedVillagerG
     }
 
     public ResourceLocation getTextureLocation(RedVillagerGeneralEntity hongcunqientity) {
-        return new ResourceLocation("annoyingvillagers:textures/entities/hong_cun_qi_.png");
+        return new ResourceLocation("annoyingvillagers:textures/entities/red_villager_general.png");
     }
 }
 

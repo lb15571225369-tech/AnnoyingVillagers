@@ -16,6 +16,6 @@ public class VillagerScoutRenderer extends HumanoidMobRenderer<VillagerScoutEnti
     }
 
     public ResourceLocation getTextureLocation(VillagerScoutEntity cunminzhenchabingentity) {
-        return new ResourceLocation("annoyingvillagers:textures/entities/cun_zhen_dui_chang_.png");
+        return new ResourceLocation("annoyingvillagers:textures/entities/villager_scout.png");
     }
 }

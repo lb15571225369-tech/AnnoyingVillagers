@@ -12,7 +12,7 @@ public class EnduranceMobEffect extends MobEffect {
     }
 
     public String getDescriptionId() {
-        return "effect.annoyingvillagers.naili";
+        return "effect.annoyingvillagers.endurance";
     }
 
     public void applyEffectTick(LivingEntity livingentity, int i) {

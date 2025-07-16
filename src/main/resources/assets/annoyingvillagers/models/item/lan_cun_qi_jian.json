@@ -1,7 +1,0 @@
-{
-  "parent": "annoyingvillagers:custom/lan_cun_qi_jian_",
-  "textures": {
-    "0": "annoyingvillagers:blocks/lan_cun_qi_jian_",
-    "particle": "annoyingvillagers:items/lan_cun_qi_jian_"
-  }
-}

@@ -1,7 +1,0 @@
-{
-  "parent": "annoyingvillagers:custom/cunqitoukui",
-  "textures": {
-    "0": "annoyingvillagers:blocks/hongcunqitoukui",
-    "particle": "annoyingvillagers:items/hongcunqitoukui"
-  }
-}

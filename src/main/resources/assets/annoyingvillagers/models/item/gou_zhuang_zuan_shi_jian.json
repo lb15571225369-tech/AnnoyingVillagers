@@ -1,7 +1,0 @@
-{
-  "parent": "annoyingvillagers:custom/gou_zhuang_zuan_shi_jian_",
-  "textures": {
-    "0": "annoyingvillagers:blocks/gou_zhuang_zuan_shi_jian_",
-    "particle": "annoyingvillagers:items/gou_zhuang_zuan_shi_jian_"
-  }
-}

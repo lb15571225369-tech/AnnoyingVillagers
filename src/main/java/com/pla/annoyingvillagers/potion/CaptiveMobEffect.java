@@ -16,7 +16,7 @@ public class CaptiveMobEffect extends MobEffect {
     }
 
     public String getDescriptionId() {
-        return "effect.annoyingvillagers.fulu";
+        return "effect.annoyingvillagers.captive";
     }
 
     public boolean isDurationEffectTick(int i, int j) {

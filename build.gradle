@@ -101,6 +101,7 @@ dependencies {
     implementation fg.deobf("curse.maven:player-mobs-430513:4574739")
     implementation fg.deobf("curse.maven:modern-ui-352491:5229350")
     implementation fg.deobf("curse.maven:jade-324717:5079263")
+    implementation fg.deobf("curse.maven:jei-238222:4593548")
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 

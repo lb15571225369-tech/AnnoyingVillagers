@@ -70,7 +70,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
 
             itemstack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 4);
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect give @s annoyingvillagers:fulu 20000 0 true");
+                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect give @s annoyingvillagers:captive 20000 0 true");
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {
@@ -541,7 +541,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                                         Entity entity2 = entity;
 
                                                                                         if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                                                            entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect clear @e annoyingvillagers:gedang");
+                                                                                            entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect clear @e annoyingvillagers:block");
                                                                                         }
 
                                                                                         levelaccessor9 = levelaccessor;

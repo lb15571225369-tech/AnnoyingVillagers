@@ -30,7 +30,7 @@ public class IdleHandlerProcedure {
     public static void onLivingTick(LivingEvent.LivingUpdateEvent event) {
         if (!(event.getEntity() instanceof Mob mob)) return;
         if (mob.level.isClientSide()) return;
-        if (event.getEntity() != null && !mob.level.isClientSide() && (ForgeRegistries.ENTITIES.getKey(event.getEntity().getType()).toString().equals("minecraft:zombie") || ForgeRegistries.ENTITIES.getKey(event.getEntity().getType()).toString().equals("minecraft:skeleton") || ForgeRegistries.ENTITIES.getKey(event.getEntity().getType()).toString().equals("annoyingvillagers:cun_min_zhen_cha_bing"))) {
+        if (event.getEntity() != null && !mob.level.isClientSide() && (ForgeRegistries.ENTITIES.getKey(event.getEntity().getType()).toString().equals("minecraft:zombie") || ForgeRegistries.ENTITIES.getKey(event.getEntity().getType()).toString().equals("minecraft:skeleton") || ForgeRegistries.ENTITIES.getKey(event.getEntity().getType()).toString().equals("annoyingvillagers:villager_scout"))) {
             performIdleAction(mob, IdleAction.BURN_ITEM);
         }
         if (event.getEntity() != null && ForgeRegistries.ENTITIES.getKey(event.getEntity().getType()).toString().equals("player_mobs:player_mob")) {

@@ -625,43 +625,13 @@ public class PlayerNpcDeadProcedure {
                 }
 
                 if (f <= 7.0F) {
-                    boolean flag;
-                    label56: {
-                        if (entity1 instanceof ServerPlayer) {
-                            ServerPlayer serverplayer = (ServerPlayer)entity1;
+                    if (levelaccessor instanceof Level) {
+                        Level level = (Level)levelaccessor;
 
-                            if (serverplayer.level instanceof ServerLevel && serverplayer.getAdvancements().getOrStartProgress(serverplayer.server.getAdvancements().getAdvancement(new ResourceLocation(AnnoyingVillagers.MODID + ":hard_kill"))).isDone()) {
-                                flag = true;
-                                break label56;
-                            }
-                        }
-
-                        flag = false;
-                    }
-
-                    if (!flag) {
-                        if (entity1 instanceof ServerPlayer) {
-                            ServerPlayer serverplayer1 = (ServerPlayer)entity1;
-                            Advancement advancement = serverplayer1.server.getAdvancements().getAdvancement(new ResourceLocation(AnnoyingVillagers.MODID + ":hard_kill"));
-                            AdvancementProgress advancementprogress = serverplayer1.getAdvancements().getOrStartProgress(advancement);
-
-                            if (!advancementprogress.isDone()) {
-                                Iterator iterator = advancementprogress.getRemainingCriteria().iterator();
-
-                                while(iterator.hasNext()) {
-                                    serverplayer1.getAdvancements().award(advancement, (String)iterator.next());
-                                }
-                            }
-                        }
-
-                        if (levelaccessor instanceof Level) {
-                            Level level = (Level)levelaccessor;
-
-                            if (!level.isClientSide()) {
-                                level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":dash_star")), SoundSource.RECORDS, 2.0F, 1.0F);
-                            } else {
-                                level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":dash_star")), SoundSource.RECORDS, 2.0F, 1.0F, false);
-                            }
+                        if (!level.isClientSide()) {
+                            level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":dash_star")), SoundSource.RECORDS, 2.0F, 1.0F);
+                        } else {
+                            level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":dash_star")), SoundSource.RECORDS, 2.0F, 1.0F, false);
                         }
                     }
                 }

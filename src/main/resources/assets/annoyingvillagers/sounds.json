@@ -42,7 +42,7 @@
   "tridentfs_skill": {
     "sounds": [
       {
-        "name": "annoyingvillagers:b_dsanchajikuanghuanjie",
+        "name": "annoyingvillagers:tridentfs_skill",
         "stream": false
       }
     ]
@@ -50,23 +50,23 @@
   "electify": {
     "sounds": [
       {
-        "name": "annoyingvillagers:dianhu_10-3",
+        "name": "annoyingvillagers:electify_1",
         "stream": false
       },
       {
-        "name": "annoyingvillagers:dianhu_10-7",
+        "name": "annoyingvillagers:electify_2",
         "stream": false
       },
       {
-        "name": "annoyingvillagers:dianhu_10-8",
+        "name": "annoyingvillagers:electify_3",
         "stream": false
       },
       {
-        "name": "annoyingvillagers:dianhu_10-18",
+        "name": "annoyingvillagers:electify_4",
         "stream": false
       },
       {
-        "name": "annoyingvillagers:dianhu_10-19",
+        "name": "annoyingvillagers:electify_5",
         "stream": false
       }
     ]
@@ -74,7 +74,7 @@
   "bluedemonsayyc": {
     "sounds": [
       {
-        "name": "annoyingvillagers:b_dsaynideyucehenhao",
+        "name": "annoyingvillagers:bluedemonsayyc",
         "stream": false
       }
     ]
@@ -82,7 +82,7 @@
   "bluedemon_say_player_interesting": {
     "sounds": [
       {
-        "name": "annoyingvillagers:b_dduomeyouqu",
+        "name": "annoyingvillagers:bluedemon_say_player_interesting",
         "stream": false
       }
     ]
@@ -90,7 +90,7 @@
   "bluedemon_say_you_no_know": {
     "sounds": [
       {
-        "name": "annoyingvillagers:b_dsayamhuisbai",
+        "name": "annoyingvillagers:bluedemon_say_you_no_know",
         "stream": false
       }
     ]
@@ -98,7 +98,7 @@
   "bluedemonsayplayer": {
     "sounds": [
       {
-        "name": "annoyingvillagers:b_dsaypsit",
+        "name": "annoyingvillagers:bluedemonsayplayer",
         "stream": false
       }
     ]
@@ -106,15 +106,7 @@
   "bluedemonsaydontbe": {
     "sounds": [
       {
-        "name": "annoyingvillagers:buyaozida",
-        "stream": false
-      }
-    ]
-  },
-  "smoke_used": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:smoke_used",
+        "name": "annoyingvillagers:bluedemonsaydontbe",
         "stream": false
       }
     ]
@@ -138,51 +130,15 @@
   "metal_hit": {
     "sounds": [
       {
-        "name": "annoyingvillagers:zi_dan_jin_shu_",
+        "name": "annoyingvillagers:metal_hit_1",
         "stream": false
       },
       {
-        "name": "annoyingvillagers:zi_dan_jin_shu_2",
+        "name": "annoyingvillagers:metal_hit_2",
         "stream": false
       },
       {
-        "name": "annoyingvillagers:zi_dan_jin_shu_3",
-        "stream": false
-      }
-    ]
-  },
-  "gun_shot": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:shot",
-        "stream": false
-      },
-      {
-        "name": "annoyingvillagers:shot1",
-        "stream": false
-      },
-      {
-        "name": "annoyingvillagers:shot2",
-        "stream": false
-      },
-      {
-        "name": "annoyingvillagers:shot3",
-        "stream": false
-      },
-      {
-        "name": "annoyingvillagers:shot4",
-        "stream": false
-      }
-    ]
-  },
-  "head_shot": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:head_shot",
-        "stream": false
-      },
-      {
-        "name": "annoyingvillagers:head_shot2",
+        "name": "annoyingvillagers:metal_hit_3",
         "stream": false
       }
     ]
@@ -219,23 +175,23 @@
       }
     ]
   },
-  "shiqu": {
+  "lost": {
     "sounds": [
       {
-        "name": "annoyingvillagers:shiqu",
+        "name": "annoyingvillagers:lost",
         "stream": false
       }
     ]
   },
-  "wusheng": {
+  "silent": {
     "sounds": [
       {
-        "name": "annoyingvillagers:wusheng",
+        "name": "annoyingvillagers:silent",
         "stream": false
       }
     ]
   },
-  "fangzhiheiyaoshi": {
+  "obsidian_place": {
     "sounds": [
       {
         "name": "annoyingvillagers:block_place",
@@ -251,10 +207,10 @@
       }
     ]
   },
-  "heiyaoshi_hit": {
+  "obsidian_hit": {
     "sounds": [
       {
-        "name": "annoyingvillagers:heiyaoshi_hit",
+        "name": "annoyingvillagers:obsidian_hit",
         "stream": false
       }
     ]
@@ -319,10 +275,10 @@
       }
     ]
   },
-  "humchuanqi": {
+  "soul_legend": {
     "sounds": [
       {
-        "name": "annoyingvillagers:himchuanqi",
+        "name": "annoyingvillagers:soul_legend",
         "stream": false
       }
     ]
@@ -343,10 +299,10 @@
       }
     ]
   },
-  "zhanshenzhirenjuexing": {
+  "legendary_sword_awakening": {
     "sounds": [
       {
-        "name": "annoyingvillagers:zhanshenzhurenjuexing",
+        "name": "annoyingvillagers:legendary_sword_awakening",
         "stream": false
       }
     ]

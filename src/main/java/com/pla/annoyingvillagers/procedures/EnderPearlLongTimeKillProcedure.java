@@ -40,7 +40,7 @@ public class EnderPearlLongTimeKillProcedure {
             }
 
             if (d0 != 0.0D) {
-                if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("annoyingvillagers:projectile_fumomoyingzhenzhu")) {
+                if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("annoyingvillagers:projectile_enchanted_ender_pearl")) {
                     new DelayedTask(200) {
                         @Override
                         public void run() {

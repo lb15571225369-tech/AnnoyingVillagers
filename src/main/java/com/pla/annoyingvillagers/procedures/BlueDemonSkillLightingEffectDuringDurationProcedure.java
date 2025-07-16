@@ -22,7 +22,7 @@ public class BlueDemonSkillLightingEffectDuringDurationProcedure {
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect clear @s annoyingvillagers:gedang");
+                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect clear @s annoyingvillagers:block");
             }
 
         }

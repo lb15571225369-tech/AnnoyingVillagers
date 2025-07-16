@@ -1,0 +1,7 @@
+{
+  "parent": "annoyingvillagers:custom/villager_general_helmet_wearing",
+  "textures": {
+    "0": "annoyingvillagers:blocks/blue_villager_general_helmet_wearing",
+    "particle": "annoyingvillagers:items/blue_villager_general_helmet_wearing"
+  }
+}

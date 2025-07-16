@@ -202,12 +202,12 @@ public class AnimationSheduler {
                 mob.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
             }
             String command = switch (idleAnimation) {
-                case PUSH_UP -> "indestructible @s play \"annoyingvillagers:biped/emoji/emoji_14\" 0 1";
-                case LAY -> "indestructible @s play \"annoyingvillagers:biped/emoji/emoji_6\" 0 1";
+                case PUSH_UP -> "indestructible @s play \"annoyingvillagers:biped/idle/push_up\" 0 1";
+                case LAY -> "indestructible @s play \"annoyingvillagers:biped/idle/lay\" 0 1";
                 case SLEEP -> "indestructible @s play \"annoyingvillagers:biped/other/death_idle\" 0 1";
-                case SIT -> "indestructible @s play \"annoyingvillagers:biped/emoji/emote_29\" 0 1";
+                case SIT -> "indestructible @s play \"annoyingvillagers:biped/idle/sit\" 0 1";
                 case FUN_SIT -> "indestructible @s play \"annoyingvillagers:biped/other/funny_idle\" 0 1";
-                case SLIGHT -> "indestructible @s play \"annoyingvillagers:biped/emoji/emoji_15\" 0 1";
+                case SLIGHT -> "indestructible @s play \"annoyingvillagers:biped/idle/slight\" 0 1";
             };
 
             if (!mob.level.isClientSide() && mob.getServer() != null) {

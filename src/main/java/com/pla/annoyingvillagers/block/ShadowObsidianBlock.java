@@ -33,7 +33,7 @@ public class ShadowObsidianBlock extends Block {
 
     public ShadowObsidianBlock() {
         super(Properties.of(Material.STONE).sound(new ForgeSoundType(1.0F, 1.0F, () -> {
-                return new SoundEvent(new ResourceLocation("annoyingvillagers:shiqu"));
+                return new SoundEvent(new ResourceLocation("annoyingvillagers:lost"));
         }, () -> {
             return new SoundEvent(new ResourceLocation("block.stone.step"));
         }, () -> {
@@ -41,7 +41,7 @@ public class ShadowObsidianBlock extends Block {
         }, () -> {
             return new SoundEvent(new ResourceLocation("block.stone.hit"));
         }, () -> {
-            return new SoundEvent(new ResourceLocation("annoyingvillagers:wusheng"));
+            return new SoundEvent(new ResourceLocation("annoyingvillagers:silent"));
         })).strength(30.0F, 40.0F).lightLevel((blockstate) -> {
             return 4;
         }).noOcclusion().hasPostProcess((blockstate, blockgetter, blockpos) -> {

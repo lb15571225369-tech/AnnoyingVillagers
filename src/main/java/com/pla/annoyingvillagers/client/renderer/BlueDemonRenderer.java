@@ -17,6 +17,6 @@ public class BlueDemonRenderer extends HumanoidMobRenderer<BlueDemonEntity, Huma
     }
 
     public ResourceLocation getTextureLocation(BlueDemonEntity bluedemonentity) {
-        return new ResourceLocation(AnnoyingVillagers.MODID + ":textures/entities/blue_dmon.png");
+        return new ResourceLocation(AnnoyingVillagers.MODID + ":textures/entities/blue_demon.png");
     }
 }

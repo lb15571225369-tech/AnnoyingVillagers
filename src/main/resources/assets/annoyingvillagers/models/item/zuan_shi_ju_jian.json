@@ -1,7 +1,0 @@
-{
-  "parent": "annoyingvillagers:custom/zuan_shi_ju_jian_",
-  "textures": {
-    "1": "annoyingvillagers:blocks/zuan_shi_ju_jian_",
-    "particle": "annoyingvillagers:items/zuan_shi_ju_jian_"
-  }
-}

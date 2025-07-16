@@ -57,15 +57,15 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                         if (levelaccessor1 instanceof Level) {
                             level = (Level) levelaccessor1;
                             if (!level.isClientSide()) {
-                                level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:fangzhiheiyaoshi")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:obsidian_place")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                             } else {
-                                level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:fangzhiheiyaoshi")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:obsidian_place")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                             }
                         }
 
                         entity1 = entity;
                         if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                            entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:putongheiyaoshi");
+                            entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:obsidian");
                         }
 
                         new DelayedTask(1) {
@@ -74,7 +74,7 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                                 Entity entity2 = entity;
 
                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:putongheiyaoshi");
+                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:obsidian");
                                 }
                             }
                         };
@@ -85,7 +85,7 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                                 Entity entity3 = entity;
 
                                 if (!entity3.level.isClientSide() && entity3.getServer() != null) {
-                                    entity3.getServer().getCommands().performCommand(entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:putongheiyaoshi");
+                                    entity3.getServer().getCommands().performCommand(entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:obsidian");
                                 }
                             }
                         };
@@ -96,7 +96,7 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                                 Entity entity4 = entity;
 
                                 if (!entity4.level.isClientSide() && entity4.getServer() != null) {
-                                    entity4.getServer().getCommands().performCommand(entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:putongheiyaoshi");
+                                    entity4.getServer().getCommands().performCommand(entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:obsidian");
                                 }
                             }
                         };
@@ -107,7 +107,7 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                                 Entity entity5 = entity;
 
                                 if (!entity5.level.isClientSide() && entity5.getServer() != null) {
-                                    entity5.getServer().getCommands().performCommand(entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:putongheiyaoshi");
+                                    entity5.getServer().getCommands().performCommand(entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:obsidian");
                                 }
                             }
                         };
@@ -118,7 +118,7 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                                 Entity entity6 = entity;
 
                                 if (!entity6.level.isClientSide() && entity6.getServer() != null) {
-                                    entity6.getServer().getCommands().performCommand(entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:putongheiyaoshi");
+                                    entity6.getServer().getCommands().performCommand(entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:obsidian");
                                 }
 
                                 if (Math.random() < 0.5D) {
@@ -128,7 +128,7 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                                             Entity entity7 = entity;
 
                                             if (!entity7.level.isClientSide() && entity7.getServer() != null) {
-                                                entity7.getServer().getCommands().performCommand(entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^8 annoyingvillagers:putongheiyaoshi");
+                                                entity7.getServer().getCommands().performCommand(entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^8 annoyingvillagers:obsidian");
                                             }
                                         }
                                     };
@@ -139,7 +139,7 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                                             Entity entity8 = entity;
 
                                             if (!entity8.level.isClientSide() && entity8.getServer() != null) {
-                                                entity8.getServer().getCommands().performCommand(entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^9 annoyingvillagers:putongheiyaoshi");
+                                                entity8.getServer().getCommands().performCommand(entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^9 annoyingvillagers:obsidian");
                                             }
                                         }
                                     };
@@ -150,7 +150,7 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                                             Entity entity9 = entity;
 
                                             if (!entity9.level.isClientSide() && entity9.getServer() != null) {
-                                                entity9.getServer().getCommands().performCommand(entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^10 annoyingvillagers:putongheiyaoshi");
+                                                entity9.getServer().getCommands().performCommand(entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^10 annoyingvillagers:obsidian");
                                             }
 
                                             if (Math.random() < 0.5D) {
@@ -160,7 +160,7 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                                                         Entity entity10 = entity;
 
                                                         if (!entity10.level.isClientSide() && entity10.getServer() != null) {
-                                                            entity10.getServer().getCommands().performCommand(entity10.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^11 annoyingvillagers:putongheiyaoshi");
+                                                            entity10.getServer().getCommands().performCommand(entity10.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^11 annoyingvillagers:obsidian");
                                                         }
                                                     }
                                                 };
@@ -171,7 +171,7 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                                                         Entity entity11 = entity;
 
                                                         if (!entity11.level.isClientSide() && entity11.getServer() != null) {
-                                                            entity11.getServer().getCommands().performCommand(entity11.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^12 annoyingvillagers:putongheiyaoshi");
+                                                            entity11.getServer().getCommands().performCommand(entity11.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^12 annoyingvillagers:obsidian");
                                                         }
                                                     }
                                                 };
@@ -182,7 +182,7 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                                                         Entity entity12 = entity;
 
                                                         if (!entity12.level.isClientSide() && entity12.getServer() != null) {
-                                                            entity12.getServer().getCommands().performCommand(entity12.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^13 annoyingvillagers:putongheiyaoshi");
+                                                            entity12.getServer().getCommands().performCommand(entity12.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^13 annoyingvillagers:obsidian");
                                                         }
                                                     }
                                                 };
@@ -193,7 +193,7 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                                                         Entity entity13 = entity;
 
                                                         if (!entity13.level.isClientSide() && entity13.getServer() != null) {
-                                                            entity13.getServer().getCommands().performCommand(entity13.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^15 annoyingvillagers:putongheiyaoshi");
+                                                            entity13.getServer().getCommands().performCommand(entity13.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^15 annoyingvillagers:obsidian");
                                                         }
                                                     }
                                                 };
@@ -230,15 +230,15 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                             if (levelaccessor1 instanceof Level) {
                                 level = (Level) levelaccessor1;
                                 if (!level.isClientSide()) {
-                                    level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:fangzhiheiyaoshi")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                    level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:obsidian_place")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                 } else {
-                                    level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:fangzhiheiyaoshi")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                    level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:obsidian_place")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                 }
                             }
 
                             entity1 = entity;
                             if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:putongheiyaoshi");
+                                entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:obsidian");
                             }
 
                             new DelayedTask(1) {
@@ -247,7 +247,7 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                                     Entity entity2 = entity;
 
                                     if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                        entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:putongheiyaoshi");
+                                        entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:obsidian");
                                     }
                                 }
                             };
@@ -258,7 +258,7 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                                     Entity entity3 = entity;
 
                                     if (!entity3.level.isClientSide() && entity3.getServer() != null) {
-                                        entity3.getServer().getCommands().performCommand(entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:putongheiyaoshi");
+                                        entity3.getServer().getCommands().performCommand(entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:obsidian");
                                     }
                                 }
                             };
@@ -269,7 +269,7 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                                     Entity entity4 = entity;
 
                                     if (!entity4.level.isClientSide() && entity4.getServer() != null) {
-                                        entity4.getServer().getCommands().performCommand(entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:putongheiyaoshi");
+                                        entity4.getServer().getCommands().performCommand(entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:obsidian");
                                     }
                                 }
                             };
@@ -280,7 +280,7 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                                     Entity entity5 = entity;
 
                                     if (!entity5.level.isClientSide() && entity5.getServer() != null) {
-                                        entity5.getServer().getCommands().performCommand(entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:putongheiyaoshi");
+                                        entity5.getServer().getCommands().performCommand(entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:obsidian");
                                     }
                                 }
                             };
@@ -291,7 +291,7 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                                     Entity entity6 = entity;
 
                                     if (!entity6.level.isClientSide() && entity6.getServer() != null) {
-                                        entity6.getServer().getCommands().performCommand(entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:putongheiyaoshi");
+                                        entity6.getServer().getCommands().performCommand(entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:obsidian");
                                     }
                                     if (Math.random() < 0.5D) {
                                         new DelayedTask(1) {
@@ -300,7 +300,7 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                                                 Entity entity7 = entity;
 
                                                 if (!entity7.level.isClientSide() && entity7.getServer() != null) {
-                                                    entity7.getServer().getCommands().performCommand(entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^8 annoyingvillagers:putongheiyaoshi");
+                                                    entity7.getServer().getCommands().performCommand(entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^8 annoyingvillagers:obsidian");
                                                 }
                                             }
                                         };
@@ -311,7 +311,7 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                                                 Entity entity8 = entity;
 
                                                 if (!entity8.level.isClientSide() && entity8.getServer() != null) {
-                                                    entity8.getServer().getCommands().performCommand(entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^9 annoyingvillagers:putongheiyaoshi");
+                                                    entity8.getServer().getCommands().performCommand(entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^9 annoyingvillagers:obsidian");
                                                 }
                                             }
                                         };
@@ -322,7 +322,7 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                                                 Entity entity9 = entity;
 
                                                 if (!entity9.level.isClientSide() && entity9.getServer() != null) {
-                                                    entity9.getServer().getCommands().performCommand(entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^10 annoyingvillagers:putongheiyaoshi");
+                                                    entity9.getServer().getCommands().performCommand(entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^10 annoyingvillagers:obsidian");
                                                 }
                                                 if (Math.random() < 0.5D) {
                                                     new DelayedTask(1) {
@@ -331,7 +331,7 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                                                             Entity entity10 = entity;
 
                                                             if (!entity10.level.isClientSide() && entity10.getServer() != null) {
-                                                                entity10.getServer().getCommands().performCommand(entity10.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^11 annoyingvillagers:putongheiyaoshi");
+                                                                entity10.getServer().getCommands().performCommand(entity10.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^11 annoyingvillagers:obsidian");
                                                             }
                                                         }
                                                     };
@@ -342,7 +342,7 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                                                             Entity entity11 = entity;
 
                                                             if (!entity11.level.isClientSide() && entity11.getServer() != null) {
-                                                                entity11.getServer().getCommands().performCommand(entity11.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^12 annoyingvillagers:putongheiyaoshi");
+                                                                entity11.getServer().getCommands().performCommand(entity11.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^12 annoyingvillagers:obsidian");
                                                             }
                                                         }
                                                     };
@@ -353,7 +353,7 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                                                             Entity entity12 = entity;
 
                                                             if (!entity12.level.isClientSide() && entity12.getServer() != null) {
-                                                                entity12.getServer().getCommands().performCommand(entity12.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^13 annoyingvillagers:putongheiyaoshi");
+                                                                entity12.getServer().getCommands().performCommand(entity12.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^13 annoyingvillagers:obsidian");
                                                             }
                                                         }
                                                     };
@@ -364,7 +364,7 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                                                             Entity entity13 = entity;
 
                                                             if (!entity13.level.isClientSide() && entity13.getServer() != null) {
-                                                                entity13.getServer().getCommands().performCommand(entity13.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^15 annoyingvillagers:putongheiyaoshi");
+                                                                entity13.getServer().getCommands().performCommand(entity13.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute as @s at @s anchored eyes run setblock ^ ^ ^15 annoyingvillagers:obsidian");
                                                             }
                                                         }
                                                     };

@@ -16,7 +16,7 @@ public class BlockMobEffect extends MobEffect {
     }
 
     public String getDescriptionId() {
-        return "effect.annoyingvillagers.gedang";
+        return "effect.annoyingvillagers.block";
     }
 
     public boolean isDurationEffectTick(int i, int j) {
