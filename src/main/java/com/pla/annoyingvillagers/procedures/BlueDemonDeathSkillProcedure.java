@@ -48,7 +48,7 @@ public class BlueDemonDeathSkillProcedure {
             public void run() {
                 if (isSpectator(sourceEntity) || isCreative(sourceEntity)) {
                     if (entity instanceof Player player && !player.level.isClientSide()) {
-                        player.displayClientMessage(new TextComponent("无目标"), true);
+                        player.displayClientMessage(new TextComponent("No target"), true);
                     }
                     return;
                 }

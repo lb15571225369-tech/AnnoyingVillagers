@@ -25,7 +25,7 @@ public class EnchantBedRightClickOnBlockProcedure {
                     if (entity instanceof Player) {
                         player = (Player) entity;
                         if (!player.level.isClientSide()) {
-                            player.displayClientMessage(new TextComponent("\u4f60\u5df2\u7ecf\u4f7f\u7528\u4e86\u9644\u9b54\u5e8a\uff01"), true);
+                            player.displayClientMessage(new TextComponent("You have already used the Enchant Bed!"), true);
                             return;
                         }
                     }
@@ -50,7 +50,7 @@ public class EnchantBedRightClickOnBlockProcedure {
                     if (entity instanceof Player) {
                         player = (Player) entity;
                         if (!player.level.isClientSide()) {
-                            player.displayClientMessage(new TextComponent("\u9644\u9b54\u5e8a\u5df2\u5931\u6548\uff0c\u4f60\u5c06\u65e0\u6cd5\u518d\u6b21\u4f7f\u7528"), true);
+                            player.displayClientMessage(new TextComponent("The Enchant Bed has expired, you can no longer use it."), true);
                         }
                     }
                 } else {
@@ -65,14 +65,14 @@ public class EnchantBedRightClickOnBlockProcedure {
                     if (entity instanceof Player) {
                         player = (Player) entity;
                         if (!player.level.isClientSide()) {
-                            player.displayClientMessage(new TextComponent("\u4f60\u4f7f\u7528\u4e86\u4e00\u6b21\u9644\u9b54\u5e8a\uff0c\u7ecf\u9a8c\u7b49\u7ea7-1"), true);
+                            player.displayClientMessage(new TextComponent("You used the Enchant Bed once. Experience level -1."), true);
                         }
                     }
 
                     if (entity instanceof Player) {
                         player = (Player) entity;
                         if (!player.level.isClientSide()) {
-                            player.displayClientMessage(new TextComponent("\u5df2\u91cd\u7f6e\u91cd\u751f\u70b9"), false);
+                            player.displayClientMessage(new TextComponent("Respawn point has been reset."), false);
                         }
                     }
 
@@ -92,7 +92,7 @@ public class EnchantBedRightClickOnBlockProcedure {
             } else if (entity instanceof Player) {
                 player = (Player) entity;
                 if (!player.level.isClientSide()) {
-                    player.displayClientMessage(new TextComponent("\u4f60\u7684\u7ecf\u9a8c\u7b49\u7ea7\u4e0d\u591f\uff0c\u5fc5\u987b\u5927\u4e8e2\u7ea7\u624d\u80fd\u4f7f\u7528\uff01"), true);
+                    player.displayClientMessage(new TextComponent("Your experience level is too low. You must be above level 2 to use this!"), true);
                 }
             }
 

@@ -55,14 +55,14 @@ public class VillagerHeadRightOnUseProcedure {
                 if (entity instanceof Player) {
                     player1 = (Player) entity;
                     if (!player1.level.isClientSide()) {
-                        player1.displayClientMessage(new TextComponent("\u4f60\u5df2\u5e26\u4e0a\u6751\u6c11\u5934\u5957\uff0c\u73b0\u5728\u6751\u6c11\u58eb\u5175\u5c06\u4e0d\u4f1a\u653b\u51fb\u4f60"), false);
+                        player1.displayClientMessage(new TextComponent("You have put on the villager helmet. Villager soldiers will no longer attack you."), false);
                     }
                 }
 
                 if (entity instanceof Player) {
                     player1 = (Player) entity;
                     if (!player1.level.isClientSide()) {
-                        player1.displayClientMessage(new TextComponent("\u4f7f\u7528\u4e0b\u8e72\u952e+\u53f3\u952e\u5207\u6362\u4f2a\u88c5/\u653b\u51fb\u6a21\u5f0f"), false);
+                        player1.displayClientMessage(new TextComponent("Sneak + Right-Click to toggle Disguise/Attack Mode"), false);
                     }
                 }
             }

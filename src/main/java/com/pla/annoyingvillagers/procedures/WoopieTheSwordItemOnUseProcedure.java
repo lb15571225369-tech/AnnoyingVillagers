@@ -140,7 +140,7 @@ public class WoopieTheSwordItemOnUseProcedure {
                     Player player1 = (Player)entity;
 
                     if (!player1.level.isClientSide()) {
-                        player1.displayClientMessage(new TextComponent("\u80fd\u91cf\u4e0d\u8db3\uff01"), true);
+                        player1.displayClientMessage(new TextComponent("Not Enough Energy!"), true);
                     }
                 }
             }

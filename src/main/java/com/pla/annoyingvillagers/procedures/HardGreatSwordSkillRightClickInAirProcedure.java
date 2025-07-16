@@ -67,7 +67,7 @@ public class HardGreatSwordSkillRightClickInAirProcedure {
 
         } else if (entity instanceof Player player && !player.level.isClientSide()) {
             player.displayClientMessage(
-                    new TextComponent("能量不足，目前充能 " + currentPower + "/10"),
+                    new TextComponent("Not enough energy. Current charge: " + currentPower + "/10"),
                     true
             );
         }

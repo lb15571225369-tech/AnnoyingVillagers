@@ -32,7 +32,7 @@ public class VillagerHeadEveryTickInInventoryProcedure {
                     Player player = (Player) entity;
 
                     if (!player.level.isClientSide()) {
-                        player.displayClientMessage(new TextComponent("\u4f60\u5df2\u53d6\u4e0b\u5934\u5957\uff0c\u73b0\u5728\u6751\u6c11\u58eb\u5175\u5c06\u4f1a\u653b\u51fb\u4f60"), false);
+                        player.displayClientMessage(new TextComponent("You have removed your helmet. Villager soldiers will now attack you."), false);
                     }
                 }
             }

@@ -58,7 +58,7 @@ public class VillagerHeadSetProcedure {
                             if (entity instanceof Player) {
                                 player = (Player)entity;
                                 if (!player.level.isClientSide()) {
-                                    player.displayClientMessage(new TextComponent("\u5df2\u5207\u6362\u653b\u51fb\u6a21\u5f0f"), false);
+                                    player.displayClientMessage(new TextComponent("Switched to Attack Mode"), false);
                                 }
                             }
 
@@ -73,7 +73,7 @@ public class VillagerHeadSetProcedure {
                         } else if (entity instanceof Player) {
                             player = (Player)entity;
                             if (!player.level.isClientSide()) {
-                                player.displayClientMessage(new TextComponent("\u51b7\u5374\u4e2d"), true);
+                                player.displayClientMessage(new TextComponent("On Cooldown"), true);
                             }
                         }
                     } else if (entity.getPersistentData().getBoolean("villager_head")) {
@@ -85,7 +85,7 @@ public class VillagerHeadSetProcedure {
                             if (entity instanceof Player) {
                                 player = (Player)entity;
                                 if (!player.level.isClientSide()) {
-                                    player.displayClientMessage(new TextComponent("\u5df2\u5207\u6362\u4f2a\u88c5\u6a21\u5f0f"), false);
+                                    player.displayClientMessage(new TextComponent("Switched to Disguise Mode"), false);
                                 }
                             }
 
@@ -101,7 +101,7 @@ public class VillagerHeadSetProcedure {
                         } else if (entity instanceof Player) {
                             player = (Player)entity;
                             if (!player.level.isClientSide()) {
-                                player.displayClientMessage(new TextComponent("\u51b7\u5374\u4e2d"), true);
+                                player.displayClientMessage(new TextComponent("On Cooldown"), true);
                             }
                         }
                     }

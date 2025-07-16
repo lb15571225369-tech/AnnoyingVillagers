@@ -106,7 +106,7 @@ public class VillagerScoutOnInteractProcedure {
                     if (livingentity4 instanceof Player) {
                         player = (Player)livingentity4;
                         if (!player.level.isClientSide()) {
-                            player.displayClientMessage(new TextComponent("\u5df2\u4fd8"), true);
+                            player.displayClientMessage(new TextComponent("Target Captured"), true);
                         }
                     }
                 } else {
@@ -172,7 +172,7 @@ public class VillagerScoutOnInteractProcedure {
                         if (entity2 instanceof Player) {
                             player1 = (Player)entity2;
                             if (!player1.level.isClientSide()) {
-                                player1.displayClientMessage(new TextComponent("\u5df2\u4fd8"), true);
+                                player1.displayClientMessage(new TextComponent("Target Captured"), true);
                             }
                         }
                     }

@@ -115,7 +115,7 @@ public class BlueVillagerGeneralOnAttackingEntityProcedure {
                     if (livingentity4 instanceof Player) {
                         player = (Player)livingentity4;
                         if (!player.level.isClientSide()) {
-                            player.displayClientMessage(new TextComponent("\u5df2\u4fd8"), false);
+                            player.displayClientMessage(new TextComponent("Target captured"), false);
                         }
                     }
                 } else {
@@ -193,7 +193,7 @@ public class BlueVillagerGeneralOnAttackingEntityProcedure {
                         if (entity2 instanceof Player) {
                             player1 = (Player)entity2;
                             if (!player1.level.isClientSide()) {
-                                player1.displayClientMessage(new TextComponent("\u5df2\u4fd8"), false);
+                                player1.displayClientMessage(new TextComponent("Target captured"), false);
                             }
                         }
                     }

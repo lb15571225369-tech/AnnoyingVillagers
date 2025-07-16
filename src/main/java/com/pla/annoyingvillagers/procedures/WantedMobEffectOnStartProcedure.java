@@ -25,7 +25,7 @@ public class WantedMobEffectOnStartProcedure {
                 Player player = (Player)entity;
 
                 if (!player.level.isClientSide()) {
-                    player.displayClientMessage(new TextComponent("\u4f60\u88ab\u901a\u7f09\u4e86\uff01"), false);
+                    player.displayClientMessage(new TextComponent("You're now wanted!"), false);
                 }
             }
 

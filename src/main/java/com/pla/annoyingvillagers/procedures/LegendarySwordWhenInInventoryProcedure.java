@@ -74,13 +74,13 @@ public class LegendarySwordWhenInInventoryProcedure {
                     if (entity instanceof Player) {
                         player1 = (Player) entity;
                         if (!player1.level.isClientSide()) {
-                            player1.displayClientMessage(new TextComponent("\u60a8\u662f\u6b64\u6b66\u5668\u7684\u4e3b\u4eba"), false);
+                            player1.displayClientMessage(new TextComponent("You are the owner of this weapon."), false);
                         }
                     }
                 } else if (entity instanceof Player) {
                     player1 = (Player) entity;
                     if (!player1.level.isClientSide()) {
-                        player1.displayClientMessage(new TextComponent("\u4f60\u4e0d\u662f\u6b64\u6b66\u5668\u7684\u4e3b\u4eba\uff0c\u6b64\u6b66\u5668\u5c06\u4e0d\u53d7\u4f60\u7684\u63a7\u5236"), false);
+                        player1.displayClientMessage(new TextComponent("You are not the owner of this weapon. It will not obey your commands."), false);
                     }
                 }
             }
@@ -118,14 +118,14 @@ public class LegendarySwordWhenInInventoryProcedure {
                     if (entity instanceof Player) {
                         player = (Player) entity;
                         if (!player.level.isClientSide()) {
-                            player.displayClientMessage(new TextComponent("\u4f60\u6ca1\u6709\u80fd\u529b\u9a7e\u9a6d\u8fd9\u4e2a\u6b66\u5668"), true);
+                            player.displayClientMessage(new TextComponent("You are not strong enough to wield this weapon"), true);
                         }
                     }
 
                     if (entity instanceof Player) {
                         player = (Player) entity;
                         if (!player.level.isClientSide()) {
-                            player.displayClientMessage(new TextComponent("\u4f60\u6ca1\u6709\u80fd\u529b\u9a7e\u9a6d\u8fd9\u4e2a\u6b66\u5668"), false);
+                            player.displayClientMessage(new TextComponent("You are not strong enough to wield this weapon"), false);
                         }
                     }
 

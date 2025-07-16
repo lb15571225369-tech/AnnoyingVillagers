@@ -59,7 +59,7 @@ public class LegendarySwordUseProcedure {
                             player = (Player)entity;
                             if (!player.level.isClientSide()) {
                                 compoundtag = itemstack.getOrCreateTag();
-                                player.displayClientMessage(new TextComponent("\u80fd\u91cf\u4e0d\u8db3\uff0c\u76ee\u524d\u5145\u80fd" + compoundtag.getDouble("power") + "/25"), true);
+                                player.displayClientMessage(new TextComponent("Not enough energy. Current charge: " + compoundtag.getDouble("power") + "/25"), true);
                             }
                         }
                     } else if (itemstack.getOrCreateTag().getDouble("power") >= 20.0D) {
@@ -135,13 +135,13 @@ public class LegendarySwordUseProcedure {
                         player = (Player)entity;
                         if (!player.level.isClientSide()) {
                             compoundtag = itemstack.getOrCreateTag();
-                            player.displayClientMessage(new TextComponent("\u80fd\u91cf\u4e0d\u8db3\uff0c\u76ee\u524d\u5145\u80fd" + compoundtag.getDouble("power") + "/20"), true);
+                            player.displayClientMessage(new TextComponent("Not enough energy. Current charge: " + compoundtag.getDouble("power") + "/20"), true);
                         }
                     }
                 } else if (entity instanceof Player) {
                     player = (Player)entity;
                     if (!player.level.isClientSide()) {
-                        player.displayClientMessage(new TextComponent("\u4f60\u4e0d\u662f\u6b64\u6b66\u5668\u7684\u4e3b\u4eba\uff0c\u65e0\u6cd5\u64cd\u63a7\u6b64\u6280\u80fd"), true);
+                        player.displayClientMessage(new TextComponent("You are not the owner of this weapon and cannot control this skill."), true);
                     }
                 }
             }
