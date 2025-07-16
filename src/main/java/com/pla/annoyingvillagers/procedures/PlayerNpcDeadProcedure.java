@@ -590,7 +590,7 @@ public class PlayerNpcDeadProcedure {
                                     public void run() {
                                         entity.getServer().getCommands().performCommand(
                                                 entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                                                "tellraw @a [{\"text\":\"<\"},{\"selector\":\"@s\"},{\"text\":\"> Hmmm, you’re here… bro.🤓\"}]"
+                                                "tellraw @a [{\"text\":\"<\"},{\"selector\":\"@s\"},{\"text\":\"> Hmmm, you're here… bro.🤓\"}]"
                                         );
                                     }
                                 };

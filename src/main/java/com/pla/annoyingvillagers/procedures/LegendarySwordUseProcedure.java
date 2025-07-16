@@ -59,7 +59,7 @@ public class LegendarySwordUseProcedure {
                             player = (Player)entity;
                             if (!player.level.isClientSide()) {
                                 compoundtag = itemstack.getOrCreateTag();
-                                player.displayClientMessage(new TextComponent("Not enough energy. Current charge: " + compoundtag.getDouble("power") + "/25"), true);
+                                player.displayClientMessage(new TextComponent("Not enough energy. Current charge: " + (int) compoundtag.getDouble("power") + "/25"), true);
                             }
                         }
                     } else if (itemstack.getOrCreateTag().getDouble("power") >= 20.0D) {
@@ -135,7 +135,7 @@ public class LegendarySwordUseProcedure {
                         player = (Player)entity;
                         if (!player.level.isClientSide()) {
                             compoundtag = itemstack.getOrCreateTag();
-                            player.displayClientMessage(new TextComponent("Not enough energy. Current charge: " + compoundtag.getDouble("power") + "/20"), true);
+                            player.displayClientMessage(new TextComponent("Not enough energy. Current charge: " + (int) compoundtag.getDouble("power") + "/20"), true);
                         }
                     }
                 } else if (entity instanceof Player) {

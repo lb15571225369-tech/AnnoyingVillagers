@@ -113,7 +113,7 @@ public class EnchantedWoodenDoorItem extends TieredItem {
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(new TextComponent("An incredibly quirky wooden door, even noobs say it’s great"));
+        list.add(new TextComponent("An incredibly quirky wooden door, even noobs say it's great"));
     }
 
     @OnlyIn(Dist.CLIENT)
