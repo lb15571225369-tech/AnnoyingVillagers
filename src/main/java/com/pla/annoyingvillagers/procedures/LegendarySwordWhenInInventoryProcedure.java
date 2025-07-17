@@ -52,17 +52,9 @@ public class LegendarySwordWhenInInventoryProcedure {
                 itemstack.enchant(Enchantments.KNOCKBACK, 9);
                 itemstack.enchant(Enchantments.UNBREAKING, 7);
                 itemstack.enchant(Enchantments.MENDING, 5);
-                itemstack.enchant((Enchantment) AnnoyingVillagersModEnchantments.ENERGY.get(), 4);
-                itemstack.enchant((Enchantment) AnnoyingVillagersModEnchantments.HEAVY_ATTACK.get(), 5);
+                itemstack.enchant(Enchantments.FIRE_ASPECT, 2);
                 itemstack.enchant(Enchantments.PROJECTILE_PROTECTION, 7);
                 itemstack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 10);
-                itemstack.enchant((Enchantment) AnnoyingVillagersModEnchantments.QUICK_DRAW.get(), 10);
-                itemstack.enchant((Enchantment) AnnoyingVillagersModEnchantments.POSSESSION.get(), 10);
-                itemstack.enchant((Enchantment) AnnoyingVillagersModEnchantments.HOLY_BLEESSING.get(), 10);
-                itemstack.enchant((Enchantment) AnnoyingVillagersModEnchantments.EXPERIENCE.get(), 0);
-                itemstack.enchant((Enchantment) AnnoyingVillagersModEnchantments.LEARNING.get(), 0);
-                itemstack.enchant((Enchantment) AnnoyingVillagersModEnchantments.UNKNOWN.get(), 0);
-                itemstack.enchant((Enchantment) AnnoyingVillagersModEnchantments.ERROR.get(), 0);
                 itemstack.getOrCreateTag().putString("l_g_ower", entity.getUUID().toString());
             }
 
