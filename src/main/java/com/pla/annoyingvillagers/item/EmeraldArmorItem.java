@@ -40,7 +40,7 @@ public abstract class EmeraldArmorItem extends ArmorItem {
             }
 
             public String getName() {
-                return "llbstz";
+                return "emerald_armor";
             }
 
             public float getToughness() {
@@ -60,7 +60,7 @@ public abstract class EmeraldArmorItem extends ArmorItem {
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoyingvillagers:textures/models/armor/ik__e_layer_1.png";
+            return "annoyingvillagers:textures/models/armor/emerald_armor_layer_1.png";
         }
 
         public void onArmorTick(ItemStack itemstack, Level level, Player player) {
@@ -75,7 +75,7 @@ public abstract class EmeraldArmorItem extends ArmorItem {
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoyingvillagers:textures/models/armor/ik__e_layer_2.png";
+            return "annoyingvillagers:textures/models/armor/emerald_armor_layer_2.png";
         }
 
         public void onArmorTick(ItemStack itemstack, Level level, Player player) {
@@ -90,7 +90,7 @@ public abstract class EmeraldArmorItem extends ArmorItem {
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoyingvillagers:textures/models/armor/ik__e_layer_1.png";
+            return "annoyingvillagers:textures/models/armor/emerald_armor_layer_1.png";
         }
 
         public void onArmorTick(ItemStack itemstack, Level level, Player player) {
@@ -105,7 +105,7 @@ public abstract class EmeraldArmorItem extends ArmorItem {
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoyingvillagers:textures/models/armor/ik__e_layer_1.png";
+            return "annoyingvillagers:textures/models/armor/emerald_armor_layer_1.png";
         }
 
         public void onArmorTick(ItemStack itemstack, Level level, Player player) {

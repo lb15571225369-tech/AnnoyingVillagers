@@ -46,7 +46,7 @@ public abstract class PurpleVillagerGeneralArmorItem extends ArmorItem {
             }
 
             public String getName() {
-                return "zi_cun_qi_kui_jia";
+                return "purple_villager_general_armor";
             }
 
             public float getToughness() {
@@ -59,28 +59,6 @@ public abstract class PurpleVillagerGeneralArmorItem extends ArmorItem {
         }, equipmentslot, properties);
     }
 
-    public static class Boots extends PurpleVillagerGeneralArmorItem {
-
-        public Boots() {
-            super(EquipmentSlot.FEET, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
-        }
-
-        public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoyingvillagers:textures/models/armor/cun_min_qi_shi_zi_se_xiong_jia___layer_1.png";
-        }
-    }
-
-    public static class Leggings extends PurpleVillagerGeneralArmorItem {
-
-        public Leggings() {
-            super(EquipmentSlot.LEGS, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
-        }
-
-        public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoyingvillagers:textures/models/armor/cun_min_qi_shi_zi_se_xiong_jia___layer_2.png";
-        }
-    }
-
     public static class Chestplate extends PurpleVillagerGeneralArmorItem {
 
         public Chestplate() {
@@ -88,7 +66,7 @@ public abstract class PurpleVillagerGeneralArmorItem extends ArmorItem {
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoyingvillagers:textures/models/armor/cun_min_qi_shi_zi_se_xiong_jia___layer_1.png";
+            return "annoyingvillagers:textures/models/armor/purple_villager_general_armor_layer.png";
         }
     }
 

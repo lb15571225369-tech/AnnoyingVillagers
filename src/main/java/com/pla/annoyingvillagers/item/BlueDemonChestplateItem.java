@@ -60,7 +60,7 @@ public abstract class BlueDemonChestplateItem extends ArmorItem {
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return AnnoyingVillagers.MODID + ":textures/models/armor/drowned___layer_1.png";
+            return AnnoyingVillagers.MODID + ":textures/models/armor/blue_demon_chestplate_layer.png";
         }
 
         public void onArmorTick(ItemStack itemstack, Level level, Player player) {

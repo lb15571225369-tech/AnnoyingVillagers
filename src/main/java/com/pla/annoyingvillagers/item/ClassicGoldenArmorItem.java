@@ -36,7 +36,7 @@ public abstract class ClassicGoldenArmorItem extends ArmorItem {
             }
 
             public String getName() {
-                return "classicgoldena";
+                return "classic_golden_armor";
             }
 
             public float getToughness() {
@@ -56,7 +56,7 @@ public abstract class ClassicGoldenArmorItem extends ArmorItem {
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoyingvillagers:textures/models/armor/gold__layer_1.png";
+            return "annoyingvillagers:textures/models/armor/gold_layer_1.png";
         }
     }
 
@@ -67,7 +67,7 @@ public abstract class ClassicGoldenArmorItem extends ArmorItem {
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoyingvillagers:textures/models/armor/gold__layer_2.png";
+            return "annoyingvillagers:textures/models/armor/gold_layer_2.png";
         }
     }
 
@@ -78,7 +78,7 @@ public abstract class ClassicGoldenArmorItem extends ArmorItem {
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoyingvillagers:textures/models/armor/gold__layer_1.png";
+            return "annoyingvillagers:textures/models/armor/gold_layer_1.png";
         }
     }
 
@@ -89,7 +89,7 @@ public abstract class ClassicGoldenArmorItem extends ArmorItem {
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoyingvillagers:textures/models/armor/gold__layer_1.png";
+            return "annoyingvillagers:textures/models/armor/gold_layer_1.png";
         }
     }
 }

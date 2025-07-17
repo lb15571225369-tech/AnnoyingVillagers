@@ -37,7 +37,7 @@ public abstract class UnlightDiamondArmorItem extends ArmorItem {
             }
 
             public String getName() {
-                return "unlightdiamond";
+                return "unlight_diamond_armor";
             }
 
             public float getToughness() {
@@ -57,7 +57,7 @@ public abstract class UnlightDiamondArmorItem extends ArmorItem {
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoyingvillagers:textures/models/armor/unlight_diamond__layer_1.png";
+            return "annoyingvillagers:textures/models/armor/unlight_diamond_layer_1.png";
         }
     }
 
@@ -68,7 +68,7 @@ public abstract class UnlightDiamondArmorItem extends ArmorItem {
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoyingvillagers:textures/models/armor/unlight_diamond__layer_2.png";
+            return "annoyingvillagers:textures/models/armor/unlight_diamond_layer_2.png";
         }
     }
 
@@ -79,7 +79,7 @@ public abstract class UnlightDiamondArmorItem extends ArmorItem {
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoyingvillagers:textures/models/armor/unlight_diamond__layer_1.png";
+            return "annoyingvillagers:textures/models/armor/unlight_diamond_layer_1.png";
         }
     }
 
@@ -90,7 +90,7 @@ public abstract class UnlightDiamondArmorItem extends ArmorItem {
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoyingvillagers:textures/models/armor/unlight_diamond__layer_1.png";
+            return "annoyingvillagers:textures/models/armor/unlight_diamond_layer_1.png";
         }
     }
 }

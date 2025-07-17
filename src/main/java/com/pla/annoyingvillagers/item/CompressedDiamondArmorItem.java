@@ -39,7 +39,7 @@ public abstract class CompressedDiamondArmorItem extends ArmorItem {
             }
 
             public String getName() {
-                return "cchunzuantao";
+                return "compressed_diamond_armor";
             }
 
             public float getToughness() {
@@ -59,7 +59,7 @@ public abstract class CompressedDiamondArmorItem extends ArmorItem {
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoyingvillagers:textures/models/armor/bd__layer_1.png";
+            return "annoyingvillagers:textures/models/armor/compressed_diamond_armor_layer_1.png";
         }
     }
 
@@ -70,7 +70,7 @@ public abstract class CompressedDiamondArmorItem extends ArmorItem {
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoyingvillagers:textures/models/armor/bd__layer_2.png";
+            return "annoyingvillagers:textures/models/armor/compressed_diamond_armor_layer_2.png";
         }
     }
 
@@ -81,7 +81,7 @@ public abstract class CompressedDiamondArmorItem extends ArmorItem {
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoyingvillagers:textures/models/armor/bd__layer_1.png";
+            return "annoyingvillagers:textures/models/armor/compressed_diamond_armor_layer_1.png";
         }
     }
 
@@ -92,7 +92,7 @@ public abstract class CompressedDiamondArmorItem extends ArmorItem {
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoyingvillagers:textures/models/armor/bd__layer_1.png";
+            return "annoyingvillagers:textures/models/armor/compressed_diamond_armor_layer_1.png";
         }
     }
 }

@@ -47,7 +47,7 @@ public abstract class BlueVillagerGeneralArmorItem extends ArmorItem {
             }
 
             public String getName() {
-                return "lan_cun_qiarmor";
+                return "blue_villager_general_armor";
             }
 
             public float getToughness() {
@@ -60,28 +60,6 @@ public abstract class BlueVillagerGeneralArmorItem extends ArmorItem {
         }, equipmentslot, properties);
     }
 
-    public static class Boots extends BlueVillagerGeneralArmorItem {
-
-        public Boots() {
-            super(EquipmentSlot.FEET, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
-        }
-
-        public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoyingvillagers:textures/models/armor/cun_min_qi_shi_lan_se_xiong_jia___layer_1.png";
-        }
-    }
-
-    public static class Leggings extends BlueVillagerGeneralArmorItem {
-
-        public Leggings() {
-            super(EquipmentSlot.LEGS, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
-        }
-
-        public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoyingvillagers:textures/models/armor/cun_min_qi_shi_lan_se_xiong_jia___layer_2.png";
-        }
-    }
-
     public static class Chestplate extends BlueVillagerGeneralArmorItem {
 
         public Chestplate() {
@@ -89,7 +67,7 @@ public abstract class BlueVillagerGeneralArmorItem extends ArmorItem {
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoyingvillagers:textures/models/armor/cun_min_qi_shi_lan_se_xiong_jia___layer_1.png";
+            return "annoyingvillagers:textures/models/armor/blue_villager_general_armor_layer.png";
         }
     }
 

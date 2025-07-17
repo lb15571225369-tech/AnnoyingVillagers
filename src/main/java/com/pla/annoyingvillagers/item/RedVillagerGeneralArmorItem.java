@@ -46,7 +46,7 @@ public abstract class RedVillagerGeneralArmorItem extends ArmorItem {
             }
 
             public String getName() {
-                return "hong_cun_qihelmet";
+                return "red_villager_general_armor";
             }
 
             public float getToughness() {
@@ -66,7 +66,7 @@ public abstract class RedVillagerGeneralArmorItem extends ArmorItem {
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoyingvillagers:textures/models/armor/cun_min_qi_shi_hong_se_xiong_jia___layer_1.png";
+            return "annoyingvillagers:textures/models/armor/red_villager_general_armor_layer_1.png";
         }
     }
 
@@ -77,7 +77,7 @@ public abstract class RedVillagerGeneralArmorItem extends ArmorItem {
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoyingvillagers:textures/models/armor/cun_min_qi_shi_hong_se_xiong_jia___layer_2.png";
+            return "annoyingvillagers:textures/models/armor/red_villager_general_armor_layer_2.png";
         }
     }
 
@@ -88,7 +88,7 @@ public abstract class RedVillagerGeneralArmorItem extends ArmorItem {
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoyingvillagers:textures/models/armor/cun_min_qi_shi_hong_se_xiong_jia___layer_1.png";
+            return "annoyingvillagers:textures/models/armor/red_villager_general_armor_layer_1.png";
         }
     }
 

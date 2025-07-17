@@ -49,7 +49,7 @@ public abstract class GreenVillagerGeneralArmorItem extends ArmorItem {
             }
 
             public String getName() {
-                return "greenknightarmor";
+                return "green_villager_general_armor";
             }
 
             public float getToughness() {
@@ -60,42 +60,6 @@ public abstract class GreenVillagerGeneralArmorItem extends ArmorItem {
                 return 0.0F;
             }
         }, equipmentslot, properties);
-    }
-
-    public static class Boots extends GreenVillagerGeneralArmorItem {
-
-        public Boots() {
-            super(EquipmentSlot.FEET, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
-        }
-
-        public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-            consumer.accept(new IItemRenderProperties() {
-                @OnlyIn(Dist.CLIENT)
-                public HumanoidModel getArmorModel(LivingEntity livingentity, ItemStack itemstack, EquipmentSlot equipmentslot, HumanoidModel humanoidmodel) {
-                    HumanoidModel humanoidmodel1 = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of("left_leg", (new ModelGreenVillagerGeneralArmor<>(Minecraft.getInstance().getEntityModels().bakeLayer(ModelGreenVillagerGeneralArmor.LAYER_LOCATION))).LeftLeg, "right_leg", (new ModelGreenVillagerGeneralArmor<>(Minecraft.getInstance().getEntityModels().bakeLayer(ModelGreenVillagerGeneralArmor.LAYER_LOCATION))).RightLeg, "head", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "body", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "right_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "left_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()))));
-
-                    humanoidmodel1.crouching = livingentity.isShiftKeyDown();
-                    humanoidmodel1.riding = humanoidmodel.riding;
-                    humanoidmodel1.young = livingentity.isBaby();
-                    return humanoidmodel1;
-                }
-            });
-        }
-
-        public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoyingvillagers:textures/entities/greenknight_armorlayer_1.png";
-        }
-    }
-
-    public static class Leggings extends GreenVillagerGeneralArmorItem {
-
-        public Leggings() {
-            super(EquipmentSlot.LEGS, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
-        }
-
-        public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoyingvillagers:textures/models/armor/greenknight_armor_layer_2.png";
-        }
     }
 
     public static class Chestplate extends GreenVillagerGeneralArmorItem {
@@ -119,7 +83,7 @@ public abstract class GreenVillagerGeneralArmorItem extends ArmorItem {
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
-            return "annoyingvillagers:textures/entities/greenknight_armorlayer_1.png";
+            return "annoyingvillagers:textures/models/armor/green_villager_general_armor_layer.png";
         }
     }
 
