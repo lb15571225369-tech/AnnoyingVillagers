@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
-@Mixin(value = {Mob.class}, remap = false)
+@Mixin(value = {Mob.class}, remap = true)
 public class MobMixin {
     @Inject(method = "dropCustomDeathLoot", at = @At("TAIL"))
     private void dropCustomInventoryOnDeath(DamageSource source, int looting, boolean recentlyHit, CallbackInfo ci) {

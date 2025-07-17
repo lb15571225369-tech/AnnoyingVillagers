@@ -50,5 +50,5 @@ Pla ported this mod from annoying villlagers modpack Chinese version.
     modId="player_mobs"
     mandatory=true
     versionRange="[2.2, )"
-    ordering="NONE"
+    ordering="AFTER"
     side="BOTH"
