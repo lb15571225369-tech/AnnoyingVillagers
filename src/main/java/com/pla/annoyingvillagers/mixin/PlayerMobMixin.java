@@ -45,7 +45,7 @@ public class PlayerMobMixin {
         PlayerMobEntity self = (PlayerMobEntity) (Object) this;
         self.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(self, 1.0D));
         self.goalSelector.addGoal(3, new OpenDoorGoal(self, true));
-        self.targetSelector.addGoal(1, new HurtByTargetGoal(self));
+        self.targetSelector.addGoal(1, new HurtByTargetGoal(self).setAlertOthers());
         ((GroundPathNavigation) self.getNavigation()).setCanOpenDoors(true);
 
         CompoundTag data = self.getPersistentData();
@@ -70,6 +70,10 @@ public class PlayerMobMixin {
                 self.goalSelector.addGoal(2, new MeleeAttackGoal(self, 1.2D, false));
                 self.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(self, Monster.class, true));
                 self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, Player.class, true));
+                self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, HerobrineEntity.class, true));
+                self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, Herobrine2Entity.class, true));
+                self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, BlueDemonEntity.class, true));
+                self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, BlueDemon2Entity.class, true));
             }
             case "village_hunter" -> {
                 self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Villager.class, true));
@@ -84,6 +88,10 @@ public class PlayerMobMixin {
             }
             case "monster_hunter" -> {
                 self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Monster.class, true));
+                self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, HerobrineEntity.class, true));
+                self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Herobrine2Entity.class, true));
+                self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, BlueDemonEntity.class, true));
+                self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, BlueDemon2Entity.class, true));
             }
             case "player_hunter" -> {
                 self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Player.class, true));

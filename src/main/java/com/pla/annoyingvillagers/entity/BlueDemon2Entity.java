@@ -25,6 +25,7 @@ import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -41,6 +42,7 @@ import com.pla.annoyingvillagers.procedures.BlueDemon2OnEntityDeathProcedure;
 import com.pla.annoyingvillagers.procedures.BlueDemon2ParryingProcedure;
 import com.pla.annoyingvillagers.procedures.BlueDemon2OnEntityInitialSpawnProcedure;
 import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityKillOtherEntityProcedure;
+import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
 public class BlueDemon2Entity extends Monster {
 
@@ -67,17 +69,17 @@ public class BlueDemon2Entity extends Monster {
 
     protected void registerGoals() {
         super.registerGoals();
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal(this, Monster.class, true, false));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, Mob.class, true, false));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this, new Class[0]));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, Player.class, true, false));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, PlayerMobEntity.class, true, false));
         this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.2D, false) {
             protected double getAttackReachSqr(LivingEntity livingentity) {
                 return (double) (this.mob.getBbWidth() * this.mob.getBbWidth() + livingentity.getBbWidth());
             }
         });
         this.goalSelector.addGoal(4, new RandomStrollGoal(this, 1.0D));
-        this.targetSelector.addGoal(5, new HurtByTargetGoal(this, new Class[0]));
-        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(7, new FloatGoal(this));
+        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(6, new FloatGoal(this));
     }
 
     public MobType getMobType() {

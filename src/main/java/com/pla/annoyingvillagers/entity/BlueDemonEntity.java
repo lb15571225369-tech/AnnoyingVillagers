@@ -51,6 +51,7 @@ import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityDamageProcedure;
 import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityDeathProcedure;
 import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityKillOtherEntityProcedure;
 import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityInitialSpawnProcedure;
+import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
 @EventBusSubscriber
 public class BlueDemonEntity extends Monster {
@@ -83,18 +84,17 @@ public class BlueDemonEntity extends Monster {
 
     protected void registerGoals() {
         super.registerGoals();
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal(this, Monster.class, true, false));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, Mob.class, true, false));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal(this, Player.class, true, false));
-        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.2D, false) {
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this, new Class[0]));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, Player.class, true, false));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, PlayerMobEntity.class, true, false));
+        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.2D, false) {
             protected double getAttackReachSqr(LivingEntity livingentity) {
                 return (double) (this.mob.getBbWidth() * this.mob.getBbWidth() + livingentity.getBbWidth());
             }
         });
-        this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0D));
-        this.targetSelector.addGoal(6, new HurtByTargetGoal(this, new Class[0]));
-        this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(8, new FloatGoal(this));
+        this.goalSelector.addGoal(4, new RandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(6, new FloatGoal(this));
     }
 
     public MobType getMobType() {

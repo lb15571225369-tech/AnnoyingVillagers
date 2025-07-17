@@ -27,11 +27,7 @@ import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.ai.goal.OpenDoorGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
@@ -84,8 +80,24 @@ public class PurpleVillagerGeneralEntity extends PathfinderMob {
     protected void registerGoals() {
         super.registerGoals();
         this.getNavigation().getNodeEvaluator().setCanOpenDoors(true);
-        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this, new Class[0])).setAlertOthers(new Class[0]));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, Monster.class, true, false));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal(this, BlueDemonEntity.class, true, false));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal(this, BlueDemon2Entity.class, true, false));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal(this, HerobrineEntity.class, true, false));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal(this, HerobrineEntity.class, true, false));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, PlayerMobEntity.class, true, false));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, Player.class, true, false));
+        this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.5D, false) {
+            protected double getAttackReachSqr(LivingEntity livingentity) {
+                return (double) (this.mob.getBbWidth() * this.mob.getBbWidth() + livingentity.getBbWidth());
+            }
+        });
+        this.goalSelector.addGoal(6, new RandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(7, new FollowMobGoal(this, 1.3D, 20.0F, 15.0F));
+        this.goalSelector.addGoal(8, new OpenDoorGoal(this, true));
+        this.goalSelector.addGoal(9, new OpenDoorGoal(this, false));
+        this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(11, new FloatGoal(this));
 //        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal(this, HbGaoJiFenShenEntity.class, true, false));
 //        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, LingZhiEntity.class, true, false));
 //        this.targetSelector.addGoal(5, new NearestAttackableTargetGoal(this, DiJiherobrineEntity.class, true, false));
@@ -99,18 +111,6 @@ public class PurpleVillagerGeneralEntity extends PathfinderMob {
 //        this.targetSelector.addGoal(13, new NearestAttackableTargetGoal(this, JianbingguoziEntity.class, true, false));
 //        this.targetSelector.addGoal(14, new NearestAttackableTargetGoal(this, WanJia1Entity.class, true, false));
 //        this.targetSelector.addGoal(15, new NearestAttackableTargetGoal(this, ZaiEZhiWangEntity.class, true, false));
-        this.goalSelector.addGoal(16, new MeleeAttackGoal(this, 1.5D, true) {
-            protected double getAttackReachSqr(LivingEntity livingentity) {
-                return (double) (this.mob.getBbWidth() * this.mob.getBbWidth() + livingentity.getBbWidth());
-            }
-        });
-        this.targetSelector.addGoal(6, new NearestAttackableTargetGoal(this, PlayerMobEntity.class, true, false));
-        this.targetSelector.addGoal(17, new NearestAttackableTargetGoal(this, Player.class, true, false));
-        this.goalSelector.addGoal(18, new RandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(19, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(20, new FloatGoal(this));
-        this.goalSelector.addGoal(21, new OpenDoorGoal(this, true));
-        this.goalSelector.addGoal(22, new OpenDoorGoal(this, false));
 //        this.targetSelector.addGoal(23, new NearestAttackableTargetGoal(this, CunZhenFuLuEntity.class, true, true));
 //        this.targetSelector.addGoal(24, new NearestAttackableTargetGoal(this, LanCunQiFuLuEntity.class, true, true));
 //        this.targetSelector.addGoal(25, new NearestAttackableTargetGoal(this, LvcunqifuluEntity.class, true, true));

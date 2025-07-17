@@ -16,7 +16,7 @@ import com.pla.annoyingvillagers.network.WeaponsMoreAttackMessage;
 
 @EventBusSubscriber(bus = Bus.MOD, value = {Dist.CLIENT})
 public class AnnoyingVillagersModKeyMappings {
-    public static final KeyMapping KICK = new KeyMapping("key.annoyingvillagers.kick", 88, "key.categories.misc") {
+    public static final KeyMapping KICK = new KeyMapping("key.annoyingvillagers.kick", 88, "key.categories.annoyingvillagers") {
         private boolean isDownOld = false;
 
         public void setDown(boolean flag) {
@@ -35,7 +35,7 @@ public class AnnoyingVillagersModKeyMappings {
             this.isDownOld = flag;
         }
     };
-    public static final KeyMapping WEAPONS_MORE_ATTACK = new KeyMapping("key.annoyingvillagers.weapons_more_attack", 67, "key.categories.misc") {
+    public static final KeyMapping WEAPONS_MORE_ATTACK = new KeyMapping("key.annoyingvillagers.weapons_more_attack", 67, "key.categories.annoyingvillagers") {
         private boolean isDownOld = false;
 
         public void setDown(boolean flag) {
@@ -50,7 +50,7 @@ public class AnnoyingVillagersModKeyMappings {
     };
     private static long KICK_LASTPRESS = 0L;
 
-    public static final KeyMapping THROW_ENDER_PEARL = new KeyMapping("key.annoyingvillagers.throw_ender_pearl", 70, "key.categories.misc") {
+    public static final KeyMapping THROW_ENDER_PEARL = new KeyMapping("key.annoyingvillagers.throw_ender_pearl", 70, "key.categories.annoyingvillagers") {
         private boolean isDownOld = false;
 
         public void setDown(boolean flag) {
