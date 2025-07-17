@@ -13,9 +13,9 @@ import net.minecraftforge.fml.common.Mod;
 public class AnnoyingVillagersModModels {
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions registerlayerdefinitions) {
+        registerlayerdefinitions.registerLayerDefinition(ModelVillagerScoutHelmet.LAYER_LOCATION, ModelVillagerScoutHelmet::createBodyLayer);
         registerlayerdefinitions.registerLayerDefinition(ModelBlueDemonTrident.LAYER_LOCATION, ModelBlueDemonTrident::createBodyLayer);
         registerlayerdefinitions.registerLayerDefinition(ModelGreenVillagerGeneralArmor.LAYER_LOCATION, ModelGreenVillagerGeneralArmor::createBodyLayer);
         registerlayerdefinitions.registerLayerDefinition(ModelVillagerGeneralArmor.LAYER_LOCATION, ModelVillagerGeneralArmor::createBodyLayer);
-        registerlayerdefinitions.registerLayerDefinition(ModelVillagerScoutHelmet.LAYER_LOCATION, ModelVillagerScoutHelmet::createBodyLayer);
     }
 }

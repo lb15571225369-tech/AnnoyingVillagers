@@ -1,7 +1,6 @@
 package com.pla.annoyingvillagers.item;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-//import com.pla.annoyingvillagers.client.model.ModelVillagerScoutHelmet;
 import com.pla.annoyingvillagers.client.model.ModelVillagerScoutHelmet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
