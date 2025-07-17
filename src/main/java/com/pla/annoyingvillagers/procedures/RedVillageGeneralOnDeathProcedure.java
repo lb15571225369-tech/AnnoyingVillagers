@@ -317,16 +317,6 @@ public class RedVillageGeneralOnDeathProcedure {
                     if (levelaccessor1 instanceof Level) {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
-                            itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack((ItemLike) AnnoyingVillagersModItems.RED_VILLAGER_GENERAL_HELMET_WEARING.get()));
-                            itementity.setPickUpDelay(10);
-                            level.addFreshEntity(itementity);
-                        }
-                    }
-
-                    levelaccessor1 = levelaccessor;
-                    if (levelaccessor1 instanceof Level) {
-                        level = (Level)levelaccessor1;
-                        if (!level.isClientSide()) {
                             itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack(Items.APPLE));
                             itementity.setPickUpDelay(10);
                             level.addFreshEntity(itementity);

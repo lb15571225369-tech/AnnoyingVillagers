@@ -171,8 +171,8 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> EMERALD_BOOTS = AnnoyingVillagersModItems.REGISTRY.register("emerald_boots", () -> {
         return new EmeraldArmorItem.Boots();
     });
-    public static final RegistryObject<Item> VILLAGER_SCOUT_HELMET_WEARING = AnnoyingVillagersModItems.REGISTRY.register("villager_scout_helmet_wearing", () -> {
-        return new VillagerScoutHelmetWearingItem();
+    public static final RegistryObject<Item> VILLAGER_SCOUT_HELMET = AnnoyingVillagersModItems.REGISTRY.register("villager_scout_helmet", () -> {
+        return new VillagerScoutHelmetItem.Helmet();
     });
     public static final RegistryObject<Item> CLASSICGOLDENA_CHESTPLATE = AnnoyingVillagersModItems.REGISTRY.register("classicgoldena_chestplate", () -> {
         return new ClassicGoldenArmorItem.Chestplate();
@@ -182,9 +182,6 @@ public class AnnoyingVillagersModItems {
     });
     public static final RegistryObject<Item> CLASSICGOLDENA_BOOTS = AnnoyingVillagersModItems.REGISTRY.register("classicgoldena_boots", () -> {
         return new ClassicGoldenArmorItem.Boots();
-    });
-    public static final RegistryObject<Item> RED_VILLAGER_GENERAL_HELMET_WEARING = AnnoyingVillagersModItems.REGISTRY.register("red_villager_general_helmet_wearing", () -> {
-        return new RedVillagerGeneralHelmetWearingItem();
     });
     public static final RegistryObject<Item> RED_VILLAGER_GENERAL_HELMET = AnnoyingVillagersModItems.REGISTRY.register("red_villager_general_helmet", () -> {
         return new RedVillagerGeneralArmorItem.Armor();
@@ -198,26 +195,17 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> VILLAGER_GENERAL_BOOTS = AnnoyingVillagersModItems.REGISTRY.register("villager_general_boots", () -> {
         return new RedVillagerGeneralArmorItem.Boots();
     });
-    public static final RegistryObject<Item> BLUE_VILLAGER_GENERAL_HELMET_WEARING = AnnoyingVillagersModItems.REGISTRY.register("blue_villager_general_helmet_wearing", () -> {
-        return new BlueVillagerGeneralHelmetWearingItem();
-    });
     public static final RegistryObject<Item> BLUE_VILLAGER_GENERAL_HELMET = AnnoyingVillagersModItems.REGISTRY.register("blue_villager_general_helmet", () -> {
         return new BlueVillagerGeneralArmorItem.Helmet();
     });
     public static final RegistryObject<Item> BLUE_VILLAGER_GENERAL_CHESTPLATE = AnnoyingVillagersModItems.REGISTRY.register("blue_villager_general_chestplate", () -> {
         return new BlueVillagerGeneralArmorItem.Chestplate();
     });
-    public static final RegistryObject<Item> GREEN_VILLAGER_GENERAL_HELMET_WEARING = AnnoyingVillagersModItems.REGISTRY.register("green_villager_general_helmet_wearing", () -> {
-        return new GreenVillagerGeneralHelmetWearingItem();
-    });
     public static final RegistryObject<Item> GREEN_VILLAGER_GENERAL_HELMET = AnnoyingVillagersModItems.REGISTRY.register("green_villager_general_helmet", () -> {
         return new GreenVillagerGeneralArmorItem.Helmet();
     });
     public static final RegistryObject<Item> GREEN_VILLAGER_GENERAL_CHESTPLATE = AnnoyingVillagersModItems.REGISTRY.register("green_villager_general_chestplate", () -> {
         return new GreenVillagerGeneralArmorItem.Chestplate();
-    });
-    public static final RegistryObject<Item> PURPLE_VILLAGER_GENERAL_HELMET_WEARING = AnnoyingVillagersModItems.REGISTRY.register("purple_villager_general_helmet_wearing", () -> {
-        return new PurpleVillagerGeneralHelmetWearingItem();
     });
     public static final RegistryObject<Item> PURPLE_VILLAGER_GENERAL_HELMET = AnnoyingVillagersModItems.REGISTRY.register("purple_villager_general_helmet", () -> {
         return new PurpleVillagerGeneralArmorItem.Helmet();

@@ -98,16 +98,6 @@ public class VillagerScoutOnEntityDeathProcedure {
                     if (levelaccessor1 instanceof Level) {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
-                            itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack((ItemLike) AnnoyingVillagersModItems.VILLAGER_SCOUT_HELMET_WEARING.get()));
-                            itementity.setPickUpDelay(10);
-                            level.addFreshEntity(itementity);
-                        }
-                    }
-
-                    levelaccessor1 = levelaccessor;
-                    if (levelaccessor1 instanceof Level) {
-                        level = (Level)levelaccessor1;
-                        if (!level.isClientSide()) {
                             itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack(Items.IRON_SWORD));
                             itementity.setPickUpDelay(10);
                             level.addFreshEntity(itementity);
