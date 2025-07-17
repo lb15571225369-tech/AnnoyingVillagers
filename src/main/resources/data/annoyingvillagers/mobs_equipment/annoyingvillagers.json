@@ -1,0 +1,20 @@
+{
+  "MAINHAND": [
+    "hooked_diamond_sword",
+    "diamond_dagger",
+    "crafting_table",
+    "enchanted_wooden_door",
+    "wooden_door"
+  ],
+  "OFFHAND": [
+  ],
+  "FEET": [
+  ],
+  "LEGS": [
+  ],
+  "CHEST": [
+  ],
+  "HEAD": [
+    "villager_scout_helmet"
+  ]
+}
