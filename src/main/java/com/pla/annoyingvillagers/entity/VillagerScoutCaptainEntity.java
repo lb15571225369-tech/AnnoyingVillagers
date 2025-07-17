@@ -50,6 +50,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
+import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
 @EventBusSubscriber
 public class VillagerScoutCaptainEntity extends PathfinderMob {
@@ -101,11 +102,12 @@ public class VillagerScoutCaptainEntity extends PathfinderMob {
 //        this.targetSelector.addGoal(13, new NearestAttackableTargetGoal(this, JianbingguoziEntity.class, true, false));
 //        this.targetSelector.addGoal(14, new NearestAttackableTargetGoal(this, WanJia1Entity.class, true, false));
 //        this.targetSelector.addGoal(15, new NearestAttackableTargetGoal(this, ZaiEZhiWangEntity.class, true, false));
-        this.goalSelector.addGoal(16, new MeleeAttackGoal(this, 1.5D, true) {
+        this.goalSelector.addGoal(15, new MeleeAttackGoal(this, 1.5D, true) {
             protected double getAttackReachSqr(LivingEntity livingentity) {
                 return 1.0D;
             }
         });
+        this.targetSelector.addGoal(16, new NearestAttackableTargetGoal(this, PlayerMobEntity.class, true, false));
         this.targetSelector.addGoal(17, new NearestAttackableTargetGoal(this, Player.class, true, false));
         this.goalSelector.addGoal(19, new RandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(20, new OpenDoorGoal(this, true));

@@ -77,9 +77,9 @@ public class LegendarySwordItem extends SwordItem {
 
     public void inventoryTick(ItemStack itemstack, Level level, Entity entity, int i, boolean flag) {
         super.inventoryTick(itemstack, level, entity, i, flag);
-        if (flag) {
-            LegendarySwordWhenInHandProcedure.execute(entity);
-        }
+//        if (flag) {
+//            LegendarySwordWhenInHandProcedure.execute(entity);
+//        }
 
         LegendarySwordWhenInInventoryProcedure.execute(entity, itemstack);
     }

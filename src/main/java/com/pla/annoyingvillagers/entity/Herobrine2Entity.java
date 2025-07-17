@@ -70,7 +70,7 @@ public class Herobrine2Entity extends Monster {
         this.maxUpStep = 0.7F;
         this.xpReward = 300;
         this.setNoAi(false);
-        this.setCustomName(new TextComponent("Herobrine"));
+        this.setCustomName(new TextComponent("§5Herobrine§r"));
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
     }

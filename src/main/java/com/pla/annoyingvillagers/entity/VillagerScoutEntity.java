@@ -52,6 +52,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
+import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
 @EventBusSubscriber
 public class VillagerScoutEntity extends PathfinderMob {
@@ -107,6 +108,7 @@ public class VillagerScoutEntity extends PathfinderMob {
                 return (double) (this.mob.getBbWidth() * this.mob.getBbWidth() + livingentity.getBbWidth());
             }
         });
+            this.targetSelector.addGoal(19, new NearestAttackableTargetGoal(this, PlayerMobEntity.class, true, false));
         this.targetSelector.addGoal(20, new NearestAttackableTargetGoal(this, Player.class, true, true));
         this.goalSelector.addGoal(22, new RandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(23, new FollowMobGoal(this, 1.2D, 20.0F, 15.0F));
