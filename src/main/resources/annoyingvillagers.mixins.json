@@ -7,7 +7,8 @@
     "NoKnockDownProMixin",
     "KnockDownCheckMixin",
     "MoreParryMixin",
-    "PlayerMobMixin",
+    "PlayerMobMixinRemapFalse",
+    "PlayerMobMixinRemapTrue",
     "MobMixin",
     "EntityMixin"
   ],
