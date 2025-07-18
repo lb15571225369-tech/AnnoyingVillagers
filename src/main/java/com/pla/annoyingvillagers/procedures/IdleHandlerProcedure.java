@@ -1,8 +1,10 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.util.*;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.TagParser;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
@@ -27,7 +29,7 @@ public class IdleHandlerProcedure {
     }
 
     @SubscribeEvent
-    public static void onLivingTick(LivingEvent.LivingUpdateEvent event) {
+    public static void onLivingTick(LivingEvent.LivingUpdateEvent event) throws CommandSyntaxException {
         if (!(event.getEntity() instanceof Mob mob)) return;
         if (mob.level.isClientSide()) return;
         if (event.getEntity() != null && !mob.level.isClientSide() && (ForgeRegistries.ENTITIES.getKey(event.getEntity().getType()).toString().equals("minecraft:zombie") || ForgeRegistries.ENTITIES.getKey(event.getEntity().getType()).toString().equals("minecraft:skeleton") || ForgeRegistries.ENTITIES.getKey(event.getEntity().getType()).toString().equals("annoyingvillagers:villager_scout"))) {
@@ -38,7 +40,7 @@ public class IdleHandlerProcedure {
         }
     }
 
-    private static void scheduleIdleActionDecision(Mob mob) {
+    private static void scheduleIdleActionDecision(Mob mob) throws CommandSyntaxException {
         CompoundTag data = mob.getPersistentData();
         if (!data.contains("av_idle_action")) {
             LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(mob, LivingEntityPatch.class);
@@ -50,7 +52,7 @@ public class IdleHandlerProcedure {
         }
     }
 
-    private static void performIdleAction(Mob mob, IdleAction action) {
+    private static void performIdleAction(Mob mob, IdleAction action) throws CommandSyntaxException {
         CompoundTag data = mob.getPersistentData();
         if (mob.getTarget() != null) {
             if (data.contains("av_idle_action")) {
@@ -60,7 +62,24 @@ public class IdleHandlerProcedure {
                 data.remove("av_idle_animation_playing");
             }
             if (data.contains("av_idle_animate_backup_main_hand")) {
+                CompoundTag fullTag = TagParser.parseTag(data.getString("av_idle_animate_backup_main_hand"));
+                String id = fullTag.getString("id");
+                String nbtPart = fullTag.contains("tag") ? fullTag.getCompound("tag").toString() : "";
+                String cmd = "item replace entity @s weapon.mainhand with " + id;
+                if (!nbtPart.isEmpty()) {
+                    cmd += nbtPart;
+                }
+                mob.getServer().getCommands().performCommand(
+                        mob.createCommandSourceStack().withSuppressedOutput().withPermission(4),
+                        cmd
+                );
                 data.remove("av_idle_animate_backup_main_hand");
+                if (data.contains("av_idle_action")) {
+                    data.remove("av_idle_action");
+                }
+                if (data.contains("idle_message_broadcasted")) {
+                    data.remove("idle_message_broadcasted");
+                }
             }
             return;
         }
