@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.item;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -48,20 +49,32 @@ public class ShadowObsidianWeaponItem extends SwordItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {
         InteractionResultHolder<ItemStack> interactionresultholder = super.use(level, player, interactionhand);
 
-        ShadowObsidianProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
+        try {
+            ShadowObsidianProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
         return interactionresultholder;
     }
 
     public InteractionResult useOn(UseOnContext useoncontext) {
         super.useOn(useoncontext);
-        ShadowObsidianProcedure.execute(useoncontext.getLevel(), (double) useoncontext.getClickedPos().getX(), (double) useoncontext.getClickedPos().getY(), (double) useoncontext.getClickedPos().getZ(), useoncontext.getPlayer(), useoncontext.getItemInHand());
+        try {
+            ShadowObsidianProcedure.execute(useoncontext.getLevel(), (double) useoncontext.getClickedPos().getX(), (double) useoncontext.getClickedPos().getY(), (double) useoncontext.getClickedPos().getZ(), useoncontext.getPlayer(), useoncontext.getItemInHand());
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
         return InteractionResult.SUCCESS;
     }
 
     public boolean onEntitySwing(ItemStack itemstack, LivingEntity livingentity) {
         boolean flag = super.onEntitySwing(itemstack, livingentity);
 
-        ShadowObsidianProcedure.execute(livingentity.level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity, itemstack);
+        try {
+            ShadowObsidianProcedure.execute(livingentity.level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity, itemstack);
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
         return flag;
     }
 }

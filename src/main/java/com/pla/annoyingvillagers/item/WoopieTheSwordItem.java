@@ -2,11 +2,12 @@ package com.pla.annoyingvillagers.item;
 
 import java.util.List;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.procedures.WoopieTheSwordItemOnEntityHitProcedure;
 import com.pla.annoyingvillagers.procedures.WoopieTheSwordItemOnUseProcedure;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -58,12 +59,16 @@ public class WoopieTheSwordItem extends SwordItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {
         InteractionResultHolder<ItemStack> interactionresultholder = super.use(level, player, interactionhand);
 
-        WoopieTheSwordItemOnUseProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
+        try {
+            WoopieTheSwordItemOnUseProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
         return interactionresultholder;
     }
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(new TextComponent("A special weapon that can unleash a skill by right-clicking while sprinting after hitting an enemy."));
+        list.add(Component.literal("A special weapon that can unleash a skill by right-clicking while sprinting after hitting an enemy."));
     }
 }

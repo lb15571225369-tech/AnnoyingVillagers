@@ -1,7 +1,10 @@
 package com.pla.annoyingvillagers.procedures;
 
 import java.util.Random;
+
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -15,22 +18,18 @@ import net.minecraft.world.phys.Vec3;
 
 public class DarkObSsOnEntityInsideProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, Entity entity) {
+    public static void execute(LevelAccessor levelaccessor, Entity entity) throws CommandSyntaxException {
         if (entity != null) {
             if (entity instanceof LivingEntity) {
                 LivingEntity livingentity = (LivingEntity) entity;
 
                 if (livingentity.getMobType() == MobType.UNDEAD) {
-                    if (!entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "1");
-                    }
-
                     return;
                 }
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 1");
+                entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
             }
 
             LivingEntity livingentity1;
@@ -45,13 +44,13 @@ public class DarkObSsOnEntityInsideProcedure {
 
             ItemStack itemstack1 = itemstack;
 
-            if (itemstack1.hurt(1, new Random(), (ServerPlayer) null)) {
+            if (itemstack1.hurt(1, (RandomSource) new Random(), (ServerPlayer) null)) {
                 itemstack1.shrink(1);
                 itemstack1.setDamageValue(0);
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/combat/hit_short\" 0 1");
+                entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/combat/hit_short\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
             }
 
             if (entity instanceof LivingEntity) {
@@ -62,7 +61,7 @@ public class DarkObSsOnEntityInsideProcedure {
             }
 
             itemstack1 = itemstack;
-            if (itemstack1.hurt(1, new Random(), (ServerPlayer) null)) {
+            if (itemstack1.hurt(1, (RandomSource) new Random(), (ServerPlayer) null)) {
                 itemstack1.shrink(1);
                 itemstack1.setDamageValue(0);
             }

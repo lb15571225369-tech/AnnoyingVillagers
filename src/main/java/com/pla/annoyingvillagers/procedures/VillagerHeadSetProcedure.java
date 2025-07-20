@@ -2,8 +2,9 @@ package com.pla.annoyingvillagers.procedures;
 
 import javax.annotation.Nullable;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.util.DelayedTask;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,17 +24,17 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 public class VillagerHeadSetProcedure {
 
     @SubscribeEvent
-    public static void onRightClickBlock(RightClickBlock rightclickblock) {
-        if (rightclickblock.getHand() == rightclickblock.getPlayer().getUsedItemHand()) {
-            execute(rightclickblock, rightclickblock.getWorld(), rightclickblock.getPlayer());
+    public static void onRightClickBlock(RightClickBlock rightclickblock) throws CommandSyntaxException {
+        if (rightclickblock.getHand() == rightclickblock.getEntity().getUsedItemHand()) {
+            execute(rightclickblock, rightclickblock.getLevel(), rightclickblock.getEntity());
         }
     }
 
-    public static void execute(LevelAccessor levelaccessor, Entity entity) {
+    public static void execute(LevelAccessor levelaccessor, Entity entity) throws CommandSyntaxException {
         execute((Event) null, levelaccessor, entity);
     }
 
-    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, final Entity entity) {
+    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, final Entity entity) throws CommandSyntaxException {
         if (entity != null) {
             if (entity.isShiftKeyDown()) {
                 ItemStack itemstack;
@@ -52,13 +53,15 @@ public class VillagerHeadSetProcedure {
                     if (!entity.getPersistentData().getBoolean("villager_head")) {
                         if (!entity.getPersistentData().getBoolean("villager_head_used")) {
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "team leave @s[team=villagers]");
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "team leave @s[team=villagers]",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                             }
 
                             if (entity instanceof Player) {
                                 player = (Player)entity;
                                 if (!player.level.isClientSide()) {
-                                    player.displayClientMessage(new TextComponent("Switched to Attack Mode"), false);
+                                    player.displayClientMessage(Component.literal("Switched to Attack Mode"), false);
                                 }
                             }
 
@@ -73,19 +76,21 @@ public class VillagerHeadSetProcedure {
                         } else if (entity instanceof Player) {
                             player = (Player)entity;
                             if (!player.level.isClientSide()) {
-                                player.displayClientMessage(new TextComponent("On Cooldown"), true);
+                                player.displayClientMessage(Component.literal("On Cooldown"), true);
                             }
                         }
                     } else if (entity.getPersistentData().getBoolean("villager_head")) {
                         if (!entity.getPersistentData().getBoolean("villager_head_used")) {
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "team join villagers @s");
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "team join villagers @s",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                             }
 
                             if (entity instanceof Player) {
                                 player = (Player)entity;
                                 if (!player.level.isClientSide()) {
-                                    player.displayClientMessage(new TextComponent("Switched to Disguise Mode"), false);
+                                    player.displayClientMessage(Component.literal("Switched to Disguise Mode"), false);
                                 }
                             }
 
@@ -101,7 +106,7 @@ public class VillagerHeadSetProcedure {
                         } else if (entity instanceof Player) {
                             player = (Player)entity;
                             if (!player.level.isClientSide()) {
-                                player.displayClientMessage(new TextComponent("On Cooldown"), true);
+                                player.displayClientMessage(Component.literal("On Cooldown"), true);
                             }
                         }
                     }

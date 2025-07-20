@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.procedures;
 import java.util.Map;
 import javax.annotation.Nullable;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -25,17 +26,17 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 public class RightefProcedure {
 
     @SubscribeEvent
-    public static void onRightClickItem(RightClickItem rightclickitem) {
-        if (rightclickitem.getHand() == rightclickitem.getPlayer().getUsedItemHand()) {
-            execute(rightclickitem, rightclickitem.getWorld(), rightclickitem.getPlayer());
+    public static void onRightClickItem(RightClickItem rightclickitem) throws CommandSyntaxException {
+        if (rightclickitem.getHand() == rightclickitem.getEntity().getUsedItemHand()) {
+            execute(rightclickitem, rightclickitem.getLevel(), rightclickitem.getEntity());
         }
     }
 
-    public static void execute(LevelAccessor levelaccessor, Entity entity) {
+    public static void execute(LevelAccessor levelaccessor, Entity entity) throws CommandSyntaxException {
         execute((Event) null, levelaccessor, entity);
     }
 
-    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, final Entity entity) {
+    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, final Entity entity) throws CommandSyntaxException {
         if (entity != null) {
             Enchantment enchantment = Enchantments.CHANNELING;
             LivingEntity livingentity;
@@ -49,7 +50,9 @@ public class RightefProcedure {
             }
 
             if (EnchantmentHelper.getItemEnchantmentLevel(enchantment, itemstack) != 0 && !entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect give @s annoyingvillagers:electify 4 0 true");
+                entity.getServer().getCommands().getDispatcher().execute(
+                        "effect give @s annoyingvillagers:electify 4 0 true",
+                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
             }
 
             enchantment = Enchantments.FIRE_ASPECT;

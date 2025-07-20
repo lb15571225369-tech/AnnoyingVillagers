@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.LevelAccessor;
@@ -11,16 +12,16 @@ public class BlueDemonEndStagingOnEntityUpdateProcedure {
 
         new DelayedTask(405) {
             @Override
-            public void run() {
+            public void run() throws CommandSyntaxException {
                 if (entity.isAlive()) {
                     String command = Math.random() <= 0.4D
                             ? "summon annoyingvillagers:blue_demon"
                             : "summon annoyingvillagers:blue_demon_2";
 
                     if (!entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().performCommand(
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                                command
+                        entity.getServer().getCommands().getDispatcher().execute(
+                                command,
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                         );
                     }
 

@@ -6,7 +6,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-//import com.pla.annoyingvillagers.potion.HerobrineEffectMobEffect;
 
 
 public class AnnoyingVillagersModMobEffects {

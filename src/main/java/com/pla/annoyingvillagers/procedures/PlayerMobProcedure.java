@@ -62,7 +62,7 @@ public class PlayerMobProcedure {
                     Level level;
                     Projectile projectile;
 
-                    if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("player_mobs:player_mob")) {
+                    if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("player_mobs:player_mob")) {
                         if (Math.random() <= 0.3D && entity instanceof LivingEntity) {
                             livingentity1 = (LivingEntity)entity;
                             if (!livingentity1.level.isClientSide()) {
@@ -317,7 +317,7 @@ public class PlayerMobProcedure {
                         }
                     }
 
-                    if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("guardvillagers:guard")) {
+                    if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("guardvillagers:guard")) {
                         if (Math.random() <= 0.35D && entity instanceof LivingEntity) {
                             livingentity1 = (LivingEntity)entity;
                             if (!livingentity1.level.isClientSide()) {

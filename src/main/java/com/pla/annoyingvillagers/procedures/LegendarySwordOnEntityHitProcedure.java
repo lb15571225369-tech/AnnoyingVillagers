@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.procedures;
 import java.util.Random;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,7 +27,7 @@ public class LegendarySwordOnEntityHitProcedure {
 
                 ItemStack itemstack2 = itemstack1;
 
-                if (itemstack2.hurt(Mth.nextInt(new Random(), 30, 300), new Random(), (ServerPlayer) null)) {
+                if (itemstack2.hurt(Mth.nextInt((RandomSource) new Random(), 30, 300), (RandomSource) new Random(), (ServerPlayer) null)) {
                     itemstack2.shrink(1);
                     itemstack2.setDamageValue(0);
                 }
@@ -39,7 +40,7 @@ public class LegendarySwordOnEntityHitProcedure {
                 }
 
                 itemstack2 = itemstack1;
-                if (itemstack2.hurt(Mth.nextInt(new Random(), 30, 300), new Random(), (ServerPlayer) null)) {
+                if (itemstack2.hurt(Mth.nextInt((RandomSource) new Random(), 30, 300), (RandomSource) new Random(), (ServerPlayer) null)) {
                     itemstack2.shrink(1);
                     itemstack2.setDamageValue(0);
                 }
@@ -52,7 +53,7 @@ public class LegendarySwordOnEntityHitProcedure {
                 }
 
                 itemstack2 = itemstack1;
-                if (itemstack2.hurt(Mth.nextInt(new Random(), 30, 300), new Random(), (ServerPlayer) null)) {
+                if (itemstack2.hurt(Mth.nextInt((RandomSource) new Random(), 30, 300), (RandomSource) new Random(), (ServerPlayer) null)) {
                     itemstack2.shrink(1);
                     itemstack2.setDamageValue(0);
                 }
@@ -65,7 +66,7 @@ public class LegendarySwordOnEntityHitProcedure {
                 }
 
                 itemstack2 = itemstack1;
-                if (itemstack2.hurt(Mth.nextInt(new Random(), 30, 300), new Random(), (ServerPlayer) null)) {
+                if (itemstack2.hurt(Mth.nextInt((RandomSource) new Random(), 30, 300), (RandomSource) new Random(), (ServerPlayer) null)) {
                     itemstack2.shrink(1);
                     itemstack2.setDamageValue(0);
                 }

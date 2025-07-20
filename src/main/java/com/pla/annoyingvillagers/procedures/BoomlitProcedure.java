@@ -7,15 +7,15 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.util.CheckGameMode;
-import net.minecraft.Util;
-import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -26,12 +26,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.world.ExplosionEvent.Detonate;
+import net.minecraftforge.event.level.ExplosionEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -46,40 +45,35 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 public class BoomlitProcedure {
 
     @SubscribeEvent
-    public static void onExplode(Detonate detonate) {
-        execute(detonate, detonate.getWorld(), detonate.getExplosion().getPosition().x, detonate.getExplosion().getPosition().y, detonate.getExplosion().getPosition().z);
+    public static void onExplode(ExplosionEvent.Detonate detonate) throws CommandSyntaxException {
+        execute(detonate, detonate.getLevel(), detonate.getExplosion().getPosition().x, detonate.getExplosion().getPosition().y, detonate.getExplosion().getPosition().z);
     }
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2) {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2) throws CommandSyntaxException {
         execute((Event) null, levelaccessor, d0, d1, d2);
     }
 
-    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, double d0, double d1, double d2) {
+    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, double d0, double d1, double d2) throws CommandSyntaxException {
         ServerLevel serverlevel;
 
         if (levelaccessor instanceof ServerLevel) {
             serverlevel = (ServerLevel)levelaccessor;
-            serverlevel.getServer().getCommands().performCommand((new CommandSourceStack(CommandSource.NULL, new Vec3(d0, d1, d2), Vec2.ZERO, serverlevel, 4, "", new TextComponent(""), serverlevel.getServer(), (Entity)null)).withSuppressedOutput(), "particle minecraft:campfire_signal_smoke ~ ~ ~ 0 0 0 0.02 100");
+            serverlevel.getServer().getCommands().getDispatcher().execute("particle minecraft:campfire_signal_smoke ~ ~ ~ 0 0 0 0.02 100", (new CommandSourceStack(CommandSource.NULL, new Vec3(d0, d1, d2), Vec2.ZERO, serverlevel, 4, "", Component.literal(""), serverlevel.getServer(), (Entity)null)).withSuppressedOutput());
         }
 
         if (levelaccessor instanceof ServerLevel) {
             serverlevel = (ServerLevel)levelaccessor;
-            serverlevel.getServer().getCommands().performCommand((new CommandSourceStack(CommandSource.NULL, new Vec3(d0, d1, d2), Vec2.ZERO, serverlevel, 4, "", new TextComponent(""), serverlevel.getServer(), (Entity)null)).withSuppressedOutput(), "particle epicfight:air_burst ^ ^1.5 ^ 0 0 0 10 1");
+            serverlevel.getServer().getCommands().getDispatcher().execute("particle epicfight:air_burst ^ ^1.5 ^ 0 0 0 10 1", (new CommandSourceStack(CommandSource.NULL, new Vec3(d0, d1, d2), Vec2.ZERO, serverlevel, 4, "", Component.literal(""), serverlevel.getServer(), (Entity)null)).withSuppressedOutput());
         }
 
         if (levelaccessor instanceof ServerLevel) {
             serverlevel = (ServerLevel)levelaccessor;
-            serverlevel.getServer().getCommands().performCommand((new CommandSourceStack(CommandSource.NULL, new Vec3(d0, d1, d2), Vec2.ZERO, serverlevel, 4, "", new TextComponent(""), serverlevel.getServer(), (Entity)null)).withSuppressedOutput(), "particle epicfight:air_burst ~ ~1.5 ~ 0 0 0 10 1");
+            serverlevel.getServer().getCommands().getDispatcher().execute("particle epicfight:air_burst ~ ~1.5 ~ 0 0 0 10 1", (new CommandSourceStack(CommandSource.NULL, new Vec3(d0, d1, d2), Vec2.ZERO, serverlevel, 4, "", Component.literal(""), serverlevel.getServer(), (Entity)null)).withSuppressedOutput());
         }
 
-        if (levelaccessor.isEmptyBlock(new BlockPos(d0, d1 - 1.0D, d2))) {
-            if (levelaccessor instanceof ServerLevel) {
-                serverlevel = (ServerLevel)levelaccessor;
-                serverlevel.getServer().getCommands().performCommand((new CommandSourceStack(CommandSource.NULL, new Vec3(d0, d1, d2), Vec2.ZERO, serverlevel, 4, "", new TextComponent(""), serverlevel.getServer(), (Entity)null)).withSuppressedOutput(), "1");
-            }
-        } else if (levelaccessor instanceof ServerLevel) {
+        if (!levelaccessor.isEmptyBlock(new BlockPos(d0, d1 - 1.0D, d2)) && levelaccessor instanceof ServerLevel) {
             serverlevel = (ServerLevel)levelaccessor;
-            serverlevel.getServer().getCommands().performCommand((new CommandSourceStack(CommandSource.NULL, new Vec3(d0, d1, d2), Vec2.ZERO, serverlevel, 4, "", new TextComponent(""), serverlevel.getServer(), (Entity)null)).withSuppressedOutput(), "particle epicfight:ground_slam ~ ~-3 ~ 0 0 0 2 90");
+            serverlevel.getServer().getCommands().getDispatcher().execute("particle epicfight:ground_slam ~ ~-3 ~ 0 0 0 2 90", (new CommandSourceStack(CommandSource.NULL, new Vec3(d0, d1, d2), Vec2.ZERO, serverlevel, 4, "", Component.literal(""), serverlevel.getServer(), (Entity)null)).withSuppressedOutput());
         }
 
         Vec3 vec3 = new Vec3(d0, d1, d2);
@@ -95,12 +89,8 @@ public class BoomlitProcedure {
 
         while(iterator.hasNext()) {
             entity = (Entity)iterator.next();
-            if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("minecraft:player")) {
-                if (entity.isPassenger()) {
-                    if (!entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "1");
-                    }
-                } else {
+            if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:player")) {
+                if (!entity.isPassenger()) {
                     LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch)EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 
                     if (livingentitypatch != null) {
@@ -132,7 +122,7 @@ public class BoomlitProcedure {
                                 }
 
                                 itemstack2 = itemstack1;
-                                if (itemstack2.hurt(300, new Random(), (ServerPlayer)null)) {
+                                if (itemstack2.hurt(300, (RandomSource) new Random(), (ServerPlayer)null)) {
                                     itemstack2.shrink(1);
                                     itemstack2.setDamageValue(0);
                                 }
@@ -155,7 +145,7 @@ public class BoomlitProcedure {
                                 }
 
                                 itemstack2 = itemstack1;
-                                if (itemstack2.hurt(300, new Random(), (ServerPlayer)null)) {
+                                if (itemstack2.hurt(300, (RandomSource) new Random(), (ServerPlayer)null)) {
                                     itemstack2.shrink(1);
                                     itemstack2.setDamageValue(0);
                                 }
@@ -178,7 +168,7 @@ public class BoomlitProcedure {
                                 }
 
                                 itemstack2 = itemstack1;
-                                if (itemstack2.hurt(300, new Random(), (ServerPlayer)null)) {
+                                if (itemstack2.hurt(300, (RandomSource) new Random(), (ServerPlayer)null)) {
                                     itemstack2.shrink(1);
                                     itemstack2.setDamageValue(0);
                                 }
@@ -201,7 +191,7 @@ public class BoomlitProcedure {
                                 }
 
                                 itemstack2 = itemstack1;
-                                if (itemstack2.hurt(300, new Random(), (ServerPlayer)null)) {
+                                if (itemstack2.hurt(300, (RandomSource) new Random(), (ServerPlayer)null)) {
                                     itemstack2.shrink(1);
                                     itemstack2.setDamageValue(0);
                                 }
@@ -229,7 +219,7 @@ public class BoomlitProcedure {
 
                     if (dynamicanimation1 != AVAnimations.HARD_GREAT_SWORD_GUARD_SKILL) {
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10");
+                            entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                         }
 
                         if (entity.getPersistentData().getBoolean("a_player") && entity instanceof LivingEntity) {
@@ -256,7 +246,7 @@ public class BoomlitProcedure {
         while(iterator.hasNext()) {
             entity = (Entity)iterator.next();
             if (entity instanceof Player && !entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "impactful @s shake 40 6 6");
+                entity.getServer().getCommands().getDispatcher().execute("impactful @s shake 40 6 6", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
             }
         }
 

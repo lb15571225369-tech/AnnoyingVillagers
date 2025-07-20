@@ -1,7 +1,7 @@
 package com.pla.annoyingvillagers.procedures;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -25,7 +25,7 @@ public class EnchantBedRightClickOnBlockProcedure {
                     if (entity instanceof Player) {
                         player = (Player) entity;
                         if (!player.level.isClientSide()) {
-                            player.displayClientMessage(new TextComponent("You have already used the Enchant Bed!"), true);
+                            player.displayClientMessage(Component.literal("You have already used the Enchant Bed!"), true);
                             return;
                         }
                     }
@@ -50,7 +50,7 @@ public class EnchantBedRightClickOnBlockProcedure {
                     if (entity instanceof Player) {
                         player = (Player) entity;
                         if (!player.level.isClientSide()) {
-                            player.displayClientMessage(new TextComponent("The Enchant Bed has expired, you can no longer use it."), true);
+                            player.displayClientMessage(Component.literal("The Enchant Bed has expired, you can no longer use it."), true);
                         }
                     }
                 } else {
@@ -65,14 +65,14 @@ public class EnchantBedRightClickOnBlockProcedure {
                     if (entity instanceof Player) {
                         player = (Player) entity;
                         if (!player.level.isClientSide()) {
-                            player.displayClientMessage(new TextComponent("You used the Enchant Bed once. Experience level -1."), true);
+                            player.displayClientMessage(Component.literal("You used the Enchant Bed once. Experience level -1."), true);
                         }
                     }
 
                     if (entity instanceof Player) {
                         player = (Player) entity;
                         if (!player.level.isClientSide()) {
-                            player.displayClientMessage(new TextComponent("Respawn point has been reset."), false);
+                            player.displayClientMessage(Component.literal("Respawn point has been reset."), false);
                         }
                     }
 
@@ -92,7 +92,7 @@ public class EnchantBedRightClickOnBlockProcedure {
             } else if (entity instanceof Player) {
                 player = (Player) entity;
                 if (!player.level.isClientSide()) {
-                    player.displayClientMessage(new TextComponent("Your experience level is too low. You must be above level 2 to use this!"), true);
+                    player.displayClientMessage(Component.literal("Your experience level is too low. You must be above level 2 to use this!"), true);
                 }
             }
 

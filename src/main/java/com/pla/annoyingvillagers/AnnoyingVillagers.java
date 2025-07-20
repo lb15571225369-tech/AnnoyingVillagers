@@ -41,14 +41,13 @@ public class AnnoyingVillagers {
     public static final Logger LOGGER = LogManager.getLogger(AnnoyingVillagers.class);
     public static final String MODID = "annoyingvillagers";
     private static final String PROTOCOL_VERSION = "1";
-    public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(new ResourceLocation(AnnoyingVillagers.MODID, "main"), () -> {
+    public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "main"), () -> {
         return "1";
     }, "1"::equals, "1"::equals);
     private static int messageID = 0;
 
-    public AnnoyingVillagers() {
-        IEventBus ieventbus = FMLJavaModLoadingContext.get().getModEventBus();
-
+    public AnnoyingVillagers(FMLJavaModLoadingContext context) {
+        IEventBus ieventbus = context.getModEventBus();
         AnnoyingVillagersModBlocks.REGISTRY.register(ieventbus);
         AnnoyingVillagersModItems.REGISTRY.register(ieventbus);
         ieventbus.addListener(LegendarySwordCapability::register);
@@ -56,7 +55,7 @@ public class AnnoyingVillagers {
         AnnoyingVillagersModEntities.REGISTRY.register(ieventbus);
         AnnoyingVillagersModEnchantments.REGISTRY.register(ieventbus);
         AnnoyingVillagersModMobEffects.REGISTRY.register(ieventbus);
-        AnnoyingVillagersModParticleTypes.REGISTRY.register(ieventbus);
+        AnnoyingVillagersModBiomeModifiers.register(ieventbus);
         AVSkill.registerSkills();
         AVSounds.SOUNDS.register(ieventbus);
         MinecraftForge.EVENT_BUS.register(new NpcGearLoadProcedure());

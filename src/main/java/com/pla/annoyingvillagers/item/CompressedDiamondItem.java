@@ -6,7 +6,7 @@ import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.procedures.CompressedDiamondOnCraftedProcedure;
 import com.pla.annoyingvillagers.procedures.CompressedDiamondOnDroppedProcedure;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -22,7 +22,7 @@ public class CompressedDiamondItem extends Item {
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(new TextComponent("Compressed Diamond: Highest Quality, Maximum Hardness"));
+        list.add(Component.literal("Compressed Diamond: Highest Quality, Maximum Hardness"));
     }
 
     public void onCraftedBy(ItemStack itemstack, Level level, Player player) {

@@ -1,6 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -66,13 +66,13 @@ public class LegendarySwordWhenInInventoryProcedure {
                     if (entity instanceof Player) {
                         player1 = (Player) entity;
                         if (!player1.level.isClientSide()) {
-                            player1.displayClientMessage(new TextComponent("You are the owner of this weapon."), false);
+                            player1.displayClientMessage(Component.literal("You are the owner of this weapon."), false);
                         }
                     }
                 } else if (entity instanceof Player) {
                     player1 = (Player) entity;
                     if (!player1.level.isClientSide()) {
-                        player1.displayClientMessage(new TextComponent("You are not the owner of this weapon. It will not obey your commands."), false);
+                        player1.displayClientMessage(Component.literal("You are not the owner of this weapon. It will not obey your commands."), false);
                     }
                 }
             }
@@ -110,14 +110,14 @@ public class LegendarySwordWhenInInventoryProcedure {
                     if (entity instanceof Player) {
                         player = (Player) entity;
                         if (!player.level.isClientSide()) {
-                            player.displayClientMessage(new TextComponent("You are not strong enough to wield this weapon"), true);
+                            player.displayClientMessage(Component.literal("You are not strong enough to wield this weapon"), true);
                         }
                     }
 
                     if (entity instanceof Player) {
                         player = (Player) entity;
                         if (!player.level.isClientSide()) {
-                            player.displayClientMessage(new TextComponent("You are not strong enough to wield this weapon"), false);
+                            player.displayClientMessage(Component.literal("You are not strong enough to wield this weapon"), false);
                         }
                     }
 

@@ -13,6 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -63,7 +64,7 @@ public class VillagerScoutCaptainOnHurtProcedure {
 
                     if (Math.random() <= 0.09D) {
                         entity.setYRot(0.0F);
-                        entity.setXRot((float)Mth.nextDouble(new Random(), 90.0D, 180.0D));
+                        entity.setXRot((float)Mth.nextDouble((RandomSource) new Random(), 90.0D, 180.0D));
                         entity.setYBodyRot(entity.getYRot());
                         entity.setYHeadRot(entity.getYRot());
                         entity.yRotO = entity.getYRot();
@@ -359,9 +360,9 @@ public class VillagerScoutCaptainOnHurtProcedure {
                     if (f <= 7.0F && levelaccessor instanceof Level) {
                         level = (Level)levelaccessor;
                         if (!level.isClientSide()) {
-                            level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.item.break")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                            level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.item.break")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                         } else {
-                            level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.item.break")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                            level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.item.break")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                         }
                     }
                 }

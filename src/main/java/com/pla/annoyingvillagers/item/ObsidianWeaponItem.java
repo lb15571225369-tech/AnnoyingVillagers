@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.item;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -49,13 +50,21 @@ public class ObsidianWeaponItem extends SwordItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {
         InteractionResultHolder<ItemStack> interactionresultholder = super.use(level, player, interactionhand);
 
-        ObsidianWeaponsOnUseProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
+        try {
+            ObsidianWeaponsOnUseProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
         return interactionresultholder;
     }
 
     public InteractionResult useOn(UseOnContext useoncontext) {
         super.useOn(useoncontext);
-        ObsidianWeaponsOnUseProcedure.execute(useoncontext.getLevel(), (double) useoncontext.getClickedPos().getX(), (double) useoncontext.getClickedPos().getY(), (double) useoncontext.getClickedPos().getZ(), useoncontext.getPlayer(), useoncontext.getItemInHand());
+        try {
+            ObsidianWeaponsOnUseProcedure.execute(useoncontext.getLevel(), (double) useoncontext.getClickedPos().getX(), (double) useoncontext.getClickedPos().getY(), (double) useoncontext.getClickedPos().getZ(), useoncontext.getPlayer(), useoncontext.getItemInHand());
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
         return InteractionResult.SUCCESS;
     }
 

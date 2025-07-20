@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.client.renderer;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.VillagerScoutEntity;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -16,6 +17,6 @@ public class VillagerScoutRenderer extends HumanoidMobRenderer<VillagerScoutEnti
     }
 
     public ResourceLocation getTextureLocation(VillagerScoutEntity cunminzhenchabingentity) {
-        return new ResourceLocation("annoyingvillagers:textures/entities/villager_scout.png");
+        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/villager_scout.png");
     }
 }

@@ -1,9 +1,10 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -21,7 +22,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class WoopieTheSwordItemOnUseProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity, ItemStack itemstack) {
+    public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity, ItemStack itemstack) throws CommandSyntaxException {
         if (entity != null) {
             if (entity.isSprinting()) {
                 if (itemstack.getOrCreateTag().getDouble("woopie_dash") >= 1.0D) {
@@ -40,10 +41,12 @@ public class WoopieTheSwordItemOnUseProcedure {
                     if (itemstack1.getItem() == AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get()) {
                         itemstack.getOrCreateTag().putDouble("woopie_dash", itemstack.getOrCreateTag().getDouble("woopie_dash") - 1.0D);
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/rush_sword\" 0 1");
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "indestructible @s play \"annoyingvillagers:biped/combat/rush_sword\" 0 1",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                         }
                         new DelayedTask(4) {
-                            public void run() {
+                            public void run() throws CommandSyntaxException {
                                 if (entity instanceof LivingEntity) {
                                     LivingEntity livingentity1 = (LivingEntity)entity;
 
@@ -55,7 +58,9 @@ public class WoopieTheSwordItemOnUseProcedure {
                                 Entity entity1 = entity;
 
                                 if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                    entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute at @s run particle annoyingvillagers:blue_spark ~ ~1 ~ 0 0 0 0.1 500");
+                                    entity1.getServer().getCommands().getDispatcher().execute(
+                                            "execute at @s run particle annoyingvillagers:blue_spark ~ ~1 ~ 0 0 0 0.1 500",
+                                            entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                 }
 
                                 LevelAccessor levelaccessor1 = levelaccessor;
@@ -64,9 +69,9 @@ public class WoopieTheSwordItemOnUseProcedure {
                                 if (levelaccessor1 instanceof Level) {
                                     level = (Level)levelaccessor1;
                                     if (!level.isClientSide()) {
-                                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.ender_dragon.flap")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.ender_dragon.flap")), SoundSource.BLOCKS, 1.0F, 1.0F);
                                     } else {
-                                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.ender_dragon.flap")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.ender_dragon.flap")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                                     }
                                 }
 
@@ -74,9 +79,9 @@ public class WoopieTheSwordItemOnUseProcedure {
                                 if (levelaccessor1 instanceof Level) {
                                     level = (Level)levelaccessor1;
                                     if (!level.isClientSide()) {
-                                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:wing")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "wing")), SoundSource.BLOCKS, 1.0F, 1.0F);
                                     } else {
-                                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:wing")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "wing")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                                     }
                                 }
 
@@ -106,7 +111,9 @@ public class WoopieTheSwordItemOnUseProcedure {
                             }
 
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute at @s run particle annoyingvillagers:blue_spark ~ ~1 ~ 0 0 0 0.1 500");
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "execute at @s run particle annoyingvillagers:blue_spark ~ ~1 ~ 0 0 0 0.1 500",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                             }
 
                             Level level;
@@ -114,18 +121,18 @@ public class WoopieTheSwordItemOnUseProcedure {
                             if (levelaccessor instanceof Level) {
                                 level = (Level)levelaccessor;
                                 if (!level.isClientSide()) {
-                                    level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.ender_dragon.flap")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                                    level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.ender_dragon.flap")), SoundSource.BLOCKS, 1.0F, 1.0F);
                                 } else {
-                                    level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.ender_dragon.flap")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                                    level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.ender_dragon.flap")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                                 }
                             }
 
                             if (levelaccessor instanceof Level) {
                                 level = (Level)levelaccessor;
                                 if (!level.isClientSide()) {
-                                    level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:wing")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                                    level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "wing")), SoundSource.BLOCKS, 1.0F, 1.0F);
                                 } else {
-                                    level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:wing")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                                    level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "wing")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                                 }
                             }
 
@@ -140,7 +147,7 @@ public class WoopieTheSwordItemOnUseProcedure {
                     Player player1 = (Player)entity;
 
                     if (!player1.level.isClientSide()) {
-                        player1.displayClientMessage(new TextComponent("Not Enough Energy!"), true);
+                        player1.displayClientMessage(Component.literal("Not Enough Energy!"), true);
                     }
                 }
             }

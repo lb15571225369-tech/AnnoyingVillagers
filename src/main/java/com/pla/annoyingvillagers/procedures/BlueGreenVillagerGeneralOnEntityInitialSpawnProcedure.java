@@ -3,10 +3,12 @@ package com.pla.annoyingvillagers.procedures;
 import java.util.Comparator;
 import java.util.Random;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -30,7 +32,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) throws CommandSyntaxException {
         if (entity != null) {
             entity.getPersistentData().putBoolean("av_npc", true);
             LivingEntity livingentity;
@@ -99,7 +101,7 @@ public class BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure {
                     itemstack1 = ItemStack.EMPTY;
                 }
 
-                itemstack1.enchant(Enchantments.SHARPNESS, Mth.nextInt(new Random(), 1, 4));
+                itemstack1.enchant(Enchantments.SHARPNESS, Mth.nextInt((RandomSource) new Random(), 1, 4));
                 if (entity instanceof LivingEntity) {
                     livingentity = (LivingEntity)entity;
                     itemstack1 = livingentity.getItemBySlot(EquipmentSlot.HEAD);
@@ -107,7 +109,7 @@ public class BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure {
                     itemstack1 = ItemStack.EMPTY;
                 }
 
-                itemstack1.enchant(Enchantments.ALL_DAMAGE_PROTECTION, Mth.nextInt(new Random(), 1, 4));
+                itemstack1.enchant(Enchantments.ALL_DAMAGE_PROTECTION, Mth.nextInt((RandomSource) new Random(), 1, 4));
                 if (entity instanceof LivingEntity) {
                     livingentity = (LivingEntity)entity;
                     itemstack1 = livingentity.getItemBySlot(EquipmentSlot.CHEST);
@@ -115,7 +117,7 @@ public class BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure {
                     itemstack1 = ItemStack.EMPTY;
                 }
 
-                itemstack1.enchant(Enchantments.ALL_DAMAGE_PROTECTION, Mth.nextInt(new Random(), 1, 4));
+                itemstack1.enchant(Enchantments.ALL_DAMAGE_PROTECTION, Mth.nextInt((RandomSource) new Random(), 1, 4));
                 if (entity instanceof LivingEntity) {
                     livingentity = (LivingEntity)entity;
                     itemstack1 = livingentity.getItemBySlot(EquipmentSlot.LEGS);
@@ -123,7 +125,7 @@ public class BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure {
                     itemstack1 = ItemStack.EMPTY;
                 }
 
-                itemstack1.enchant(Enchantments.ALL_DAMAGE_PROTECTION, Mth.nextInt(new Random(), 1, 4));
+                itemstack1.enchant(Enchantments.ALL_DAMAGE_PROTECTION, Mth.nextInt((RandomSource) new Random(), 1, 4));
                 if (entity instanceof LivingEntity) {
                     livingentity = (LivingEntity)entity;
                     itemstack1 = livingentity.getItemBySlot(EquipmentSlot.FEET);
@@ -131,7 +133,7 @@ public class BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure {
                     itemstack1 = ItemStack.EMPTY;
                 }
 
-                itemstack1.enchant(Enchantments.ALL_DAMAGE_PROTECTION, Mth.nextInt(new Random(), 1, 4));
+                itemstack1.enchant(Enchantments.ALL_DAMAGE_PROTECTION, Mth.nextInt((RandomSource) new Random(), 1, 4));
             }
 
             if (Math.random() <= 0.1D) {
@@ -153,7 +155,7 @@ public class BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure {
                     itemstack1 = ItemStack.EMPTY;
                 }
 
-                itemstack1.enchant(Enchantments.POWER_ARROWS, Mth.nextInt(new Random(), 1, 4));
+                itemstack1.enchant(Enchantments.POWER_ARROWS, Mth.nextInt((RandomSource) new Random(), 1, 4));
             }
 
             ServerLevel serverlevel;
@@ -179,7 +181,7 @@ public class BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure {
                     itemstack1 = ItemStack.EMPTY;
                 }
 
-                itemstack1.enchant(Enchantments.POWER_ARROWS, Mth.nextInt(new Random(), 1, 4));
+                itemstack1.enchant(Enchantments.POWER_ARROWS, Mth.nextInt((RandomSource) new Random(), 1, 4));
                 if (levelaccessor instanceof ServerLevel) {
                     serverlevel = (ServerLevel)levelaccessor;
                     Cow cow = new Cow(EntityType.COW, serverlevel);
@@ -270,7 +272,7 @@ public class BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure {
                     itemstack1 = ItemStack.EMPTY;
                 }
 
-                itemstack1.enchant(Enchantments.POWER_ARROWS, Mth.nextInt(new Random(), 1, 4));
+                itemstack1.enchant(Enchantments.POWER_ARROWS, Mth.nextInt((RandomSource) new Random(), 1, 4));
                 if (levelaccessor instanceof ServerLevel) {
                     serverlevel = (ServerLevel)levelaccessor;
                     PolarBear polarbear = new PolarBear(EntityType.POLAR_BEAR, serverlevel);
@@ -341,19 +343,19 @@ public class BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure {
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "team add villagers");
+                entity.getServer().getCommands().getDispatcher().execute("team add villagers", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "team modify villagers friendlyFire false");
+                entity.getServer().getCommands().getDispatcher().execute("team modify villagers friendlyFire false", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "team join villagers @s");
+                entity.getServer().getCommands().getDispatcher().execute("team join villagers @s", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "team join villagers @e[type=minecraft:iron_golem]");
+                entity.getServer().getCommands().getDispatcher().execute("team join villagers @e[type=minecraft:iron_golem]", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
             }
 
         }

@@ -1,19 +1,20 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.LevelAccessor;
 
 public class BlueDemonOnEntityDeathProcedure {
 
-    public static void execute(LevelAccessor world, Entity entity, Entity entity1) {
+    public static void execute(LevelAccessor world, Entity entity, Entity entity1) throws CommandSyntaxException {
         if (entity == null || entity1 == null) return;
 
         // Summon Blue Demon replacement
         if (!entity.level.isClientSide() && entity.getServer() != null) {
-            entity.getServer().getCommands().performCommand(
-                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                    "summon annoyingvillagers:blue_demon_staging"
+            entity.getServer().getCommands().getDispatcher().execute(
+                    "summon annoyingvillagers:blue_demon_staging",
+                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
             );
         }
 

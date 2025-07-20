@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -13,7 +14,7 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 public class NpcKickEffectOnEndProcedure {
 
-    public static void execute(Entity entity) {
+    public static void execute(Entity entity) throws CommandSyntaxException {
         if (entity != null) {
             if (entity.isAlive()) {
                 boolean flag;
@@ -33,7 +34,9 @@ public class NpcKickEffectOnEndProcedure {
                         DynamicAnimation dynamicanimation = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
 
                         if ((dynamicanimation instanceof LongHitAnimation || dynamicanimation == Animations.BIPED_COMMON_NEUTRALIZED || dynamicanimation == Animations.BIPED_KNOCKDOWN) && !entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/skill/roll_backward\" 0 1");
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "indestructible @s play \"epicfight:biped/skill/roll_backward\" 0 1",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                         }
                     }
                 } else if (entity instanceof LivingEntity) {

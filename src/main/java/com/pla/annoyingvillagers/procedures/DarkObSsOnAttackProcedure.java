@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 
 import net.minecraft.core.BlockPos;
@@ -14,19 +15,19 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class DarkObSsOnAttackProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) throws CommandSyntaxException {
         if (entity != null) {
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100");
+                entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
             }
 
             if (levelaccessor instanceof Level) {
                 Level level = (Level) levelaccessor;
 
                 if (!level.isClientSide()) {
-                    level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":ob_place")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                    level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ob_place")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                 } else {
-                    level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":ob_place")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                    level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ob_place")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                 }
             }
 

@@ -52,7 +52,7 @@ public class AVSkill {
 
 
     public static void registerSkills() {
-        SkillManager.register(SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(new ResourceLocation(AnnoyingVillagers.MODID, "biped/combat/dancing_edge")), AnnoyingVillagers.MODID, "dual_dancing_edge");
+        SkillManager.register(SimpleWeaponInnateSkill::new, SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "biped/combat/dancing_edge")), AnnoyingVillagers.MODID, "dual_dancing_edge");
         SkillManager.register(SpinningDeath::new, SpinningDeath.createWeaponInnateBuilder().setCreativeTab(EpicFightCreativeTabs.ITEMS), AnnoyingVillagers.MODID, "spinning_death");
         SkillManager.register(Clash::new, PassiveSkill.createPassiveBuilder().setCreativeTab(EpicFightCreativeTabs.ITEMS), AnnoyingVillagers.MODID, "clash");
         SkillManager.register(EarthquakeSkill::new, EarthquakeSkill.createWeaponInnateBuilder().setCategory(INTERNAL_ONLY), AnnoyingVillagers.MODID, "earthquake");

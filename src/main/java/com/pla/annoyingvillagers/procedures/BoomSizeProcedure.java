@@ -33,8 +33,5 @@ public class BoomSizeProcedure {
             level.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) size, Explosion.BlockInteraction.DESTROY);
             level.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) size, Explosion.BlockInteraction.DESTROY);
         }
-
-        Logger logger = AnnoyingVillagers.LOGGER;
-        logger.info("已在 " + pos.getX() + " " + pos.getY() + " " + pos.getZ() + " 产生大小为 " + size + " 的 boom");
     }
 }

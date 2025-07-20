@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.client.model.ModelBlueDemonTrident;
 import com.pla.annoyingvillagers.entity.BlueDemonTridentEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -15,7 +16,7 @@ import net.minecraft.util.Mth;
 
 public class BlueDemonTridentRenderer extends EntityRenderer<BlueDemonTridentEntity> {
 
-    private static final ResourceLocation texture = new ResourceLocation("annoyingvillagers:textures/entities/bluedemontrident.png");
+    private static final ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/bluedemontrident.png");
     private final ModelBlueDemonTrident model;
 
     public BlueDemonTridentRenderer(Context context) {

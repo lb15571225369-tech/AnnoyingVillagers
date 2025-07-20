@@ -1,9 +1,10 @@
 package com.pla.annoyingvillagers.entity;
 
-import java.util.Set;
 import javax.annotation.Nullable;
+
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -16,7 +17,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.SpawnGroupData;
@@ -35,12 +35,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.biome.MobSpawnSettings.SpawnerData;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraftforge.common.DungeonHooks;
-import net.minecraftforge.event.world.BiomeLoadingEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
@@ -58,17 +55,6 @@ import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
 @EventBusSubscriber
 public class HerobrineEntity extends Monster {
-
-    private static final Set<ResourceLocation> SPAWN_BIOMES = Set.of(new ResourceLocation("forest"), new ResourceLocation("dark_forest"), new ResourceLocation("plains"), new ResourceLocation("the_end"), new ResourceLocation("desert"));
-
-    @SubscribeEvent
-    public static void addLivingEntityToBiomes(BiomeLoadingEvent biomeloadingevent) {
-        if (HerobrineEntity.SPAWN_BIOMES.contains(biomeloadingevent.getName())) {
-            biomeloadingevent.getSpawns().getSpawner(MobCategory.MONSTER).add(new SpawnerData((EntityType) AnnoyingVillagersModEntities.HEROBRINE.get(), 1, 1, 1));
-        }
-
-    }
-
     public HerobrineEntity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.HEROBRINE.get(), level);
     }
@@ -78,7 +64,7 @@ public class HerobrineEntity extends Monster {
         this.maxUpStep = 0.7F;
         this.xpReward = 300;
         this.setNoAi(false);
-        this.setCustomName(new TextComponent("§5Herobrine§r"));
+        this.setCustomName(Component.literal("§5Herobrine§r"));
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Blocks.OBSIDIAN));
@@ -122,11 +108,11 @@ public class HerobrineEntity extends Monster {
     }
 
     public SoundEvent getHurtSound(DamageSource damagesource) {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
+        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.hurt"));
     }
 
     public SoundEvent getDeathSound() {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
+        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.death"));
     }
 
     public void thunderHit(ServerLevel serverlevel, LightningBolt lightningbolt) {
@@ -140,19 +126,31 @@ public class HerobrineEntity extends Monster {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        HerobrineOnHurtProcedure.execute(this);
+        try {
+            HerobrineOnHurtProcedure.execute(this);
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
         return damagesource == DamageSource.FALL ? false : (damagesource == DamageSource.CACTUS ? false : (damagesource == DamageSource.DROWN ? false : (damagesource == DamageSource.WITHER ? false : (damagesource.getMsgId().equals("witherSkull") ? false : super.hurt(damagesource, f)))));
     }
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
-        HerobrineOnDeathProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
+        try {
+            HerobrineOnDeathProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
 
-        HerobrineOnInitialSpawnProcedure.execute(serverlevelaccessor, this);
+        try {
+            HerobrineOnInitialSpawnProcedure.execute(serverlevelaccessor, this);
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
         return spawngroupdata1;
     }
 
@@ -163,7 +161,11 @@ public class HerobrineEntity extends Monster {
 
     public void baseTick() {
         super.baseTick();
-        HerobrineOnEntityTickUpdateProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
+        try {
+            HerobrineOnEntityTickUpdateProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void init() {

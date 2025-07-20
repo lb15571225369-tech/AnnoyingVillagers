@@ -4,7 +4,7 @@ import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.ChatType;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -26,7 +26,7 @@ public class BlueDemon2OnEntityDeathProcedure {
                 @Override
                 public void run() {
                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<Blue Demon> Ultimately couldn't withstand the pressure of this chaotic world..."), ChatType.SYSTEM, Util.NIL_UUID);
+                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Blue Demon> Ultimately couldn't withstand the pressure of this chaotic world..."), false);
                     }
 
                     LevelAccessor levelaccessor1 = levelaccessor;

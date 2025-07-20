@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -10,8 +11,8 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber
 public class AddStarterSkillProcedure {
     @SubscribeEvent
-    public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
-        if (!(event.getPlayer() instanceof ServerPlayer player)) return;
+    public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) throws CommandSyntaxException {
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
 
         CompoundTag data = player.getPersistentData();
         CompoundTag persisted;
@@ -28,17 +29,17 @@ public class AddStarterSkillProcedure {
                     .withSuppressedOutput()
                     .withPermission(4);
 
-            player.getServer().getCommands().performCommand(
-                    source,
-                    "epicfight skill add @s dodge epicfight:roll"
+            player.getServer().getCommands().getDispatcher().execute(
+                    "epicfight skill add @s dodge epicfight:roll",
+                    source
             );
-            player.getServer().getCommands().performCommand(
-                    source,
-                    "epicfight skill add @s passive1 annoyingvillagers:clash"
+            player.getServer().getCommands().getDispatcher().execute(
+                    "epicfight skill add @s passive1 annoyingvillagers:clash",
+                    source
             );
-            player.getServer().getCommands().performCommand(
-                    source,
-                    "epicfight skill add @s guard epicfight:guard"
+            player.getServer().getCommands().getDispatcher().execute(
+                    "epicfight skill add @s guard epicfight:guard",
+                    source
             );
         }
     }

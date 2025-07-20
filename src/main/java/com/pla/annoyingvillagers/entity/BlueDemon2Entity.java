@@ -1,8 +1,10 @@
 package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
+
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -55,7 +57,7 @@ public class BlueDemon2Entity extends Monster {
         this.maxUpStep = 3.0F;
         this.xpReward = 400;
         this.setNoAi(false);
-        this.setCustomName(new TextComponent("§bBlue Demon$r"));
+        this.setCustomName(Component.literal("§bBlue Demon$r"));
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.TRIDENT));
@@ -95,15 +97,19 @@ public class BlueDemon2Entity extends Monster {
     }
 
     public SoundEvent getHurtSound(DamageSource damagesource) {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
+        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.generic.hurt"));
     }
 
     public SoundEvent getDeathSound() {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
+        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.generic.death"));
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        BlueDemon2ParryingProcedure.execute(this);
+        try {
+            BlueDemon2ParryingProcedure.execute(this);
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
         return damagesource.getDirectEntity() instanceof AbstractArrow ? false : (damagesource == DamageSource.FALL ? false : (damagesource == DamageSource.CACTUS ? false : (damagesource == DamageSource.DROWN ? false : (damagesource == DamageSource.LIGHTNING_BOLT ? false : (damagesource.getMsgId().equals("trident") ? false : (damagesource == DamageSource.WITHER ? false : (damagesource.getMsgId().equals("witherSkull") ? false : super.hurt(damagesource, f))))))));
     }
 
@@ -115,7 +121,11 @@ public class BlueDemon2Entity extends Monster {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
 
-        BlueDemon2OnEntityInitialSpawnProcedure.execute(this);
+        try {
+            BlueDemon2OnEntityInitialSpawnProcedure.execute(this);
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
         return spawngroupdata1;
     }
 
@@ -126,7 +136,11 @@ public class BlueDemon2Entity extends Monster {
 
     public void baseTick() {
         super.baseTick();
-        BlueDemon2OnEntityUpdateProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
+        try {
+            BlueDemon2OnEntityUpdateProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void init() {}

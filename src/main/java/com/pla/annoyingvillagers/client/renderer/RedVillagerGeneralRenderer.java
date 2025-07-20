@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.client.renderer;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.RedVillagerGeneralEntity;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -16,7 +17,7 @@ public class RedVillagerGeneralRenderer extends HumanoidMobRenderer<RedVillagerG
     }
 
     public ResourceLocation getTextureLocation(RedVillagerGeneralEntity hongcunqientity) {
-        return new ResourceLocation("annoyingvillagers:textures/entities/red_villager_general.png");
+        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/red_villager_general.png");
     }
 }
 

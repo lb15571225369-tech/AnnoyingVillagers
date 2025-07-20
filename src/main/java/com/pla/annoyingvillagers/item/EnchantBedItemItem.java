@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
@@ -31,7 +31,7 @@ public class EnchantBedItemItem extends Item {
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(new TextComponent("Right-click the Enchanted Bed once to save your respawn point. Upon death, you will not drop your items. After each use, you must right-click the bed again to reactivate the effect. Conflicts with the Totem of Undying."));
+        list.add(Component.literal("Right-click the Enchanted Bed once to save your respawn point. Upon death, you will not drop your items. After each use, you must right-click the bed again to reactivate the effect. Conflicts with the Totem of Undying."));
     }
 
     public InteractionResult useOn(UseOnContext useoncontext) {

@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,7 +11,7 @@ import com.pla.annoyingvillagers.util.DelayedTask;
 
 public class BlueDemonTridentFsSkillEndOnEntityInitialSpawnProcedure {
 
-    public static void execute(LevelAccessor world, Entity entity) {
+    public static void execute(LevelAccessor world, Entity entity) throws CommandSyntaxException {
         if (entity == null) return;
 
         // Enchant chestplate with Protection V
@@ -29,9 +30,9 @@ public class BlueDemonTridentFsSkillEndOnEntityInitialSpawnProcedure {
             };
 
             for (String cmd : commands) {
-                entity.getServer().getCommands().performCommand(
-                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                        cmd
+                entity.getServer().getCommands().getDispatcher().execute(
+                        cmd,
+                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                 );
             }
         }
@@ -39,15 +40,15 @@ public class BlueDemonTridentFsSkillEndOnEntityInitialSpawnProcedure {
         // Schedule transformation after 400 ticks
         new DelayedTask(100) {
             @Override
-            public void run() {
+            public void run() throws CommandSyntaxException {
                 if (!entity.isAlive()) return;
 
                 String summonCommand = "summon annoyingvillagers:blue_demon_2";
 
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().performCommand(
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                            summonCommand
+                    entity.getServer().getCommands().getDispatcher().execute(
+                            summonCommand,
+                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                     );
                 }
 

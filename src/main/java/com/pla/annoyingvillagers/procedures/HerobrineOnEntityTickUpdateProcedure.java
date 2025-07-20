@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 
 public class HerobrineOnEntityTickUpdateProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) throws CommandSyntaxException {
         if (entity != null) {
             Vec3 vec3 = new Vec3(d0, d1, d2);
             List<Entity> list = (List)levelaccessor.getEntitiesOfClass(Entity.class, (new AABB(vec3, vec3)).inflate(16.0D), (entity1) -> {
@@ -44,7 +45,9 @@ public class HerobrineOnEntityTickUpdateProcedure {
 
                 if (entity1 == livingentity) {
                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "tag @s add aim");
+                        entity1.getServer().getCommands().getDispatcher().execute(
+                                "tag @s add aim",
+                                entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                     }
                 } else {
                     LivingEntity livingentity1;
@@ -74,7 +77,9 @@ public class HerobrineOnEntityTickUpdateProcedure {
                     }
 
                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "tag @s remove aim");
+                        entity1.getServer().getCommands().getDispatcher().execute(
+                                "tag @s remove aim",
+                                entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                     }
                 }
             }
@@ -84,7 +89,9 @@ public class HerobrineOnEntityTickUpdateProcedure {
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "fill ~-1 ~ ~ ~ ~ ~ minecraft:air replace");
+                entity.getServer().getCommands().getDispatcher().execute(
+                        "fill ~-1 ~ ~ ~ ~ ~ minecraft:air replace",
+                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
             }
 
             LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch)EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
@@ -96,12 +103,14 @@ public class HerobrineOnEntityTickUpdateProcedure {
                     if (dynamicanimation instanceof KnockdownAnimation) {
                         new DelayedTask(10) {
                             @Override
-                            public void run() {
+                            public void run() throws CommandSyntaxException {
                                 if (dynamicanimation instanceof KnockdownAnimation) {
                                     Entity entity2 = entity;
 
                                     if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                        entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/skill/knockdown_wakeup_left\" 0 1");
+                                        entity2.getServer().getCommands().getDispatcher().execute(
+                                                "indestructible @s play \"epicfight:biped/skill/knockdown_wakeup_left\" 0 1",
+                                                entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                     }
                                 }
                             }

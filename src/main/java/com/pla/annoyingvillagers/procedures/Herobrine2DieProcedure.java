@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.entity.DarkOBFarEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
@@ -28,29 +29,25 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.*;
 
 public class Herobrine2DieProcedure {
-    public static void execute(LevelAccessor world, double x, double y, double z, Entity sourceEntity, Entity targetEntity) {
+    public static void execute(LevelAccessor world, double x, double y, double z, Entity sourceEntity, Entity targetEntity) throws CommandSyntaxException {
         if (sourceEntity == null || targetEntity == null) return;
 
         if (!sourceEntity.level.isClientSide() && sourceEntity.getServer() != null) {
-            sourceEntity.getServer().getCommands().performCommand(
-                    sourceEntity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                    "tag @a remove aim"
+            sourceEntity.getServer().getCommands().getDispatcher().execute(
+                    "tag @a remove aim",
+                    sourceEntity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
             );
         }
 
         if (sourceEntity.isVehicle() && sourceEntity.getType() == EntityType.PLAYER) {
             for (Entity passenger : new ArrayList<>(sourceEntity.getPassengers())) {
                 if (isSpectatorGamemode(passenger)) {
-                    passenger.getServer().getCommands().performCommand(
-                            passenger.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                            "tag @s remove sp"
+                    passenger.getServer().getCommands().getDispatcher().execute(
+                            "tag @s remove sp",
+                            passenger.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                     );
 
                     transferArmor(sourceEntity, passenger);
-
-//                    if (passenger instanceof LivingEntity living) {
-//                        living.removeEffect(AnnoyingVillagersModMobEffects.HEROBRINE_EFFECT.get());
-//                    }
 
                     passenger.stopRiding();
                     if (passenger instanceof ServerPlayer sp) {

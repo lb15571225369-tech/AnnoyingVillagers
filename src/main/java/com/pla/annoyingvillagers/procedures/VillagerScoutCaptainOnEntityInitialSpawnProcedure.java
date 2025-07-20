@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.procedures;
 import java.util.Comparator;
 import java.util.List;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -28,7 +29,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class VillagerScoutCaptainOnEntityInitialSpawnProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) throws CommandSyntaxException {
         if (entity != null) {
             entity.getPersistentData().putBoolean("av_npc", true);
             LivingEntity livingentity;
@@ -255,19 +256,27 @@ public class VillagerScoutCaptainOnEntityInitialSpawnProcedure {
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "team add villagers");
+                entity.getServer().getCommands().getDispatcher().execute(
+                        "team add villagers",
+                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "team modify villagers friendlyFire false");
+                entity.getServer().getCommands().getDispatcher().execute(
+                        "team modify villagers friendlyFire false",
+                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "team join villagers @s");
+                entity.getServer().getCommands().getDispatcher().execute(
+                        "team join villagers @s",
+                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "team join villagers @e[type=minecraft:iron_golem]");
+                entity.getServer().getCommands().getDispatcher().execute(
+                        "team join villagers @e[type=minecraft:iron_golem]",
+                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
             }
 
         }

@@ -26,7 +26,7 @@ public class AirHitProcedure {
 
     private static void execute(@Nullable Event event, Entity entity, Entity entity1) {
         if (entity != null && entity1 != null) {
-            if (ForgeRegistries.ENTITIES.getKey(entity1.getType()).toString().equals("cgm:projectile")) {
+            if (ForgeRegistries.ENTITY_TYPES.getKey(entity1.getType()).toString().equals("cgm:projectile")) {
                 float f;
 
                 if (entity instanceof LivingEntity) {

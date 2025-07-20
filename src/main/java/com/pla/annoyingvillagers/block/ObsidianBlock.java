@@ -3,12 +3,12 @@ package com.pla.annoyingvillagers.block;
 import java.util.Collections;
 import java.util.List;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
@@ -33,15 +33,15 @@ public class ObsidianBlock extends Block {
 
     public ObsidianBlock() {
         super(Properties.of(Material.STONE).sound(new ForgeSoundType(1.0F, 1.0F, () -> {
-            return new SoundEvent(new ResourceLocation("annoyingvillagers:lost"));
+            return new SoundEvent(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "lost"));
         }, () -> {
-            return new SoundEvent(new ResourceLocation("block.stone.step"));
+            return new SoundEvent(ResourceLocation.fromNamespaceAndPath("minecraft", "block.stone.step"));
         }, () -> {
-            return new SoundEvent(new ResourceLocation("block.stone.place"));
+            return new SoundEvent(ResourceLocation.fromNamespaceAndPath("minecraft", "block.stone.place"));
         }, () -> {
-            return new SoundEvent(new ResourceLocation("block.stone.hit"));
+            return new SoundEvent(ResourceLocation.fromNamespaceAndPath("minecraft", "block.stone.hit"));
         }, () -> {
-            return new SoundEvent(new ResourceLocation("annoyingvillagers:silent"));
+            return new SoundEvent(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "silent"));
         })).strength(60.0F, 40.0F).lightLevel((blockstate) -> {
             return 4;
         }).noOcclusion().hasPostProcess((blockstate, blockgetter, blockpos) -> {
@@ -55,7 +55,7 @@ public class ObsidianBlock extends Block {
 
     public void appendHoverText(ItemStack itemstack, BlockGetter blockgetter, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, blockgetter, list, tooltipflag);
-        list.add(new TextComponent("Obsidian Fired by Herobrine's Clone"));
+        list.add(Component.literal("Obsidian Fired by Herobrine's Clone"));
     }
 
     public int getLightBlock(BlockState blockstate, BlockGetter blockgetter, BlockPos blockpos) {
@@ -83,7 +83,11 @@ public class ObsidianBlock extends Block {
 
     public void entityInside(BlockState blockstate, Level level, BlockPos blockpos, Entity entity) {
         super.entityInside(blockstate, level, blockpos, entity);
-        ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), entity);
+        try {
+            ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), entity);
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @OnlyIn(Dist.CLIENT)

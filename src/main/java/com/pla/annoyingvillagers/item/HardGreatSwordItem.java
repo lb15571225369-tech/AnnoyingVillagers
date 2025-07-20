@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.item;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -53,7 +54,11 @@ public class HardGreatSwordItem extends SwordItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {
         InteractionResultHolder<ItemStack> interactionresultholder = super.use(level, player, interactionhand);
 
-        HardGreatSwordSkillRightClickInAirProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
+        try {
+            HardGreatSwordSkillRightClickInAirProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
         return interactionresultholder;
     }
 }

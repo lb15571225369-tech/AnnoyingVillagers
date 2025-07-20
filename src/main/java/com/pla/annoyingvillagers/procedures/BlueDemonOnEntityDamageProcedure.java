@@ -1,12 +1,13 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.ChatType;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -22,7 +23,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class BlueDemonOnEntityDamageProcedure {
 
-    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity, Entity entity1) {
+    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity, Entity entity1) throws CommandSyntaxException {
         if (entity == null || entity1 == null || world == null) return;
 
         if (!entity.getPersistentData().getBoolean("kick_x")) {
@@ -34,16 +35,16 @@ public class BlueDemonOnEntityDamageProcedure {
 
             if (entity instanceof Mob mob && mob.getTarget() == entity1) {
                 if (Math.random() <= 0.2 && !entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().performCommand(
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                            "effect give @s annoyingvillagers:block 1 0 true"
+                    entity.getServer().getCommands().getDispatcher().execute(
+                            "effect give @s annoyingvillagers:block 1 0 true",
+                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                     );
                 }
 
                 if (Math.random() <= 0.01) {
                     new DelayedTask(20) {
                         @Override
-                        public void run() {
+                        public void run() throws CommandSyntaxException {
                             broadcast(world, "<Blue Demon> You're way too predictable.");
                             playSound(world, x, y, z, AnnoyingVillagers.MODID + ":bluedemonsayyc");
                             applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 3);
@@ -55,7 +56,7 @@ public class BlueDemonOnEntityDamageProcedure {
                 } else if (Math.random() <= 0.01) {
                     new DelayedTask(20) {
                         @Override
-                        public void run() {
+                        public void run() throws CommandSyntaxException {
                             applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 10);
                             runParticle(entity);
                         }
@@ -68,7 +69,7 @@ public class BlueDemonOnEntityDamageProcedure {
 
                             new DelayedTask(20) {
                                 @Override
-                                public void run() {
+                                public void run() throws CommandSyntaxException {
                                     applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 40);
                                     applyEffect(entity1, MobEffects.MOVEMENT_SLOWDOWN, 80, 2);
                                     runParticle(entity);
@@ -82,7 +83,7 @@ public class BlueDemonOnEntityDamageProcedure {
                         public void run() {
                             new DelayedTask(20) {
                                 @Override
-                                public void run() {
+                                public void run() throws CommandSyntaxException {
                                     broadcast(world, "<Blue Demon> Looking down on us undead creatures only highlights how ignorant you are.");
                                     playSound(world, x, y, z, AnnoyingVillagers.MODID + ":bluedemon_say_you_no_know");
                                     applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 10);
@@ -98,7 +99,7 @@ public class BlueDemonOnEntityDamageProcedure {
                         public void run() {
                             new DelayedTask(20) {
                                 @Override
-                                public void run() {
+                                public void run() throws CommandSyntaxException {
                                     broadcast(world, "<Blue Demon> How interesting. But I really want to know what is your motive?");
                                     playSound(world, x, y, z, AnnoyingVillagers.MODID + ":bluedemon_say_player_interesting");
                                     runParticle(entity);
@@ -131,13 +132,16 @@ public class BlueDemonOnEntityDamageProcedure {
 
     private static void broadcast(LevelAccessor world, String message) {
         if (!world.isClientSide() && world.getServer() != null) {
-            world.getServer().getPlayerList().broadcastMessage(new TextComponent(message), ChatType.SYSTEM, Util.NIL_UUID);
+            world.getServer().getPlayerList().broadcastSystemMessage(Component.literal(message), false);
         }
     }
 
     private static void playSound(LevelAccessor world, double x, double y, double z, String soundName) {
         if (world instanceof Level level) {
-            SoundEvent sound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(soundName));
+            String[] parts = soundName.split(":", 2);
+            String namespace = parts[0];
+            String path = parts[1];
+            SoundEvent sound = ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(namespace, path));
             if (!level.isClientSide()) {
                 level.playSound(null, new BlockPos(x, y, z), sound, SoundSource.NEUTRAL, 1.0F, 1.0F);
             } else {
@@ -146,20 +150,20 @@ public class BlueDemonOnEntityDamageProcedure {
         }
     }
 
-    private static void runParticle(Entity entity) {
+    private static void runParticle(Entity entity) throws CommandSyntaxException {
         if (!entity.level.isClientSide() && entity.getServer() != null) {
-            entity.getServer().getCommands().performCommand(
-                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                    "execute at @s run particle annoyingvillagers:electric_spark_2 ^ ^ ^ 5 1.5 5 0 10"
+            entity.getServer().getCommands().getDispatcher().execute(
+                    "execute at @s run particle annoyingvillagers:electric_spark_2 ^ ^ ^ 5 1.5 5 0 10",
+                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
             );
         }
     }
 
-    private static void runCommand(Entity entity, String command) {
+    private static void runCommand(Entity entity, String command) throws CommandSyntaxException {
         if (!entity.level.isClientSide() && entity.getServer() != null) {
-            entity.getServer().getCommands().performCommand(
-                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                    command
+            entity.getServer().getCommands().getDispatcher().execute(
+                    command,
+                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
             );
         }
     }

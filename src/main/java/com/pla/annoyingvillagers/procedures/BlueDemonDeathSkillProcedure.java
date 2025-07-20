@@ -4,7 +4,7 @@ import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
@@ -41,14 +41,14 @@ public class BlueDemonDeathSkillProcedure {
     private static void execute(Event event, LevelAccessor world, Entity entity, Entity sourceEntity) {
         if (entity == null || sourceEntity == null || world == null) return;
 
-        if (!ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals(AnnoyingVillagers.MODID + ":blue_demon")) return;
+        if (!ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals(AnnoyingVillagers.MODID + ":blue_demon")) return;
 
         new DelayedTask(90) {
             @Override
             public void run() {
                 if (isSpectator(sourceEntity) || isCreative(sourceEntity)) {
                     if (entity instanceof Player player && !player.level.isClientSide()) {
-                        player.displayClientMessage(new TextComponent("No target"), true);
+                        player.displayClientMessage(Component.literal("No target"), true);
                     }
                     return;
                 }

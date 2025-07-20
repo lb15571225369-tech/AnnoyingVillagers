@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,13 +18,13 @@ import java.util.*;
 
 public class HerobrineOnDeathProcedure {
 
-    public static void execute(LevelAccessor world, double x, double y, double z, Entity source) {
+    public static void execute(LevelAccessor world, double x, double y, double z, Entity source) throws CommandSyntaxException {
         if (source == null) return;
 
         if (!source.level.isClientSide() && source.getServer() != null) {
-            source.getServer().getCommands().performCommand(
-                    source.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                    "tag @a remove aim"
+            source.getServer().getCommands().getDispatcher().execute(
+                    "tag @a remove aim",
+                    source.createCommandSourceStack().withSuppressedOutput().withPermission(4)
             );
         }
 
@@ -32,18 +33,13 @@ public class HerobrineOnDeathProcedure {
             for (Entity passenger : new ArrayList<>(source.getPassengers())) {
                 if (isSpectatorGamemode(passenger)) {
                     if (!passenger.level.isClientSide() && passenger.getServer() != null) {
-                        passenger.getServer().getCommands().performCommand(
-                                passenger.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                                "tag @s remove sp"
+                        passenger.getServer().getCommands().getDispatcher().execute(
+                                "tag @s remove sp",
+                                passenger.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                         );
                     }
 
                     transferArmor(source, passenger);
-
-//                    if (passenger instanceof LivingEntity living) {
-//                        living.removeEffect(AnnoyingVillagersModMobEffects.HEROBRINE_EFFECT.get());
-//                    }
-
                     passenger.stopRiding();
                     if (passenger instanceof ServerPlayer sp) {
                         sp.setGameMode(GameType.SURVIVAL);

@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.item;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.procedures.DiamondGreatSwordItemOnHurtProcedure;
 import com.pla.annoyingvillagers.procedures.DiamondGreatSwordItemOnUseProcedure;
@@ -54,7 +55,11 @@ public class DiamondGreatSwordItem extends SwordItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {
         InteractionResultHolder<ItemStack> interactionresultholder = super.use(level, player, interactionhand);
 
-        DiamondGreatSwordItemOnUseProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
+        try {
+            DiamondGreatSwordItemOnUseProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
         return interactionresultholder;
     }
 }

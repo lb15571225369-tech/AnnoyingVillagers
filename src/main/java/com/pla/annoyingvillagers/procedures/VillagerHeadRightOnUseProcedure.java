@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.procedures;
 
-import net.minecraft.network.chat.TextComponent;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,7 +13,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 
 public class VillagerHeadRightOnUseProcedure {
 
-    public static void execute(Entity entity) {
+    public static void execute(Entity entity) throws CommandSyntaxException {
         if (entity != null) {
             ItemStack itemstack;
 
@@ -48,21 +49,23 @@ public class VillagerHeadRightOnUseProcedure {
                 }
 
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "team join villagers @s");
+                    entity.getServer().getCommands().getDispatcher().execute(
+                            "team join villagers @s",
+                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 }
 
                 entity.getPersistentData().putBoolean("villager_player", true);
                 if (entity instanceof Player) {
                     player1 = (Player) entity;
                     if (!player1.level.isClientSide()) {
-                        player1.displayClientMessage(new TextComponent("You have put on the villager helmet. Villager soldiers will no longer attack you."), false);
+                        player1.displayClientMessage(Component.literal("You have put on the villager helmet. Villager soldiers will no longer attack you."), false);
                     }
                 }
 
                 if (entity instanceof Player) {
                     player1 = (Player) entity;
                     if (!player1.level.isClientSide()) {
-                        player1.displayClientMessage(new TextComponent("Sneak + Right-Click to toggle Disguise/Attack Mode"), false);
+                        player1.displayClientMessage(Component.literal("Sneak + Right-Click to toggle Disguise/Attack Mode"), false);
                     }
                 }
             }

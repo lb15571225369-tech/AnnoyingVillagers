@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.util.DelayedTask;
@@ -15,6 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -182,12 +184,12 @@ public class BlueVillagerGeneralOnTickProcedure {
                                     }
 
                                     if (Math.random() <= 0.05D) {
-                                        new DelayedTask(Mth.nextInt(new Random(), 1, 10)) {
-                                            public void run() {
+                                        new DelayedTask(Mth.nextInt((RandomSource) new Random(), 1, 10)) {
+                                            public void run() throws CommandSyntaxException {
                                                 Entity entity2 = entity;
 
                                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/combat/bow_shot_mid\" 0 1");
+                                                    entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/combat/bow_shot_mid\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                 }
 
                                                 entity2 = entity;
@@ -210,9 +212,9 @@ public class BlueVillagerGeneralOnTickProcedure {
                                                     Level level1 = (Level)levelaccessor1;
 
                                                     if (!level1.isClientSide()) {
-                                                        level1.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.arrow.shoot")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                        level1.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.arrow.shoot")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                     } else {
-                                                        level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.arrow.shoot")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                        level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.arrow.shoot")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                     }
                                                 }
                                             }
@@ -275,8 +277,8 @@ public class BlueVillagerGeneralOnTickProcedure {
                                         }
 
                                         if (Math.random() <= 0.05D) {
-                                            new DelayedTask(Mth.nextInt(new Random(), 1, 10)) {
-                                                public void run() {
+                                            new DelayedTask(Mth.nextInt((RandomSource) new Random(), 1, 10)) {
+                                                public void run() throws CommandSyntaxException {
                                                     Entity entity2 = entity;
                                                     Level level = entity2.level;
 
@@ -293,7 +295,7 @@ public class BlueVillagerGeneralOnTickProcedure {
 
                                                     entity2 = entity;
                                                     if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                        entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/combat/bow_shot_mid\" 0 1");
+                                                        entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/combat/bow_shot_mid\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                     }
 
                                                     LevelAccessor levelaccessor1 = levelaccessor;
@@ -302,9 +304,9 @@ public class BlueVillagerGeneralOnTickProcedure {
                                                         Level level1 = (Level)levelaccessor1;
 
                                                         if (!level1.isClientSide()) {
-                                                            level1.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.arrow.shoot")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                            level1.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.arrow.shoot")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                         } else {
-                                                            level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.arrow.shoot")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                            level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.arrow.shoot")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                         }
                                                     }
                                                 }

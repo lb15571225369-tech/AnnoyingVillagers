@@ -1,7 +1,7 @@
 package com.pla.annoyingvillagers.item;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -12,7 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistries;
 import com.pla.annoyingvillagers.procedures.BlueDemonChestplateEventProcedure;
 
 public abstract class BlueDemonChestplateItem extends ArmorItem {
@@ -32,7 +31,7 @@ public abstract class BlueDemonChestplateItem extends ArmorItem {
             }
 
             public SoundEvent getEquipSound() {
-                return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(""));
+                return null;
             }
 
             public Ingredient getRepairIngredient() {
@@ -64,7 +63,11 @@ public abstract class BlueDemonChestplateItem extends ArmorItem {
         }
 
         public void onArmorTick(ItemStack itemstack, Level level, Player player) {
-            BlueDemonChestplateEventProcedure.execute(player);
+            try {
+                BlueDemonChestplateEventProcedure.execute(player);
+            } catch (CommandSyntaxException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }

@@ -1,12 +1,13 @@
 package com.pla.annoyingvillagers.item;
 
 import java.util.List;
+import java.util.Random;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.EnchantedEnderPearlEntity;
 import com.pla.annoyingvillagers.procedures.EnchantedEnderPearlWhenItemUsedProcedure;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -35,7 +36,7 @@ public class EnchantedEnderPearlItem extends Item {
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(new TextComponent("This is an Ender Pearl enchanted to ignore fall damage"));
+        list.add(Component.literal("This is an Ender Pearl enchanted to ignore fall damage"));
     }
 
     public UseAnim getUseAnimation(ItemStack itemstack) {
@@ -57,7 +58,7 @@ public class EnchantedEnderPearlItem extends Item {
             double d0 = serverplayer.getX();
             double d1 = serverplayer.getY();
             double d2 = serverplayer.getZ();
-            EnchantedEnderPearlEntity fumomoyingzhenzhuentity = EnchantedEnderPearlEntity.shoot(level, serverplayer, level.getRandom(), 1.3F, 0.0D, 0);
+            EnchantedEnderPearlEntity fumomoyingzhenzhuentity = EnchantedEnderPearlEntity.shoot(level, serverplayer, (Random) level.getRandom(), 1.3F, 0.0D, 0);
 
             itemstack.hurtAndBreak(1, serverplayer, (serverplayer1) -> {
                 serverplayer1.broadcastBreakEvent(serverplayer.getUsedItemHand());

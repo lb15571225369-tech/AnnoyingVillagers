@@ -97,7 +97,11 @@ public class EquipmentDataLoader extends SimpleJsonResourceReloadListener {
             } else {
                 itemId = pool.get(RANDOM.nextInt(pool.size()));
             }
-            Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemId));
+
+            String[] parts = itemId.split(":", 2);
+            String namespace = parts[0];
+            String path = parts[1];
+            Item item = ForgeRegistries.ITEMS.getValue(ResourceLocation.fromNamespaceAndPath(namespace, path));
             if (item == null) continue;
             int damage = 0;
             if (item.canBeDepleted()) {
@@ -125,7 +129,10 @@ public class EquipmentDataLoader extends SimpleJsonResourceReloadListener {
         if (pool.isEmpty()) return Optional.empty();
 
         String itemId = pool.get(RANDOM.nextInt(pool.size()));
-        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemId));
+        String[] parts = itemId.split(":", 2);
+        String namespace = parts[0];
+        String path = parts[1];
+        Item item = ForgeRegistries.ITEMS.getValue(ResourceLocation.fromNamespaceAndPath(namespace, path));
         if (item == null) return Optional.empty();
 
         int damage = 0;

@@ -39,7 +39,7 @@ public class NpcRollUpProcedure {
                 boolean flag;
                 LivingEntity livingentity1;
 
-                if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("player_mobs:player_mob")) {
+                if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("player_mobs:player_mob")) {
                     if (entity.getPersistentData().getDouble("npc_level") != 0.0D) {
                         if (entity instanceof LivingEntity) {
                             livingentity = (LivingEntity) entity;

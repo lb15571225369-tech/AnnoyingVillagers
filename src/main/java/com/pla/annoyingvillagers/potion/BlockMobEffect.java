@@ -7,7 +7,7 @@ import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraftforge.client.EffectRenderer;
+import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
 
 public class BlockMobEffect extends MobEffect {
 
@@ -23,8 +23,8 @@ public class BlockMobEffect extends MobEffect {
         return true;
     }
 
-    public void initializeClient(Consumer<EffectRenderer> consumer) {
-        consumer.accept(new EffectRenderer() {
+    public void initializeClient(Consumer<IClientMobEffectExtensions> consumer) {
+        consumer.accept(new IClientMobEffectExtensions() {
             public boolean shouldRender(MobEffectInstance mobeffectinstance) {
                 return false;
             }

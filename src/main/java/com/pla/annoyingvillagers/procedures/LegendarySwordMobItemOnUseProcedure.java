@@ -5,10 +5,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -28,7 +29,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class LegendarySwordMobItemOnUseProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity, final ItemStack itemstack) {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity, final ItemStack itemstack) throws CommandSyntaxException {
         if (entity != null) {
             if (entity.isShiftKeyDown()) {
                 Vec3 vec3 = new Vec3(d0, d1, d2);
@@ -53,11 +54,15 @@ public class LegendarySwordMobItemOnUseProcedure {
                 }
 
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute at @s run particle minecraft:totem_of_undying ^ ^1.5 ^ 0 0 0 1 1000");
+                    entity.getServer().getCommands().getDispatcher().execute(
+                            "execute at @s run particle minecraft:totem_of_undying ^ ^1.5 ^ 0 0 0 1 1000",
+                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 }
 
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute at @s run particle epicfight:air_burst ^ ^1.5 ^ 0 0 0 8 1");
+                    entity.getServer().getCommands().getDispatcher().execute(
+                            "execute at @s run particle epicfight:air_burst ^ ^1.5 ^ 0 0 0 8 1",
+                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 }
 
                 if (entity instanceof Player) {
@@ -66,7 +71,7 @@ public class LegendarySwordMobItemOnUseProcedure {
                     player.getCooldowns().addCooldown(itemstack.getItem(), 500);
                 }
 
-                itemstack.setHoverName(new TextComponent("\u00a7lWake up!"));
+                itemstack.setHoverName(Component.literal("\u00a7lWake up!"));
                 entity.setDeltaMovement(new Vec3(0.0D, 1.2D, 0.0D));
                 entity.setYRot(0.0F);
                 entity.setXRot(45.0F);
@@ -86,36 +91,36 @@ public class LegendarySwordMobItemOnUseProcedure {
                 if (levelaccessor instanceof Level) {
                     level = (Level)levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:wing")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "wing")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:wing")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "wing")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                     }
                 }
 
                 if (levelaccessor instanceof Level) {
                     level = (Level)levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:l_g_w_u")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "l_g_w_u")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:l_g_w_u")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "l_g_w_u")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                     }
                 }
 
                 if (levelaccessor instanceof Level) {
                     level = (Level)levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:legendary_sword_awakening")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "legendary_sword_awakening")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:legendary_sword_awakening")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "legendary_sword_awakening")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                     }
                 }
 
                 if (levelaccessor instanceof Level) {
                     level = (Level)levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.ender_dragon.flap")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.ender_dragon.flap")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.ender_dragon.flap")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.ender_dragon.flap")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                     }
                 }
 
@@ -138,7 +143,7 @@ public class LegendarySwordMobItemOnUseProcedure {
                 new DelayedTask(50) {
                     @Override
                     public void run() {
-                        itemstack.setHoverName(new TextComponent("Legendary Sword"));
+                        itemstack.setHoverName(Component.literal("Legendary Sword"));
                     }
                 };
             }

@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.client.renderer;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.BlueVillagerGeneralEntity;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -16,6 +17,6 @@ public class BlueVillagerGeneralRenderer extends HumanoidMobRenderer<BlueVillage
     }
 
     public ResourceLocation getTextureLocation(BlueVillagerGeneralEntity lancunqientity) {
-        return new ResourceLocation("annoyingvillagers:textures/entities/blue_villager_general.png");
+        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/blue_villager_general.png");
     }
 }

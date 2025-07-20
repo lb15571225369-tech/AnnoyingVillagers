@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
@@ -13,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -33,22 +35,22 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 public class BlueDemon2OnEntityUpdateProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) throws CommandSyntaxException {
         if (entity != null) {
             if (!levelaccessor.getEntitiesOfClass(ThrownTrident.class, AABB.ofSize(new Vec3(d0, d1, d2), 40.0D, 40.0D, 40.0D), (throwntrident) -> {
                 return true;
             }).isEmpty() && Math.random() <= 0.02D) {
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @e[type=minecraft:trident] run particle annoyingvillagers:electric_spark ^ ^ ^0.1 0.2 0.2 0.1 0 1");
+                    entity.getServer().getCommands().getDispatcher().execute("execute at @e[type=minecraft:trident] run particle annoyingvillagers:electric_spark ^ ^ ^0.1 0.2 0.2 0.1 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 }
 
                 if (levelaccessor instanceof Level) {
                     Level level = (Level)levelaccessor;
 
                     if (!level.isClientSide()) {
-                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":electify")), SoundSource.BLOCKS, (float)Mth.nextDouble(new Random(), 0.0D, 0.1D), (float)Mth.nextDouble(new Random(), 0.7D, 1.05D));
+                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "electify")), SoundSource.BLOCKS, (float)Mth.nextDouble((RandomSource) new Random(), 0.0D, 0.1D), (float)Mth.nextDouble((RandomSource) new Random(), 0.7D, 1.05D));
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":electify")), SoundSource.BLOCKS, (float)Mth.nextDouble(new Random(), 0.0D, 0.1D), (float)Mth.nextDouble(new Random(), 0.7D, 1.05D), false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "electify")), SoundSource.BLOCKS, (float)Mth.nextDouble((RandomSource) new Random(), 0.0D, 0.1D), (float)Mth.nextDouble((RandomSource) new Random(), 0.7D, 1.05D), false);
                     }
                 }
             }
@@ -75,16 +77,16 @@ public class BlueDemon2OnEntityUpdateProcedure {
 
                 if (entity1 == livingentity && Math.random() <= 0.12D) {
                     if (!entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute at @s run particle annoyingvillagers:electric_spark ^ ^ ^ 0.3 1.2 0.3 0 1");
+                        entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:electric_spark ^ ^ ^ 0.3 1.2 0.3 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                     }
 
                     if (Math.random() <= 0.8D && levelaccessor instanceof Level) {
                         Level level1 = (Level)levelaccessor;
 
                         if (!level1.isClientSide()) {
-                            level1.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":electify")), SoundSource.BLOCKS, (float)Mth.nextDouble(new Random(), 0.0D, 0.15D), (float)Mth.nextDouble(new Random(), 0.7D, 1.05D));
+                            level1.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "electify")), SoundSource.BLOCKS, (float)Mth.nextDouble((RandomSource) new Random(), 0.0D, 0.15D), (float)Mth.nextDouble((RandomSource) new Random(), 0.7D, 1.05D));
                         } else {
-                            level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":electify")), SoundSource.BLOCKS, (float)Mth.nextDouble(new Random(), 0.0D, 0.15D), (float)Mth.nextDouble(new Random(), 0.7D, 1.05D), false);
+                            level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "electify")), SoundSource.BLOCKS, (float)Mth.nextDouble((RandomSource) new Random(), 0.0D, 0.15D), (float)Mth.nextDouble((RandomSource) new Random(), 0.7D, 1.05D), false);
                         }
                     }
                 }
@@ -95,12 +97,12 @@ public class BlueDemon2OnEntityUpdateProcedure {
             }
             new DelayedTask(1800) {
                 @Override
-                public void run() {
+                public void run() throws CommandSyntaxException {
                     if (entity.isAlive()) {
                         Entity entity2 = entity;
 
                         if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                            entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "summon annoyingvillagers:blue_demon");
+                            entity2.getServer().getCommands().getDispatcher().execute("summon annoyingvillagers:blue_demon", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                         }
 
                         if (!entity.level.isClientSide()) {
@@ -118,12 +120,12 @@ public class BlueDemon2OnEntityUpdateProcedure {
                     if (dynamicanimation instanceof KnockdownAnimation) {
                         new DelayedTask(10) {
                             @Override
-                            public void run() {
+                            public void run() throws CommandSyntaxException {
                                 if (dynamicanimation instanceof KnockdownAnimation) {
                                     Entity entity2 = entity;
 
                                     if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                        entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/skill/knockdown_wakeup_left\" 0 1");
+                                        entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/skill/knockdown_wakeup_left\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                     }
                                 }
                             }

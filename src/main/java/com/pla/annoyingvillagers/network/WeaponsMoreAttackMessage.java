@@ -1,6 +1,8 @@
 package com.pla.annoyingvillagers.network;
 
 import java.util.function.Supplier;
+
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -37,12 +39,16 @@ public class WeaponsMoreAttackMessage {
         Context context = (Context) supplier.get();
 
         context.enqueueWork(() -> {
-            pressAction(context.getSender(), weaponsmoreattackmessage.type, weaponsmoreattackmessage.pressedms);
+            try {
+                pressAction(context.getSender(), weaponsmoreattackmessage.type, weaponsmoreattackmessage.pressedms);
+            } catch (CommandSyntaxException e) {
+                throw new RuntimeException(e);
+            }
         });
         context.setPacketHandled(true);
     }
 
-    public static void pressAction(Player player, int i, int j) {
+    public static void pressAction(Player player, int i, int j) throws CommandSyntaxException {
         Level level = player.level;
         double d0 = player.getX();
         double d1 = player.getY();

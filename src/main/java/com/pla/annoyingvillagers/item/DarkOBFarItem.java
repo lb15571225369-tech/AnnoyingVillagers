@@ -15,6 +15,8 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import com.pla.annoyingvillagers.entity.DarkOBFarEntity;
 
+import java.util.Random;
+
 public class DarkOBFarItem extends Item {
 
     public DarkOBFarItem() {
@@ -40,7 +42,7 @@ public class DarkOBFarItem extends Item {
             double d0 = serverplayer.getX();
             double d1 = serverplayer.getY();
             double d2 = serverplayer.getZ();
-            DarkOBFarEntity darkobfarentity = DarkOBFarEntity.shoot(level, serverplayer, level.getRandom(), 1.0F, 9.0D, 0);
+            DarkOBFarEntity darkobfarentity = DarkOBFarEntity.shoot(level, serverplayer, (Random) level.getRandom(), 1.0F, 9.0D, 0);
 
             itemstack.hurtAndBreak(1, serverplayer, (serverplayer1) -> {
                 serverplayer1.broadcastBreakEvent(serverplayer.getUsedItemHand());

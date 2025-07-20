@@ -1,6 +1,8 @@
 package com.pla.annoyingvillagers.procedures;
 
 import javax.annotation.Nullable;
+
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,18 +19,18 @@ import com.pla.annoyingvillagers.entity.BlueDemonEntity;
 public class ImpactAttackProcedure {
 
     @SubscribeEvent
-    public static void onEntityAttacked(LivingAttackEvent livingattackevent) {
+    public static void onEntityAttacked(LivingAttackEvent livingattackevent) throws CommandSyntaxException {
         if (livingattackevent != null && livingattackevent.getEntity() != null) {
             execute(livingattackevent, livingattackevent.getEntity().level, livingattackevent.getEntity(), livingattackevent.getSource().getDirectEntity(), livingattackevent.getSource().getEntity(), (double) livingattackevent.getAmount());
         }
 
     }
 
-    public static void execute(LevelAccessor levelaccessor, Entity entity, Entity entity1, Entity entity2, double d0) {
+    public static void execute(LevelAccessor levelaccessor, Entity entity, Entity entity1, Entity entity2, double d0) throws CommandSyntaxException {
         execute((Event) null, levelaccessor, entity, entity1, entity2, d0);
     }
 
-    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, Entity entity, Entity entity1, Entity entity2, double d0) {
+    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, Entity entity, Entity entity1, Entity entity2, double d0) throws CommandSyntaxException {
         if (entity != null && entity1 != null && entity2 != null) {
             LivingEntity livingentity;
 
@@ -47,7 +49,9 @@ public class ImpactAttackProcedure {
             if (entity1 instanceof ThrownTrident && entity2 instanceof BlueDemonEntity) {
                 entity.hurt(DamageSource.MAGIC, (float) (d0 * 7.0D));
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "effect give @s annoyingvillagers:electify 5 0 true");
+                    entity.getServer().getCommands().getDispatcher().execute(
+                            "effect give @s annoyingvillagers:electify 5 0 true",
+                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 }
             }
 

@@ -2,6 +2,8 @@ package com.pla.annoyingvillagers.block;
 
 import java.util.Collections;
 import java.util.List;
+
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -45,7 +47,11 @@ public class NoneObBlock extends Block {
 
     public void entityInside(BlockState blockstate, Level level, BlockPos blockpos, Entity entity) {
         super.entityInside(blockstate, level, blockpos, entity);
-        NoneObWhenEntityCollidesWithBlockProcedure.execute(level, entity);
+        try {
+            NoneObWhenEntityCollidesWithBlockProcedure.execute(level, entity);
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -56,7 +62,7 @@ public class NoneObBlock extends Block {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static void blockColorLoad(net.minecraftforge.client.event.ColorHandlerEvent.Block net_minecraftforge_client_event_colorhandlerevent_block) {
+    public static void blockColorLoad(net.minecraftforge.client.event.RegisterColorHandlersEvent.Block net_minecraftforge_client_event_colorhandlerevent_block) {
         net_minecraftforge_client_event_colorhandlerevent_block.getBlockColors().register((blockstate, blockandtintgetter, blockpos, i) -> {
             return blockandtintgetter != null && blockpos != null ? BiomeColors.getAverageGrassColor(blockandtintgetter, blockpos) : GrassColor.get(0.5D, 1.0D);
         }, new Block[]{(Block) AnnoyingVillagersModBlocks.NONEOB.get()});

@@ -1,10 +1,13 @@
 package com.pla.annoyingvillagers.block;
 
 import java.util.Random;
+
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
@@ -33,7 +36,7 @@ public class DarkObUpBlock extends Block {
             return true;
         }).isRedstoneConductor((blockstate, blockgetter, blockpos) -> {
             return false;
-        }).dynamicShape().noDrops());
+        }).dynamicShape());
     }
 
     public boolean propagatesSkylightDown(BlockState blockstate, BlockGetter blockgetter, BlockPos blockpos) {
@@ -62,7 +65,8 @@ public class DarkObUpBlock extends Block {
         DarkObSsOnPlaceProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ());
     }
 
-    public void tick(BlockState blockstate, ServerLevel serverlevel, BlockPos blockpos, Random random) {
+    @Override
+    public void tick(BlockState blockstate, ServerLevel serverlevel, BlockPos blockpos, RandomSource random) {
         super.tick(blockstate, serverlevel, blockpos, random);
         int i = blockpos.getX();
         int j = blockpos.getY();
@@ -74,12 +78,20 @@ public class DarkObUpBlock extends Block {
 
     public void attack(BlockState blockstate, Level level, BlockPos blockpos, Player player) {
         super.attack(blockstate, level, blockpos, player);
-        DarkObSsOnAttackProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), player);
+        try {
+            DarkObSsOnAttackProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), player);
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void entityInside(BlockState blockstate, Level level, BlockPos blockpos, Entity entity) {
         super.entityInside(blockstate, level, blockpos, entity);
-        DarkObSsOnEntityInsideProcedure.execute(level, entity);
+        try {
+            DarkObSsOnEntityInsideProcedure.execute(level, entity);
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @OnlyIn(Dist.CLIENT)

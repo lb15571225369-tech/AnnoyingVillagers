@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.entity;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -58,11 +59,11 @@ public class BlueDemonTridentParticleEntity extends PathfinderMob {
     }
 
     public SoundEvent getHurtSound(DamageSource damagesource) {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
+        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.hurt"));
     }
 
     public SoundEvent getDeathSound() {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
+        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.death"));
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
@@ -76,7 +77,11 @@ public class BlueDemonTridentParticleEntity extends PathfinderMob {
 
     public void baseTick() {
         super.baseTick();
-        BlueDemonTridentParticleOnEntityUpdate.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
+        try {
+            BlueDemonTridentParticleOnEntityUpdate.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public boolean isPushable() {

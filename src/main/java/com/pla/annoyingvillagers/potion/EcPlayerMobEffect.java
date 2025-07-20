@@ -2,13 +2,15 @@ package com.pla.annoyingvillagers.potion;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import java.util.function.Consumer;
+
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.client.EffectRenderer;
+import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
 import com.pla.annoyingvillagers.procedures.EcPlayerDuringEffectEveryTickProcedure;
 
 public class EcPlayerMobEffect extends MobEffect {
@@ -22,15 +24,19 @@ public class EcPlayerMobEffect extends MobEffect {
     }
 
     public void applyEffectTick(LivingEntity livingentity, int i) {
-        EcPlayerDuringEffectEveryTickProcedure.execute(livingentity);
+        try {
+            EcPlayerDuringEffectEveryTickProcedure.execute(livingentity);
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public boolean isDurationEffectTick(int i, int j) {
         return true;
     }
 
-    public void initializeClient(Consumer<EffectRenderer> consumer) {
-        consumer.accept(new EffectRenderer() {
+    public void initializeClient(Consumer<IClientMobEffectExtensions> consumer) {
+        consumer.accept(new IClientMobEffectExtensions() {
             public boolean shouldRender(MobEffectInstance mobeffectinstance) {
                 return false;
             }

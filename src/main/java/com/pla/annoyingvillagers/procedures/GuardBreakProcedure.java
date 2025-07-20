@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.procedures;
 import java.util.Random;
 import javax.annotation.Nullable;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -11,6 +12,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -35,14 +37,14 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 public class GuardBreakProcedure {
 
     @SubscribeEvent
-    public static void onEntityAttacked(LivingAttackEvent livingattackevent) {
+    public static void onEntityAttacked(LivingAttackEvent livingattackevent) throws CommandSyntaxException {
         if (livingattackevent != null && livingattackevent.getEntity() != null) {
             execute(livingattackevent, livingattackevent.getEntity().level, livingattackevent.getEntity().getX(), livingattackevent.getEntity().getY(), livingattackevent.getEntity().getZ(), livingattackevent.getEntity(), livingattackevent.getSource().getEntity());
         }
 
     }
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity, Entity entity1) {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity, Entity entity1) throws CommandSyntaxException {
         execute((Event) null, levelaccessor, d0, d1, d2, entity, entity1);
     }
 
@@ -56,22 +58,22 @@ public class GuardBreakProcedure {
         return false;
     }
 
-    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity, final Entity entity1) {
+    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity, final Entity entity1) throws CommandSyntaxException {
         if (entity != null && entity1 != null) {
             LivingEntity livingentity;
 
-            if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("minecraft:player")) {
+            if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:player")) {
                 float f;
                 LivingEntity livingentity1;
 
-                if (ForgeRegistries.ENTITIES.getKey(entity1.getType()).toString().equals(AnnoyingVillagers.MODID + ":herobrine")) {
+                if (ForgeRegistries.ENTITY_TYPES.getKey(entity1.getType()).toString().equals(AnnoyingVillagers.MODID + ":herobrine")) {
                     if (entity instanceof LivingEntity) {
                         livingentity = (LivingEntity)entity;
                         f = livingentity.getHealth();
                     } else {
                         f = -1.0F;
                     }
-                } else if (ForgeRegistries.ENTITIES.getKey(entity1.getType()).toString().equals(AnnoyingVillagers.MODID + ":herobrine_2")) {
+                } else if (ForgeRegistries.ENTITY_TYPES.getKey(entity1.getType()).toString().equals(AnnoyingVillagers.MODID + ":herobrine_2")) {
                     if (entity instanceof LivingEntity) {
                         livingentity = (LivingEntity)entity;
                         f = livingentity.getHealth();
@@ -81,7 +83,7 @@ public class GuardBreakProcedure {
                 }
             }
 
-            if (ForgeRegistries.ENTITIES.getKey(entity1.getType()).toString().equals("minecraft:player")) {
+            if (ForgeRegistries.ENTITY_TYPES.getKey(entity1.getType()).toString().equals("minecraft:player")) {
                 LivingEntity livingentity2;
 
                 if (entity instanceof TamableAnimal) {
@@ -109,19 +111,19 @@ public class GuardBreakProcedure {
 
                 entity.getPersistentData().putBoolean("s_g", false);
                 if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                    entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/skill/guard_break1\" 0 1");
+                    entity1.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/skill/guard_break1\" 0 1", entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 }
 
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/combat/tachi_auto2\" 0 1");
+                    entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/combat/tachi_auto2\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 }
 
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100");
+                    entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 }
 
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1");
+                    entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 }
 
                 Level level;
@@ -129,18 +131,18 @@ public class GuardBreakProcedure {
                 if (levelaccessor instanceof Level) {
                     level = (Level)levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":s_g")), SoundSource.NEUTRAL, 2.0F, 1.0F);
+                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "s_g")), SoundSource.NEUTRAL, 2.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":s_g")), SoundSource.NEUTRAL, 2.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "s_g")), SoundSource.NEUTRAL, 2.0F, 1.0F, false);
                     }
                 }
 
                 if (levelaccessor instanceof Level) {
                     level = (Level)levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":s_g_hit")), SoundSource.NEUTRAL, 3.0F, (float)Mth.nextDouble(new Random(), 0.7D, 1.2D));
+                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "s_g_hit")), SoundSource.NEUTRAL, 3.0F, (float)Mth.nextDouble((RandomSource) new Random(), 0.7D, 1.2D));
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":s_g_hit")), SoundSource.NEUTRAL, 3.0F, (float)Mth.nextDouble(new Random(), 0.7D, 1.2D), false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "s_g_hit")), SoundSource.NEUTRAL, 3.0F, (float)Mth.nextDouble((RandomSource) new Random(), 0.7D, 1.2D), false);
                     }
                 }
 
@@ -167,7 +169,7 @@ public class GuardBreakProcedure {
                 if (!flag) {
                     new DelayedTask(10) {
                         @Override
-                        public void run() {
+                        public void run() throws CommandSyntaxException {
                             if (entity1 instanceof LivingEntity) {
                                 LivingEntity livingentity4 = (LivingEntity)entity1;
 
@@ -179,7 +181,7 @@ public class GuardBreakProcedure {
                             Entity entity2 = entity1;
 
                             if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/skill/grasping_spire_second\" 0 1");
+                                entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/skill/grasping_spire_second\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                             }
                         }
                     };

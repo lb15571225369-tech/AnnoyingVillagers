@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.procedures;
 
 import java.util.Random;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -9,6 +10,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -24,21 +26,15 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) throws CommandSyntaxException {
         if (entity != null) {
             boolean flag = false;
 
-//            if (entity instanceof LivingEntity) {
-//                LivingEntity livingentity = (LivingEntity)entity;
-//
-//                flag = livingentity.getMobType() == MobType.UNDEAD;
-//            } else {
-//                flag = false;
-//            }
-
             if (!flag) {
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1");
+                    entity.getServer().getCommands().getDispatcher().execute(
+                            "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
+                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 }
 
                 Level level;
@@ -46,9 +42,9 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                 if (levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:obsidian_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(new Random(), 0.5D, 1.0D));
+                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "obsidian_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble((RandomSource) new Random(), 0.5D, 1.0D));
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:obsidian_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(new Random(), 0.5D, 1.0D), false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "obsidian_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble((RandomSource) new Random(), 0.5D, 1.0D), false);
                     }
                 }
 
@@ -64,7 +60,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
 
                 ItemStack itemstack1 = itemstack;
 
-                if (itemstack1.hurt((int) Mth.nextDouble(new Random(), 1.0D, 10.0D), new Random(), (ServerPlayer) null)) {
+                if (itemstack1.hurt((int) Mth.nextDouble((RandomSource) new Random(), 1.0D, 10.0D), (RandomSource) new Random(), (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -77,7 +73,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt((int) Mth.nextDouble(new Random(), 1.0D, 10.0D), new Random(), (ServerPlayer) null)) {
+                if (itemstack1.hurt((int) Mth.nextDouble((RandomSource) new Random(), 1.0D, 10.0D), (RandomSource) new Random(), (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -90,7 +86,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt((int) Mth.nextDouble(new Random(), 1.0D, 10.0D), new Random(), (ServerPlayer) null)) {
+                if (itemstack1.hurt((int) Mth.nextDouble((RandomSource) new Random(), 1.0D, 10.0D), (RandomSource) new Random(), (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -103,7 +99,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt((int) Mth.nextDouble(new Random(), 1.0D, 10.0D), new Random(), (ServerPlayer) null)) {
+                if (itemstack1.hurt((int) Mth.nextDouble((RandomSource) new Random(), 1.0D, 10.0D), (RandomSource) new Random(), (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -116,7 +112,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt((int) Mth.nextDouble(new Random(), 1.0D, 10.0D), new Random(), (ServerPlayer) null)) {
+                if (itemstack1.hurt((int) Mth.nextDouble((RandomSource) new Random(), 1.0D, 10.0D), (RandomSource) new Random(), (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -129,7 +125,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt((int) Mth.nextDouble(new Random(), 1.0D, 10.0D), new Random(), (ServerPlayer) null)) {
+                if (itemstack1.hurt((int) Mth.nextDouble((RandomSource) new Random(), 1.0D, 10.0D), (RandomSource) new Random(), (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -154,7 +150,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                     }
 
                     itemstack1 = itemstack;
-                    if (itemstack1.hurt(300, new Random(), (ServerPlayer) null)) {
+                    if (itemstack1.hurt(300, (RandomSource) new Random(), (ServerPlayer) null)) {
                         itemstack1.shrink(1);
                         itemstack1.setDamageValue(0);
                     }
@@ -167,7 +163,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                     }
 
                     itemstack1 = itemstack;
-                    if (itemstack1.hurt(300, new Random(), (ServerPlayer) null)) {
+                    if (itemstack1.hurt(300, (RandomSource) new Random(), (ServerPlayer) null)) {
                         itemstack1.shrink(1);
                         itemstack1.setDamageValue(0);
                     }
@@ -175,11 +171,13 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                     entity.hurt(DamageSource.GENERIC, 15.5F);
                     new DelayedTask(1) {
                         @Override
-                        public void run() {
+                        public void run() throws CommandSyntaxException {
                             Entity entity1 = entity;
 
                             if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/combat/hit_long\" 0 10");
+                                entity1.getServer().getCommands().getDispatcher().execute(
+                                        "indestructible @s play \"epicfight:biped/combat/hit_long\" 0 10",
+                                        entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                             }
                         }
                     };
@@ -189,9 +187,9 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                         if (levelaccessor instanceof Level) {
                             level = (Level) levelaccessor;
                             if (!level.isClientSide()) {
-                                level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:heavy_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(new Random(), 0.5D, 1.2D));
+                                level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "heavy_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble((RandomSource) new Random(), 0.5D, 1.2D));
                             } else {
-                                level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:heavy_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(new Random(), 0.5D, 1.2D), false);
+                                level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "heavy_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble((RandomSource) new Random(), 0.5D, 1.2D), false);
                             }
                         }
 
@@ -203,7 +201,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                         }
 
                         itemstack1 = itemstack;
-                        if (itemstack1.hurt(1000, new Random(), (ServerPlayer) null)) {
+                        if (itemstack1.hurt(1000, (RandomSource) new Random(), (ServerPlayer) null)) {
                             itemstack1.shrink(1);
                             itemstack1.setDamageValue(0);
                         }
@@ -216,7 +214,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                         }
 
                         itemstack1 = itemstack;
-                        if (itemstack1.hurt(1000, new Random(), (ServerPlayer) null)) {
+                        if (itemstack1.hurt(1000, (RandomSource) new Random(), (ServerPlayer) null)) {
                             itemstack1.shrink(1);
                             itemstack1.setDamageValue(0);
                         }
@@ -229,7 +227,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                         }
 
                         itemstack1 = itemstack;
-                        if (itemstack1.hurt((int) Mth.nextDouble(new Random(), 200.0D, 1002.0D), new Random(), (ServerPlayer) null)) {
+                        if (itemstack1.hurt((int) Mth.nextDouble((RandomSource) new Random(), 200.0D, 1002.0D), (RandomSource) new Random(), (ServerPlayer) null)) {
                             itemstack1.shrink(1);
                             itemstack1.setDamageValue(0);
                         }
@@ -237,11 +235,13 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                         entity.hurt(DamageSource.GENERIC, 17.5F);
                         new DelayedTask(1) {
                             @Override
-                            public void run() {
+                            public void run() throws CommandSyntaxException {
                                 Entity entity1 = entity;
 
                                 if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                    entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10");
+                                    entity1.getServer().getCommands().getDispatcher().execute(
+                                            "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10",
+                                            entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                 }
                             }
                         };

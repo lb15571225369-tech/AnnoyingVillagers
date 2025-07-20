@@ -1,6 +1,8 @@
 package com.pla.annoyingvillagers.procedures;
 
 import javax.annotation.Nullable;
+
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,18 +16,18 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 public class LongHitProcedure {
 
     @SubscribeEvent
-    public static void onEntityAttacked(LivingHurtEvent livinghurtevent) {
+    public static void onEntityAttacked(LivingHurtEvent livinghurtevent) throws CommandSyntaxException {
         if (livinghurtevent != null && livinghurtevent.getEntity() != null) {
             execute(livinghurtevent, livinghurtevent.getEntity(), (double) livinghurtevent.getAmount());
         }
 
     }
 
-    public static void execute(Entity entity, double d0) {
+    public static void execute(Entity entity, double d0) throws CommandSyntaxException {
         execute((Event) null, entity, d0);
     }
 
-    private static void execute(@Nullable Event event, Entity entity, double d0) {
+    private static void execute(@Nullable Event event, Entity entity, double d0) throws CommandSyntaxException {
         if (entity != null) {
             if (entity.isAlive()) {
                 boolean flag;
@@ -41,10 +43,14 @@ public class LongHitProcedure {
                 if (!flag) {
                     if (d0 >= 35.0D) {
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/longest_hit\" 0 10");
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "indestructible @s play \"annoyingvillagers:biped/combat/longest_hit\" 0 10",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                         }
                     } else if (d0 >= 30.0D && !entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10");
+                        entity.getServer().getCommands().getDispatcher().execute(
+                                "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10",
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                     }
                 }
             }

@@ -50,7 +50,7 @@ public class AnnoyingVillagersModBlocks {
         }
 
         @SubscribeEvent
-        public static void blockColorLoad(net.minecraftforge.client.event.ColorHandlerEvent.Block net_minecraftforge_client_event_colorhandlerevent_block) {
+        public static void blockColorLoad(net.minecraftforge.client.event.RegisterColorHandlersEvent.Block net_minecraftforge_client_event_colorhandlerevent_block) {
             NoneObBlock.blockColorLoad(net_minecraftforge_client_event_colorhandlerevent_block);
         }
     }

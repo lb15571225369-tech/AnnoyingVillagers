@@ -19,7 +19,7 @@ public class BlueDemonStagingRenderer extends HumanoidMobRenderer<BlueDemonStagi
     }
 
     public ResourceLocation getTextureLocation(BlueDemonStagingEntity bluedemonrentity) {
-        return new ResourceLocation(AnnoyingVillagers.MODID + ":textures/entities/blue_demon.png");
+        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/blue_demon.png");
     }
 
     protected boolean isShaking(BlueDemonStagingEntity bluedemonrentity) {

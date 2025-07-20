@@ -1,8 +1,10 @@
 package com.pla.annoyingvillagers.procedures;
 
 import java.util.Comparator;
+
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -20,7 +22,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class GreenVillagerGeneralOnAttackingEntityProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) throws CommandSyntaxException {
         if (entity != null) {
             float f;
 
@@ -64,14 +66,14 @@ public class GreenVillagerGeneralOnAttackingEntityProcedure {
                     if (levelaccessor instanceof Level) {
                         level = (Level)levelaccessor;
                         if (!level.isClientSide()) {
-                            level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("item.armor.equip_leather")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                            level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.armor.equip_leather")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                         } else {
-                            level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("item.armor.equip_leather")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                            level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.armor.equip_leather")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                         }
                     }
 
                     if (!entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:zi_cun_qi_fu_lu ^ ^ ^ {VillagerData:{level:5,profession:\"minecraft:weaponsmith\"}}");
+                        entity.getServer().getCommands().getDispatcher().execute("summon annoying_villagersbychentu:zi_cun_qi_fu_lu ^ ^ ^ {VillagerData:{level:5,profession:\"minecraft:weaponsmith\"}}", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                     }
 
                     Mob mob1;
@@ -106,7 +108,7 @@ public class GreenVillagerGeneralOnAttackingEntityProcedure {
                     if (livingentity4 instanceof Player) {
                         player = (Player)livingentity4;
                         if (!player.level.isClientSide()) {
-                            player.displayClientMessage(new TextComponent("Target captured"), true);
+                            player.displayClientMessage(Component.literal("Target captured"), true);
                         }
                     }
                 } else {
@@ -134,14 +136,14 @@ public class GreenVillagerGeneralOnAttackingEntityProcedure {
                         if (levelaccessor instanceof Level) {
                             level = (Level)levelaccessor;
                             if (!level.isClientSide()) {
-                                level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("item.armor.equip_leather")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.armor.equip_leather")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                             } else {
-                                level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("item.armor.equip_leather")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.armor.equip_leather")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                             }
                         }
 
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoying_villagersbychentu:zi_cun_qi_fu_lu ^ ^ ^ {VillagerData:{level:3,profession:\"minecraft:weaponsmith\"}}");
+                            entity.getServer().getCommands().getDispatcher().execute("summon annoying_villagersbychentu:zi_cun_qi_fu_lu ^ ^ ^ {VillagerData:{level:3,profession:\"minecraft:weaponsmith\"}}", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                         }
 
                         Entity entity2 = levelaccessor.getEntitiesOfClass(Player.class,
@@ -174,7 +176,7 @@ public class GreenVillagerGeneralOnAttackingEntityProcedure {
                         if (entity2 instanceof Player) {
                             player1 = (Player)entity2;
                             if (!player1.level.isClientSide()) {
-                                player1.displayClientMessage(new TextComponent("Target captured"), true);
+                                player1.displayClientMessage(Component.literal("Target captured"), true);
                             }
                         }
                     }

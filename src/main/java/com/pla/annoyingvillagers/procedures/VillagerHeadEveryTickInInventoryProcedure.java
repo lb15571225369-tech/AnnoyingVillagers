@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.procedures;
 
-import net.minecraft.network.chat.TextComponent;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,7 +11,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 
 public class VillagerHeadEveryTickInInventoryProcedure {
 
-    public static void execute(Entity entity) {
+    public static void execute(Entity entity) throws CommandSyntaxException {
         if (entity != null) {
             ItemStack itemstack;
 
@@ -24,7 +25,9 @@ public class VillagerHeadEveryTickInInventoryProcedure {
 
             if (itemstack.getItem() != AnnoyingVillagersModItems.VILLAGER_HEAD.get() && entity.getPersistentData().getBoolean("villager_player")) {
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "team leave @s[team=villagers]");
+                    entity.getServer().getCommands().getDispatcher().execute(
+                            "team leave @s[team=villagers]",
+                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 }
 
                 entity.getPersistentData().putBoolean("villager_player", false);
@@ -32,7 +35,7 @@ public class VillagerHeadEveryTickInInventoryProcedure {
                     Player player = (Player) entity;
 
                     if (!player.level.isClientSide()) {
-                        player.displayClientMessage(new TextComponent("You have removed your helmet. Villager soldiers will now attack you."), false);
+                        player.displayClientMessage(Component.literal("You have removed your helmet. Villager soldiers will now attack you."), false);
                     }
                 }
             }

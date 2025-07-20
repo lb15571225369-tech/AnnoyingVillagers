@@ -7,6 +7,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -42,7 +43,7 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
 
             ItemStack itemstack1 = itemstack;
 
-            if (itemstack1.hurt(30, new Random(), (ServerPlayer) null)) {
+            if (itemstack1.hurt(30, (RandomSource) (RandomSource) new Random(), (ServerPlayer) null)) {
                 itemstack1.shrink(1);
                 itemstack1.setDamageValue(0);
             }
@@ -55,7 +56,7 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
             }
 
             itemstack1 = itemstack;
-            if (itemstack1.hurt(30, new Random(), (ServerPlayer) null)) {
+            if (itemstack1.hurt(30, (RandomSource) new Random(), (ServerPlayer) null)) {
                 itemstack1.shrink(1);
                 itemstack1.setDamageValue(0);
             }
@@ -68,7 +69,7 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
             }
 
             itemstack1 = itemstack;
-            if (itemstack1.hurt(30, new Random(), (ServerPlayer) null)) {
+            if (itemstack1.hurt(30, (RandomSource) new Random(), (ServerPlayer) null)) {
                 itemstack1.shrink(1);
                 itemstack1.setDamageValue(0);
             }
@@ -81,7 +82,7 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
             }
 
             itemstack1 = itemstack;
-            if (itemstack1.hurt(30, new Random(), (ServerPlayer) null)) {
+            if (itemstack1.hurt(30, (RandomSource) new Random(), (ServerPlayer) null)) {
                 itemstack1.shrink(1);
                 itemstack1.setDamageValue(0);
             }
@@ -97,7 +98,7 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt(Mth.nextInt(new Random(), 100, 500), new Random(), (ServerPlayer) null)) {
+                if (itemstack1.hurt(Mth.nextInt((RandomSource) new Random(), 100, 500), (RandomSource) new Random(), (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -105,18 +106,18 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
                 if (levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.glass.break")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.glass.break")), SoundSource.BLOCKS, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.glass.break")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.glass.break")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                     }
                 }
 
                 if (levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.item.break")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.item.break")), SoundSource.BLOCKS, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.item.break")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.item.break")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                     }
                 }
             }
@@ -130,7 +131,7 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt(Mth.nextInt(new Random(), 100, 500), new Random(), (ServerPlayer) null)) {
+                if (itemstack1.hurt(Mth.nextInt((RandomSource) new Random(), 100, 500), (RandomSource) new Random(), (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -138,18 +139,18 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
                 if (levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.glass.break")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.glass.break")), SoundSource.BLOCKS, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.glass.break")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.glass.break")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                     }
                 }
 
                 if (levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.item.break")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.item.break")), SoundSource.BLOCKS, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.item.break")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.item.break")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                     }
                 }
             }
@@ -163,7 +164,7 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt(Mth.nextInt(new Random(), 100, 500), new Random(), (ServerPlayer) null)) {
+                if (itemstack1.hurt(Mth.nextInt((RandomSource) new Random(), 100, 500), (RandomSource) new Random(), (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -171,18 +172,18 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
                 if (levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.glass.break")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.glass.break")), SoundSource.BLOCKS, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.glass.break")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.glass.break")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                     }
                 }
 
                 if (levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.item.break")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.item.break")), SoundSource.BLOCKS, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.item.break")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.item.break")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                     }
                 }
             }
@@ -196,7 +197,7 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt(Mth.nextInt(new Random(), 100, 500), new Random(), (ServerPlayer) null)) {
+                if (itemstack1.hurt(Mth.nextInt((RandomSource) new Random(), 100, 500), (RandomSource) new Random(), (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -204,18 +205,18 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
                 if (levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.glass.break")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.glass.break")), SoundSource.BLOCKS, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.glass.break")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.glass.break")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                     }
                 }
 
                 if (levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.item.break")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.item.break")), SoundSource.BLOCKS, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.item.break")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.item.break")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                     }
                 }
             }
@@ -229,7 +230,7 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt(1000, new Random(), (ServerPlayer) null)) {
+                if (itemstack1.hurt(1000, (RandomSource) new Random(), (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -242,7 +243,7 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt(1000, new Random(), (ServerPlayer) null)) {
+                if (itemstack1.hurt(1000, (RandomSource) new Random(), (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -255,7 +256,7 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt(1000, new Random(), (ServerPlayer) null)) {
+                if (itemstack1.hurt(1000, (RandomSource) new Random(), (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -268,7 +269,7 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt(1000, new Random(), (ServerPlayer) null)) {
+                if (itemstack1.hurt(1000, (RandomSource) new Random(), (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -276,27 +277,27 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
                 if (levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.glass.break")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.glass.break")), SoundSource.BLOCKS, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.glass.break")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.glass.break")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                     }
                 }
 
                 if (levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.item.break")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.item.break")), SoundSource.BLOCKS, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.item.break")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.item.break")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                     }
                 }
 
                 if (levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.chain.break")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.chain.break")), SoundSource.BLOCKS, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.chain.break")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.chain.break")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                     }
                 }
             }

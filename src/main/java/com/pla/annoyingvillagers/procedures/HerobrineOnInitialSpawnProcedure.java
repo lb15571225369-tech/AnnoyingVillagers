@@ -3,12 +3,13 @@ package com.pla.annoyingvillagers.procedures;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.util.CheckGameMode;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.Util;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.ChatType;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,22 +20,28 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class HerobrineOnInitialSpawnProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, final Entity entity) {
+    public static void execute(LevelAccessor levelaccessor, final Entity entity) throws CommandSyntaxException {
         if (entity != null) {
             if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("Herobrine has spawned a new possessed body."), ChatType.SYSTEM, Util.NIL_UUID);
+                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("Herobrine has spawned a new possessed body."), false);
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "fill ~-2 ~ ~-2 ~2 ~3 ~2 minecraft:air");
+                entity.getServer().getCommands().getDispatcher().execute(
+                        "fill ~-2 ~ ~-2 ~2 ~3 ~2 minecraft:air",
+                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "team add herobrinexintu");
+                entity.getServer().getCommands().getDispatcher().execute(
+                        "team add herobrinexintu",
+                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "team join herobrinexintu @s");
+                entity.getServer().getCommands().getDispatcher().execute(
+                        "team join herobrinexintu @s",
+                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
             }
             new DelayedTask(1) {
                 @Override
@@ -45,7 +52,7 @@ public class HerobrineOnInitialSpawnProcedure {
                         while(iterator.hasNext()) {
                             Entity entity1 = (Entity)iterator.next();
 
-                            if (ForgeRegistries.ENTITIES.getKey(entity1.getType()).toString().equals("minecraft:player") && CheckGameMode.isSpectatorGamemode(entity1)) {
+                            if (ForgeRegistries.ENTITY_TYPES.getKey(entity1.getType()).toString().equals("minecraft:player") && CheckGameMode.isSpectatorGamemode(entity1)) {
                                 Entity entity2 = entity;
                                 Player player;
                                 NonNullList nonnulllist;

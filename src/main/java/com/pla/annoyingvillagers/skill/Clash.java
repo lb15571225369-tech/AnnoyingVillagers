@@ -2,6 +2,9 @@ package com.pla.annoyingvillagers.skill;
 
 import java.util.List;
 import java.util.UUID;
+
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -72,7 +75,7 @@ public class Clash extends PassiveSkill {
                 if (flag && list.contains(dynamicanimation) || dynamicanimation == AVAnimations.GIANT_WHIRLWIND_2 || dynamicanimation == AVAnimations.DUAL_SWORD_DANCING_EDGE || dynamicanimation == AVAnimations.SpinningDeath) {
                     pre.setCanceled(true);
                     pre.setResult(ResultType.BLOCKED);
-                    playerpatch.playSound(EpicFightSounds.CLASH, -0.05F, 0.1F);
+                    playerpatch.playSound(EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
                     if (entity != null) {
                         entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * -0.2D, 0.0D, entity.getLookAngle().z * -0.2D));
                     }
@@ -86,10 +89,18 @@ public class Clash extends PassiveSkill {
                     ItemStack itemstack1 = serverplayer.getOffhandItem();
 
                     if (!serverplayer.level.isClientSide() && serverplayer.getServer() != null) {
-                        serverplayer.getServer().getCommands().performCommand(serverplayer.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100");
+                        try {
+                            serverplayer.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100", serverplayer.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
 
-                    serverplayer.getServer().getCommands().performCommand(serverplayer.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/impactful @s shake 15 10 10");
+                    try {
+                        serverplayer.getServer().getCommands().getDispatcher().execute("impactful @s shake 15 10 10", serverplayer.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                        throw new RuntimeException(e);
+                    }
                     if (itemstack.isDamageableItem()) {
                         int i = itemstack.getDamageValue();
                         int j = itemstack.getMaxDamage();

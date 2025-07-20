@@ -1,11 +1,12 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -20,7 +21,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class HardGreatSwordSkillRightClickInAirProcedure {
 
-    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity, ItemStack itemstack) {
+    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity, ItemStack itemstack) throws CommandSyntaxException {
         if (entity == null || !entity.isShiftKeyDown()) return;
 
         CompoundTag tag = itemstack.getOrCreateTag();
@@ -32,9 +33,9 @@ public class HardGreatSwordSkillRightClickInAirProcedure {
 
             // Play animation
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(
-                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                        "indestructible @s play \"annoyingvillagers:biped/combat/hard_great_sword_skill\" 0 1"
+                entity.getServer().getCommands().getDispatcher().execute(
+                        "indestructible @s play \"annoyingvillagers:biped/combat/hard_great_sword_skill\" 0 1",
+                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                 );
             }
 
@@ -46,16 +47,16 @@ public class HardGreatSwordSkillRightClickInAirProcedure {
             // Delayed effects (particles + sound)
             new DelayedTask(4) {
                 @Override
-                public void run() {
+                public void run() throws CommandSyntaxException {
                     if (!entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().performCommand(
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                                "execute at @s run particle annoyingvillagers:red_spark ^ ^1.5 ^1 0 0 0 0.6 35"
+                        entity.getServer().getCommands().getDispatcher().execute(
+                                "execute at @s run particle annoyingvillagers:red_spark ^ ^1.5 ^1 0 0 0 0.6 35",
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                         );
                     }
 
                     if (world instanceof Level level) {
-                        SoundEvent sound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":hard_great_sword_skill"));
+                        SoundEvent sound = ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "hard_great_sword_skill"));
                         if (!level.isClientSide()) {
                             level.playSound(null, new BlockPos(x, y, z), sound, SoundSource.NEUTRAL, 1.0F, 1.0F);
                         } else {
@@ -67,7 +68,7 @@ public class HardGreatSwordSkillRightClickInAirProcedure {
 
         } else if (entity instanceof Player player && !player.level.isClientSide()) {
             player.displayClientMessage(
-                    new TextComponent("Not enough energy. Current charge: " + (int) currentPower + "/10"),
+                    Component.literal("Not enough energy. Current charge: " + (int) currentPower + "/10"),
                     true
             );
         }

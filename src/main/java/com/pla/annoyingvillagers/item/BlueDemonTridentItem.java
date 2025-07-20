@@ -23,6 +23,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 
+import java.util.Random;
+
 public class BlueDemonTridentItem extends Item {
 
     public BlueDemonTridentItem() {
@@ -61,7 +63,7 @@ public class BlueDemonTridentItem extends Item {
             double d0 = serverplayer.getX();
             double d1 = serverplayer.getY();
             double d2 = serverplayer.getZ();
-            BlueDemonTridentEntity bluedemontridententity = BlueDemonTridentEntity.shoot(level, serverplayer, level.getRandom(), 1.1F, 9.0D, 4);
+            BlueDemonTridentEntity bluedemontridententity = BlueDemonTridentEntity.shoot(level, serverplayer, (Random) level.getRandom(), 1.1F, 9.0D, 4);
 
             itemstack.hurtAndBreak(1, serverplayer, (serverplayer1) -> {
                 serverplayer1.broadcastBreakEvent(serverplayer.getUsedItemHand());

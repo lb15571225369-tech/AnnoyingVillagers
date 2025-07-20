@@ -1,6 +1,8 @@
 package com.pla.annoyingvillagers.procedures;
 
 import javax.annotation.Nullable;
+
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
@@ -19,18 +21,18 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 public class HardGreatSwordSkillExecuteProcedure {
 
     @SubscribeEvent
-    public static void onEntityAttacked(LivingAttackEvent livingattackevent) {
+    public static void onEntityAttacked(LivingAttackEvent livingattackevent) throws CommandSyntaxException {
         if (livingattackevent != null && livingattackevent.getEntity() != null) {
             execute(livingattackevent, livingattackevent.getEntity(), livingattackevent.getSource().getEntity());
         }
 
     }
 
-    public static void execute(Entity entity, Entity entity1) {
+    public static void execute(Entity entity, Entity entity1) throws CommandSyntaxException {
         execute((Event) null, entity, entity1);
     }
 
-    private static void execute(@Nullable Event event, Entity entity, Entity entity1) {
+    private static void execute(@Nullable Event event, Entity entity, Entity entity1) throws CommandSyntaxException {
         if (entity != null && entity1 != null) {
             LivingEntityPatch livingentitypatch;
             DynamicAnimation dynamicanimation;
@@ -67,13 +69,13 @@ public class HardGreatSwordSkillExecuteProcedure {
                             }
                         }
 
-                        livingentitypatch.playSound(EpicFightSounds.CLASH, -0.05F, 0.1F);
+                        livingentitypatch.playSound(EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100");
+                            entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                         }
 
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1");
+                            entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                         }
                     }
                 }
@@ -86,13 +88,13 @@ public class HardGreatSwordSkillExecuteProcedure {
                             event.setCanceled(true);
                         }
 
-                        livingentitypatch.playSound(EpicFightSounds.CLASH, -0.05F, 0.1F);
+                        livingentitypatch.playSound(EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100");
+                            entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                         }
 
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1");
+                            entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                         }
                     }
                 }

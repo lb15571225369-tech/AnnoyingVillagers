@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.entity;
 
 import java.util.Random;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.EnchantedEnderPearlOnProjectileHitBlockProcedure;
@@ -71,7 +72,11 @@ public class EnchantedEnderPearlEntity extends AbstractArrow implements ItemSupp
 
     public void onHitBlock(BlockHitResult blockhitresult) {
         super.onHitBlock(blockhitresult);
-        EnchantedEnderPearlOnProjectileHitBlockProcedure.execute(this.level, (double) blockhitresult.getBlockPos().getX(), (double) blockhitresult.getBlockPos().getY(), (double) blockhitresult.getBlockPos().getZ(), this.getOwner());
+        try {
+            EnchantedEnderPearlOnProjectileHitBlockProcedure.execute(this.level, (double) blockhitresult.getBlockPos().getX(), (double) blockhitresult.getBlockPos().getY(), (double) blockhitresult.getBlockPos().getZ(), this.getOwner());
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void tick() {
@@ -92,7 +97,7 @@ public class EnchantedEnderPearlEntity extends AbstractArrow implements ItemSupp
         fumomoyingzhenzhuentity.setBaseDamage(d0);
         fumomoyingzhenzhuentity.setKnockback(i);
         level.addFreshEntity(fumomoyingzhenzhuentity);
-        level.playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:throw")), SoundSource.PLAYERS, 1.0F, 1.0F / (random.nextFloat() * 0.5F + 1.0F) + f / 2.0F);
+        level.playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "throw")), SoundSource.PLAYERS, 1.0F, 1.0F / (random.nextFloat() * 0.5F + 1.0F) + f / 2.0F);
         return fumomoyingzhenzhuentity;
     }
 
@@ -108,7 +113,7 @@ public class EnchantedEnderPearlEntity extends AbstractArrow implements ItemSupp
         fumomoyingzhenzhuentity.setKnockback(0);
         fumomoyingzhenzhuentity.setCritArrow(false);
         livingentity.level.addFreshEntity(fumomoyingzhenzhuentity);
-        livingentity.level.playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:throw")), SoundSource.PLAYERS, 1.0F, 1.0F / ((new Random()).nextFloat() * 0.5F + 1.0F));
+        livingentity.level.playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "throw")), SoundSource.PLAYERS, 1.0F, 1.0F / ((new Random()).nextFloat() * 0.5F + 1.0F));
         return fumomoyingzhenzhuentity;
     }
 }

@@ -1,8 +1,10 @@
 package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
+
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -46,7 +48,7 @@ public class BlueDemonEndStagingEntity extends Monster {
         this.maxUpStep = 3.0F;
         this.xpReward = 300;
         this.setNoAi(false);
-        this.setCustomName(new TextComponent("§bBlue Demon$r"));
+        this.setCustomName(Component.literal("§bBlue Demon$r"));
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.TRIDENT));
@@ -76,11 +78,11 @@ public class BlueDemonEndStagingEntity extends Monster {
     }
 
     public SoundEvent getHurtSound(DamageSource damagesource) {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
+        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.hurt"));
     }
 
     public SoundEvent getDeathSound() {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
+        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.death"));
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
@@ -90,7 +92,11 @@ public class BlueDemonEndStagingEntity extends Monster {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
 
-        BlueDemonTridentFsSkillEndOnEntityInitialSpawnProcedure.execute(serverlevelaccessor, this);
+        try {
+            BlueDemonTridentFsSkillEndOnEntityInitialSpawnProcedure.execute(serverlevelaccessor, this);
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
         return spawngroupdata1;
     }
 

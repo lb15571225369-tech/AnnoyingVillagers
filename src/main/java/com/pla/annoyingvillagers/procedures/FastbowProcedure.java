@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -35,8 +36,8 @@ public class FastbowProcedure {
 
     @SubscribeEvent
     public static void onRightClickItem(RightClickItem rightclickitem) {
-        if (rightclickitem.getHand() == rightclickitem.getPlayer().getUsedItemHand()) {
-            execute(rightclickitem, rightclickitem.getWorld(), (double) rightclickitem.getPos().getX(), (double) rightclickitem.getPos().getY(), (double) rightclickitem.getPos().getZ(), rightclickitem.getPlayer());
+        if (rightclickitem.getHand() == rightclickitem.getEntity().getUsedItemHand()) {
+            execute(rightclickitem, rightclickitem.getLevel(), (double) rightclickitem.getPos().getX(), (double) rightclickitem.getPos().getY(), (double) rightclickitem.getPos().getZ(), rightclickitem.getEntity());
         }
     }
 
@@ -121,9 +122,9 @@ public class FastbowProcedure {
                             Level level1 = (Level)levelaccessor;
 
                             if (!level1.isClientSide()) {
-                                level1.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.arrow.shoot")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                level1.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.arrow.shoot")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                             } else {
-                                level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.arrow.shoot")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.arrow.shoot")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                             }
                         }
 
@@ -156,7 +157,7 @@ public class FastbowProcedure {
                             itemstack6 = ItemStack.EMPTY;
                         }
 
-                        if (itemstack5.hurt(1 + EnchantmentHelper.getItemEnchantmentLevel(enchantment3, itemstack6), new Random(), (ServerPlayer)null)) {
+                        if (itemstack5.hurt(1 + EnchantmentHelper.getItemEnchantmentLevel(enchantment3, itemstack6), (RandomSource) new Random(), (ServerPlayer)null)) {
                             itemstack5.shrink(1);
                             itemstack5.setDamageValue(0);
                         }

@@ -28,7 +28,7 @@ public abstract class ClassicGoldenArmorItem extends ArmorItem {
             }
 
             public SoundEvent getEquipSound() {
-                return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(""));
+                return null;
             }
 
             public Ingredient getRepairIngredient() {

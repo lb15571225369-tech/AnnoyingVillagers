@@ -6,7 +6,7 @@ import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.network.chat.ChatType;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
@@ -170,9 +170,9 @@ public class AnimationSheduler {
             if (!nbtPart.isEmpty()) {
                 cmd += nbtPart;
             }
-            mob.getServer().getCommands().performCommand(
-                    mob.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                    cmd
+            mob.getServer().getCommands().getDispatcher().execute(
+                    cmd,
+                    mob.createCommandSourceStack().withSuppressedOutput().withPermission(4)
             );
             data.remove("av_idle_animate_backup_main_hand");
             if (data.contains("av_idle_action")) {
@@ -212,8 +212,9 @@ public class AnimationSheduler {
             };
 
             if (!mob.level.isClientSide() && mob.getServer() != null) {
-                mob.getServer().getCommands().performCommand(
-                        mob.createCommandSourceStack().withSuppressedOutput().withPermission(4), command
+                mob.getServer().getCommands().getDispatcher().execute(
+                        command,
+                        mob.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                 );
             }
 
@@ -222,10 +223,9 @@ public class AnimationSheduler {
                 String message = "<" + mob.getDisplayName().getString() + "> " + idleMessages
                         .getOrDefault(idleAnimation, List.of("..."))
                         .get(new Random().nextInt(idleMessages.get(idleAnimation).size()));
-                serverLevel.getServer().getPlayerList().broadcastMessage(
-                        new TextComponent(message),
-                        ChatType.SYSTEM,
-                        Util.NIL_UUID
+                serverLevel.getServer().getPlayerList().broadcastSystemMessage(
+                        Component.literal(message),
+                        false
                 );
                 data.putBoolean("idle_message_broadcasted", true);
             }

@@ -29,13 +29,13 @@ public class IdleHandlerProcedure {
     }
 
     @SubscribeEvent
-    public static void onLivingTick(LivingEvent.LivingUpdateEvent event) throws CommandSyntaxException {
+    public static void onLivingTick(LivingEvent.LivingTickEvent event) throws CommandSyntaxException {
         if (!(event.getEntity() instanceof Mob mob)) return;
         if (mob.level.isClientSide()) return;
-        if (event.getEntity() != null && !mob.level.isClientSide() && (ForgeRegistries.ENTITIES.getKey(event.getEntity().getType()).toString().equals("minecraft:zombie") || ForgeRegistries.ENTITIES.getKey(event.getEntity().getType()).toString().equals("minecraft:skeleton") || ForgeRegistries.ENTITIES.getKey(event.getEntity().getType()).toString().equals("annoyingvillagers:villager_scout"))) {
+        if (event.getEntity() != null && !mob.level.isClientSide() && (ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("minecraft:zombie") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("minecraft:skeleton") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("annoyingvillagers:villager_scout"))) {
             performIdleAction(mob, IdleAction.BURN_ITEM);
         }
-        if (event.getEntity() != null && ForgeRegistries.ENTITIES.getKey(event.getEntity().getType()).toString().equals("player_mobs:player_mob")) {
+        if (event.getEntity() != null && ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("player_mobs:player_mob")) {
             scheduleIdleActionDecision((Mob) event.getEntity());
         }
     }
@@ -69,9 +69,9 @@ public class IdleHandlerProcedure {
                 if (!nbtPart.isEmpty()) {
                     cmd += nbtPart;
                 }
-                mob.getServer().getCommands().performCommand(
-                        mob.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                        cmd
+                mob.getServer().getCommands().getDispatcher().execute(
+                        cmd,
+                        mob.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                 );
                 data.remove("av_idle_animate_backup_main_hand");
                 if (data.contains("av_idle_action")) {

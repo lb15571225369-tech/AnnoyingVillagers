@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.client.renderer;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.GreenVillagerGeneralEntity;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -16,6 +17,6 @@ public class GreenVillagerGeneralRenderer extends HumanoidMobRenderer<GreenVilla
     }
 
     public ResourceLocation getTextureLocation(GreenVillagerGeneralEntity zicunqientity) {
-        return new ResourceLocation("annoyingvillagers:textures/entities/green_villager_general.png");
+        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/green_villager_general.png");
     }
 }

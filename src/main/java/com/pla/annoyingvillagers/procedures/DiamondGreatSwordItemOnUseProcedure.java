@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
@@ -15,11 +16,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class DiamondGreatSwordItemOnUseProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity, ItemStack itemstack) {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity, ItemStack itemstack) throws CommandSyntaxException {
         if (entity != null) {
             if (entity.isShiftKeyDown() && itemstack.getOrCreateTag().getDouble("sword_skill") >= 1.0D) {
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/execute at @s run particle epicfight:air_burst ^ ^1.5 ^ 0 0 0 7 1");
+                    entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle epicfight:air_burst ^ ^1.5 ^ 0 0 0 7 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 }
 
                 entity.setDeltaMovement(new Vec3(0.0D, 1.0D, 0.0D));
@@ -27,9 +28,9 @@ public class DiamondGreatSwordItemOnUseProcedure {
                     Level level = (Level) levelaccessor;
 
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.ender_dragon.flap")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.ender_dragon.flap")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.ender_dragon.flap")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.ender_dragon.flap")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                     }
                 }
 

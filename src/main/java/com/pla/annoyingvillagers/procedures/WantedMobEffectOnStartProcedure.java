@@ -7,7 +7,7 @@ import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.ChatType;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -25,7 +25,7 @@ public class WantedMobEffectOnStartProcedure {
                 Player player = (Player)entity;
 
                 if (!player.level.isClientSide()) {
-                    player.displayClientMessage(new TextComponent("You're now wanted!"), false);
+                    player.displayClientMessage(Component.literal("You're now wanted!"), false);
                 }
             }
 
@@ -77,7 +77,7 @@ public class WantedMobEffectOnStartProcedure {
                         }
 
                         if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                            levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<Villager Scout> Found them! There's a wanted criminal here!"), ChatType.SYSTEM, Util.NIL_UUID);
+                            levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Villager Scout> Found them! There's a wanted criminal here!"), false);
                         }
                     }
                 };

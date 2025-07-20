@@ -2,13 +2,14 @@ package com.pla.annoyingvillagers.procedures;
 
 import javax.annotation.Nullable;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.ChatType;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -34,17 +35,17 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class FireworkUseProcedure {
 
     @SubscribeEvent
-    public static void onRightClickBlock(RightClickBlock rightclickblock) {
-        if (rightclickblock.getHand() == rightclickblock.getPlayer().getUsedItemHand()) {
-            execute(rightclickblock, rightclickblock.getWorld(), (double) rightclickblock.getPos().getX(), (double) rightclickblock.getPos().getY(), (double) rightclickblock.getPos().getZ(), rightclickblock.getPlayer());
+    public static void onRightClickBlock(RightClickBlock rightclickblock) throws CommandSyntaxException {
+        if (rightclickblock.getHand() == rightclickblock.getEntity().getUsedItemHand()) {
+            execute(rightclickblock, rightclickblock.getLevel(), (double) rightclickblock.getPos().getX(), (double) rightclickblock.getPos().getY(), (double) rightclickblock.getPos().getZ(), rightclickblock.getEntity());
         }
     }
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) throws CommandSyntaxException {
         execute((Event) null, levelaccessor, d0, d1, d2, entity);
     }
 
-    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity) {
+    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity) throws CommandSyntaxException {
         if (entity != null) {
             if (!entity.isShiftKeyDown()) {
                 int i;
@@ -73,10 +74,6 @@ public class FireworkUseProcedure {
                             LivingEntity livingentity1 = (LivingEntity)entity;
 
                             if (livingentity1.hasEffect(MobEffects.LUCK)) {
-                                if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "1");
-                                }
-
                                 return;
                             }
                         }
@@ -134,16 +131,16 @@ public class FireworkUseProcedure {
                         }
 
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon firework_rocket ~ ~10 ~ {LifeTime:10,FireworksItem:{id:firework_rocket,Count:1,tag:{Fireworks:{Explosions:[{Type:3,Colors:[0],Flicker:1}]}},display:{Name:\"Black Creeper Firework\"}}}");
+                            entity.getServer().getCommands().getDispatcher().execute("summon firework_rocket ~ ~10 ~ {LifeTime:10,FireworksItem:{id:firework_rocket,Count:1,tag:{Fireworks:{Explosions:[{Type:3,Colors:[0],Flicker:1}]}},display:{Name:\"Black Creeper Firework\"}}}", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                         }
 
                         if (levelaccessor instanceof Level) {
                             Level level = (Level)levelaccessor;
 
                             if (!level.isClientSide()) {
-                                level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.firework_rocket.launch")), SoundSource.NEUTRAL, 1.0F, 2.0F);
+                                level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.firework_rocket.launch")), SoundSource.NEUTRAL, 1.0F, 2.0F);
                             } else {
-                                level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.firework_rocket.launch")), SoundSource.NEUTRAL, 1.0F, 2.0F, false);
+                                level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.firework_rocket.launch")), SoundSource.NEUTRAL, 1.0F, 2.0F, false);
                             }
                         }
 
@@ -151,16 +148,16 @@ public class FireworkUseProcedure {
 
                         new DelayedTask(50) {
                             @Override
-                            public void run() {
+                            public void run() throws CommandSyntaxException {
                                 LevelAccessor levelaccessor1 = levelaccessor;
 
                                 if (levelaccessor1 instanceof Level) {
                                     Level level1 = (Level)levelaccessor1;
 
                                     if (!level1.isClientSide()) {
-                                        level1.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.experience_orb.pickup")), SoundSource.NEUTRAL, 1.0F, 2.0F);
+                                        level1.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.experience_orb.pickup")), SoundSource.NEUTRAL, 1.0F, 2.0F);
                                     } else {
-                                        level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.experience_orb.pickup")), SoundSource.NEUTRAL, 1.0F, 2.0F, false);
+                                        level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.experience_orb.pickup")), SoundSource.NEUTRAL, 1.0F, 2.0F, false);
                                     }
                                 }
 
@@ -168,93 +165,93 @@ public class FireworkUseProcedure {
 
                                 if (Math.random() <= 0.6D) {
                                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<Villager Scout> What the matter?"), ChatType.SYSTEM, Util.NIL_UUID);
+                                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Villager Scout> What the matter?"), false);
                                     }
 
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:villager_scout ~ ~5 ~10");
+                                        entity1.getServer().getCommands().getDispatcher().execute("summon annoyingvillagers:villager_scout ~ ~5 ~10", entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                     }
 
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:villager_scout ~10 ~5 ~-5");
+                                        entity1.getServer().getCommands().getDispatcher().execute("summon annoyingvillagers:villager_scout ~10 ~5 ~-5", entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                     }
 
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:blue_villager_general ~-10 ~5 ~20");
+                                        entity1.getServer().getCommands().getDispatcher().execute("summon annoyingvillagers:blue_villager_general ~-10 ~5 ~20", entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                     }
                                 } else if (Math.random() <= 0.1D) {
                                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<Villager Blue General> What the matter?"), ChatType.SYSTEM, Util.NIL_UUID);
+                                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Villager Blue General> What the matter?"), false);
                                     }
 
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:blue_villager_general ~10 ~5 ~-20");
+                                        entity1.getServer().getCommands().getDispatcher().execute("summon annoyingvillagers:blue_villager_general ~10 ~5 ~-20", entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                     }
 
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:blue_villager_general ~-5 ~5 ~20");
+                                        entity1.getServer().getCommands().getDispatcher().execute("summon annoyingvillagers:blue_villager_general ~-5 ~5 ~20", entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                     }
 
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:villager_scout ~ ~5 ~10");
+                                        entity1.getServer().getCommands().getDispatcher().execute("summon annoyingvillagers:villager_scout ~ ~5 ~10", entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                     }
                                 } else if (Math.random() <= 0.1D) {
                                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<Villager Purple General> What the matter?"), ChatType.SYSTEM, Util.NIL_UUID);
+                                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Villager Purple General> What the matter?"), false);
                                     }
 
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:purple_villager_general ~-5 ~5 ~20");
+                                        entity1.getServer().getCommands().getDispatcher().execute("summon annoyingvillagers:purple_villager_general ~-5 ~5 ~20", entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                     }
 
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:purple_villager_general ~10 ~5 ~-20");
+                                        entity1.getServer().getCommands().getDispatcher().execute("summon annoyingvillagers:purple_villager_general ~10 ~5 ~-20", entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                     }
                                 } else if (Math.random() <= 0.1D) {
                                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<Villager Red General> What the matter?"), ChatType.SYSTEM, Util.NIL_UUID);
+                                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Villager Red General> What the matter?"), false);
                                     }
 
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:red_villager_general ~10 ~5 ~20");
+                                        entity1.getServer().getCommands().getDispatcher().execute("summon annoyingvillagers:red_villager_general ~10 ~5 ~20", entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                     }
 
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:red_villager_general ~5 ~5 ~-20");
+                                        entity1.getServer().getCommands().getDispatcher().execute("summon annoyingvillagers:red_villager_general ~5 ~5 ~-20", entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                     }
 
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:villager_scout ~ ~5 ~-10");
+                                        entity1.getServer().getCommands().getDispatcher().execute("summon annoyingvillagers:villager_scout ~ ~5 ~-10", entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                     }
                                 } else {
                                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<Villager Green General> What the matter?"), ChatType.SYSTEM, Util.NIL_UUID);
+                                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Villager Green General> What the matter?"), false);
                                     }
 
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:villager_scout ~ ~5 ~-10");
+                                        entity1.getServer().getCommands().getDispatcher().execute("summon annoyingvillagers:villager_scout ~ ~5 ~-10", entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                     }
 
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:blue_villager_general ~10 ~5 ~20");
+                                        entity1.getServer().getCommands().getDispatcher().execute("summon annoyingvillagers:blue_villager_general ~10 ~5 ~20", entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                     }
 
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "/summon annoyingvillagers:green_villager_general ~-5 ~5 ~20");
+                                        entity1.getServer().getCommands().getDispatcher().execute("summon annoyingvillagers:green_villager_general ~-5 ~5 ~20", entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                     }
                                 }
                             }

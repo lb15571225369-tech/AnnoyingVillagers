@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.procedures;
 
 import javax.annotation.Nullable;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
@@ -75,12 +76,14 @@ public class NpcKickProcedure {
                                     entity1.getPersistentData().putDouble("kick", 2.0D);
                                     new DelayedTask(10) {
                                         @Override
-                                        public void run() {
+                                        public void run() throws CommandSyntaxException {
                                             if (entity1.isAlive()) {
                                                 Entity entity2 = entity1;
 
                                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/kick_1\" 0 1");
+                                                    entity2.getServer().getCommands().getDispatcher().execute(
+                                                            "indestructible @s play \"annoyingvillagers:biped/combat/kick_1\" 0 1",
+                                                            entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                 }
                                             }
                                         }
@@ -89,12 +92,14 @@ public class NpcKickProcedure {
                                     entity1.getPersistentData().putDouble("kick", 3.0D);
                                     new DelayedTask(10) {
                                         @Override
-                                        public void run() {
+                                        public void run() throws CommandSyntaxException {
                                             if (entity1.isAlive()) {
                                                 Entity entity2 = entity1;
 
                                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/kick_2\" 0 1");
+                                                    entity2.getServer().getCommands().getDispatcher().execute(
+                                                            "indestructible @s play \"annoyingvillagers:biped/combat/kick_2\" 0 1",
+                                                            entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                 }
                                             }
                                         }
@@ -103,12 +108,14 @@ public class NpcKickProcedure {
                                     entity1.getPersistentData().putDouble("kick", 0.0D);
                                     new DelayedTask(10) {
                                         @Override
-                                        public void run() {
+                                        public void run() throws CommandSyntaxException {
                                             if (entity1.isAlive()) {
                                                 Entity entity2 = entity1;
 
                                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"annoyingvillagers:biped/combat/kick_3\" 0 1");
+                                                    entity2.getServer().getCommands().getDispatcher().execute(
+                                                            "indestructible @s play \"annoyingvillagers:biped/combat/kick_3\" 0 1",
+                                                            entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                 }
                                             }
                                         }

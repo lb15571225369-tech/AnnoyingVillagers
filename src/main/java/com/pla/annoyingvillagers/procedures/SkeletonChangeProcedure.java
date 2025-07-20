@@ -30,7 +30,7 @@ public class SkeletonChangeProcedure {
 
     private static void execute(@Nullable Event event, LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) {
         if (entity != null) {
-            if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("minecraft:skeleton")) {
+            if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:skeleton")) {
                 if (!entity.level.isClientSide()) {
                     entity.discard();
                 }

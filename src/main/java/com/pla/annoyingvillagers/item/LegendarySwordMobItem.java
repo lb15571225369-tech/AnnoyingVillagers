@@ -2,12 +2,13 @@ package com.pla.annoyingvillagers.item;
 
 import java.util.List;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.LegendarySwordMobItemOnHurtEnemyProcedure;
 import com.pla.annoyingvillagers.procedures.LegendarySwordMobItemOnEntityWingProcedure;
 import com.pla.annoyingvillagers.procedures.LegendarySwordMobItemOnUseProcedure;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -65,13 +66,17 @@ public class LegendarySwordMobItem extends SwordItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {
         InteractionResultHolder<ItemStack> interactionresultholder = super.use(level, player, interactionhand);
 
-        LegendarySwordMobItemOnUseProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
+        try {
+            LegendarySwordMobItemOnUseProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
         return interactionresultholder;
     }
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(new TextComponent("One of the Legendary Weapons"));
+        list.add(Component.literal("One of the Legendary Weapons"));
     }
 
     public void onCraftedBy(ItemStack itemstack, Level level, Player player) {

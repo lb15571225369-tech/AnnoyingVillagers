@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.procedures;
 
 import javax.annotation.Nullable;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.util.DelayedTask;
@@ -119,7 +120,7 @@ public class BleedingProcedure {
                                     if (f <= 10.0F && entity.isAlive()) {
                                         new DelayedTask(50) {
                                             @Override
-                                            public void run() {
+                                            public void run() throws CommandSyntaxException {
                                                 if (entity.isAlive()) {
                                                     float f1;
 
@@ -154,7 +155,7 @@ public class BleedingProcedure {
 
                                                                 entity2 = entity;
                                                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                                    entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1");
+                                                                    entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                 }
 
                                                                 if (entity instanceof LivingEntity) {
@@ -166,55 +167,50 @@ public class BleedingProcedure {
 
                                                                 new DelayedTask(4) {
                                                                     @Override
-                                                                    public void run() {
+                                                                    public void run() throws CommandSyntaxException {
                                                                         LevelAccessor levelaccessor1 = levelaccessor;
 
                                                                         if (levelaccessor1 instanceof Level) {
                                                                             Level level = (Level)levelaccessor1;
 
                                                                             if (!level.isClientSide()) {
-                                                                                level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                             } else {
-                                                                                level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                             }
                                                                         }
 
                                                                         Entity entity3 = entity;
 
                                                                         if (!entity3.level.isClientSide() && entity3.getServer() != null) {
-                                                                            entity3.getServer().getCommands().performCommand(entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10");
+                                                                            entity3.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                         }
 
                                                                         if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
                                                                             entity3 = entity;
                                                                             if (!entity3.level.isClientSide() && entity3.getServer() != null) {
-                                                                                entity3.getServer().getCommands().performCommand(entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1");
-                                                                            }
-                                                                        } else {
-                                                                            entity3 = entity;
-                                                                            if (!entity3.level.isClientSide() && entity3.getServer() != null) {
-                                                                                entity3.getServer().getCommands().performCommand(entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4), "nothing");
+                                                                                entity3.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                             }
                                                                         }
 
                                                                         new DelayedTask(4) {
-                                                                            public void run() {
+                                                                            public void run() throws CommandSyntaxException {
                                                                                 LevelAccessor levelaccessor2 = levelaccessor;
 
                                                                                 if (levelaccessor2 instanceof Level) {
                                                                                     Level level1 = (Level)levelaccessor2;
 
                                                                                     if (!level1.isClientSide()) {
-                                                                                        level1.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                        level1.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                     } else {
-                                                                                        level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                        level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                     }
                                                                                 }
 
                                                                                 Entity entity4 = entity;
 
                                                                                 if (!entity4.level.isClientSide() && entity4.getServer() != null) {
-                                                                                    entity4.getServer().getCommands().performCommand(entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10");
+                                                                                    entity4.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                 }
 
                                                                                 LivingEntity livingentity6;
@@ -242,172 +238,139 @@ public class BleedingProcedure {
                                                                                 if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
                                                                                     entity4 = entity;
                                                                                     if (!entity4.level.isClientSide() && entity4.getServer() != null) {
-                                                                                        entity4.getServer().getCommands().performCommand(entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1");
-                                                                                    }
-                                                                                } else {
-                                                                                    entity4 = entity;
-                                                                                    if (!entity4.level.isClientSide() && entity4.getServer() != null) {
-                                                                                        entity4.getServer().getCommands().performCommand(entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4), "nothing");
+                                                                                        entity4.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                     }
                                                                                 }
 
                                                                                 new DelayedTask(4) {
-                                                                                    public void run() {
+                                                                                    public void run() throws CommandSyntaxException {
                                                                                         LevelAccessor levelaccessor3 = levelaccessor;
 
                                                                                         if (levelaccessor3 instanceof Level) {
                                                                                             Level level2 = (Level)levelaccessor3;
 
                                                                                             if (!level2.isClientSide()) {
-                                                                                                level2.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                level2.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                             } else {
-                                                                                                level2.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                level2.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                             }
                                                                                         }
 
                                                                                         Entity entity5 = entity;
 
                                                                                         if (!entity5.level.isClientSide() && entity5.getServer() != null) {
-                                                                                            entity5.getServer().getCommands().performCommand(entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10");
+                                                                                            entity5.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                         }
 
                                                                                         if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
                                                                                             entity5 = entity;
                                                                                             if (!entity5.level.isClientSide() && entity5.getServer() != null) {
-                                                                                                entity5.getServer().getCommands().performCommand(entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1");
-                                                                                            }
-                                                                                        } else {
-                                                                                            entity5 = entity;
-                                                                                            if (!entity5.level.isClientSide() && entity5.getServer() != null) {
-                                                                                                entity5.getServer().getCommands().performCommand(entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4), "nothing");
+                                                                                                entity5.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                             }
                                                                                         }
 
                                                                                         new DelayedTask(4) {
-                                                                                            public void run() {
+                                                                                            public void run() throws CommandSyntaxException {
                                                                                                 LevelAccessor levelaccessor4 = levelaccessor;
 
                                                                                                 if (levelaccessor4 instanceof Level) {
                                                                                                     Level level3 = (Level)levelaccessor4;
 
                                                                                                     if (!level3.isClientSide()) {
-                                                                                                        level3.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                        level3.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                                     } else {
-                                                                                                        level3.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                        level3.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                                     }
                                                                                                 }
 
                                                                                                 Entity entity6 = entity;
 
                                                                                                 if (!entity6.level.isClientSide() && entity6.getServer() != null) {
-                                                                                                    entity6.getServer().getCommands().performCommand(entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10");
+                                                                                                    entity6.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                 }
 
                                                                                                 if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
                                                                                                     entity6 = entity;
                                                                                                     if (!entity6.level.isClientSide() && entity6.getServer() != null) {
-                                                                                                        entity6.getServer().getCommands().performCommand(entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1");
-                                                                                                    }
-                                                                                                } else {
-                                                                                                    entity6 = entity;
-                                                                                                    if (!entity6.level.isClientSide() && entity6.getServer() != null) {
-                                                                                                        entity6.getServer().getCommands().performCommand(entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4), "nothing");
+                                                                                                        entity6.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                     }
                                                                                                 }
 
                                                                                                 new DelayedTask(4) {
-                                                                                                    public void run() {
+                                                                                                    public void run() throws CommandSyntaxException {
                                                                                                         LevelAccessor levelaccessor5 = levelaccessor;
 
                                                                                                         if (levelaccessor5 instanceof Level) {
                                                                                                             Level level4 = (Level)levelaccessor5;
 
                                                                                                             if (!level4.isClientSide()) {
-                                                                                                                level4.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                                level4.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                                             } else {
-                                                                                                                level4.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                                level4.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                                             }
                                                                                                         }
 
                                                                                                         Entity entity7 = entity;
 
                                                                                                         if (!entity7.level.isClientSide() && entity7.getServer() != null) {
-                                                                                                            entity7.getServer().getCommands().performCommand(entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10");
+                                                                                                            entity7.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                         }
 
                                                                                                         if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
                                                                                                             entity7 = entity;
                                                                                                             if (!entity7.level.isClientSide() && entity7.getServer() != null) {
-                                                                                                                entity7.getServer().getCommands().performCommand(entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1");
-                                                                                                            }
-                                                                                                        } else {
-                                                                                                            entity7 = entity;
-                                                                                                            if (!entity7.level.isClientSide() && entity7.getServer() != null) {
-                                                                                                                entity7.getServer().getCommands().performCommand(entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4), "nothing");
+                                                                                                                entity7.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                             }
                                                                                                         }
 
                                                                                                         new DelayedTask(4) {
-                                                                                                            public void run() {
+                                                                                                            public void run() throws CommandSyntaxException {
                                                                                                                 LevelAccessor levelaccessor6 = levelaccessor;
 
                                                                                                                 if (levelaccessor6 instanceof Level) {
                                                                                                                     Level level5 = (Level)levelaccessor6;
 
                                                                                                                     if (!level5.isClientSide()) {
-                                                                                                                        level5.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                                        level5.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                                                     } else {
-                                                                                                                        level5.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                                        level5.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                                                     }
                                                                                                                 }
 
                                                                                                                 Entity entity8 = entity;
 
                                                                                                                 if (!entity8.level.isClientSide() && entity8.getServer() != null) {
-                                                                                                                    entity8.getServer().getCommands().performCommand(entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10");
+                                                                                                                    entity8.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                                 }
-
-                                                                                                                if (dynamicanimation instanceof AttackAnimation || dynamicanimation instanceof LongHitAnimation || dynamicanimation instanceof HitAnimation) {
-                                                                                                                    entity8 = entity;
-                                                                                                                    if (!entity8.level.isClientSide() && entity8.getServer() != null) {
-                                                                                                                        entity8.getServer().getCommands().performCommand(entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4), "nothing");
-                                                                                                                    }
-                                                                                                                }
-
                                                                                                                 entity8 = entity;
                                                                                                                 if (!entity8.level.isClientSide() && entity8.getServer() != null) {
-                                                                                                                    entity8.getServer().getCommands().performCommand(entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1");
+                                                                                                                    entity8.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                                 }
 
                                                                                                                 new DelayedTask(4) {
-                                                                                                                    public void run() {
+                                                                                                                    public void run() throws CommandSyntaxException {
                                                                                                                         LevelAccessor levelaccessor7 = levelaccessor;
 
                                                                                                                         if (levelaccessor7 instanceof Level) {
                                                                                                                             Level level6 = (Level)levelaccessor7;
 
                                                                                                                             if (!level6.isClientSide()) {
-                                                                                                                                level6.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                                                level6.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                                                             } else {
-                                                                                                                                level6.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                                                level6.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                                                             }
                                                                                                                         }
 
                                                                                                                         Entity entity9 = entity;
 
                                                                                                                         if (!entity9.level.isClientSide() && entity9.getServer() != null) {
-                                                                                                                            entity9.getServer().getCommands().performCommand(entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10");
+                                                                                                                            entity9.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                                         }
 
                                                                                                                         if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
                                                                                                                             entity9 = entity;
                                                                                                                             if (!entity9.level.isClientSide() && entity9.getServer() != null) {
-                                                                                                                                entity9.getServer().getCommands().performCommand(entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1");
-                                                                                                                            }
-                                                                                                                        } else {
-                                                                                                                            entity9 = entity;
-                                                                                                                            if (!entity9.level.isClientSide() && entity9.getServer() != null) {
-                                                                                                                                entity9.getServer().getCommands().performCommand(entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4), "nothing");
+                                                                                                                                entity9.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                                             }
                                                                                                                         }
 
@@ -420,9 +383,9 @@ public class BleedingProcedure {
                                                                                                                                         Level level7 = (Level)levelaccessor8;
 
                                                                                                                                         if (!level7.isClientSide()) {
-                                                                                                                                            level7.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F);
+                                                                                                                                            level7.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F);
                                                                                                                                         } else {
-                                                                                                                                            level7.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F, false);
+                                                                                                                                            level7.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F, false);
                                                                                                                                         }
                                                                                                                                     }
                                                                                                                                 }
@@ -477,11 +440,6 @@ public class BleedingProcedure {
                                                                     }
                                                                 };
                                                             }
-                                                        } else {
-                                                            entity2 = entity;
-                                                            if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                                entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "nothing");
-                                                            }
                                                         }
                                                     }
                                                 }
@@ -497,7 +455,7 @@ public class BleedingProcedure {
                             }
                         }
 
-                        if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("player_mobs:player_mob")  || ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("guardvillagers:guard")) {
+                        if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("player_mobs:player_mob")  || ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("guardvillagers:guard")) {
                             entity1.getPersistentData().putDouble("hit_npc", entity1.getPersistentData().getDouble("hit_npc") + 1.0D);
                             entity.getPersistentData().putDouble("hit_npc", entity.getPersistentData().getDouble("hit_npc") + 1.0D);
                             entity1.getPersistentData().putBoolean("dont_kill", false);
@@ -505,7 +463,7 @@ public class BleedingProcedure {
                             if (entity.isAlive() && entity instanceof LivingEntity player_mob) {
                                 ItemStack oldItem = player_mob.getOffhandItem();
                                 new DelayedTask(50) {
-                                    public void run() {
+                                    public void run() throws CommandSyntaxException {
                                         if (entity.isAlive()) {
                                             if (player_mob.getHealth() <= 10.0F) {
                                                 LivingEntityPatch<?> livingentitypatch1 = (LivingEntityPatch)EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
@@ -532,59 +490,54 @@ public class BleedingProcedure {
 
                                                             entity2 = entity;
                                                             if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                                entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1");
+                                                                entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                             }
 
                                                             new DelayedTask(4) {
-                                                                public void run() {
+                                                                public void run() throws CommandSyntaxException {
                                                                     LevelAccessor levelaccessor1 = levelaccessor;
 
                                                                     if (levelaccessor1 instanceof Level) {
                                                                         Level level = (Level)levelaccessor1;
 
                                                                         if (!level.isClientSide()) {
-                                                                            level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                            level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                         } else {
-                                                                            level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                            level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                         }
                                                                     }
 
                                                                     Entity entity3 = entity;
 
                                                                     if (!entity3.level.isClientSide() && entity3.getServer() != null) {
-                                                                        entity3.getServer().getCommands().performCommand(entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10");
+                                                                        entity3.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                     }
 
                                                                     if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
                                                                         entity3 = entity;
                                                                         if (!entity3.level.isClientSide() && entity3.getServer() != null) {
-                                                                            entity3.getServer().getCommands().performCommand(entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1");
-                                                                        }
-                                                                    } else {
-                                                                        entity3 = entity;
-                                                                        if (!entity3.level.isClientSide() && entity3.getServer() != null) {
-                                                                            entity3.getServer().getCommands().performCommand(entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4), "nothing");
+                                                                            entity3.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                         }
                                                                     }
 
                                                                     new DelayedTask(4) {
-                                                                        public void run() {
+                                                                        public void run() throws CommandSyntaxException {
                                                                             LevelAccessor levelaccessor2 = levelaccessor;
 
                                                                             if (levelaccessor2 instanceof Level) {
                                                                                 Level level1 = (Level)levelaccessor2;
 
                                                                                 if (!level1.isClientSide()) {
-                                                                                    level1.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                    level1.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                 } else {
-                                                                                    level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                    level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                 }
                                                                             }
 
                                                                             Entity entity4 = entity;
 
                                                                             if (!entity4.level.isClientSide() && entity4.getServer() != null) {
-                                                                                entity4.getServer().getCommands().performCommand(entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10");
+                                                                                entity4.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                             }
 
                                                                             LivingEntity livingentity6;
@@ -612,175 +565,142 @@ public class BleedingProcedure {
                                                                             if (!(dynamicanimation1 instanceof AttackAnimation) && !(dynamicanimation1 instanceof LongHitAnimation) && !(dynamicanimation1 instanceof HitAnimation)) {
                                                                                 entity4 = entity;
                                                                                 if (!entity4.level.isClientSide() && entity4.getServer() != null) {
-                                                                                    entity4.getServer().getCommands().performCommand(entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1");
-                                                                                }
-                                                                            } else {
-                                                                                entity4 = entity;
-                                                                                if (!entity4.level.isClientSide() && entity4.getServer() != null) {
-                                                                                    entity4.getServer().getCommands().performCommand(entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4), "nothing");
+                                                                                    entity4.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                 }
                                                                             }
 
                                                                             new DelayedTask(4) {
-                                                                                public void run() {
+                                                                                public void run() throws CommandSyntaxException {
                                                                                     LevelAccessor levelaccessor3 = levelaccessor;
 
                                                                                     if (levelaccessor3 instanceof Level) {
                                                                                         Level level2 = (Level)levelaccessor3;
 
                                                                                         if (!level2.isClientSide()) {
-                                                                                            level2.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                            level2.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                         } else {
-                                                                                            level2.playLocalSound(0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                            level2.playLocalSound(0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                         }
                                                                                     }
 
                                                                                     Entity entity5 = entity;
 
                                                                                     if (!entity5.level.isClientSide() && entity5.getServer() != null) {
-                                                                                        entity5.getServer().getCommands().performCommand(entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10");
+                                                                                        entity5.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                     }
 
                                                                                     if (!(dynamicanimation1 instanceof AttackAnimation) && !(dynamicanimation1 instanceof LongHitAnimation) && !(dynamicanimation1 instanceof HitAnimation)) {
                                                                                         entity5 = entity;
                                                                                         if (!entity5.level.isClientSide() && entity5.getServer() != null) {
-                                                                                            entity5.getServer().getCommands().performCommand(entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1");
-                                                                                        }
-                                                                                    } else {
-                                                                                        entity5 = entity;
-                                                                                        if (!entity5.level.isClientSide() && entity5.getServer() != null) {
-                                                                                            entity5.getServer().getCommands().performCommand(entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4), "nothing");
+                                                                                            entity5.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                         }
                                                                                     }
 
                                                                                     new DelayedTask(4) {
-                                                                                        public void run() {
+                                                                                        public void run() throws CommandSyntaxException {
                                                                                             LevelAccessor levelaccessor4 = levelaccessor;
 
                                                                                             if (levelaccessor4 instanceof Level) {
                                                                                                 Level level3 = (Level)levelaccessor4;
 
                                                                                                 if (!level3.isClientSide()) {
-                                                                                                    level3.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                    level3.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                                 } else {
-                                                                                                    level3.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                    level3.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                                 }
                                                                                             }
 
                                                                                             Entity entity6 = entity;
 
                                                                                             if (!entity6.level.isClientSide() && entity6.getServer() != null) {
-                                                                                                entity6.getServer().getCommands().performCommand(entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10");
+                                                                                                entity6.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                             }
 
                                                                                             if (!(dynamicanimation1 instanceof AttackAnimation) && !(dynamicanimation1 instanceof LongHitAnimation) && !(dynamicanimation1 instanceof HitAnimation)) {
                                                                                                 entity6 = entity;
                                                                                                 if (!entity6.level.isClientSide() && entity6.getServer() != null) {
-                                                                                                    entity6.getServer().getCommands().performCommand(entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1");
-                                                                                                }
-                                                                                            } else {
-                                                                                                entity6 = entity;
-                                                                                                if (!entity6.level.isClientSide() && entity6.getServer() != null) {
-                                                                                                    entity6.getServer().getCommands().performCommand(entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4), "nothing");
+                                                                                                    entity6.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                 }
                                                                                             }
 
                                                                                             new DelayedTask(4) {
-                                                                                                public void run() {
+                                                                                                public void run() throws CommandSyntaxException {
                                                                                                     LevelAccessor levelaccessor5 = levelaccessor;
 
                                                                                                     if (levelaccessor5 instanceof Level) {
                                                                                                         Level level4 = (Level)levelaccessor5;
 
                                                                                                         if (!level4.isClientSide()) {
-                                                                                                            level4.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                            level4.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                                         } else {
-                                                                                                            level4.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                            level4.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                                         }
                                                                                                     }
 
                                                                                                     Entity entity7 = entity;
 
                                                                                                     if (!entity7.level.isClientSide() && entity7.getServer() != null) {
-                                                                                                        entity7.getServer().getCommands().performCommand(entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10");
+                                                                                                        entity7.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                     }
 
                                                                                                     if (!(dynamicanimation1 instanceof AttackAnimation) && !(dynamicanimation1 instanceof LongHitAnimation) && !(dynamicanimation1 instanceof HitAnimation)) {
                                                                                                         entity7 = entity;
                                                                                                         if (!entity7.level.isClientSide() && entity7.getServer() != null) {
-                                                                                                            entity7.getServer().getCommands().performCommand(entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1");
-                                                                                                        }
-                                                                                                    } else {
-                                                                                                        entity7 = entity;
-                                                                                                        if (!entity7.level.isClientSide() && entity7.getServer() != null) {
-                                                                                                            entity7.getServer().getCommands().performCommand(entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4), "nothing");
+                                                                                                            entity7.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                         }
                                                                                                     }
 
                                                                                                     new DelayedTask(4) {
-                                                                                                        public void run() {
+                                                                                                        public void run() throws CommandSyntaxException {
                                                                                                             LevelAccessor levelaccessor6 = levelaccessor;
 
                                                                                                             if (levelaccessor6 instanceof Level) {
                                                                                                                 Level level5 = (Level)levelaccessor6;
 
                                                                                                                 if (!level5.isClientSide()) {
-                                                                                                                    level5.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                                    level5.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                                                 } else {
-                                                                                                                    level5.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                                    level5.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                                                 }
                                                                                                             }
 
                                                                                                             Entity entity8 = entity;
 
                                                                                                             if (!entity8.level.isClientSide() && entity8.getServer() != null) {
-                                                                                                                entity8.getServer().getCommands().performCommand(entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10");
-                                                                                                            }
-
-                                                                                                            if (dynamicanimation1 instanceof AttackAnimation || dynamicanimation1 instanceof LongHitAnimation || dynamicanimation1 instanceof HitAnimation) {
-                                                                                                                entity8 = entity;
-                                                                                                                if (!entity8.level.isClientSide() && entity8.getServer() != null) {
-                                                                                                                    entity8.getServer().getCommands().performCommand(entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4), "nothing");
-                                                                                                                }
+                                                                                                                entity8.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                             }
 
                                                                                                             entity8 = entity;
                                                                                                             if (!entity8.level.isClientSide() && entity8.getServer() != null) {
-                                                                                                                entity8.getServer().getCommands().performCommand(entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1");
+                                                                                                                entity8.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                             }
 
                                                                                                             new DelayedTask(4) {
-                                                                                                                public void run() {
+                                                                                                                public void run() throws CommandSyntaxException {
                                                                                                                     LevelAccessor levelaccessor7 = levelaccessor;
 
                                                                                                                     if (levelaccessor7 instanceof Level) {
                                                                                                                         Level level6 = (Level)levelaccessor7;
 
                                                                                                                         if (!level6.isClientSide()) {
-                                                                                                                            level6.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                                            level6.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                                                         } else {
-                                                                                                                            level6.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                                            level6.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                                                         }
                                                                                                                     }
 
                                                                                                                     Entity entity9 = entity;
 
                                                                                                                     if (!entity9.level.isClientSide() && entity9.getServer() != null) {
-                                                                                                                        entity9.getServer().getCommands().performCommand(entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10");
+                                                                                                                        entity9.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                                     }
 
                                                                                                                     if (!(dynamicanimation1 instanceof AttackAnimation) && !(dynamicanimation1 instanceof LongHitAnimation) && !(dynamicanimation1 instanceof HitAnimation)) {
                                                                                                                         entity9 = entity;
                                                                                                                         if (!entity9.level.isClientSide() && entity9.getServer() != null) {
-                                                                                                                            entity9.getServer().getCommands().performCommand(entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1");
-                                                                                                                        }
-                                                                                                                    } else {
-                                                                                                                        entity9 = entity;
-                                                                                                                        if (!entity9.level.isClientSide() && entity9.getServer() != null) {
-                                                                                                                            entity9.getServer().getCommands().performCommand(entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4), "nothing");
+                                                                                                                            entity9.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                                         }
                                                                                                                     }
-
                                                                                                                     new DelayedTask(3) {
                                                                                                                         public void run() {
                                                                                                                             if (Math.random() <= 0.4D) {
@@ -790,9 +710,9 @@ public class BleedingProcedure {
                                                                                                                                     Level level7 = (Level)levelaccessor8;
 
                                                                                                                                     if (!level7.isClientSide()) {
-                                                                                                                                        level7.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F);
+                                                                                                                                        level7.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F);
                                                                                                                                     } else {
-                                                                                                                                        level7.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F, false);
+                                                                                                                                        level7.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F, false);
                                                                                                                                     }
                                                                                                                                 }
                                                                                                                             }
@@ -845,11 +765,6 @@ public class BleedingProcedure {
                                                                 }
                                                             };
                                                         }
-                                                    } else {
-                                                        entity2 = entity;
-                                                        if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                            entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "nothing");
-                                                        }
                                                     }
                                                 }
                                             }
@@ -859,11 +774,11 @@ public class BleedingProcedure {
                             }
                         }
 
-                        if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("minecraft:zombie") || ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("minecraft:husk") || ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("minecraft:skeleton") || ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("minecraft:wither_skeleton")) {
+                        if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:zombie") || ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:husk") || ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:skeleton") || ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:wither_skeleton")) {
                             if (entity instanceof LivingEntity zombie && zombie.getHealth() <= 18.0F && entity.isAlive()) {
                                 new DelayedTask(50) {
                                     @Override
-                                    public void run() {
+                                    public void run() throws CommandSyntaxException {
                                         if (zombie.isAlive()) {
                                             if (zombie.getHealth() <= 15.0F) {
                                                 LivingEntityPatch<?> livingentitypatch2 = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
@@ -891,7 +806,7 @@ public class BleedingProcedure {
 
                                                             entity2 = zombie;
                                                             if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                                entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1");
+                                                                entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                             }
 
                                                             if (entity instanceof LivingEntity) {
@@ -903,16 +818,16 @@ public class BleedingProcedure {
 
                                                             new DelayedTask(4) {
                                                                 @Override
-                                                                public void run() {
+                                                                public void run() throws CommandSyntaxException {
                                                                     LevelAccessor levelaccessor1 = levelaccessor;
 
                                                                     if (levelaccessor1 instanceof Level) {
                                                                         Level level = (Level) levelaccessor1;
 
                                                                         if (!level.isClientSide()) {
-                                                                            level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                            level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                         } else {
-                                                                            level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                            level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                         }
                                                                     }
 
@@ -920,26 +835,21 @@ public class BleedingProcedure {
                                                                     if (!(dynamicanimation3 instanceof AttackAnimation) && !(dynamicanimation3 instanceof LongHitAnimation) && !(dynamicanimation3 instanceof HitAnimation)) {
                                                                         entity3 = entity;
                                                                         if (!entity3.level.isClientSide() && entity3.getServer() != null) {
-                                                                            entity3.getServer().getCommands().performCommand(entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1");
-                                                                        }
-                                                                    } else {
-                                                                        entity3 = zombie;
-                                                                        if (!entity3.level.isClientSide() && entity3.getServer() != null) {
-                                                                            entity3.getServer().getCommands().performCommand(entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4), "nothing");
+                                                                            entity3.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1", entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                         }
                                                                     }
 
                                                                     new DelayedTask(4) {
-                                                                        public void run() {
+                                                                        public void run() throws CommandSyntaxException {
                                                                             LevelAccessor levelaccessor2 = levelaccessor;
 
                                                                             if (levelaccessor2 instanceof Level) {
                                                                                 Level level1 = (Level) levelaccessor2;
 
                                                                                 if (!level1.isClientSide()) {
-                                                                                    level1.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                    level1.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                 } else {
-                                                                                    level1.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                    level1.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                 }
                                                                             }
 
@@ -969,26 +879,21 @@ public class BleedingProcedure {
                                                                             if (!(dynamicanimation3 instanceof AttackAnimation) && !(dynamicanimation3 instanceof LongHitAnimation) && !(dynamicanimation3 instanceof HitAnimation)) {
                                                                                 entity4 = zombie;
                                                                                 if (!entity4.level.isClientSide() && entity4.getServer() != null) {
-                                                                                    entity4.getServer().getCommands().performCommand(entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1");
-                                                                                }
-                                                                            } else {
-                                                                                entity4 = zombie;
-                                                                                if (!entity4.level.isClientSide() && entity4.getServer() != null) {
-                                                                                    entity4.getServer().getCommands().performCommand(entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4), "nothing");
+                                                                                    entity4.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1", entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                 }
                                                                             }
 
                                                                             new DelayedTask(4) {
-                                                                                public void run() {
+                                                                                public void run() throws CommandSyntaxException {
                                                                                     LevelAccessor levelaccessor3 = levelaccessor;
 
                                                                                     if (levelaccessor3 instanceof Level) {
                                                                                         Level level2 = (Level) levelaccessor3;
 
                                                                                         if (!level2.isClientSide()) {
-                                                                                            level2.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                            level2.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                         } else {
-                                                                                            level2.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                            level2.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                         }
                                                                                     }
 
@@ -996,26 +901,21 @@ public class BleedingProcedure {
                                                                                     if (!(dynamicanimation3 instanceof AttackAnimation) && !(dynamicanimation3 instanceof LongHitAnimation) && !(dynamicanimation3 instanceof HitAnimation)) {
                                                                                         entity5 = zombie;
                                                                                         if (!entity5.level.isClientSide() && entity5.getServer() != null) {
-                                                                                            entity5.getServer().getCommands().performCommand(entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1");
-                                                                                        }
-                                                                                    } else {
-                                                                                        entity5 = zombie;
-                                                                                        if (!entity5.level.isClientSide() && entity5.getServer() != null) {
-                                                                                            entity5.getServer().getCommands().performCommand(entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4), "nothing");
+                                                                                            entity5.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1", entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                         }
                                                                                     }
 
                                                                                     new DelayedTask(4) {
-                                                                                        public void run() {
+                                                                                        public void run() throws CommandSyntaxException {
                                                                                             LevelAccessor levelaccessor4 = levelaccessor;
 
                                                                                             if (levelaccessor4 instanceof Level) {
                                                                                                 Level level3 = (Level) levelaccessor4;
 
                                                                                                 if (!level3.isClientSide()) {
-                                                                                                    level3.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                    level3.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                                 } else {
-                                                                                                    level3.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                    level3.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                                 }
                                                                                             }
 
@@ -1023,26 +923,21 @@ public class BleedingProcedure {
                                                                                             if (!(dynamicanimation3 instanceof AttackAnimation) && !(dynamicanimation3 instanceof LongHitAnimation) && !(dynamicanimation3 instanceof HitAnimation)) {
                                                                                                 entity6 = zombie;
                                                                                                 if (!entity6.level.isClientSide() && entity6.getServer() != null) {
-                                                                                                    entity6.getServer().getCommands().performCommand(entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1");
-                                                                                                }
-                                                                                            } else {
-                                                                                                entity6 = zombie;
-                                                                                                if (!entity6.level.isClientSide() && entity6.getServer() != null) {
-                                                                                                    entity6.getServer().getCommands().performCommand(entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4), "nothing");
+                                                                                                    entity6.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1", entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                 }
                                                                                             }
 
                                                                                             new DelayedTask(4) {
-                                                                                                public void run() {
+                                                                                                public void run() throws CommandSyntaxException {
                                                                                                     LevelAccessor levelaccessor5 = levelaccessor;
 
                                                                                                     if (levelaccessor5 instanceof Level) {
                                                                                                         Level level4 = (Level) levelaccessor5;
 
                                                                                                         if (!level4.isClientSide()) {
-                                                                                                            level4.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                            level4.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                                         } else {
-                                                                                                            level4.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                            level4.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                                         }
                                                                                                     }
 
@@ -1050,53 +945,40 @@ public class BleedingProcedure {
                                                                                                     if (!(dynamicanimation3 instanceof AttackAnimation) && !(dynamicanimation3 instanceof LongHitAnimation) && !(dynamicanimation3 instanceof HitAnimation)) {
                                                                                                         entity7 = zombie;
                                                                                                         if (!entity7.level.isClientSide() && entity7.getServer() != null) {
-                                                                                                            entity7.getServer().getCommands().performCommand(entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1");
-                                                                                                        }
-                                                                                                    } else {
-                                                                                                        entity7 = zombie;
-                                                                                                        if (!entity7.level.isClientSide() && entity7.getServer() != null) {
-                                                                                                            entity7.getServer().getCommands().performCommand(entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4), "nothing");
+                                                                                                            entity7.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1", entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                         }
                                                                                                     }
 
                                                                                                     new DelayedTask(4) {
-                                                                                                        public void run() {
+                                                                                                        public void run() throws CommandSyntaxException {
                                                                                                             LevelAccessor levelaccessor6 = levelaccessor;
 
                                                                                                             if (levelaccessor6 instanceof Level) {
                                                                                                                 Level level5 = (Level) levelaccessor6;
 
                                                                                                                 if (!level5.isClientSide()) {
-                                                                                                                    level5.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                                    level5.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                                                 } else {
-                                                                                                                    level5.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                                    level5.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                                                 }
                                                                                                             }
 
                                                                                                             Entity entity8 = zombie;
-                                                                                                            if (dynamicanimation3 instanceof AttackAnimation || dynamicanimation3 instanceof LongHitAnimation || dynamicanimation3 instanceof HitAnimation) {
-                                                                                                                entity8 = zombie;
-                                                                                                                if (!entity8.level.isClientSide() && entity8.getServer() != null) {
-                                                                                                                    entity8.getServer().getCommands().performCommand(entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4), "nothing");
-                                                                                                                }
-                                                                                                            }
-
-                                                                                                            entity8 = zombie;
                                                                                                             if (!entity8.level.isClientSide() && entity8.getServer() != null) {
-                                                                                                                entity8.getServer().getCommands().performCommand(entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1");
+                                                                                                                entity8.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1", entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                             }
 
                                                                                                             new DelayedTask(4) {
-                                                                                                                public void run() {
+                                                                                                                public void run() throws CommandSyntaxException {
                                                                                                                     LevelAccessor levelaccessor7 = levelaccessor;
 
                                                                                                                     if (levelaccessor7 instanceof Level) {
                                                                                                                         Level level6 = (Level) levelaccessor7;
 
                                                                                                                         if (!level6.isClientSide()) {
-                                                                                                                            level6.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                                            level6.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                                                         } else {
-                                                                                                                            level6.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                                            level6.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                                                         }
                                                                                                                     }
 
@@ -1104,12 +986,7 @@ public class BleedingProcedure {
                                                                                                                     if (!(dynamicanimation3 instanceof AttackAnimation) && !(dynamicanimation3 instanceof LongHitAnimation) && !(dynamicanimation3 instanceof HitAnimation)) {
                                                                                                                         entity9 = zombie;
                                                                                                                         if (!entity9.level.isClientSide() && entity9.getServer() != null) {
-                                                                                                                            entity9.getServer().getCommands().performCommand(entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1");
-                                                                                                                        }
-                                                                                                                    } else {
-                                                                                                                        entity9 = zombie;
-                                                                                                                        if (!entity9.level.isClientSide() && entity9.getServer() != null) {
-                                                                                                                            entity9.getServer().getCommands().performCommand(entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4), "nothing");
+                                                                                                                            entity9.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1", entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                                         }
                                                                                                                     }
 
@@ -1122,9 +999,9 @@ public class BleedingProcedure {
                                                                                                                                     Level level7 = (Level) levelaccessor8;
 
                                                                                                                                     if (!level7.isClientSide()) {
-                                                                                                                                        level7.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F);
+                                                                                                                                        level7.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F);
                                                                                                                                     } else {
-                                                                                                                                        level7.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F, false);
+                                                                                                                                        level7.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F, false);
                                                                                                                                     }
                                                                                                                                 }
                                                                                                                             }
@@ -1168,11 +1045,6 @@ public class BleedingProcedure {
                                                                     };
                                                                 }
                                                             };
-                                                        }
-                                                    } else {
-                                                        entity2 = entity;
-                                                        if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                            entity2.getServer().getCommands().performCommand(entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4), "nothing");
                                                         }
                                                     }
                                                 }

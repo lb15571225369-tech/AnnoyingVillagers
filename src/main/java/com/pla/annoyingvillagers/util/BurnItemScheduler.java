@@ -6,7 +6,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.network.chat.ChatType;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -104,9 +104,9 @@ public class BurnItemScheduler {
             if (!nbtPart.isEmpty()) {
                 cmd += nbtPart;
             }
-            mob.getServer().getCommands().performCommand(
-                    mob.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                    cmd
+            mob.getServer().getCommands().getDispatcher().execute(
+                    cmd,
+                    mob.createCommandSourceStack().withSuppressedOutput().withPermission(4)
             );
             data.remove("av_idle_burn_backup_main_hand");
         }
@@ -165,14 +165,13 @@ public class BurnItemScheduler {
                 if (rawName.startsWith("[") && rawName.endsWith("]")) {
                     rawName = rawName.substring(1, rawName.length() - 1).toLowerCase();;
                 }
-                if (!(ForgeRegistries.ENTITIES.getKey(mob.getType()).toString().equals("minecraft:zombie") || ForgeRegistries.ENTITIES.getKey(mob.getType()).toString().equals("minecraft:skeleton"))
+                if (!(ForgeRegistries.ENTITY_TYPES.getKey(mob.getType()).toString().equals("minecraft:zombie") || ForgeRegistries.ENTITY_TYPES.getKey(mob.getType()).toString().equals("minecraft:skeleton"))
                         && new Random().nextFloat() < 0.05f) {
                     String message = "<" + mob.getDisplayName().getString() + "> " +
                             getRandomBurnMessage(rawName);
-                    serverLevel.getServer().getPlayerList().broadcastMessage(
-                            new TextComponent(message),
-                            ChatType.SYSTEM,
-                            Util.NIL_UUID
+                    serverLevel.getServer().getPlayerList().broadcastSystemMessage(
+                            Component.literal(message),
+                            false
                     );
                 }
             }

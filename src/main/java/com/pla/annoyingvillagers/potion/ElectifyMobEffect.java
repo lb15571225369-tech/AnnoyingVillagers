@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.potion;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.procedures.ElectifyDuringEffectEveryTickProcedure;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -16,7 +17,11 @@ public class ElectifyMobEffect extends MobEffect {
     }
 
     public void applyEffectTick(LivingEntity livingentity, int i) {
-        ElectifyDuringEffectEveryTickProcedure.execute(livingentity.level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity);
+        try {
+            ElectifyDuringEffectEveryTickProcedure.execute(livingentity.level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity);
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public boolean isDurationEffectTick(int i, int j) {

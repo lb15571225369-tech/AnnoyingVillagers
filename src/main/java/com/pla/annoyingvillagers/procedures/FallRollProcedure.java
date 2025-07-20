@@ -1,6 +1,8 @@
 package com.pla.annoyingvillagers.procedures;
 
 import javax.annotation.Nullable;
+
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -12,22 +14,22 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 public class FallRollProcedure {
 
     @SubscribeEvent
-    public static void onEntityAttacked(LivingHurtEvent livinghurtevent) {
+    public static void onEntityAttacked(LivingHurtEvent livinghurtevent) throws CommandSyntaxException {
         if (livinghurtevent != null && livinghurtevent.getEntity() != null) {
             execute(livinghurtevent, livinghurtevent.getSource(), livinghurtevent.getEntity());
         }
 
     }
 
-    public static void execute(DamageSource damagesource, Entity entity) {
+    public static void execute(DamageSource damagesource, Entity entity) throws CommandSyntaxException {
         execute((Event) null, damagesource, entity);
     }
 
-    private static void execute(@Nullable Event event, DamageSource damagesource, Entity entity) {
+    private static void execute(@Nullable Event event, DamageSource damagesource, Entity entity) throws CommandSyntaxException {
         if (entity != null) {
             if (damagesource == DamageSource.FALL && entity.isShiftKeyDown()) {
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "indestructible @s play \"epicfight:biped/skill/roll_forward\" 0 1");
+                    entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/skill/roll_forward\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 }
 
                 if (event != null && event.isCancelable()) {

@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
@@ -15,15 +16,15 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class EnchantedEnderPearlOnProjectileHitBlockProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) throws CommandSyntaxException {
         if (entity != null) {
             if (levelaccessor instanceof Level) {
                 Level level = (Level) levelaccessor;
 
                 if (!level.isClientSide()) {
-                    level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.enderman.teleport")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                    level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.enderman.teleport")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                 } else {
-                    level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.enderman.teleport")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                    level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.enderman.teleport")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                 }
             }
 
@@ -41,7 +42,7 @@ public class EnchantedEnderPearlOnProjectileHitBlockProcedure {
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().performCommand(entity.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle annoyingvillagers:ender ~ ~1 ~ 0 0 0 0.5 16");
+                entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:ender ~ ~1 ~ 0 0 0 0.5 16", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
             }
 
         }

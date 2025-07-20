@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.client.renderer;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.PurpleVillagerGeneralEntity;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -16,6 +17,6 @@ public class PurpleVillagerGeneralRenderer extends HumanoidMobRenderer<PurpleVil
     }
 
     public ResourceLocation getTextureLocation(PurpleVillagerGeneralEntity lucunqientity) {
-        return new ResourceLocation("annoyingvillagers:textures/entities/purple_villager_general.png");
+        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/purple_villager_general.png");
     }
 }

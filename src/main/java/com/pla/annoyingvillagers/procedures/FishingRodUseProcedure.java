@@ -28,8 +28,8 @@ public class FishingRodUseProcedure {
 
     @SubscribeEvent
     public static void onRightClickItem(RightClickItem rightclickitem) {
-        if (rightclickitem.getHand() == rightclickitem.getPlayer().getUsedItemHand()) {
-            execute(rightclickitem, rightclickitem.getWorld(), (double) rightclickitem.getPos().getX(), (double) rightclickitem.getPos().getY(), (double) rightclickitem.getPos().getZ(), rightclickitem.getPlayer());
+        if (rightclickitem.getHand() == rightclickitem.getEntity().getUsedItemHand()) {
+            execute(rightclickitem, rightclickitem.getLevel(), (double) rightclickitem.getPos().getX(), (double) rightclickitem.getPos().getY(), (double) rightclickitem.getPos().getZ(), rightclickitem.getEntity());
         }
     }
 

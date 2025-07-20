@@ -35,7 +35,7 @@ public class RenderIncinerator extends RenderItemBase {
             DynamicAnimation dynamicanimation = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
             ItemStack itemstack1;
 
-            if (dynamicanimation != AVAnimations.Legendary_Sword_Heavy_Attack && dynamicanimation != WOMAnimations.SOLAR_AUTO_2_POLVORA) {
+            if (dynamicanimation != AVAnimations.Legendary_Sword_Heavy_Attack && dynamicanimation != WOMAnimations.SOLAR_AUTO_2) {
                 if (dynamicanimation == AVAnimations.Legendary_Sword_Wake_Up_Attack) {
                     itemstack1 = new ItemStack((ItemLike) AnnoyingVillagersModItems.WAKE_UP_LEGENDARY_SWORD.get());
                     posestack.pushPose();

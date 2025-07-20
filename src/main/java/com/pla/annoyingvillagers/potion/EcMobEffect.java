@@ -9,7 +9,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
-import net.minecraftforge.client.EffectRenderer;
+import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
 import com.pla.annoyingvillagers.procedures.ECEffectOnEndProcedure;
 import com.pla.annoyingvillagers.procedures.ECEffectOnStartProcedure;
 import com.pla.annoyingvillagers.procedures.ECDuringEffectEveryTickProcedure;
@@ -41,8 +41,8 @@ public class EcMobEffect extends MobEffect {
         return true;
     }
 
-    public void initializeClient(Consumer<EffectRenderer> consumer) {
-        consumer.accept(new EffectRenderer() {
+    public void initializeClient(Consumer<IClientMobEffectExtensions> consumer) {
+        consumer.accept(new IClientMobEffectExtensions() {
             public boolean shouldRender(MobEffectInstance mobeffectinstance) {
                 return false;
             }

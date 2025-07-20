@@ -5,7 +5,6 @@ import com.pla.annoyingvillagers.client.model.ModelVillagerScoutHelmet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -14,8 +13,7 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.client.IItemRenderProperties;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 import java.util.Collections;
 import java.util.Map;
@@ -38,7 +36,7 @@ public abstract class VillagerScoutHelmetItem extends ArmorItem {
             }
 
             public SoundEvent getEquipSound() {
-                return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(""));
+                return null;
             }
 
             public Ingredient getRepairIngredient() {
@@ -66,11 +64,10 @@ public abstract class VillagerScoutHelmetItem extends ArmorItem {
         }
 
         @Override
-        public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-            consumer.accept(new IItemRenderProperties() {
+        public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+            consumer.accept(new IClientItemExtensions() {
                 HumanoidModel<LivingEntity> armorModel = null;
 
-                @Override
                 public HumanoidModel<?> getArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> defaultModel) {
                     if (armorModel == null) {
                         ModelVillagerScoutHelmet<?> helmetModel = new ModelVillagerScoutHelmet<>(

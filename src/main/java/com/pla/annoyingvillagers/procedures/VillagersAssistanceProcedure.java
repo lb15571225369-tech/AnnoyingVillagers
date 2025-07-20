@@ -2,12 +2,13 @@ package com.pla.annoyingvillagers.procedures;
 
 import javax.annotation.Nullable;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.ChatType;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -45,20 +46,20 @@ public class VillagersAssistanceProcedure {
 
     private static void execute(@Nullable Event event, LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity) {
         if (entity != null) {
-            if (ForgeRegistries.ENTITIES.getKey(entity.getType()).toString().equals("minecraft:villager") && levelaccessor instanceof ServerLevel) {
+            if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:villager") && levelaccessor instanceof ServerLevel) {
                 ServerLevel serverlevel = (ServerLevel)levelaccessor;
 
                 if (serverlevel.isRaided(new BlockPos(d0, d1, d2)) && Math.random() <= 0.2D) {
                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                        levelaccessor.getServer().getPlayerList().broadcastMessage(new TextComponent("<Villager> Help !"), ChatType.SYSTEM, Util.NIL_UUID);
+                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Villager> Help !"), false);
                     }
 
                     new DelayedTask(11) {
-                        private void summonFirework(Entity entity) {
+                        private void summonFirework(Entity entity) throws CommandSyntaxException {
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                entity.getServer().getCommands().performCommand(
-                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                                        "/summon firework_rocket ~ ~10 ~ {LifeTime:10,FireworksItem:{id:firework_rocket,Count:1,tag:{Fireworks:{Explosions:[{Type:3,Colors:[0],Flicker:1}]}},display:{Name:\"Black Creeper Firework\"}}}"
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "summon firework_rocket ~ ~10 ~ {LifeTime:10,FireworksItem:{id:firework_rocket,Count:1,tag:{Fireworks:{Explosions:[{Type:3,Colors:[0],Flicker:1}]}},display:{Name:\"Black Creeper Firework\"}}}",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                                 );
                             }
 
@@ -67,7 +68,10 @@ public class VillagersAssistanceProcedure {
 
                         private void playSound(LevelAccessor level, double x, double y, double z, String soundId) {
                             if (level instanceof Level lvl) {
-                                SoundEvent sound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(soundId));
+                                String[] parts = soundId.split(":", 2);
+                                String namespace = parts[0];
+                                String path = parts[1];
+                                SoundEvent sound = ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(namespace, path));
                                 if (!lvl.isClientSide()) {
                                     lvl.playSound(null, new BlockPos(x, y, z), sound, SoundSource.NEUTRAL, 1.0F, 2.0F);
                                 } else {
@@ -78,24 +82,23 @@ public class VillagersAssistanceProcedure {
 
                         private void broadcast(String speaker, String message) {
                             if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                levelaccessor.getServer().getPlayerList().broadcastMessage(
-                                        new TextComponent("<" + speaker + "> " + message),
-                                        ChatType.SYSTEM,
-                                        Util.NIL_UUID
+                                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(
+                                        Component.literal("<" + speaker + "> " + message),
+                                        false
                                 );
                             }
                         }
 
-                        private void summon(Entity entity, String type, double dx, double dy, double dz) {
+                        private void summon(Entity entity, String type, double dx, double dy, double dz) throws CommandSyntaxException {
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                entity.getServer().getCommands().performCommand(
-                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4),
-                                        String.format("/summon annoyingvillagers:%s ~%.1f ~%.1f ~%.1f", type, dx, dy, dz)
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        String.format("summon annoyingvillagers:%s ~%.1f ~%.1f ~%.1f", type, dx, dy, dz),
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                                 );
                             }
                         }
                         @Override
-                        public void run() {
+                        public void run() throws CommandSyntaxException {
                             if (entity instanceof LivingEntity living) {
                                 if (living.hasEffect(MobEffects.MOVEMENT_SPEED)) {
                                     broadcast("Villager", "Help me!");
@@ -114,7 +117,7 @@ public class VillagersAssistanceProcedure {
 
                                 new DelayedTask(50) {
                                     @Override
-                                    public void run() {
+                                    public void run() throws CommandSyntaxException {
                                         playSound(levelaccessor, d0, d1, d2, "entity.experience_orb.pickup");
 
                                         if (Math.random() <= 0.6) {

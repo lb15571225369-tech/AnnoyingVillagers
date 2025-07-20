@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.procedures;
 import java.util.Random;
 import javax.annotation.Nullable;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 
 import net.minecraft.core.BlockPos;
@@ -10,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -34,18 +36,18 @@ import static net.minecraft.world.item.enchantment.Enchantments.PROJECTILE_PROTE
 public class ProjectiveProcedure {
 
     @SubscribeEvent
-    public static void onEntityAttacked(LivingAttackEvent livingattackevent) {
+    public static void onEntityAttacked(LivingAttackEvent livingattackevent) throws CommandSyntaxException {
         if (livingattackevent != null && livingattackevent.getEntity() != null) {
             execute(livingattackevent, livingattackevent.getEntity().level, livingattackevent.getEntity().getX(), livingattackevent.getEntity().getY(), livingattackevent.getEntity().getZ(), livingattackevent.getEntity(), livingattackevent.getSource().getDirectEntity(), (double) livingattackevent.getAmount());
         }
 
     }
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity, Entity entity1, double d3) {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity, Entity entity1, double d3) throws CommandSyntaxException {
         execute((Event) null, levelaccessor, d0, d1, d2, entity, entity1, d3);
     }
 
-    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity, Entity entity1, double d3) {
+    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity, Entity entity1, double d3) throws CommandSyntaxException {
         if (entity != null && entity1 != null) {
             double d4;
 
@@ -96,7 +98,7 @@ public class ProjectiveProcedure {
                         itemstack3 = ItemStack.EMPTY;
                     }
 
-                    if (itemstack2.hurt((int)(d3 / (double)EnchantmentHelper.getItemEnchantmentLevel(enchantment1, itemstack3)), new Random(), (ServerPlayer)null)) {
+                    if (itemstack2.hurt((int)(d3 / (double)EnchantmentHelper.getItemEnchantmentLevel(enchantment1, itemstack3)), (RandomSource) new Random(), (ServerPlayer)null)) {
                         itemstack2.shrink(1);
                         itemstack2.setDamageValue(0);
                     }
@@ -105,14 +107,16 @@ public class ProjectiveProcedure {
                         Level level = (Level)levelaccessor;
 
                         if (!level.isClientSide()) {
-                            level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":target_block_hit")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                            level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "target_block_hit")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                         } else {
-                            level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID + ":target_block_hit")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                            level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "target_block_hit")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                         }
                     }
 
                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                        entity1.getServer().getCommands().performCommand(entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4), "execute at @s run particle annoyingvillagers:spark ~ ~ ~ 0 0 0 0.1 10");
+                        entity1.getServer().getCommands().getDispatcher().execute(
+                                "execute at @s run particle annoyingvillagers:spark ~ ~ ~ 0 0 0 0.1 10",
+                                entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                     }
                 } else {
                     enchantment = PROJECTILE_PROTECTION;
@@ -156,7 +160,7 @@ public class ProjectiveProcedure {
                         }
 
                         itemstack2 = itemstack1;
-                        if (itemstack2.hurt((int)d3, new Random(), (ServerPlayer)null)) {
+                        if (itemstack2.hurt((int)d3, (RandomSource) new Random(), (ServerPlayer)null)) {
                             itemstack2.shrink(1);
                             itemstack2.setDamageValue(0);
                         }
@@ -198,7 +202,7 @@ public class ProjectiveProcedure {
                             }
 
                             itemstack2 = itemstack1;
-                            if (itemstack2.hurt((int)d3, new Random(), (ServerPlayer)null)) {
+                            if (itemstack2.hurt((int)d3, (RandomSource) new Random(), (ServerPlayer)null)) {
                                 itemstack2.shrink(1);
                                 itemstack2.setDamageValue(0);
                             }
@@ -239,7 +243,7 @@ public class ProjectiveProcedure {
                                 }
 
                                 itemstack2 = itemstack1;
-                                if (itemstack2.hurt((int)d3, new Random(), (ServerPlayer)null)) {
+                                if (itemstack2.hurt((int)d3, (RandomSource) new Random(), (ServerPlayer)null)) {
                                     itemstack2.shrink(1);
                                     itemstack2.setDamageValue(0);
                                 }

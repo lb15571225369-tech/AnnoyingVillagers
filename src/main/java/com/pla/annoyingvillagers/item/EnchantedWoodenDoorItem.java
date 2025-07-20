@@ -9,7 +9,7 @@ import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.procedures.EnchantedWoodenDoorOnUseProcedure;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -113,7 +113,7 @@ public class EnchantedWoodenDoorItem extends TieredItem {
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(new TextComponent("An incredibly quirky wooden door, even noobs say it's great"));
+        list.add(Component.literal("An incredibly quirky wooden door, even noobs say it's great"));
     }
 
     @OnlyIn(Dist.CLIENT)

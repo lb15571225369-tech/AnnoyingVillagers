@@ -2,9 +2,10 @@ package com.pla.annoyingvillagers.item;
 
 import java.util.List;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -26,7 +27,7 @@ public class VillagerHeadItem extends Item {
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(new TextComponent("A tool for disguising as a villager. Right-click to equip. Sneak + Right-click to toggle Disguise/Attack mode."));
+        list.add(Component.literal("A tool for disguising as a villager. Right-click to equip. Sneak + Right-click to toggle Disguise/Attack mode."));
     }
 
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {
@@ -36,17 +37,29 @@ public class VillagerHeadItem extends Item {
         double d1 = player.getY();
         double d2 = player.getZ();
 
-        VillagerHeadRightOnUseProcedure.execute(player);
+        try {
+            VillagerHeadRightOnUseProcedure.execute(player);
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
         return interactionresultholder;
     }
 
     public void inventoryTick(ItemStack itemstack, Level level, Entity entity, int i, boolean flag) {
         super.inventoryTick(itemstack, level, entity, i, flag);
-        VillagerHeadEveryTickInInventoryProcedure.execute(entity);
+        try {
+            VillagerHeadEveryTickInInventoryProcedure.execute(entity);
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public boolean onDroppedByPlayer(ItemStack itemstack, Player player) {
-        VillagerHeadWhenDroppedByPlayerProcedure.execute(player);
+        try {
+            VillagerHeadWhenDroppedByPlayerProcedure.execute(player);
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
         return true;
     }
 }

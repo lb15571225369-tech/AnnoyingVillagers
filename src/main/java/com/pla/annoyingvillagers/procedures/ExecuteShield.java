@@ -34,8 +34,8 @@ public class ExecuteShield {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onRightClickEntity(RightClickItem rightclickitem) {
-        if (rightclickitem.getHand() == rightclickitem.getPlayer().getUsedItemHand()) {
-            Player player = rightclickitem.getPlayer();
+        if (rightclickitem.getHand() == rightclickitem.getEntity().getUsedItemHand()) {
+            Player player = rightclickitem.getEntity();
             Level level = rightclickitem.getEntity().getLevel();
 
             if (player != null && level != null) {

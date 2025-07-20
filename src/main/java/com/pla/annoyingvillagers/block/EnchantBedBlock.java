@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -56,7 +55,7 @@ public class EnchantBedBlock extends Block {
 
     public void appendHoverText(ItemStack itemstack, BlockGetter blockgetter, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, blockgetter, list, tooltipflag);
-        list.add(new TextComponent("Right-click the Enchanted Bed once to set your respawn point. Upon death, you won't drop your items. You must right-click it again after each use to reactivate the effect. Conflicts with the Totem of Undying."));
+        list.add(Component.literal("Right-click the Enchanted Bed once to set your respawn point. Upon death, you won't drop your items. You must right-click it again after each use to reactivate the effect. Conflicts with the Totem of Undying."));
     }
 
     public boolean propagatesSkylightDown(BlockState blockstate, BlockGetter blockgetter, BlockPos blockpos) {

@@ -21,9 +21,9 @@ public class EnchantedWoodenDoorOnUseProcedure {
                 Level level = (Level) levelaccessor;
 
                 if (!level.isClientSide()) {
-                    level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.wooden_door.close")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                    level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.wooden_door.close")), SoundSource.BLOCKS, 1.0F, 1.0F);
                 } else {
-                    level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.wooden_door.close")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                    level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.wooden_door.close")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                 }
             }
 
