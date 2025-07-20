@@ -53,7 +53,7 @@ public class ObsidianWeaponItem extends SwordItem {
         try {
             ObsidianWeaponsOnUseProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
         return interactionresultholder;
     }
@@ -63,7 +63,7 @@ public class ObsidianWeaponItem extends SwordItem {
         try {
             ObsidianWeaponsOnUseProcedure.execute(useoncontext.getLevel(), (double) useoncontext.getClickedPos().getX(), (double) useoncontext.getClickedPos().getY(), (double) useoncontext.getClickedPos().getZ(), useoncontext.getPlayer(), useoncontext.getItemInHand());
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
         return InteractionResult.SUCCESS;
     }

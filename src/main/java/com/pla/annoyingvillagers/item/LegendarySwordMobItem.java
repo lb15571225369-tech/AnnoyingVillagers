@@ -69,7 +69,7 @@ public class LegendarySwordMobItem extends SwordItem {
         try {
             LegendarySwordMobItemOnUseProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
         return interactionresultholder;
     }

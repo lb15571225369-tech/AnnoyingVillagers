@@ -113,7 +113,7 @@ public class BlueDemonEntity extends Monster {
         try {
             BlueDemonOnEntityDamageProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
         return damagesource.getDirectEntity() instanceof AbstractArrow ? false : (damagesource == DamageSource.FALL ? false : (damagesource == DamageSource.CACTUS ? false : (damagesource == DamageSource.DROWN ? false : (damagesource == DamageSource.LIGHTNING_BOLT ? false : (damagesource.isExplosion() ? false : (damagesource.getMsgId().equals("trident") ? false : (damagesource == DamageSource.WITHER ? false : (damagesource.getMsgId().equals("witherSkull") ? false : super.hurt(damagesource, f)))))))));
     }
@@ -123,7 +123,7 @@ public class BlueDemonEntity extends Monster {
         try {
             BlueDemonOnEntityDeathProcedure.execute(this.level, this, damagesource.getEntity());
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
     }
 
@@ -144,7 +144,7 @@ public class BlueDemonEntity extends Monster {
         try {
             BlueDemonOnEntityUpdateProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
     }
 

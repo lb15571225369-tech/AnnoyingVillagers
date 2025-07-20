@@ -147,7 +147,7 @@ public class VillagerScoutEntity extends PathfinderMob {
         try {
             VillagerScoutOnEntityDeathProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
     }
 
@@ -157,7 +157,7 @@ public class VillagerScoutEntity extends PathfinderMob {
         try {
             VillagerScoutOnEntityInitialSpawnProcedure.execute(serverlevelaccessor, this.getX(), this.getY(), this.getZ(), this);
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
         return spawngroupdata1;
     }
@@ -175,7 +175,7 @@ public class VillagerScoutEntity extends PathfinderMob {
         try {
             VillagerScoutOnInteractProcedure.execute(level, d0, d1, d2, this);
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
         return interactionresult;
     }

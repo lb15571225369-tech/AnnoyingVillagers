@@ -66,7 +66,7 @@ public abstract class BlueDemonChestplateItem extends ArmorItem {
             try {
                 BlueDemonChestplateEventProcedure.execute(player);
             } catch (CommandSyntaxException e) {
-                throw new RuntimeException(e);
+                
             }
         }
     }

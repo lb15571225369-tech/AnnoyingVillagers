@@ -7,6 +7,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.util.DelayedTask;
@@ -184,7 +185,7 @@ public class BlueVillagerGeneralOnTickProcedure {
                                     }
 
                                     if (Math.random() <= 0.05D) {
-                                        new DelayedTask(Mth.nextInt((RandomSource) new Random(), 1, 10)) {
+                                        new DelayedTask(Mth.nextInt(AnnoyingVillagers.randomSource, 1, 10)) {
                                             public void run() throws CommandSyntaxException {
                                                 Entity entity2 = entity;
 
@@ -277,7 +278,7 @@ public class BlueVillagerGeneralOnTickProcedure {
                                         }
 
                                         if (Math.random() <= 0.05D) {
-                                            new DelayedTask(Mth.nextInt((RandomSource) new Random(), 1, 10)) {
+                                            new DelayedTask(Mth.nextInt(AnnoyingVillagers.randomSource, 1, 10)) {
                                                 public void run() throws CommandSyntaxException {
                                                     Entity entity2 = entity;
                                                     Level level = entity2.level;

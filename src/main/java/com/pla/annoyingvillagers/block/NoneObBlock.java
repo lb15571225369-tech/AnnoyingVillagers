@@ -50,7 +50,7 @@ public class NoneObBlock extends Block {
         try {
             NoneObWhenEntityCollidesWithBlockProcedure.execute(level, entity);
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
     }
 

@@ -96,7 +96,7 @@ public class BlueDemonStagingEntity extends Monster {
         try {
             BlueDemonStagingOnEntityInitialSpawnProcedure.execute(serverlevelaccessor, this.getX(), this.getY(), this.getZ(), this);
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
         return spawngroupdata1;
     }
@@ -106,7 +106,7 @@ public class BlueDemonStagingEntity extends Monster {
         try {
             BlueDemonStagingOnEntityUpdateProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
     }
 

@@ -98,7 +98,7 @@ public class ProjectiveProcedure {
                         itemstack3 = ItemStack.EMPTY;
                     }
 
-                    if (itemstack2.hurt((int)(d3 / (double)EnchantmentHelper.getItemEnchantmentLevel(enchantment1, itemstack3)), (RandomSource) new Random(), (ServerPlayer)null)) {
+                    if (itemstack2.hurt((int)(d3 / (double)EnchantmentHelper.getItemEnchantmentLevel(enchantment1, itemstack3)), AnnoyingVillagers.randomSource, (ServerPlayer)null)) {
                         itemstack2.shrink(1);
                         itemstack2.setDamageValue(0);
                     }
@@ -160,7 +160,7 @@ public class ProjectiveProcedure {
                         }
 
                         itemstack2 = itemstack1;
-                        if (itemstack2.hurt((int)d3, (RandomSource) new Random(), (ServerPlayer)null)) {
+                        if (itemstack2.hurt((int)d3, AnnoyingVillagers.randomSource, (ServerPlayer)null)) {
                             itemstack2.shrink(1);
                             itemstack2.setDamageValue(0);
                         }
@@ -202,7 +202,7 @@ public class ProjectiveProcedure {
                             }
 
                             itemstack2 = itemstack1;
-                            if (itemstack2.hurt((int)d3, (RandomSource) new Random(), (ServerPlayer)null)) {
+                            if (itemstack2.hurt((int)d3, AnnoyingVillagers.randomSource, (ServerPlayer)null)) {
                                 itemstack2.shrink(1);
                                 itemstack2.setDamageValue(0);
                             }
@@ -243,7 +243,7 @@ public class ProjectiveProcedure {
                                 }
 
                                 itemstack2 = itemstack1;
-                                if (itemstack2.hurt((int)d3, (RandomSource) new Random(), (ServerPlayer)null)) {
+                                if (itemstack2.hurt((int)d3, AnnoyingVillagers.randomSource, (ServerPlayer)null)) {
                                     itemstack2.shrink(1);
                                     itemstack2.setDamageValue(0);
                                 }

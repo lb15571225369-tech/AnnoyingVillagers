@@ -27,7 +27,7 @@ public class EcPlayerMobEffect extends MobEffect {
         try {
             EcPlayerDuringEffectEveryTickProcedure.execute(livingentity);
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
     }
 

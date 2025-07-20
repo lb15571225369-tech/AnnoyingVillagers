@@ -42,7 +42,7 @@ public class WeaponsMoreAttackMessage {
             try {
                 pressAction(context.getSender(), weaponsmoreattackmessage.type, weaponsmoreattackmessage.pressedms);
             } catch (CommandSyntaxException e) {
-                throw new RuntimeException(e);
+                
             }
         });
         context.setPacketHandled(true);

@@ -105,7 +105,7 @@ public class DarkObSsBlock extends Block {
         try {
             DarkObSsOnAttackProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), player);
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
     }
 
@@ -114,7 +114,7 @@ public class DarkObSsBlock extends Block {
         try {
             DarkObSsOnEntityInsideProcedure.execute(level, entity);
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
     }
 

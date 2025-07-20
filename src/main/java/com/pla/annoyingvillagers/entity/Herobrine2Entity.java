@@ -118,7 +118,7 @@ public class Herobrine2Entity extends Monster {
         try {
             HerobrineOnHurtProcedure.execute(this);
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
         return damagesource == DamageSource.FALL ? false : (damagesource == DamageSource.DROWN ? false : (damagesource == DamageSource.WITHER ? false : (damagesource.getMsgId().equals("witherSkull") ? false : super.hurt(damagesource, f))));
     }
@@ -128,7 +128,7 @@ public class Herobrine2Entity extends Monster {
         try {
             Herobrine2DieProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
     }
 
@@ -138,7 +138,7 @@ public class Herobrine2Entity extends Monster {
         try {
             HerobrineOnInitialSpawnProcedure.execute(serverlevelaccessor, this);
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
         return spawngroupdata1;
     }
@@ -153,7 +153,7 @@ public class Herobrine2Entity extends Monster {
         try {
             HerobrineOnEntityTickUpdateProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
     }
 

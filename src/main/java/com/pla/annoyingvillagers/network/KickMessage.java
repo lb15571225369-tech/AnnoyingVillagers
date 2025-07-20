@@ -43,7 +43,7 @@ public class KickMessage {
             try {
                 pressAction(context.getSender(), kickmessage.type, kickmessage.pressedms);
             } catch (CommandSyntaxException e) {
-                throw new RuntimeException(e);
+                
             }
         });
         context.setPacketHandled(true);

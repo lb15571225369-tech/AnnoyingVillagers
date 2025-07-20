@@ -95,7 +95,7 @@ public class BlueDemonEndStagingEntity extends Monster {
         try {
             BlueDemonTridentFsSkillEndOnEntityInitialSpawnProcedure.execute(serverlevelaccessor, this);
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
         return spawngroupdata1;
     }

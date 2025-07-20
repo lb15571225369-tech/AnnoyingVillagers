@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.procedures;
 import java.util.Random;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -31,7 +32,7 @@ public class ShadowObsidianProcedure {
                 }
             }
 
-            if (itemstack.hurt(100, (RandomSource) new Random(), (ServerPlayer)null)) {
+            if (itemstack.hurt(100, AnnoyingVillagers.randomSource, (ServerPlayer)null)) {
                 itemstack.shrink(1);
                 itemstack.setDamageValue(0);
             }

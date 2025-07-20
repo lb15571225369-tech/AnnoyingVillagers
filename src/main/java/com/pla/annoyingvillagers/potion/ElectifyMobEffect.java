@@ -20,7 +20,7 @@ public class ElectifyMobEffect extends MobEffect {
         try {
             ElectifyDuringEffectEveryTickProcedure.execute(livingentity.level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity);
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
     }
 

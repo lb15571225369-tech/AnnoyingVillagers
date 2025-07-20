@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.procedures;
 
 import java.util.Random;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -23,18 +24,18 @@ public class ShadowObsidianPreventBlockProcedure {
         if (levelaccessor instanceof Level) {
             level = (Level)levelaccessor;
             if (!level.isClientSide()) {
-                level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.deepslate.place")), SoundSource.BLOCKS, 1.0F, (float)Mth.nextDouble((RandomSource) new Random(), 0.95D, 1.0D));
+                level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.deepslate.place")), SoundSource.BLOCKS, 1.0F, (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.95D, 1.0D));
             } else {
-                level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.deepslate.place")), SoundSource.BLOCKS, 1.0F, (float)Mth.nextDouble((RandomSource) new Random(), 0.95D, 1.0D), false);
+                level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.deepslate.place")), SoundSource.BLOCKS, 1.0F, (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.95D, 1.0D), false);
             }
         }
 
         if (levelaccessor instanceof Level) {
             level = (Level)levelaccessor;
             if (!level.isClientSide()) {
-                level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "ob_place")), SoundSource.BLOCKS, (float)Mth.nextDouble((RandomSource) new Random(), 0.2D, 1.0D), 1.0F);
+                level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "ob_place")), SoundSource.BLOCKS, (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.2D, 1.0D), 1.0F);
             } else {
-                level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "ob_place")), SoundSource.BLOCKS, (float)Mth.nextDouble((RandomSource) new Random(), 0.2D, 1.0D), 1.0F, false);
+                level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "ob_place")), SoundSource.BLOCKS, (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.2D, 1.0D), 1.0F, false);
             }
         }
 
@@ -47,9 +48,9 @@ public class ShadowObsidianPreventBlockProcedure {
                     Level level1 = (Level)levelaccessor1;
 
                     if (!level1.isClientSide()) {
-                        level1.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.stone.break")), SoundSource.BLOCKS, 1.0F, (float)Mth.nextDouble((RandomSource) new Random(), 1.0D, 1.1D));
+                        level1.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.stone.break")), SoundSource.BLOCKS, 1.0F, (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 1.1D));
                     } else {
-                        level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.stone.break")), SoundSource.BLOCKS, 1.0F, (float)Mth.nextDouble((RandomSource) new Random(), 1.0D, 1.1D), false);
+                        level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.stone.break")), SoundSource.BLOCKS, 1.0F, (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 1.1D), false);
                     }
                 }
 
@@ -57,7 +58,7 @@ public class ShadowObsidianPreventBlockProcedure {
             }
         };
 
-        new DelayedTask((int)Mth.nextDouble((RandomSource) new Random(), 5.0D, 10.0D)) {
+        new DelayedTask((int)Mth.nextDouble(AnnoyingVillagers.randomSource, 5.0D, 10.0D)) {
             @Override
             public void run() {
                 LevelAccessor levelaccessor2 = levelaccessor;

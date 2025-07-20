@@ -7,6 +7,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -110,7 +111,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                     if (levelaccessor1 instanceof ServerLevel) {
                         serverlevel = (ServerLevel)levelaccessor1;
                         bdtridententity = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel);
-                        bdtridententity.moveTo(d0 + (double)Mth.nextInt((RandomSource) new Random(), -3, 3), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), -3, 3), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                        bdtridententity.moveTo(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -3, 3), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -3, 3), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                         if (bdtridententity instanceof Mob) {
                             mob = (Mob)bdtridententity;
                             mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(bdtridententity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
@@ -123,7 +124,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                     if (levelaccessor1 instanceof ServerLevel) {
                         serverlevel = (ServerLevel)levelaccessor1;
                         bdtridententity = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel);
-                        bdtridententity.moveTo(d0 + (double)Mth.nextInt((RandomSource) new Random(), -3, 3), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), -3, 3), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                        bdtridententity.moveTo(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -3, 3), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -3, 3), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                         if (bdtridententity instanceof Mob) {
                             mob = (Mob)bdtridententity;
                             mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(bdtridententity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
@@ -145,7 +146,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                 ServerLevel serverlevel1 = (ServerLevel)levelaccessor2;
                                 BlueDemonTridentParticleEntity bdtridententity1 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel1);
 
-                                bdtridententity1.moveTo(d0 + (double)Mth.nextInt((RandomSource) new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                bdtridententity1.moveTo(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                 if (bdtridententity1 instanceof Mob) {
                                     Mob mob1 = (Mob)bdtridententity1;
 
@@ -165,7 +166,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                         if (levelaccessor3 instanceof ServerLevel) {
                                             serverlevel2 = (ServerLevel)levelaccessor3;
                                             bdtridententity2 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel2);
-                                            bdtridententity2.moveTo(d0 + (double)Mth.nextInt((RandomSource) new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                            bdtridententity2.moveTo(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                             if (bdtridententity2 instanceof Mob) {
                                                 mob2 = (Mob)bdtridententity2;
                                                 mob2.finalizeSpawn(serverlevel2, levelaccessor.getCurrentDifficultyAt(bdtridententity2.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
@@ -178,7 +179,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                         if (levelaccessor3 instanceof ServerLevel) {
                                             serverlevel2 = (ServerLevel)levelaccessor3;
                                             bdtridententity2 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel2);
-                                            bdtridententity2.moveTo(d0 + (double)Mth.nextInt((RandomSource) new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                            bdtridententity2.moveTo(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                             if (bdtridententity2 instanceof Mob) {
                                                 mob2 = (Mob)bdtridententity2;
                                                 mob2.finalizeSpawn(serverlevel2, levelaccessor.getCurrentDifficultyAt(bdtridententity2.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
@@ -198,7 +199,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                 if (levelaccessor4 instanceof ServerLevel) {
                                                     serverlevel3 = (ServerLevel)levelaccessor4;
                                                     bdtridententity3 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel3);
-                                                    bdtridententity3.moveTo(d0 + (double)Mth.nextInt((RandomSource) (RandomSource) new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) (RandomSource) new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                    bdtridententity3.moveTo(d0 + (double)Mth.nextInt((RandomSource) AnnoyingVillagers.randomSource, -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) AnnoyingVillagers.randomSource, -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                     if (bdtridententity3 instanceof Mob) {
                                                         mob3 = (Mob)bdtridententity3;
                                                         mob3.finalizeSpawn(serverlevel3, levelaccessor.getCurrentDifficultyAt(bdtridententity3.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
@@ -211,7 +212,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                 if (levelaccessor4 instanceof ServerLevel) {
                                                     serverlevel3 = (ServerLevel)levelaccessor4;
                                                     bdtridententity3 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel3);
-                                                    bdtridententity3.moveTo(d0 + (double)Mth.nextInt((RandomSource) new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                    bdtridententity3.moveTo(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                     if (bdtridententity3 instanceof Mob) {
                                                         mob3 = (Mob)bdtridententity3;
                                                         mob3.finalizeSpawn(serverlevel3, levelaccessor.getCurrentDifficultyAt(bdtridententity3.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
@@ -231,7 +232,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                         if (levelaccessor5 instanceof ServerLevel) {
                                                             serverlevel4 = (ServerLevel)levelaccessor5;
                                                             bdtridententity4 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel4);
-                                                            bdtridententity4.moveTo(d0 + (double)Mth.nextInt((RandomSource) new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                            bdtridententity4.moveTo(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                             if (bdtridententity4 instanceof Mob) {
                                                                 mob4 = (Mob)bdtridententity4;
                                                                 mob4.finalizeSpawn(serverlevel4, levelaccessor.getCurrentDifficultyAt(bdtridententity4.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
@@ -244,7 +245,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                         if (levelaccessor5 instanceof ServerLevel) {
                                                             serverlevel4 = (ServerLevel)levelaccessor5;
                                                             bdtridententity4 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel4);
-                                                            bdtridententity4.moveTo(d0 + (double)Mth.nextInt((RandomSource) new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), 3, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                            bdtridententity4.moveTo(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, 3, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                             if (bdtridententity4 instanceof Mob) {
                                                                 mob4 = (Mob)bdtridententity4;
                                                                 mob4.finalizeSpawn(serverlevel4, levelaccessor.getCurrentDifficultyAt(bdtridententity4.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
@@ -257,7 +258,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                         if (levelaccessor5 instanceof ServerLevel) {
                                                             serverlevel4 = (ServerLevel)levelaccessor5;
                                                             bdtridententity4 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel4);
-                                                            bdtridententity4.moveTo(d0 + (double)Mth.nextInt((RandomSource) new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), 3, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                            bdtridententity4.moveTo(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, 3, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                             if (bdtridententity4 instanceof Mob) {
                                                                 mob4 = (Mob)bdtridententity4;
                                                                 mob4.finalizeSpawn(serverlevel4, levelaccessor.getCurrentDifficultyAt(bdtridententity4.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
@@ -277,7 +278,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                 if (levelaccessor6 instanceof ServerLevel) {
                                                                     serverlevel5 = (ServerLevel)levelaccessor6;
                                                                     bdtridententity5 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel5);
-                                                                    bdtridententity5.moveTo(d0 + (double)Mth.nextInt((RandomSource) new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                    bdtridententity5.moveTo(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                     if (bdtridententity5 instanceof Mob) {
                                                                         mob5 = (Mob)bdtridententity5;
                                                                         mob5.finalizeSpawn(serverlevel5, levelaccessor.getCurrentDifficultyAt(bdtridententity5.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
@@ -290,7 +291,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                 if (levelaccessor6 instanceof ServerLevel) {
                                                                     serverlevel5 = (ServerLevel)levelaccessor6;
                                                                     bdtridententity5 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel5);
-                                                                    bdtridententity5.moveTo(d0 + (double)Mth.nextInt((RandomSource) new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), 3, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                    bdtridententity5.moveTo(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, 3, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                     if (bdtridententity5 instanceof Mob) {
                                                                         mob5 = (Mob)bdtridententity5;
                                                                         mob5.finalizeSpawn(serverlevel5, levelaccessor.getCurrentDifficultyAt(bdtridententity5.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
@@ -310,7 +311,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                         if (levelaccessor7 instanceof ServerLevel) {
                                                                             serverlevel6 = (ServerLevel)levelaccessor7;
                                                                             bdtridententity6 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel6);
-                                                                            bdtridententity6.moveTo(d0 + (double)Mth.nextInt((RandomSource) new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                            bdtridententity6.moveTo(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                             if (bdtridententity6 instanceof Mob) {
                                                                                 mob6 = (Mob)bdtridententity6;
                                                                                 mob6.finalizeSpawn(serverlevel6, levelaccessor.getCurrentDifficultyAt(bdtridententity6.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
@@ -323,7 +324,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                         if (levelaccessor7 instanceof ServerLevel) {
                                                                             serverlevel6 = (ServerLevel)levelaccessor7;
                                                                             bdtridententity6 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel6);
-                                                                            bdtridententity6.moveTo(d0 + (double)Mth.nextInt((RandomSource) new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                            bdtridententity6.moveTo(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                             if (bdtridententity6 instanceof Mob) {
                                                                                 mob6 = (Mob)bdtridententity6;
                                                                                 mob6.finalizeSpawn(serverlevel6, levelaccessor.getCurrentDifficultyAt(bdtridententity6.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
@@ -336,7 +337,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                         if (levelaccessor7 instanceof ServerLevel) {
                                                                             serverlevel6 = (ServerLevel)levelaccessor7;
                                                                             bdtridententity6 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel6);
-                                                                            bdtridententity6.moveTo(d0 + (double)Mth.nextInt((RandomSource) new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                            bdtridententity6.moveTo(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                             if (bdtridententity6 instanceof Mob) {
                                                                                 mob6 = (Mob)bdtridententity6;
                                                                                 mob6.finalizeSpawn(serverlevel6, levelaccessor.getCurrentDifficultyAt(bdtridententity6.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
@@ -349,7 +350,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                         if (levelaccessor7 instanceof ServerLevel) {
                                                                             serverlevel6 = (ServerLevel)levelaccessor7;
                                                                             bdtridententity6 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel6);
-                                                                            bdtridententity6.moveTo(d0 + (double)Mth.nextInt((RandomSource) new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                            bdtridententity6.moveTo(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                             if (bdtridententity6 instanceof Mob) {
                                                                                 mob6 = (Mob)bdtridententity6;
                                                                                 mob6.finalizeSpawn(serverlevel6, levelaccessor.getCurrentDifficultyAt(bdtridententity6.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
@@ -369,7 +370,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                                 if (levelaccessor8 instanceof ServerLevel) {
                                                                                     serverlevel7 = (ServerLevel)levelaccessor8;
                                                                                     bdtridententity7 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel7);
-                                                                                    bdtridententity7.moveTo(d0 + (double)Mth.nextInt((RandomSource) new Random(), -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                                    bdtridententity7.moveTo(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -10, 10), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -10, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                                     if (bdtridententity7 instanceof Mob) {
                                                                                         mob7 = (Mob)bdtridententity7;
                                                                                         mob7.finalizeSpawn(serverlevel7, levelaccessor.getCurrentDifficultyAt(bdtridententity7.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
@@ -382,7 +383,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                                 if (levelaccessor8 instanceof ServerLevel) {
                                                                                     serverlevel7 = (ServerLevel)levelaccessor8;
                                                                                     bdtridententity7 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel7);
-                                                                                    bdtridententity7.moveTo(d0 + (double)Mth.nextInt((RandomSource) new Random(), -20, -20), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), -20, -20), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                                    bdtridententity7.moveTo(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -20, -20), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -20, -20), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                                     if (bdtridententity7 instanceof Mob) {
                                                                                         mob7 = (Mob)bdtridententity7;
                                                                                         mob7.finalizeSpawn(serverlevel7, levelaccessor.getCurrentDifficultyAt(bdtridententity7.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
@@ -395,7 +396,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                                 if (levelaccessor8 instanceof ServerLevel) {
                                                                                     serverlevel7 = (ServerLevel)levelaccessor8;
                                                                                     bdtridententity7 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel7);
-                                                                                    bdtridententity7.moveTo(d0 + (double)Mth.nextInt((RandomSource) new Random(), -20, -20), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), -20, -20), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                                    bdtridententity7.moveTo(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -20, -20), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -20, -20), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                                     if (bdtridententity7 instanceof Mob) {
                                                                                         mob7 = (Mob)bdtridententity7;
                                                                                         mob7.finalizeSpawn(serverlevel7, levelaccessor.getCurrentDifficultyAt(bdtridententity7.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
@@ -408,7 +409,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                                 if (levelaccessor8 instanceof ServerLevel) {
                                                                                     serverlevel7 = (ServerLevel)levelaccessor8;
                                                                                     bdtridententity7 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel7);
-                                                                                    bdtridententity7.moveTo(d0 + (double)Mth.nextInt((RandomSource) new Random(), -20, -20), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), -20, -20), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                                    bdtridententity7.moveTo(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -20, -20), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -20, -20), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                                     if (bdtridententity7 instanceof Mob) {
                                                                                         mob7 = (Mob)bdtridententity7;
                                                                                         mob7.finalizeSpawn(serverlevel7, levelaccessor.getCurrentDifficultyAt(bdtridententity7.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
@@ -421,7 +422,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                                 if (levelaccessor8 instanceof ServerLevel) {
                                                                                     serverlevel7 = (ServerLevel)levelaccessor8;
                                                                                     bdtridententity7 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel7);
-                                                                                    bdtridententity7.moveTo(d0 + (double)Mth.nextInt((RandomSource) new Random(), -20, -20), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), -20, -20), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                                    bdtridententity7.moveTo(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -20, -20), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -20, -20), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                                     if (bdtridententity7 instanceof Mob) {
                                                                                         mob7 = (Mob)bdtridententity7;
                                                                                         mob7.finalizeSpawn(serverlevel7, levelaccessor.getCurrentDifficultyAt(bdtridententity7.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
@@ -440,7 +441,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                                         if (levelaccessor9 instanceof ServerLevel) {
                                                                                             serverlevel8 = (ServerLevel)levelaccessor9;
                                                                                             lightningbolt = (LightningBolt)EntityType.LIGHTNING_BOLT.create(serverlevel8);
-                                                                                            lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos(d0 + (double)Mth.nextInt((RandomSource) new Random(), -25, 25), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), -25, 25))));
+                                                                                            lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -25, 25), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -25, 25))));
                                                                                             lightningbolt.setVisualOnly(true);
                                                                                             serverlevel8.addFreshEntity(lightningbolt);
                                                                                         }
@@ -449,7 +450,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                                         if (levelaccessor9 instanceof ServerLevel) {
                                                                                             serverlevel8 = (ServerLevel)levelaccessor9;
                                                                                             lightningbolt = (LightningBolt)EntityType.LIGHTNING_BOLT.create(serverlevel8);
-                                                                                            lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos(d0 + (double)Mth.nextInt((RandomSource) new Random(), -25, 25), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), -25, 25))));
+                                                                                            lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -25, 25), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -25, 25))));
                                                                                             lightningbolt.setVisualOnly(true);
                                                                                             serverlevel8.addFreshEntity(lightningbolt);
                                                                                         }
@@ -458,7 +459,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                                         if (levelaccessor9 instanceof ServerLevel) {
                                                                                             serverlevel8 = (ServerLevel)levelaccessor9;
                                                                                             lightningbolt = (LightningBolt)EntityType.LIGHTNING_BOLT.create(serverlevel8);
-                                                                                            lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos(d0 + (double)Mth.nextInt((RandomSource) new Random(), -25, 25), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), -25, 25))));
+                                                                                            lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -25, 25), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -25, 25))));
                                                                                             lightningbolt.setVisualOnly(true);
                                                                                             serverlevel8.addFreshEntity(lightningbolt);
                                                                                         }
@@ -467,7 +468,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                                         if (levelaccessor9 instanceof ServerLevel) {
                                                                                             serverlevel8 = (ServerLevel)levelaccessor9;
                                                                                             lightningbolt = (LightningBolt)EntityType.LIGHTNING_BOLT.create(serverlevel8);
-                                                                                            lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos(d0 + (double)Mth.nextInt((RandomSource) new Random(), -25, 25), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), -25, 25))));
+                                                                                            lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -25, 25), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -25, 25))));
                                                                                             lightningbolt.setVisualOnly(true);
                                                                                             serverlevel8.addFreshEntity(lightningbolt);
                                                                                         }
@@ -479,7 +480,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                                         if (levelaccessor9 instanceof ServerLevel) {
                                                                                             serverlevel8 = (ServerLevel)levelaccessor9;
                                                                                             bdtridententity8 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel8);
-                                                                                            bdtridententity8.moveTo(d0 + (double)Mth.nextInt((RandomSource) new Random(), -25, 25), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), -25, 25), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                                            bdtridententity8.moveTo(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -25, 25), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -25, 25), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                                             if (bdtridententity8 instanceof Mob) {
                                                                                                 mob8 = (Mob)bdtridententity8;
                                                                                                 mob8.finalizeSpawn(serverlevel8, levelaccessor.getCurrentDifficultyAt(bdtridententity8.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
@@ -492,7 +493,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                                         if (levelaccessor9 instanceof ServerLevel) {
                                                                                             serverlevel8 = (ServerLevel)levelaccessor9;
                                                                                             bdtridententity8 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel8);
-                                                                                            bdtridententity8.moveTo(d0 + (double)Mth.nextInt((RandomSource) new Random(), -25, -25), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), -25, -25), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                                            bdtridententity8.moveTo(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -25, -25), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -25, -25), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                                             if (bdtridententity8 instanceof Mob) {
                                                                                                 mob8 = (Mob)bdtridententity8;
                                                                                                 mob8.finalizeSpawn(serverlevel8, levelaccessor.getCurrentDifficultyAt(bdtridententity8.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
@@ -505,7 +506,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                                         if (levelaccessor9 instanceof ServerLevel) {
                                                                                             serverlevel8 = (ServerLevel)levelaccessor9;
                                                                                             bdtridententity8 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel8);
-                                                                                            bdtridententity8.moveTo(d0 + (double)Mth.nextInt((RandomSource) new Random(), -25, -25), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), -25, -25), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                                            bdtridententity8.moveTo(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -25, -25), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -25, -25), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                                             if (bdtridententity8 instanceof Mob) {
                                                                                                 mob8 = (Mob)bdtridententity8;
                                                                                                 mob8.finalizeSpawn(serverlevel8, levelaccessor.getCurrentDifficultyAt(bdtridententity8.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
@@ -518,7 +519,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                                         if (levelaccessor9 instanceof ServerLevel) {
                                                                                             serverlevel8 = (ServerLevel)levelaccessor9;
                                                                                             bdtridententity8 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel8);
-                                                                                            bdtridententity8.moveTo(d0 + (double)Mth.nextInt((RandomSource) new Random(), -25, -25), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), -25, -25), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                                            bdtridententity8.moveTo(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -25, -25), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -25, -25), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                                             if (bdtridententity8 instanceof Mob) {
                                                                                                 mob8 = (Mob)bdtridententity8;
                                                                                                 mob8.finalizeSpawn(serverlevel8, levelaccessor.getCurrentDifficultyAt(bdtridententity8.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
@@ -531,7 +532,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                                         if (levelaccessor9 instanceof ServerLevel) {
                                                                                             serverlevel8 = (ServerLevel)levelaccessor9;
                                                                                             bdtridententity8 = new BlueDemonTridentParticleEntity((EntityType)AnnoyingVillagersModEntities.BD_TRIDENT.get(), serverlevel8);
-                                                                                            bdtridententity8.moveTo(d0 + (double)Mth.nextInt((RandomSource) new Random(), -25, -25), d1 - 1.0D, d2 + (double)Mth.nextInt((RandomSource) new Random(), -25, -25), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                                                                                            bdtridententity8.moveTo(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -25, -25), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -25, -25), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                                                                                             if (bdtridententity8 instanceof Mob) {
                                                                                                 mob8 = (Mob)bdtridententity8;
                                                                                                 mob8.finalizeSpawn(serverlevel8, levelaccessor.getCurrentDifficultyAt(bdtridententity8.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);

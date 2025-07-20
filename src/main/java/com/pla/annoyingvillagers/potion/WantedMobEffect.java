@@ -26,7 +26,7 @@ public class WantedMobEffect extends MobEffect {
         try {
             WantedMobEffectEveryTickProcedure.execute(livingentity);
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
     }
 

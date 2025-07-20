@@ -80,7 +80,7 @@ public class BlueDemonTridentParticleEntity extends PathfinderMob {
         try {
             BlueDemonTridentParticleOnEntityUpdate.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
     }
 

@@ -27,7 +27,7 @@ public class BlueDemonSkillLightingEffectMobEffect extends MobEffect {
         try {
             BlueDemonSkillLightingEffectDuringDurationProcedure.execute(livingentity.level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity);
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
     }
 

@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.util.CheckGameMode;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
@@ -122,7 +123,7 @@ public class BoomlitProcedure {
                                 }
 
                                 itemstack2 = itemstack1;
-                                if (itemstack2.hurt(300, (RandomSource) new Random(), (ServerPlayer)null)) {
+                                if (itemstack2.hurt(300, AnnoyingVillagers.randomSource, (ServerPlayer)null)) {
                                     itemstack2.shrink(1);
                                     itemstack2.setDamageValue(0);
                                 }
@@ -145,7 +146,7 @@ public class BoomlitProcedure {
                                 }
 
                                 itemstack2 = itemstack1;
-                                if (itemstack2.hurt(300, (RandomSource) new Random(), (ServerPlayer)null)) {
+                                if (itemstack2.hurt(300, AnnoyingVillagers.randomSource, (ServerPlayer)null)) {
                                     itemstack2.shrink(1);
                                     itemstack2.setDamageValue(0);
                                 }
@@ -168,7 +169,7 @@ public class BoomlitProcedure {
                                 }
 
                                 itemstack2 = itemstack1;
-                                if (itemstack2.hurt(300, (RandomSource) new Random(), (ServerPlayer)null)) {
+                                if (itemstack2.hurt(300, AnnoyingVillagers.randomSource, (ServerPlayer)null)) {
                                     itemstack2.shrink(1);
                                     itemstack2.setDamageValue(0);
                                 }
@@ -191,7 +192,7 @@ public class BoomlitProcedure {
                                 }
 
                                 itemstack2 = itemstack1;
-                                if (itemstack2.hurt(300, (RandomSource) new Random(), (ServerPlayer)null)) {
+                                if (itemstack2.hurt(300, AnnoyingVillagers.randomSource, (ServerPlayer)null)) {
                                     itemstack2.shrink(1);
                                     itemstack2.setDamageValue(0);
                                 }

@@ -1,6 +1,8 @@
 package com.pla.annoyingvillagers.procedures;
 
 import java.util.Random;
+
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -43,7 +45,7 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
 
             ItemStack itemstack1 = itemstack;
 
-            if (itemstack1.hurt(30, (RandomSource) (RandomSource) new Random(), (ServerPlayer) null)) {
+            if (itemstack1.hurt(30, (RandomSource) AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
                 itemstack1.shrink(1);
                 itemstack1.setDamageValue(0);
             }
@@ -56,7 +58,7 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
             }
 
             itemstack1 = itemstack;
-            if (itemstack1.hurt(30, (RandomSource) new Random(), (ServerPlayer) null)) {
+            if (itemstack1.hurt(30, AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
                 itemstack1.shrink(1);
                 itemstack1.setDamageValue(0);
             }
@@ -69,7 +71,7 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
             }
 
             itemstack1 = itemstack;
-            if (itemstack1.hurt(30, (RandomSource) new Random(), (ServerPlayer) null)) {
+            if (itemstack1.hurt(30, AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
                 itemstack1.shrink(1);
                 itemstack1.setDamageValue(0);
             }
@@ -82,7 +84,7 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
             }
 
             itemstack1 = itemstack;
-            if (itemstack1.hurt(30, (RandomSource) new Random(), (ServerPlayer) null)) {
+            if (itemstack1.hurt(30, AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
                 itemstack1.shrink(1);
                 itemstack1.setDamageValue(0);
             }
@@ -98,7 +100,7 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt(Mth.nextInt((RandomSource) new Random(), 100, 500), (RandomSource) new Random(), (ServerPlayer) null)) {
+                if (itemstack1.hurt(Mth.nextInt(AnnoyingVillagers.randomSource, 100, 500), AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -131,7 +133,7 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt(Mth.nextInt((RandomSource) new Random(), 100, 500), (RandomSource) new Random(), (ServerPlayer) null)) {
+                if (itemstack1.hurt(Mth.nextInt(AnnoyingVillagers.randomSource, 100, 500), AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -164,7 +166,7 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt(Mth.nextInt((RandomSource) new Random(), 100, 500), (RandomSource) new Random(), (ServerPlayer) null)) {
+                if (itemstack1.hurt(Mth.nextInt(AnnoyingVillagers.randomSource, 100, 500), AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -197,7 +199,7 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt(Mth.nextInt((RandomSource) new Random(), 100, 500), (RandomSource) new Random(), (ServerPlayer) null)) {
+                if (itemstack1.hurt(Mth.nextInt(AnnoyingVillagers.randomSource, 100, 500), AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -230,7 +232,7 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt(1000, (RandomSource) new Random(), (ServerPlayer) null)) {
+                if (itemstack1.hurt(1000, AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -243,7 +245,7 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt(1000, (RandomSource) new Random(), (ServerPlayer) null)) {
+                if (itemstack1.hurt(1000, AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -256,7 +258,7 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt(1000, (RandomSource) new Random(), (ServerPlayer) null)) {
+                if (itemstack1.hurt(1000, AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -269,7 +271,7 @@ public class LegendarySwordMobItemOnHurtEnemyProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt(1000, (RandomSource) new Random(), (ServerPlayer) null)) {
+                if (itemstack1.hurt(1000, AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }

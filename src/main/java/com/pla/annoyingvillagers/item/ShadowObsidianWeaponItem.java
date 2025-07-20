@@ -52,7 +52,7 @@ public class ShadowObsidianWeaponItem extends SwordItem {
         try {
             ShadowObsidianProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
         return interactionresultholder;
     }
@@ -62,7 +62,7 @@ public class ShadowObsidianWeaponItem extends SwordItem {
         try {
             ShadowObsidianProcedure.execute(useoncontext.getLevel(), (double) useoncontext.getClickedPos().getX(), (double) useoncontext.getClickedPos().getY(), (double) useoncontext.getClickedPos().getZ(), useoncontext.getPlayer(), useoncontext.getItemInHand());
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
         return InteractionResult.SUCCESS;
     }
@@ -73,7 +73,7 @@ public class ShadowObsidianWeaponItem extends SwordItem {
         try {
             ShadowObsidianProcedure.execute(livingentity.level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity, itemstack);
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
         return flag;
     }

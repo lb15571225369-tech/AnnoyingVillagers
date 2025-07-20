@@ -138,7 +138,7 @@ public class PurpleVillagerGeneralEntity extends PathfinderMob {
         try {
             GreenVillagerGeneralOnDeathProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
     }
 
@@ -148,7 +148,7 @@ public class PurpleVillagerGeneralEntity extends PathfinderMob {
         try {
             BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure.execute(serverlevelaccessor, this.getX(), this.getY(), this.getZ(), this);
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
         return spawngroupdata1;
     }
@@ -166,7 +166,7 @@ public class PurpleVillagerGeneralEntity extends PathfinderMob {
         try {
             GreenVillagerGeneralOnAttackingEntityProcedure.execute(level, d0, d1, d2, this);
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
         return interactionresult;
     }

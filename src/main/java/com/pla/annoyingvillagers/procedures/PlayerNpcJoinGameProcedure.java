@@ -218,7 +218,7 @@ public class PlayerNpcJoinGameProcedure {
                                         entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                                 );
                             } catch (CommandSyntaxException e) {
-                                throw new RuntimeException(e);
+                                
                             }
                         });
                     }
@@ -238,7 +238,7 @@ public class PlayerNpcJoinGameProcedure {
                                         entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                                 );
                             } catch (CommandSyntaxException e) {
-                                throw new RuntimeException(e);
+                                
                             }
                         });
                     }
@@ -250,7 +250,7 @@ public class PlayerNpcJoinGameProcedure {
                                         entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                                 );
                             } catch (CommandSyntaxException e) {
-                                throw new RuntimeException(e);
+                                
                             }
                         });
                     }

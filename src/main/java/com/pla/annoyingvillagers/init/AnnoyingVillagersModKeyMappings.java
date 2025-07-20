@@ -27,7 +27,7 @@ public class AnnoyingVillagersModKeyMappings {
                 try {
                     KickMessage.pressAction(Minecraft.getInstance().player, 0, 0);
                 } catch (CommandSyntaxException e) {
-                    throw new RuntimeException(e);
+                    
                 }
                 AnnoyingVillagersModKeyMappings.KICK_LASTPRESS = System.currentTimeMillis();
             } else if (this.isDownOld != flag && !flag) {
@@ -37,7 +37,7 @@ public class AnnoyingVillagersModKeyMappings {
                 try {
                     KickMessage.pressAction(Minecraft.getInstance().player, 1, i);
                 } catch (CommandSyntaxException e) {
-                    throw new RuntimeException(e);
+                    
                 }
             }
 
@@ -54,7 +54,7 @@ public class AnnoyingVillagersModKeyMappings {
                 try {
                     WeaponsMoreAttackMessage.pressAction(Minecraft.getInstance().player, 0, 0);
                 } catch (CommandSyntaxException e) {
-                    throw new RuntimeException(e);
+                    
                 }
             }
 

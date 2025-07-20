@@ -40,7 +40,7 @@ public class VillagerHeadItem extends Item {
         try {
             VillagerHeadRightOnUseProcedure.execute(player);
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
         return interactionresultholder;
     }
@@ -50,7 +50,7 @@ public class VillagerHeadItem extends Item {
         try {
             VillagerHeadEveryTickInInventoryProcedure.execute(entity);
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
     }
 
@@ -58,7 +58,7 @@ public class VillagerHeadItem extends Item {
         try {
             VillagerHeadWhenDroppedByPlayerProcedure.execute(player);
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
         return true;
     }

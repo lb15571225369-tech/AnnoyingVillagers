@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.procedures;
 import java.util.Random;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
@@ -50,7 +51,7 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                         }
 
                         itemstack1 = itemstack;
-                        if (itemstack1.hurt(100, (RandomSource) new Random(), (ServerPlayer) null)) {
+                        if (itemstack1.hurt(100, AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
                             itemstack1.shrink(1);
                             itemstack1.setDamageValue(0);
                         }
@@ -249,7 +250,7 @@ public class ObsidianWeaponsWhenSwingingProcedure {
                             }
 
                             itemstack1 = itemstack;
-                            if (itemstack1.hurt(100, (RandomSource) new Random(), (ServerPlayer) null)) {
+                            if (itemstack1.hurt(100, AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
                                 itemstack1.shrink(1);
                                 itemstack1.setDamageValue(0);
                             }

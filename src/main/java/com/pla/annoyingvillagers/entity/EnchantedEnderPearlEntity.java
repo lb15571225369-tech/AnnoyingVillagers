@@ -75,7 +75,7 @@ public class EnchantedEnderPearlEntity extends AbstractArrow implements ItemSupp
         try {
             EnchantedEnderPearlOnProjectileHitBlockProcedure.execute(this.level, (double) blockhitresult.getBlockPos().getX(), (double) blockhitresult.getBlockPos().getY(), (double) blockhitresult.getBlockPos().getZ(), this.getOwner());
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
     }
 

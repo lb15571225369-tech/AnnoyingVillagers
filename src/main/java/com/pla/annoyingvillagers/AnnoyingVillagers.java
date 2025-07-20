@@ -16,6 +16,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -45,6 +46,7 @@ public class AnnoyingVillagers {
         return "1";
     }, "1"::equals, "1"::equals);
     private static int messageID = 0;
+    public static final RandomSource randomSource = RandomSource.create();
 
     public AnnoyingVillagers(FMLJavaModLoadingContext context) {
         IEventBus ieventbus = context.getModEventBus();

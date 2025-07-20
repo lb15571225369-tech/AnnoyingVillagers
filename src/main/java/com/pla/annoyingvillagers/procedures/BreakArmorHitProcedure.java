@@ -2,6 +2,8 @@ package com.pla.annoyingvillagers.procedures;
 
 import java.util.Random;
 import javax.annotation.Nullable;
+
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -66,7 +68,7 @@ public class BreakArmorHitProcedure {
                     itemstack3 = ItemStack.EMPTY;
                 }
 
-                if (itemstack2.hurt(EnchantmentHelper.getItemEnchantmentLevel(enchantment1, itemstack3) * 10, (RandomSource) new Random(), (ServerPlayer) null)) {
+                if (itemstack2.hurt(EnchantmentHelper.getItemEnchantmentLevel(enchantment1, itemstack3) * 10, AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
                     itemstack2.shrink(1);
                     itemstack2.setDamageValue(0);
                 }
@@ -87,7 +89,7 @@ public class BreakArmorHitProcedure {
                     itemstack3 = ItemStack.EMPTY;
                 }
 
-                if (itemstack2.hurt(EnchantmentHelper.getItemEnchantmentLevel(enchantment1, itemstack3) * 10, (RandomSource) new Random(), (ServerPlayer) null)) {
+                if (itemstack2.hurt(EnchantmentHelper.getItemEnchantmentLevel(enchantment1, itemstack3) * 10, AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
                     itemstack2.shrink(1);
                     itemstack2.setDamageValue(0);
                 }
@@ -108,7 +110,7 @@ public class BreakArmorHitProcedure {
                     itemstack3 = ItemStack.EMPTY;
                 }
 
-                if (itemstack2.hurt(EnchantmentHelper.getItemEnchantmentLevel(enchantment1, itemstack3) * 10, (RandomSource) new Random(), (ServerPlayer) null)) {
+                if (itemstack2.hurt(EnchantmentHelper.getItemEnchantmentLevel(enchantment1, itemstack3) * 10, AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
                     itemstack2.shrink(1);
                     itemstack2.setDamageValue(0);
                 }
@@ -129,7 +131,7 @@ public class BreakArmorHitProcedure {
                     itemstack3 = ItemStack.EMPTY;
                 }
 
-                if (itemstack2.hurt(EnchantmentHelper.getItemEnchantmentLevel(enchantment1, itemstack3) * 10, (RandomSource) new Random(), (ServerPlayer) null)) {
+                if (itemstack2.hurt(EnchantmentHelper.getItemEnchantmentLevel(enchantment1, itemstack3) * 10, AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
                     itemstack2.shrink(1);
                     itemstack2.setDamageValue(0);
                 }

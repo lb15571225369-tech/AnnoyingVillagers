@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.Random;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -101,7 +102,7 @@ public class BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure {
                     itemstack1 = ItemStack.EMPTY;
                 }
 
-                itemstack1.enchant(Enchantments.SHARPNESS, Mth.nextInt((RandomSource) new Random(), 1, 4));
+                itemstack1.enchant(Enchantments.SHARPNESS, Mth.nextInt(AnnoyingVillagers.randomSource, 1, 4));
                 if (entity instanceof LivingEntity) {
                     livingentity = (LivingEntity)entity;
                     itemstack1 = livingentity.getItemBySlot(EquipmentSlot.HEAD);
@@ -109,7 +110,7 @@ public class BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure {
                     itemstack1 = ItemStack.EMPTY;
                 }
 
-                itemstack1.enchant(Enchantments.ALL_DAMAGE_PROTECTION, Mth.nextInt((RandomSource) new Random(), 1, 4));
+                itemstack1.enchant(Enchantments.ALL_DAMAGE_PROTECTION, Mth.nextInt(AnnoyingVillagers.randomSource, 1, 4));
                 if (entity instanceof LivingEntity) {
                     livingentity = (LivingEntity)entity;
                     itemstack1 = livingentity.getItemBySlot(EquipmentSlot.CHEST);
@@ -117,7 +118,7 @@ public class BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure {
                     itemstack1 = ItemStack.EMPTY;
                 }
 
-                itemstack1.enchant(Enchantments.ALL_DAMAGE_PROTECTION, Mth.nextInt((RandomSource) new Random(), 1, 4));
+                itemstack1.enchant(Enchantments.ALL_DAMAGE_PROTECTION, Mth.nextInt(AnnoyingVillagers.randomSource, 1, 4));
                 if (entity instanceof LivingEntity) {
                     livingentity = (LivingEntity)entity;
                     itemstack1 = livingentity.getItemBySlot(EquipmentSlot.LEGS);
@@ -125,7 +126,7 @@ public class BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure {
                     itemstack1 = ItemStack.EMPTY;
                 }
 
-                itemstack1.enchant(Enchantments.ALL_DAMAGE_PROTECTION, Mth.nextInt((RandomSource) new Random(), 1, 4));
+                itemstack1.enchant(Enchantments.ALL_DAMAGE_PROTECTION, Mth.nextInt(AnnoyingVillagers.randomSource, 1, 4));
                 if (entity instanceof LivingEntity) {
                     livingentity = (LivingEntity)entity;
                     itemstack1 = livingentity.getItemBySlot(EquipmentSlot.FEET);
@@ -133,7 +134,7 @@ public class BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure {
                     itemstack1 = ItemStack.EMPTY;
                 }
 
-                itemstack1.enchant(Enchantments.ALL_DAMAGE_PROTECTION, Mth.nextInt((RandomSource) new Random(), 1, 4));
+                itemstack1.enchant(Enchantments.ALL_DAMAGE_PROTECTION, Mth.nextInt(AnnoyingVillagers.randomSource, 1, 4));
             }
 
             if (Math.random() <= 0.1D) {
@@ -155,7 +156,7 @@ public class BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure {
                     itemstack1 = ItemStack.EMPTY;
                 }
 
-                itemstack1.enchant(Enchantments.POWER_ARROWS, Mth.nextInt((RandomSource) new Random(), 1, 4));
+                itemstack1.enchant(Enchantments.POWER_ARROWS, Mth.nextInt(AnnoyingVillagers.randomSource, 1, 4));
             }
 
             ServerLevel serverlevel;
@@ -181,7 +182,7 @@ public class BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure {
                     itemstack1 = ItemStack.EMPTY;
                 }
 
-                itemstack1.enchant(Enchantments.POWER_ARROWS, Mth.nextInt((RandomSource) new Random(), 1, 4));
+                itemstack1.enchant(Enchantments.POWER_ARROWS, Mth.nextInt(AnnoyingVillagers.randomSource, 1, 4));
                 if (levelaccessor instanceof ServerLevel) {
                     serverlevel = (ServerLevel)levelaccessor;
                     Cow cow = new Cow(EntityType.COW, serverlevel);
@@ -272,7 +273,7 @@ public class BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure {
                     itemstack1 = ItemStack.EMPTY;
                 }
 
-                itemstack1.enchant(Enchantments.POWER_ARROWS, Mth.nextInt((RandomSource) new Random(), 1, 4));
+                itemstack1.enchant(Enchantments.POWER_ARROWS, Mth.nextInt(AnnoyingVillagers.randomSource, 1, 4));
                 if (levelaccessor instanceof ServerLevel) {
                     serverlevel = (ServerLevel)levelaccessor;
                     PolarBear polarbear = new PolarBear(EntityType.POLAR_BEAR, serverlevel);

@@ -29,7 +29,7 @@ public class NpcKickEffectMobEffect extends MobEffect {
         try {
             NpcKickEffectOnEndProcedure.execute(livingentity);
         } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
+            
         }
     }
 

@@ -92,14 +92,14 @@ public class Clash extends PassiveSkill {
                         try {
                             serverplayer.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100", serverplayer.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                         } catch (CommandSyntaxException e) {
-                            throw new RuntimeException(e);
+                            
                         }
                     }
 
                     try {
                         serverplayer.getServer().getCommands().getDispatcher().execute("impactful @s shake 15 10 10", serverplayer.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                     } catch (CommandSyntaxException e) {
-                        throw new RuntimeException(e);
+                        
                     }
                     if (itemstack.isDamageableItem()) {
                         int i = itemstack.getDamageValue();

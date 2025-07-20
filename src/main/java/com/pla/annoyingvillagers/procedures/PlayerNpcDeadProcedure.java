@@ -55,7 +55,7 @@ public class PlayerNpcDeadProcedure {
     private static void execute(@Nullable Event event, LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity, final Entity entity1) {
         if (entity != null && entity1 != null) {
             if (ForgeRegistries.ENTITY_TYPES.getKey(entity1.getType()).toString().equals("player_mobs:player_mob")) {
-                new DelayedTask(Mth.nextInt((RandomSource) new Random(), 70, 100)) {
+                new DelayedTask(Mth.nextInt(AnnoyingVillagers.randomSource, 70, 100)) {
                     @Override
                     public void run() {
                         if (Math.random() <= 0.05D) {
@@ -425,7 +425,7 @@ public class PlayerNpcDeadProcedure {
                         }
                     }
                 };
-                new DelayedTask(Mth.nextInt((RandomSource) new Random(), 40, 80)) {
+                new DelayedTask(Mth.nextInt(AnnoyingVillagers.randomSource, 40, 80)) {
                     @Override
                     public void run() throws CommandSyntaxException {
                         Entity entity2;
@@ -607,7 +607,7 @@ public class PlayerNpcDeadProcedure {
                             }
                         }
 
-                        new DelayedTask(Mth.nextInt((RandomSource) new Random(), 25, 100)) {
+                        new DelayedTask(Mth.nextInt(AnnoyingVillagers.randomSource, 25, 100)) {
                             @Override
                             public void run() {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
