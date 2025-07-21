@@ -14,22 +14,26 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 public class FallRollProcedure {
 
     @SubscribeEvent
-    public static void onEntityAttacked(LivingHurtEvent livinghurtevent) throws CommandSyntaxException {
+    public static void onEntityAttacked(LivingHurtEvent livinghurtevent) {
         if (livinghurtevent != null && livinghurtevent.getEntity() != null) {
             execute(livinghurtevent, livinghurtevent.getSource(), livinghurtevent.getEntity());
         }
 
     }
 
-    public static void execute(DamageSource damagesource, Entity entity) throws CommandSyntaxException {
+    public static void execute(DamageSource damagesource, Entity entity) {
         execute((Event) null, damagesource, entity);
     }
 
-    private static void execute(@Nullable Event event, DamageSource damagesource, Entity entity) throws CommandSyntaxException {
+    private static void execute(@Nullable Event event, DamageSource damagesource, Entity entity) {
         if (entity != null) {
             if (damagesource == DamageSource.FALL && entity.isShiftKeyDown()) {
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/skill/roll_forward\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    try {
+                        entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/skill/roll_forward\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                        
+                    }
                 }
 
                 if (event != null && event.isCancelable()) {

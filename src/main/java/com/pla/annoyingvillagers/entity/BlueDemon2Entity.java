@@ -105,11 +105,7 @@ public class BlueDemon2Entity extends Monster {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        try {
-            BlueDemon2ParryingProcedure.execute(this);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        BlueDemon2ParryingProcedure.execute(this);
         return damagesource.getDirectEntity() instanceof AbstractArrow ? false : (damagesource == DamageSource.FALL ? false : (damagesource == DamageSource.CACTUS ? false : (damagesource == DamageSource.DROWN ? false : (damagesource == DamageSource.LIGHTNING_BOLT ? false : (damagesource.getMsgId().equals("trident") ? false : (damagesource == DamageSource.WITHER ? false : (damagesource.getMsgId().equals("witherSkull") ? false : super.hurt(damagesource, f))))))));
     }
 
@@ -121,11 +117,7 @@ public class BlueDemon2Entity extends Monster {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
 
-        try {
-            BlueDemon2OnEntityInitialSpawnProcedure.execute(this);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        BlueDemon2OnEntityInitialSpawnProcedure.execute(this);
         return spawngroupdata1;
     }
 
@@ -136,11 +128,7 @@ public class BlueDemon2Entity extends Monster {
 
     public void baseTick() {
         super.baseTick();
-        try {
-            BlueDemon2OnEntityUpdateProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        BlueDemon2OnEntityUpdateProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
     }
 
     public static void init() {}

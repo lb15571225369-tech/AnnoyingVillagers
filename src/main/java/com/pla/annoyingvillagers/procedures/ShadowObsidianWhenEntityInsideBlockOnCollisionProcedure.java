@@ -27,15 +27,19 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) throws CommandSyntaxException {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) {
         if (entity != null) {
             boolean flag = false;
 
             if (!flag) {
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().getDispatcher().execute(
-                            "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    try {
+                        entity.getServer().getCommands().getDispatcher().execute(
+                                "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                        
+                    }
                 }
 
                 Level level;
@@ -172,13 +176,17 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                     entity.hurt(DamageSource.GENERIC, 15.5F);
                     new DelayedTask(1) {
                         @Override
-                        public void run() throws CommandSyntaxException {
+                        public void run() {
                             Entity entity1 = entity;
 
                             if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                entity1.getServer().getCommands().getDispatcher().execute(
-                                        "indestructible @s play \"epicfight:biped/combat/hit_long\" 0 10",
-                                        entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                try {
+                                    entity1.getServer().getCommands().getDispatcher().execute(
+                                            "indestructible @s play \"epicfight:biped/combat/hit_long\" 0 10",
+                                            entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                } catch (CommandSyntaxException e) {
+                                    
+                                }
                             }
                         }
                     };
@@ -236,13 +244,17 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                         entity.hurt(DamageSource.GENERIC, 17.5F);
                         new DelayedTask(1) {
                             @Override
-                            public void run() throws CommandSyntaxException {
+                            public void run() {
                                 Entity entity1 = entity;
 
                                 if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                    entity1.getServer().getCommands().getDispatcher().execute(
-                                            "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10",
-                                            entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                    try {
+                                        entity1.getServer().getCommands().getDispatcher().execute(
+                                                "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10",
+                                                entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                    } catch (CommandSyntaxException e) {
+                                        
+                                    }
                                 }
                             }
                         };

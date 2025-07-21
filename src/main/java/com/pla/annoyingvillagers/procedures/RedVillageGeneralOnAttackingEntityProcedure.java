@@ -22,7 +22,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class RedVillageGeneralOnAttackingEntityProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) throws CommandSyntaxException {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) {
         if (entity != null) {
             float f;
 
@@ -82,9 +82,13 @@ public class RedVillageGeneralOnAttackingEntityProcedure {
                     }
 
                     if (!entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                "summon annoying_villagersbychentu:hong_cun_qi_fu_lu ^ ^ ^ {VillagerData:{level:4,profession:\"minecraft:weaponsmith\"}}",
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        try {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "summon annoying_villagersbychentu:hong_cun_qi_fu_lu ^ ^ ^ {VillagerData:{level:4,profession:\"minecraft:weaponsmith\"}}",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException e) {
+                            
+                        }
                     }
 
                     Mob mob1;
@@ -164,9 +168,13 @@ public class RedVillageGeneralOnAttackingEntityProcedure {
                         }
 
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "summon annoying_villagersbychentu:hong_cun_qi_fu_lu ^ ^ ^ {VillagerData:{level:4,profession:\"minecraft:weaponsmith\"}}",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            try {
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "summon annoying_villagersbychentu:hong_cun_qi_fu_lu ^ ^ ^ {VillagerData:{level:4,profession:\"minecraft:weaponsmith\"}}",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                                
+                            }
                         }
 
                         Entity entity2 = levelaccessor.getEntitiesOfClass(

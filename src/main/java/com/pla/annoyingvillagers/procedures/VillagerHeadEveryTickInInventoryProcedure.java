@@ -11,7 +11,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 
 public class VillagerHeadEveryTickInInventoryProcedure {
 
-    public static void execute(Entity entity) throws CommandSyntaxException {
+    public static void execute(Entity entity) {
         if (entity != null) {
             ItemStack itemstack;
 
@@ -25,9 +25,13 @@ public class VillagerHeadEveryTickInInventoryProcedure {
 
             if (itemstack.getItem() != AnnoyingVillagersModItems.VILLAGER_HEAD.get() && entity.getPersistentData().getBoolean("villager_player")) {
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().getDispatcher().execute(
-                            "team leave @s[team=villagers]",
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    try {
+                        entity.getServer().getCommands().getDispatcher().execute(
+                                "team leave @s[team=villagers]",
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                        
+                    }
                 }
 
                 entity.getPersistentData().putBoolean("villager_player", false);

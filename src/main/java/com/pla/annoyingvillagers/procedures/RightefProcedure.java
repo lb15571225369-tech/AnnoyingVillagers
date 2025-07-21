@@ -26,17 +26,17 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 public class RightefProcedure {
 
     @SubscribeEvent
-    public static void onRightClickItem(RightClickItem rightclickitem) throws CommandSyntaxException {
+    public static void onRightClickItem(RightClickItem rightclickitem) {
         if (rightclickitem.getHand() == rightclickitem.getEntity().getUsedItemHand()) {
             execute(rightclickitem, rightclickitem.getLevel(), rightclickitem.getEntity());
         }
     }
 
-    public static void execute(LevelAccessor levelaccessor, Entity entity) throws CommandSyntaxException {
+    public static void execute(LevelAccessor levelaccessor, Entity entity) {
         execute((Event) null, levelaccessor, entity);
     }
 
-    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, final Entity entity) throws CommandSyntaxException {
+    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, final Entity entity) {
         if (entity != null) {
             Enchantment enchantment = Enchantments.CHANNELING;
             LivingEntity livingentity;
@@ -50,9 +50,13 @@ public class RightefProcedure {
             }
 
             if (EnchantmentHelper.getItemEnchantmentLevel(enchantment, itemstack) != 0 && !entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().getDispatcher().execute(
-                        "effect give @s annoyingvillagers:electify 4 0 true",
-                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                try {
+                    entity.getServer().getCommands().getDispatcher().execute(
+                            "effect give @s annoyingvillagers:electify 4 0 true",
+                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+                    
+                }
             }
 
             enchantment = Enchantments.FIRE_ASPECT;

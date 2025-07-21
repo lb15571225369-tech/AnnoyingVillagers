@@ -14,20 +14,24 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 public class NpcJumpProcedure {
 
     @SubscribeEvent
-    public static void onEntityJump(LivingJumpEvent livingjumpevent) throws CommandSyntaxException {
+    public static void onEntityJump(LivingJumpEvent livingjumpevent) {
         execute(livingjumpevent, livingjumpevent.getEntity());
     }
 
-    public static void execute(Entity entity) throws CommandSyntaxException {
+    public static void execute(Entity entity) {
         execute((Event) null, entity);
     }
 
-    private static void execute(@Nullable Event event, Entity entity) throws CommandSyntaxException {
+    private static void execute(@Nullable Event event, Entity entity) {
         if (entity != null) {
             if (!(entity instanceof Player) && !entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().getDispatcher().execute(
-                        "indestructible @s play \"epicfight:biped/living/jump\" 0 1",
-                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                try {
+                    entity.getServer().getCommands().getDispatcher().execute(
+                            "indestructible @s play \"epicfight:biped/living/jump\" 0 1",
+                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+                    
+                }
             }
 
         }

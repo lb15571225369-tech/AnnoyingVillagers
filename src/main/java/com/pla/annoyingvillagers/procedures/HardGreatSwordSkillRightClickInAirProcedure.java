@@ -21,7 +21,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class HardGreatSwordSkillRightClickInAirProcedure {
 
-    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity, ItemStack itemstack) throws CommandSyntaxException {
+    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity, ItemStack itemstack) {
         if (entity == null || !entity.isShiftKeyDown()) return;
 
         CompoundTag tag = itemstack.getOrCreateTag();
@@ -33,10 +33,14 @@ public class HardGreatSwordSkillRightClickInAirProcedure {
 
             // Play animation
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().getDispatcher().execute(
-                        "indestructible @s play \"annoyingvillagers:biped/combat/hard_great_sword_skill\" 0 1",
-                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-                );
+                try {
+                    entity.getServer().getCommands().getDispatcher().execute(
+                            "indestructible @s play \"annoyingvillagers:biped/combat/hard_great_sword_skill\" 0 1",
+                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                    );
+                } catch (CommandSyntaxException e) {
+                    
+                }
             }
 
             // Apply potion effect
@@ -47,12 +51,16 @@ public class HardGreatSwordSkillRightClickInAirProcedure {
             // Delayed effects (particles + sound)
             new DelayedTask(4) {
                 @Override
-                public void run() throws CommandSyntaxException {
+                public void run() {
                     if (!entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                "execute at @s run particle annoyingvillagers:red_spark ^ ^1.5 ^1 0 0 0 0.6 35",
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-                        );
+                        try {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "execute at @s run particle annoyingvillagers:red_spark ^ ^1.5 ^1 0 0 0 0.6 35",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                            );
+                        } catch (CommandSyntaxException e) {
+                            
+                        }
                     }
 
                     if (world instanceof Level level) {

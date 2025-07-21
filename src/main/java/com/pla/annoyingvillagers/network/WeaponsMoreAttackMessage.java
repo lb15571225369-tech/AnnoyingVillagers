@@ -39,16 +39,12 @@ public class WeaponsMoreAttackMessage {
         Context context = (Context) supplier.get();
 
         context.enqueueWork(() -> {
-            try {
-                pressAction(context.getSender(), weaponsmoreattackmessage.type, weaponsmoreattackmessage.pressedms);
-            } catch (CommandSyntaxException e) {
-                
-            }
+            pressAction(context.getSender(), weaponsmoreattackmessage.type, weaponsmoreattackmessage.pressedms);
         });
         context.setPacketHandled(true);
     }
 
-    public static void pressAction(Player player, int i, int j) throws CommandSyntaxException {
+    public static void pressAction(Player player, int i, int j) {
         Level level = player.level;
         double d0 = player.getX();
         double d1 = player.getY();

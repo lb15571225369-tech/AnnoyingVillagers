@@ -16,7 +16,7 @@ public abstract class DelayedTask {
     }
 
     @SubscribeEvent
-    public void onTick(ServerTickEvent event) throws CommandSyntaxException {
+    public void onTick(ServerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
             ticks++;
             if (ticks >= waitTicks) {
@@ -26,5 +26,5 @@ public abstract class DelayedTask {
         }
     }
 
-    public abstract void run() throws CommandSyntaxException;
+    public abstract void run();
 }

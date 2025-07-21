@@ -97,20 +97,12 @@ public class DarkObBlock extends Block {
 
     public void attack(BlockState blockstate, Level level, BlockPos blockpos, Player player) {
         super.attack(blockstate, level, blockpos, player);
-        try {
-            DarkObSsOnAttackProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), player);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        DarkObSsOnAttackProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), player);
     }
 
     public void entityInside(BlockState blockstate, Level level, BlockPos blockpos, Entity entity) {
         super.entityInside(blockstate, level, blockpos, entity);
-        try {
-            DarkObBlockOnEntityInsideProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), entity);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        DarkObBlockOnEntityInsideProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), entity);
     }
 
     @OnlyIn(Dist.CLIENT)

@@ -161,19 +161,28 @@ public class AnimationSheduler {
         this.data = mob.getPersistentData();
     }
 
-    private void resetItem() throws CommandSyntaxException {
+    private void resetItem() {
         if (data.contains("av_idle_animate_backup_main_hand")) {
-            CompoundTag fullTag = TagParser.parseTag(data.getString("av_idle_animate_backup_main_hand"));
+            CompoundTag fullTag = null;
+            try {
+                fullTag = TagParser.parseTag(data.getString("av_idle_animate_backup_main_hand"));
+            } catch (CommandSyntaxException e) {
+                
+            }
             String id = fullTag.getString("id");
             String nbtPart = fullTag.contains("tag") ? fullTag.getCompound("tag").toString() : "";
             String cmd = "item replace entity @s weapon.mainhand with " + id;
             if (!nbtPart.isEmpty()) {
                 cmd += nbtPart;
             }
-            mob.getServer().getCommands().getDispatcher().execute(
-                    cmd,
-                    mob.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-            );
+            try {
+                mob.getServer().getCommands().getDispatcher().execute(
+                        cmd,
+                        mob.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                );
+            } catch (CommandSyntaxException e) {
+                
+            }
             data.remove("av_idle_animate_backup_main_hand");
             if (data.contains("av_idle_action")) {
                 data.remove("av_idle_action");
@@ -184,7 +193,7 @@ public class AnimationSheduler {
         }
     }
 
-    public void run(IdleAnimation idleAnimation, boolean checkOnly, boolean reTry) throws CommandSyntaxException {
+    public void run(IdleAnimation idleAnimation, boolean checkOnly, boolean reTry) {
         if (!(mob.level instanceof ServerLevel serverLevel)) return;
 
         if (mob.getTarget() != null) {
@@ -212,10 +221,14 @@ public class AnimationSheduler {
             };
 
             if (!mob.level.isClientSide() && mob.getServer() != null) {
-                mob.getServer().getCommands().getDispatcher().execute(
-                        command,
-                        mob.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-                );
+                try {
+                    mob.getServer().getCommands().getDispatcher().execute(
+                            command,
+                            mob.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                    );
+                } catch (CommandSyntaxException e) {
+                    
+                }
             }
 
             if (reTry && !data.contains("idle_message_broadcasted")) {
@@ -233,11 +246,7 @@ public class AnimationSheduler {
         }
         if (reTry) {
             TaskScheduler.schedule(() -> {
-                try {
-                    new AnimationSheduler(mob).run(idleAnimation, true, true);
-                } catch (CommandSyntaxException e) {
-                    e.printStackTrace();
-                }
+                new AnimationSheduler(mob).run(idleAnimation, true, true);
             }, 20);
         }
     }

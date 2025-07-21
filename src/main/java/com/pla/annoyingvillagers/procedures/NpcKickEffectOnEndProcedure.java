@@ -14,7 +14,7 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 public class NpcKickEffectOnEndProcedure {
 
-    public static void execute(Entity entity) throws CommandSyntaxException {
+    public static void execute(Entity entity) {
         if (entity != null) {
             if (entity.isAlive()) {
                 boolean flag;
@@ -34,9 +34,13 @@ public class NpcKickEffectOnEndProcedure {
                         DynamicAnimation dynamicanimation = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
 
                         if ((dynamicanimation instanceof LongHitAnimation || dynamicanimation == Animations.BIPED_COMMON_NEUTRALIZED || dynamicanimation == Animations.BIPED_KNOCKDOWN) && !entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "indestructible @s play \"epicfight:biped/skill/roll_backward\" 0 1",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            try {
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "indestructible @s play \"epicfight:biped/skill/roll_backward\" 0 1",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                                
+                            }
                         }
                     }
                 } else if (entity instanceof LivingEntity) {

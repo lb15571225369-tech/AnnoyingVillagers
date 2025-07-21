@@ -24,17 +24,17 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 public class VillagerHeadSetProcedure {
 
     @SubscribeEvent
-    public static void onRightClickBlock(RightClickBlock rightclickblock) throws CommandSyntaxException {
+    public static void onRightClickBlock(RightClickBlock rightclickblock) {
         if (rightclickblock.getHand() == rightclickblock.getEntity().getUsedItemHand()) {
             execute(rightclickblock, rightclickblock.getLevel(), rightclickblock.getEntity());
         }
     }
 
-    public static void execute(LevelAccessor levelaccessor, Entity entity) throws CommandSyntaxException {
+    public static void execute(LevelAccessor levelaccessor, Entity entity) {
         execute((Event) null, levelaccessor, entity);
     }
 
-    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, final Entity entity) throws CommandSyntaxException {
+    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, final Entity entity) {
         if (entity != null) {
             if (entity.isShiftKeyDown()) {
                 ItemStack itemstack;
@@ -53,9 +53,13 @@ public class VillagerHeadSetProcedure {
                     if (!entity.getPersistentData().getBoolean("villager_head")) {
                         if (!entity.getPersistentData().getBoolean("villager_head_used")) {
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                entity.getServer().getCommands().getDispatcher().execute(
-                                        "team leave @s[team=villagers]",
-                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                try {
+                                    entity.getServer().getCommands().getDispatcher().execute(
+                                            "team leave @s[team=villagers]",
+                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                } catch (CommandSyntaxException e) {
+                                    
+                                }
                             }
 
                             if (entity instanceof Player) {
@@ -82,9 +86,13 @@ public class VillagerHeadSetProcedure {
                     } else if (entity.getPersistentData().getBoolean("villager_head")) {
                         if (!entity.getPersistentData().getBoolean("villager_head_used")) {
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                entity.getServer().getCommands().getDispatcher().execute(
-                                        "team join villagers @s",
-                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                try {
+                                    entity.getServer().getCommands().getDispatcher().execute(
+                                            "team join villagers @s",
+                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                } catch (CommandSyntaxException e) {
+                                    
+                                }
                             }
 
                             if (entity instanceof Player) {

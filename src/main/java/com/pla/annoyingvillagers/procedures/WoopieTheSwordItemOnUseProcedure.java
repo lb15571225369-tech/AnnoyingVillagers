@@ -22,7 +22,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class WoopieTheSwordItemOnUseProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity, ItemStack itemstack) throws CommandSyntaxException {
+    public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity, ItemStack itemstack) {
         if (entity != null) {
             if (entity.isSprinting()) {
                 if (itemstack.getOrCreateTag().getDouble("woopie_dash") >= 1.0D) {
@@ -41,12 +41,16 @@ public class WoopieTheSwordItemOnUseProcedure {
                     if (itemstack1.getItem() == AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get()) {
                         itemstack.getOrCreateTag().putDouble("woopie_dash", itemstack.getOrCreateTag().getDouble("woopie_dash") - 1.0D);
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "indestructible @s play \"annoyingvillagers:biped/combat/rush_sword\" 0 1",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            try {
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "indestructible @s play \"annoyingvillagers:biped/combat/rush_sword\" 0 1",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                                
+                            }
                         }
                         new DelayedTask(4) {
-                            public void run() throws CommandSyntaxException {
+                            public void run() {
                                 if (entity instanceof LivingEntity) {
                                     LivingEntity livingentity1 = (LivingEntity)entity;
 
@@ -58,9 +62,13 @@ public class WoopieTheSwordItemOnUseProcedure {
                                 Entity entity1 = entity;
 
                                 if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                    entity1.getServer().getCommands().getDispatcher().execute(
-                                            "execute at @s run particle annoyingvillagers:blue_spark ~ ~1 ~ 0 0 0 0.1 500",
-                                            entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                    try {
+                                        entity1.getServer().getCommands().getDispatcher().execute(
+                                                "execute at @s run particle annoyingvillagers:blue_spark ~ ~1 ~ 0 0 0 0.1 500",
+                                                entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                    } catch (CommandSyntaxException e) {
+                                        
+                                    }
                                 }
 
                                 LevelAccessor levelaccessor1 = levelaccessor;
@@ -111,9 +119,13 @@ public class WoopieTheSwordItemOnUseProcedure {
                             }
 
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                entity.getServer().getCommands().getDispatcher().execute(
-                                        "execute at @s run particle annoyingvillagers:blue_spark ~ ~1 ~ 0 0 0 0.1 500",
-                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                try {
+                                    entity.getServer().getCommands().getDispatcher().execute(
+                                            "execute at @s run particle annoyingvillagers:blue_spark ~ ~1 ~ 0 0 0 0.1 500",
+                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                } catch (CommandSyntaxException e) {
+                                    
+                                }
                             }
 
                             Level level;

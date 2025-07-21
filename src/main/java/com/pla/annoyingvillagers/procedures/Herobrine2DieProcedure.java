@@ -29,23 +29,31 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.*;
 
 public class Herobrine2DieProcedure {
-    public static void execute(LevelAccessor world, double x, double y, double z, Entity sourceEntity, Entity targetEntity) throws CommandSyntaxException {
+    public static void execute(LevelAccessor world, double x, double y, double z, Entity sourceEntity, Entity targetEntity) {
         if (sourceEntity == null || targetEntity == null) return;
 
         if (!sourceEntity.level.isClientSide() && sourceEntity.getServer() != null) {
-            sourceEntity.getServer().getCommands().getDispatcher().execute(
-                    "tag @a remove aim",
-                    sourceEntity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-            );
+            try {
+                sourceEntity.getServer().getCommands().getDispatcher().execute(
+                        "tag @a remove aim",
+                        sourceEntity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                );
+            } catch (CommandSyntaxException e) {
+                
+            }
         }
 
         if (sourceEntity.isVehicle() && sourceEntity.getType() == EntityType.PLAYER) {
             for (Entity passenger : new ArrayList<>(sourceEntity.getPassengers())) {
                 if (isSpectatorGamemode(passenger)) {
-                    passenger.getServer().getCommands().getDispatcher().execute(
-                            "tag @s remove sp",
-                            passenger.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-                    );
+                    try {
+                        passenger.getServer().getCommands().getDispatcher().execute(
+                                "tag @s remove sp",
+                                passenger.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                        );
+                    } catch (CommandSyntaxException e) {
+                        
+                    }
 
                     transferArmor(sourceEntity, passenger);
 

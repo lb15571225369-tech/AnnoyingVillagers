@@ -35,13 +35,17 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 public class BlueDemon2OnEntityUpdateProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) throws CommandSyntaxException {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) {
         if (entity != null) {
             if (!levelaccessor.getEntitiesOfClass(ThrownTrident.class, AABB.ofSize(new Vec3(d0, d1, d2), 40.0D, 40.0D, 40.0D), (throwntrident) -> {
                 return true;
             }).isEmpty() && Math.random() <= 0.02D) {
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().getDispatcher().execute("execute at @e[type=minecraft:trident] run particle annoyingvillagers:electric_spark ^ ^ ^0.1 0.2 0.2 0.1 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    try {
+                        entity.getServer().getCommands().getDispatcher().execute("execute at @e[type=minecraft:trident] run particle annoyingvillagers:electric_spark ^ ^ ^0.1 0.2 0.2 0.1 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                        
+                    }
                 }
 
                 if (levelaccessor instanceof Level) {
@@ -77,7 +81,11 @@ public class BlueDemon2OnEntityUpdateProcedure {
 
                 if (entity1 == livingentity && Math.random() <= 0.12D) {
                     if (!entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:electric_spark ^ ^ ^ 0.3 1.2 0.3 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        try {
+                            entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:electric_spark ^ ^ ^ 0.3 1.2 0.3 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException e) {
+                            
+                        }
                     }
 
                     if (Math.random() <= 0.8D && levelaccessor instanceof Level) {
@@ -97,12 +105,16 @@ public class BlueDemon2OnEntityUpdateProcedure {
             }
             new DelayedTask(1800) {
                 @Override
-                public void run() throws CommandSyntaxException {
+                public void run() {
                     if (entity.isAlive()) {
                         Entity entity2 = entity;
 
                         if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                            entity2.getServer().getCommands().getDispatcher().execute("summon annoyingvillagers:blue_demon", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            try {
+                                entity2.getServer().getCommands().getDispatcher().execute("summon annoyingvillagers:blue_demon", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                                
+                            }
                         }
 
                         if (!entity.level.isClientSide()) {
@@ -120,12 +132,16 @@ public class BlueDemon2OnEntityUpdateProcedure {
                     if (dynamicanimation instanceof KnockdownAnimation) {
                         new DelayedTask(10) {
                             @Override
-                            public void run() throws CommandSyntaxException {
+                            public void run() {
                                 if (dynamicanimation instanceof KnockdownAnimation) {
                                     Entity entity2 = entity;
 
                                     if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                        entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/skill/knockdown_wakeup_left\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                        try {
+                                            entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/skill/knockdown_wakeup_left\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                        } catch (CommandSyntaxException e) {
+                                            
+                                        }
                                     }
                                 }
                             }

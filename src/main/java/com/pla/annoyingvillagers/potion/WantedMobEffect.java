@@ -23,11 +23,7 @@ public class WantedMobEffect extends MobEffect {
     }
 
     public void applyEffectTick(LivingEntity livingentity, int i) {
-        try {
-            WantedMobEffectEveryTickProcedure.execute(livingentity);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        WantedMobEffectEveryTickProcedure.execute(livingentity);
     }
 
     public void removeAttributeModifiers(LivingEntity livingentity, AttributeMap attributemap, int i) {

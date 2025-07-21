@@ -31,7 +31,7 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
         return false;
     }
 
-    public static void execute(LevelAccessor world, Entity entity) throws CommandSyntaxException {
+    public static void execute(LevelAccessor world, Entity entity) {
         if (entity == null || isSpectatorGamemode(entity)) return;
 
         LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
@@ -54,17 +54,25 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                 if (playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE) {
                     if (entity.isShiftKeyDown()) {
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "indestructible @s play \"annoyingvillagers:biped/combat/spinning_death\" 0 1",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            try {
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "indestructible @s play \"annoyingvillagers:biped/combat/spinning_death\" 0 1",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                                
+                            }
                         }
                     } else {
                         if (entity.getPersistentData().getDouble("axe_a") < 1.0D) {
                             entity.getPersistentData().putDouble("axe_a", 1.5D);
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                entity.getServer().getCommands().getDispatcher().execute(
-                                        "indestructible @s play \"annoyingvillagers:biped/combat/greatsword_dual_airslash\" 0 1",
-                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                try {
+                                    entity.getServer().getCommands().getDispatcher().execute(
+                                            "indestructible @s play \"annoyingvillagers:biped/combat/greatsword_dual_airslash\" 0 1",
+                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                } catch (CommandSyntaxException e) {
+                                    
+                                }
                             }
 
                             new DelayedTask(8) {
@@ -76,9 +84,13 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                         } else if (entity.getPersistentData().getDouble("axe_a") == 2.0D) {
                             entity.getPersistentData().putDouble("axe_a", 2.5D);
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                entity.getServer().getCommands().getDispatcher().execute(
-                                        "indestructible @s play \"annoyingvillagers:biped/combat/greatsword_dual_auto_2\" 0 1",
-                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                try {
+                                    entity.getServer().getCommands().getDispatcher().execute(
+                                            "indestructible @s play \"annoyingvillagers:biped/combat/greatsword_dual_auto_2\" 0 1",
+                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                } catch (CommandSyntaxException e) {
+                                    
+                                }
                             }
 
                             new DelayedTask(8) {
@@ -90,9 +102,13 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                         } else if (entity.getPersistentData().getDouble("axe_a") == 3.0D) {
                             entity.getPersistentData().putDouble("axe_a", 3.5D);
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                entity.getServer().getCommands().getDispatcher().execute(
-                                        "indestructible @s play \"wom:biped/skill/torment_berserk_auto_1\" 0 1",
-                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                try {
+                                    entity.getServer().getCommands().getDispatcher().execute(
+                                            "indestructible @s play \"wom:biped/skill/torment_berserk_auto_1\" 0 1",
+                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                } catch (CommandSyntaxException e) {
+                                    
+                                }
                             }
                             new DelayedTask(8) {
                                 @Override
@@ -104,16 +120,24 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                         } else if (entity.getPersistentData().getDouble("axe_a") == 4.0D) {
                             entity.getPersistentData().putDouble("axe_a", 4.5D);
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                entity.getServer().getCommands().getDispatcher().execute(
-                                        "indestructible @s play \"wom:biped/skill/torment_berserk_auto2\" 0 1",
-                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                try {
+                                    entity.getServer().getCommands().getDispatcher().execute(
+                                            "indestructible @s play \"wom:biped/skill/torment_berserk_auto2\" 0 1",
+                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                } catch (CommandSyntaxException e) {
+                                    
+                                }
                             }
                         } else if (entity.getPersistentData().getDouble("axe_a") == 5.0D) {
                             entity.getPersistentData().putDouble("axe_a", 5.5D);
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                entity.getServer().getCommands().getDispatcher().execute(
-                                        "indestructible @s play \"annoyingvillagers:biped/combat/greatsword_dual_auto_3\" 0 1",
-                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                try {
+                                    entity.getServer().getCommands().getDispatcher().execute(
+                                            "indestructible @s play \"annoyingvillagers:biped/combat/greatsword_dual_auto_3\" 0 1",
+                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                } catch (CommandSyntaxException e) {
+                                    
+                                }
                             }
 
                             new DelayedTask(8) {
@@ -126,9 +150,13 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                         } else if (entity.getPersistentData().getDouble("axe_a") == 6.0D) {
                             entity.getPersistentData().putDouble("axe_a", 6.5D);
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                entity.getServer().getCommands().getDispatcher().execute(
-                                        "indestructible @s play \"epicfight:illager/swing_axe3\" 0 1",
-                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                try {
+                                    entity.getServer().getCommands().getDispatcher().execute(
+                                            "indestructible @s play \"epicfight:illager/swing_axe3\" 0 1",
+                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                } catch (CommandSyntaxException e) {
+                                    
+                                }
                             }
 
                             new DelayedTask(8) {
@@ -147,16 +175,24 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
 
                     if (dynamicanimation == Animations.THE_GUILLOTINE) {
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "indestructible @s play \"annoyingvillagers:biped/combat/axe_fun_skill\" 0 1",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            try {
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "indestructible @s play \"annoyingvillagers:biped/combat/axe_fun_skill\" 0 1",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                                
+                            }
                         }
                     } else if (entity.getPersistentData().getDouble("axe_a") == 0.0D) {
                         entity.getPersistentData().putDouble("axe_a", 1.5D);
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "indestructible @s play \"annoyingvillagers:biped/combat/axe_heavy_auto1\" 0 1",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            try {
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "indestructible @s play \"annoyingvillagers:biped/combat/axe_heavy_auto1\" 0 1",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                                
+                            }
                         }
 
                         new DelayedTask(10) {
@@ -168,9 +204,13 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                     } else if (entity.getPersistentData().getDouble("axe_a") == 2.0D) {
                         entity.getPersistentData().putDouble("axe_a", 2.5D);
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "indestructible @s play \"annoyingvillagers:biped/combat/axe_heavy_auto2\" 0 1",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            try {
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "indestructible @s play \"annoyingvillagers:biped/combat/axe_heavy_auto2\" 0 1",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                                
+                            }
                         }
 
                         new DelayedTask(10) {
@@ -185,9 +225,13 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                 if (entity.isSprinting()) {
                     if (entity.isShiftKeyDown()) {
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "indestructible @s play \"annoyingvillagers:biped/combat/whirlwind_kick_left\" 0 1",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            try {
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "indestructible @s play \"annoyingvillagers:biped/combat/whirlwind_kick_left\" 0 1",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                                
+                            }
                         }
 
                         entity.getPersistentData().putBoolean("fist_a", true);
@@ -212,9 +256,13 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                         };
                     } else {
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "indestructible @s play \"annoyingvillagers:biped/combat/whirlwind_kick\" 0 1",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            try {
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "indestructible @s play \"annoyingvillagers:biped/combat/whirlwind_kick\" 0 1",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                                
+                            }
                         }
 
                         entity.getPersistentData().putBoolean("fist_a", true);
@@ -235,24 +283,36 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                     }
                 } else if (entity.isShiftKeyDown()) {
                     if (!entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                "indestructible @s play \"annoyingvillagers:biped/combat/fist_up\" 0 1",
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        try {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "indestructible @s play \"annoyingvillagers:biped/combat/fist_up\" 0 1",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException e) {
+                            
+                        }
                     }
                 } else if (playerpatch != null) {
                     DynamicAnimation dynamicanimation1 = playerpatch.getAnimator().getPlayerFor(null).getAnimation();
 
                     if (dynamicanimation1 == AVAnimations.FIST_UP) {
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "indestructible @s play \"annoyingvillagers:biped/combat/fist_left\" 0 1",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            try {
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "indestructible @s play \"annoyingvillagers:biped/combat/fist_left\" 0 1",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                                
+                            }
                         }
 
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "effect give @s epicfight:stun_immunity 3 5 true",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            try {
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "effect give @s epicfight:stun_immunity 3 5 true",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                                
+                            }
                         }
 
                         entity.getPersistentData().putBoolean("fist_a", true);
@@ -271,9 +331,13 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                         };
                     } else {
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "indestructible @s play \"annoyingvillagers:biped/combat/fist_dash\" 0 1",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            try {
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "indestructible @s play \"annoyingvillagers:biped/combat/fist_dash\" 0 1",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                                
+                            }
                         }
 
                         entity.getPersistentData().putBoolean("fist_a", true);
@@ -299,9 +363,13 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
             } else if (entity.getPersistentData().getDouble("sword_a") == 0.0D) {
                 entity.getPersistentData().putDouble("sword_a", 1.5D);
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().getDispatcher().execute(
-                            "indestructible @s play \"annoyingvillagers:biped/combat/sword_heavy_auto1\" 0 1",
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    try {
+                        entity.getServer().getCommands().getDispatcher().execute(
+                                "indestructible @s play \"annoyingvillagers:biped/combat/sword_heavy_auto1\" 0 1",
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                        
+                    }
                 }
                 new DelayedTask(10) {
                     @Override
@@ -312,9 +380,13 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
             } else if (entity.getPersistentData().getDouble("sword_a") == 2.0D) {
                 entity.getPersistentData().putDouble("sword_a", 2.5D);
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().getDispatcher().execute(
-                            "indestructible @s play \"annoyingvillagers:biped/combat/sword_heavy_auto2\" 0 1",
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    try {
+                        entity.getServer().getCommands().getDispatcher().execute(
+                                "indestructible @s play \"annoyingvillagers:biped/combat/sword_heavy_auto2\" 0 1",
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                        
+                    }
                 }
                 new DelayedTask(10) {
                     @Override
@@ -325,9 +397,13 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
             } else if (entity.getPersistentData().getDouble("sword_a") == 3.0D) {
                 entity.getPersistentData().putDouble("sword_a", 3.5D);
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().getDispatcher().execute(
-                            "indestructible @s play \"annoyingvillagers:biped/combat/sword_heavy_auto3\" 0 1",
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    try {
+                        entity.getServer().getCommands().getDispatcher().execute(
+                                "indestructible @s play \"annoyingvillagers:biped/combat/sword_heavy_auto3\" 0 1",
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                        
+                    }
                 }
 
                 new DelayedTask(10) {
@@ -340,9 +416,13 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
         } else {
             if (dynamicanimation == Animations.DANCING_EDGE) {
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().getDispatcher().execute(
-                            "indestructible @s play \"annoyingvillagers:biped/combat/dual_sword_skill\" 0 1",
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    try {
+                        entity.getServer().getCommands().getDispatcher().execute(
+                                "indestructible @s play \"annoyingvillagers:biped/combat/dual_sword_skill\" 0 1",
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                        
+                    }
                 }
             } else {
                 if (entity.getPersistentData().getDouble("sword_a") < 1.0D) {
@@ -352,9 +432,13 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                 if (entity.getPersistentData().getDouble("sword_a") == 1.0D) {
                     entity.getPersistentData().putDouble("sword_a", 1.5D);
                     if (!entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                "indestructible @s play \"epicfight:biped/combat/dagger_dual_dash\" 0 1",
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        try {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "indestructible @s play \"epicfight:biped/combat/dagger_dual_dash\" 0 1",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException e) {
+                            
+                        }
                     }
 
                     new DelayedTask(10) {
@@ -366,9 +450,13 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                 } else if (entity.getPersistentData().getDouble("sword_a") == 2.0D) {
                     entity.getPersistentData().putDouble("sword_a", 2.5D);
                     if (!entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                "indestructible @s play \"epicfight:biped/combat/longsword_auto2\" 0 1",
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        try {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "indestructible @s play \"epicfight:biped/combat/longsword_auto2\" 0 1",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException e) {
+                            
+                        }
                     }
 
                     new DelayedTask(10) {
@@ -380,9 +468,13 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                 } else if (entity.getPersistentData().getDouble("sword_a") == 3.0D) {
                     entity.getPersistentData().putDouble("sword_a", 3.5D);
                     if (!entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                "indestructible @s play \"annoyingvillagers:biped/combat/dancing_edge\" 0 1",
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        try {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "indestructible @s play \"annoyingvillagers:biped/combat/dancing_edge\" 0 1",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException e) {
+                            
+                        }
                     }
 
                     new DelayedTask(20) {
@@ -394,9 +486,13 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                 } else if (entity.getPersistentData().getDouble("sword_a") == 4.0D) {
                     entity.getPersistentData().putDouble("sword_a", 4.5D);
                     if (!entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                "indestructible @s play \"annoyingvillagers:biped/combat/dual_sword_dancing_edge\" 0 1",
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        try {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "indestructible @s play \"annoyingvillagers:biped/combat/dual_sword_dancing_edge\" 0 1",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException e) {
+                            
+                        }
                     }
 
                     new DelayedTask(20) {
@@ -417,9 +513,13 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                 if (entity.getPersistentData().getDouble("sword_a") < 1.0D) {
                     entity.getPersistentData().putDouble("sword_a", 1.5D);
                     if (!entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                "indestructible @s play \"annoyingvillagers:biped/combat/giant_whirlwind\" 0 1",
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        try {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "indestructible @s play \"annoyingvillagers:biped/combat/giant_whirlwind\" 0 1",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException e) {
+                            
+                        }
                     }
 
                     new DelayedTask(30) {
@@ -431,9 +531,13 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                 } else if (entity.getPersistentData().getDouble("sword_a") == 2.0D) {
                     entity.getPersistentData().putDouble("sword_a", 2.5D);
                     if (!entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                "indestructible @s play \"annoyingvillagers:biped/combat/giant_whirlwind_2\" 0 1",
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        try {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "indestructible @s play \"annoyingvillagers:biped/combat/giant_whirlwind_2\" 0 1",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException e) {
+                            
+                        }
                     }
 
                     new DelayedTask(20) {
@@ -446,9 +550,13 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                     entity.getPersistentData().putDouble("sword_a", 0.0D);
                 }
             } else if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().getDispatcher().execute(
-                        "indestructible @s play \"annoyingvillagers:biped/combat/greatsword_skill\" 0 1",
-                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                try {
+                    entity.getServer().getCommands().getDispatcher().execute(
+                            "indestructible @s play \"annoyingvillagers:biped/combat/greatsword_skill\" 0 1",
+                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+                    
+                }
             }
         }
 
@@ -456,9 +564,13 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
             if (entity.getPersistentData().getDouble("sword_a") < 1.0D) {
                 entity.getPersistentData().putDouble("sword_a", 1.5D);
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().getDispatcher().execute(
-                            "indestructible @s play \"annoyingvillagers:biped/combat/spear_thrust\" 0 1",
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    try {
+                        entity.getServer().getCommands().getDispatcher().execute(
+                                "indestructible @s play \"annoyingvillagers:biped/combat/spear_thrust\" 0 1",
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                        
+                    }
                 }
 
                 new DelayedTask(30) {

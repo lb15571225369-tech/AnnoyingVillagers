@@ -11,7 +11,7 @@ import com.pla.annoyingvillagers.util.DelayedTask;
 
 public class BlueDemonTridentFsSkillEndOnEntityInitialSpawnProcedure {
 
-    public static void execute(LevelAccessor world, Entity entity) throws CommandSyntaxException {
+    public static void execute(LevelAccessor world, Entity entity) {
         if (entity == null) return;
 
         // Enchant chestplate with Protection V
@@ -30,26 +30,34 @@ public class BlueDemonTridentFsSkillEndOnEntityInitialSpawnProcedure {
             };
 
             for (String cmd : commands) {
-                entity.getServer().getCommands().getDispatcher().execute(
-                        cmd,
-                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-                );
+                try {
+                    entity.getServer().getCommands().getDispatcher().execute(
+                            cmd,
+                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                    );
+                } catch (CommandSyntaxException e) {
+                    
+                }
             }
         }
 
         // Schedule transformation after 400 ticks
         new DelayedTask(100) {
             @Override
-            public void run() throws CommandSyntaxException {
+            public void run() {
                 if (!entity.isAlive()) return;
 
                 String summonCommand = "summon annoyingvillagers:blue_demon_2";
 
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().getDispatcher().execute(
-                            summonCommand,
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-                    );
+                    try {
+                        entity.getServer().getCommands().getDispatcher().execute(
+                                summonCommand,
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                        );
+                    } catch (CommandSyntaxException e) {
+                        
+                    }
                 }
 
                 if (!entity.level.isClientSide()) {

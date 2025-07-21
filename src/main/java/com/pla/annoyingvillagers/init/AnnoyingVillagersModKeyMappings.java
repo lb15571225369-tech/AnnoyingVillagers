@@ -24,21 +24,13 @@ public class AnnoyingVillagersModKeyMappings {
             super.setDown(flag);
             if (this.isDownOld != flag && flag) {
                 AnnoyingVillagers.PACKET_HANDLER.sendToServer(new KickMessage(0, 0));
-                try {
-                    KickMessage.pressAction(Minecraft.getInstance().player, 0, 0);
-                } catch (CommandSyntaxException e) {
-                    
-                }
+                KickMessage.pressAction(Minecraft.getInstance().player, 0, 0);
                 AnnoyingVillagersModKeyMappings.KICK_LASTPRESS = System.currentTimeMillis();
             } else if (this.isDownOld != flag && !flag) {
                 int i = (int) (System.currentTimeMillis() - AnnoyingVillagersModKeyMappings.KICK_LASTPRESS);
 
                 AnnoyingVillagers.PACKET_HANDLER.sendToServer(new KickMessage(1, i));
-                try {
-                    KickMessage.pressAction(Minecraft.getInstance().player, 1, i);
-                } catch (CommandSyntaxException e) {
-                    
-                }
+                KickMessage.pressAction(Minecraft.getInstance().player, 1, i);
             }
 
             this.isDownOld = flag;
@@ -51,11 +43,7 @@ public class AnnoyingVillagersModKeyMappings {
             super.setDown(flag);
             if (this.isDownOld != flag && flag) {
                 AnnoyingVillagers.PACKET_HANDLER.sendToServer(new WeaponsMoreAttackMessage(0, 0));
-                try {
-                    WeaponsMoreAttackMessage.pressAction(Minecraft.getInstance().player, 0, 0);
-                } catch (CommandSyntaxException e) {
-                    
-                }
+                WeaponsMoreAttackMessage.pressAction(Minecraft.getInstance().player, 0, 0);
             }
 
             this.isDownOld = flag;

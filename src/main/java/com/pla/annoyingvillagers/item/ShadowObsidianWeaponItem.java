@@ -49,32 +49,20 @@ public class ShadowObsidianWeaponItem extends SwordItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {
         InteractionResultHolder<ItemStack> interactionresultholder = super.use(level, player, interactionhand);
 
-        try {
-            ShadowObsidianProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
-        } catch (CommandSyntaxException e) {
-            
-        }
+        ShadowObsidianProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
         return interactionresultholder;
     }
 
     public InteractionResult useOn(UseOnContext useoncontext) {
         super.useOn(useoncontext);
-        try {
-            ShadowObsidianProcedure.execute(useoncontext.getLevel(), (double) useoncontext.getClickedPos().getX(), (double) useoncontext.getClickedPos().getY(), (double) useoncontext.getClickedPos().getZ(), useoncontext.getPlayer(), useoncontext.getItemInHand());
-        } catch (CommandSyntaxException e) {
-            
-        }
+        ShadowObsidianProcedure.execute(useoncontext.getLevel(), (double) useoncontext.getClickedPos().getX(), (double) useoncontext.getClickedPos().getY(), (double) useoncontext.getClickedPos().getZ(), useoncontext.getPlayer(), useoncontext.getItemInHand());
         return InteractionResult.SUCCESS;
     }
 
     public boolean onEntitySwing(ItemStack itemstack, LivingEntity livingentity) {
         boolean flag = super.onEntitySwing(itemstack, livingentity);
 
-        try {
-            ShadowObsidianProcedure.execute(livingentity.level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity, itemstack);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        ShadowObsidianProcedure.execute(livingentity.level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity, itemstack);
         return flag;
     }
 }

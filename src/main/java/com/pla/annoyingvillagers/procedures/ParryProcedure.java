@@ -43,18 +43,18 @@ import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
 public class ParryProcedure {
 
     @SubscribeEvent
-    public static void onEntityAttacked(LivingAttackEvent livingattackevent) throws CommandSyntaxException {
+    public static void onEntityAttacked(LivingAttackEvent livingattackevent) {
         if (livingattackevent != null && livingattackevent.getEntity() != null) {
             execute(livingattackevent, livingattackevent.getEntity().level, livingattackevent.getEntity(), livingattackevent.getSource().getEntity());
         }
 
     }
 
-    public static void execute(LevelAccessor levelaccessor, Entity entity, Entity entity1) throws CommandSyntaxException {
+    public static void execute(LevelAccessor levelaccessor, Entity entity, Entity entity1) {
         execute((Event) null, levelaccessor, entity, entity1);
     }
 
-    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, final Entity entity, final Entity entity1) throws CommandSyntaxException {
+    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, final Entity entity, final Entity entity1) {
         if (entity != null && entity1 != null) {
             LivingEntityPatch livingentitypatch;
             DynamicAnimation dynamicanimation;
@@ -92,22 +92,27 @@ public class ParryProcedure {
                                         }
 
                                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                            entity.getServer().getCommands().getDispatcher().execute(
-                                                    "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
-                                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                        }
-
-                                        if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                            entity.getServer().getCommands().getDispatcher().execute(
-                                                    "execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100",
-                                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                            try {
+                                                entity.getServer().getCommands().getDispatcher().execute(
+                                                        "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
+                                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                entity.getServer().getCommands().getDispatcher().execute(
+                                                        "execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100",
+                                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                            } catch (CommandSyntaxException e) {
+                                                
+                                            }
                                         }
 
                                         humanoidmobpatch1.playSound(EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
                                         if (entity1 instanceof Player && !entity1.level.isClientSide() && entity1.getServer() != null) {
-                                            entity1.getServer().getCommands().getDispatcher().execute(
-                                                    "impactful @s shake 15 5 6",
-                                                    entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                            try {
+                                                entity1.getServer().getCommands().getDispatcher().execute(
+                                                        "impactful @s shake 15 5 6",
+                                                        entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                            } catch (CommandSyntaxException e) {
+                                                
+                                            }
                                         }
 
                                         entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * -0.2D, 0.0D, entity.getLookAngle().z * -0.2D));
@@ -129,24 +134,29 @@ public class ParryProcedure {
                                             }
 
                                             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                                entity.getServer().getCommands().getDispatcher().execute(
-                                                        "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
-                                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                            }
-
-                                            if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                                entity.getServer().getCommands().getDispatcher().execute(
-                                                        "execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100",
-                                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                try {
+                                                    entity.getServer().getCommands().getDispatcher().execute(
+                                                            "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
+                                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                    entity.getServer().getCommands().getDispatcher().execute(
+                                                            "execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100",
+                                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                } catch (CommandSyntaxException e) {
+                                                    
+                                                }
                                             }
 
                                             humanoidmobpatch1.playSound(EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
                                             entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * -0.2D, 0.0D, entity.getLookAngle().z * -0.2D));
                                             entity1.setDeltaMovement(new Vec3(entity1.getLookAngle().x * -0.2D, 0.0D, entity1.getLookAngle().z * -0.2D));
                                             if (entity1 instanceof Player && !entity1.level.isClientSide() && entity1.getServer() != null) {
-                                                entity1.getServer().getCommands().getDispatcher().execute(
-                                                        "impactful @s shake 15 5 6",
-                                                        entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                try {
+                                                    entity1.getServer().getCommands().getDispatcher().execute(
+                                                            "impactful @s shake 15 5 6",
+                                                            entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                } catch (CommandSyntaxException e) {
+                                                    
+                                                }
                                             }
                                         }
                                     }
@@ -160,14 +170,18 @@ public class ParryProcedure {
                                 if (entity.isAlive()) {
                                     new DelayedTask(1) {
                                         @Override
-                                        public void run() throws CommandSyntaxException {
+                                        public void run() {
                                             if (entity.isAlive()) {
                                                 Entity entity2 = entity;
 
                                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                    entity2.getServer().getCommands().getDispatcher().execute(
-                                                            "indestructible @s play \"epicfight:biped/skill/guard_break1\" 0 10",
-                                                            entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                    try {
+                                                        entity2.getServer().getCommands().getDispatcher().execute(
+                                                                "indestructible @s play \"epicfight:biped/skill/guard_break1\" 0 10",
+                                                                entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                    } catch (CommandSyntaxException e) {
+                                                        
+                                                    }
                                                 }
                                             }
                                         }
@@ -204,27 +218,28 @@ public class ParryProcedure {
                                 }
                                 playerpatch.playSound(EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
                                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                    entity.getServer().getCommands().getDispatcher().execute(
-                                            "impactful @s shake 15 5 6",
-                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                    try {
+                                        entity.getServer().getCommands().getDispatcher().execute(
+                                                "impactful @s shake 15 5 6",
+                                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                        entity.getServer().getCommands().getDispatcher().execute(
+                                                "execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100",
+                                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                        entity.getServer().getCommands().getDispatcher().execute(
+                                                "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
+                                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                    } catch (CommandSyntaxException e) {
+                                        
+                                    }
                                 }
-
-                                if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                    entity.getServer().getCommands().getDispatcher().execute(
-                                            "execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100",
-                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                }
-
-                                if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                    entity.getServer().getCommands().getDispatcher().execute(
-                                            "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
-                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                }
-
                                 if (entity1 instanceof Player && !entity1.level.isClientSide() && entity1.getServer() != null) {
-                                    entity1.getServer().getCommands().getDispatcher().execute(
-                                            "impactful @s shake 15 5 6",
-                                            entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                    try {
+                                        entity1.getServer().getCommands().getDispatcher().execute(
+                                                "impactful @s shake 15 5 6",
+                                                entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                    } catch (CommandSyntaxException e) {
+                                        
+                                    }
                                 }
                             }
                         }
@@ -233,29 +248,41 @@ public class ParryProcedure {
                         if (entity.isAlive()) {
                             ((HitParticleType)EpicFightParticles.AIR_BURST.get()).spawnParticleWithArgument((ServerLevel)entity.level, entity, entity1);
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                entity.getServer().getCommands().getDispatcher().execute(
-                                        "effect give @s cgm:blinded 1 1 true",
-                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                try {
+                                    entity.getServer().getCommands().getDispatcher().execute(
+                                            "effect give @s cgm:blinded 1 1 true",
+                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                } catch (CommandSyntaxException e) {
+                                    
+                                }
                             }
 
                             if (dynamicanimation instanceof DashAttackAnimation) {
                                 if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.FIST) {
                                     new DelayedTask(1) {
                                         @Override
-                                        public void run() throws CommandSyntaxException {
+                                        public void run() {
                                             Entity entity2 = entity;
 
                                             if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                entity2.getServer().getCommands().getDispatcher().execute(
-                                                        "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
-                                                        entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                try {
+                                                    entity2.getServer().getCommands().getDispatcher().execute(
+                                                            "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
+                                                            entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                } catch (CommandSyntaxException e) {
+                                                    
+                                                }
                                             }
 
                                             entity2 = entity;
                                             if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                entity2.getServer().getCommands().getDispatcher().execute(
-                                                        "indestructible @s play \"annoyingvillagers:biped/combat/guard_break_attack\" 0 10",
-                                                        entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                try {
+                                                    entity2.getServer().getCommands().getDispatcher().execute(
+                                                            "indestructible @s play \"annoyingvillagers:biped/combat/guard_break_attack\" 0 10",
+                                                            entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                } catch (CommandSyntaxException e) {
+                                                    
+                                                }
                                             }
 
                                             entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * -0.4D, 0.0D, entity.getLookAngle().z * -0.4D));
@@ -265,13 +292,17 @@ public class ParryProcedure {
                             } else {
                                 new DelayedTask(1) {
                                     @Override
-                                    public void run() throws CommandSyntaxException {
+                                    public void run() {
                                         Entity entity2 = entity;
 
                                         if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                            entity2.getServer().getCommands().getDispatcher().execute(
-                                                    "indestructible @s play \"epicfight:biped/skill/guard_break1\" 0 10",
-                                                    entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                            try {
+                                                entity2.getServer().getCommands().getDispatcher().execute(
+                                                        "indestructible @s play \"epicfight:biped/skill/guard_break1\" 0 10",
+                                                        entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                            } catch (CommandSyntaxException e) {
+                                                
+                                            }
                                         }
                                     }
                                 };
@@ -292,21 +323,29 @@ public class ParryProcedure {
                         livingentitypatch1.playSound(EpicFightSounds.NEUTRALIZE_MOBS.get(), -0.05F, 0.1F);
                         if (entity.isAlive()) {
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                entity.getServer().getCommands().getDispatcher().execute(
-                                        "effect give @s cgm:blinded 1 1 true",
-                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                try {
+                                    entity.getServer().getCommands().getDispatcher().execute(
+                                            "effect give @s cgm:blinded 1 1 true",
+                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                } catch (CommandSyntaxException e) {
+                                    
+                                }
                             }
 
                             new DelayedTask(1) {
                                 @Override
-                                public void run() throws CommandSyntaxException {
+                                public void run() {
                                     if (entity.isAlive()) {
                                         Entity entity2 = entity;
 
                                         if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                            entity2.getServer().getCommands().getDispatcher().execute(
-                                                    "indestructible @s play \"epicfight:biped/skill/guard_break1\" 0 10",
-                                                    entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                            try {
+                                                entity2.getServer().getCommands().getDispatcher().execute(
+                                                        "indestructible @s play \"epicfight:biped/skill/guard_break1\" 0 10",
+                                                        entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                            } catch (CommandSyntaxException e) {
+                                                
+                                            }
                                         }
                                     }
                                 }
@@ -319,16 +358,24 @@ public class ParryProcedure {
 
                         livingentitypatch1.playSound(EpicFightSounds.NEUTRALIZE_MOBS.get(), -0.05F, 0.1F);
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "particle epicfight:air_burst ~ ~1.5 ~ 0 0 0 8 1",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            try {
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "particle epicfight:air_burst ~ ~1.5 ~ 0 0 0 8 1",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                                
+                            }
                         }
 
                         if (livingentitypatch1.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.FIST) {
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                entity.getServer().getCommands().getDispatcher().execute(
-                                        "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
-                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                try {
+                                    entity.getServer().getCommands().getDispatcher().execute(
+                                            "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
+                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                } catch (CommandSyntaxException e) {
+                                    
+                                }
                             }
 
                             livingentitypatch1.playSound(EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
@@ -340,53 +387,67 @@ public class ParryProcedure {
                         entity1.setDeltaMovement(new Vec3(entity1.getLookAngle().x * -0.2D, 0.0D, entity1.getLookAngle().z * -0.2D));
                         if (entity instanceof Player) {
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                entity.getServer().getCommands().getDispatcher().execute(
-                                        "effect give @s cgm:blinded 1 1 true",
-                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                            }
-
-                            if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                entity.getServer().getCommands().getDispatcher().execute(
-                                        "impactful @s shake 15 5 6",
-                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                try {
+                                    entity.getServer().getCommands().getDispatcher().execute(
+                                            "effect give @s cgm:blinded 1 1 true",
+                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                    entity.getServer().getCommands().getDispatcher().execute(
+                                            "impactful @s shake 15 5 6",
+                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                } catch (CommandSyntaxException e) {
+                                    
+                                }
                             }
                         } else if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            try {
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                                
+                            }
                         }
 
                         if (entity1 instanceof Player) {
                             if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                entity1.getServer().getCommands().getDispatcher().execute(
-                                        "impactful @s shake 15 5 6",
-                                        entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                            }
-
-                            if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                entity1.getServer().getCommands().getDispatcher().execute(
-                                        "effect give @s cgm:blinded 1 1 true",
-                                        entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                try {
+                                    entity1.getServer().getCommands().getDispatcher().execute(
+                                            "impactful @s shake 15 5 6",
+                                            entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                    entity1.getServer().getCommands().getDispatcher().execute(
+                                            "effect give @s cgm:blinded 1 1 true",
+                                            entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                } catch (CommandSyntaxException e) {
+                                    
+                                }
                             }
                         }
 
                         if (entity.isAlive()) {
                             new DelayedTask(1) {
                                 @Override
-                                public void run() throws CommandSyntaxException {
+                                public void run() {
                                     Entity entity2 = entity;
 
                                     if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                        entity2.getServer().getCommands().getDispatcher().execute(
-                                                "indestructible @s play \"annoyingvillagers:biped/combat/guard_break_attack\" 0 10",
-                                                entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                        try {
+                                            entity2.getServer().getCommands().getDispatcher().execute(
+                                                    "indestructible @s play \"annoyingvillagers:biped/combat/guard_break_attack\" 0 10",
+                                                    entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                        } catch (CommandSyntaxException e) {
+                                            
+                                        }
                                     }
 
                                     entity2 = entity1;
                                     if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                        entity2.getServer().getCommands().getDispatcher().execute(
-                                                "indestructible @s play \"annoyingvillagers:biped/combat/guard_break_attack\" 0 10",
-                                                entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                        try {
+                                            entity2.getServer().getCommands().getDispatcher().execute(
+                                                    "indestructible @s play \"annoyingvillagers:biped/combat/guard_break_attack\" 0 10",
+                                                    entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                        } catch (CommandSyntaxException e) {
+                                            
+                                        }
                                     }
                                 }
                             };

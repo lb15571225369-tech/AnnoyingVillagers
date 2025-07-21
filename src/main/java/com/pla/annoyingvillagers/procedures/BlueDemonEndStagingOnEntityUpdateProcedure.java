@@ -12,17 +12,21 @@ public class BlueDemonEndStagingOnEntityUpdateProcedure {
 
         new DelayedTask(405) {
             @Override
-            public void run() throws CommandSyntaxException {
+            public void run() {
                 if (entity.isAlive()) {
                     String command = Math.random() <= 0.4D
                             ? "summon annoyingvillagers:blue_demon"
                             : "summon annoyingvillagers:blue_demon_2";
 
                     if (!entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                command,
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-                        );
+                        try {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    command,
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                            );
+                        } catch (CommandSyntaxException e) {
+                            
+                        }
                     }
 
                     if (!entity.level.isClientSide()) {

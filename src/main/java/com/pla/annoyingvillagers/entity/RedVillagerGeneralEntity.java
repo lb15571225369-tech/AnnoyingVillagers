@@ -139,21 +139,13 @@ public class RedVillagerGeneralEntity extends PathfinderMob {
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
-        try {
-            RedVillageGeneralOnDeathProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        RedVillageGeneralOnDeathProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
 
-        try {
-            RedVillageGeneralOnEntityInitialSpawnProcedure.execute(serverlevelaccessor, this.getX(), this.getY(), this.getZ(), this);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        RedVillageGeneralOnEntityInitialSpawnProcedure.execute(serverlevelaccessor, this.getX(), this.getY(), this.getZ(), this);
         return spawngroupdata1;
     }
 
@@ -167,11 +159,7 @@ public class RedVillagerGeneralEntity extends PathfinderMob {
         double d2 = this.getZ();
         Level level = this.level;
 
-        try {
-            RedVillageGeneralOnAttackingEntityProcedure.execute(level, d0, d1, d2, this);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        RedVillageGeneralOnAttackingEntityProcedure.execute(level, d0, d1, d2, this);
         return interactionresult;
     }
 

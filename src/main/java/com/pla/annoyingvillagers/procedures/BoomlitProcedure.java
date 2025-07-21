@@ -46,35 +46,36 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 public class BoomlitProcedure {
 
     @SubscribeEvent
-    public static void onExplode(ExplosionEvent.Detonate detonate) throws CommandSyntaxException {
+    public static void onExplode(ExplosionEvent.Detonate detonate) {
         execute(detonate, detonate.getLevel(), detonate.getExplosion().getPosition().x, detonate.getExplosion().getPosition().y, detonate.getExplosion().getPosition().z);
     }
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2) throws CommandSyntaxException {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2) {
         execute((Event) null, levelaccessor, d0, d1, d2);
     }
 
-    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, double d0, double d1, double d2) throws CommandSyntaxException {
+    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, double d0, double d1, double d2) {
         ServerLevel serverlevel;
 
         if (levelaccessor instanceof ServerLevel) {
             serverlevel = (ServerLevel)levelaccessor;
-            serverlevel.getServer().getCommands().getDispatcher().execute("particle minecraft:campfire_signal_smoke ~ ~ ~ 0 0 0 0.02 100", (new CommandSourceStack(CommandSource.NULL, new Vec3(d0, d1, d2), Vec2.ZERO, serverlevel, 4, "", Component.literal(""), serverlevel.getServer(), (Entity)null)).withSuppressedOutput());
-        }
+            try {
+                serverlevel.getServer().getCommands().getDispatcher().execute("particle minecraft:campfire_signal_smoke ~ ~ ~ 0 0 0 0.02 100", (new CommandSourceStack(CommandSource.NULL, new Vec3(d0, d1, d2), Vec2.ZERO, serverlevel, 4, "", Component.literal(""), serverlevel.getServer(), (Entity)null)).withSuppressedOutput());
 
-        if (levelaccessor instanceof ServerLevel) {
-            serverlevel = (ServerLevel)levelaccessor;
-            serverlevel.getServer().getCommands().getDispatcher().execute("particle epicfight:air_burst ^ ^1.5 ^ 0 0 0 10 1", (new CommandSourceStack(CommandSource.NULL, new Vec3(d0, d1, d2), Vec2.ZERO, serverlevel, 4, "", Component.literal(""), serverlevel.getServer(), (Entity)null)).withSuppressedOutput());
-        }
+                serverlevel.getServer().getCommands().getDispatcher().execute("particle epicfight:air_burst ^ ^1.5 ^ 0 0 0 10 1", (new CommandSourceStack(CommandSource.NULL, new Vec3(d0, d1, d2), Vec2.ZERO, serverlevel, 4, "", Component.literal(""), serverlevel.getServer(), (Entity)null)).withSuppressedOutput());
 
-        if (levelaccessor instanceof ServerLevel) {
-            serverlevel = (ServerLevel)levelaccessor;
-            serverlevel.getServer().getCommands().getDispatcher().execute("particle epicfight:air_burst ~ ~1.5 ~ 0 0 0 10 1", (new CommandSourceStack(CommandSource.NULL, new Vec3(d0, d1, d2), Vec2.ZERO, serverlevel, 4, "", Component.literal(""), serverlevel.getServer(), (Entity)null)).withSuppressedOutput());
+                serverlevel.getServer().getCommands().getDispatcher().execute("particle epicfight:air_burst ~ ~1.5 ~ 0 0 0 10 1", (new CommandSourceStack(CommandSource.NULL, new Vec3(d0, d1, d2), Vec2.ZERO, serverlevel, 4, "", Component.literal(""), serverlevel.getServer(), (Entity)null)).withSuppressedOutput());
+            } catch (CommandSyntaxException e) {
+                
+            }
         }
-
         if (!levelaccessor.isEmptyBlock(new BlockPos(d0, d1 - 1.0D, d2)) && levelaccessor instanceof ServerLevel) {
             serverlevel = (ServerLevel)levelaccessor;
-            serverlevel.getServer().getCommands().getDispatcher().execute("particle epicfight:ground_slam ~ ~-3 ~ 0 0 0 2 90", (new CommandSourceStack(CommandSource.NULL, new Vec3(d0, d1, d2), Vec2.ZERO, serverlevel, 4, "", Component.literal(""), serverlevel.getServer(), (Entity)null)).withSuppressedOutput());
+            try {
+                serverlevel.getServer().getCommands().getDispatcher().execute("particle epicfight:ground_slam ~ ~-3 ~ 0 0 0 2 90", (new CommandSourceStack(CommandSource.NULL, new Vec3(d0, d1, d2), Vec2.ZERO, serverlevel, 4, "", Component.literal(""), serverlevel.getServer(), (Entity)null)).withSuppressedOutput());
+            } catch (CommandSyntaxException e) {
+                
+            }
         }
 
         Vec3 vec3 = new Vec3(d0, d1, d2);
@@ -220,7 +221,11 @@ public class BoomlitProcedure {
 
                     if (dynamicanimation1 != AVAnimations.HARD_GREAT_SWORD_GUARD_SKILL) {
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            try {
+                                entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                                
+                            }
                         }
 
                         if (entity.getPersistentData().getBoolean("a_player") && entity instanceof LivingEntity) {
@@ -247,7 +252,11 @@ public class BoomlitProcedure {
         while(iterator.hasNext()) {
             entity = (Entity)iterator.next();
             if (entity instanceof Player && !entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().getDispatcher().execute("impactful @s shake 40 6 6", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                try {
+                    entity.getServer().getCommands().getDispatcher().execute("impactful @s shake 40 6 6", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+                    
+                }
             }
         }
 

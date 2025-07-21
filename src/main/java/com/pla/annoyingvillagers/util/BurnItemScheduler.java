@@ -95,24 +95,33 @@ public class BurnItemScheduler {
         return String.format(template, itemName);
     }
 
-    private void resetItem() throws CommandSyntaxException {
+    private void resetItem() {
         if (data.contains("av_idle_burn_backup_main_hand")) {
-            CompoundTag fullTag = TagParser.parseTag(data.getString("av_idle_burn_backup_main_hand"));
+            CompoundTag fullTag = null;
+            try {
+                fullTag = TagParser.parseTag(data.getString("av_idle_burn_backup_main_hand"));
+            } catch (CommandSyntaxException e) {
+                
+            }
             String id = fullTag.getString("id");
             String nbtPart = fullTag.contains("tag") ? fullTag.getCompound("tag").toString() : "";
             String cmd = "item replace entity @s weapon.mainhand with " + id;
             if (!nbtPart.isEmpty()) {
                 cmd += nbtPart;
             }
-            mob.getServer().getCommands().getDispatcher().execute(
-                    cmd,
-                    mob.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-            );
+            try {
+                mob.getServer().getCommands().getDispatcher().execute(
+                        cmd,
+                        mob.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                );
+            } catch (CommandSyntaxException e) {
+                
+            }
             data.remove("av_idle_burn_backup_main_hand");
         }
     }
 
-    public void run() throws CommandSyntaxException {
+    public void run() {
         if (!(mob.level instanceof ServerLevel serverLevel)) return;
 
         if (mob.getTarget() != null) {
@@ -176,11 +185,7 @@ public class BurnItemScheduler {
                 }
             }
             TaskScheduler.schedule(() -> {
-                try {
-                    new BurnItemScheduler(mob).run();
-                } catch (CommandSyntaxException e) {
-                    e.printStackTrace();
-                }
+                new BurnItemScheduler(mob).run();
             }, 20);
         } else {
             resetItem();

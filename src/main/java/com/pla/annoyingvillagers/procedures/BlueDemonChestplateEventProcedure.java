@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.Blocks;
 
 public class BlueDemonChestplateEventProcedure {
 
-    public static void execute(Entity entity) throws CommandSyntaxException {
+    public static void execute(Entity entity) {
         if (entity != null) {
             Player player;
             LivingEntity livingentity;
@@ -43,7 +43,11 @@ public class BlueDemonChestplateEventProcedure {
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().getDispatcher().execute("effect give @s annoyingvillagers:electify 1 0 true", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                try {
+                    entity.getServer().getCommands().getDispatcher().execute("effect give @s annoyingvillagers:electify 1 0 true", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+                    
+                }
             }
 
         }

@@ -36,18 +36,18 @@ import static net.minecraft.world.item.enchantment.Enchantments.PROJECTILE_PROTE
 public class ProjectiveProcedure {
 
     @SubscribeEvent
-    public static void onEntityAttacked(LivingAttackEvent livingattackevent) throws CommandSyntaxException {
+    public static void onEntityAttacked(LivingAttackEvent livingattackevent) {
         if (livingattackevent != null && livingattackevent.getEntity() != null) {
             execute(livingattackevent, livingattackevent.getEntity().level, livingattackevent.getEntity().getX(), livingattackevent.getEntity().getY(), livingattackevent.getEntity().getZ(), livingattackevent.getEntity(), livingattackevent.getSource().getDirectEntity(), (double) livingattackevent.getAmount());
         }
 
     }
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity, Entity entity1, double d3) throws CommandSyntaxException {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity, Entity entity1, double d3) {
         execute((Event) null, levelaccessor, d0, d1, d2, entity, entity1, d3);
     }
 
-    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity, Entity entity1, double d3) throws CommandSyntaxException {
+    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity, Entity entity1, double d3) {
         if (entity != null && entity1 != null) {
             double d4;
 
@@ -114,9 +114,13 @@ public class ProjectiveProcedure {
                     }
 
                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                        entity1.getServer().getCommands().getDispatcher().execute(
-                                "execute at @s run particle annoyingvillagers:spark ~ ~ ~ 0 0 0 0.1 10",
-                                entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        try {
+                            entity1.getServer().getCommands().getDispatcher().execute(
+                                    "execute at @s run particle annoyingvillagers:spark ~ ~ ~ 0 0 0 0.1 10",
+                                    entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException e) {
+                            
+                        }
                     }
                 } else {
                     enchantment = PROJECTILE_PROTECTION;

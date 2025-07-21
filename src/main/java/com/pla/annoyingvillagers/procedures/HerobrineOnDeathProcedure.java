@@ -18,14 +18,18 @@ import java.util.*;
 
 public class HerobrineOnDeathProcedure {
 
-    public static void execute(LevelAccessor world, double x, double y, double z, Entity source) throws CommandSyntaxException {
+    public static void execute(LevelAccessor world, double x, double y, double z, Entity source) {
         if (source == null) return;
 
         if (!source.level.isClientSide() && source.getServer() != null) {
-            source.getServer().getCommands().getDispatcher().execute(
-                    "tag @a remove aim",
-                    source.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-            );
+            try {
+                source.getServer().getCommands().getDispatcher().execute(
+                        "tag @a remove aim",
+                        source.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                );
+            } catch (CommandSyntaxException e) {
+                
+            }
         }
 
         // Armor transfer from source to passengers
@@ -33,10 +37,14 @@ public class HerobrineOnDeathProcedure {
             for (Entity passenger : new ArrayList<>(source.getPassengers())) {
                 if (isSpectatorGamemode(passenger)) {
                     if (!passenger.level.isClientSide() && passenger.getServer() != null) {
-                        passenger.getServer().getCommands().getDispatcher().execute(
-                                "tag @s remove sp",
-                                passenger.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-                        );
+                        try {
+                            passenger.getServer().getCommands().getDispatcher().execute(
+                                    "tag @s remove sp",
+                                    passenger.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                            );
+                        } catch (CommandSyntaxException e) {
+                            
+                        }
                     }
 
                     transferArmor(source, passenger);

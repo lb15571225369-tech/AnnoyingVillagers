@@ -26,11 +26,7 @@ public class NpcKickEffectMobEffect extends MobEffect {
 
     public void removeAttributeModifiers(LivingEntity livingentity, AttributeMap attributemap, int i) {
         super.removeAttributeModifiers(livingentity, attributemap, i);
-        try {
-            NpcKickEffectOnEndProcedure.execute(livingentity);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        NpcKickEffectOnEndProcedure.execute(livingentity);
     }
 
     public boolean isDurationEffectTick(int i, int j) {

@@ -15,13 +15,17 @@ import com.pla.annoyingvillagers.entity.BlueDemonEndStagingEntity;
 
 public class BlueDemonTridentParticleOnEntityUpdate {
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) throws CommandSyntaxException {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) {
         if (entity != null) {
             if (!levelaccessor.getEntitiesOfClass(BlueDemonEndStagingEntity.class, AABB.ofSize(new Vec3(d0, d1, d2), 90.0D, 90.0D, 90.0D), (bluedemonendentity) -> {
                 return true;
             }).isEmpty()) {
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().getDispatcher().execute("kill @s", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    try {
+                        entity.getServer().getCommands().getDispatcher().execute("kill @s", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                        
+                    }
                 }
 
                 if (!entity.level.isClientSide()) {

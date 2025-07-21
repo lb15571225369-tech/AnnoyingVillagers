@@ -11,7 +11,7 @@ import net.minecraft.world.level.LevelAccessor;
 
 public class KickOnKeyReleasedProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, final Entity entity) throws CommandSyntaxException {
+    public static void execute(LevelAccessor levelaccessor, final Entity entity) {
         if (entity != null) {
             if (entity.isShiftKeyDown() && entity.isSprinting()) {
                 ItemStack itemstack;
@@ -27,7 +27,11 @@ public class KickOnKeyReleasedProcedure {
                 if (itemstack.getItem() instanceof SwordItem) {
                     if (entity.getPersistentData().getDouble("dash_auto") != 1.0D) {
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"wom:biped/combat/torment_charged_attack_2\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            try {
+                                entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"wom:biped/combat/torment_charged_attack_2\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                                
+                            }
                         }
 
                         entity.getPersistentData().putDouble("dash_auto", 1.0D);
@@ -49,7 +53,11 @@ public class KickOnKeyReleasedProcedure {
 
                     if (itemstack.getItem() instanceof AxeItem && entity.getPersistentData().getDouble("dash_auto") != 1.0D) {
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"wom:biped/combat/torment_charged_attack_2\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            try {
+                                entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"wom:biped/combat/torment_charged_attack_2\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                                
+                            }
                         }
 
                         entity.getPersistentData().putDouble("dash_auto", 1.0D);

@@ -37,14 +37,14 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 public class GuardBreakProcedure {
 
     @SubscribeEvent
-    public static void onEntityAttacked(LivingAttackEvent livingattackevent) throws CommandSyntaxException {
+    public static void onEntityAttacked(LivingAttackEvent livingattackevent) {
         if (livingattackevent != null && livingattackevent.getEntity() != null) {
             execute(livingattackevent, livingattackevent.getEntity().level, livingattackevent.getEntity().getX(), livingattackevent.getEntity().getY(), livingattackevent.getEntity().getZ(), livingattackevent.getEntity(), livingattackevent.getSource().getEntity());
         }
 
     }
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity, Entity entity1) throws CommandSyntaxException {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity, Entity entity1) {
         execute((Event) null, levelaccessor, d0, d1, d2, entity, entity1);
     }
 
@@ -58,7 +58,7 @@ public class GuardBreakProcedure {
         return false;
     }
 
-    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity, final Entity entity1) throws CommandSyntaxException {
+    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity, final Entity entity1) {
         if (entity != null && entity1 != null) {
             LivingEntity livingentity;
 
@@ -111,19 +111,17 @@ public class GuardBreakProcedure {
 
                 entity.getPersistentData().putBoolean("s_g", false);
                 if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                    entity1.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/skill/guard_break1\" 0 1", entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                }
+                    try {
+                        entity1.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/skill/guard_break1\" 0 1", entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
 
-                if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/combat/tachi_auto2\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                }
+                        entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/combat/tachi_auto2\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
 
-                if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                }
+                        entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
 
-                if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                        
+                    }
                 }
 
                 Level level;
@@ -169,7 +167,7 @@ public class GuardBreakProcedure {
                 if (!flag) {
                     new DelayedTask(10) {
                         @Override
-                        public void run() throws CommandSyntaxException {
+                        public void run() {
                             if (entity1 instanceof LivingEntity) {
                                 LivingEntity livingentity4 = (LivingEntity)entity1;
 
@@ -181,7 +179,11 @@ public class GuardBreakProcedure {
                             Entity entity2 = entity1;
 
                             if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/skill/grasping_spire_second\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                try {
+                                    entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/skill/grasping_spire_second\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                } catch (CommandSyntaxException e) {
+                                    
+                                }
                             }
                         }
                     };

@@ -135,21 +135,13 @@ public class PurpleVillagerGeneralEntity extends PathfinderMob {
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
-        try {
-            GreenVillagerGeneralOnDeathProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        GreenVillagerGeneralOnDeathProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
 
-        try {
-            BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure.execute(serverlevelaccessor, this.getX(), this.getY(), this.getZ(), this);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure.execute(serverlevelaccessor, this.getX(), this.getY(), this.getZ(), this);
         return spawngroupdata1;
     }
 
@@ -163,11 +155,7 @@ public class PurpleVillagerGeneralEntity extends PathfinderMob {
         double d2 = this.getZ();
         Level level = this.level;
 
-        try {
-            GreenVillagerGeneralOnAttackingEntityProcedure.execute(level, d0, d1, d2, this);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        GreenVillagerGeneralOnAttackingEntityProcedure.execute(level, d0, d1, d2, this);
         return interactionresult;
     }
 

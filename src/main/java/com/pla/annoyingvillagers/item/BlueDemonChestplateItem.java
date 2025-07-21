@@ -63,11 +63,7 @@ public abstract class BlueDemonChestplateItem extends ArmorItem {
         }
 
         public void onArmorTick(ItemStack itemstack, Level level, Player player) {
-            try {
-                BlueDemonChestplateEventProcedure.execute(player);
-            } catch (CommandSyntaxException e) {
-                
-            }
+            BlueDemonChestplateEventProcedure.execute(player);
         }
     }
 }

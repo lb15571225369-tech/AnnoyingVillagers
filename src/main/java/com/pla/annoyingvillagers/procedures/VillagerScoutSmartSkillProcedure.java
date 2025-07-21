@@ -162,13 +162,17 @@ public class VillagerScoutSmartSkillProcedure {
 
                                 if (Math.random() <= 0.05D) {
                                     new DelayedTask(Mth.nextInt(AnnoyingVillagers.randomSource, 1, 10)) {
-                                        public void run() throws CommandSyntaxException {
+                                        public void run() {
                                             Entity entity2 = entity;
 
                                             if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                entity2.getServer().getCommands().getDispatcher().execute(
-                                                        "indestructible @s play \"epicfight:biped/combat/bow_shot_mid\" 0 1",
-                                                        entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                try {
+                                                    entity2.getServer().getCommands().getDispatcher().execute(
+                                                            "indestructible @s play \"epicfight:biped/combat/bow_shot_mid\" 0 1",
+                                                            entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                } catch (CommandSyntaxException e) {
+                                                    
+                                                }
                                             }
 
                                             entity2 = entity;
@@ -256,13 +260,17 @@ public class VillagerScoutSmartSkillProcedure {
 
                                     if (Math.random() <= 0.05D) {
                                         new DelayedTask(Mth.nextInt(AnnoyingVillagers.randomSource, 1, 10)) {
-                                            public void run() throws CommandSyntaxException {
+                                            public void run() {
                                                 Entity entity2 = entity;
 
                                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                    entity2.getServer().getCommands().getDispatcher().execute(
-                                                            "indestructible @s play \"epicfight:biped/combat/bow_shot_mid\" 0 1",
-                                                            entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                    try {
+                                                        entity2.getServer().getCommands().getDispatcher().execute(
+                                                                "indestructible @s play \"epicfight:biped/combat/bow_shot_mid\" 0 1",
+                                                                entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                    } catch (CommandSyntaxException e) {
+                                                        
+                                                    }
                                                 }
 
                                                 entity2 = entity;

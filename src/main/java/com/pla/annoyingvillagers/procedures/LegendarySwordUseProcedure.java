@@ -21,7 +21,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class LegendarySwordUseProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, final Entity entity, ItemStack itemstack) throws CommandSyntaxException {
+    public static void execute(LevelAccessor levelaccessor, final Entity entity, ItemStack itemstack) {
         if (entity != null) {
             if (entity.isShiftKeyDown()) {
                 Player player;
@@ -48,15 +48,23 @@ public class LegendarySwordUseProcedure {
 
                             itemstack.getOrCreateTag().putDouble("power", itemstack.getOrCreateTag().getDouble("power") - 25.0D);
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                entity.getServer().getCommands().getDispatcher().execute(
-                                        "indestructible @s play \"annoyingvillagers:biped/combat/legendary_sword_wake_up_attack\" 0 1",
-                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                try {
+                                    entity.getServer().getCommands().getDispatcher().execute(
+                                            "indestructible @s play \"annoyingvillagers:biped/combat/legendary_sword_wake_up_attack\" 0 1",
+                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                } catch (CommandSyntaxException e) {
+                                    
+                                }
                             }
 
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                entity.getServer().getCommands().getDispatcher().execute(
-                                        "execute at @s run particle annoyingvillagers:blue_spark ~ ~1 ~ 0 0 0 0.1 500",
-                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                try {
+                                    entity.getServer().getCommands().getDispatcher().execute(
+                                            "execute at @s run particle annoyingvillagers:blue_spark ~ ~1 ~ 0 0 0 0.1 500",
+                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                } catch (CommandSyntaxException e) {
+                                    
+                                }
                             }
 
                             entity.setDeltaMovement(new Vec3(0.0D, 0.2D, 0.0D));
@@ -75,33 +83,35 @@ public class LegendarySwordUseProcedure {
 
                         entity.setDeltaMovement(new Vec3(0.0D, 1.3D, 0.0D));
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "playsound epicfight:sfx.entity_move neutral @p",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                        }
-
-                        if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "indestructible @s play \"epicfight:biped/skill/demolition_leap\" 0 1",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                        }
-
-                        if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "particle epicfight:air_burst ~ ~1.5 ~ 0 0 0 6 1",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            try {
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "playsound epicfight:sfx.entity_move neutral @p",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "indestructible @s play \"epicfight:biped/skill/demolition_leap\" 0 1",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "particle epicfight:air_burst ~ ~1.5 ~ 0 0 0 6 1",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                                
+                            }
                         }
 
                         itemstack.getOrCreateTag().putDouble("power", itemstack.getOrCreateTag().getDouble("power") - 20.0D);
                         new DelayedTask(8) {
                             @Override
-                            public void run() throws CommandSyntaxException {
+                            public void run() {
                                 Entity entity1 = entity;
 
                                 if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                    entity1.getServer().getCommands().getDispatcher().execute(
-                                            "playsound annoyingvillagers:heavy_attack_start neutral @a ~ ~ ~",
-                                            entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                    try {
+                                        entity1.getServer().getCommands().getDispatcher().execute(
+                                                "playsound annoyingvillagers:heavy_attack_start neutral @a ~ ~ ~",
+                                                entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                    } catch (CommandSyntaxException e) {
+                                        
+                                    }
                                 }
 
                                 LevelAccessor levelaccessor1 = levelaccessor;
@@ -135,16 +145,24 @@ public class LegendarySwordUseProcedure {
 
                                 entity1 = entity;
                                 if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                    entity1.getServer().getCommands().getDispatcher().execute(
-                                            "execute as @s at @s anchored eyes run particle minecraft:totem_of_undying ~ ~ ~ 0 0 0 0.5 100",
-                                            entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                    try {
+                                        entity1.getServer().getCommands().getDispatcher().execute(
+                                                "execute as @s at @s anchored eyes run particle minecraft:totem_of_undying ~ ~ ~ 0 0 0 0.5 100",
+                                                entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                    } catch (CommandSyntaxException e) {
+                                        
+                                    }
                                 }
 
                                 entity1 = entity;
                                 if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                    entity1.getServer().getCommands().getDispatcher().execute(
-                                            "indestructible @s play \"annoyingvillagers:biped/combat/legendary_sword_heavy_attack\" 0 1",
-                                            entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                    try {
+                                        entity1.getServer().getCommands().getDispatcher().execute(
+                                                "indestructible @s play \"annoyingvillagers:biped/combat/legendary_sword_heavy_attack\" 0 1",
+                                                entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                    } catch (CommandSyntaxException e) {
+                                        
+                                    }
                                 }
                             }
                         };

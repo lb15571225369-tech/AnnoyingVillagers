@@ -17,11 +17,7 @@ public class ElectifyMobEffect extends MobEffect {
     }
 
     public void applyEffectTick(LivingEntity livingentity, int i) {
-        try {
-            ElectifyDuringEffectEveryTickProcedure.execute(livingentity.level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        ElectifyDuringEffectEveryTickProcedure.execute(livingentity.level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity);
     }
 
     public boolean isDurationEffectTick(int i, int j) {

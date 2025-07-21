@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber
 public class AddStarterSkillProcedure {
     @SubscribeEvent
-    public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) throws CommandSyntaxException {
+    public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
 
         CompoundTag data = player.getPersistentData();
@@ -29,18 +29,21 @@ public class AddStarterSkillProcedure {
                     .withSuppressedOutput()
                     .withPermission(4);
 
-            player.getServer().getCommands().getDispatcher().execute(
-                    "epicfight skill add @s dodge epicfight:roll",
-                    source
-            );
-            player.getServer().getCommands().getDispatcher().execute(
-                    "epicfight skill add @s passive1 annoyingvillagers:clash",
-                    source
-            );
-            player.getServer().getCommands().getDispatcher().execute(
-                    "epicfight skill add @s guard epicfight:guard",
-                    source
-            );
+            try {
+                player.getServer().getCommands().getDispatcher().execute(
+                        "epicfight skill add @s dodge epicfight:roll",
+                        source
+                );
+                player.getServer().getCommands().getDispatcher().execute(
+                        "epicfight skill add @s passive1 annoyingvillagers:clash",
+                        source
+                );
+                player.getServer().getCommands().getDispatcher().execute(
+                        "epicfight skill add @s guard epicfight:guard",
+                        source
+                );
+            } catch (CommandSyntaxException e) {
+            }
         }
     }
 

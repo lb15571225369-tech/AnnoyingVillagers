@@ -144,21 +144,13 @@ public class VillagerScoutEntity extends PathfinderMob {
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
-        try {
-            VillagerScoutOnEntityDeathProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        VillagerScoutOnEntityDeathProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
 
-        try {
-            VillagerScoutOnEntityInitialSpawnProcedure.execute(serverlevelaccessor, this.getX(), this.getY(), this.getZ(), this);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        VillagerScoutOnEntityInitialSpawnProcedure.execute(serverlevelaccessor, this.getX(), this.getY(), this.getZ(), this);
         return spawngroupdata1;
     }
 
@@ -172,11 +164,7 @@ public class VillagerScoutEntity extends PathfinderMob {
         double d2 = this.getZ();
         Level level = this.level;
 
-        try {
-            VillagerScoutOnInteractProcedure.execute(level, d0, d1, d2, this);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        VillagerScoutOnInteractProcedure.execute(level, d0, d1, d2, this);
         return interactionresult;
     }
 

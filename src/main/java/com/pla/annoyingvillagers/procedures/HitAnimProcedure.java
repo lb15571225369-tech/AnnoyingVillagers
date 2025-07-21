@@ -18,18 +18,18 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 public class HitAnimProcedure {
 
     @SubscribeEvent
-    public static void onEntityAttacked(LivingHurtEvent livinghurtevent) throws CommandSyntaxException {
+    public static void onEntityAttacked(LivingHurtEvent livinghurtevent) {
         if (livinghurtevent != null && livinghurtevent.getEntity() != null) {
             execute(livinghurtevent, livinghurtevent.getEntity());
         }
 
     }
 
-    public static void execute(Entity entity) throws CommandSyntaxException {
+    public static void execute(Entity entity) {
         execute((Event) null, entity);
     }
 
-    private static void execute(@Nullable Event event, Entity entity) throws CommandSyntaxException {
+    private static void execute(@Nullable Event event, Entity entity) {
         if (entity != null) {
             LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 
@@ -38,20 +38,32 @@ public class HitAnimProcedure {
 
                 if (dynamicanimation instanceof HitAnimation) {
                     if (!entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                "indestructible @s play \"annoyingvillagers:biped/combat/hit_left\" 0 1",
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        try {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "indestructible @s play \"annoyingvillagers:biped/combat/hit_left\" 0 1",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException e) {
+                            
+                        }
                     }
                 } else if (dynamicanimation == AVAnimations.HIT_LEFT) {
                     if (!entity.level.isClientSide() && entity.getServer() != null) {
+                        try {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "indestructible @s play \"annoyingvillagers:biped/combat/hit_right\" 0 1",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException e) {
+                            
+                        }
+                    }
+                } else if (dynamicanimation == AVAnimations.HIT_RIGHT && !entity.level.isClientSide() && entity.getServer() != null) {
+                    try {
                         entity.getServer().getCommands().getDispatcher().execute(
                                 "indestructible @s play \"annoyingvillagers:biped/combat/hit_right\" 0 1",
                                 entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                        
                     }
-                } else if (dynamicanimation == AVAnimations.HIT_RIGHT && !entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().getDispatcher().execute(
-                            "indestructible @s play \"annoyingvillagers:biped/combat/hit_right\" 0 1",
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 }
             }
 

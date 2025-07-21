@@ -92,11 +92,7 @@ public class BlueDemonEndStagingEntity extends Monster {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
 
-        try {
-            BlueDemonTridentFsSkillEndOnEntityInitialSpawnProcedure.execute(serverlevelaccessor, this);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        BlueDemonTridentFsSkillEndOnEntityInitialSpawnProcedure.execute(serverlevelaccessor, this);
         return spawngroupdata1;
     }
 

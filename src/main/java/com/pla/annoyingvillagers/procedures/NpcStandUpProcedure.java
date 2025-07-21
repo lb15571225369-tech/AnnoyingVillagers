@@ -43,23 +43,31 @@ public class NpcStandUpProcedure {
                     final DynamicAnimation dynamicanimation = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation)null).getAnimation();
                     new DelayedTask(10) {
                         @Override
-                        public void run() throws CommandSyntaxException {
+                        public void run() {
                             if (dynamicanimation instanceof KnockdownAnimation) {
                                 Entity entity1;
 
                                 if (Math.random() <= 0.4D) {
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().getDispatcher().execute(
-                                                "indestructible @s play \"epicfight:biped/skill/knockdown_wakeup_left\" 0 1",
-                                                entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                        try {
+                                            entity1.getServer().getCommands().getDispatcher().execute(
+                                                    "indestructible @s play \"epicfight:biped/skill/knockdown_wakeup_left\" 0 1",
+                                                    entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                        } catch (CommandSyntaxException e) {
+                                            
+                                        }
                                     }
                                 } else {
                                     entity1 = entity;
                                     if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                                        entity1.getServer().getCommands().getDispatcher().execute(
-                                                "indestructible @s play \"epicfight:biped/skill/knockdown_wakeup_right\" 0 1",
-                                                entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                        try {
+                                            entity1.getServer().getCommands().getDispatcher().execute(
+                                                    "indestructible @s play \"epicfight:biped/skill/knockdown_wakeup_right\" 0 1",
+                                                    entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                        } catch (CommandSyntaxException e) {
+                                            
+                                        }
                                     }
                                 }
                             }

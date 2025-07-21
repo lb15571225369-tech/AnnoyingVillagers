@@ -29,7 +29,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class LegendarySwordMobItemOnUseProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity, final ItemStack itemstack) throws CommandSyntaxException {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity, final ItemStack itemstack) {
         if (entity != null) {
             if (entity.isShiftKeyDown()) {
                 Vec3 vec3 = new Vec3(d0, d1, d2);
@@ -54,15 +54,23 @@ public class LegendarySwordMobItemOnUseProcedure {
                 }
 
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().getDispatcher().execute(
-                            "execute at @s run particle minecraft:totem_of_undying ^ ^1.5 ^ 0 0 0 1 1000",
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    try {
+                        entity.getServer().getCommands().getDispatcher().execute(
+                                "execute at @s run particle minecraft:totem_of_undying ^ ^1.5 ^ 0 0 0 1 1000",
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                        
+                    }
                 }
 
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().getDispatcher().execute(
-                            "execute at @s run particle epicfight:air_burst ^ ^1.5 ^ 0 0 0 8 1",
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    try {
+                        entity.getServer().getCommands().getDispatcher().execute(
+                                "execute at @s run particle epicfight:air_burst ^ ^1.5 ^ 0 0 0 8 1",
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                        
+                    }
                 }
 
                 if (entity instanceof Player) {

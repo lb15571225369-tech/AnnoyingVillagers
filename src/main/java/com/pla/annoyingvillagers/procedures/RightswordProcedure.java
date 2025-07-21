@@ -19,17 +19,17 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 public class RightswordProcedure {
 
     @SubscribeEvent
-    public static void onRightClickItem(RightClickItem rightclickitem) throws CommandSyntaxException {
+    public static void onRightClickItem(RightClickItem rightclickitem) {
         if (rightclickitem.getHand() == rightclickitem.getEntity().getUsedItemHand()) {
             execute(rightclickitem, rightclickitem.getEntity());
         }
     }
 
-    public static void execute(Entity entity) throws CommandSyntaxException {
+    public static void execute(Entity entity) {
         execute((Event) null, entity);
     }
 
-    private static void execute(@Nullable Event event, Entity entity) throws CommandSyntaxException {
+    private static void execute(@Nullable Event event, Entity entity) {
         if (entity != null) {
             ItemStack itemstack;
 
@@ -43,9 +43,13 @@ public class RightswordProcedure {
 
             if (itemstack.getItem() instanceof SwordItem) {
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().getDispatcher().execute(
-                            "epicfight mode battle @s",
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    try {
+                        entity.getServer().getCommands().getDispatcher().execute(
+                                "epicfight mode battle @s",
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                        
+                    }
                 }
             } else {
                 if (entity instanceof LivingEntity) {
@@ -58,9 +62,13 @@ public class RightswordProcedure {
 
                 if (itemstack.getItem() instanceof AxeItem) {
                     if (!entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                "epicfight mode battle @s",
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        try {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "epicfight mode battle @s",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException e) {
+                            
+                        }
                     }
                 } else {
                     if (entity instanceof LivingEntity) {
@@ -73,9 +81,13 @@ public class RightswordProcedure {
 
                     if (itemstack.getItem() instanceof TridentItem) {
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "epicfight mode battle @s",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            try {
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "epicfight mode battle @s",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                                
+                            }
                         }
                     } else {
                         if (entity instanceof LivingEntity) {
@@ -87,9 +99,13 @@ public class RightswordProcedure {
                         }
 
                         if (itemstack.getItem() instanceof PickaxeItem && !entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "epicfight mode battle @s",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            try {
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "epicfight mode battle @s",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                                
+                            }
                         }
                     }
                 }

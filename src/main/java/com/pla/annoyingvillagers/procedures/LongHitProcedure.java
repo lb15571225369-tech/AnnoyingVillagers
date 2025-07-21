@@ -16,18 +16,18 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 public class LongHitProcedure {
 
     @SubscribeEvent
-    public static void onEntityAttacked(LivingHurtEvent livinghurtevent) throws CommandSyntaxException {
+    public static void onEntityAttacked(LivingHurtEvent livinghurtevent) {
         if (livinghurtevent != null && livinghurtevent.getEntity() != null) {
             execute(livinghurtevent, livinghurtevent.getEntity(), (double) livinghurtevent.getAmount());
         }
 
     }
 
-    public static void execute(Entity entity, double d0) throws CommandSyntaxException {
+    public static void execute(Entity entity, double d0) {
         execute((Event) null, entity, d0);
     }
 
-    private static void execute(@Nullable Event event, Entity entity, double d0) throws CommandSyntaxException {
+    private static void execute(@Nullable Event event, Entity entity, double d0) {
         if (entity != null) {
             if (entity.isAlive()) {
                 boolean flag;
@@ -43,14 +43,22 @@ public class LongHitProcedure {
                 if (!flag) {
                     if (d0 >= 35.0D) {
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "indestructible @s play \"annoyingvillagers:biped/combat/longest_hit\" 0 10",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            try {
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "indestructible @s play \"annoyingvillagers:biped/combat/longest_hit\" 0 10",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                                
+                            }
                         }
                     } else if (d0 >= 30.0D && !entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10",
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        try {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException e) {
+                            
+                        }
                     }
                 }
             }

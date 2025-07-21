@@ -55,12 +55,16 @@ public class VillagersAssistanceProcedure {
                     }
 
                     new DelayedTask(11) {
-                        private void summonFirework(Entity entity) throws CommandSyntaxException {
+                        private void summonFirework(Entity entity) {
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                entity.getServer().getCommands().getDispatcher().execute(
-                                        "summon firework_rocket ~ ~10 ~ {LifeTime:10,FireworksItem:{id:firework_rocket,Count:1,tag:{Fireworks:{Explosions:[{Type:3,Colors:[0],Flicker:1}]}},display:{Name:\"Black Creeper Firework\"}}}",
-                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-                                );
+                                try {
+                                    entity.getServer().getCommands().getDispatcher().execute(
+                                            "summon firework_rocket ~ ~10 ~ {LifeTime:10,FireworksItem:{id:firework_rocket,Count:1,tag:{Fireworks:{Explosions:[{Type:3,Colors:[0],Flicker:1}]}},display:{Name:\"Black Creeper Firework\"}}}",
+                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                                    );
+                                } catch (CommandSyntaxException e) {
+                                    
+                                }
                             }
 
                             playSound(levelaccessor, d0, d1, d2, "entity.firework_rocket.launch");
@@ -89,16 +93,20 @@ public class VillagersAssistanceProcedure {
                             }
                         }
 
-                        private void summon(Entity entity, String type, double dx, double dy, double dz) throws CommandSyntaxException {
+                        private void summon(Entity entity, String type, double dx, double dy, double dz) {
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                                entity.getServer().getCommands().getDispatcher().execute(
-                                        String.format("summon annoyingvillagers:%s ~%.1f ~%.1f ~%.1f", type, dx, dy, dz),
-                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-                                );
+                                try {
+                                    entity.getServer().getCommands().getDispatcher().execute(
+                                            String.format("summon annoyingvillagers:%s ~%.1f ~%.1f ~%.1f", type, dx, dy, dz),
+                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                                    );
+                                } catch (CommandSyntaxException e) {
+                                    
+                                }
                             }
                         }
                         @Override
-                        public void run() throws CommandSyntaxException {
+                        public void run() {
                             if (entity instanceof LivingEntity living) {
                                 if (living.hasEffect(MobEffects.MOVEMENT_SPEED)) {
                                     broadcast("Villager", "Help me!");
@@ -117,7 +125,7 @@ public class VillagersAssistanceProcedure {
 
                                 new DelayedTask(50) {
                                     @Override
-                                    public void run() throws CommandSyntaxException {
+                                    public void run() {
                                         playSound(levelaccessor, d0, d1, d2, "entity.experience_orb.pickup");
 
                                         if (Math.random() <= 0.6) {

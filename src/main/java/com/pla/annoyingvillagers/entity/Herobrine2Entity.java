@@ -115,31 +115,19 @@ public class Herobrine2Entity extends Monster {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        try {
-            HerobrineOnHurtProcedure.execute(this);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        HerobrineOnHurtProcedure.execute(this);
         return damagesource == DamageSource.FALL ? false : (damagesource == DamageSource.DROWN ? false : (damagesource == DamageSource.WITHER ? false : (damagesource.getMsgId().equals("witherSkull") ? false : super.hurt(damagesource, f))));
     }
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
-        try {
-            Herobrine2DieProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
-        } catch (CommandSyntaxException e) {
-            
-        }
+        Herobrine2DieProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
 
-        try {
-            HerobrineOnInitialSpawnProcedure.execute(serverlevelaccessor, this);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        HerobrineOnInitialSpawnProcedure.execute(serverlevelaccessor, this);
         return spawngroupdata1;
     }
 
@@ -150,11 +138,7 @@ public class Herobrine2Entity extends Monster {
 
     public void baseTick() {
         super.baseTick();
-        try {
-            HerobrineOnEntityTickUpdateProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        HerobrineOnEntityTickUpdateProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
     }
 
     public static void init() {

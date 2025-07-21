@@ -76,14 +76,18 @@ public class NpcKickProcedure {
                                     entity1.getPersistentData().putDouble("kick", 2.0D);
                                     new DelayedTask(10) {
                                         @Override
-                                        public void run() throws CommandSyntaxException {
+                                        public void run() {
                                             if (entity1.isAlive()) {
                                                 Entity entity2 = entity1;
 
                                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                    entity2.getServer().getCommands().getDispatcher().execute(
-                                                            "indestructible @s play \"annoyingvillagers:biped/combat/kick_1\" 0 1",
-                                                            entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                    try {
+                                                        entity2.getServer().getCommands().getDispatcher().execute(
+                                                                "indestructible @s play \"annoyingvillagers:biped/combat/kick_1\" 0 1",
+                                                                entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                    } catch (CommandSyntaxException e) {
+                                                        
+                                                    }
                                                 }
                                             }
                                         }
@@ -92,14 +96,18 @@ public class NpcKickProcedure {
                                     entity1.getPersistentData().putDouble("kick", 3.0D);
                                     new DelayedTask(10) {
                                         @Override
-                                        public void run() throws CommandSyntaxException {
+                                        public void run() {
                                             if (entity1.isAlive()) {
                                                 Entity entity2 = entity1;
 
                                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                    entity2.getServer().getCommands().getDispatcher().execute(
-                                                            "indestructible @s play \"annoyingvillagers:biped/combat/kick_2\" 0 1",
-                                                            entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                    try {
+                                                        entity2.getServer().getCommands().getDispatcher().execute(
+                                                                "indestructible @s play \"annoyingvillagers:biped/combat/kick_2\" 0 1",
+                                                                entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                    } catch (CommandSyntaxException e) {
+                                                        
+                                                    }
                                                 }
                                             }
                                         }
@@ -108,14 +116,18 @@ public class NpcKickProcedure {
                                     entity1.getPersistentData().putDouble("kick", 0.0D);
                                     new DelayedTask(10) {
                                         @Override
-                                        public void run() throws CommandSyntaxException {
+                                        public void run() {
                                             if (entity1.isAlive()) {
                                                 Entity entity2 = entity1;
 
                                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                    entity2.getServer().getCommands().getDispatcher().execute(
-                                                            "indestructible @s play \"annoyingvillagers:biped/combat/kick_3\" 0 1",
-                                                            entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                    try {
+                                                        entity2.getServer().getCommands().getDispatcher().execute(
+                                                                "indestructible @s play \"annoyingvillagers:biped/combat/kick_3\" 0 1",
+                                                                entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                    } catch (CommandSyntaxException e) {
+                                                        
+                                                    }
                                                 }
                                             }
                                         }

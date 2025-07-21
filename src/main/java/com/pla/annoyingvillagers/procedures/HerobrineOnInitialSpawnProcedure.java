@@ -20,28 +20,40 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class HerobrineOnInitialSpawnProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, final Entity entity) throws CommandSyntaxException {
+    public static void execute(LevelAccessor levelaccessor, final Entity entity) {
         if (entity != null) {
             if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                 levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("Herobrine has spawned a new possessed body."), false);
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().getDispatcher().execute(
-                        "fill ~-2 ~ ~-2 ~2 ~3 ~2 minecraft:air",
-                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                try {
+                    entity.getServer().getCommands().getDispatcher().execute(
+                            "fill ~-2 ~ ~-2 ~2 ~3 ~2 minecraft:air",
+                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+                    
+                }
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().getDispatcher().execute(
-                        "team add herobrinexintu",
-                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                try {
+                    entity.getServer().getCommands().getDispatcher().execute(
+                            "team add herobrinexintu",
+                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+                    
+                }
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().getDispatcher().execute(
-                        "team join herobrinexintu @s",
-                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                try {
+                    entity.getServer().getCommands().getDispatcher().execute(
+                            "team join herobrinexintu @s",
+                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+                    
+                }
             }
             new DelayedTask(1) {
                 @Override

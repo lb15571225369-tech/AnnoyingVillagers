@@ -47,11 +47,7 @@ public class NoneObBlock extends Block {
 
     public void entityInside(BlockState blockstate, Level level, BlockPos blockpos, Entity entity) {
         super.entityInside(blockstate, level, blockpos, entity);
-        try {
-            NoneObWhenEntityCollidesWithBlockProcedure.execute(level, entity);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        NoneObWhenEntityCollidesWithBlockProcedure.execute(level, entity);
     }
 
     @OnlyIn(Dist.CLIENT)

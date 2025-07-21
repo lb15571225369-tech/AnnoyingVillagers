@@ -24,11 +24,7 @@ public class EcPlayerMobEffect extends MobEffect {
     }
 
     public void applyEffectTick(LivingEntity livingentity, int i) {
-        try {
-            EcPlayerDuringEffectEveryTickProcedure.execute(livingentity);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        EcPlayerDuringEffectEveryTickProcedure.execute(livingentity);
     }
 
     public boolean isDurationEffectTick(int i, int j) {

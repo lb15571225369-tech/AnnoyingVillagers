@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.Blocks;
 
 public class VillagerScoutOnEntityDeathProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity) throws CommandSyntaxException {
+    public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity) {
         if (entity != null) {
             new DelayedTask(15) {
                 public void run() {
@@ -188,16 +188,20 @@ public class VillagerScoutOnEntityDeathProcedure {
             };
             if (Math.random() <= 0.11D) {
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().getDispatcher().execute(
-                            "summon firework_rocket ~ ~10 ~ {LifeTime:10,FireworksItem:{id:firework_rocket,Count:1,tag:{Fireworks:{Explosions:[{Type:3,Colors:[0],Flicker:1}]}},display:{Name:\"Black Creeper Firework\"}}}",
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    try {
+                        entity.getServer().getCommands().getDispatcher().execute(
+                                "summon firework_rocket ~ ~10 ~ {LifeTime:10,FireworksItem:{id:firework_rocket,Count:1,tag:{Fireworks:{Explosions:[{Type:3,Colors:[0],Flicker:1}]}},display:{Name:\"Black Creeper Firework\"}}}",
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                        
+                    }
                 }
 
                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                     levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Villager Scout> Requesting backup!"), false);
                 }
                 new DelayedTask(400) {
-                    public void run() throws CommandSyntaxException {
+                    public void run() {
                         if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                             levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Villager Scout> Reinforcements have arrived!"), false);
                         }
@@ -205,23 +209,35 @@ public class VillagerScoutOnEntityDeathProcedure {
                         Entity entity1 = entity;
 
                         if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                            entity1.getServer().getCommands().getDispatcher().execute(
-                                    "summon annoyingvillagers:villager_scout ^ ^ ^10",
-                                    entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            try {
+                                entity1.getServer().getCommands().getDispatcher().execute(
+                                        "summon annoyingvillagers:villager_scout ^ ^ ^10",
+                                        entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                                
+                            }
                         }
 
                         entity1 = entity;
                         if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                            entity1.getServer().getCommands().getDispatcher().execute(
-                                    "summon annoyingvillagers:villager_scout ^ ^ ^15",
-                                    entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            try {
+                                entity1.getServer().getCommands().getDispatcher().execute(
+                                        "summon annoyingvillagers:villager_scout ^ ^ ^15",
+                                        entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                                
+                            }
                         }
 
                         entity1 = entity;
                         if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                            entity1.getServer().getCommands().getDispatcher().execute(
-                                    "summon annoyingvillagers:blue_villager_general ^10 ^ ^20",
-                                    entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            try {
+                                entity1.getServer().getCommands().getDispatcher().execute(
+                                        "summon annoyingvillagers:blue_villager_general ^10 ^ ^20",
+                                        entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                                
+                            }
                         }
                     }
                 };

@@ -37,29 +37,17 @@ public class VillagerHeadItem extends Item {
         double d1 = player.getY();
         double d2 = player.getZ();
 
-        try {
-            VillagerHeadRightOnUseProcedure.execute(player);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        VillagerHeadRightOnUseProcedure.execute(player);
         return interactionresultholder;
     }
 
     public void inventoryTick(ItemStack itemstack, Level level, Entity entity, int i, boolean flag) {
         super.inventoryTick(itemstack, level, entity, i, flag);
-        try {
-            VillagerHeadEveryTickInInventoryProcedure.execute(entity);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        VillagerHeadEveryTickInInventoryProcedure.execute(entity);
     }
 
     public boolean onDroppedByPlayer(ItemStack itemstack, Player player) {
-        try {
-            VillagerHeadWhenDroppedByPlayerProcedure.execute(player);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        VillagerHeadWhenDroppedByPlayerProcedure.execute(player);
         return true;
     }
 }

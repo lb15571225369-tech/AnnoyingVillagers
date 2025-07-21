@@ -16,11 +16,15 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class DiamondGreatSwordItemOnUseProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity, ItemStack itemstack) throws CommandSyntaxException {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity, ItemStack itemstack) {
         if (entity != null) {
             if (entity.isShiftKeyDown() && itemstack.getOrCreateTag().getDouble("sword_skill") >= 1.0D) {
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle epicfight:air_burst ^ ^1.5 ^ 0 0 0 7 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    try {
+                        entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle epicfight:air_burst ^ ^1.5 ^ 0 0 0 7 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                        
+                    }
                 }
 
                 entity.setDeltaMovement(new Vec3(0.0D, 1.0D, 0.0D));

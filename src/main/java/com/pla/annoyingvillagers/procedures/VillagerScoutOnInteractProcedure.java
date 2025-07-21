@@ -22,7 +22,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class VillagerScoutOnInteractProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) throws CommandSyntaxException {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) {
         if (entity != null) {
             float f;
 
@@ -73,9 +73,13 @@ public class VillagerScoutOnInteractProcedure {
                     }
 
                     if (!entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                "summon annoying_villagersbychentu:cun_zhen_fu_lu ^ ^ ^ {VillagerData:{level:2,profession:\"minecraft:weaponsmith\"}}",
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        try {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "summon annoying_villagersbychentu:cun_zhen_fu_lu ^ ^ ^ {VillagerData:{level:2,profession:\"minecraft:weaponsmith\"}}",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException e) {
+                            
+                        }
                     }
 
                     Mob mob1;
@@ -145,9 +149,13 @@ public class VillagerScoutOnInteractProcedure {
                         }
 
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "summon annoying_villagersbychentu:cun_zhen_fu_lu ^ ^ ^ {VillagerData:{level:2,profession:\"minecraft:weaponsmith\"}}",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            try {
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "summon annoying_villagersbychentu:cun_zhen_fu_lu ^ ^ ^ {VillagerData:{level:2,profession:\"minecraft:weaponsmith\"}}",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                                
+                            }
                         }
 
                         Entity entity2 = levelaccessor.getEntitiesOfClass(Player.class,

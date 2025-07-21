@@ -23,7 +23,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class BlueDemonOnEntityDamageProcedure {
 
-    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity, Entity entity1) throws CommandSyntaxException {
+    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity, Entity entity1) {
         if (entity == null || entity1 == null || world == null) return;
 
         if (!entity.getPersistentData().getBoolean("kick_x")) {
@@ -35,16 +35,20 @@ public class BlueDemonOnEntityDamageProcedure {
 
             if (entity instanceof Mob mob && mob.getTarget() == entity1) {
                 if (Math.random() <= 0.2 && !entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().getDispatcher().execute(
-                            "effect give @s annoyingvillagers:block 1 0 true",
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-                    );
+                    try {
+                        entity.getServer().getCommands().getDispatcher().execute(
+                                "effect give @s annoyingvillagers:block 1 0 true",
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                        );
+                    } catch (CommandSyntaxException e) {
+                        
+                    }
                 }
 
                 if (Math.random() <= 0.01) {
                     new DelayedTask(20) {
                         @Override
-                        public void run() throws CommandSyntaxException {
+                        public void run() {
                             broadcast(world, "<Blue Demon> You're way too predictable.");
                             playSound(world, x, y, z, AnnoyingVillagers.MODID + ":bluedemonsayyc");
                             applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 3);
@@ -56,7 +60,7 @@ public class BlueDemonOnEntityDamageProcedure {
                 } else if (Math.random() <= 0.01) {
                     new DelayedTask(20) {
                         @Override
-                        public void run() throws CommandSyntaxException {
+                        public void run() {
                             applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 10);
                             runParticle(entity);
                         }
@@ -69,7 +73,7 @@ public class BlueDemonOnEntityDamageProcedure {
 
                             new DelayedTask(20) {
                                 @Override
-                                public void run() throws CommandSyntaxException {
+                                public void run() {
                                     applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 40);
                                     applyEffect(entity1, MobEffects.MOVEMENT_SLOWDOWN, 80, 2);
                                     runParticle(entity);
@@ -83,7 +87,7 @@ public class BlueDemonOnEntityDamageProcedure {
                         public void run() {
                             new DelayedTask(20) {
                                 @Override
-                                public void run() throws CommandSyntaxException {
+                                public void run() {
                                     broadcast(world, "<Blue Demon> Looking down on us undead creatures only highlights how ignorant you are.");
                                     playSound(world, x, y, z, AnnoyingVillagers.MODID + ":bluedemon_say_you_no_know");
                                     applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 10);
@@ -99,7 +103,7 @@ public class BlueDemonOnEntityDamageProcedure {
                         public void run() {
                             new DelayedTask(20) {
                                 @Override
-                                public void run() throws CommandSyntaxException {
+                                public void run() {
                                     broadcast(world, "<Blue Demon> How interesting. But I really want to know what is your motive?");
                                     playSound(world, x, y, z, AnnoyingVillagers.MODID + ":bluedemon_say_player_interesting");
                                     runParticle(entity);
@@ -150,21 +154,27 @@ public class BlueDemonOnEntityDamageProcedure {
         }
     }
 
-    private static void runParticle(Entity entity) throws CommandSyntaxException {
+    private static void runParticle(Entity entity) {
         if (!entity.level.isClientSide() && entity.getServer() != null) {
-            entity.getServer().getCommands().getDispatcher().execute(
-                    "execute at @s run particle annoyingvillagers:electric_spark_2 ^ ^ ^ 5 1.5 5 0 10",
-                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-            );
+            try {
+                entity.getServer().getCommands().getDispatcher().execute(
+                        "execute at @s run particle annoyingvillagers:electric_spark_2 ^ ^ ^ 5 1.5 5 0 10",
+                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                );
+            } catch (CommandSyntaxException e) {
+            }
         }
     }
 
-    private static void runCommand(Entity entity, String command) throws CommandSyntaxException {
+    private static void runCommand(Entity entity, String command) {
         if (!entity.level.isClientSide() && entity.getServer() != null) {
-            entity.getServer().getCommands().getDispatcher().execute(
-                    command,
-                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-            );
+            try {
+                entity.getServer().getCommands().getDispatcher().execute(
+                        command,
+                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                );
+            } catch (CommandSyntaxException e) {
+            }
         }
     }
 }

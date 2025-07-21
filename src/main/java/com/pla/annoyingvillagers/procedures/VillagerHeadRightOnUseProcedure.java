@@ -13,7 +13,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 
 public class VillagerHeadRightOnUseProcedure {
 
-    public static void execute(Entity entity) throws CommandSyntaxException {
+    public static void execute(Entity entity) {
         if (entity != null) {
             ItemStack itemstack;
 
@@ -49,9 +49,13 @@ public class VillagerHeadRightOnUseProcedure {
                 }
 
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().getDispatcher().execute(
-                            "team join villagers @s",
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    try {
+                        entity.getServer().getCommands().getDispatcher().execute(
+                                "team join villagers @s",
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                        
+                    }
                 }
 
                 entity.getPersistentData().putBoolean("villager_player", true);

@@ -83,7 +83,7 @@ public class ExecuteNpcProcedure {
                                         if (humanoidmobpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.SPEAR) {
                                             new DelayedTask(4) {
                                                 @Override
-                                                public void run() throws CommandSyntaxException {
+                                                public void run() {
                                                     if (entity.isAlive() && entity1.isAlive()) {
                                                         Vec3 vec3 = ((LivingEntity)livingentitypatch.getOriginal()).getViewVector(1.0F);
 
@@ -131,12 +131,13 @@ public class ExecuteNpcProcedure {
                                                         Entity entity2 = entity;
 
                                                         if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                            entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 4 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                        }
+                                                            try {
+                                                                entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 4 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
 
-                                                        entity2 = entity1;
-                                                        if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                            entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 4 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 4 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                            } catch (CommandSyntaxException e) {
+                                                                
+                                                            }
                                                         }
 
                                                         if (!entity.level.isClientSide()) {
@@ -150,7 +151,7 @@ public class ExecuteNpcProcedure {
                                             if (humanoidmobpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.GREATSWORD) {
                                                 new DelayedTask(4) {
                                                     @Override
-                                                    public void run() throws CommandSyntaxException {
+                                                    public void run() {
                                                         if (entity.isAlive() && entity1.isAlive()) {
                                                             Vec3 vec3 = ((LivingEntity)livingentitypatch.getOriginal()).getViewVector(1.0F);
 
@@ -199,7 +200,11 @@ public class ExecuteNpcProcedure {
                                                             Entity entity2 = entity1;
 
                                                             if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                                entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/execute_greatsword\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                try {
+                                                                    entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/execute_greatsword\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                } catch (CommandSyntaxException e) {
+                                                                    
+                                                                }
                                                             }
                                                             if (!entity.level.isClientSide()) {
                                                                 livingentitypatch.playAnimationSynchronized(AVAnimations.EXECUTE_GREATSWORD_HIT, 0.0F);
@@ -209,12 +214,13 @@ public class ExecuteNpcProcedure {
                                                             ((LivingEntity)livingentitypatch.getOriginal()).addEffect(new MobEffectInstance((MobEffect)EpicFightMobEffects.STUN_IMMUNITY.get(), 60, 0, false, false));
                                                             entity2 = entity1;
                                                             if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                                entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 6 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                            }
+                                                                try {
+                                                                    entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 6 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
 
-                                                            entity2 = entity;
-                                                            if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                                entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 6 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                    entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 6 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                } catch (CommandSyntaxException e) {
+                                                                    
+                                                                }
                                                             }
                                                         }
                                                     }
@@ -222,7 +228,7 @@ public class ExecuteNpcProcedure {
                                             } else if (humanoidmobpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.FIST) {
                                                 new DelayedTask(4) {
                                                     @Override
-                                                    public void run() throws CommandSyntaxException {
+                                                    public void run() {
                                                         if (entity.isAlive()) {
                                                             float f;
 
@@ -283,7 +289,11 @@ public class ExecuteNpcProcedure {
                                                                     entity.lookAt(Anchor.EYES, new Vec3(entity1.getX(), entity1.getY() + 1.0D, entity1.getZ()));
                                                                     entity2 = entity1;
                                                                     if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                                        entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/execute_boss\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                        try {
+                                                                            entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/execute_boss\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                        } catch (CommandSyntaxException e) {
+                                                                            
+                                                                        }
                                                                     }
                                                                     if (!entity.level.isClientSide()) {
                                                                         livingentitypatch.playAnimationSynchronized(AVAnimations.BOSS_EXECUTE_HIT, 0.0F);
@@ -291,7 +301,11 @@ public class ExecuteNpcProcedure {
 
                                                                     entity2 = entity1;
                                                                     if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                                        entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 3 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                        try {
+                                                                            entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 3 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                        } catch (CommandSyntaxException e) {
+                                                                            
+                                                                        }
                                                                     }
                                                                 }
                                                             } else if (entity1.isAlive()) {
@@ -338,14 +352,22 @@ public class ExecuteNpcProcedure {
                                                                 entity.lookAt(Anchor.EYES, new Vec3(entity1.getX(), entity1.getY() + 1.0D, entity1.getZ()));
                                                                 entity2 = entity1;
                                                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                                    entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/wrestling\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                    try {
+                                                                        entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/wrestling\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                    } catch (CommandSyntaxException e) {
+                                                                        
+                                                                    }
                                                                 }
                                                                 if (!entity.level.isClientSide()) {
                                                                     livingentitypatch.playAnimationSynchronized(AVAnimations.WRESTLING_HIT, 0.0F);
                                                                 }
                                                                 entity2 = entity1;
                                                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                                    entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 3 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                    try {
+                                                                        entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 3 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                    } catch (CommandSyntaxException e) {
+                                                                        
+                                                                    }
                                                                 }
                                                             }
                                                         }
@@ -355,7 +377,7 @@ public class ExecuteNpcProcedure {
                                         } else {
                                             new DelayedTask(4) {
                                                 @Override
-                                                public void run() throws CommandSyntaxException {
+                                                public void run() {
                                                     if (entity.isAlive() && entity1.isAlive()) {
                                                         Vec3 vec3 = ((LivingEntity)livingentitypatch.getOriginal()).getViewVector(1.0F);
 
@@ -404,7 +426,11 @@ public class ExecuteNpcProcedure {
                                                         Entity entity2 = entity1;
 
                                                         if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                            entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/execute_longsword\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                            try {
+                                                                entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/execute_longsword\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                            } catch (CommandSyntaxException e) {
+                                                                
+                                                            }
                                                         }
                                                         if (!entity.level.isClientSide()) {
                                                             livingentitypatch.playAnimationSynchronized(AVAnimations.EXECUTE_LONGSWORD_HIT, 0.0F);
@@ -413,12 +439,13 @@ public class ExecuteNpcProcedure {
                                                         ((LivingEntity)livingentitypatch.getOriginal()).addEffect(new MobEffectInstance((MobEffect)EpicFightMobEffects.STUN_IMMUNITY.get(), 60, 0, false, false));
                                                         entity2 = entity1;
                                                         if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                            entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 4 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                        }
+                                                            try {
+                                                                entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 4 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
 
-                                                        entity2 = entity;
-                                                        if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                            entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 3 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 3 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                            } catch (CommandSyntaxException e) {
+                                                                
+                                                            }
                                                         }
                                                     }
                                                 }
@@ -427,7 +454,7 @@ public class ExecuteNpcProcedure {
                                     } else {
                                         new DelayedTask(4) {
                                             @Override
-                                            public void run() throws CommandSyntaxException {
+                                            public void run() {
                                                 if (entity.isAlive() && entity1.isAlive()) {
                                                     Vec3 vec3 = ((LivingEntity)livingentitypatch.getOriginal()).getViewVector(1.0F);
 
@@ -476,22 +503,17 @@ public class ExecuteNpcProcedure {
                                                     Entity entity2 = entity1;
 
                                                     if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                        entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 3 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                    }
+                                                        try {
+                                                            entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 3 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
 
-                                                    entity2 = entity;
-                                                    if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                        entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 4 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                    }
+                                                            entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 4 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
 
-                                                    entity2 = entity1;
-                                                    if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                        entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/execute_one_hand\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                    }
+                                                            entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/execute_one_hand\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
 
-                                                    entity2 = entity;
-                                                    if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                        entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/execute_dual_hit\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                            entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/execute_dual_hit\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                        } catch (CommandSyntaxException e) {
+                                                            
+                                                        }
                                                     }
                                                 }
                                             }
@@ -500,7 +522,7 @@ public class ExecuteNpcProcedure {
                                 } else {
                                     new DelayedTask(4) {
                                         @Override
-                                        public void run() throws CommandSyntaxException {
+                                        public void run() {
                                             if (entity.isAlive() && entity1.isAlive()) {
                                                 Vec3 vec3 = ((LivingEntity)livingentitypatch.getOriginal()).getViewVector(1.0F);
 
@@ -549,12 +571,13 @@ public class ExecuteNpcProcedure {
                                                 Entity entity2 = entity1;
 
                                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                    entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 4 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                }
+                                                    try {
+                                                        entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 4 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
 
-                                                entity2 = entity1;
-                                                if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                    entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/execute_dual\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                        entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/execute_dual\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                    } catch (CommandSyntaxException e) {
+                                                        
+                                                    }
                                                 }
 
                                                 if (!entity.level.isClientSide()) {
@@ -562,7 +585,11 @@ public class ExecuteNpcProcedure {
                                                 }
                                                 entity2 = entity;
                                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                    entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 4 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                    try {
+                                                        entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 4 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                    } catch (CommandSyntaxException e) {
+                                                        
+                                                    }
                                                 }
                                             }
                                         }

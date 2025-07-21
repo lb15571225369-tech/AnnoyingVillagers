@@ -24,11 +24,7 @@ public class BlueDemonSkillLightingEffectMobEffect extends MobEffect {
     }
 
     public void applyEffectTick(LivingEntity livingentity, int i) {
-        try {
-            BlueDemonSkillLightingEffectDuringDurationProcedure.execute(livingentity.level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        BlueDemonSkillLightingEffectDuringDurationProcedure.execute(livingentity.level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity);
     }
 
     public boolean isDurationEffectTick(int i, int j) {

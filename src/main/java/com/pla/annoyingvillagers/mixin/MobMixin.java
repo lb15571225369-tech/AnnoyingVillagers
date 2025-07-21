@@ -42,7 +42,7 @@ public class MobMixin {
                     );
                     new DelayedTask(20) {
                         @Override
-                        public void run() throws CommandSyntaxException {
+                        public void run() {
                             entity.level.addFreshEntity(itemEntity);
                         }
                     };

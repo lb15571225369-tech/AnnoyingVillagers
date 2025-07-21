@@ -110,21 +110,13 @@ public class BlueDemonEntity extends Monster {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        try {
-            BlueDemonOnEntityDamageProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
-        } catch (CommandSyntaxException e) {
-            
-        }
+        BlueDemonOnEntityDamageProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
         return damagesource.getDirectEntity() instanceof AbstractArrow ? false : (damagesource == DamageSource.FALL ? false : (damagesource == DamageSource.CACTUS ? false : (damagesource == DamageSource.DROWN ? false : (damagesource == DamageSource.LIGHTNING_BOLT ? false : (damagesource.isExplosion() ? false : (damagesource.getMsgId().equals("trident") ? false : (damagesource == DamageSource.WITHER ? false : (damagesource.getMsgId().equals("witherSkull") ? false : super.hurt(damagesource, f)))))))));
     }
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
-        try {
-            BlueDemonOnEntityDeathProcedure.execute(this.level, this, damagesource.getEntity());
-        } catch (CommandSyntaxException e) {
-            
-        }
+        BlueDemonOnEntityDeathProcedure.execute(this.level, this, damagesource.getEntity());
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
@@ -141,11 +133,7 @@ public class BlueDemonEntity extends Monster {
 
     public void baseTick() {
         super.baseTick();
-        try {
-            BlueDemonOnEntityUpdateProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        BlueDemonOnEntityUpdateProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
     }
 
     public static void init() {

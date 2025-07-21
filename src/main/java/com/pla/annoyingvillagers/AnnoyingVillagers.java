@@ -58,6 +58,7 @@ public class AnnoyingVillagers {
         AnnoyingVillagersModEnchantments.REGISTRY.register(ieventbus);
         AnnoyingVillagersModMobEffects.REGISTRY.register(ieventbus);
         AnnoyingVillagersModBiomeModifiers.register(ieventbus);
+        AnnoyingVillagersModSounds.register(ieventbus);
         AVSkill.registerSkills();
         AVSounds.SOUNDS.register(ieventbus);
         MinecraftForge.EVENT_BUS.register(new NpcGearLoadProcedure());

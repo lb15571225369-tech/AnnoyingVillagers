@@ -43,7 +43,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 
 public class BlueDemonStagingOnEntityInitialSpawnProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity) throws CommandSyntaxException {
+    public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity) {
         if (entity != null) {
             Vec3 vec3 = new Vec3(d0, d1, d2);
             List<Entity> list = (List)levelaccessor.getEntitiesOfClass(Entity.class, (new AABB(vec3, vec3)).inflate(32.0D), (entity1) -> {
@@ -57,7 +57,11 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                 Entity entity1 = (Entity)iterator.next();
 
                 if (!entity1.level.isClientSide() && entity1.getServer() != null) {
-                    entity1.getServer().getCommands().getDispatcher().execute("impactful @s shake 400 5 5", entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    try {
+                        entity1.getServer().getCommands().getDispatcher().execute("impactful @s shake 400 5 5", entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                        
+                    }
                 }
             }
 
@@ -73,19 +77,17 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
 
             itemstack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 4);
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().getDispatcher().execute("effect give @s annoyingvillagers:captive 20000 0 true", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            }
+                try {
+                    entity.getServer().getCommands().getDispatcher().execute("effect give @s annoyingvillagers:captive 20000 0 true", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
 
-            if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().getDispatcher().execute( "item replace entity @s weapon.mainhand with annoyingvillagers:bluedemontrident", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            }
+                    entity.getServer().getCommands().getDispatcher().execute( "item replace entity @s weapon.mainhand with annoyingvillagers:bluedemontrident", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
 
-            if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().getDispatcher().execute("item replace entity @s weapon.offhand with annoyingvillagers:bluedemontrident", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            }
+                    entity.getServer().getCommands().getDispatcher().execute("item replace entity @s weapon.offhand with annoyingvillagers:bluedemontrident", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
 
-            if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/other/blue_demon_start_skill\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/other/blue_demon_start_skill\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+                    
+                }
             }
 
             new DelayedTask(25) {
@@ -433,7 +435,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
 
                                                                                 new DelayedTask(10) {
                                                                                     @Override
-                                                                                    public void run() throws CommandSyntaxException {
+                                                                                    public void run() {
                                                                                         LevelAccessor levelaccessor9 = levelaccessor;
                                                                                         ServerLevel serverlevel8;
                                                                                         LightningBolt lightningbolt;
@@ -544,7 +546,12 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                                         Entity entity2 = entity;
 
                                                                                         if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                                                            entity2.getServer().getCommands().getDispatcher().execute("effect clear @e annoyingvillagers:block", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                            try {
+                                                                                                entity2.getServer().getCommands().getDispatcher().execute("effect clear @e annoyingvillagers:block", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                            } catch (
+                                                                                                    CommandSyntaxException e) {
+                                                                                                
+                                                                                            }
                                                                                         }
 
                                                                                         levelaccessor9 = levelaccessor;

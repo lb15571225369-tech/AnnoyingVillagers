@@ -120,7 +120,7 @@ public class BleedingProcedure {
                                     if (f <= 10.0F && entity.isAlive()) {
                                         new DelayedTask(50) {
                                             @Override
-                                            public void run() throws CommandSyntaxException {
+                                            public void run() {
                                                 if (entity.isAlive()) {
                                                     float f1;
 
@@ -155,7 +155,11 @@ public class BleedingProcedure {
 
                                                                 entity2 = entity;
                                                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                                    entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                    try {
+                                                                        entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                    } catch (CommandSyntaxException e) {
+                                                                        
+                                                                    }
                                                                 }
 
                                                                 if (entity instanceof LivingEntity) {
@@ -167,7 +171,7 @@ public class BleedingProcedure {
 
                                                                 new DelayedTask(4) {
                                                                     @Override
-                                                                    public void run() throws CommandSyntaxException {
+                                                                    public void run() {
                                                                         LevelAccessor levelaccessor1 = levelaccessor;
 
                                                                         if (levelaccessor1 instanceof Level) {
@@ -183,18 +187,26 @@ public class BleedingProcedure {
                                                                         Entity entity3 = entity;
 
                                                                         if (!entity3.level.isClientSide() && entity3.getServer() != null) {
-                                                                            entity3.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                            try {
+                                                                                entity3.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                            } catch (CommandSyntaxException e) {
+                                                                                
+                                                                            }
                                                                         }
 
                                                                         if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
                                                                             entity3 = entity;
                                                                             if (!entity3.level.isClientSide() && entity3.getServer() != null) {
-                                                                                entity3.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                try {
+                                                                                    entity3.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                } catch (CommandSyntaxException e) {
+                                                                                    
+                                                                                }
                                                                             }
                                                                         }
 
                                                                         new DelayedTask(4) {
-                                                                            public void run() throws CommandSyntaxException {
+                                                                            public void run() {
                                                                                 LevelAccessor levelaccessor2 = levelaccessor;
 
                                                                                 if (levelaccessor2 instanceof Level) {
@@ -210,7 +222,11 @@ public class BleedingProcedure {
                                                                                 Entity entity4 = entity;
 
                                                                                 if (!entity4.level.isClientSide() && entity4.getServer() != null) {
-                                                                                    entity4.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                    try {
+                                                                                        entity4.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                    } catch (CommandSyntaxException e) {
+                                                                                        
+                                                                                    }
                                                                                 }
 
                                                                                 LivingEntity livingentity6;
@@ -238,12 +254,17 @@ public class BleedingProcedure {
                                                                                 if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
                                                                                     entity4 = entity;
                                                                                     if (!entity4.level.isClientSide() && entity4.getServer() != null) {
-                                                                                        entity4.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                        try {
+                                                                                            entity4.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                        } catch (
+                                                                                                CommandSyntaxException e) {
+                                                                                            
+                                                                                        }
                                                                                     }
                                                                                 }
 
                                                                                 new DelayedTask(4) {
-                                                                                    public void run() throws CommandSyntaxException {
+                                                                                    public void run() {
                                                                                         LevelAccessor levelaccessor3 = levelaccessor;
 
                                                                                         if (levelaccessor3 instanceof Level) {
@@ -259,18 +280,28 @@ public class BleedingProcedure {
                                                                                         Entity entity5 = entity;
 
                                                                                         if (!entity5.level.isClientSide() && entity5.getServer() != null) {
-                                                                                            entity5.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                            try {
+                                                                                                entity5.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                            } catch (
+                                                                                                    CommandSyntaxException e) {
+                                                                                                
+                                                                                            }
                                                                                         }
 
                                                                                         if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
                                                                                             entity5 = entity;
                                                                                             if (!entity5.level.isClientSide() && entity5.getServer() != null) {
-                                                                                                entity5.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                try {
+                                                                                                    entity5.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                } catch (
+                                                                                                        CommandSyntaxException e) {
+                                                                                                    
+                                                                                                }
                                                                                             }
                                                                                         }
 
                                                                                         new DelayedTask(4) {
-                                                                                            public void run() throws CommandSyntaxException {
+                                                                                            public void run() {
                                                                                                 LevelAccessor levelaccessor4 = levelaccessor;
 
                                                                                                 if (levelaccessor4 instanceof Level) {
@@ -286,18 +317,28 @@ public class BleedingProcedure {
                                                                                                 Entity entity6 = entity;
 
                                                                                                 if (!entity6.level.isClientSide() && entity6.getServer() != null) {
-                                                                                                    entity6.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                    try {
+                                                                                                        entity6.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                    } catch (
+                                                                                                            CommandSyntaxException e) {
+                                                                                                        
+                                                                                                    }
                                                                                                 }
 
                                                                                                 if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
                                                                                                     entity6 = entity;
                                                                                                     if (!entity6.level.isClientSide() && entity6.getServer() != null) {
-                                                                                                        entity6.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                        try {
+                                                                                                            entity6.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                        } catch (
+                                                                                                                CommandSyntaxException e) {
+                                                                                                            
+                                                                                                        }
                                                                                                     }
                                                                                                 }
 
                                                                                                 new DelayedTask(4) {
-                                                                                                    public void run() throws CommandSyntaxException {
+                                                                                                    public void run() {
                                                                                                         LevelAccessor levelaccessor5 = levelaccessor;
 
                                                                                                         if (levelaccessor5 instanceof Level) {
@@ -313,18 +354,28 @@ public class BleedingProcedure {
                                                                                                         Entity entity7 = entity;
 
                                                                                                         if (!entity7.level.isClientSide() && entity7.getServer() != null) {
-                                                                                                            entity7.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                            try {
+                                                                                                                entity7.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                            } catch (
+                                                                                                                    CommandSyntaxException e) {
+                                                                                                                
+                                                                                                            }
                                                                                                         }
 
                                                                                                         if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
                                                                                                             entity7 = entity;
                                                                                                             if (!entity7.level.isClientSide() && entity7.getServer() != null) {
-                                                                                                                entity7.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                                try {
+                                                                                                                    entity7.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                                } catch (
+                                                                                                                        CommandSyntaxException e) {
+                                                                                                                    
+                                                                                                                }
                                                                                                             }
                                                                                                         }
 
                                                                                                         new DelayedTask(4) {
-                                                                                                            public void run() throws CommandSyntaxException {
+                                                                                                            public void run() {
                                                                                                                 LevelAccessor levelaccessor6 = levelaccessor;
 
                                                                                                                 if (levelaccessor6 instanceof Level) {
@@ -340,15 +391,25 @@ public class BleedingProcedure {
                                                                                                                 Entity entity8 = entity;
 
                                                                                                                 if (!entity8.level.isClientSide() && entity8.getServer() != null) {
-                                                                                                                    entity8.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                                    try {
+                                                                                                                        entity8.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                                    } catch (
+                                                                                                                            CommandSyntaxException e) {
+                                                                                                                        
+                                                                                                                    }
                                                                                                                 }
                                                                                                                 entity8 = entity;
                                                                                                                 if (!entity8.level.isClientSide() && entity8.getServer() != null) {
-                                                                                                                    entity8.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                                    try {
+                                                                                                                        entity8.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                                    } catch (
+                                                                                                                            CommandSyntaxException e) {
+                                                                                                                        
+                                                                                                                    }
                                                                                                                 }
 
                                                                                                                 new DelayedTask(4) {
-                                                                                                                    public void run() throws CommandSyntaxException {
+                                                                                                                    public void run() {
                                                                                                                         LevelAccessor levelaccessor7 = levelaccessor;
 
                                                                                                                         if (levelaccessor7 instanceof Level) {
@@ -364,13 +425,23 @@ public class BleedingProcedure {
                                                                                                                         Entity entity9 = entity;
 
                                                                                                                         if (!entity9.level.isClientSide() && entity9.getServer() != null) {
-                                                                                                                            entity9.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                                            try {
+                                                                                                                                entity9.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                                            } catch (
+                                                                                                                                    CommandSyntaxException e) {
+                                                                                                                                
+                                                                                                                            }
                                                                                                                         }
 
                                                                                                                         if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
                                                                                                                             entity9 = entity;
                                                                                                                             if (!entity9.level.isClientSide() && entity9.getServer() != null) {
-                                                                                                                                entity9.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                                                try {
+                                                                                                                                    entity9.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                                                } catch (
+                                                                                                                                        CommandSyntaxException e) {
+                                                                                                                                    
+                                                                                                                                }
                                                                                                                             }
                                                                                                                         }
 
@@ -463,7 +534,7 @@ public class BleedingProcedure {
                             if (entity.isAlive() && entity instanceof LivingEntity player_mob) {
                                 ItemStack oldItem = player_mob.getOffhandItem();
                                 new DelayedTask(50) {
-                                    public void run() throws CommandSyntaxException {
+                                    public void run() {
                                         if (entity.isAlive()) {
                                             if (player_mob.getHealth() <= 10.0F) {
                                                 LivingEntityPatch<?> livingentitypatch1 = (LivingEntityPatch)EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
@@ -490,11 +561,15 @@ public class BleedingProcedure {
 
                                                             entity2 = entity;
                                                             if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                                entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                try {
+                                                                    entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                } catch (CommandSyntaxException e) {
+                                                                    
+                                                                }
                                                             }
 
                                                             new DelayedTask(4) {
-                                                                public void run() throws CommandSyntaxException {
+                                                                public void run() {
                                                                     LevelAccessor levelaccessor1 = levelaccessor;
 
                                                                     if (levelaccessor1 instanceof Level) {
@@ -510,18 +585,26 @@ public class BleedingProcedure {
                                                                     Entity entity3 = entity;
 
                                                                     if (!entity3.level.isClientSide() && entity3.getServer() != null) {
-                                                                        entity3.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                        try {
+                                                                            entity3.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                        } catch (CommandSyntaxException e) {
+                                                                            
+                                                                        }
                                                                     }
 
                                                                     if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
                                                                         entity3 = entity;
                                                                         if (!entity3.level.isClientSide() && entity3.getServer() != null) {
-                                                                            entity3.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                            try {
+                                                                                entity3.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                            } catch (CommandSyntaxException e) {
+                                                                                
+                                                                            }
                                                                         }
                                                                     }
 
                                                                     new DelayedTask(4) {
-                                                                        public void run() throws CommandSyntaxException {
+                                                                        public void run() {
                                                                             LevelAccessor levelaccessor2 = levelaccessor;
 
                                                                             if (levelaccessor2 instanceof Level) {
@@ -537,7 +620,11 @@ public class BleedingProcedure {
                                                                             Entity entity4 = entity;
 
                                                                             if (!entity4.level.isClientSide() && entity4.getServer() != null) {
-                                                                                entity4.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                try {
+                                                                                    entity4.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                } catch (CommandSyntaxException e) {
+                                                                                    
+                                                                                }
                                                                             }
 
                                                                             LivingEntity livingentity6;
@@ -565,12 +652,16 @@ public class BleedingProcedure {
                                                                             if (!(dynamicanimation1 instanceof AttackAnimation) && !(dynamicanimation1 instanceof LongHitAnimation) && !(dynamicanimation1 instanceof HitAnimation)) {
                                                                                 entity4 = entity;
                                                                                 if (!entity4.level.isClientSide() && entity4.getServer() != null) {
-                                                                                    entity4.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                    try {
+                                                                                        entity4.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                    } catch (CommandSyntaxException e) {
+                                                                                        
+                                                                                    }
                                                                                 }
                                                                             }
 
                                                                             new DelayedTask(4) {
-                                                                                public void run() throws CommandSyntaxException {
+                                                                                public void run() {
                                                                                     LevelAccessor levelaccessor3 = levelaccessor;
 
                                                                                     if (levelaccessor3 instanceof Level) {
@@ -586,18 +677,28 @@ public class BleedingProcedure {
                                                                                     Entity entity5 = entity;
 
                                                                                     if (!entity5.level.isClientSide() && entity5.getServer() != null) {
-                                                                                        entity5.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                        try {
+                                                                                            entity5.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                        } catch (
+                                                                                                CommandSyntaxException e) {
+                                                                                            
+                                                                                        }
                                                                                     }
 
                                                                                     if (!(dynamicanimation1 instanceof AttackAnimation) && !(dynamicanimation1 instanceof LongHitAnimation) && !(dynamicanimation1 instanceof HitAnimation)) {
                                                                                         entity5 = entity;
                                                                                         if (!entity5.level.isClientSide() && entity5.getServer() != null) {
-                                                                                            entity5.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                            try {
+                                                                                                entity5.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                            } catch (
+                                                                                                    CommandSyntaxException e) {
+                                                                                                
+                                                                                            }
                                                                                         }
                                                                                     }
 
                                                                                     new DelayedTask(4) {
-                                                                                        public void run() throws CommandSyntaxException {
+                                                                                        public void run() {
                                                                                             LevelAccessor levelaccessor4 = levelaccessor;
 
                                                                                             if (levelaccessor4 instanceof Level) {
@@ -613,18 +714,28 @@ public class BleedingProcedure {
                                                                                             Entity entity6 = entity;
 
                                                                                             if (!entity6.level.isClientSide() && entity6.getServer() != null) {
-                                                                                                entity6.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                try {
+                                                                                                    entity6.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                } catch (
+                                                                                                        CommandSyntaxException e) {
+                                                                                                    
+                                                                                                }
                                                                                             }
 
                                                                                             if (!(dynamicanimation1 instanceof AttackAnimation) && !(dynamicanimation1 instanceof LongHitAnimation) && !(dynamicanimation1 instanceof HitAnimation)) {
                                                                                                 entity6 = entity;
                                                                                                 if (!entity6.level.isClientSide() && entity6.getServer() != null) {
-                                                                                                    entity6.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                    try {
+                                                                                                        entity6.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                    } catch (
+                                                                                                            CommandSyntaxException e) {
+                                                                                                        
+                                                                                                    }
                                                                                                 }
                                                                                             }
 
                                                                                             new DelayedTask(4) {
-                                                                                                public void run() throws CommandSyntaxException {
+                                                                                                public void run() {
                                                                                                     LevelAccessor levelaccessor5 = levelaccessor;
 
                                                                                                     if (levelaccessor5 instanceof Level) {
@@ -640,18 +751,28 @@ public class BleedingProcedure {
                                                                                                     Entity entity7 = entity;
 
                                                                                                     if (!entity7.level.isClientSide() && entity7.getServer() != null) {
-                                                                                                        entity7.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                        try {
+                                                                                                            entity7.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                        } catch (
+                                                                                                                CommandSyntaxException e) {
+                                                                                                            
+                                                                                                        }
                                                                                                     }
 
                                                                                                     if (!(dynamicanimation1 instanceof AttackAnimation) && !(dynamicanimation1 instanceof LongHitAnimation) && !(dynamicanimation1 instanceof HitAnimation)) {
                                                                                                         entity7 = entity;
                                                                                                         if (!entity7.level.isClientSide() && entity7.getServer() != null) {
-                                                                                                            entity7.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                            try {
+                                                                                                                entity7.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                            } catch (
+                                                                                                                    CommandSyntaxException e) {
+                                                                                                                
+                                                                                                            }
                                                                                                         }
                                                                                                     }
 
                                                                                                     new DelayedTask(4) {
-                                                                                                        public void run() throws CommandSyntaxException {
+                                                                                                        public void run() {
                                                                                                             LevelAccessor levelaccessor6 = levelaccessor;
 
                                                                                                             if (levelaccessor6 instanceof Level) {
@@ -667,16 +788,26 @@ public class BleedingProcedure {
                                                                                                             Entity entity8 = entity;
 
                                                                                                             if (!entity8.level.isClientSide() && entity8.getServer() != null) {
-                                                                                                                entity8.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                                try {
+                                                                                                                    entity8.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                                } catch (
+                                                                                                                        CommandSyntaxException e) {
+                                                                                                                    
+                                                                                                                }
                                                                                                             }
 
                                                                                                             entity8 = entity;
                                                                                                             if (!entity8.level.isClientSide() && entity8.getServer() != null) {
-                                                                                                                entity8.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                                try {
+                                                                                                                    entity8.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                                } catch (
+                                                                                                                        CommandSyntaxException e) {
+                                                                                                                    
+                                                                                                                }
                                                                                                             }
 
                                                                                                             new DelayedTask(4) {
-                                                                                                                public void run() throws CommandSyntaxException {
+                                                                                                                public void run() {
                                                                                                                     LevelAccessor levelaccessor7 = levelaccessor;
 
                                                                                                                     if (levelaccessor7 instanceof Level) {
@@ -692,13 +823,23 @@ public class BleedingProcedure {
                                                                                                                     Entity entity9 = entity;
 
                                                                                                                     if (!entity9.level.isClientSide() && entity9.getServer() != null) {
-                                                                                                                        entity9.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                                        try {
+                                                                                                                            entity9.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                                        } catch (
+                                                                                                                                CommandSyntaxException e) {
+                                                                                                                            
+                                                                                                                        }
                                                                                                                     }
 
                                                                                                                     if (!(dynamicanimation1 instanceof AttackAnimation) && !(dynamicanimation1 instanceof LongHitAnimation) && !(dynamicanimation1 instanceof HitAnimation)) {
                                                                                                                         entity9 = entity;
                                                                                                                         if (!entity9.level.isClientSide() && entity9.getServer() != null) {
-                                                                                                                            entity9.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                                            try {
+                                                                                                                                entity9.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/eat_offhand\" 0 1", entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                                            } catch (
+                                                                                                                                    CommandSyntaxException e) {
+                                                                                                                                
+                                                                                                                            }
                                                                                                                         }
                                                                                                                     }
                                                                                                                     new DelayedTask(3) {
@@ -778,7 +919,7 @@ public class BleedingProcedure {
                             if (entity instanceof LivingEntity zombie && zombie.getHealth() <= 18.0F && entity.isAlive()) {
                                 new DelayedTask(50) {
                                     @Override
-                                    public void run() throws CommandSyntaxException {
+                                    public void run() {
                                         if (zombie.isAlive()) {
                                             if (zombie.getHealth() <= 15.0F) {
                                                 LivingEntityPatch<?> livingentitypatch2 = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
@@ -806,7 +947,11 @@ public class BleedingProcedure {
 
                                                             entity2 = zombie;
                                                             if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                                                entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                try {
+                                                                    entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                } catch (CommandSyntaxException e) {
+                                                                    
+                                                                }
                                                             }
 
                                                             if (entity instanceof LivingEntity) {
@@ -818,7 +963,7 @@ public class BleedingProcedure {
 
                                                             new DelayedTask(4) {
                                                                 @Override
-                                                                public void run() throws CommandSyntaxException {
+                                                                public void run() {
                                                                     LevelAccessor levelaccessor1 = levelaccessor;
 
                                                                     if (levelaccessor1 instanceof Level) {
@@ -835,12 +980,16 @@ public class BleedingProcedure {
                                                                     if (!(dynamicanimation3 instanceof AttackAnimation) && !(dynamicanimation3 instanceof LongHitAnimation) && !(dynamicanimation3 instanceof HitAnimation)) {
                                                                         entity3 = entity;
                                                                         if (!entity3.level.isClientSide() && entity3.getServer() != null) {
-                                                                            entity3.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1", entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                            try {
+                                                                                entity3.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1", entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                            } catch (CommandSyntaxException e) {
+                                                                                
+                                                                            }
                                                                         }
                                                                     }
 
                                                                     new DelayedTask(4) {
-                                                                        public void run() throws CommandSyntaxException {
+                                                                        public void run() {
                                                                             LevelAccessor levelaccessor2 = levelaccessor;
 
                                                                             if (levelaccessor2 instanceof Level) {
@@ -879,12 +1028,16 @@ public class BleedingProcedure {
                                                                             if (!(dynamicanimation3 instanceof AttackAnimation) && !(dynamicanimation3 instanceof LongHitAnimation) && !(dynamicanimation3 instanceof HitAnimation)) {
                                                                                 entity4 = zombie;
                                                                                 if (!entity4.level.isClientSide() && entity4.getServer() != null) {
-                                                                                    entity4.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1", entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                    try {
+                                                                                        entity4.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1", entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                    } catch (CommandSyntaxException e) {
+                                                                                        
+                                                                                    }
                                                                                 }
                                                                             }
 
                                                                             new DelayedTask(4) {
-                                                                                public void run() throws CommandSyntaxException {
+                                                                                public void run() {
                                                                                     LevelAccessor levelaccessor3 = levelaccessor;
 
                                                                                     if (levelaccessor3 instanceof Level) {
@@ -901,12 +1054,17 @@ public class BleedingProcedure {
                                                                                     if (!(dynamicanimation3 instanceof AttackAnimation) && !(dynamicanimation3 instanceof LongHitAnimation) && !(dynamicanimation3 instanceof HitAnimation)) {
                                                                                         entity5 = zombie;
                                                                                         if (!entity5.level.isClientSide() && entity5.getServer() != null) {
-                                                                                            entity5.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1", entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                            try {
+                                                                                                entity5.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1", entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                            } catch (
+                                                                                                    CommandSyntaxException e) {
+                                                                                                
+                                                                                            }
                                                                                         }
                                                                                     }
 
                                                                                     new DelayedTask(4) {
-                                                                                        public void run() throws CommandSyntaxException {
+                                                                                        public void run() {
                                                                                             LevelAccessor levelaccessor4 = levelaccessor;
 
                                                                                             if (levelaccessor4 instanceof Level) {
@@ -923,12 +1081,17 @@ public class BleedingProcedure {
                                                                                             if (!(dynamicanimation3 instanceof AttackAnimation) && !(dynamicanimation3 instanceof LongHitAnimation) && !(dynamicanimation3 instanceof HitAnimation)) {
                                                                                                 entity6 = zombie;
                                                                                                 if (!entity6.level.isClientSide() && entity6.getServer() != null) {
-                                                                                                    entity6.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1", entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                    try {
+                                                                                                        entity6.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1", entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                    } catch (
+                                                                                                            CommandSyntaxException e) {
+                                                                                                        
+                                                                                                    }
                                                                                                 }
                                                                                             }
 
                                                                                             new DelayedTask(4) {
-                                                                                                public void run() throws CommandSyntaxException {
+                                                                                                public void run() {
                                                                                                     LevelAccessor levelaccessor5 = levelaccessor;
 
                                                                                                     if (levelaccessor5 instanceof Level) {
@@ -945,12 +1108,17 @@ public class BleedingProcedure {
                                                                                                     if (!(dynamicanimation3 instanceof AttackAnimation) && !(dynamicanimation3 instanceof LongHitAnimation) && !(dynamicanimation3 instanceof HitAnimation)) {
                                                                                                         entity7 = zombie;
                                                                                                         if (!entity7.level.isClientSide() && entity7.getServer() != null) {
-                                                                                                            entity7.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1", entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                            try {
+                                                                                                                entity7.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1", entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                            } catch (
+                                                                                                                    CommandSyntaxException e) {
+                                                                                                                
+                                                                                                            }
                                                                                                         }
                                                                                                     }
 
                                                                                                     new DelayedTask(4) {
-                                                                                                        public void run() throws CommandSyntaxException {
+                                                                                                        public void run() {
                                                                                                             LevelAccessor levelaccessor6 = levelaccessor;
 
                                                                                                             if (levelaccessor6 instanceof Level) {
@@ -965,11 +1133,16 @@ public class BleedingProcedure {
 
                                                                                                             Entity entity8 = zombie;
                                                                                                             if (!entity8.level.isClientSide() && entity8.getServer() != null) {
-                                                                                                                entity8.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1", entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                                try {
+                                                                                                                    entity8.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1", entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                                } catch (
+                                                                                                                        CommandSyntaxException e) {
+                                                                                                                    
+                                                                                                                }
                                                                                                             }
 
                                                                                                             new DelayedTask(4) {
-                                                                                                                public void run() throws CommandSyntaxException {
+                                                                                                                public void run() {
                                                                                                                     LevelAccessor levelaccessor7 = levelaccessor;
 
                                                                                                                     if (levelaccessor7 instanceof Level) {
@@ -986,7 +1159,12 @@ public class BleedingProcedure {
                                                                                                                     if (!(dynamicanimation3 instanceof AttackAnimation) && !(dynamicanimation3 instanceof LongHitAnimation) && !(dynamicanimation3 instanceof HitAnimation)) {
                                                                                                                         entity9 = zombie;
                                                                                                                         if (!entity9.level.isClientSide() && entity9.getServer() != null) {
-                                                                                                                            entity9.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1", entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                                            try {
+                                                                                                                                entity9.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/living/drink_offhand\" 0 1", entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                                            } catch (
+                                                                                                                                    CommandSyntaxException e) {
+                                                                                                                                
+                                                                                                                            }
                                                                                                                         }
                                                                                                                     }
 

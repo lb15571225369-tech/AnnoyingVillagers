@@ -60,11 +60,7 @@ public class LegendarySwordItem extends SwordItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {
         InteractionResultHolder<ItemStack> interactionresultholder = super.use(level, player, interactionhand);
 
-        try {
-            LegendarySwordUseProcedure.execute(level, player, (ItemStack) interactionresultholder.getObject());
-        } catch (CommandSyntaxException e) {
-            
-        }
+        LegendarySwordUseProcedure.execute(level, player, (ItemStack) interactionresultholder.getObject());
         return interactionresultholder;
     }
 

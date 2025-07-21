@@ -29,7 +29,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class VillagerScoutCaptainOnEntityInitialSpawnProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) throws CommandSyntaxException {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) {
         if (entity != null) {
             entity.getPersistentData().putBoolean("av_npc", true);
             LivingEntity livingentity;
@@ -256,29 +256,23 @@ public class VillagerScoutCaptainOnEntityInitialSpawnProcedure {
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().getDispatcher().execute(
-                        "team add villagers",
-                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                try {
+                    entity.getServer().getCommands().getDispatcher().execute(
+                            "team add villagers",
+                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    entity.getServer().getCommands().getDispatcher().execute(
+                            "team modify villagers friendlyFire false",
+                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    entity.getServer().getCommands().getDispatcher().execute(
+                            "team join villagers @s",
+                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    entity.getServer().getCommands().getDispatcher().execute(
+                            "team join villagers @e[type=minecraft:iron_golem]",
+                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+                    
+                }
             }
-
-            if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().getDispatcher().execute(
-                        "team modify villagers friendlyFire false",
-                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            }
-
-            if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().getDispatcher().execute(
-                        "team join villagers @s",
-                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            }
-
-            if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().getDispatcher().execute(
-                        "team join villagers @e[type=minecraft:iron_golem]",
-                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            }
-
         }
     }
 }

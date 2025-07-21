@@ -16,7 +16,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class EnchantedEnderPearlOnProjectileHitBlockProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) throws CommandSyntaxException {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) {
         if (entity != null) {
             if (levelaccessor instanceof Level) {
                 Level level = (Level) levelaccessor;
@@ -42,7 +42,11 @@ public class EnchantedEnderPearlOnProjectileHitBlockProcedure {
             }
 
             if (!entity.level.isClientSide() && entity.getServer() != null) {
-                entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:ender ~ ~1 ~ 0 0 0 0.5 16", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                try {
+                    entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:ender ~ ~1 ~ 0 0 0 0.5 16", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+                    
+                }
             }
 
         }

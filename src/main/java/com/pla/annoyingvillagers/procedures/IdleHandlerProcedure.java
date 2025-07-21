@@ -29,7 +29,7 @@ public class IdleHandlerProcedure {
     }
 
     @SubscribeEvent
-    public static void onLivingTick(LivingEvent.LivingTickEvent event) throws CommandSyntaxException {
+    public static void onLivingTick(LivingEvent.LivingTickEvent event) {
         if (!(event.getEntity() instanceof Mob mob)) return;
         if (mob.level.isClientSide()) return;
         if (event.getEntity() != null && !mob.level.isClientSide() && (ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("minecraft:zombie") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("minecraft:skeleton") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("annoyingvillagers:villager_scout"))) {
@@ -40,7 +40,7 @@ public class IdleHandlerProcedure {
         }
     }
 
-    private static void scheduleIdleActionDecision(Mob mob) throws CommandSyntaxException {
+    private static void scheduleIdleActionDecision(Mob mob) {
         CompoundTag data = mob.getPersistentData();
         if (!data.contains("av_idle_action")) {
             LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(mob, LivingEntityPatch.class);
@@ -52,7 +52,7 @@ public class IdleHandlerProcedure {
         }
     }
 
-    private static void performIdleAction(Mob mob, IdleAction action) throws CommandSyntaxException {
+    private static void performIdleAction(Mob mob, IdleAction action) {
         CompoundTag data = mob.getPersistentData();
         if (mob.getTarget() != null) {
             if (data.contains("av_idle_action")) {
@@ -62,17 +62,26 @@ public class IdleHandlerProcedure {
                 data.remove("av_idle_animation_playing");
             }
             if (data.contains("av_idle_animate_backup_main_hand")) {
-                CompoundTag fullTag = TagParser.parseTag(data.getString("av_idle_animate_backup_main_hand"));
+                CompoundTag fullTag = null;
+                try {
+                    fullTag = TagParser.parseTag(data.getString("av_idle_animate_backup_main_hand"));
+                } catch (CommandSyntaxException e) {
+                    
+                }
                 String id = fullTag.getString("id");
                 String nbtPart = fullTag.contains("tag") ? fullTag.getCompound("tag").toString() : "";
                 String cmd = "item replace entity @s weapon.mainhand with " + id;
                 if (!nbtPart.isEmpty()) {
                     cmd += nbtPart;
                 }
-                mob.getServer().getCommands().getDispatcher().execute(
-                        cmd,
-                        mob.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-                );
+                try {
+                    mob.getServer().getCommands().getDispatcher().execute(
+                            cmd,
+                            mob.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                    );
+                } catch (CommandSyntaxException e) {
+                    
+                }
                 data.remove("av_idle_animate_backup_main_hand");
                 if (data.contains("av_idle_action")) {
                     data.remove("av_idle_action");
@@ -119,62 +128,30 @@ public class IdleHandlerProcedure {
                     IdleAnimation idleAnimation = IdleAnimation.values()[RANDOM.nextInt(IdleAnimation.values().length)];
                     new DelayedTask(40) {
                         @Override
-                        public void run() throws CommandSyntaxException {
+                        public void run() {
                             TaskScheduler.schedule(() -> {
-                                try {
+                                new AnimationSheduler(mob).run(idleAnimation, false, false);
+                                TaskScheduler.schedule(() -> {
                                     new AnimationSheduler(mob).run(idleAnimation, false, false);
                                     TaskScheduler.schedule(() -> {
-                                        try {
+                                        new AnimationSheduler(mob).run(idleAnimation, false, false);
+                                        TaskScheduler.schedule(() -> {
                                             new AnimationSheduler(mob).run(idleAnimation, false, false);
                                             TaskScheduler.schedule(() -> {
-                                                try {
+                                                new AnimationSheduler(mob).run(idleAnimation, false, false);
+                                                TaskScheduler.schedule(() -> {
                                                     new AnimationSheduler(mob).run(idleAnimation, false, false);
                                                     TaskScheduler.schedule(() -> {
-                                                        try {
-                                                            new AnimationSheduler(mob).run(idleAnimation, false, false);
-                                                            TaskScheduler.schedule(() -> {
-                                                                try {
-                                                                    new AnimationSheduler(mob).run(idleAnimation, false, false);
-                                                                    TaskScheduler.schedule(() -> {
-                                                                        try {
-                                                                            new AnimationSheduler(mob).run(idleAnimation, false, false);
-                                                                            TaskScheduler.schedule(() -> {
-                                                                                try {
-                                                                                    new AnimationSheduler(mob).run(idleAnimation, false, false);
-                                                                                    TaskScheduler.schedule(() -> {
-                                                                                        try {
-                                                                                            new AnimationSheduler(mob).run(idleAnimation, false, true);
-                                                                                        } catch (CommandSyntaxException e) {
-                                                                                            e.printStackTrace();
-                                                                                        }
-                                                                                    }, 5);
-                                                                                } catch (CommandSyntaxException e) {
-                                                                                    e.printStackTrace();
-                                                                                }
-                                                                            }, 5);
-                                                                        } catch (CommandSyntaxException e) {
-                                                                            e.printStackTrace();
-                                                                        }
-                                                                    }, 5);
-                                                                } catch (CommandSyntaxException e) {
-                                                                    e.printStackTrace();
-                                                                }
-                                                            }, 5);
-                                                        } catch (CommandSyntaxException e) {
-                                                            e.printStackTrace();
-                                                        }
+                                                        new AnimationSheduler(mob).run(idleAnimation, false, false);
+                                                        TaskScheduler.schedule(() -> {
+                                                            new AnimationSheduler(mob).run(idleAnimation, false, true);
+                                                        }, 5);
                                                     }, 5);
-                                                } catch (CommandSyntaxException e) {
-                                                    e.printStackTrace();
-                                                }
+                                                }, 5);
                                             }, 5);
-                                        } catch (CommandSyntaxException e) {
-                                            e.printStackTrace();
-                                        }
+                                        }, 5);
                                     }, 5);
-                                } catch (CommandSyntaxException e) {
-                                    e.printStackTrace();
-                                }
+                                }, 5);
                             }, 5);
                         }
                     };

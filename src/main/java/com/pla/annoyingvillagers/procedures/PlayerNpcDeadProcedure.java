@@ -427,15 +427,19 @@ public class PlayerNpcDeadProcedure {
                 };
                 new DelayedTask(Mth.nextInt(AnnoyingVillagers.randomSource, 40, 80)) {
                     @Override
-                    public void run() throws CommandSyntaxException {
+                    public void run() {
                         Entity entity2;
 
                         if (Math.random() <= 0.05D) {
                             entity2 = entity;
                             if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                entity2.getServer().getCommands().getDispatcher().execute(
-                                        "tellraw @a [{\"text\":\"<\"},{\"selector\":\"@s\"},{\"text\":\"> " + entity1.getDisplayName().getString() + " Bro, I'll remember you for this\ud83d\ude21\"}]",
-                                        entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                try {
+                                    entity2.getServer().getCommands().getDispatcher().execute(
+                                            "tellraw @a [{\"text\":\"<\"},{\"selector\":\"@s\"},{\"text\":\"> " + entity1.getDisplayName().getString() + " Bro, I'll remember you for this\ud83d\ude21\"}]",
+                                            entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                } catch (CommandSyntaxException e) {
+                                    
+                                }
                             }
                         } else if (Math.random() <= 0.05D) {
                             if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
@@ -556,48 +560,68 @@ public class PlayerNpcDeadProcedure {
                             } else if (Math.random() <= 0.05D) {
                                 entity2 = entity;
                                 if (!entity2.level.isClientSide() && entity2.getServer() != null) {
-                                    entity2.getServer().getCommands().getDispatcher().execute(
-                                            "tellraw @a [{\"text\":\"<\"},{\"selector\":\"@s\"},{\"text\":\"> Don't leave, I'm calling some people\ud83d\ude21\ud83d\ude21\ud83d\ude21\"}]",
-                                            entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                    try {
+                                        entity2.getServer().getCommands().getDispatcher().execute(
+                                                "tellraw @a [{\"text\":\"<\"},{\"selector\":\"@s\"},{\"text\":\"> Don't leave, I'm calling some people\ud83d\ude21\ud83d\ude21\ud83d\ude21\"}]",
+                                                entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                    } catch (CommandSyntaxException e) {
+                                        
+                                    }
                                 }
 
                                 new DelayedTask(50) {
                                     @Override
-                                    public void run() throws CommandSyntaxException {
-                                        entity.getServer().getCommands().getDispatcher().execute(
-                                                "summon player_mobs:player_mob",
-                                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-                                        );
+                                    public void run() {
+                                        try {
+                                            entity.getServer().getCommands().getDispatcher().execute(
+                                                    "summon player_mobs:player_mob",
+                                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                                            );
+                                        } catch (CommandSyntaxException e) {
+                                            
+                                        }
                                     }
                                 };
 
                                 new DelayedTask(20) {
                                     @Override
-                                    public void run() throws CommandSyntaxException {
-                                        entity.getServer().getCommands().getDispatcher().execute(
-                                                "summon player_mobs:player_mob",
-                                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-                                        );
+                                    public void run() {
+                                        try {
+                                            entity.getServer().getCommands().getDispatcher().execute(
+                                                    "summon player_mobs:player_mob",
+                                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                                            );
+                                        } catch (CommandSyntaxException e) {
+                                            
+                                        }
                                     }
                                 };
 
                                 new DelayedTask(20) {
                                     @Override
-                                    public void run() throws CommandSyntaxException {
-                                        entity.getServer().getCommands().getDispatcher().execute(
-                                                "summon player_mobs:player_mob",
-                                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-                                        );
+                                    public void run() {
+                                        try {
+                                            entity.getServer().getCommands().getDispatcher().execute(
+                                                    "summon player_mobs:player_mob",
+                                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                                            );
+                                        } catch (CommandSyntaxException e) {
+                                            
+                                        }
                                     }
                                 };
 
                                 new DelayedTask(20) {
                                     @Override
-                                    public void run() throws CommandSyntaxException {
-                                        entity.getServer().getCommands().getDispatcher().execute(
-                                                "tellraw @a [{\"text\":\"<\"},{\"selector\":\"@s\"},{\"text\":\"> Hmmm, you're here… bro.🤓\"}]",
-                                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-                                        );
+                                    public void run() {
+                                        try {
+                                            entity.getServer().getCommands().getDispatcher().execute(
+                                                    "tellraw @a [{\"text\":\"<\"},{\"selector\":\"@s\"},{\"text\":\"> Hmmm, you're here… bro.🤓\"}]",
+                                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                                            );
+                                        } catch (CommandSyntaxException e) {
+                                            
+                                        }
                                     }
                                 };
                             } else if (Math.random() <= 0.05D && !levelaccessor.isClientSide() && levelaccessor.getServer() != null) {

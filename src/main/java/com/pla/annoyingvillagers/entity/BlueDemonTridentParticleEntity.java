@@ -77,11 +77,7 @@ public class BlueDemonTridentParticleEntity extends PathfinderMob {
 
     public void baseTick() {
         super.baseTick();
-        try {
-            BlueDemonTridentParticleOnEntityUpdate.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
-        } catch (CommandSyntaxException e) {
-            
-        }
+        BlueDemonTridentParticleOnEntityUpdate.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
     }
 
     public boolean isPushable() {

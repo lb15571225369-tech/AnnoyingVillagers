@@ -15,50 +15,64 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 public class HitWallProcedure {
 
     @SubscribeEvent
-    public static void onEntityAttacked(LivingHurtEvent livinghurtevent) throws CommandSyntaxException {
+    public static void onEntityAttacked(LivingHurtEvent livinghurtevent) {
         if (livinghurtevent != null && livinghurtevent.getEntity() != null) {
             execute(livinghurtevent, livinghurtevent.getEntity().level, livinghurtevent.getSource(), livinghurtevent.getEntity(), (double) livinghurtevent.getAmount());
         }
 
     }
 
-    public static void execute(LevelAccessor levelaccessor, DamageSource damagesource, Entity entity, double d0) throws CommandSyntaxException {
+    public static void execute(LevelAccessor levelaccessor, DamageSource damagesource, Entity entity, double d0) {
         execute((Event) null, levelaccessor, damagesource, entity, d0);
     }
 
-    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, DamageSource damagesource, Entity entity, double d0) throws CommandSyntaxException {
+    private static void execute(@Nullable Event event, LevelAccessor levelaccessor, DamageSource damagesource, Entity entity, double d0) {
         if (entity != null) {
             if (damagesource == DamageSource.FLY_INTO_WALL) {
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().getDispatcher().execute(
-                            "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10",
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    try {
+                        entity.getServer().getCommands().getDispatcher().execute(
+                                "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10",
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                        
+                    }
                 }
 
                 entity.hurt(DamageSource.GENERIC, 10.0F);
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().getDispatcher().execute(
-                            "impactful @s shake 20 5 6",
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    try {
+                        entity.getServer().getCommands().getDispatcher().execute(
+                                "impactful @s shake 20 5 6",
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                        
+                    }
                 }
             } else if (damagesource == DamageSource.FALL) {
                 if (!entity.level.isClientSide() && entity.getServer() != null) {
-                    entity.getServer().getCommands().getDispatcher().execute(
-                            "particle minecraft:campfire_signal_smoke ~ ~ ~ 0 0 0 0.02 5",
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    try {
+                        entity.getServer().getCommands().getDispatcher().execute(
+                                "particle minecraft:campfire_signal_smoke ~ ~ ~ 0 0 0 0.02 5",
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                        
+                    }
                 }
 
                 if (d0 >= 10.0D) {
                     if (!entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10",
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                    }
+                        try {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
 
-                    if (!entity.level.isClientSide() && entity.getServer() != null) {
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                "impactful @s shake 20 5 6",
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "impactful @s shake 20 5 6",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException e) {
+                            
+                        }
                     }
                 }
             }

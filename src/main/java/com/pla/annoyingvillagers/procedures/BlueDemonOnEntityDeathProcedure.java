@@ -7,15 +7,19 @@ import net.minecraft.world.level.LevelAccessor;
 
 public class BlueDemonOnEntityDeathProcedure {
 
-    public static void execute(LevelAccessor world, Entity entity, Entity entity1) throws CommandSyntaxException {
+    public static void execute(LevelAccessor world, Entity entity, Entity entity1) {
         if (entity == null || entity1 == null) return;
 
         // Summon Blue Demon replacement
         if (!entity.level.isClientSide() && entity.getServer() != null) {
-            entity.getServer().getCommands().getDispatcher().execute(
-                    "summon annoyingvillagers:blue_demon_staging",
-                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-            );
+            try {
+                entity.getServer().getCommands().getDispatcher().execute(
+                        "summon annoyingvillagers:blue_demon_staging",
+                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                );
+            } catch (CommandSyntaxException e) {
+                
+            }
         }
 
         if (!entity.level.isClientSide()) {

@@ -97,7 +97,7 @@ public class PlayerMobMixinRemapTrue {
                             itemEntity.setPickUpDelay(0);
                             new DelayedTask(5) {
                                 @Override
-                                public void run() throws CommandSyntaxException {
+                                public void run() {
                                     itemEntity.discard();
                                     self.level.playSound(null, self.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.HOSTILE, 0.2F, 1.0F);
                                 }
