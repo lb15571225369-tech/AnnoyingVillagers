@@ -3,17 +3,17 @@ package com.pla.annoyingvillagers.gameasset;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-@EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Bus.MOD)
 public class AVSounds {
     public static final DeferredRegister<SoundEvent> SOUNDS;
     public static final RegistryObject<SoundEvent> SWORD_WHOOSH;
     public static final RegistryObject<SoundEvent> KICK;
+
+    public AVSounds() {
+    }
 
     private static RegistryObject<SoundEvent> registerSound(String name) {
         ResourceLocation res = ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, name);

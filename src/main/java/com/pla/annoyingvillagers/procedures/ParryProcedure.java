@@ -9,6 +9,7 @@ import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -104,7 +105,7 @@ public class ParryProcedure {
                                             }
                                         }
 
-                                        humanoidmobpatch1.playSound(EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
+                                        humanoidmobpatch1.playSound((SoundEvent) EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
                                         if (entity1 instanceof Player && !entity1.level.isClientSide() && entity1.getServer() != null) {
                                             try {
                                                 entity1.getServer().getCommands().getDispatcher().execute(
@@ -146,7 +147,7 @@ public class ParryProcedure {
                                                 }
                                             }
 
-                                            humanoidmobpatch1.playSound(EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
+                                            humanoidmobpatch1.playSound((SoundEvent) EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
                                             entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * -0.2D, 0.0D, entity.getLookAngle().z * -0.2D));
                                             entity1.setDeltaMovement(new Vec3(entity1.getLookAngle().x * -0.2D, 0.0D, entity1.getLookAngle().z * -0.2D));
                                             if (entity1 instanceof Player && !entity1.level.isClientSide() && entity1.getServer() != null) {
@@ -166,7 +167,7 @@ public class ParryProcedure {
                             DynamicAnimation dynamicanimation3 = humanoidmobpatch.getAnimator().getPlayerFor((DynamicAnimation)null).getAnimation();
 
                             if (dynamicanimation3 instanceof AttackAnimation) {
-                                humanoidmobpatch.playSound(EpicFightSounds.NEUTRALIZE_MOBS.get(), -0.05F, 0.1F);
+                                humanoidmobpatch.playSound((SoundEvent) EpicFightSounds.NEUTRALIZE_MOBS.get(), -0.05F, 0.1F);
                                 if (entity.isAlive()) {
                                     new DelayedTask(1) {
                                         @Override
@@ -216,7 +217,7 @@ public class ParryProcedure {
                                 if (event != null && event.isCancelable()) {
                                     event.setCanceled(true);
                                 }
-                                playerpatch.playSound(EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
+                                playerpatch.playSound((SoundEvent) EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
                                 if (!entity.level.isClientSide() && entity.getServer() != null) {
                                     try {
                                         entity.getServer().getCommands().getDispatcher().execute(
@@ -244,7 +245,7 @@ public class ParryProcedure {
                             }
                         }
                     } else if (list.contains(dynamicanimation)) {
-                        playerpatch.playSound(EpicFightSounds.NEUTRALIZE_MOBS.get(), -0.05F, 0.1F);
+                        playerpatch.playSound((SoundEvent) EpicFightSounds.NEUTRALIZE_MOBS.get(), -0.05F, 0.1F);
                         if (entity.isAlive()) {
                             ((HitParticleType)EpicFightParticles.AIR_BURST.get()).spawnParticleWithArgument((ServerLevel)entity.level, entity, entity1);
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
@@ -320,7 +321,7 @@ public class ParryProcedure {
                 dynamicanimation1 = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
                 if (dynamicanimation instanceof KickAttackAnimation) {
                     if (dynamicanimation1 instanceof AttackAnimation) {
-                        livingentitypatch1.playSound(EpicFightSounds.NEUTRALIZE_MOBS.get(), -0.05F, 0.1F);
+                        livingentitypatch1.playSound((SoundEvent) EpicFightSounds.NEUTRALIZE_MOBS.get(), -0.05F, 0.1F);
                         if (entity.isAlive()) {
                             if (!entity.level.isClientSide() && entity.getServer() != null) {
                                 try {
@@ -356,7 +357,7 @@ public class ParryProcedure {
                             event.setCanceled(true);
                         }
 
-                        livingentitypatch1.playSound(EpicFightSounds.NEUTRALIZE_MOBS.get(), -0.05F, 0.1F);
+                        livingentitypatch1.playSound((SoundEvent) EpicFightSounds.NEUTRALIZE_MOBS.get(), -0.05F, 0.1F);
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
                             try {
                                 entity.getServer().getCommands().getDispatcher().execute(
@@ -378,7 +379,7 @@ public class ParryProcedure {
                                 }
                             }
 
-                            livingentitypatch1.playSound(EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
+                            livingentitypatch1.playSound((SoundEvent) EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
                         }
 
                         entity.lookAt(Anchor.EYES, new Vec3(entity1.getX(), entity1.getY() + 1.0D, entity1.getZ()));

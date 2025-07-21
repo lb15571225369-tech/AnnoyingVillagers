@@ -57,6 +57,7 @@ public class AnnoyingVillagers {
         AnnoyingVillagersModEntities.REGISTRY.register(ieventbus);
         AnnoyingVillagersModEnchantments.REGISTRY.register(ieventbus);
         AnnoyingVillagersModMobEffects.REGISTRY.register(ieventbus);
+//        AnnoyingVillagersModParticleTypes.REGISTRY.register(ieventbus);
         AnnoyingVillagersModBiomeModifiers.register(ieventbus);
         AnnoyingVillagersModSounds.register(ieventbus);
         AVSkill.registerSkills();

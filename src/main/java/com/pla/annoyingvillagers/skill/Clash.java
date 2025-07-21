@@ -8,6 +8,7 @@ import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -75,7 +76,7 @@ public class Clash extends PassiveSkill {
                 if (flag && list.contains(dynamicanimation) || dynamicanimation == AVAnimations.GIANT_WHIRLWIND_2 || dynamicanimation == AVAnimations.DUAL_SWORD_DANCING_EDGE || dynamicanimation == AVAnimations.SpinningDeath) {
                     pre.setCanceled(true);
                     pre.setResult(ResultType.BLOCKED);
-                    playerpatch.playSound(EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
+                    playerpatch.playSound((SoundEvent) EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
                     if (entity != null) {
                         entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * -0.2D, 0.0D, entity.getLookAngle().z * -0.2D));
                     }

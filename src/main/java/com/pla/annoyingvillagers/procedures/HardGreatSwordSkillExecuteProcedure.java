@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -69,7 +70,7 @@ public class HardGreatSwordSkillExecuteProcedure {
                             }
                         }
 
-                        livingentitypatch.playSound(EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
+                        livingentitypatch.playSound((SoundEvent) EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
                             try {
                                 entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
@@ -90,7 +91,7 @@ public class HardGreatSwordSkillExecuteProcedure {
                             event.setCanceled(true);
                         }
 
-                        livingentitypatch.playSound(EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
+                        livingentitypatch.playSound((SoundEvent) EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
                         if (!entity.level.isClientSide() && entity.getServer() != null) {
                             try {
                                 entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
