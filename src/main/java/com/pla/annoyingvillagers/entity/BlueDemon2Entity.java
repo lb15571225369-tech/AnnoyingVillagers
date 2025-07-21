@@ -57,7 +57,7 @@ public class BlueDemon2Entity extends Monster {
         this.maxUpStep = 3.0F;
         this.xpReward = 400;
         this.setNoAi(false);
-        this.setCustomName(Component.literal("§bBlue Demon$r"));
+        this.setCustomName(Component.literal("§bBlue Demon§r"));
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.TRIDENT));

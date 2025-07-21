@@ -10,7 +10,6 @@ import com.pla.annoyingvillagers.client.model.ModelGreenVillagerGeneralArmor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -22,7 +21,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class GreenVillagerGeneralArmorItem extends ArmorItem {
 
@@ -70,13 +69,13 @@ public abstract class GreenVillagerGeneralArmorItem extends ArmorItem {
 
         public void initializeClient(Consumer<IClientItemExtensions> consumer) {
             consumer.accept(new IClientItemExtensions() {
-                @OnlyIn(Dist.CLIENT)
-                public HumanoidModel getArmorModel(LivingEntity livingentity, ItemStack itemstack, EquipmentSlot equipmentslot, HumanoidModel humanoidmodel) {
+                @Override
+                public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
                     HumanoidModel humanoidmodel1 = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of("body", (new ModelGreenVillagerGeneralArmor<>(Minecraft.getInstance().getEntityModels().bakeLayer(ModelGreenVillagerGeneralArmor.LAYER_LOCATION))).Body, "left_arm", (new ModelGreenVillagerGeneralArmor<>(Minecraft.getInstance().getEntityModels().bakeLayer(ModelGreenVillagerGeneralArmor.LAYER_LOCATION))).LeftArm, "right_arm", (new ModelGreenVillagerGeneralArmor<>(Minecraft.getInstance().getEntityModels().bakeLayer(ModelGreenVillagerGeneralArmor.LAYER_LOCATION))).RightArm, "head", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "right_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "left_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()))));
 
-                    humanoidmodel1.crouching = livingentity.isShiftKeyDown();
-                    humanoidmodel1.riding = humanoidmodel.riding;
-                    humanoidmodel1.young = livingentity.isBaby();
+                    humanoidmodel1.crouching = livingEntity.isShiftKeyDown();
+                    humanoidmodel1.riding = original.riding;
+                    humanoidmodel1.young = livingEntity.isBaby();
                     return humanoidmodel1;
                 }
             });

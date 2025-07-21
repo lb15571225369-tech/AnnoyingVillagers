@@ -20,6 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class PurpleVillagerGeneralArmorItem extends ArmorItem {
 
@@ -78,12 +79,13 @@ public abstract class PurpleVillagerGeneralArmorItem extends ArmorItem {
 
         public void initializeClient(Consumer<IClientItemExtensions> consumer) {
             consumer.accept(new IClientItemExtensions() {
-                public HumanoidModel getArmorModel(LivingEntity livingentity, ItemStack itemstack, EquipmentSlot equipmentslot, HumanoidModel humanoidmodel) {
+                @Override
+                public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
                     HumanoidModel humanoidmodel1 = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of("head", (new ModelVillagerGeneralArmor<>(Minecraft.getInstance().getEntityModels().bakeLayer(ModelVillagerGeneralArmor.LAYER_LOCATION))).Head, "hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "body", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "right_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "left_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "right_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "left_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()))));
 
-                    humanoidmodel1.crouching = livingentity.isShiftKeyDown();
-                    humanoidmodel1.riding = humanoidmodel.riding;
-                    humanoidmodel1.young = livingentity.isBaby();
+                    humanoidmodel1.crouching = livingEntity.isShiftKeyDown();
+                    humanoidmodel1.riding = original.riding;
+                    humanoidmodel1.young = livingEntity.isBaby();
                     return humanoidmodel1;
                 }
             });

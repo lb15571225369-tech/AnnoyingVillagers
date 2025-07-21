@@ -14,6 +14,7 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.Map;
@@ -68,7 +69,8 @@ public abstract class VillagerScoutHelmetItem extends ArmorItem {
             consumer.accept(new IClientItemExtensions() {
                 HumanoidModel<LivingEntity> armorModel = null;
 
-                public HumanoidModel<?> getArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> defaultModel) {
+                @Override
+                public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
                     if (armorModel == null) {
                         ModelVillagerScoutHelmet<?> helmetModel = new ModelVillagerScoutHelmet<>(
                                 Minecraft.getInstance().getEntityModels().bakeLayer(ModelVillagerScoutHelmet.LAYER_LOCATION)
@@ -87,9 +89,9 @@ public abstract class VillagerScoutHelmetItem extends ArmorItem {
                         armorModel = new HumanoidModel<>(root);
                     }
 
-                    armorModel.crouching = entity.isCrouching();
-                    armorModel.riding = entity.isPassenger();
-                    armorModel.young = entity.isBaby();
+                    armorModel.crouching = livingEntity.isCrouching();
+                    armorModel.riding = livingEntity.isPassenger();
+                    armorModel.young = livingEntity.isBaby();
 
                     return armorModel;
                 }
