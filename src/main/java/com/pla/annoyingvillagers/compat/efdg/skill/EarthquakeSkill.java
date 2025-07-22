@@ -57,8 +57,8 @@ public class EarthquakeSkill extends WeaponInnateSkill {
     public List<Component> getTooltipOnItem(ItemStack itemstack, CapabilityItem capabilityitem, PlayerPatch<?> playerpatch) {
         List<Component> list = super.getTooltipOnItem(itemstack, capabilityitem, playerpatch);
 
-//        this.generateTooltipforPhase(list, itemstack, capabilityitem, playerpatch, (Map) this.properties.get(1), "Swing:");
-//        this.generateTooltipforPhase(list, itemstack, capabilityitem, playerpatch, (Map) this.properties.get(2), "Slam :");
+        this.generateTooltipforPhase(list, itemstack, capabilityitem, playerpatch, (Map) this.properties.get(1), "Swing:");
+        this.generateTooltipforPhase(list, itemstack, capabilityitem, playerpatch, (Map) this.properties.get(2), "Slam :");
         return list;
     }
 

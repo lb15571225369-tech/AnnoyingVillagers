@@ -65,12 +65,16 @@ public class EquipmentDataLoader extends SimpleJsonResourceReloadListener {
         }
     }
 
-    public static boolean isOneHanded(ItemStack stack, LivingEntityPatch<?> patch) {
+    public static boolean canTwoHand(ItemStack stack) {
         CapabilityItem cap = EpicFightCapabilities.getItemStackCapability(stack);
 
         if (cap instanceof WeaponCapability weaponCap) {
-            Style style = weaponCap.getStyle(patch);
-            return style == CapabilityItem.Styles.ONE_HAND;
+            return weaponCap.getWeaponCategory() == CapabilityItem.WeaponCategories.GREATSWORD ||
+                    weaponCap.getWeaponCategory() == CapabilityItem.WeaponCategories.AXE ||
+                    weaponCap.getWeaponCategory() == CapabilityItem.WeaponCategories.TACHI ||
+                    weaponCap.getWeaponCategory() == CapabilityItem.WeaponCategories.SWORD ||
+                    weaponCap.getWeaponCategory() == CapabilityItem.WeaponCategories.FIST ||
+                    weaponCap.getWeaponCategory() == CapabilityItem.WeaponCategories.DAGGER;
         }
 
         return false;
@@ -114,8 +118,7 @@ public class EquipmentDataLoader extends SimpleJsonResourceReloadListener {
 
             ItemStack itemStack = new ItemStack(item);
             if (slot.equals("MAINHAND")) {
-                LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
-                if (isOneHanded(itemStack, patch)) {
+                if (canTwoHand(itemStack)) {
                     oneHandWeaponInMainHand = itemId;
                 }
             }
