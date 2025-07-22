@@ -44,20 +44,4 @@ public class AnnoyingVillagersModParticleTypes {
     public static final RegistryObject<ParticleType<?>> ENDER = AnnoyingVillagersModParticleTypes.REGISTRY.register("ender", () -> {
         return new SimpleParticleType(true);
     });
-
-    @SubscribeEvent
-    public static void registerParticles(FMLClientSetupEvent event) {
-        event.enqueueWork(() -> {
-            Minecraft.getInstance().particleEngine.register((SimpleParticleType) RED_SPARK.get(), RedSparkParticle::provider);
-            Minecraft.getInstance().particleEngine.register((SimpleParticleType) ELECTRIC_SPARK.get(), ElectricSparkParticle::provider);
-            Minecraft.getInstance().particleEngine.register((SimpleParticleType) ELECTRIC_SPARK_2.get(), ElectricSpark2Particle::provider);
-            Minecraft.getInstance().particleEngine.register((SimpleParticleType) SPARK.get(), SparkParticle::provider);
-            Minecraft.getInstance().particleEngine.register((SimpleParticleType) PE.get(), PeParticle::provider);
-            Minecraft.getInstance().particleEngine.register((SimpleParticleType) GLOWINGEYES.get(), GlowingEyesParticle::provider);
-            Minecraft.getInstance().particleEngine.register((SimpleParticleType) LIGHT.get(), LightParticle::provider);
-            Minecraft.getInstance().particleEngine.register((SimpleParticleType) BLUESPARK.get(), BlueSparkParticle::provider);
-            Minecraft.getInstance().particleEngine.register((SimpleParticleType) GREENSPARK.get(), GreenSparkParticle::provider);
-            Minecraft.getInstance().particleEngine.register((SimpleParticleType) ENDER.get(), EnderParticle::provider);
-        });
-    }
 }
