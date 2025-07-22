@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class ModelVillagerScoutHelmet<T extends Entity> extends EntityModel<T> {
 
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "modelvillagerscouthelmet"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("annoyingvillagers", "modelvillagerscouthelmet"), "main");
     public final ModelPart Head;
 
     public ModelVillagerScoutHelmet(ModelPart modelpart) {

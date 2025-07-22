@@ -178,9 +178,9 @@ public class BleedingProcedure {
                                                                             Level level = (Level)levelaccessor1;
 
                                                                             if (!level.isClientSide()) {
-                                                                                level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                             } else {
-                                                                                level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                             }
                                                                         }
 
@@ -213,9 +213,9 @@ public class BleedingProcedure {
                                                                                     Level level1 = (Level)levelaccessor2;
 
                                                                                     if (!level1.isClientSide()) {
-                                                                                        level1.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                        level1.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                     } else {
-                                                                                        level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                        level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                     }
                                                                                 }
 
@@ -271,9 +271,9 @@ public class BleedingProcedure {
                                                                                             Level level2 = (Level)levelaccessor3;
 
                                                                                             if (!level2.isClientSide()) {
-                                                                                                level2.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                level2.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                             } else {
-                                                                                                level2.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                level2.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                             }
                                                                                         }
 
@@ -308,9 +308,9 @@ public class BleedingProcedure {
                                                                                                     Level level3 = (Level)levelaccessor4;
 
                                                                                                     if (!level3.isClientSide()) {
-                                                                                                        level3.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                        level3.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                                     } else {
-                                                                                                        level3.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                        level3.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                                     }
                                                                                                 }
 
@@ -345,9 +345,9 @@ public class BleedingProcedure {
                                                                                                             Level level4 = (Level)levelaccessor5;
 
                                                                                                             if (!level4.isClientSide()) {
-                                                                                                                level4.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                                level4.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                                             } else {
-                                                                                                                level4.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                                level4.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                                             }
                                                                                                         }
 
@@ -382,9 +382,9 @@ public class BleedingProcedure {
                                                                                                                     Level level5 = (Level)levelaccessor6;
 
                                                                                                                     if (!level5.isClientSide()) {
-                                                                                                                        level5.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                                        level5.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                                                     } else {
-                                                                                                                        level5.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                                        level5.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                                                     }
                                                                                                                 }
 
@@ -416,9 +416,9 @@ public class BleedingProcedure {
                                                                                                                             Level level6 = (Level)levelaccessor7;
 
                                                                                                                             if (!level6.isClientSide()) {
-                                                                                                                                level6.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                                                level6.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                                                             } else {
-                                                                                                                                level6.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                                                level6.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                                                             }
                                                                                                                         }
 
@@ -454,9 +454,9 @@ public class BleedingProcedure {
                                                                                                                                         Level level7 = (Level)levelaccessor8;
 
                                                                                                                                         if (!level7.isClientSide()) {
-                                                                                                                                            level7.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F);
+                                                                                                                                            level7.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F);
                                                                                                                                         } else {
-                                                                                                                                            level7.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F, false);
+                                                                                                                                            level7.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F, false);
                                                                                                                                         }
                                                                                                                                     }
                                                                                                                                 }
@@ -576,9 +576,9 @@ public class BleedingProcedure {
                                                                         Level level = (Level)levelaccessor1;
 
                                                                         if (!level.isClientSide()) {
-                                                                            level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                            level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                         } else {
-                                                                            level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                            level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                         }
                                                                     }
 
@@ -611,9 +611,9 @@ public class BleedingProcedure {
                                                                                 Level level1 = (Level)levelaccessor2;
 
                                                                                 if (!level1.isClientSide()) {
-                                                                                    level1.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                    level1.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                 } else {
-                                                                                    level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                    level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                 }
                                                                             }
 
@@ -668,9 +668,9 @@ public class BleedingProcedure {
                                                                                         Level level2 = (Level)levelaccessor3;
 
                                                                                         if (!level2.isClientSide()) {
-                                                                                            level2.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                            level2.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                         } else {
-                                                                                            level2.playLocalSound(0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                            level2.playLocalSound(0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                         }
                                                                                     }
 
@@ -705,9 +705,9 @@ public class BleedingProcedure {
                                                                                                 Level level3 = (Level)levelaccessor4;
 
                                                                                                 if (!level3.isClientSide()) {
-                                                                                                    level3.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                    level3.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                                 } else {
-                                                                                                    level3.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                    level3.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                                 }
                                                                                             }
 
@@ -742,9 +742,9 @@ public class BleedingProcedure {
                                                                                                         Level level4 = (Level)levelaccessor5;
 
                                                                                                         if (!level4.isClientSide()) {
-                                                                                                            level4.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                            level4.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                                         } else {
-                                                                                                            level4.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                            level4.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                                         }
                                                                                                     }
 
@@ -779,9 +779,9 @@ public class BleedingProcedure {
                                                                                                                 Level level5 = (Level)levelaccessor6;
 
                                                                                                                 if (!level5.isClientSide()) {
-                                                                                                                    level5.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                                    level5.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                                                 } else {
-                                                                                                                    level5.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                                    level5.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                                                 }
                                                                                                             }
 
@@ -814,9 +814,9 @@ public class BleedingProcedure {
                                                                                                                         Level level6 = (Level)levelaccessor7;
 
                                                                                                                         if (!level6.isClientSide()) {
-                                                                                                                            level6.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                                            level6.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                                                         } else {
-                                                                                                                            level6.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                                            level6.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                                                         }
                                                                                                                     }
 
@@ -851,9 +851,9 @@ public class BleedingProcedure {
                                                                                                                                     Level level7 = (Level)levelaccessor8;
 
                                                                                                                                     if (!level7.isClientSide()) {
-                                                                                                                                        level7.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F);
+                                                                                                                                        level7.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F);
                                                                                                                                     } else {
-                                                                                                                                        level7.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F, false);
+                                                                                                                                        level7.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F, false);
                                                                                                                                     }
                                                                                                                                 }
                                                                                                                             }
@@ -970,9 +970,9 @@ public class BleedingProcedure {
                                                                         Level level = (Level) levelaccessor1;
 
                                                                         if (!level.isClientSide()) {
-                                                                            level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                            level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                         } else {
-                                                                            level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                            level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                         }
                                                                     }
 
@@ -996,9 +996,9 @@ public class BleedingProcedure {
                                                                                 Level level1 = (Level) levelaccessor2;
 
                                                                                 if (!level1.isClientSide()) {
-                                                                                    level1.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                    level1.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                 } else {
-                                                                                    level1.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                    level1.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                 }
                                                                             }
 
@@ -1044,9 +1044,9 @@ public class BleedingProcedure {
                                                                                         Level level2 = (Level) levelaccessor3;
 
                                                                                         if (!level2.isClientSide()) {
-                                                                                            level2.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                            level2.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                         } else {
-                                                                                            level2.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                            level2.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                         }
                                                                                     }
 
@@ -1071,9 +1071,9 @@ public class BleedingProcedure {
                                                                                                 Level level3 = (Level) levelaccessor4;
 
                                                                                                 if (!level3.isClientSide()) {
-                                                                                                    level3.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                    level3.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                                 } else {
-                                                                                                    level3.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                    level3.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                                 }
                                                                                             }
 
@@ -1098,9 +1098,9 @@ public class BleedingProcedure {
                                                                                                         Level level4 = (Level) levelaccessor5;
 
                                                                                                         if (!level4.isClientSide()) {
-                                                                                                            level4.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                            level4.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                                         } else {
-                                                                                                            level4.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                            level4.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                                         }
                                                                                                     }
 
@@ -1125,9 +1125,9 @@ public class BleedingProcedure {
                                                                                                                 Level level5 = (Level) levelaccessor6;
 
                                                                                                                 if (!level5.isClientSide()) {
-                                                                                                                    level5.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                                    level5.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                                                 } else {
-                                                                                                                    level5.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                                    level5.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                                                 }
                                                                                                             }
 
@@ -1149,9 +1149,9 @@ public class BleedingProcedure {
                                                                                                                         Level level6 = (Level) levelaccessor7;
 
                                                                                                                         if (!level6.isClientSide()) {
-                                                                                                                            level6.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                                            level6.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                                                         } else {
-                                                                                                                            level6.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                                            level6.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                                                         }
                                                                                                                     }
 
@@ -1177,9 +1177,9 @@ public class BleedingProcedure {
                                                                                                                                     Level level7 = (Level) levelaccessor8;
 
                                                                                                                                     if (!level7.isClientSide()) {
-                                                                                                                                        level7.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F);
+                                                                                                                                        level7.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F);
                                                                                                                                     } else {
-                                                                                                                                        level7.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F, false);
+                                                                                                                                        level7.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F, false);
                                                                                                                                     }
                                                                                                                                 }
                                                                                                                             }

@@ -39,7 +39,7 @@ public abstract class PurpleVillagerGeneralArmorItem extends ArmorItem {
             }
 
             public SoundEvent getEquipSound() {
-                return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.armor.equip_chain"));
+                return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "item.armor.equip_chain"));
             }
 
             public Ingredient getRepairIngredient() {

@@ -17,6 +17,6 @@ public class PurpleVillagerGeneralRenderer extends HumanoidMobRenderer<PurpleVil
     }
 
     public ResourceLocation getTextureLocation(PurpleVillagerGeneralEntity lucunqientity) {
-        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/purple_villager_general.png");
+        return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/purple_villager_general.png");
     }
 }

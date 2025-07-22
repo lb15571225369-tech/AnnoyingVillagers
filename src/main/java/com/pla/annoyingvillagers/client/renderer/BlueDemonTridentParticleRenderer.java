@@ -17,6 +17,6 @@ public class BlueDemonTridentParticleRenderer extends HumanoidMobRenderer<BlueDe
     }
 
     public ResourceLocation getTextureLocation(BlueDemonTridentParticleEntity bdtridententity) {
-        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/empty.png");
+        return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/empty.png");
     }
 }

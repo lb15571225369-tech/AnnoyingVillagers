@@ -16,7 +16,7 @@ import net.minecraft.util.Mth;
 
 public class BlueDemonTridentRenderer extends EntityRenderer<BlueDemonTridentEntity> {
 
-    private static final ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/bluedemontrident.png");
+    private static final ResourceLocation texture = new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/bluedemontrident.png");
     private final ModelBlueDemonTrident model;
 
     public BlueDemonTridentRenderer(Context context) {

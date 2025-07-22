@@ -14,7 +14,7 @@ public class AttachCapabilitiesHandlerProcedure {
     @SubscribeEvent
     public static void onAttachCapabilitiesEntity(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof PlayerMobEntity) {
-            event.addCapability(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "player_mob_inventory"),
+            event.addCapability(new ResourceLocation(AnnoyingVillagers.MODID, "player_mob_inventory"),
                     new PlayerMobInventoryProvider());
         }
     }

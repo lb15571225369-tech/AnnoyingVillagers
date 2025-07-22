@@ -17,6 +17,6 @@ public class BlueVillagerGeneralRenderer extends HumanoidMobRenderer<BlueVillage
     }
 
     public ResourceLocation getTextureLocation(BlueVillagerGeneralEntity lancunqientity) {
-        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/blue_villager_general.png");
+        return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/blue_villager_general.png");
     }
 }

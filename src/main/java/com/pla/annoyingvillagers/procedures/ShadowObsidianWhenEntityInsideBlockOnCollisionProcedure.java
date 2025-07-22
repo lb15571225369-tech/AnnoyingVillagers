@@ -47,9 +47,9 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                 if (levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "obsidian_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.5D, 1.0D));
+                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "obsidian_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.5D, 1.0D));
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "obsidian_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.5D, 1.0D), false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "obsidian_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.5D, 1.0D), false);
                     }
                 }
 
@@ -196,9 +196,9 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                         if (levelaccessor instanceof Level) {
                             level = (Level) levelaccessor;
                             if (!level.isClientSide()) {
-                                level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "heavy_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.5D, 1.2D));
+                                level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "heavy_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.5D, 1.2D));
                             } else {
-                                level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "heavy_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.5D, 1.2D), false);
+                                level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "heavy_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.5D, 1.2D), false);
                             }
                         }
 

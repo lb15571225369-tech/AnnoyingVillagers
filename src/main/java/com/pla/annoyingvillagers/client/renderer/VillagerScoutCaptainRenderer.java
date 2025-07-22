@@ -17,7 +17,7 @@ public class VillagerScoutCaptainRenderer extends HumanoidMobRenderer<VillagerSc
     }
 
     public ResourceLocation getTextureLocation(VillagerScoutCaptainEntity cczdzentity) {
-        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/villager_scout.png");
+        return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/villager_scout.png");
     }
 }
 

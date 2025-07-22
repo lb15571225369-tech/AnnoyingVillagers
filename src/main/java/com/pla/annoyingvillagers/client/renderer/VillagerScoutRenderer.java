@@ -17,6 +17,6 @@ public class VillagerScoutRenderer extends HumanoidMobRenderer<VillagerScoutEnti
     }
 
     public ResourceLocation getTextureLocation(VillagerScoutEntity cunminzhenchabingentity) {
-        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/villager_scout.png");
+        return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/villager_scout.png");
     }
 }

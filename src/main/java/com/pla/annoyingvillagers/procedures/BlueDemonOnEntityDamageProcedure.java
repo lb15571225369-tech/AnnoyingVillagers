@@ -145,7 +145,7 @@ public class BlueDemonOnEntityDamageProcedure {
             String[] parts = soundName.split(":", 2);
             String namespace = parts[0];
             String path = parts[1];
-            SoundEvent sound = ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(namespace, path));
+            SoundEvent sound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(namespace, path));
             if (!level.isClientSide()) {
                 level.playSound(null, new BlockPos(x, y, z), sound, SoundSource.NEUTRAL, 1.0F, 1.0F);
             } else {

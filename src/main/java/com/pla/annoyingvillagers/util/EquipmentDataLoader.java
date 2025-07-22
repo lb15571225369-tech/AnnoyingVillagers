@@ -105,7 +105,7 @@ public class EquipmentDataLoader extends SimpleJsonResourceReloadListener {
             String[] parts = itemId.split(":", 2);
             String namespace = parts[0];
             String path = parts[1];
-            Item item = ForgeRegistries.ITEMS.getValue(ResourceLocation.fromNamespaceAndPath(namespace, path));
+            Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(namespace, path));
             if (item == null) continue;
             int damage = 0;
             if (item.canBeDepleted()) {
@@ -135,7 +135,7 @@ public class EquipmentDataLoader extends SimpleJsonResourceReloadListener {
         String[] parts = itemId.split(":", 2);
         String namespace = parts[0];
         String path = parts[1];
-        Item item = ForgeRegistries.ITEMS.getValue(ResourceLocation.fromNamespaceAndPath(namespace, path));
+        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(namespace, path));
         if (item == null) return Optional.empty();
 
         int damage = 0;

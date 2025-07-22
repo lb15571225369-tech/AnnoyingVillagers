@@ -16,7 +16,7 @@ public class AVSounds {
     }
 
     private static RegistryObject<SoundEvent> registerSound(String name) {
-        ResourceLocation res = ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, name);
+        ResourceLocation res = new ResourceLocation(AnnoyingVillagers.MODID, name);
         return SOUNDS.register(name, () -> new SoundEvent(res));
     }
 

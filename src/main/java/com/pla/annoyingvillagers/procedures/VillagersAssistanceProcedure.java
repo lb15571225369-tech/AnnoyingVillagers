@@ -75,7 +75,7 @@ public class VillagersAssistanceProcedure {
                                 String[] parts = soundId.split(":", 2);
                                 String namespace = parts[0];
                                 String path = parts[1];
-                                SoundEvent sound = ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(namespace, path));
+                                SoundEvent sound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(namespace, path));
                                 if (!lvl.isClientSide()) {
                                     lvl.playSound(null, new BlockPos(x, y, z), sound, SoundSource.NEUTRAL, 1.0F, 2.0F);
                                 } else {

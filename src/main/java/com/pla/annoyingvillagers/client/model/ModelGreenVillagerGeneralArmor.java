@@ -17,7 +17,7 @@ import net.minecraft.world.entity.Entity;
 
 public class ModelGreenVillagerGeneralArmor<T extends Entity> extends EntityModel<T> {
 
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "modelgreenvillagergeneralarmor"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("annoyingvillagers", "modelgreenvillagergeneralarmor"), "main");
     public final ModelPart Body;
     public final ModelPart RightArm;
     public final ModelPart LeftArm;

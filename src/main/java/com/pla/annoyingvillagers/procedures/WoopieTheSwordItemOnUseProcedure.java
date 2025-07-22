@@ -77,9 +77,9 @@ public class WoopieTheSwordItemOnUseProcedure {
                                 if (levelaccessor1 instanceof Level) {
                                     level = (Level)levelaccessor1;
                                     if (!level.isClientSide()) {
-                                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.ender_dragon.flap")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.ender_dragon.flap")), SoundSource.BLOCKS, 1.0F, 1.0F);
                                     } else {
-                                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.ender_dragon.flap")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.ender_dragon.flap")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                                     }
                                 }
 
@@ -87,9 +87,9 @@ public class WoopieTheSwordItemOnUseProcedure {
                                 if (levelaccessor1 instanceof Level) {
                                     level = (Level)levelaccessor1;
                                     if (!level.isClientSide()) {
-                                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "wing")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "wing")), SoundSource.BLOCKS, 1.0F, 1.0F);
                                     } else {
-                                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "wing")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "wing")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                                     }
                                 }
 
@@ -133,18 +133,18 @@ public class WoopieTheSwordItemOnUseProcedure {
                             if (levelaccessor instanceof Level) {
                                 level = (Level)levelaccessor;
                                 if (!level.isClientSide()) {
-                                    level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.ender_dragon.flap")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                                    level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.ender_dragon.flap")), SoundSource.BLOCKS, 1.0F, 1.0F);
                                 } else {
-                                    level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.ender_dragon.flap")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                                    level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.ender_dragon.flap")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                                 }
                             }
 
                             if (levelaccessor instanceof Level) {
                                 level = (Level)levelaccessor;
                                 if (!level.isClientSide()) {
-                                    level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "wing")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                                    level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "wing")), SoundSource.BLOCKS, 1.0F, 1.0F);
                                 } else {
-                                    level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("annoyingvillagers", "wing")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                                    level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "wing")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                                 }
                             }
 

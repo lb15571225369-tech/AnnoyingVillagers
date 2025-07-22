@@ -42,7 +42,7 @@ public class AnnoyingVillagers {
     public static final Logger LOGGER = LogManager.getLogger(AnnoyingVillagers.class);
     public static final String MODID = "annoyingvillagers";
     private static final String PROTOCOL_VERSION = "1";
-    public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "main"), () -> {
+    public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(new ResourceLocation(AnnoyingVillagers.MODID, "main"), () -> {
         return "1";
     }, "1"::equals, "1"::equals);
     private static int messageID = 0;

@@ -129,18 +129,18 @@ public class GuardBreakProcedure {
                 if (levelaccessor instanceof Level) {
                     level = (Level)levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "s_g")), SoundSource.NEUTRAL, 2.0F, 1.0F);
+                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "s_g")), SoundSource.NEUTRAL, 2.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "s_g")), SoundSource.NEUTRAL, 2.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "s_g")), SoundSource.NEUTRAL, 2.0F, 1.0F, false);
                     }
                 }
 
                 if (levelaccessor instanceof Level) {
                     level = (Level)levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "s_g_hit")), SoundSource.NEUTRAL, 3.0F, (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.7D, 1.2D));
+                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "s_g_hit")), SoundSource.NEUTRAL, 3.0F, (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.7D, 1.2D));
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "s_g_hit")), SoundSource.NEUTRAL, 3.0F, (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.7D, 1.2D), false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "s_g_hit")), SoundSource.NEUTRAL, 3.0F, (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.7D, 1.2D), false);
                     }
                 }
 
