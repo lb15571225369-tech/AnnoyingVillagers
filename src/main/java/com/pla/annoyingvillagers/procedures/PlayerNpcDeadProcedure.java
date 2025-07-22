@@ -475,7 +475,7 @@ public class PlayerNpcDeadProcedure {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                                     playerlist1 = levelaccessor.getServer().getPlayerList();
                                     s1 = entity.getDisplayName().getString();
-                                    playerlist1.broadcastSystemMessage(Component.literal("<" + s1 + "> " + entity1.getDisplayName().getString() + " , your mom is dead. F** your mom"), false);
+                                    playerlist1.broadcastSystemMessage(Component.literal("<" + s1 + "> " + entity1.getDisplayName().getString() + " , your should die. F**"), false);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
@@ -503,7 +503,7 @@ public class PlayerNpcDeadProcedure {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                                     playerlist1 = levelaccessor.getServer().getPlayerList();
                                     s1 = entity.getDisplayName().getString();
-                                    playerlist1.broadcastSystemMessage(Component.literal("<" + s1 + "> " + entity1.getDisplayName().getString() + ", f*** your mom! Dare to fight fair with proper gear?\ud83d\ude21"), false);
+                                    playerlist1.broadcastSystemMessage(Component.literal("<" + s1 + "> " + entity1.getDisplayName().getString() + ", f*** you! Dare to fight fair with proper gear?\ud83d\ude21"), false);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
@@ -555,7 +555,7 @@ public class PlayerNpcDeadProcedure {
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + entity.getDisplayName().getString() + "> Idiot, f** your mom\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95"), false);
+                                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + entity.getDisplayName().getString() + "> Idiot, f** you \ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95\ud83d\udd95"), false);
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 entity2 = entity;
