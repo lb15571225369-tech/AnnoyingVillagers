@@ -23,7 +23,6 @@ import java.util.Random;
 public class IdleHandlerProcedure {
     static Random RANDOM = new Random();
     public enum IdleAction {
-        NOTHING,
         BURN_ITEM,
         PLAY_ANIMATION,
     }
@@ -40,11 +39,14 @@ public class IdleHandlerProcedure {
         }
     }
 
+    public static IdleAction getRandomIdleAction() {
+        return RANDOM.nextFloat() < 0.8f ? IdleAction.BURN_ITEM : IdleAction.PLAY_ANIMATION;
+    }
+
     private static void scheduleIdleActionDecision(Mob mob) {
         CompoundTag data = mob.getPersistentData();
         if (!data.contains("av_idle_action")) {
-            LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(mob, LivingEntityPatch.class);
-            IdleAction action = IdleAction.values()[RANDOM.nextInt(IdleAction.values().length)];
+            IdleAction action = getRandomIdleAction();
             data.putString("av_idle_action", action.toString());
             performIdleAction(mob, action);
         } else {
@@ -93,9 +95,6 @@ public class IdleHandlerProcedure {
             return;
         }
         switch (action) {
-            case NOTHING -> {
-
-            }
             case BURN_ITEM -> {
                 List<ItemEntity> nearbyItems = mob.level.getEntitiesOfClass(ItemEntity.class, mob.getBoundingBox().inflate(2));
                 if (!nearbyItems.isEmpty() && !data.contains("av_idle_burn_backup_main_hand")) {
