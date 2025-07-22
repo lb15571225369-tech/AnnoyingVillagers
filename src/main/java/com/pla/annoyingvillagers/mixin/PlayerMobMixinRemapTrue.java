@@ -42,6 +42,10 @@ public class PlayerMobMixinRemapTrue {
     private void teleportToSurfaceIfUnderground(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag, CallbackInfoReturnable<SpawnGroupData> cir) {
         PlayerMobEntity self = (PlayerMobEntity) (Object) this;
 
+        if (reason == MobSpawnType.SPAWN_EGG) {
+            return;
+        }
+
         if (world instanceof ServerLevel level && level.isDay()) {
             float roll = world.getRandom().nextFloat();
 

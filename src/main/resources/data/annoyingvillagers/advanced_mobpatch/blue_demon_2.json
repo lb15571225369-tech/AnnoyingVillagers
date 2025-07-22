@@ -106,6 +106,7 @@
 								{"predicate":"within_distance", "min": 0.0, "max": 1.9}, {"predicate":"guard_break", "invert": true},
 								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
+							"animation": "epicfight:biped/living/idle",
 							"play_speed": 1.1,
 							"guard": 1
 						}
@@ -130,6 +131,7 @@
 								{"predicate":"within_distance", "min": 0.0, "max": 2.0}, {"predicate":"guard_break", "invert": true},
 								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
+							"animation": "epicfight:biped/living/idle",
 							"convert_time": 0.15,
 							"guard": 1
 						},
@@ -147,6 +149,7 @@
 								{"predicate":"within_distance", "min": 0.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
 								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
+							"animation": "epicfight:biped/living/idle",
 							"guard": 1,
 							"play_speed": 1.1
 						},
@@ -163,6 +166,7 @@
 								{"predicate":"within_distance", "min": 0.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
 								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
+							"animation": "epicfight:biped/living/idle",
 							"guard": 1,
 							"play_speed": 1.1
 						},
@@ -180,6 +184,7 @@
 								{"predicate":"within_distance", "min": 0.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
 								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
+							"animation": "epicfight:biped/living/idle",
 							"guard": 1,
 							"play_speed": 1.1
 						},
@@ -197,6 +202,7 @@
 								{"predicate":"within_distance", "min": 0.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
 								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
+							"animation": "epicfight:biped/living/idle",
 							"guard": 1,
 							"play_speed": 1.1
 						},
@@ -214,6 +220,7 @@
 								{"predicate":"within_distance", "min": 0.0, "max": 5.0}, {"predicate":"guard_break", "invert": true},
 								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
+							"animation": "epicfight:biped/living/idle",
 							"guard": 1,
 							"play_speed": 1.1
 						},
@@ -231,6 +238,7 @@
 								{"predicate":"within_distance", "min": 0.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
 								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
+							"animation": "epicfight:biped/living/idle",
 							"guard": 1,
 							"play_speed": 1.1
 						},
@@ -248,6 +256,7 @@
 								{"predicate":"within_distance", "min": 0.0, "max": 1.8}, {"predicate":"guard_break", "invert": true},
 								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
+							"animation": "epicfight:biped/living/idle",
 							"guard": 1,
 							"play_speed": 1.1
 						},
@@ -265,6 +274,7 @@
 								{"predicate":"within_distance", "min": 0.0, "max": 1.9}, {"predicate":"guard_break", "invert": true},
 								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
+							"animation": "epicfight:biped/living/idle",
 							"guard": 1,
 							"play_speed": 1.1
 						},
@@ -282,6 +292,7 @@
 								{"predicate":"within_distance", "min": 1.0, "max": 1.0}, {"predicate":"guard_break", "invert": true},
 								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
+							"animation": "epicfight:biped/living/idle",
 							"guard": 1,
 							"play_speed": 1.1
 						},
@@ -297,6 +308,7 @@
 								{"predicate":"within_distance", "min": 3.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
 								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
+							"animation": "epicfight:biped/living/idle",
 							"guard": 1,
 							"play_speed": 1.1
 						}
@@ -312,6 +324,7 @@
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 5.0}
 							],
+							"animation": "epicfight:biped/living/idle",
 							"convert_time": 1,
 							"guard": 1
 						}
@@ -389,6 +402,7 @@
 							"conditions": [
 								{"predicate":"within_distance", "min": 1.0, "max": 2.0}
 							],
+							"animation": "epicfight:biped/living/idle",
 							"guard": 1
 						}
                     ]                 
@@ -565,6 +579,7 @@
 								
 								{"predicate":"within_distance", "min": 1.0, "max": 10.0}
 							],
+							"animation": "epicfight:biped/living/idle",
 							"guard": 1,
 							"play_speed": 1.1,
 							"convert_time": 0.15,
@@ -634,6 +649,7 @@
 								{"predicate":"within_distance", "min": 0.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
 								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
+							"animation": "epicfight:biped/living/idle",
 							"play_speed": 1.1
 						},
 						{
@@ -710,6 +726,7 @@
 								{"predicate":"within_distance", "min": 0.0, "max": 1.9}, {"predicate":"guard_break", "invert": true},
 								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
+							"animation": "epicfight:biped/living/idle",
 							"play_speed": 1.1
 						},
 						{
@@ -724,6 +741,7 @@
 								{"predicate":"within_distance", "min": 1.0, "max": 1.0}, {"predicate":"guard_break", "invert": true},
 								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
+							"animation": "epicfight:biped/living/idle",
 							"play_speed": 1.1
 						},
 						{
@@ -738,6 +756,7 @@
 								{"predicate":"within_distance", "min": 3.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
 								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
+							"animation": "epicfight:biped/living/idle",
 							"guard": 1,
 							"play_speed": 1.1
 						}
@@ -822,6 +841,7 @@
 							"conditions": [
 								{"predicate":"within_distance", "min": 7.0, "max": 20.0}, {"predicate":"within_angle", "min": -30.0, "max": 30.0}
 							],
+							"animation": "epicfight:biped/living/idle",
 							"guard": 1
 						},
 						{
@@ -947,6 +967,7 @@
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 4.0},{"predicate": "attack_level", "min":1,"max":8}
 							],
+							"animation": "epicfight:biped/living/idle",
 							"convert_time": 1,
 							"guard": 1
 						}
@@ -962,6 +983,7 @@
 								{"predicate":"within_distance", "min": 0.0, "max": 1.9}, {"predicate":"guard_break", "invert": true},
 								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
+							"animation": "epicfight:biped/living/idle",
 							"guard": 1
 						}
                     ]                 
@@ -1064,6 +1086,7 @@
 								{"predicate":"within_distance", "min": 3.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
 								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
+							"animation": "epicfight:biped/living/idle",
 							"guard": 1
 						}
                         ]                 
@@ -1139,6 +1162,7 @@
 							"conditions": [
 								{"predicate":"within_distance", "min": 1.0, "max": 2.0}
 							],
+							"animation": "epicfight:biped/living/idle",
 							"guard": 1
 						}
                     ]                 
@@ -1208,6 +1232,7 @@
 							"conditions": [
 								{"predicate":"within_distance", "min": 3.0, "max": 8.0},{"predicate": "attack_level", "min":1,"max":2}
 							],
+							"animation": "epicfight:biped/living/idle",
 							"guard": 45
 						}
                     ]                 
@@ -1223,6 +1248,7 @@
 								{"predicate":"within_distance", "min": 2.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
 								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
+							"animation": "epicfight:biped/living/idle",
 							"guard": 40
 						}
                     ]                 
