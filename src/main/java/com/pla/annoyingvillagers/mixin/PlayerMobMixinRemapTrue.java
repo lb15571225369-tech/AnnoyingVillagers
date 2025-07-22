@@ -43,12 +43,39 @@ public class PlayerMobMixinRemapTrue {
         PlayerMobEntity self = (PlayerMobEntity) (Object) this;
 
         if (world instanceof ServerLevel level && level.isDay()) {
-            BlockPos pos = self.blockPosition();
-            int currentY = pos.getY();
-            int surfaceY = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, pos).getY();
-            if (currentY < surfaceY - 5 && world.getRandom().nextFloat() < 0.6F) {
-                BlockPos surfacePos = new BlockPos(pos.getX(), surfaceY, pos.getZ());
-                self.setPos(surfacePos.getX() + 0.5, surfacePos.getY(), surfacePos.getZ() + 0.5);
+            float roll = world.getRandom().nextFloat();
+
+            if (roll < 0.8F) {
+                self.discard();
+            } else if (roll < 0.9F) {
+                BlockPos pos = self.blockPosition();
+                int currentY = pos.getY();
+                int surfaceY = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, pos).getY();
+                if (currentY < surfaceY - 5) {
+                    BlockPos surfacePos = new BlockPos(pos.getX(), surfaceY, pos.getZ());
+                    if (!world.getLevel().getBlockState(surfacePos).getMaterial().isLiquid()) {
+                        self.setPos(surfacePos.getX() + 0.5, surfacePos.getY(), surfacePos.getZ() + 0.5);
+                    } else {
+                        final int radius = 30;
+                        for (int dx = -radius; dx <= radius; dx++) {
+                            for (int dz = -radius; dz <= radius; dz++) {
+                                BlockPos candidateXZ = pos.offset(dx, 0, dz);
+                                int candidateY = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, candidateXZ).getY();
+                                BlockPos candidateSurface = new BlockPos(candidateXZ.getX(), candidateY, candidateXZ.getZ());
+
+                                if (!world.getLevel().getBlockState(candidateSurface).getMaterial().isLiquid()) {
+                                    self.setPos(candidateSurface.getX() + 0.5, candidateSurface.getY(), candidateSurface.getZ() + 0.5);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        } else {
+            if (world.getRandom().nextFloat() < 0.8F) {
+                self.discard();
             }
         }
     }

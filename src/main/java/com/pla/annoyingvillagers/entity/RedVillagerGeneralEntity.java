@@ -72,12 +72,12 @@ public class RedVillagerGeneralEntity extends PathfinderMob {
         this.getNavigation().getNodeEvaluator().setCanOpenDoors(true);
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this, new Class[0])).setAlertOthers(new Class[0]));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, Monster.class, true, false));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal(this, BlueDemonEntity.class, true, false));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal(this, BlueDemon2Entity.class, true, false));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal(this, HerobrineEntity.class, true, false));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal(this, HerobrineEntity.class, true, false));
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, PlayerMobEntity.class, true, false));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal(this, PlayerMobEntity.class, true, false));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, Player.class, true, false));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, BlueDemonEntity.class, true, false));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, BlueDemon2Entity.class, true, false));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, HerobrineEntity.class, true, false));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, HerobrineEntity.class, true, false));
         this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.5D, false) {
             protected double getAttackReachSqr(LivingEntity livingentity) {
                 return (double) (this.mob.getBbWidth() * this.mob.getBbWidth() + livingentity.getBbWidth());
