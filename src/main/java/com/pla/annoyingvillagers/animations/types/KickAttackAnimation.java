@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.Optional;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,12 +22,13 @@ import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.EntityState;
 import yesman.epicfight.api.animation.types.EntityState.StateFactor;
 import yesman.epicfight.api.client.animation.Layer.Priority;
+import yesman.epicfight.api.client.animation.property.ClientAnimationProperties;
 import yesman.epicfight.api.client.animation.property.JointMask;
 import yesman.epicfight.api.client.animation.property.JointMask.BindModifier;
 import yesman.epicfight.api.client.animation.property.JointMaskEntry;
 import yesman.epicfight.api.collider.Collider;
 import yesman.epicfight.api.model.Armature;
-import yesman.epicfight.api.utils.TypeFlexibleHashMap;
+import yesman.epicfight.api.utils.datastruct.TypeFlexibleHashMap;
 import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.damagesource.EpicFightDamageSource;
@@ -34,6 +36,17 @@ import yesman.epicfight.world.damagesource.StunType;
 import yesman.epicfight.world.gamerule.EpicFightGamerules;
 
 public class KickAttackAnimation extends AttackAnimation {
+    void init() {
+        if (!this.properties.containsKey(AttackAnimationProperty.BASIS_ATTACK_SPEED)) {
+            float mfloat = Float.parseFloat(String.format(Locale.US, "%.2f", 1.0F / this.getTotalTime()));
+            this.addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, mfloat);
+        }
+        JointMaskEntry jointMask = JointMaskEntry.builder()
+                .defaultMask(JointMaskEntry.BIPED_UPPER_JOINTS_WITH_ROOT)
+                .create();
+
+        this.addProperty(ClientAnimationProperties.JOINT_MASK, jointMask);
+    }
 
     public KickAttackAnimation(float f, float f1, float f2, float f3, @Nullable Collider collider, Joint joint, String s, Armature armature) {
         this(f, f1, f1, f2, f3, collider, joint, s, armature);
@@ -49,10 +62,12 @@ public class KickAttackAnimation extends AttackAnimation {
 
     public KickAttackAnimation(float f, String s, Armature armature, boolean flag, Phase... aphase) {
         super(f, s, armature, aphase);
+        init();
     }
 
     public KickAttackAnimation(float f, String s, Armature armature, Phase... aphase) {
         super(f, s, armature, aphase);
+        init();
         this.newTimePair(0.0F, Float.MAX_VALUE);
         this.addStateRemoveOld(EntityState.TURNING_LOCKED, false);
         this.addProperty(ActionAnimationProperty.COORD_SET_BEGIN, MoveCoordFunctions.TRACE_LOC_TARGET);
@@ -85,22 +100,12 @@ public class KickAttackAnimation extends AttackAnimation {
         });
     }
 
-    protected void onLoaded() {
-        super.onLoaded();
-        if (!this.properties.containsKey(AttackAnimationProperty.BASIS_ATTACK_SPEED)) {
-            float f = Float.parseFloat(String.format(Locale.US, "%.2f", 1.0F / this.totalTime));
-
-            this.addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, f);
-        }
-
-    }
-
     public void end(LivingEntityPatch<?> livingentitypatch, DynamicAnimation dynamicanimation, boolean flag) {
         super.end(livingentitypatch, dynamicanimation, flag);
-        boolean flag1 = ((BooleanValue) ((LivingEntity) livingentitypatch.getOriginal()).level.getGameRules().getRule(EpicFightGamerules.STIFF_COMBO_ATTACKS)).get();
+        boolean flag1 = ((BooleanValue) ((LivingEntity) livingentitypatch.getOriginal()).level().getGameRules().getRule(EpicFightGamerules.STIFF_COMBO_ATTACKS)).get();
 
         if (!flag && !dynamicanimation.isMainFrameAnimation() && livingentitypatch.isLogicalClient() && !flag1) {
-            float f = 0.05F * this.getPlaySpeed(livingentitypatch);
+            float f = 0.05F * this.getPlaySpeed(livingentitypatch, dynamicanimation);
 
             livingentitypatch.getClientAnimator().baseLayer.copyLayerTo(livingentitypatch.getClientAnimator().baseLayer.getLayer(Priority.HIGHEST), f);
         }
@@ -110,7 +115,7 @@ public class KickAttackAnimation extends AttackAnimation {
     public TypeFlexibleHashMap<StateFactor<?>> getStatesMap(LivingEntityPatch<?> livingentitypatch, float f) {
         TypeFlexibleHashMap<StateFactor<?>> typeflexiblehashmap = super.getStatesMap(livingentitypatch, f);
 
-        if (!((BooleanValue) ((LivingEntity) livingentitypatch.getOriginal()).level.getGameRules().getRule(EpicFightGamerules.STIFF_COMBO_ATTACKS)).get()) {
+        if (!((BooleanValue) ((LivingEntity) livingentitypatch.getOriginal()).level().getGameRules().getRule(EpicFightGamerules.STIFF_COMBO_ATTACKS)).get()) {
             typeflexiblehashmap.put(EntityState.MOVEMENT_LOCKED, Optional.of(false));
         }
 
@@ -127,21 +132,6 @@ public class KickAttackAnimation extends AttackAnimation {
         return vec3;
     }
 
-    public boolean isJointEnabled(LivingEntityPatch<?> livingentitypatch, Priority priority, String s) {
-        return priority == Priority.HIGHEST ? !JointMaskEntry.BASIC_ATTACK_MASK.isMasked(livingentitypatch.getCurrentLivingMotion(), s) : super.isJointEnabled(livingentitypatch, priority, s);
-    }
-
-    public BindModifier getBindModifier(LivingEntityPatch<?> livingentitypatch, Priority priority, String s) {
-        if (priority == Priority.HIGHEST) {
-            List<JointMask> list = JointMaskEntry.BIPED_UPPER_JOINTS_WITH_ROOT;
-            int i = list.indexOf(JointMask.of(s));
-
-            return i >= 0 ? ((JointMask) list.get(i)).getBindModifier() : null;
-        } else {
-            return super.getBindModifier(livingentitypatch, priority, s);
-        }
-    }
-
     public boolean isBasicAttackAnimation() {
         return true;
     }
@@ -152,7 +142,7 @@ public class KickAttackAnimation extends AttackAnimation {
         String s3;
         int i;
 
-        if (entity.level.getBlockState(new BlockPos(new Vec3(entity.getX(), entity.getY() - 1.0D, entity.getZ()))).isAir() && epicfightdamagesource.getStunType() != StunType.FALL) {
+        if (entity.level().getBlockState(new BlockPos(new Vec3i((int) entity.getX(), (int) entity.getY() - 1, (int) entity.getZ()))).isAir() && epicfightdamagesource.getStunType() != StunType.FALL) {
             s2 = String.valueOf(this.getId());
             s3 = s2 + "-" + String.valueOf(phase.contact);
             if (s.split(":").length > 3) {

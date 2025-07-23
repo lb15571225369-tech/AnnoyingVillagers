@@ -2,14 +2,15 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -54,7 +55,7 @@ public class BlueDemon2Entity extends Monster {
 
     public BlueDemon2Entity(EntityType<BlueDemon2Entity> entitytype, Level level) {
         super(entitytype, level);
-        this.maxUpStep = 3.0F;
+        this.setMaxUpStep(3.0F);
         this.xpReward = 400;
         this.setNoAi(false);
         this.setCustomName(Component.literal("§bBlue Demon§r"));
@@ -65,7 +66,7 @@ public class BlueDemon2Entity extends Monster {
         this.setItemSlot(EquipmentSlot.CHEST, new ItemStack((ItemLike) AnnoyingVillagersModItems.BLUE_DEMON_CHESTPLATE.get()));
     }
 
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -108,12 +109,20 @@ public class BlueDemon2Entity extends Monster {
 
     public boolean hurt(DamageSource damagesource, float f) {
         BlueDemon2ParryingProcedure.execute(this);
-        return damagesource.getDirectEntity() instanceof AbstractArrow ? false : (damagesource == DamageSource.FALL ? false : (damagesource == DamageSource.CACTUS ? false : (damagesource == DamageSource.DROWN ? false : (damagesource == DamageSource.LIGHTNING_BOLT ? false : (damagesource.getMsgId().equals("trident") ? false : (damagesource == DamageSource.WITHER ? false : (damagesource.getMsgId().equals("witherSkull") ? false : super.hurt(damagesource, f))))))));
+        if (damagesource.getDirectEntity() instanceof AbstractArrow) return false;
+        if (damagesource.is(DamageTypes.FALL)) return false;
+        if (damagesource.is(DamageTypes.CACTUS)) return false;
+        if (damagesource.is(DamageTypes.DROWN)) return false;
+        if (damagesource.is(DamageTypes.LIGHTNING_BOLT)) return false;
+        if (damagesource.is(DamageTypes.WITHER)) return false;
+        if (damagesource.is(DamageTypes.TRIDENT)) return false;
+        if (damagesource.is(DamageTypes.WITHER_SKULL)) return false;
+        return super.hurt(damagesource, f);
     }
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
-        BlueDemon2OnEntityDeathProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
+        BlueDemon2OnEntityDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
@@ -125,12 +134,12 @@ public class BlueDemon2Entity extends Monster {
 
     public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
         super.awardKillScore(entity, i, damagesource);
-        BlueDemonOnEntityKillOtherEntityProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), entity);
+        BlueDemonOnEntityKillOtherEntityProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), entity);
     }
 
     public void baseTick() {
         super.baseTick();
-        BlueDemon2OnEntityUpdateProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
+        BlueDemon2OnEntityUpdateProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
     public static void init() {}

@@ -19,9 +19,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.LootContext.Builder;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -37,13 +38,17 @@ import com.pla.annoyingvillagers.procedures.DarkObSsOnPlaceProcedure;
 public class DarkObSsBlock extends Block {
 
     public DarkObSsBlock() {
-        super(Properties.of(Material.STONE).sound(SoundType.STONE).strength(3.0F, 50.0F).speedFactor(0.0F).jumpFactor(0.0F).noOcclusion().hasPostProcess((blockstate, blockgetter, blockpos) -> {
-            return true;
-        }).emissiveRendering((blockstate, blockgetter, blockpos) -> {
-            return true;
-        }).isRedstoneConductor((blockstate, blockgetter, blockpos) -> {
-            return false;
-        }).dynamicShape());
+        super(Properties.of()
+                .sound(SoundType.STONE)
+                .offsetType(OffsetType.XYZ)
+                .strength(3.0F, 50.0F)
+                .speedFactor(0.0F)
+                .jumpFactor(0.0F)
+                .noOcclusion()
+                .hasPostProcess((state, getter, pos) -> true)
+                .emissiveRendering((state, getter, pos) -> true)
+                .isRedstoneConductor((state, getter, pos) -> false)
+                .dynamicShape());
     }
 
     public boolean propagatesSkylightDown(BlockState blockstate, BlockGetter blockgetter, BlockPos blockpos) {
@@ -62,16 +67,12 @@ public class DarkObSsBlock extends Block {
         return Shapes.or(box(6.0D, 0.0D, -9.0D, 10.0D, 4.0D, 7.0D), new VoxelShape[]{box(8.0D, 0.0D, -1.0D, 12.0D, 4.0D, 15.0D), box(5.0D, 4.0D, 11.0D, 9.0D, 8.0D, 27.0D)});
     }
 
-    public OffsetType getOffsetType() {
-        return OffsetType.XYZ;
-    }
-
     public PushReaction getPistonPushReaction(BlockState blockstate) {
         return PushReaction.BLOCK;
     }
 
-    public List<ItemStack> getDrops(BlockState blockstate, Builder builder) {
-        List<ItemStack> list = super.getDrops(blockstate, builder);
+    public List<ItemStack> getDrops(BlockState blockstate, LootParams.Builder pParams) {
+        List<ItemStack> list = super.getDrops(blockstate, pParams);
 
         return !list.isEmpty() ? list : Collections.singletonList(new ItemStack(this, 1));
     }

@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.entity;
 
 import java.util.Random;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -44,7 +45,7 @@ public class DarkOBFarEntity extends AbstractArrow implements ItemSupplier {
         super(entitytype, livingentity, level);
     }
 
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -64,12 +65,12 @@ public class DarkOBFarEntity extends AbstractArrow implements ItemSupplier {
 
     public void onHitEntity(EntityHitResult entityhitresult) {
         super.onHitEntity(entityhitresult);
-        DarkObFarEntityOnHitEntityProcedure.execute(this.level, this.getX(), this.getY(), this.getZ());
+        DarkObFarEntityOnHitEntityProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ());
     }
 
     public void onHitBlock(BlockHitResult blockhitresult) {
         super.onHitBlock(blockhitresult);
-        DarkObFarEntityOnHitBlockProcedure.execute(this.level, (double) blockhitresult.getBlockPos().getX(), (double) blockhitresult.getBlockPos().getY(), (double) blockhitresult.getBlockPos().getZ(), this.getOwner());
+        DarkObFarEntityOnHitBlockProcedure.execute(this.level(), (double) blockhitresult.getBlockPos().getX(), (double) blockhitresult.getBlockPos().getY(), (double) blockhitresult.getBlockPos().getZ(), this.getOwner());
     }
 
     public void tick() {
@@ -94,7 +95,7 @@ public class DarkOBFarEntity extends AbstractArrow implements ItemSupplier {
     }
 
     public static DarkOBFarEntity shoot(LivingEntity livingentity, LivingEntity livingentity1) {
-        DarkOBFarEntity darkobfarentity = new DarkOBFarEntity((EntityType) AnnoyingVillagersModEntities.DARK_OB_FAR.get(), livingentity, livingentity.level);
+        DarkOBFarEntity darkobfarentity = new DarkOBFarEntity((EntityType) AnnoyingVillagersModEntities.DARK_OB_FAR.get(), livingentity, livingentity.level());
         double d0 = livingentity1.getX() - livingentity.getX();
         double d1 = livingentity1.getY() + (double) livingentity1.getEyeHeight() - 1.1D;
         double d2 = livingentity1.getZ() - livingentity.getZ();
@@ -104,8 +105,8 @@ public class DarkOBFarEntity extends AbstractArrow implements ItemSupplier {
         darkobfarentity.setBaseDamage(9.0D);
         darkobfarentity.setKnockback(0);
         darkobfarentity.setCritArrow(false);
-        livingentity.level.addFreshEntity(darkobfarentity);
-        livingentity.level.playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.arrow.shoot")), SoundSource.PLAYERS, 1.0F, 1.0F / ((new Random()).nextFloat() * 0.5F + 1.0F));
+        livingentity.level().addFreshEntity(darkobfarentity);
+        livingentity.level().playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.arrow.shoot")), SoundSource.PLAYERS, 1.0F, 1.0F / ((new Random()).nextFloat() * 0.5F + 1.0F));
         return darkobfarentity;
     }
 }

@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.Property;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -41,15 +41,15 @@ public class EnchantBedBlock extends Block {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     public EnchantBedBlock() {
-        super(Properties.of(Material.WOOD).sound(SoundType.WOOD).strength(1.25F, 10.0F).lightLevel((blockstate) -> {
-            return 2;
-        }).jumpFactor(5.0F).noOcclusion().hasPostProcess((blockstate, blockgetter, blockpos) -> {
-            return true;
-        }).emissiveRendering((blockstate, blockgetter, blockpos) -> {
-            return true;
-        }).isRedstoneConductor((blockstate, blockgetter, blockpos) -> {
-            return false;
-        }));
+        super(Properties.of()
+                .sound(SoundType.WOOD)
+                .strength(1.25F, 10.0F)
+                .lightLevel((blockstate) -> 2)
+                .jumpFactor(5.0F)
+                .noOcclusion()
+                .hasPostProcess((blockstate, blockgetter, blockpos) -> true)
+                .emissiveRendering((blockstate, blockgetter, blockpos) -> true)
+                .isRedstoneConductor((blockstate, blockgetter, blockpos) -> false));
         this.registerDefaultState((BlockState) ((BlockState) this.stateDefinition.any()).setValue(EnchantBedBlock.FACING, Direction.NORTH));
     }
 
@@ -106,8 +106,8 @@ public class EnchantBedBlock extends Block {
         return blockstate.rotate(mirror.getRotation((Direction) blockstate.getValue(EnchantBedBlock.FACING)));
     }
 
-    public List<ItemStack> getDrops(BlockState blockstate, net.minecraft.world.level.storage.loot.LootContext.Builder net_minecraft_world_level_storage_loot_lootcontext_builder) {
-        List<ItemStack> list = super.getDrops(blockstate, net_minecraft_world_level_storage_loot_lootcontext_builder);
+    public List<ItemStack> getDrops(BlockState blockstate, LootParams.Builder pParams) {
+        List<ItemStack> list = super.getDrops(blockstate, pParams);
 
         return !list.isEmpty() ? list : Collections.singletonList(new ItemStack((ItemLike) AnnoyingVillagersModItems.ENCHANT_BED_ITEM.get()));
     }

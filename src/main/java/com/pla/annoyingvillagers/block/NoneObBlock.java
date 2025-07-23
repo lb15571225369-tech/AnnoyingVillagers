@@ -3,7 +3,6 @@ package com.pla.annoyingvillagers.block;
 import java.util.Collections;
 import java.util.List;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -16,8 +15,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.LootContext.Builder;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
@@ -27,14 +26,17 @@ import com.pla.annoyingvillagers.procedures.NoneObPlaceBlockProcedure;
 public class NoneObBlock extends Block {
 
     public NoneObBlock() {
-        super(Properties.of(Material.STONE).sound(SoundType.GRAVEL).strength(1.0F, 10.0F).noCollission());
+        super(Properties.of()
+                .sound(SoundType.GRAVEL)
+                .strength(1.0F, 10.0F)
+                .noCollission());
     }
 
     public int getLightBlock(BlockState blockstate, BlockGetter blockgetter, BlockPos blockpos) {
         return 15;
     }
 
-    public List<ItemStack> getDrops(BlockState blockstate, Builder builder) {
+    public List<ItemStack> getDrops(BlockState blockstate, LootParams.Builder builder) {
         List<ItemStack> list = super.getDrops(blockstate, builder);
 
         return !list.isEmpty() ? list : Collections.singletonList(new ItemStack(this, 1));

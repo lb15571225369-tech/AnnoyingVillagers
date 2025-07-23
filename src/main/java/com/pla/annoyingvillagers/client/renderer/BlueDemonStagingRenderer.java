@@ -15,7 +15,11 @@ public class BlueDemonStagingRenderer extends HumanoidMobRenderer<BlueDemonStagi
 
     public BlueDemonStagingRenderer(Context context) {
         super(context, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER)), 0.0F);
-        this.addLayer(new HumanoidArmorLayer(this, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)), new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR))));
+        this.addLayer(new HumanoidArmorLayer(
+                this,
+                new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)),
+                new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)),
+                context.getModelManager()));
     }
 
     public ResourceLocation getTextureLocation(BlueDemonStagingEntity bluedemonrentity) {
@@ -23,7 +27,7 @@ public class BlueDemonStagingRenderer extends HumanoidMobRenderer<BlueDemonStagi
     }
 
     protected boolean isShaking(BlueDemonStagingEntity bluedemonrentity) {
-        Level level = bluedemonrentity.level;
+        Level level = bluedemonrentity.level();
         double d0 = bluedemonrentity.getX();
         double d1 = bluedemonrentity.getY();
         double d2 = bluedemonrentity.getZ();

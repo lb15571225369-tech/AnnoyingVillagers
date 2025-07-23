@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -13,8 +14,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import yesman.epicfight.skill.SkillContainer;
-import yesman.epicfight.skill.SkillDataManager.SkillDataKey;
-import yesman.epicfight.skill.SkillDataManager.ValueType;
+import yesman.epicfight.skill.SkillDataKey;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
@@ -27,7 +27,13 @@ import yesman.epicfight.world.entity.eventlistener.PlayerEventListener.EventType
 public class EarthquakeSkill extends WeaponInnateSkill {
 
     private static final UUID EVENT_UUID = UUID.fromString("b19d1eb4-fefa-11ec-b939-0242ac12000");
-    public static final SkillDataKey<Boolean> SUPERARMOR = SkillDataKey.createDataKey(ValueType.BOOLEAN);
+    public static final SkillDataKey<Boolean> SUPERARMOR =
+            new SkillDataKey<>(
+                    ByteBuf::writeBoolean,
+                    ByteBuf::readBoolean,
+                    false,
+                    true
+            );
 
     public EarthquakeSkill(Builder builder) {
         super(builder);

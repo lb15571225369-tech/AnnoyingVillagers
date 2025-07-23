@@ -2,18 +2,19 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -43,7 +44,6 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
-import net.minecraft.world.level.material.Material;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
@@ -58,7 +58,7 @@ public class VillagerScoutEntity extends PathfinderMob {
 
     public VillagerScoutEntity(EntityType<VillagerScoutEntity> entitytype, Level level) {
         super(entitytype, level);
-        this.maxUpStep = 2.0F;
+        this.setMaxUpStep(2.0F);
         this.xpReward = 8;
         this.setNoAi(false);
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SWORD));
@@ -69,7 +69,7 @@ public class VillagerScoutEntity extends PathfinderMob {
         this.setItemSlot(EquipmentSlot.FEET, new ItemStack((ItemLike) AnnoyingVillagersModItems.CLASSICGOLDENA_BOOTS.get()));
     }
 
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -138,13 +138,15 @@ public class VillagerScoutEntity extends PathfinderMob {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        VillagerScoutOnHurtProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
-        return damagesource == DamageSource.FALL ? false : super.hurt(damagesource, f);
+        VillagerScoutOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
+        if (damagesource.is(DamageTypes.FALL)) return false;
+        if (damagesource.is(DamageTypes.CACTUS)) return false;
+        return super.hurt(damagesource, f);
     }
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
-        VillagerScoutOnEntityDeathProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
+        VillagerScoutOnEntityDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
@@ -156,13 +158,13 @@ public class VillagerScoutEntity extends PathfinderMob {
 
     public InteractionResult mobInteract(Player player, InteractionHand interactionhand) {
         player.getItemInHand(interactionhand);
-        InteractionResult interactionresult = InteractionResult.sidedSuccess(this.level.isClientSide());
+        InteractionResult interactionresult = InteractionResult.sidedSuccess(this.level().isClientSide());
 
         super.mobInteract(player, interactionhand);
         double d0 = this.getX();
         double d1 = this.getY();
         double d2 = this.getZ();
-        Level level = this.level;
+        Level level = this.level();
 
         VillagerScoutOnInteractProcedure.execute(level, d0, d1, d2, this);
         return interactionresult;
@@ -174,12 +176,12 @@ public class VillagerScoutEntity extends PathfinderMob {
 
     public void baseTick() {
         super.baseTick();
-        VillagerScoutSmartSkillProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
+        VillagerScoutSmartSkillProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
     public static void init() {
         SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.VILLAGER_SCOUT.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
-            return serverlevelaccessor.getBlockState(blockpos.below()).getMaterial() == Material.GRASS && serverlevelaccessor.getRawBrightness(blockpos, 0) > 8;
+            return serverlevelaccessor.getRawBrightness(blockpos, 0) > 8;
         });
     }
 

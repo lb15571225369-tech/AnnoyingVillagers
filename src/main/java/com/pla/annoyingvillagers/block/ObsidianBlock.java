@@ -3,14 +3,13 @@ package com.pla.annoyingvillagers.block;
 import java.util.Collections;
 import java.util.List;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -18,8 +17,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.storage.loot.LootContext.Builder;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -32,25 +30,20 @@ import com.pla.annoyingvillagers.procedures.ObsidianBlockPlaceBlockProcedure;
 public class ObsidianBlock extends Block {
 
     public ObsidianBlock() {
-        super(Properties.of(Material.STONE).sound(new ForgeSoundType(1.0F, 1.0F, () -> {
-            return new SoundEvent(new ResourceLocation("annoyingvillagers", "lost"));
-        }, () -> {
-            return new SoundEvent(new ResourceLocation("minecraft", "block.stone.step"));
-        }, () -> {
-            return new SoundEvent(new ResourceLocation("minecraft", "block.stone.place"));
-        }, () -> {
-            return new SoundEvent(new ResourceLocation("minecraft", "block.stone.hit"));
-        }, () -> {
-            return new SoundEvent(new ResourceLocation("annoyingvillagers", "silent"));
-        })).strength(60.0F, 40.0F).lightLevel((blockstate) -> {
-            return 4;
-        }).noOcclusion().hasPostProcess((blockstate, blockgetter, blockpos) -> {
-            return true;
-        }).emissiveRendering((blockstate, blockgetter, blockpos) -> {
-            return true;
-        }).isRedstoneConductor((blockstate, blockgetter, blockpos) -> {
-            return false;
-        }));
+        super(Properties.of()
+                .sound(new ForgeSoundType(1.0F, 1.0F,
+                        () -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("annoyingvillagers", "lost")),
+                        () -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("minecraft", "block.stone.step")),
+                        () -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("minecraft", "block.stone.place")),
+                        () -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("minecraft", "block.stone.hit")),
+                        () -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("annoyingvillagers", "silent"))
+                ))
+                .strength(60.0F, 40.0F)
+                .lightLevel((blockstate) -> 4)
+                .noOcclusion()
+                .hasPostProcess((blockstate, blockgetter, blockpos) -> true)
+                .emissiveRendering((blockstate, blockgetter, blockpos) -> true)
+                .isRedstoneConductor((blockstate, blockgetter, blockpos) -> false));
     }
 
     public void appendHoverText(ItemStack itemstack, BlockGetter blockgetter, List<Component> list, TooltipFlag tooltipflag) {
@@ -70,7 +63,7 @@ public class ObsidianBlock extends Block {
         return box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 17.0D);
     }
 
-    public List<ItemStack> getDrops(BlockState blockstate, Builder builder) {
+    public List<ItemStack> getDrops(BlockState blockstate, LootParams.Builder builder) {
         List<ItemStack> list = super.getDrops(blockstate, builder);
 
         return !list.isEmpty() ? list : Collections.singletonList(new ItemStack(this, 1));

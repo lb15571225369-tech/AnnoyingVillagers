@@ -2,15 +2,16 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -43,7 +44,6 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.procedures.HerobrineWhenStruckByLightningProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineOnEntityTickUpdateProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineOnHurtProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineOnDeathProcedure;
@@ -61,7 +61,7 @@ public class HerobrineEntity extends Monster {
 
     public HerobrineEntity(EntityType<HerobrineEntity> entitytype, Level level) {
         super(entitytype, level);
-        this.maxUpStep = 0.7F;
+        this.setMaxUpStep(0.7F);
         this.xpReward = 300;
         this.setNoAi(false);
         this.setCustomName(Component.literal("§5Herobrine§r"));
@@ -71,7 +71,7 @@ public class HerobrineEntity extends Monster {
         this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Blocks.OBSIDIAN));
     }
 
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -129,12 +129,17 @@ public class HerobrineEntity extends Monster {
 
     public boolean hurt(DamageSource damagesource, float f) {
         HerobrineOnHurtProcedure.execute(this);
-        return damagesource == DamageSource.FALL ? false : (damagesource == DamageSource.CACTUS ? false : (damagesource == DamageSource.DROWN ? false : (damagesource == DamageSource.WITHER ? false : (damagesource.getMsgId().equals("witherSkull") ? false : super.hurt(damagesource, f)))));
+        if (damagesource.is(DamageTypes.FALL)) return false;
+        if (damagesource.is(DamageTypes.CACTUS)) return false;
+        if (damagesource.is(DamageTypes.WITHER)) return false;
+        if (damagesource.is(DamageTypes.DROWN)) return false;
+        if (damagesource.is(DamageTypes.WITHER_SKULL)) return false;
+        return super.hurt(damagesource, f);
     }
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
-        HerobrineOnDeathProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
+        HerobrineOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
@@ -146,12 +151,12 @@ public class HerobrineEntity extends Monster {
 
     public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
         super.awardKillScore(entity, i, damagesource);
-        HerobrineOnAwardKillScoreProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), entity);
+        HerobrineOnAwardKillScoreProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), entity);
     }
 
     public void baseTick() {
         super.baseTick();
-        HerobrineOnEntityTickUpdateProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
+        HerobrineOnEntityTickUpdateProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
     public static void init() {

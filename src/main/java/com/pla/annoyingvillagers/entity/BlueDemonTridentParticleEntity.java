@@ -1,10 +1,11 @@
 package com.pla.annoyingvillagers.entity;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -35,14 +36,14 @@ public class BlueDemonTridentParticleEntity extends PathfinderMob {
 
     public BlueDemonTridentParticleEntity(EntityType<BlueDemonTridentParticleEntity> entitytype, Level level) {
         super(entitytype, level);
-        this.maxUpStep = 0.6F;
+        this.setMaxUpStep(0.6F);
         this.xpReward = 0;
         this.setNoAi(true);
         this.setPersistenceRequired();
         this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.TRIDENT));
     }
 
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -67,17 +68,30 @@ public class BlueDemonTridentParticleEntity extends PathfinderMob {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        return damagesource.getDirectEntity() instanceof AbstractArrow ? false : (damagesource.getDirectEntity() instanceof Player ? false : (!(damagesource.getDirectEntity() instanceof ThrownPotion) && !(damagesource.getDirectEntity() instanceof AreaEffectCloud) ? (damagesource == DamageSource.FALL ? false : (damagesource == DamageSource.CACTUS ? false : (damagesource == DamageSource.DROWN ? false : (damagesource == DamageSource.LIGHTNING_BOLT ? false : (damagesource.isExplosion() ? false : (damagesource.getMsgId().equals("trident") ? false : (damagesource == DamageSource.ANVIL ? false : (damagesource == DamageSource.DRAGON_BREATH ? false : (damagesource == DamageSource.WITHER ? false : (damagesource.getMsgId().equals("witherSkull") ? false : super.hurt(damagesource, f))))))))))) : false));
+        if (damagesource.getDirectEntity() instanceof AbstractArrow) return false;
+        if (damagesource.is(DamageTypes.PLAYER_ATTACK)) return false;
+        if (damagesource.is(DamageTypes.THROWN)) return false;
+        if (damagesource.is(DamageTypes.EXPLOSION)) return false;
+        if (damagesource.is(DamageTypes.DRAGON_BREATH)) return false;
+        if (damagesource.is(DamageTypes.FALL)) return false;
+        if (damagesource.is(DamageTypes.CACTUS)) return false;
+        if (damagesource.is(DamageTypes.DROWN)) return false;
+        if (damagesource.is(DamageTypes.LIGHTNING_BOLT)) return false;
+        if (damagesource.is(DamageTypes.WITHER)) return false;
+        if (damagesource.is(DamageTypes.TRIDENT)) return false;
+        if (damagesource.is(DamageTypes.WITHER_SKULL)) return false;
+        if (damagesource.is(DamageTypes.FALLING_ANVIL)) return false;
+        return super.hurt(damagesource, f);
     }
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
-        BlueDemonTridentParticleWhenEntityDiesProcedure.execute(this.level, this.getX(), this.getY(), this.getZ());
+        BlueDemonTridentParticleWhenEntityDiesProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ());
     }
 
     public void baseTick() {
         super.baseTick();
-        BlueDemonTridentParticleOnEntityUpdate.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
+        BlueDemonTridentParticleOnEntityUpdate.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
     public boolean isPushable() {

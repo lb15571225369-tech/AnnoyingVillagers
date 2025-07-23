@@ -7,6 +7,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.BlueDemonTridentOnProjectileHitBlockProcedure;
 import com.pla.annoyingvillagers.procedures.BlueDemonTridentOnProjectileHitEntityProcedure;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -46,7 +47,7 @@ public class BlueDemonTridentEntity extends AbstractArrow implements ItemSupplie
         super(entitytype, livingentity, level);
     }
 
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -66,12 +67,12 @@ public class BlueDemonTridentEntity extends AbstractArrow implements ItemSupplie
 
     public void onHitEntity(EntityHitResult entityhitresult) {
         super.onHitEntity(entityhitresult);
-        BlueDemonTridentOnProjectileHitEntityProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), entityhitresult.getEntity());
+        BlueDemonTridentOnProjectileHitEntityProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), entityhitresult.getEntity());
     }
 
     public void onHitBlock(BlockHitResult blockhitresult) {
         super.onHitBlock(blockhitresult);
-        BlueDemonTridentOnProjectileHitBlockProcedure.execute(this.level, (double) blockhitresult.getBlockPos().getX(), (double) blockhitresult.getBlockPos().getY(), (double) blockhitresult.getBlockPos().getZ());
+        BlueDemonTridentOnProjectileHitBlockProcedure.execute(this.level(), (double) blockhitresult.getBlockPos().getX(), (double) blockhitresult.getBlockPos().getY(), (double) blockhitresult.getBlockPos().getZ());
     }
 
     public void tick() {
@@ -97,7 +98,7 @@ public class BlueDemonTridentEntity extends AbstractArrow implements ItemSupplie
     }
 
     public static BlueDemonTridentEntity shoot(LivingEntity livingentity, LivingEntity livingentity1) {
-        BlueDemonTridentEntity bluedemontridententity = new BlueDemonTridentEntity((EntityType) AnnoyingVillagersModEntities.BLUEDEMONTRIDENT.get(), livingentity, livingentity.level);
+        BlueDemonTridentEntity bluedemontridententity = new BlueDemonTridentEntity((EntityType) AnnoyingVillagersModEntities.BLUEDEMONTRIDENT.get(), livingentity, livingentity.level());
         double d0 = livingentity1.getX() - livingentity.getX();
         double d1 = livingentity1.getY() + (double) livingentity1.getEyeHeight() - 1.1D;
         double d2 = livingentity1.getZ() - livingentity.getZ();
@@ -108,8 +109,8 @@ public class BlueDemonTridentEntity extends AbstractArrow implements ItemSupplie
         bluedemontridententity.setKnockback(4);
         bluedemontridententity.setCritArrow(false);
         bluedemontridententity.setSecondsOnFire(100);
-        livingentity.level.addFreshEntity(bluedemontridententity);
-        livingentity.level.playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft","item.trident.throw")), SoundSource.PLAYERS, 1.0F, 1.0F / ((new Random()).nextFloat() * 0.5F + 1.0F));
+        livingentity.level().addFreshEntity(bluedemontridententity);
+        livingentity.level().playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft","item.trident.throw")), SoundSource.PLAYERS, 1.0F, 1.0F / ((new Random()).nextFloat() * 0.5F + 1.0F));
         return bluedemontridententity;
     }
 }

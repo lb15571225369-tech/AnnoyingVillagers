@@ -15,7 +15,11 @@ public class HerobrineRenderer extends HumanoidMobRenderer<HerobrineEntity, Huma
 
     public HerobrineRenderer(Context context) {
         super(context, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER)), 0.5F);
-        this.addLayer(new HumanoidArmorLayer(this, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)), new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR))));
+        this.addLayer(new HumanoidArmorLayer(
+                this,
+                new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)),
+                new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)),
+                context.getModelManager()));
     }
 
     public ResourceLocation getTextureLocation(HerobrineEntity herobrineentity) {
@@ -23,7 +27,7 @@ public class HerobrineRenderer extends HumanoidMobRenderer<HerobrineEntity, Huma
     }
 
     protected boolean isShaking(HerobrineEntity herobrineentity) {
-        Level level = herobrineentity.level;
+        Level level = herobrineentity.level();
         double d0 = herobrineentity.getX();
         double d1 = herobrineentity.getY();
         double d2 = herobrineentity.getZ();

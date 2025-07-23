@@ -3,8 +3,10 @@ package com.pla.annoyingvillagers.capabilities;
 import com.mojang.datafixers.util.Pair;
 import java.util.function.Function;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.gameasset.AVCollider;
 import com.pla.annoyingvillagers.gameasset.AVSkill;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -24,6 +26,7 @@ import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.skill.BattojutsuPassive;
+import yesman.epicfight.skill.SkillDataKeys;
 import yesman.epicfight.skill.SkillSlots;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.Builder;
@@ -209,7 +212,7 @@ public class LegendarySwordCapability {
             if (livingentitypatch instanceof PlayerPatch) {
                 PlayerPatch<?> playerpatch = (PlayerPatch) livingentitypatch;
 
-                if (playerpatch.getSkill(SkillSlots.WEAPON_PASSIVE).getDataManager().hasData(BattojutsuPassive.SHEATH) && (Boolean) playerpatch.getSkill(SkillSlots.WEAPON_PASSIVE).getDataManager().getDataValue(BattojutsuPassive.SHEATH)) {
+                if (playerpatch.getSkill(SkillSlots.WEAPON_PASSIVE).getDataManager().hasData(SkillDataKeys.SHEATH.get()) && (Boolean) playerpatch.getSkill(SkillSlots.WEAPON_PASSIVE).getDataManager().getDataValue(SkillDataKeys.SHEATH.get())) {
                     return Styles.SHEATH;
                 }
             }
@@ -238,20 +241,20 @@ public class LegendarySwordCapability {
     };
 
     public static void register(WeaponCapabilityPresetRegistryEvent weaponcapabilitypresetregistryevent) {
-        weaponcapabilitypresetregistryevent.getTypeEntry().put("legendarysword", LegendarySwordCapability.LEGENDARYSWORD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put("axe", LegendarySwordCapability.AXE);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put("sword", LegendarySwordCapability.SWORD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put("spear", LegendarySwordCapability.SPEAR);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put("ironfist", LegendarySwordCapability.IRONFIST);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put("tachi", LegendarySwordCapability.TACHI);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put("longsword", LegendarySwordCapability.LONGSWORD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put("hgsd", LegendarySwordCapability.HGSD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put("e_sword", LegendarySwordCapability.ESWORD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put("e_trident", LegendarySwordCapability.ETRIDENT);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put("knife", LegendarySwordCapability.KNIFE);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put("redgreatsword", LegendarySwordCapability.REDGREATSWORD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put("hardgreatsword", LegendarySwordCapability.HARDGREATSWORD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put("uchigatana", LegendarySwordCapability.UCHIGATANA);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put("greatsword", LegendarySwordCapability.GREATSWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "legendarysword"), LegendarySwordCapability.LEGENDARYSWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "axe"), LegendarySwordCapability.AXE);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "sword"), LegendarySwordCapability.SWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "spear"), LegendarySwordCapability.SPEAR);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "ironfist"), LegendarySwordCapability.IRONFIST);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "tachi"), LegendarySwordCapability.TACHI);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "longsword"), LegendarySwordCapability.LONGSWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "hgsd"), LegendarySwordCapability.HGSD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "e_sword"), LegendarySwordCapability.ESWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "e_trident"), LegendarySwordCapability.ETRIDENT);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "knife"), LegendarySwordCapability.KNIFE);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "redgreatsword"), LegendarySwordCapability.REDGREATSWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "hardgreatsword"), LegendarySwordCapability.HARDGREATSWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "uchigatana"), LegendarySwordCapability.UCHIGATANA);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "greatsword"), LegendarySwordCapability.GREATSWORD);
     }
 }

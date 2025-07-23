@@ -4,9 +4,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.api.distmarker.Dist;
@@ -40,20 +40,20 @@ public class RenderIncinerator extends RenderItemBase {
                     itemstack1 = new ItemStack((ItemLike) AnnoyingVillagersModItems.WAKE_UP_LEGENDARY_SWORD.get());
                     posestack.pushPose();
                     this.mulPoseStack(posestack, openmatrix4f);
-                    Minecraft.getInstance().getItemRenderer().renderStatic(itemstack1, TransformType.THIRD_PERSON_RIGHT_HAND, i, OverlayTexture.NO_OVERLAY, posestack, multibuffersource, 0);
+                    Minecraft.getInstance().getItemRenderer().renderStatic(itemstack1, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, i, OverlayTexture.NO_OVERLAY, posestack, multibuffersource, livingentitypatch.getOriginal().level(), 0);
                     posestack.popPose();
                 } else {
                     itemstack1 = new ItemStack((ItemLike) AnnoyingVillagersModItems.LEGENDARY_SWORD.get());
                     posestack.pushPose();
                     this.mulPoseStack(posestack, openmatrix4f);
-                    Minecraft.getInstance().getItemRenderer().renderStatic(itemstack1, TransformType.THIRD_PERSON_RIGHT_HAND, i, OverlayTexture.NO_OVERLAY, posestack, multibuffersource, 0);
+                    Minecraft.getInstance().getItemRenderer().renderStatic(itemstack1, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, i, OverlayTexture.NO_OVERLAY, posestack, multibuffersource, livingentitypatch.getOriginal().level(), 0);
                     posestack.popPose();
                 }
             } else {
                 itemstack1 = new ItemStack((ItemLike) AnnoyingVillagersModItems.HEAVY_ATTACK_LEGENDARY_SWORD.get());
                 posestack.pushPose();
                 this.mulPoseStack(posestack, openmatrix4f);
-                Minecraft.getInstance().getItemRenderer().renderStatic(itemstack1, TransformType.THIRD_PERSON_RIGHT_HAND, i, OverlayTexture.NO_OVERLAY, posestack, multibuffersource, 0);
+                Minecraft.getInstance().getItemRenderer().renderStatic(itemstack1, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, i, OverlayTexture.NO_OVERLAY, posestack, multibuffersource, livingentitypatch.getOriginal().level(), 0);
                 posestack.popPose();
             }
         }

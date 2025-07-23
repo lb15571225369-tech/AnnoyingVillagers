@@ -1,8 +1,5 @@
 package com.pla.annoyingvillagers.block;
 
-import java.util.Random;
-
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
@@ -15,7 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -30,13 +27,15 @@ import com.pla.annoyingvillagers.procedures.DarkObSsOnPlaceProcedure;
 public class DarkObUpBlock extends Block {
 
     public DarkObUpBlock() {
-        super(Properties.of(Material.STONE).sound(SoundType.STONE).strength(3.0F, 50.0F).noOcclusion().hasPostProcess((blockstate, blockgetter, blockpos) -> {
-            return true;
-        }).emissiveRendering((blockstate, blockgetter, blockpos) -> {
-            return true;
-        }).isRedstoneConductor((blockstate, blockgetter, blockpos) -> {
-            return false;
-        }).dynamicShape());
+        super(Properties.of()
+                .sound(SoundType.STONE)
+                .offsetType(OffsetType.XYZ)
+                .strength(3.0F, 50.0F)
+                .noOcclusion()
+                .hasPostProcess((blockstate, blockgetter, blockpos) -> true)
+                .emissiveRendering((blockstate, blockgetter, blockpos) -> true)
+                .isRedstoneConductor((blockstate, blockgetter, blockpos) -> false)
+                .dynamicShape());
     }
 
     public boolean propagatesSkylightDown(BlockState blockstate, BlockGetter blockgetter, BlockPos blockpos) {
@@ -53,10 +52,6 @@ public class DarkObUpBlock extends Block {
 
     public VoxelShape getShape(BlockState blockstate, BlockGetter blockgetter, BlockPos blockpos, CollisionContext collisioncontext) {
         return Shapes.or(box(6.0D, 0.0D, 12.0D, 10.0D, 16.0D, 16.0D), new VoxelShape[]{box(6.0D, 16.0D, 12.0D, 10.0D, 32.0D, 16.0D), box(6.0D, -16.0D, 12.0D, 10.0D, 0.0D, 16.0D)});
-    }
-
-    public OffsetType getOffsetType() {
-        return OffsetType.XYZ;
     }
 
     public void onPlace(BlockState blockstate, Level level, BlockPos blockpos, BlockState blockstate1, boolean flag) {

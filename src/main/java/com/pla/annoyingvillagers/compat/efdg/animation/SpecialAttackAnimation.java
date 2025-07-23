@@ -6,6 +6,7 @@ import java.util.Locale;
 import java.util.Optional;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
@@ -18,6 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules.BooleanValue;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import yesman.epicfight.api.animation.Joint;
 import yesman.epicfight.api.animation.Keyframe;
 import yesman.epicfight.api.animation.TransformSheet;
@@ -29,6 +31,7 @@ import yesman.epicfight.api.animation.types.AttackAnimation;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.EntityState;
 import yesman.epicfight.api.animation.types.EntityState.StateFactor;
+import yesman.epicfight.api.client.animation.property.ClientAnimationProperties;
 import yesman.epicfight.api.client.animation.property.JointMask;
 import yesman.epicfight.api.client.animation.property.JointMask.BindModifier;
 import yesman.epicfight.api.client.animation.property.JointMaskEntry;
@@ -37,7 +40,8 @@ import yesman.epicfight.api.model.Armature;
 import yesman.epicfight.api.utils.AttackResult;
 import yesman.epicfight.api.utils.HitEntityList;
 import yesman.epicfight.api.utils.HitEntityList.Priority;
-import yesman.epicfight.api.utils.TypeFlexibleHashMap;
+import yesman.epicfight.api.utils.datastruct.TypeFlexibleHashMap;
+import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.HurtableEntityPatch;
@@ -51,6 +55,17 @@ import yesman.epicfight.world.entity.eventlistener.PlayerEventListener.EventType
 import yesman.epicfight.world.gamerule.EpicFightGamerules;
 
 public class SpecialAttackAnimation extends AttackAnimation {
+    void init() {
+        if (!this.properties.containsKey(AttackAnimationProperty.BASIS_ATTACK_SPEED)) {
+            float f = Float.parseFloat(String.format(Locale.US, "%.2f", 1.0F / this.getTotalTime()));
+            this.addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, f);
+        }
+        JointMaskEntry jointMask = JointMaskEntry.builder()
+                .defaultMask(JointMaskEntry.BIPED_UPPER_JOINTS_WITH_ROOT)
+                .create();
+
+        this.addProperty(ClientAnimationProperties.JOINT_MASK, jointMask);
+    }
 
     public SpecialAttackAnimation(float f, float f1, float f2, float f3, @Nullable Collider collider, Joint joint, String s, Armature armature) {
         this(f, f1, f1, f2, f3, collider, joint, s, armature);
@@ -66,10 +81,12 @@ public class SpecialAttackAnimation extends AttackAnimation {
 
     public SpecialAttackAnimation(float f, String s, Armature armature, boolean flag, Phase... aphase) {
         super(f, s, armature, aphase);
+        init();
     }
 
     public SpecialAttackAnimation(float f, String s, Armature armature, Phase... aphase) {
         super(f, s, armature, aphase);
+        init();
         this.newTimePair(0.0F, Float.MAX_VALUE);
         this.addStateRemoveOld(EntityState.TURNING_LOCKED, false);
         this.addProperty(ActionAnimationProperty.COORD_SET_BEGIN, MoveCoordFunctions.TRACE_LOC_TARGET);
@@ -105,10 +122,10 @@ public class SpecialAttackAnimation extends AttackAnimation {
     protected void hurtCollidingEntities(LivingEntityPatch<?> livingentitypatch, float f, float f1, EntityState entitystate, EntityState entitystate1, Phase phase) {
         LivingEntity livingentity = (LivingEntity) livingentitypatch.getOriginal();
 
-        livingentitypatch.getArmature().initializeTransform();
+        livingentitypatch.getArmature().getRootJoint().initOriginTransform(new OpenMatrix4f());
         float f2 = entitystate.attacking() ? f : phase.preDelay;
         float f3 = entitystate1.attacking() ? f1 : phase.contact;
-        List<Entity> list = this.getPhaseByTime(f1).getCollidingEntities(livingentitypatch, this, f2, f3, this.getPlaySpeed(livingentitypatch));
+        List<Entity> list = this.getPhaseByTime(f1).getCollidingEntities(livingentitypatch, this, f2, f3, this.getPlaySpeed(livingentitypatch, this));
 
         if (list.size() > 0) {
             HitEntityList hitentitylist = new HitEntityList(livingentitypatch, list, (Priority) phase.getProperty(AttackPhaseProperty.HIT_PRIORITY).orElse(Priority.DISTANCE));
@@ -216,16 +233,16 @@ public class SpecialAttackAnimation extends AttackAnimation {
                     if (attackresult.resultType.dealtDamage()) {
                         if (livingentitypatch instanceof ServerPlayerPatch) {
                             ServerPlayerPatch serverplayerpatch = (ServerPlayerPatch) livingentitypatch;
-
-                            serverplayerpatch.getEventListener().triggerEvents(EventType.DEALT_DAMAGE_EVENT_POST, new DealtDamageEvent(serverplayerpatch, livingentity1, epicfightdamagesource, attackresult.damage));
+                            LivingDamageEvent damageEvent = new LivingDamageEvent(livingentity1, epicfightdamagesource, attackresult.damage);
+                            serverplayerpatch.getEventListener().triggerEvents(EventType.DEALT_DAMAGE_EVENT_DAMAGE, new DealtDamageEvent.Damage(serverplayerpatch, livingentity1, epicfightdamagesource, damageEvent));
                         }
 
                         if (epicfightdamagesource.getStunType() == StunType.KNOCKDOWN) {
                             ((LivingEntity) hurtableentitypatch.getOriginal()).addEffect(new MobEffectInstance((MobEffect) EpicFightMobEffects.STUN_IMMUNITY.get(), 60, 0, true, false, false));
                         }
 
-                        entity.level.playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), this.getHitSound(livingentitypatch, phase), entity.getSoundSource(), 1.0F, 1.0F);
-                        this.spawnHitParticle((ServerLevel) entity.level, livingentitypatch, entity, phase);
+                        entity.level().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), this.getHitSound(livingentitypatch, phase), entity.getSoundSource(), 1.0F, 1.0F);
+                        this.spawnHitParticle((ServerLevel) entity.level(), livingentitypatch, entity, phase);
                         if (hurtableentitypatch != null && phase.getProperty(AttackPhaseProperty.STUN_TYPE).isPresent()) {
                             float f5;
 
@@ -251,7 +268,7 @@ public class SpecialAttackAnimation extends AttackAnimation {
                                         Vec3 vec3 = entity.getDeltaMovement();
                                         Vec3 vec31 = (new Vec3(d0, 0.0D, d1)).normalize().scale((double) f6);
 
-                                        entity.setDeltaMovement(vec3.x / 2.0D - vec31.x, entity.isOnGround() ? Math.min(0.4D, vec3.y / 2.0D) : vec3.y, vec3.z / 2.0D - vec31.z);
+                                        entity.setDeltaMovement(vec3.x / 2.0D - vec31.x, entity.onGround() ? Math.min(0.4D, vec3.y / 2.0D) : vec3.y, vec3.z / 2.0D - vec31.z);
                                     }
                                 }
                             }
@@ -300,22 +317,12 @@ public class SpecialAttackAnimation extends AttackAnimation {
 
     }
 
-    protected void onLoaded() {
-        super.onLoaded();
-        if (!this.properties.containsKey(AttackAnimationProperty.BASIS_ATTACK_SPEED)) {
-            float f = Float.parseFloat(String.format(Locale.US, "%.2f", 1.0F / this.totalTime));
-
-            this.addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, f);
-        }
-
-    }
-
     public void end(LivingEntityPatch<?> livingentitypatch, DynamicAnimation dynamicanimation, boolean flag) {
         super.end(livingentitypatch, dynamicanimation, flag);
-        boolean flag1 = ((BooleanValue) ((LivingEntity) livingentitypatch.getOriginal()).level.getGameRules().getRule(EpicFightGamerules.STIFF_COMBO_ATTACKS)).get();
+        boolean flag1 = ((BooleanValue) ((LivingEntity) livingentitypatch.getOriginal()).level().getGameRules().getRule(EpicFightGamerules.STIFF_COMBO_ATTACKS)).get();
 
         if (!flag && !dynamicanimation.isMainFrameAnimation() && livingentitypatch.isLogicalClient() && !flag1) {
-            float f = 0.05F * this.getPlaySpeed(livingentitypatch);
+            float f = 0.05F * this.getPlaySpeed(livingentitypatch, dynamicanimation);
 
             livingentitypatch.getClientAnimator().baseLayer.copyLayerTo(livingentitypatch.getClientAnimator().baseLayer.getLayer(yesman.epicfight.api.client.animation.Layer.Priority.HIGHEST), f);
         }
@@ -325,7 +332,7 @@ public class SpecialAttackAnimation extends AttackAnimation {
     public TypeFlexibleHashMap<StateFactor<?>> getStatesMap(LivingEntityPatch<?> livingentitypatch, float f) {
         TypeFlexibleHashMap<StateFactor<?>> typeflexiblehashmap = super.getStatesMap(livingentitypatch, f);
 
-        if (!((BooleanValue) ((LivingEntity) livingentitypatch.getOriginal()).level.getGameRules().getRule(EpicFightGamerules.STIFF_COMBO_ATTACKS)).get()) {
+        if (!((BooleanValue) ((LivingEntity) livingentitypatch.getOriginal()).level().getGameRules().getRule(EpicFightGamerules.STIFF_COMBO_ATTACKS)).get()) {
             typeflexiblehashmap.put(EntityState.MOVEMENT_LOCKED, Optional.of(false));
         }
 
@@ -342,21 +349,6 @@ public class SpecialAttackAnimation extends AttackAnimation {
         return vec3;
     }
 
-    public boolean isJointEnabled(LivingEntityPatch<?> livingentitypatch, yesman.epicfight.api.client.animation.Layer.Priority yesman_epicfight_api_client_animation_layer_priority, String s) {
-        return yesman_epicfight_api_client_animation_layer_priority == yesman.epicfight.api.client.animation.Layer.Priority.HIGHEST ? !JointMaskEntry.BASIC_ATTACK_MASK.isMasked(livingentitypatch.getCurrentLivingMotion(), s) : super.isJointEnabled(livingentitypatch, yesman_epicfight_api_client_animation_layer_priority, s);
-    }
-
-    public BindModifier getBindModifier(LivingEntityPatch<?> livingentitypatch, yesman.epicfight.api.client.animation.Layer.Priority yesman_epicfight_api_client_animation_layer_priority, String s) {
-        if (yesman_epicfight_api_client_animation_layer_priority == yesman.epicfight.api.client.animation.Layer.Priority.HIGHEST) {
-            List<JointMask> list = JointMaskEntry.BIPED_UPPER_JOINTS_WITH_ROOT;
-            int i = list.indexOf(JointMask.of(s));
-
-            return i >= 0 ? ((JointMask) list.get(i)).getBindModifier() : null;
-        } else {
-            return super.getBindModifier(livingentitypatch, yesman_epicfight_api_client_animation_layer_priority, s);
-        }
-    }
-
     public boolean isBasicAttackAnimation() {
         return false;
     }
@@ -367,7 +359,7 @@ public class SpecialAttackAnimation extends AttackAnimation {
         String s3;
         int i;
 
-        if (entity.level.getBlockState(new BlockPos(new Vec3(entity.getX(), entity.getY() - 1.0D, entity.getZ()))).isAir() && epicfightdamagesource.getStunType() != StunType.FALL) {
+        if (entity.level().getBlockState(new BlockPos(new Vec3i((int) entity.getX(), (int) entity.getY() - 1, (int) entity.getZ()))).isAir() && epicfightdamagesource.getStunType() != StunType.FALL) {
             s2 = String.valueOf(this.getId());
             s3 = s2 + "-" + String.valueOf(phase.contact);
             if (s.split(":").length > 3) {

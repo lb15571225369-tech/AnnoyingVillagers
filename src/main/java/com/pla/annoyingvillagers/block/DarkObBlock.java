@@ -19,8 +19,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootContext.Builder;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -36,13 +37,16 @@ import com.pla.annoyingvillagers.procedures.DarkObBlockOnEntityInsideProcedure;
 public class DarkObBlock extends Block {
 
     public DarkObBlock() {
-        super(Properties.of(Material.STONE).sound(SoundType.STONE).strength(3.0F, 50.0F).noOcclusion().hasPostProcess((blockstate, blockgetter, blockpos) -> {
-            return true;
-        }).emissiveRendering((blockstate, blockgetter, blockpos) -> {
-            return true;
-        }).isRedstoneConductor((blockstate, blockgetter, blockpos) -> {
-            return false;
-        }).dynamicShape());
+        super(Properties.of()
+                .offsetType(OffsetType.XYZ)
+                .sound(SoundType.STONE)
+                .strength(3.0F, 50.0F)
+                .noOcclusion()
+                .hasPostProcess((state, getter, pos) -> true)
+                .emissiveRendering((state, getter, pos) -> true)
+                .isRedstoneConductor((state, getter, pos) -> false)
+                .dynamicShape()
+        );
     }
 
     public boolean propagatesSkylightDown(BlockState blockstate, BlockGetter blockgetter, BlockPos blockpos) {
@@ -61,12 +65,8 @@ public class DarkObBlock extends Block {
         return box(5.0D, 6.0D, 0.0D, 9.0D, 10.0D, 16.0D);
     }
 
-    public OffsetType getOffsetType() {
-        return OffsetType.XYZ;
-    }
-
-    public List<ItemStack> getDrops(BlockState blockstate, Builder builder) {
-        List<ItemStack> list = super.getDrops(blockstate, builder);
+    public List<ItemStack> getDrops(BlockState pState, LootParams.Builder pParams) {
+        List<ItemStack> list = super.getDrops(pState, pParams);
 
         return !list.isEmpty() ? list : Collections.singletonList(new ItemStack(this, 1));
     }
