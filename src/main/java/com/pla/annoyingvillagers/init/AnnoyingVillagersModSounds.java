@@ -53,7 +53,7 @@ public class AnnoyingVillagersModSounds {
     public static final RegistryObject<SoundEvent> HIMATTACK2 = register("himattack2");
 
     private static RegistryObject<SoundEvent> register(String name) {
-        return SOUNDS.register(name, () -> new SoundEvent(new ResourceLocation(AnnoyingVillagers.MODID, name)));
+        return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(AnnoyingVillagers.MODID, name)));
     }
 
     public static void register(IEventBus bus) {

@@ -28,7 +28,7 @@ import java.util.Random;
 public class BlueDemonTridentItem extends Item {
 
     public BlueDemonTridentItem() {
-        super((new Properties()).tab((CreativeModeTab) null).durability(2031));
+        super((new Properties()).durability(2031));
     }
 
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {

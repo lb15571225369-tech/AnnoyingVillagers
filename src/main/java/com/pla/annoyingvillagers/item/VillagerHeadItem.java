@@ -2,9 +2,6 @@ package com.pla.annoyingvillagers.item;
 
 import java.util.List;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -22,7 +19,7 @@ import com.pla.annoyingvillagers.procedures.VillagerHeadRightOnUseProcedure;
 public class VillagerHeadItem extends Item {
 
     public VillagerHeadItem() {
-        super((new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB).stacksTo(1).rarity(Rarity.COMMON));
+        super((new Properties()).stacksTo(1).rarity(Rarity.COMMON));
     }
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {

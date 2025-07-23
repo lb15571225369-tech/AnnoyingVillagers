@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.client.model.ModelVillagerGeneralArmor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
@@ -24,15 +23,28 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class PurpleVillagerGeneralArmorItem extends ArmorItem {
 
-    public PurpleVillagerGeneralArmorItem(EquipmentSlot equipmentslot, Properties properties) {
+    public PurpleVillagerGeneralArmorItem(ArmorItem.Type type, Properties properties) {
         super(new ArmorMaterial() {
-            public int getDurabilityForSlot(EquipmentSlot equipmentslot1) {
-                return (new int[]{13, 15, 16, 11})[equipmentslot1.getIndex()] * 25;
+            @Override
+            public int getDurabilityForType(ArmorItem.Type type) {
+                return switch (type) {
+                    case BOOTS      -> 13 * 25;  // 325
+                    case LEGGINGS   -> 15 * 25;  // 375
+                    case CHESTPLATE -> 16 * 25;  // 400
+                    case HELMET     -> 11 * 25;  // 275
+                };
             }
 
-            public int getDefenseForSlot(EquipmentSlot equipmentslot1) {
-                return (new int[]{4, 6, 7, 5})[equipmentslot1.getIndex()];
+            @Override
+            public int getDefenseForType(ArmorItem.Type type) {
+                return switch (type) {
+                    case BOOTS      -> 4;
+                    case LEGGINGS   -> 6;
+                    case CHESTPLATE -> 7;
+                    case HELMET     -> 5;
+                };
             }
+
 
             public int getEnchantmentValue() {
                 return 10;
@@ -57,13 +69,13 @@ public abstract class PurpleVillagerGeneralArmorItem extends ArmorItem {
             public float getKnockbackResistance() {
                 return 0.0F;
             }
-        }, equipmentslot, properties);
+        }, type, properties);
     }
 
     public static class Chestplate extends PurpleVillagerGeneralArmorItem {
 
         public Chestplate() {
-            super(EquipmentSlot.CHEST, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
+            super(Type.CHESTPLATE, (new Properties()));
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
@@ -74,7 +86,7 @@ public abstract class PurpleVillagerGeneralArmorItem extends ArmorItem {
     public static class Helmet extends PurpleVillagerGeneralArmorItem {
 
         public Helmet() {
-            super(EquipmentSlot.HEAD, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
+            super(Type.HELMET, (new Properties()));
         }
 
         public void initializeClient(Consumer<IClientItemExtensions> consumer) {

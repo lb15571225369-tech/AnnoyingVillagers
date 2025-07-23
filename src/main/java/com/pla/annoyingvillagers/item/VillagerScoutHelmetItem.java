@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.item;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.client.model.ModelVillagerScoutHelmet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
@@ -22,14 +21,26 @@ import java.util.function.Consumer;
 
 public abstract class VillagerScoutHelmetItem extends ArmorItem {
 
-    public VillagerScoutHelmetItem(EquipmentSlot equipmentslot, Properties properties) {
+    public VillagerScoutHelmetItem(ArmorItem.Type type, Properties properties) {
         super(new ArmorMaterial() {
-            public int getDurabilityForSlot(EquipmentSlot equipmentslot1) {
-                return (new int[]{13, 15, 16, 11})[equipmentslot1.getIndex()] * 25;
+            @Override
+            public int getDurabilityForType(ArmorItem.Type type) {
+                return switch (type) {
+                    case BOOTS      -> 13 * 25;
+                    case LEGGINGS   -> 15 * 25;
+                    case CHESTPLATE -> 16 * 25;
+                    case HELMET     -> 11 * 25;
+                };
             }
 
-            public int getDefenseForSlot(EquipmentSlot equipmentslot1) {
-                return (new int[]{2, 5, 6, 5})[equipmentslot1.getIndex()];
+            @Override
+            public int getDefenseForType(ArmorItem.Type type) {
+                return switch (type) {
+                    case BOOTS      -> 2;
+                    case LEGGINGS   -> 5;
+                    case CHESTPLATE -> 6;
+                    case HELMET     -> 5;
+                };
             }
 
             public int getEnchantmentValue() {
@@ -55,13 +66,13 @@ public abstract class VillagerScoutHelmetItem extends ArmorItem {
             public float getKnockbackResistance() {
                 return 0.0F;
             }
-        }, equipmentslot, properties);
+        }, type, properties);
     }
 
     public static class Helmet extends VillagerScoutHelmetItem {
 
         public Helmet() {
-            super(EquipmentSlot.HEAD, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
+            super(Type.HELMET, (new Properties()));
         }
 
         @Override

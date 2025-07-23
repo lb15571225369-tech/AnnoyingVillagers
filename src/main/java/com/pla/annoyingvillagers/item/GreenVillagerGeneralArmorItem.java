@@ -25,14 +25,26 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class GreenVillagerGeneralArmorItem extends ArmorItem {
 
-    public GreenVillagerGeneralArmorItem(EquipmentSlot equipmentslot, Properties properties) {
+    public GreenVillagerGeneralArmorItem(ArmorItem.Type type, Properties properties) {
         super(new ArmorMaterial() {
-            public int getDurabilityForSlot(EquipmentSlot equipmentslot1) {
-                return (new int[]{13, 15, 16, 11})[equipmentslot1.getIndex()] * 25;
+            @Override
+            public int getDurabilityForType(ArmorItem.Type type) {
+                return switch (type) {
+                    case BOOTS      -> 13 * 25;
+                    case LEGGINGS   -> 15 * 25;
+                    case CHESTPLATE -> 16 * 25;
+                    case HELMET     -> 11 * 25;
+                };
             }
 
-            public int getDefenseForSlot(EquipmentSlot equipmentslot1) {
-                return (new int[]{4, 5, 7, 5})[equipmentslot1.getIndex()];
+            @Override
+            public int getDefenseForType(ArmorItem.Type type) {
+                return switch (type) {
+                    case BOOTS      -> 4;
+                    case LEGGINGS   -> 5;
+                    case CHESTPLATE -> 7;
+                    case HELMET     -> 5;
+                };
             }
 
             public int getEnchantmentValue() {
@@ -58,13 +70,13 @@ public abstract class GreenVillagerGeneralArmorItem extends ArmorItem {
             public float getKnockbackResistance() {
                 return 0.0F;
             }
-        }, equipmentslot, properties);
+        }, type, properties);
     }
 
     public static class Chestplate extends GreenVillagerGeneralArmorItem {
 
         public Chestplate() {
-            super(EquipmentSlot.CHEST, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
+            super(Type.CHESTPLATE, (new Properties()));
         }
 
         public void initializeClient(Consumer<IClientItemExtensions> consumer) {
@@ -89,7 +101,7 @@ public abstract class GreenVillagerGeneralArmorItem extends ArmorItem {
     public static class Helmet extends GreenVillagerGeneralArmorItem {
 
         public Helmet() {
-            super(EquipmentSlot.HEAD, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
+            super(Type.HELMET, (new Properties()));
         }
 
         public void initializeClient(Consumer<IClientItemExtensions> consumer) {

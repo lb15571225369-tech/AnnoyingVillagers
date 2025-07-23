@@ -15,10 +15,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.CreativeModeTabRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -30,6 +32,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkEvent.Context;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
+import net.minecraftforge.registries.RegistryObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.pla.annoyingvillagers.capabilities.LegendarySwordCapability;
@@ -58,19 +61,12 @@ public class AnnoyingVillagers {
         AnnoyingVillagersModEnchantments.REGISTRY.register(ieventbus);
         AnnoyingVillagersModMobEffects.REGISTRY.register(ieventbus);
         AnnoyingVillagersModParticleTypes.REGISTRY.register(ieventbus);
+        AnnoyingVillagersModCreativeTabs.register(ieventbus);
         AnnoyingVillagersModBiomeModifiers.register(ieventbus);
         AnnoyingVillagersModSounds.register(ieventbus);
-        AVSkill.registerSkills();
         AVSounds.SOUNDS.register(ieventbus);
         MinecraftForge.EVENT_BUS.register(new NpcGearLoadProcedure());
     }
-
-    public static final CreativeModeTab ANNOYINGVILLAGERS_TAB = new CreativeModeTab(MODID) {
-        @Override
-        public ItemStack makeIcon() {
-            return AnnoyingVillagersModItems.LEGENDARY_SWORD.get().getDefaultInstance();
-        }
-    };
 
     public static <T> void addNetworkMessage(Class<T> oclass, BiConsumer<T, FriendlyByteBuf> biconsumer, Function<FriendlyByteBuf, T> function, BiConsumer<T, Supplier<Context>> biconsumer1) {
         AnnoyingVillagers.PACKET_HANDLER.registerMessage(AnnoyingVillagers.messageID, oclass, biconsumer, function, biconsumer1);

@@ -1,7 +1,5 @@
 package com.pla.annoyingvillagers.item;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -15,7 +13,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import com.pla.annoyingvillagers.procedures.LegendarySwordWhenInHandProcedure;
 import com.pla.annoyingvillagers.procedures.LegendarySwordWhenInInventoryProcedure;
 import com.pla.annoyingvillagers.procedures.LegendarySwordOnEntityHitProcedure;
 import com.pla.annoyingvillagers.procedures.LegendarySwordUseProcedure;
@@ -47,7 +44,7 @@ public class LegendarySwordItem extends SwordItem {
             public Ingredient getRepairIngredient() {
                 return Ingredient.of(new ItemStack[]{new ItemStack(Items.DIAMOND)});
             }
-        }, 3, -2.32F, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB).fireResistant());
+        }, 3, -2.32F, (new Properties()).fireResistant());
     }
 
     public boolean hurtEnemy(ItemStack itemstack, LivingEntity livingentity, LivingEntity livingentity1) {

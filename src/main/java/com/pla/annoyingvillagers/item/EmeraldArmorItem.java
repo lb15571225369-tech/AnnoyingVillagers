@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.item;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.procedures.EmeraldArmorJumpBootProcedure;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -17,14 +16,26 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class EmeraldArmorItem extends ArmorItem {
 
-    public EmeraldArmorItem(EquipmentSlot equipmentslot, Properties properties) {
+    public EmeraldArmorItem(ArmorItem.Type type, Properties properties) {
         super(new ArmorMaterial() {
-            public int getDurabilityForSlot(EquipmentSlot equipmentslot1) {
-                return (new int[]{13, 15, 16, 11})[equipmentslot1.getIndex()] * 48;
+            @Override
+            public int getDurabilityForType(ArmorItem.Type type) {
+                return switch (type) {
+                    case BOOTS      -> 13 * 48;  // 624
+                    case LEGGINGS   -> 15 * 48;  // 720
+                    case CHESTPLATE -> 16 * 48;  // 768
+                    case HELMET     -> 11 * 48;  // 528
+                };
             }
 
-            public int getDefenseForSlot(EquipmentSlot equipmentslot1) {
-                return (new int[]{4, 5, 8, 5})[equipmentslot1.getIndex()];
+            @Override
+            public int getDefenseForType(ArmorItem.Type type) {
+                return switch (type) {
+                    case BOOTS      -> 4;
+                    case LEGGINGS   -> 5;
+                    case CHESTPLATE -> 8;
+                    case HELMET     -> 5;
+                };
             }
 
             public int getEnchantmentValue() {
@@ -50,19 +61,20 @@ public abstract class EmeraldArmorItem extends ArmorItem {
             public float getKnockbackResistance() {
                 return 0.2F;
             }
-        }, equipmentslot, properties);
+        }, type, properties);
     }
 
     public static class Boots extends EmeraldArmorItem {
 
         public Boots() {
-            super(EquipmentSlot.FEET, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
+            super(Type.BOOTS, (new Properties()));
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
             return "annoyingvillagers:textures/models/armor/emerald_armor_layer_1.png";
         }
 
+        @Override
         public void onArmorTick(ItemStack itemstack, Level level, Player player) {
             EmeraldArmorJumpBootProcedure.execute(player);
         }
@@ -71,13 +83,14 @@ public abstract class EmeraldArmorItem extends ArmorItem {
     public static class Leggings extends EmeraldArmorItem {
 
         public Leggings() {
-            super(EquipmentSlot.LEGS, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
+            super(Type.LEGGINGS, (new Properties()));
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
             return "annoyingvillagers:textures/models/armor/emerald_armor_layer_2.png";
         }
 
+        @Override
         public void onArmorTick(ItemStack itemstack, Level level, Player player) {
             EmeraldArmorJumpBootProcedure.execute(player);
         }
@@ -86,13 +99,14 @@ public abstract class EmeraldArmorItem extends ArmorItem {
     public static class Chestplate extends EmeraldArmorItem {
 
         public Chestplate() {
-            super(EquipmentSlot.CHEST, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
+            super(Type.CHESTPLATE, (new Properties()));
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
             return "annoyingvillagers:textures/models/armor/emerald_armor_layer_1.png";
         }
 
+        @Override
         public void onArmorTick(ItemStack itemstack, Level level, Player player) {
             EmeraldArmorJumpBootProcedure.execute(player);
         }
@@ -101,13 +115,14 @@ public abstract class EmeraldArmorItem extends ArmorItem {
     public static class Helmet extends EmeraldArmorItem {
 
         public Helmet() {
-            super(EquipmentSlot.HEAD, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB).fireResistant());
+            super(Type.HELMET, (new Properties()).fireResistant());
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
             return "annoyingvillagers:textures/models/armor/emerald_armor_layer_1.png";
         }
 
+        @Override
         public void onArmorTick(ItemStack itemstack, Level level, Player player) {
             EmeraldArmorJumpBootProcedure.execute(player);
         }

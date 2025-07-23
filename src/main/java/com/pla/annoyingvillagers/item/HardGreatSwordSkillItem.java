@@ -39,7 +39,7 @@ public class HardGreatSwordSkillItem extends SwordItem {
             public Ingredient getRepairIngredient() {
                 return Ingredient.of();
             }
-        }, 3, -2.0F, (new Properties()).tab((CreativeModeTab) null).fireResistant());
+        }, 3, -2.0F, (new Properties()).fireResistant());
     }
 
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {

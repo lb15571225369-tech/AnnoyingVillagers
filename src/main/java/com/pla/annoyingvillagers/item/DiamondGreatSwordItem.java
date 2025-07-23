@@ -1,7 +1,5 @@
 package com.pla.annoyingvillagers.item;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.procedures.DiamondGreatSwordItemOnHurtProcedure;
 import com.pla.annoyingvillagers.procedures.DiamondGreatSwordItemOnUseProcedure;
 import net.minecraft.world.InteractionHand;
@@ -42,7 +40,7 @@ public class DiamondGreatSwordItem extends SwordItem {
             public Ingredient getRepairIngredient() {
                 return Ingredient.of(new ItemStack[]{new ItemStack(Items.DIAMOND)});
             }
-        }, 3, -2.8F, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
+        }, 3, -2.8F, (new Properties()));
     }
 
     public boolean hurtEnemy(ItemStack itemstack, LivingEntity livingentity, LivingEntity livingentity1) {

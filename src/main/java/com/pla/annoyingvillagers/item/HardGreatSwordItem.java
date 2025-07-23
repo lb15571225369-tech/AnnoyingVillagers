@@ -1,7 +1,5 @@
 package com.pla.annoyingvillagers.item;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -41,7 +39,7 @@ public class HardGreatSwordItem extends SwordItem {
             public Ingredient getRepairIngredient() {
                 return Ingredient.of();
             }
-        }, 3, -2.0F, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB).fireResistant());
+        }, 3, -2.0F, (new Properties()).fireResistant());
     }
 
     public boolean hurtEnemy(ItemStack itemstack, LivingEntity livingentity, LivingEntity livingentity1) {

@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.item;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -36,6 +35,6 @@ public class DiamondLongSwordItem extends SwordItem {
             public Ingredient getRepairIngredient() {
                 return Ingredient.of(new ItemStack[]{new ItemStack(Items.DIAMOND), new ItemStack((ItemLike) AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get())});
             }
-        }, 3, -2.6F, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
+        }, 3, -2.6F, (new Properties()));
     }
 }

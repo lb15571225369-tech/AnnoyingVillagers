@@ -26,7 +26,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class EnchantedEnderPearlItem extends Item {
 
     public EnchantedEnderPearlItem() {
-        super((new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB).stacksTo(16));
+        super((new Properties()).stacksTo(16));
     }
 
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {

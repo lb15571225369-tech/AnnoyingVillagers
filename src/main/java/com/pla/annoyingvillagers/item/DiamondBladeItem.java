@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.item;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -32,6 +31,6 @@ public class DiamondBladeItem extends SwordItem {
             public Ingredient getRepairIngredient() {
                 return Ingredient.of();
             }
-        }, 3, -2.0F, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
+        }, 3, -2.0F, (new Properties()));
     }
 }

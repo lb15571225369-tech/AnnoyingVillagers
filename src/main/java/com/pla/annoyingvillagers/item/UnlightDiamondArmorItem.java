@@ -14,16 +14,27 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class UnlightDiamondArmorItem extends ArmorItem {
 
-    public UnlightDiamondArmorItem(EquipmentSlot equipmentslot, Properties properties) {
+    public UnlightDiamondArmorItem(ArmorItem.Type type, Properties properties) {
         super(new ArmorMaterial() {
-            public int getDurabilityForSlot(EquipmentSlot equipmentslot1) {
-                return (new int[]{13, 15, 16, 11})[equipmentslot1.getIndex()] * 46;
+            @Override
+            public int getDurabilityForType(ArmorItem.Type type) {
+                return switch (type) {
+                    case BOOTS      -> 13 * 46;
+                    case LEGGINGS   -> 15 * 46;
+                    case CHESTPLATE -> 16 * 46;
+                    case HELMET     -> 11 * 46;
+                };
             }
 
-            public int getDefenseForSlot(EquipmentSlot equipmentslot1) {
-                return (new int[]{4, 5, 8, 5})[equipmentslot1.getIndex()];
+            @Override
+            public int getDefenseForType(ArmorItem.Type type) {
+                return switch (type) {
+                    case BOOTS      -> 4;
+                    case LEGGINGS   -> 5;
+                    case CHESTPLATE -> 8;
+                    case HELMET     -> 5;
+                };
             }
-
             public int getEnchantmentValue() {
                 return 10;
             }
@@ -47,13 +58,13 @@ public abstract class UnlightDiamondArmorItem extends ArmorItem {
             public float getKnockbackResistance() {
                 return 0.0F;
             }
-        }, equipmentslot, properties);
+        }, type, properties);
     }
 
     public static class Boots extends UnlightDiamondArmorItem {
 
         public Boots() {
-            super(EquipmentSlot.FEET, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB).fireResistant());
+            super(Type.BOOTS, (new Properties()).fireResistant());
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
@@ -64,7 +75,7 @@ public abstract class UnlightDiamondArmorItem extends ArmorItem {
     public static class Leggings extends UnlightDiamondArmorItem {
 
         public Leggings() {
-            super(EquipmentSlot.LEGS, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB).fireResistant());
+            super(Type.LEGGINGS, (new Properties()).fireResistant());
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
@@ -75,7 +86,7 @@ public abstract class UnlightDiamondArmorItem extends ArmorItem {
     public static class Chestplate extends UnlightDiamondArmorItem {
 
         public Chestplate() {
-            super(EquipmentSlot.CHEST, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB).fireResistant());
+            super(Type.CHESTPLATE, (new Properties()).fireResistant());
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
@@ -86,7 +97,7 @@ public abstract class UnlightDiamondArmorItem extends ArmorItem {
     public static class Helmet extends UnlightDiamondArmorItem {
 
         public Helmet() {
-            super(EquipmentSlot.HEAD, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB).fireResistant());
+            super(Type.HELMET, (new Properties()).fireResistant());
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {

@@ -1,7 +1,5 @@
 package com.pla.annoyingvillagers.item;
 
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SwordItem;
@@ -35,6 +33,6 @@ public class HeavyAttackLegendarySwordItem extends SwordItem {
             public Ingredient getRepairIngredient() {
                 return Ingredient.of(new ItemStack[]{new ItemStack(Items.DIAMOND)});
             }
-        }, 3, -2.8F, (new Properties()).tab((CreativeModeTab) null).fireResistant());
+        }, 3, -2.8F, (new Properties()).fireResistant());
     }
 }

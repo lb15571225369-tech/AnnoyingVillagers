@@ -1,26 +1,35 @@
 package com.pla.annoyingvillagers.item;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class ClassicGoldenArmorItem extends ArmorItem {
 
-    public ClassicGoldenArmorItem(EquipmentSlot equipmentslot, Properties properties) {
+    public ClassicGoldenArmorItem(ArmorItem.Type type, Properties properties) {
         super(new ArmorMaterial() {
-            public int getDurabilityForSlot(EquipmentSlot equipmentslot1) {
-                return (new int[]{13, 15, 16, 11})[equipmentslot1.getIndex()] * 27;
+            @Override
+            public int getDurabilityForType(ArmorItem.Type type) {
+                return switch (type) {
+                    case BOOTS      -> 13 * 27;
+                    case LEGGINGS   -> 15 * 27;
+                    case CHESTPLATE -> 16 * 27;
+                    case HELMET     -> 11 * 27;
+                };
             }
 
-            public int getDefenseForSlot(EquipmentSlot equipmentslot1) {
-                return (new int[]{3, 5, 6, 3})[equipmentslot1.getIndex()];
+            @Override
+            public int getDefenseForType(ArmorItem.Type type) {
+                return switch (type) {
+                    case BOOTS      -> 3;
+                    case LEGGINGS   -> 5;
+                    case CHESTPLATE -> 6;
+                    case HELMET     -> 3;
+                };
             }
 
             public int getEnchantmentValue() {
@@ -46,13 +55,13 @@ public abstract class ClassicGoldenArmorItem extends ArmorItem {
             public float getKnockbackResistance() {
                 return 0.0F;
             }
-        }, equipmentslot, properties);
+        }, type, properties);
     }
 
     public static class Boots extends ClassicGoldenArmorItem {
 
         public Boots() {
-            super(EquipmentSlot.FEET, (new Properties()).tab((CreativeModeTab) null));
+            super(Type.BOOTS, (new Properties()));
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
@@ -63,7 +72,7 @@ public abstract class ClassicGoldenArmorItem extends ArmorItem {
     public static class Leggings extends ClassicGoldenArmorItem {
 
         public Leggings() {
-            super(EquipmentSlot.LEGS, (new Properties()).tab((CreativeModeTab) null));
+            super(Type.LEGGINGS, (new Properties()));
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
@@ -74,7 +83,7 @@ public abstract class ClassicGoldenArmorItem extends ArmorItem {
     public static class Chestplate extends ClassicGoldenArmorItem {
 
         public Chestplate() {
-            super(EquipmentSlot.CHEST, (new Properties()).tab((CreativeModeTab) null));
+            super(Type.CHESTPLATE, (new Properties()));
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
@@ -85,7 +94,7 @@ public abstract class ClassicGoldenArmorItem extends ArmorItem {
     public static class Helmet extends ClassicGoldenArmorItem {
 
         public Helmet() {
-            super(EquipmentSlot.HEAD, (new Properties()).tab((CreativeModeTab) null));
+            super(Type.HELMET, (new Properties()));
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {

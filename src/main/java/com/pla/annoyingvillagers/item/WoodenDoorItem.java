@@ -5,10 +5,8 @@ import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.common.collect.Multimap;
 import java.util.List;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.procedures.WoodenDoorItemOnUseProcedure;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
@@ -58,7 +56,7 @@ public class WoodenDoorItem extends TieredItem {
             public Ingredient getRepairIngredient() {
                 return Ingredient.of(new ItemStack[]{new ItemStack(Blocks.OAK_DOOR), new ItemStack(Blocks.STRIPPED_OAK_WOOD), new ItemStack(Blocks.STRIPPED_SPRUCE_WOOD)});
             }
-        }, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB));
+        }, (new Properties()));
     }
 
     public boolean isCorrectToolForDrops(BlockState blockstate) {

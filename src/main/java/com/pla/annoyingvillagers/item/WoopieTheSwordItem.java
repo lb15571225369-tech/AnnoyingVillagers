@@ -2,11 +2,8 @@ package com.pla.annoyingvillagers.item;
 
 import java.util.List;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.procedures.WoopieTheSwordItemOnEntityHitProcedure;
 import com.pla.annoyingvillagers.procedures.WoopieTheSwordItemOnUseProcedure;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -46,7 +43,7 @@ public class WoopieTheSwordItem extends SwordItem {
             public Ingredient getRepairIngredient() {
                 return Ingredient.of(new ItemStack[]{new ItemStack(Items.DIAMOND)});
             }
-        }, 3, -2.8F, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB).fireResistant());
+        }, 3, -2.8F, (new Properties()).fireResistant());
     }
 
     public boolean hurtEnemy(ItemStack itemstack, LivingEntity livingentity, LivingEntity livingentity1) {

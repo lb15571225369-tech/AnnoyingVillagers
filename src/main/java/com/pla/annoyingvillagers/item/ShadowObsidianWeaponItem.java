@@ -1,7 +1,5 @@
 package com.pla.annoyingvillagers.item;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -43,7 +41,7 @@ public class ShadowObsidianWeaponItem extends SwordItem {
             public Ingredient getRepairIngredient() {
                 return Ingredient.of(new ItemStack[]{new ItemStack(Blocks.OBSIDIAN)});
             }
-        }, 3, 0.5F, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB).fireResistant());
+        }, 3, 0.5F, (new Properties()).fireResistant());
     }
 
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {
@@ -62,7 +60,7 @@ public class ShadowObsidianWeaponItem extends SwordItem {
     public boolean onEntitySwing(ItemStack itemstack, LivingEntity livingentity) {
         boolean flag = super.onEntitySwing(itemstack, livingentity);
 
-        ShadowObsidianProcedure.execute(livingentity.level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity, itemstack);
+        ShadowObsidianProcedure.execute(livingentity.level(), livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity, itemstack);
         return flag;
     }
 }

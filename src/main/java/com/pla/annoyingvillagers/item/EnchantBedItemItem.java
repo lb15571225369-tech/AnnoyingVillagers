@@ -2,8 +2,6 @@ package com.pla.annoyingvillagers.item;
 
 import java.util.List;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -21,7 +19,7 @@ import com.pla.annoyingvillagers.procedures.EnchantBedItemOnRightClickBlockProce
 public class EnchantBedItemItem extends Item {
 
     public EnchantBedItemItem() {
-        super((new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB).stacksTo(1).fireResistant().rarity(Rarity.COMMON));
+        super((new Properties()).stacksTo(1).fireResistant().rarity(Rarity.COMMON));
     }
 
     @OnlyIn(Dist.CLIENT)

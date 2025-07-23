@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.item;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
@@ -16,14 +15,26 @@ import com.pla.annoyingvillagers.procedures.BlueDemonChestplateEventProcedure;
 
 public abstract class BlueDemonChestplateItem extends ArmorItem {
 
-    public BlueDemonChestplateItem(EquipmentSlot equipmentslot, Properties properties) {
+    public BlueDemonChestplateItem(ArmorItem.Type type, Properties properties) {
         super(new ArmorMaterial() {
-            public int getDurabilityForSlot(EquipmentSlot equipmentslot1) {
-                return (new int[]{13, 15, 16, 11})[equipmentslot1.getIndex()] * 31;
+            @Override
+            public int getDurabilityForType(Type pType) {
+                return switch (pType) {
+                    case BOOTS -> 13 * 31;
+                    case LEGGINGS -> 15 * 31;
+                    case CHESTPLATE -> 16 * 31;
+                    case HELMET -> 11 * 31;
+                };
             }
 
-            public int getDefenseForSlot(EquipmentSlot equipmentslot1) {
-                return (new int[]{2, 5, 30, 2})[equipmentslot1.getIndex()];
+            @Override
+            public int getDefenseForType(Type pType) {
+                return switch (pType) {
+                    case BOOTS -> 2;
+                    case LEGGINGS -> 5;
+                    case CHESTPLATE -> 30;  // this seems unusual, possibly a mistake?
+                    case HELMET -> 2;
+                };
             }
 
             public int getEnchantmentValue() {
@@ -49,19 +60,20 @@ public abstract class BlueDemonChestplateItem extends ArmorItem {
             public float getKnockbackResistance() {
                 return 0.0F;
             }
-        }, equipmentslot, properties);
+        }, type, properties);
     }
 
     public static class Chestplate extends BlueDemonChestplateItem {
 
         public Chestplate() {
-            super(EquipmentSlot.CHEST, (new Properties()).tab(AnnoyingVillagers.ANNOYINGVILLAGERS_TAB).fireResistant());
+            super(Type.CHESTPLATE, (new Properties()).fireResistant());
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
             return AnnoyingVillagers.MODID + ":textures/models/armor/blue_demon_chestplate_layer.png";
         }
 
+        @Override
         public void onArmorTick(ItemStack itemstack, Level level, Player player) {
             BlueDemonChestplateEventProcedure.execute(player);
         }
