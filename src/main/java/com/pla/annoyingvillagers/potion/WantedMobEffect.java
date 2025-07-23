@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.potion;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.procedures.WantedMobEffectOnEndProcedure;
 import com.pla.annoyingvillagers.procedures.WantedMobEffectOnStartProcedure;
 import com.pla.annoyingvillagers.procedures.WantedMobEffectEveryTickProcedure;
@@ -19,7 +18,7 @@ public class WantedMobEffect extends MobEffect {
     }
 
     public void addAttributeModifiers(LivingEntity livingentity, AttributeMap attributemap, int i) {
-        WantedMobEffectOnStartProcedure.execute(livingentity.level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity);
+        WantedMobEffectOnStartProcedure.execute(livingentity.level(), livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity);
     }
 
     public void applyEffectTick(LivingEntity livingentity, int i) {

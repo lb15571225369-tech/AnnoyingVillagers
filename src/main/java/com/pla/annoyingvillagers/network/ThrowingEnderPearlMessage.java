@@ -29,22 +29,22 @@ public class ThrowingEnderPearlMessage {
         this.pressedms = friendlybytebuf.readInt();
     }
 
-    public static void buffer(ThrowingEnderPearlMessage touzhimoyingzhenzhumessage, FriendlyByteBuf friendlybytebuf) {
-        friendlybytebuf.writeInt(touzhimoyingzhenzhumessage.type);
-        friendlybytebuf.writeInt(touzhimoyingzhenzhumessage.pressedms);
+    public static void buffer(ThrowingEnderPearlMessage throwingEnderPearlMessage, FriendlyByteBuf friendlybytebuf) {
+        friendlybytebuf.writeInt(throwingEnderPearlMessage.type);
+        friendlybytebuf.writeInt(throwingEnderPearlMessage.pressedms);
     }
 
-    public static void handler(ThrowingEnderPearlMessage touzhimoyingzhenzhumessage, Supplier<Context> supplier) {
+    public static void handler(ThrowingEnderPearlMessage throwingEnderPearlMessage, Supplier<Context> supplier) {
         Context context = (Context) supplier.get();
 
         context.enqueueWork(() -> {
-            pressAction(context.getSender(), touzhimoyingzhenzhumessage.type, touzhimoyingzhenzhumessage.pressedms);
+            pressAction(context.getSender(), throwingEnderPearlMessage.type, throwingEnderPearlMessage.pressedms);
         });
         context.setPacketHandled(true);
     }
 
     public static void pressAction(Player player, int i, int j) {
-        Level level = player.level;
+        Level level = player.level();
         double d0 = player.getX();
         double d1 = player.getY();
         double d2 = player.getZ();

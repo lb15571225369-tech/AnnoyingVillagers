@@ -26,24 +26,24 @@ public class MobMixin {
                 ItemStack stack = inventory.getStackInSlot(i);
                 if (!stack.isEmpty()) {
                     ItemEntity itemEntity = new ItemEntity(
-                            entity.level,
-                            entity.getX() + (entity.level.random.nextFloat() - 0.5) * 0.5,
+                            entity.level(),
+                            entity.getX() + (entity.level().random.nextFloat() - 0.5) * 0.5,
                             entity.getY() + 0.5,
-                            entity.getZ() + (entity.level.random.nextFloat() - 0.5) * 0.5,
+                            entity.getZ() + (entity.level().random.nextFloat() - 0.5) * 0.5,
                             stack.copy()
                     );
 
                     itemEntity.setDefaultPickUpDelay();
                     float speed = 0.05F;
                     itemEntity.setDeltaMovement(
-                            (entity.level.random.nextFloat() - 0.5) * speed,
-                            entity.level.random.nextFloat() * speed,
-                            (entity.level.random.nextFloat() - 0.5) * speed
+                            (entity.level().random.nextFloat() - 0.5) * speed,
+                            entity.level().random.nextFloat() * speed,
+                            (entity.level().random.nextFloat() - 0.5) * speed
                     );
                     new DelayedTask(20) {
                         @Override
                         public void run() {
-                            entity.level.addFreshEntity(itemEntity);
+                            entity.level().addFreshEntity(itemEntity);
                         }
                     };
                 }

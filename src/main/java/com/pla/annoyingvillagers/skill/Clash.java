@@ -11,6 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -18,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import com.pla.annoyingvillagers.capabilities.AVCategories;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import yesman.epicfight.api.animation.AnimationProvider;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.utils.AttackResult.ResultType;
@@ -55,7 +57,7 @@ public class Clash extends PassiveSkill {
             DynamicAnimation dynamicanimation = playerpatch.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
             float f = pre.getAmount();
 
-            if ((playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.SWORD || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.AXE || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.LONGSWORD || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.TACHI || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.SPEAR || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.UCHIGATANA || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.GREATSWORD || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.TRIDENT || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.LEGENDARYSWORD || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.HARDGREATSWORD) && !damagesource.isMagic() && !damagesource.isExplosion() && !damagesource.isFire() && !damagesource.isFall()) {
+            if ((playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.SWORD || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.AXE || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.LONGSWORD || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.TACHI || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.SPEAR || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.UCHIGATANA || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.GREATSWORD || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.TRIDENT || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.LEGENDARYSWORD || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.HARDGREATSWORD) && !damagesource.is(DamageTypes.MAGIC) && !damagesource.is(DamageTypes.EXPLOSION) && !damagesource.is(DamageTypes.ON_FIRE) && !damagesource.is(DamageTypes.IN_FIRE) && !damagesource.is(DamageTypes.FALL)) {
                 boolean flag = false;
                 Entity entity = damagesource.getEntity();
 
@@ -70,7 +72,7 @@ public class Clash extends PassiveSkill {
                 }
 
                 CapabilityItem capabilityitem = EpicFightCapabilities.getItemStackCapability(serverplayer.getMainHandItem());
-                List<StaticAnimation> list = capabilityitem.getAutoAttckMotion(pre.getPlayerPatch());
+                List<AnimationProvider<?>> list = capabilityitem.getAutoAttckMotion(pre.getPlayerPatch());
                 LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 
                 if (flag && list.contains(dynamicanimation) || dynamicanimation == AVAnimations.GIANT_WHIRLWIND_2 || dynamicanimation == AVAnimations.DUAL_SWORD_DANCING_EDGE || dynamicanimation == AVAnimations.SpinningDeath) {
@@ -82,14 +84,14 @@ public class Clash extends PassiveSkill {
                     }
 
                     serverplayer.setDeltaMovement(new Vec3(serverplayer.getLookAngle().x * -0.2D, 0.0D, serverplayer.getLookAngle().z * -0.2D));
-                    if (serverplayer.level instanceof ServerLevel) {
-                        ((HitParticleType) EpicFightParticles.HIT_BLUNT.get()).spawnParticleWithArgument((ServerLevel) serverplayer.level, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, serverplayer, damagesource.getEntity());
+                    if (serverplayer.level() instanceof ServerLevel) {
+                        ((HitParticleType) EpicFightParticles.HIT_BLUNT.get()).spawnParticleWithArgument((ServerLevel) serverplayer.level(), HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, serverplayer, damagesource.getEntity());
                     }
 
                     ItemStack itemstack = ((Player) playerpatch.getOriginal()).getMainHandItem();
                     ItemStack itemstack1 = serverplayer.getOffhandItem();
 
-                    if (!serverplayer.level.isClientSide() && serverplayer.getServer() != null) {
+                    if (!serverplayer.level().isClientSide() && serverplayer.getServer() != null) {
                         try {
                             serverplayer.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100", serverplayer.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                         } catch (CommandSyntaxException e) {

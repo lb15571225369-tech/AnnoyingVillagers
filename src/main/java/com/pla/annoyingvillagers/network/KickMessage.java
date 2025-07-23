@@ -46,7 +46,7 @@ public class KickMessage {
     }
 
     public static void pressAction(Player player, int i, int j) {
-        Level level = player.level;
+        Level level = player.level();
         double d0 = player.getX();
         double d1 = player.getY();
         double d2 = player.getZ();

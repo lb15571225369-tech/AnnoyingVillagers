@@ -8,12 +8,14 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.items.ItemStackHandler;
 import org.spongepowered.asm.mixin.Mixin;
@@ -57,7 +59,7 @@ public class PlayerMobMixinRemapTrue {
                 int surfaceY = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, pos).getY();
                 if (currentY < surfaceY - 5) {
                     BlockPos surfacePos = new BlockPos(pos.getX(), surfaceY, pos.getZ());
-                    if (!world.getLevel().getBlockState(surfacePos).getMaterial().isLiquid()) {
+                    if (!world.getLevel().getBlockState(surfacePos).is(Blocks.WATER)) {
                         self.setPos(surfacePos.getX() + 0.5, surfacePos.getY(), surfacePos.getZ() + 0.5);
                     } else {
                         final int radius = 30;
@@ -67,7 +69,7 @@ public class PlayerMobMixinRemapTrue {
                                 int candidateY = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, candidateXZ).getY();
                                 BlockPos candidateSurface = new BlockPos(candidateXZ.getX(), candidateY, candidateXZ.getZ());
 
-                                if (!world.getLevel().getBlockState(candidateSurface).getMaterial().isLiquid()) {
+                                if (!world.getLevel().getBlockState(candidateSurface).is(Blocks.WATER)) {
                                     self.setPos(candidateSurface.getX() + 0.5, candidateSurface.getY(), candidateSurface.getZ() + 0.5);
                                     break;
                                 }
@@ -104,9 +106,9 @@ public class PlayerMobMixinRemapTrue {
     @Inject(method = "tick", at = @At("TAIL"))
     private void tickingInventory(CallbackInfo ci) {
         PlayerMobEntity self = (PlayerMobEntity) (Object) this;
-        if (!self.level.isClientSide && self.tickCount % 20 == 0) {
+        if (!self.level().isClientSide && self.tickCount % 20 == 0) {
             if (self.getHealth() <= 0.0F) return;
-            List<ItemEntity> items = self.level.getEntitiesOfClass(ItemEntity.class, self.getBoundingBox().inflate(2));
+            List<ItemEntity> items = self.level().getEntitiesOfClass(ItemEntity.class, self.getBoundingBox().inflate(2));
             for (ItemEntity item : items) {
                 if (!item.hasPickUpDelay() && !item.isRemoved()) {
                     final ItemEntity itemEntity = item;
@@ -130,7 +132,7 @@ public class PlayerMobMixinRemapTrue {
                                 @Override
                                 public void run() {
                                     itemEntity.discard();
-                                    self.level.playSound(null, self.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.HOSTILE, 0.2F, 1.0F);
+                                    self.level().playSound(null, self.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.HOSTILE, 0.2F, 1.0F);
                                 }
                             };
                         } else {

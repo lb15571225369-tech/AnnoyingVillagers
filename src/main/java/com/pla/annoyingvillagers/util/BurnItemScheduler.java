@@ -122,14 +122,14 @@ public class BurnItemScheduler {
     }
 
     public void run() {
-        if (!(mob.level instanceof ServerLevel serverLevel)) return;
+        if (!(mob.level() instanceof ServerLevel serverLevel)) return;
 
         if (mob.getTarget() != null) {
             resetItem();
             return;
         }
 
-        List<ItemEntity> items = mob.level.getEntitiesOfClass(ItemEntity.class, mob.getBoundingBox().inflate(10));
+        List<ItemEntity> items = mob.level().getEntitiesOfClass(ItemEntity.class, mob.getBoundingBox().inflate(10));
         ItemEntity targetItem = items.stream()
                 .filter(item -> item.isAlive() && !item.getItem().isEmpty())
                 .findFirst()
@@ -167,7 +167,7 @@ public class BurnItemScheduler {
                         targetItem.getX(), targetItem.getY(), targetItem.getZ(),
                         8, 0.2, 0.2, 0.2, 0.01);
 
-                mob.level.playSound(null, mob.blockPosition(), SoundEvents.FLINTANDSTEEL_USE,
+                mob.level().playSound(null, mob.blockPosition(), SoundEvents.FLINTANDSTEEL_USE,
                         SoundSource.HOSTILE, 1.0f, 1.0f);
 
                 String rawName = targetItem.getItem().getDisplayName().getString();

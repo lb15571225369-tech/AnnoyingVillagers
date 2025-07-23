@@ -3,8 +3,7 @@ package com.pla.annoyingvillagers.potion;
 import com.mojang.blaze3d.vertex.PoseStack;
 import java.util.function.Consumer;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -24,7 +23,7 @@ public class BlueDemonSkillLightingEffectMobEffect extends MobEffect {
     }
 
     public void applyEffectTick(LivingEntity livingentity, int i) {
-        BlueDemonSkillLightingEffectDuringDurationProcedure.execute(livingentity.level, livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity);
+        BlueDemonSkillLightingEffectDuringDurationProcedure.execute(livingentity.level(), livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity);
     }
 
     public boolean isDurationEffectTick(int i, int j) {
@@ -47,7 +46,7 @@ public class BlueDemonSkillLightingEffectMobEffect extends MobEffect {
 
             public void renderInventoryEffect(MobEffectInstance mobeffectinstance, EffectRenderingInventoryScreen<?> effectrenderinginventoryscreen, PoseStack posestack, int i, int j, float f) {}
 
-            public void renderHUDEffect(MobEffectInstance mobeffectinstance, GuiComponent guicomponent, PoseStack posestack, int i, int j, float f, float f1) {}
+            public void renderHUDEffect(MobEffectInstance mobeffectinstance, RenderGuiOverlayEvent renderGuiOverlayEvent, PoseStack posestack, int i, int j, float f, float f1) {}
         });
     }
 }

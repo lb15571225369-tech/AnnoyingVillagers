@@ -191,7 +191,7 @@ public class AnimationSheduler {
     }
 
     public void run(IdleAnimation idleAnimation, boolean checkOnly, boolean reTry) {
-        if (!(mob.level instanceof ServerLevel serverLevel)) return;
+        if (!(mob.level() instanceof ServerLevel serverLevel)) return;
 
         if (mob.getTarget() != null) {
             resetItem();
@@ -217,7 +217,7 @@ public class AnimationSheduler {
                 case SLIGHT -> "indestructible @s play \"annoyingvillagers:biped/idle/slight\" 0 1";
             };
 
-            if (!mob.level.isClientSide() && mob.getServer() != null) {
+            if (!mob.level().isClientSide() && mob.getServer() != null) {
                 try {
                     mob.getServer().getCommands().getDispatcher().execute(
                             command,
