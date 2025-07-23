@@ -23,7 +23,7 @@ public class BlueDemonTridentOnProjectileHitEntityProcedure {
                 serverlevel = (ServerLevel) levelaccessor;
                 LightningBolt lightningbolt = (LightningBolt) EntityType.LIGHTNING_BOLT.create(serverlevel);
 
-                lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos(d0, d1, d2)));
+                lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0, (int) d1, (int) d2)));
                 lightningbolt.setVisualOnly(true);
                 serverlevel.addFreshEntity(lightningbolt);
             }
@@ -31,7 +31,7 @@ public class BlueDemonTridentOnProjectileHitEntityProcedure {
             if (entity instanceof LivingEntity) {
                 LivingEntity livingentity = (LivingEntity) entity;
 
-                if (!livingentity.level.isClientSide()) {
+                if (!livingentity.level().isClientSide()) {
                     livingentity.addEffect(new MobEffectInstance(MobEffects.POISON, 40, 1, false, false));
                 }
             }

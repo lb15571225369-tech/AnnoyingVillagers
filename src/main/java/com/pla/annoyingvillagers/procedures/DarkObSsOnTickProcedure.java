@@ -27,12 +27,12 @@ public class DarkObSsOnTickProcedure {
             return true;
         }).isEmpty()) {
         } else {
-            levelaccessor.setBlock(new BlockPos(d0, d1, d2), Blocks.AIR.defaultBlockState(), 3);
+            levelaccessor.setBlock(new BlockPos((int) d0, (int) d1, (int) d2), Blocks.AIR.defaultBlockState(), 3);
             if (levelaccessor instanceof Level) {
                 Level level = (Level) levelaccessor;
 
                 if (!level.isClientSide()) {
-                    level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "ob_place")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                    level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "ob_place")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                 } else {
                     level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "ob_place")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                 }

@@ -24,7 +24,7 @@ public class ObsidianBlockPlaceBlockProcedure {
         if (levelaccessor instanceof Level) {
             level = (Level)levelaccessor;
             if (!level.isClientSide()) {
-                level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "block.stone.place")), SoundSource.BLOCKS, (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.0D, 0.7D), 1.0F);
+                level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "block.stone.place")), SoundSource.BLOCKS, (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.0D, 0.7D), 1.0F);
             } else {
                 level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "block.stone.place")), SoundSource.BLOCKS, (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.0D, 0.7D), 1.0F, false);
             }
@@ -33,7 +33,7 @@ public class ObsidianBlockPlaceBlockProcedure {
         if (levelaccessor instanceof Level) {
             level = (Level)levelaccessor;
             if (!level.isClientSide()) {
-                level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "obplace")), SoundSource.BLOCKS, (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.2D, 0.6D), 1.0F);
+                level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "obplace")), SoundSource.BLOCKS, (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.2D, 0.6D), 1.0F);
             } else {
                 level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "obplace")), SoundSource.BLOCKS, (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.2D, 0.6D), 1.0F, false);
             }
@@ -47,13 +47,13 @@ public class ObsidianBlockPlaceBlockProcedure {
                     Level level1 = (Level)levelaccessor1;
 
                     if (!level1.isClientSide()) {
-                        level1.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "block.stone.break")), SoundSource.BLOCKS, 1.0F, (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.9D, 1.0D));
+                        level1.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "block.stone.break")), SoundSource.BLOCKS, 1.0F, (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.9D, 1.0D));
                     } else {
                         level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "block.stone.break")), SoundSource.BLOCKS, 1.0F, (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.9D, 1.0D), false);
                     }
                 }
 
-                levelaccessor.setBlock(new BlockPos(d0, d1, d2), Blocks.AIR.defaultBlockState(), 3);
+                levelaccessor.setBlock(new BlockPos((int) d0, (int) d1, (int) d2), Blocks.AIR.defaultBlockState(), 3);
             }
         };
 
@@ -66,7 +66,7 @@ public class ObsidianBlockPlaceBlockProcedure {
                     Level level2 = (Level)levelaccessor2;
 
                     if (!level2.isClientSide()) {
-                        level2.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "pop")), SoundSource.BLOCKS, 1.0F, (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 1.0D));
+                        level2.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "pop")), SoundSource.BLOCKS, 1.0F, (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 1.0D));
                     } else {
                         level2.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "pop")), SoundSource.BLOCKS, 1.0F, (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 1.0D), false);
                     }

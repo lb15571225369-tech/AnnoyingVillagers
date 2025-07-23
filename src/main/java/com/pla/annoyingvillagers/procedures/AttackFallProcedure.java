@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.procedures;
 
 import javax.annotation.Nullable;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -30,7 +31,7 @@ public class AttackFallProcedure {
 
     private static void execute(@Nullable Event event, DamageSource damagesource, Entity entity) {
         if (entity != null) {
-            if (entity instanceof Player && damagesource == DamageSource.FALL && entity.isAlive()) {
+            if (entity instanceof Player && damagesource.is(DamageTypes.FALL) && entity.isAlive()) {
                 LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                 DynamicAnimation dynamicanimation = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
 

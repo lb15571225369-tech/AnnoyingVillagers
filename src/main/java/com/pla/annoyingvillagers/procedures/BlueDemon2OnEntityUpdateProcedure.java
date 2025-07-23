@@ -35,12 +35,12 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 public class BlueDemon2OnEntityUpdateProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) {
+    public static void execute(LevelAccessor levelaccessor, int d0, int d1, int d2, final Entity entity) {
         if (entity != null) {
             if (!levelaccessor.getEntitiesOfClass(ThrownTrident.class, AABB.ofSize(new Vec3(d0, d1, d2), 40.0D, 40.0D, 40.0D), (throwntrident) -> {
                 return true;
             }).isEmpty() && Math.random() <= 0.02D) {
-                if (!entity.level.isClientSide() && entity.getServer() != null) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
                     try {
                         entity.getServer().getCommands().getDispatcher().execute("execute at @e[type=minecraft:trident] run particle annoyingvillagers:electric_spark ^ ^ ^0.1 0.2 0.2 0.1 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                     } catch (CommandSyntaxException e) {
@@ -52,7 +52,7 @@ public class BlueDemon2OnEntityUpdateProcedure {
                     Level level = (Level)levelaccessor;
 
                     if (!level.isClientSide()) {
-                        level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "electify")), SoundSource.BLOCKS, (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.0D, 0.1D), (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.7D, 1.05D));
+                        level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "electify")), SoundSource.BLOCKS, (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.0D, 0.1D), (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.7D, 1.05D));
                     } else {
                         level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "electify")), SoundSource.BLOCKS, (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.0D, 0.1D), (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.7D, 1.05D), false);
                     }
@@ -80,7 +80,7 @@ public class BlueDemon2OnEntityUpdateProcedure {
                 }
 
                 if (entity1 == livingentity && Math.random() <= 0.12D) {
-                    if (!entity.level.isClientSide() && entity.getServer() != null) {
+                    if (!entity.level().isClientSide() && entity.getServer() != null) {
                         try {
                             entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:electric_spark ^ ^ ^ 0.3 1.2 0.3 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                         } catch (CommandSyntaxException e) {
@@ -92,7 +92,7 @@ public class BlueDemon2OnEntityUpdateProcedure {
                         Level level1 = (Level)levelaccessor;
 
                         if (!level1.isClientSide()) {
-                            level1.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "electify")), SoundSource.BLOCKS, (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.0D, 0.15D), (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.7D, 1.05D));
+                            level1.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "electify")), SoundSource.BLOCKS, (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.0D, 0.15D), (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.7D, 1.05D));
                         } else {
                             level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "electify")), SoundSource.BLOCKS, (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.0D, 0.15D), (float)Mth.nextDouble(AnnoyingVillagers.randomSource, 0.7D, 1.05D), false);
                         }
@@ -109,7 +109,7 @@ public class BlueDemon2OnEntityUpdateProcedure {
                     if (entity.isAlive()) {
                         Entity entity2 = entity;
 
-                        if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                        if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                             try {
                                 entity2.getServer().getCommands().getDispatcher().execute("summon annoyingvillagers:blue_demon", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                             } catch (CommandSyntaxException e) {
@@ -117,7 +117,7 @@ public class BlueDemon2OnEntityUpdateProcedure {
                             }
                         }
 
-                        if (!entity.level.isClientSide()) {
+                        if (!entity.level().isClientSide()) {
                             entity.discard();
                         }
                     }
@@ -136,7 +136,7 @@ public class BlueDemon2OnEntityUpdateProcedure {
                                 if (dynamicanimation instanceof KnockdownAnimation) {
                                     Entity entity2 = entity;
 
-                                    if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                    if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                         try {
                                             entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/skill/knockdown_wakeup_left\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                         } catch (CommandSyntaxException e) {

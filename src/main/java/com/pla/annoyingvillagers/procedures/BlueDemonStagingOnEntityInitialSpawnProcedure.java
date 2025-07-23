@@ -56,7 +56,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
             while(iterator.hasNext()) {
                 Entity entity1 = (Entity)iterator.next();
 
-                if (!entity1.level.isClientSide() && entity1.getServer() != null) {
+                if (!entity1.level().isClientSide() && entity1.getServer() != null) {
                     try {
                         entity1.getServer().getCommands().getDispatcher().execute("impactful @s shake 400 5 5", entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                     } catch (CommandSyntaxException e) {
@@ -76,7 +76,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
             }
 
             itemstack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 4);
-            if (!entity.level.isClientSide() && entity.getServer() != null) {
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute("effect give @s annoyingvillagers:captive 20000 0 true", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
 
@@ -99,7 +99,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                         Level level = (Level)levelaccessor1;
 
                         if (!level.isClientSide()) {
-                            level.playSound((Player)null, new BlockPos(d0, d1, d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "tridentfs_skill")), SoundSource.NEUTRAL, 5.0F, 1.0F);
+                            level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "tridentfs_skill")), SoundSource.NEUTRAL, 5.0F, 1.0F);
                         } else {
                             level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "tridentfs_skill")), SoundSource.NEUTRAL, 5.0F, 1.0F, false);
                         }
@@ -443,7 +443,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                                         if (levelaccessor9 instanceof ServerLevel) {
                                                                                             serverlevel8 = (ServerLevel)levelaccessor9;
                                                                                             lightningbolt = (LightningBolt)EntityType.LIGHTNING_BOLT.create(serverlevel8);
-                                                                                            lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -25, 25), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -25, 25))));
+                                                                                            lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0 + (int) Mth.nextInt(AnnoyingVillagers.randomSource, -25, 25), (int) d1 - 1, (int) d2 + (int) Mth.nextInt(AnnoyingVillagers.randomSource, -25, 25))));
                                                                                             lightningbolt.setVisualOnly(true);
                                                                                             serverlevel8.addFreshEntity(lightningbolt);
                                                                                         }
@@ -452,7 +452,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                                         if (levelaccessor9 instanceof ServerLevel) {
                                                                                             serverlevel8 = (ServerLevel)levelaccessor9;
                                                                                             lightningbolt = (LightningBolt)EntityType.LIGHTNING_BOLT.create(serverlevel8);
-                                                                                            lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -25, 25), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -25, 25))));
+                                                                                            lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0 + (int)Mth.nextInt(AnnoyingVillagers.randomSource, -25, 25), (int) d1 - 1, (int) d2 + (int) Mth.nextInt(AnnoyingVillagers.randomSource, -25, 25))));
                                                                                             lightningbolt.setVisualOnly(true);
                                                                                             serverlevel8.addFreshEntity(lightningbolt);
                                                                                         }
@@ -461,7 +461,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                                         if (levelaccessor9 instanceof ServerLevel) {
                                                                                             serverlevel8 = (ServerLevel)levelaccessor9;
                                                                                             lightningbolt = (LightningBolt)EntityType.LIGHTNING_BOLT.create(serverlevel8);
-                                                                                            lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -25, 25), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -25, 25))));
+                                                                                            lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0 + (int) Mth.nextInt(AnnoyingVillagers.randomSource, -25, 25), (int) d1 - 1, (int) d2 + (int) Mth.nextInt(AnnoyingVillagers.randomSource, -25, 25))));
                                                                                             lightningbolt.setVisualOnly(true);
                                                                                             serverlevel8.addFreshEntity(lightningbolt);
                                                                                         }
@@ -470,7 +470,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                                         if (levelaccessor9 instanceof ServerLevel) {
                                                                                             serverlevel8 = (ServerLevel)levelaccessor9;
                                                                                             lightningbolt = (LightningBolt)EntityType.LIGHTNING_BOLT.create(serverlevel8);
-                                                                                            lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos(d0 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -25, 25), d1 - 1.0D, d2 + (double)Mth.nextInt(AnnoyingVillagers.randomSource, -25, 25))));
+                                                                                            lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0 + (int) Mth.nextInt(AnnoyingVillagers.randomSource, -25, 25), (int) d1 - 1, (int) d2 + (int) Mth.nextInt(AnnoyingVillagers.randomSource, -25, 25))));
                                                                                             lightningbolt.setVisualOnly(true);
                                                                                             serverlevel8.addFreshEntity(lightningbolt);
                                                                                         }
@@ -545,7 +545,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
 
                                                                                         Entity entity2 = entity;
 
-                                                                                        if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                                                                        if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                                                                             try {
                                                                                                 entity2.getServer().getCommands().getDispatcher().execute("effect clear @e annoyingvillagers:block", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                             } catch (
@@ -560,7 +560,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                                         if (levelaccessor9 instanceof Level) {
                                                                                             level1 = (Level)levelaccessor9;
                                                                                             if (!level1.isClientSide()) {
-                                                                                                level1.explode((Entity)null, d0, d1 + 3.0D, d2, 60.0F, BlockInteraction.DESTROY);
+                                                                                                level1.explode((Entity)null, d0, d1 + 3.0D, d2, 60.0F, Level.ExplosionInteraction.BLOCK);
                                                                                             }
                                                                                         }
 
@@ -568,7 +568,7 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                                         if (levelaccessor9 instanceof Level) {
                                                                                             level1 = (Level)levelaccessor9;
                                                                                             if (!level1.isClientSide()) {
-                                                                                                level1.explode((Entity)null, d0, d1 + 1.0D, d2, 0.0F, BlockInteraction.NONE);
+                                                                                                level1.explode((Entity)null, d0, d1 + 1.0D, d2, 0.0F, Level.ExplosionInteraction.NONE);
                                                                                             }
                                                                                         }
 
@@ -576,11 +576,11 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                                         if (levelaccessor9 instanceof Level) {
                                                                                             level1 = (Level)levelaccessor9;
                                                                                             if (!level1.isClientSide()) {
-                                                                                                level1.explode((Entity)null, d0, d1 + 1.0D, d2, 0.0F, BlockInteraction.NONE);
+                                                                                                level1.explode((Entity)null, d0, d1 + 1.0D, d2, 0.0F, Level.ExplosionInteraction.NONE);
                                                                                             }
                                                                                         }
 
-                                                                                        if (!entity2.level.isClientSide()) {
+                                                                                        if (!entity2.level().isClientSide()) {
                                                                                             entity2.discard();
                                                                                         }
 

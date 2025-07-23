@@ -29,7 +29,7 @@ public class BlueDemonOnEntityKillOtherEntityProcedure {
                 if (levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "bluedemonsaydontbe")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "bluedemonsaydontbe")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     } else {
                         level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "bluedemonsaydontbe")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                     }
@@ -43,7 +43,7 @@ public class BlueDemonOnEntityKillOtherEntityProcedure {
                     if (levelaccessor instanceof Level) {
                         level = (Level) levelaccessor;
                         if (!level.isClientSide()) {
-                            level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "bluedemonsayplayer")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                            level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "bluedemonsayplayer")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                         } else {
                             level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "bluedemonsayplayer")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                         }
@@ -57,7 +57,7 @@ public class BlueDemonOnEntityKillOtherEntityProcedure {
                 if (levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "bluedemon_say_you_no_know")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "bluedemon_say_you_no_know")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     } else {
                         level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "bluedemon_say_you_no_know")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                     }
@@ -70,7 +70,7 @@ public class BlueDemonOnEntityKillOtherEntityProcedure {
                 if (levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "bluedemonsayyc")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "bluedemonsayyc")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     } else {
                         level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "bluedemonsayyc")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                     }

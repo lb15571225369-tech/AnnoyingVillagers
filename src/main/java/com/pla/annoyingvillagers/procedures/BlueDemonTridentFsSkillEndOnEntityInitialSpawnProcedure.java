@@ -21,7 +21,7 @@ public class BlueDemonTridentFsSkillEndOnEntityInitialSpawnProcedure {
         }
 
         // Run commands
-        if (!entity.level.isClientSide() && entity.getServer() != null) {
+        if (!entity.level().isClientSide() && entity.getServer() != null) {
             String[] commands = new String[] {
                     "item replace entity @s weapon.mainhand with annoyingvillagers:bluedemontrident",
                     "item replace entity @s weapon.offhand with annoyingvillagers:bluedemontrident",
@@ -49,7 +49,7 @@ public class BlueDemonTridentFsSkillEndOnEntityInitialSpawnProcedure {
 
                 String summonCommand = "summon annoyingvillagers:blue_demon_2";
 
-                if (!entity.level.isClientSide() && entity.getServer() != null) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
                     try {
                         entity.getServer().getCommands().getDispatcher().execute(
                                 summonCommand,
@@ -60,7 +60,7 @@ public class BlueDemonTridentFsSkillEndOnEntityInitialSpawnProcedure {
                     }
                 }
 
-                if (!entity.level.isClientSide()) {
+                if (!entity.level().isClientSide()) {
                     entity.discard();
                 }
             }

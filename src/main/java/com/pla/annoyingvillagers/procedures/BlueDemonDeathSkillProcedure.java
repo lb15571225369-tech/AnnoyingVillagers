@@ -30,7 +30,7 @@ public class BlueDemonDeathSkillProcedure {
     @SubscribeEvent
     public static void onEntityDeath(LivingDeathEvent event) {
         if (event != null && event.getEntity() != null) {
-            execute(event, event.getEntity().level, event.getEntity(), event.getSource().getEntity());
+            execute(event, event.getEntity().level(), event.getEntity(), event.getSource().getEntity());
         }
     }
 
@@ -47,7 +47,7 @@ public class BlueDemonDeathSkillProcedure {
             @Override
             public void run() {
                 if (isSpectator(sourceEntity) || isCreative(sourceEntity)) {
-                    if (entity instanceof Player player && !player.level.isClientSide()) {
+                    if (entity instanceof Player player && !player.level().isClientSide()) {
                         player.displayClientMessage(Component.literal("No target"), true);
                     }
                     return;
@@ -58,7 +58,7 @@ public class BlueDemonDeathSkillProcedure {
                 }
 
                 if (world instanceof Level level && !level.isClientSide()) {
-                    level.explode(null, sourceEntity.getX(), sourceEntity.getY(), sourceEntity.getZ(), 10.0F, Explosion.BlockInteraction.NONE);
+                    level.explode(null, sourceEntity.getX(), sourceEntity.getY(), sourceEntity.getZ(), 10.0F, Level.ExplosionInteraction.NONE);
                 }
 
                 applyEffect(sourceEntity, MobEffects.BLINDNESS, 60, 2);
@@ -66,14 +66,14 @@ public class BlueDemonDeathSkillProcedure {
                 applyEffect(sourceEntity, MobEffects.MOVEMENT_SLOWDOWN, 70, 2);
 
                 if (world instanceof Level level2 && !level2.isClientSide()) {
-                    level2.explode(null, sourceEntity.getX(), sourceEntity.getY(), sourceEntity.getZ(), 8.0F, Explosion.BlockInteraction.DESTROY);
+                    level2.explode(null, sourceEntity.getX(), sourceEntity.getY(), sourceEntity.getZ(), 8.0F, Level.ExplosionInteraction.BLOCK);
                 }
 
                 for (int i = 0; i < 2; i++) {
                     if (world instanceof ServerLevel serverLevel) {
                         LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(serverLevel);
                         if (bolt != null) {
-                            bolt.moveTo(Vec3.atBottomCenterOf(new BlockPos(sourceEntity.getX(), sourceEntity.getY(), sourceEntity.getZ())));
+                            bolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) sourceEntity.getX(), (int) sourceEntity.getY(), (int) sourceEntity.getZ())));
                             bolt.setVisualOnly(false);
                             serverLevel.addFreshEntity(bolt);
                         }
@@ -92,7 +92,7 @@ public class BlueDemonDeathSkillProcedure {
     private static boolean isSpectator(Entity entity) {
         if (entity instanceof ServerPlayer sp)
             return sp.gameMode.getGameModeForPlayer() == GameType.SPECTATOR;
-        if (entity instanceof Player player && entity.level.isClientSide()) {
+        if (entity instanceof Player player && entity.level().isClientSide()) {
             var info = Minecraft.getInstance().getConnection().getPlayerInfo(player.getGameProfile().getId());
             return info != null && info.getGameMode() == GameType.SPECTATOR;
         }
@@ -102,7 +102,7 @@ public class BlueDemonDeathSkillProcedure {
     private static boolean isCreative(Entity entity) {
         if (entity instanceof ServerPlayer sp)
             return sp.gameMode.getGameModeForPlayer() == GameType.CREATIVE;
-        if (entity instanceof Player player && entity.level.isClientSide()) {
+        if (entity instanceof Player player && entity.level().isClientSide()) {
             var info = Minecraft.getInstance().getConnection().getPlayerInfo(player.getGameProfile().getId());
             return info != null && info.getGameMode() == GameType.CREATIVE;
         }
@@ -110,7 +110,7 @@ public class BlueDemonDeathSkillProcedure {
     }
 
     private static void applyEffect(Entity entity, MobEffect effect, int duration, int amplifier) {
-        if (entity instanceof LivingEntity living && !living.level.isClientSide()) {
+        if (entity instanceof LivingEntity living && !living.level().isClientSide()) {
             living.addEffect(new MobEffectInstance(effect, duration, amplifier, false, false));
         }
     }

@@ -11,7 +11,7 @@ public class BlueDemonOnEntityDeathProcedure {
         if (entity == null || entity1 == null) return;
 
         // Summon Blue Demon replacement
-        if (!entity.level.isClientSide() && entity.getServer() != null) {
+        if (!entity.level().isClientSide() && entity.getServer() != null) {
             try {
                 entity.getServer().getCommands().getDispatcher().execute(
                         "summon annoyingvillagers:blue_demon_staging",
@@ -22,7 +22,7 @@ public class BlueDemonOnEntityDeathProcedure {
             }
         }
 
-        if (!entity.level.isClientSide()) {
+        if (!entity.level().isClientSide()) {
             entity.discard();
         }
 

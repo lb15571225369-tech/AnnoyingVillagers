@@ -46,7 +46,7 @@ public class EnchantBedRightClickOnBlockProcedure {
 
             if (i >= 2) {
                 if (entity.getPersistentData().getDouble("en_bed") >= 2.0D) {
-                    levelaccessor.setBlock(new BlockPos(d0, d1, d2), Blocks.AIR.defaultBlockState(), 3);
+                    levelaccessor.setBlock(new BlockPos((int) d0, (int) d1, (int) d2), Blocks.AIR.defaultBlockState(), 3);
                     if (entity instanceof Player) {
                         player = (Player) entity;
                         if (!player.level.isClientSide()) {
@@ -84,7 +84,7 @@ public class EnchantBedRightClickOnBlockProcedure {
                     if (entity instanceof ServerPlayer) {
                         ServerPlayer serverplayer = (ServerPlayer) entity;
 
-                        serverplayer.setRespawnPosition(serverplayer.level.dimension(), new BlockPos(d0, d1, d2), serverplayer.getYRot(), true, false);
+                        serverplayer.setRespawnPosition(serverplayer.level.dimension(), new BlockPos((int) d0, (int) d1, (int) d2), serverplayer.getYRot(), true, false);
                     }
 
                     entity.getPersistentData().putDouble("en_bed", entity.getPersistentData().getDouble("en_bed") + 1.0D);

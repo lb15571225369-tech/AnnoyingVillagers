@@ -34,7 +34,7 @@ public class ElectifyDuringEffectEveryTickProcedure {
                     Level level = (Level) levelaccessor;
 
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos(d0, d1, d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "electify")), SoundSource.NEUTRAL, (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.05D, 0.5D), (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.8D, 1.1D));
+                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "electify")), SoundSource.NEUTRAL, (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.05D, 0.5D), (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.8D, 1.1D));
                     } else {
                         level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "electify")), SoundSource.NEUTRAL, (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.05D, 0.5D), (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.8D, 1.1D), false);
                     }

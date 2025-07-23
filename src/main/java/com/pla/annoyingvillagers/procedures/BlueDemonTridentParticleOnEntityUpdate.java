@@ -20,7 +20,7 @@ public class BlueDemonTridentParticleOnEntityUpdate {
             if (!levelaccessor.getEntitiesOfClass(BlueDemonEndStagingEntity.class, AABB.ofSize(new Vec3(d0, d1, d2), 90.0D, 90.0D, 90.0D), (bluedemonendentity) -> {
                 return true;
             }).isEmpty()) {
-                if (!entity.level.isClientSide() && entity.getServer() != null) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
                     try {
                         entity.getServer().getCommands().getDispatcher().execute("kill @s", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                     } catch (CommandSyntaxException e) {
@@ -28,7 +28,7 @@ public class BlueDemonTridentParticleOnEntityUpdate {
                     }
                 }
 
-                if (!entity.level.isClientSide()) {
+                if (!entity.level().isClientSide()) {
                     entity.discard();
                 }
             }
@@ -61,7 +61,7 @@ public class BlueDemonTridentParticleOnEntityUpdate {
             new DelayedTask(120) {
                 @Override
                 public void run() {
-                    if (entity.isAlive() && !entity.level.isClientSide()) {
+                    if (entity.isAlive() && !entity.level().isClientSide()) {
                         entity.discard();
                     }
                 }

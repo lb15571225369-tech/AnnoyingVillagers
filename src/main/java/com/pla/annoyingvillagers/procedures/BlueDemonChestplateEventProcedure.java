@@ -42,7 +42,7 @@ public class BlueDemonChestplateEventProcedure {
                 livingentity.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Blocks.AIR));
             }
 
-            if (!entity.level.isClientSide() && entity.getServer() != null) {
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute("effect give @s annoyingvillagers:electify 1 0 true", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 } catch (CommandSyntaxException e) {

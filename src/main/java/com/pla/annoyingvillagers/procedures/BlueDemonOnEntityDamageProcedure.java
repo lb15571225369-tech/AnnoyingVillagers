@@ -28,13 +28,13 @@ public class BlueDemonOnEntityDamageProcedure {
 
         if (!entity.getPersistentData().getBoolean("kick_x")) {
             if (entity instanceof LivingEntity living) {
-                if (!living.level.isClientSide()) {
+                if (!living.level().isClientSide()) {
                     living.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.NPC_KICK_EFFECT.get(), 11, 0, false, false));
                 }
             }
 
             if (entity instanceof Mob mob && mob.getTarget() == entity1) {
-                if (Math.random() <= 0.2 && !entity.level.isClientSide() && entity.getServer() != null) {
+                if (Math.random() <= 0.2 && !entity.level().isClientSide() && entity.getServer() != null) {
                     try {
                         entity.getServer().getCommands().getDispatcher().execute(
                                 "effect give @s annoyingvillagers:block 1 0 true",
@@ -111,7 +111,7 @@ public class BlueDemonOnEntityDamageProcedure {
                                     applyEffect(entity1, MobEffects.MOVEMENT_SLOWDOWN, 80, 2);
 
                                     if (world instanceof Level level && !level.isClientSide()) {
-                                        level.explode(null, entity1.getX(), entity1.getY(), entity1.getZ(), 2.0F, BlockInteraction.DESTROY);
+                                        level.explode(null, entity1.getX(), entity1.getY(), entity1.getZ(), 2.0F, Level.ExplosionInteraction.BLOCK);
                                     }
                                 }
                             };
@@ -123,13 +123,13 @@ public class BlueDemonOnEntityDamageProcedure {
     }
 
     private static void applyEffect(Entity entity, net.minecraft.world.effect.MobEffect effect, int duration) {
-        if (entity instanceof LivingEntity living && !living.level.isClientSide()) {
+        if (entity instanceof LivingEntity living && !living.level().isClientSide()) {
             living.addEffect(new MobEffectInstance(effect, duration, 0, false, false));
         }
     }
 
     private static void applyEffect(Entity entity, net.minecraft.world.effect.MobEffect effect, int duration, int amplifier) {
-        if (entity instanceof LivingEntity living && !living.level.isClientSide()) {
+        if (entity instanceof LivingEntity living && !living.level().isClientSide()) {
             living.addEffect(new MobEffectInstance(effect, duration, amplifier, false, false));
         }
     }
@@ -147,7 +147,7 @@ public class BlueDemonOnEntityDamageProcedure {
             String path = parts[1];
             SoundEvent sound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(namespace, path));
             if (!level.isClientSide()) {
-                level.playSound(null, new BlockPos(x, y, z), sound, SoundSource.NEUTRAL, 1.0F, 1.0F);
+                level.playSound(null, new BlockPos((int) x, (int) y, (int) z), sound, SoundSource.NEUTRAL, 1.0F, 1.0F);
             } else {
                 level.playLocalSound(x, y, z, sound, SoundSource.NEUTRAL, 1.0F, 1.0F, false);
             }
@@ -155,7 +155,7 @@ public class BlueDemonOnEntityDamageProcedure {
     }
 
     private static void runParticle(Entity entity) {
-        if (!entity.level.isClientSide() && entity.getServer() != null) {
+        if (!entity.level().isClientSide() && entity.getServer() != null) {
             try {
                 entity.getServer().getCommands().getDispatcher().execute(
                         "execute at @s run particle annoyingvillagers:electric_spark_2 ^ ^ ^ 5 1.5 5 0 10",
@@ -167,7 +167,7 @@ public class BlueDemonOnEntityDamageProcedure {
     }
 
     private static void runCommand(Entity entity, String command) {
-        if (!entity.level.isClientSide() && entity.getServer() != null) {
+        if (!entity.level().isClientSide() && entity.getServer() != null) {
             try {
                 entity.getServer().getCommands().getDispatcher().execute(
                         command,

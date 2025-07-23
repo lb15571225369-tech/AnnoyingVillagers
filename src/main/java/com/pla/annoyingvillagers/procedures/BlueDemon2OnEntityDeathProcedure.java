@@ -45,7 +45,7 @@ public class BlueDemon2OnEntityDeathProcedure {
                         serverlevel = (ServerLevel)levelaccessor1;
                         LightningBolt lightningbolt = (LightningBolt)EntityType.LIGHTNING_BOLT.create(serverlevel);
 
-                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos(d0, d1, d2)));
+                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0, (int) d1, (int) d2)));
                         lightningbolt.setVisualOnly(true);
                         serverlevel.addFreshEntity(lightningbolt);
                     }

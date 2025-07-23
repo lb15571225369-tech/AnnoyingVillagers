@@ -139,7 +139,7 @@ public class BlueDemon2Entity extends Monster {
 
     public void baseTick() {
         super.baseTick();
-        BlueDemon2OnEntityUpdateProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        BlueDemon2OnEntityUpdateProcedure.execute(this.level(), (int) this.getX(), (int) this.getY(), (int) this.getZ(), this);
     }
 
     public static void init() {}

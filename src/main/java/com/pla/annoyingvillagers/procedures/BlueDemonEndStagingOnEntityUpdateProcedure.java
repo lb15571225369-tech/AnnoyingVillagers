@@ -18,7 +18,7 @@ public class BlueDemonEndStagingOnEntityUpdateProcedure {
                             ? "summon annoyingvillagers:blue_demon"
                             : "summon annoyingvillagers:blue_demon_2";
 
-                    if (!entity.level.isClientSide() && entity.getServer() != null) {
+                    if (!entity.level().isClientSide() && entity.getServer() != null) {
                         try {
                             entity.getServer().getCommands().getDispatcher().execute(
                                     command,
@@ -29,7 +29,7 @@ public class BlueDemonEndStagingOnEntityUpdateProcedure {
                         }
                     }
 
-                    if (!entity.level.isClientSide()) {
+                    if (!entity.level().isClientSide()) {
                         entity.discard();
                     }
                 }

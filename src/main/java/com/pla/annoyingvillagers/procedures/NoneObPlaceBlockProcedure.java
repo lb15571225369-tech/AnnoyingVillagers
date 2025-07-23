@@ -11,7 +11,7 @@ public class NoneObPlaceBlockProcedure {
         new DelayedTask(20) {
             @Override
             public void run() {
-                levelaccessor.setBlock(new BlockPos(d0, d1, d2), Blocks.AIR.defaultBlockState(), 3);
+                levelaccessor.setBlock(new BlockPos((int) d0, (int) d1, (int) d2), Blocks.AIR.defaultBlockState(), 3);
             }
         };
     }
