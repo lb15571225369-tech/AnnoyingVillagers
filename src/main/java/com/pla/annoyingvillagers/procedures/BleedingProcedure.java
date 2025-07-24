@@ -166,6 +166,7 @@ public class BleedingProcedure {
                                                                 new DelayedTask(4) {
                                                                     @Override
                                                                     public void run() {
+                                                                        if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
                                                                         LevelAccessor levelaccessor1 = levelaccessor;
 
                                                                         if (levelaccessor1 instanceof Level) {
@@ -201,6 +202,7 @@ public class BleedingProcedure {
 
                                                                         new DelayedTask(4) {
                                                                             public void run() {
+                                                                                if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
                                                                                 LevelAccessor levelaccessor2 = levelaccessor;
 
                                                                                 if (levelaccessor2 instanceof Level) {
@@ -259,6 +261,7 @@ public class BleedingProcedure {
 
                                                                                 new DelayedTask(4) {
                                                                                     public void run() {
+                                                                                        if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
                                                                                         LevelAccessor levelaccessor3 = levelaccessor;
 
                                                                                         if (levelaccessor3 instanceof Level) {
@@ -296,6 +299,7 @@ public class BleedingProcedure {
 
                                                                                         new DelayedTask(4) {
                                                                                             public void run() {
+                                                                                                if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
                                                                                                 LevelAccessor levelaccessor4 = levelaccessor;
 
                                                                                                 if (levelaccessor4 instanceof Level) {
@@ -333,6 +337,7 @@ public class BleedingProcedure {
 
                                                                                                 new DelayedTask(4) {
                                                                                                     public void run() {
+                                                                                                        if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
                                                                                                         LevelAccessor levelaccessor5 = levelaccessor;
 
                                                                                                         if (levelaccessor5 instanceof Level) {
@@ -370,6 +375,7 @@ public class BleedingProcedure {
 
                                                                                                         new DelayedTask(4) {
                                                                                                             public void run() {
+                                                                                                                if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
                                                                                                                 LevelAccessor levelaccessor6 = levelaccessor;
 
                                                                                                                 if (levelaccessor6 instanceof Level) {
@@ -404,6 +410,7 @@ public class BleedingProcedure {
 
                                                                                                                 new DelayedTask(4) {
                                                                                                                     public void run() {
+                                                                                                                        if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
                                                                                                                         LevelAccessor levelaccessor7 = levelaccessor;
 
                                                                                                                         if (levelaccessor7 instanceof Level) {
@@ -441,6 +448,7 @@ public class BleedingProcedure {
 
                                                                                                                         new DelayedTask(3) {
                                                                                                                             public void run() {
+                                                                                                                                if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
                                                                                                                                 if (Math.random() <= 0.4D) {
                                                                                                                                     LevelAccessor levelaccessor8 = levelaccessor;
 
@@ -458,6 +466,7 @@ public class BleedingProcedure {
                                                                                                                         };
                                                                                                                         new DelayedTask(20) {
                                                                                                                             public void run() {
+                                                                                                                                if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
                                                                                                                                 LivingEntity livingentity7;
 
                                                                                                                                 if (entity instanceof LivingEntity) {
@@ -564,6 +573,7 @@ public class BleedingProcedure {
 
                                                             new DelayedTask(4) {
                                                                 public void run() {
+                                                                    if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
                                                                     LevelAccessor levelaccessor1 = levelaccessor;
 
                                                                     if (levelaccessor1 instanceof Level) {
@@ -599,6 +609,7 @@ public class BleedingProcedure {
 
                                                                     new DelayedTask(4) {
                                                                         public void run() {
+                                                                            if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
                                                                             LevelAccessor levelaccessor2 = levelaccessor;
 
                                                                             if (levelaccessor2 instanceof Level) {
@@ -656,6 +667,7 @@ public class BleedingProcedure {
 
                                                                             new DelayedTask(4) {
                                                                                 public void run() {
+                                                                                    if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
                                                                                     LevelAccessor levelaccessor3 = levelaccessor;
 
                                                                                     if (levelaccessor3 instanceof Level) {
@@ -693,6 +705,7 @@ public class BleedingProcedure {
 
                                                                                     new DelayedTask(4) {
                                                                                         public void run() {
+                                                                                            if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
                                                                                             LevelAccessor levelaccessor4 = levelaccessor;
 
                                                                                             if (levelaccessor4 instanceof Level) {
@@ -730,6 +743,7 @@ public class BleedingProcedure {
 
                                                                                             new DelayedTask(4) {
                                                                                                 public void run() {
+                                                                                                    if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
                                                                                                     LevelAccessor levelaccessor5 = levelaccessor;
 
                                                                                                     if (levelaccessor5 instanceof Level) {
@@ -767,6 +781,7 @@ public class BleedingProcedure {
 
                                                                                                     new DelayedTask(4) {
                                                                                                         public void run() {
+                                                                                                            if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
                                                                                                             LevelAccessor levelaccessor6 = levelaccessor;
 
                                                                                                             if (levelaccessor6 instanceof Level) {
@@ -802,6 +817,7 @@ public class BleedingProcedure {
 
                                                                                                             new DelayedTask(4) {
                                                                                                                 public void run() {
+                                                                                                                    if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
                                                                                                                     LevelAccessor levelaccessor7 = levelaccessor;
 
                                                                                                                     if (levelaccessor7 instanceof Level) {
@@ -838,6 +854,7 @@ public class BleedingProcedure {
                                                                                                                     }
                                                                                                                     new DelayedTask(3) {
                                                                                                                         public void run() {
+                                                                                                                            if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
                                                                                                                             if (Math.random() <= 0.4D) {
                                                                                                                                 LevelAccessor levelaccessor8 = levelaccessor;
 
@@ -856,6 +873,7 @@ public class BleedingProcedure {
 
                                                                                                                     new DelayedTask(20) {
                                                                                                                         public void run() {
+                                                                                                                            if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
                                                                                                                             LivingEntity livingentity7;
 
                                                                                                                             if (entity instanceof LivingEntity) {
@@ -958,6 +976,7 @@ public class BleedingProcedure {
                                                             new DelayedTask(4) {
                                                                 @Override
                                                                 public void run() {
+                                                                    if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
                                                                     LevelAccessor levelaccessor1 = levelaccessor;
 
                                                                     if (levelaccessor1 instanceof Level) {
@@ -984,6 +1003,7 @@ public class BleedingProcedure {
 
                                                                     new DelayedTask(4) {
                                                                         public void run() {
+                                                                            if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
                                                                             LevelAccessor levelaccessor2 = levelaccessor;
 
                                                                             if (levelaccessor2 instanceof Level) {
@@ -1032,6 +1052,7 @@ public class BleedingProcedure {
 
                                                                             new DelayedTask(4) {
                                                                                 public void run() {
+                                                                                    if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
                                                                                     LevelAccessor levelaccessor3 = levelaccessor;
 
                                                                                     if (levelaccessor3 instanceof Level) {
@@ -1059,6 +1080,7 @@ public class BleedingProcedure {
 
                                                                                     new DelayedTask(4) {
                                                                                         public void run() {
+                                                                                            if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
                                                                                             LevelAccessor levelaccessor4 = levelaccessor;
 
                                                                                             if (levelaccessor4 instanceof Level) {
@@ -1086,6 +1108,7 @@ public class BleedingProcedure {
 
                                                                                             new DelayedTask(4) {
                                                                                                 public void run() {
+                                                                                                    if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
                                                                                                     LevelAccessor levelaccessor5 = levelaccessor;
 
                                                                                                     if (levelaccessor5 instanceof Level) {
@@ -1113,6 +1136,7 @@ public class BleedingProcedure {
 
                                                                                                     new DelayedTask(4) {
                                                                                                         public void run() {
+                                                                                                            if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
                                                                                                             LevelAccessor levelaccessor6 = levelaccessor;
 
                                                                                                             if (levelaccessor6 instanceof Level) {
@@ -1137,6 +1161,7 @@ public class BleedingProcedure {
 
                                                                                                             new DelayedTask(4) {
                                                                                                                 public void run() {
+                                                                                                                    if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
                                                                                                                     LevelAccessor levelaccessor7 = levelaccessor;
 
                                                                                                                     if (levelaccessor7 instanceof Level) {
@@ -1164,6 +1189,7 @@ public class BleedingProcedure {
 
                                                                                                                     new DelayedTask(3) {
                                                                                                                         public void run() {
+                                                                                                                            if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
                                                                                                                             if (Math.random() <= 0.4D) {
                                                                                                                                 LevelAccessor levelaccessor8 = levelaccessor;
 
@@ -1181,6 +1207,7 @@ public class BleedingProcedure {
                                                                                                                     };
                                                                                                                     new DelayedTask(20) {
                                                                                                                         public void run() {
+                                                                                                                            if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
                                                                                                                             LivingEntity livingentity7;
 
                                                                                                                             if (zombie instanceof LivingEntity) {

@@ -5,6 +5,7 @@ import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.util.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
@@ -55,6 +56,7 @@ public class IdleHandlerProcedure {
     }
 
     private static void performIdleAction(Mob mob, IdleAction action) {
+        if (mob == null || mob.isRemoved() || mob.isDeadOrDying()) return;
         CompoundTag data = mob.getPersistentData();
         if (mob.getTarget() != null) {
             if (data.contains("av_idle_action")) {
@@ -129,20 +131,28 @@ public class IdleHandlerProcedure {
                         @Override
                         public void run() {
                             TaskScheduler.schedule(() -> {
+                                if (mob == null || !mob.isAlive() || mob.isRemoved() || ((LivingEntity) mob).isDeadOrDying()) return;
                                 new AnimationSheduler(mob).run(idleAnimation, false, false);
                                 TaskScheduler.schedule(() -> {
+                                    if (mob == null || !mob.isAlive() || mob.isRemoved() || ((LivingEntity) mob).isDeadOrDying()) return;
                                     new AnimationSheduler(mob).run(idleAnimation, false, false);
                                     TaskScheduler.schedule(() -> {
+                                        if (mob == null || !mob.isAlive() || mob.isRemoved() || ((LivingEntity) mob).isDeadOrDying()) return;
                                         new AnimationSheduler(mob).run(idleAnimation, false, false);
                                         TaskScheduler.schedule(() -> {
+                                            if (mob == null || !mob.isAlive() || mob.isRemoved() || ((LivingEntity) mob).isDeadOrDying()) return;
                                             new AnimationSheduler(mob).run(idleAnimation, false, false);
                                             TaskScheduler.schedule(() -> {
+                                                if (mob == null || !mob.isAlive() || mob.isRemoved() || ((LivingEntity) mob).isDeadOrDying()) return;
                                                 new AnimationSheduler(mob).run(idleAnimation, false, false);
                                                 TaskScheduler.schedule(() -> {
+                                                    if (mob == null || !mob.isAlive() || mob.isRemoved() || ((LivingEntity) mob).isDeadOrDying()) return;
                                                     new AnimationSheduler(mob).run(idleAnimation, false, false);
                                                     TaskScheduler.schedule(() -> {
+                                                        if (mob == null || !mob.isAlive() || mob.isRemoved() || ((LivingEntity) mob).isDeadOrDying()) return;
                                                         new AnimationSheduler(mob).run(idleAnimation, false, false);
                                                         TaskScheduler.schedule(() -> {
+                                                            if (mob == null || !mob.isAlive() || mob.isRemoved() || ((LivingEntity) mob).isDeadOrDying()) return;
                                                             new AnimationSheduler(mob).run(idleAnimation, false, true);
                                                         }, 5);
                                                     }, 5);

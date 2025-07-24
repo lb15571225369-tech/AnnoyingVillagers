@@ -6,6 +6,7 @@ import net.minecraft.nbt.TagParser;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
 
@@ -192,6 +193,11 @@ public class AnimationSheduler {
 
     public void run(IdleAnimation idleAnimation, boolean checkOnly, boolean reTry) {
         if (!(mob.level() instanceof ServerLevel serverLevel)) return;
+
+        if (mob == null || !mob.isAlive() || mob.isRemoved() || ((LivingEntity) mob).isDeadOrDying()) {
+            resetItem();
+            return;
+        }
 
         if (mob.getTarget() != null) {
             resetItem();
