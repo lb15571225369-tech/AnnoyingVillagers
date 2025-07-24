@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.animations.types;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import javax.annotation.Nullable;
@@ -23,8 +22,6 @@ import yesman.epicfight.api.animation.types.EntityState;
 import yesman.epicfight.api.animation.types.EntityState.StateFactor;
 import yesman.epicfight.api.client.animation.Layer.Priority;
 import yesman.epicfight.api.client.animation.property.ClientAnimationProperties;
-import yesman.epicfight.api.client.animation.property.JointMask;
-import yesman.epicfight.api.client.animation.property.JointMask.BindModifier;
 import yesman.epicfight.api.client.animation.property.JointMaskEntry;
 import yesman.epicfight.api.collider.Collider;
 import yesman.epicfight.api.model.Armature;

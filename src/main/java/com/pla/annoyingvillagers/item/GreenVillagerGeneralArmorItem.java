@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -52,7 +53,7 @@ public abstract class GreenVillagerGeneralArmorItem extends ArmorItem {
             }
 
             public SoundEvent getEquipSound() {
-                return null;
+                return SoundEvents.ARMOR_EQUIP_GENERIC;
             }
 
             public Ingredient getRepairIngredient() {

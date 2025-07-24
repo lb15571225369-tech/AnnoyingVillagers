@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.item;
 
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
@@ -37,7 +38,7 @@ public abstract class ClassicGoldenArmorItem extends ArmorItem {
             }
 
             public SoundEvent getEquipSound() {
-                return null;
+                return SoundEvents.ARMOR_EQUIP_GENERIC;
             }
 
             public Ingredient getRepairIngredient() {

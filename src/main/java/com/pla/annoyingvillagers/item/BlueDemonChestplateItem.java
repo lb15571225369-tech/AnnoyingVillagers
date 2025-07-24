@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.item;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -42,7 +43,7 @@ public abstract class BlueDemonChestplateItem extends ArmorItem {
             }
 
             public SoundEvent getEquipSound() {
-                return null;
+                return SoundEvents.ARMOR_EQUIP_GENERIC;
             }
 
             public Ingredient getRepairIngredient() {

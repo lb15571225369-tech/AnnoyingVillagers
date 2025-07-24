@@ -107,11 +107,12 @@ public class PlayerMobMixinRemapTrue {
     private void tickingInventory(CallbackInfo ci) {
         PlayerMobEntity self = (PlayerMobEntity) (Object) this;
         if (!self.level().isClientSide && self.tickCount % 20 == 0) {
-            if (self.getHealth() <= 0.0F) return;
+            if (!self.isAlive() || self.isRemoved() || self.level() == null) return;
             List<ItemEntity> items = self.level().getEntitiesOfClass(ItemEntity.class, self.getBoundingBox().inflate(2));
             for (ItemEntity item : items) {
                 if (!item.hasPickUpDelay() && !item.isRemoved()) {
                     final ItemEntity itemEntity = item;
+                    if (!self.isAlive() || self.isRemoved() || self.level() == null) return;
                     self.getCapability(ModCapabilities.PLAYER_MOB_INVENTORY).ifPresent(cap -> {
                         ItemStackHandler inv = cap.getInventory();
                         ItemStack stack = itemEntity.getItem();
@@ -131,11 +132,13 @@ public class PlayerMobMixinRemapTrue {
                             new DelayedTask(5) {
                                 @Override
                                 public void run() {
+                                    if (!self.isAlive() || self.isRemoved() || self.level() == null) return;
                                     itemEntity.discard();
                                     self.level().playSound(null, self.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.HOSTILE, 0.2F, 1.0F);
                                 }
                             };
                         } else {
+                            if (self.getHealth() <= 0.0F) return;
                             itemEntity.setItem(remaining);
                         }
                     });
