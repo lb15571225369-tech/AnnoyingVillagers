@@ -1,5 +1,5 @@
 {
-	"type": "hardgreatsword",
+	"type": "epicfight:hardgreatsword",
 	"attributes": {
 		"common": {
 			"armor_negation":5.0,

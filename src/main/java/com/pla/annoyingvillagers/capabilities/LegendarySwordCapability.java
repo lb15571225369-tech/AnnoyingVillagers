@@ -241,20 +241,20 @@ public class LegendarySwordCapability {
     };
 
     public static void register(WeaponCapabilityPresetRegistryEvent weaponcapabilitypresetregistryevent) {
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "legendarysword"), LegendarySwordCapability.LEGENDARYSWORD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "axe"), LegendarySwordCapability.AXE);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "sword"), LegendarySwordCapability.SWORD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "spear"), LegendarySwordCapability.SPEAR);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "ironfist"), LegendarySwordCapability.IRONFIST);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "tachi"), LegendarySwordCapability.TACHI);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "longsword"), LegendarySwordCapability.LONGSWORD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "hgsd"), LegendarySwordCapability.HGSD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "e_sword"), LegendarySwordCapability.ESWORD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "e_trident"), LegendarySwordCapability.ETRIDENT);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "knife"), LegendarySwordCapability.KNIFE);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "redgreatsword"), LegendarySwordCapability.REDGREATSWORD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "hardgreatsword"), LegendarySwordCapability.HARDGREATSWORD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "uchigatana"), LegendarySwordCapability.UCHIGATANA);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation(AnnoyingVillagers.MODID, "greatsword"), LegendarySwordCapability.GREATSWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "legendarysword"), LegendarySwordCapability.LEGENDARYSWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "axe"), LegendarySwordCapability.AXE);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "sword"), LegendarySwordCapability.SWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "spear"), LegendarySwordCapability.SPEAR);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "ironfist"), LegendarySwordCapability.IRONFIST);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "tachi"), LegendarySwordCapability.TACHI);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "longsword"), LegendarySwordCapability.LONGSWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "hgsd"), LegendarySwordCapability.HGSD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "e_sword"), LegendarySwordCapability.ESWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "e_trident"), LegendarySwordCapability.ETRIDENT);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "knife"), LegendarySwordCapability.KNIFE);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "redgreatsword"), LegendarySwordCapability.REDGREATSWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "hardgreatsword"), LegendarySwordCapability.HARDGREATSWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "uchigatana"), LegendarySwordCapability.UCHIGATANA);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "greatsword"), LegendarySwordCapability.GREATSWORD);
     }
 }

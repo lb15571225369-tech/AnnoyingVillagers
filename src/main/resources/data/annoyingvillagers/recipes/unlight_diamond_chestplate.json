@@ -1,10 +1,13 @@
 {
-  "type": "minecraft:smithing",
-  "base": {
-    "item": "minecraft:diamond_chestplate"
-  },
-  "addition": {
-    "item": "minecraft:flint"
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " F ",
+    "FDF",
+    " F "
+  ],
+  "key": {
+    "F": { "item": "minecraft:flint" },
+    "D": { "item": "minecraft:diamond_chestplate" }
   },
   "result": {
     "item": "annoyingvillagers:unlight_diamond_chestplate"
