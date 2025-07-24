@@ -6,8 +6,6 @@
     "golden_staff",
     "iron_greataxe",
     "iron_staff",
-    "netherite_greataxe",
-    "netherite_staff",
     "stone_staff",
     "wooden_staff"
   ],
@@ -16,14 +14,12 @@
   "FEET": [
     "diamond_legbottomseal",
     "emerald_anklebracelet",
-    "golden_mokassin",
-    "netherite_chains"
+    "golden_mokassin"
   ],
   "LEGS": [
     "diamond_legtopseal",
     "emerald_tasset",
-    "golden_chrono",
-    "netherite_belt"
+    "golden_chrono"
   ],
   "CHEST": [
     "diamond_armbracelet",
@@ -32,7 +28,6 @@
   "HEAD": [
     "diamond_crown",
     "emerald_earrings",
-    "golden_monocle",
-    "netherite_mask"
+    "golden_monocle"
   ]
 }
