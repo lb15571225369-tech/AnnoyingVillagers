@@ -1,9 +1,6 @@
 package com.pla.annoyingvillagers.compat.efdg.animation;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
@@ -32,6 +29,7 @@ import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.EntityState;
 import yesman.epicfight.api.animation.types.EntityState.StateFactor;
 import yesman.epicfight.api.client.animation.property.ClientAnimationProperties;
+import yesman.epicfight.api.client.animation.property.JointMask;
 import yesman.epicfight.api.client.animation.property.JointMaskEntry;
 import yesman.epicfight.api.collider.Collider;
 import yesman.epicfight.api.model.Armature;
@@ -58,11 +56,32 @@ public class SpecialAttackAnimation extends AttackAnimation {
             float f = Float.parseFloat(String.format(Locale.US, "%.2f", 1.0F / this.getTotalTime()));
             this.addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, f);
         }
-        JointMaskEntry jointMask = JointMaskEntry.builder()
-                .defaultMask(JointMaskEntry.BIPED_UPPER_JOINTS_WITH_ROOT)
+        Set<JointMask> jointMaskSet = new HashSet<>();
+        jointMaskSet.add(JointMask.of("Root", JointMask.KEEP_CHILD_LOCROT));
+        jointMaskSet.add(JointMask.of("Torso"));
+        jointMaskSet.add(JointMask.of("Chest"));
+        jointMaskSet.add(JointMask.of("Head"));
+        jointMaskSet.add(JointMask.of("Shoulder_R"));
+        jointMaskSet.add(JointMask.of("Arm_R"));
+        jointMaskSet.add(JointMask.of("Hand_R"));
+        jointMaskSet.add(JointMask.of("Elbow_R"));
+        jointMaskSet.add(JointMask.of("Tool_R"));
+        jointMaskSet.add(JointMask.of("Shoulder_L"));
+        jointMaskSet.add(JointMask.of("Arm_L"));
+        jointMaskSet.add(JointMask.of("Hand_L"));
+        jointMaskSet.add(JointMask.of("Elbow_L"));
+        jointMaskSet.add(JointMask.of("Tool_L"));
+        jointMaskSet.add(JointMask.of("Thigh_R"));
+        jointMaskSet.add(JointMask.of("Leg_R"));
+        jointMaskSet.add(JointMask.of("Knee_R"));
+        jointMaskSet.add(JointMask.of("Thigh_L"));
+        jointMaskSet.add(JointMask.of("Leg_L"));
+        jointMaskSet.add(JointMask.of("Knee_L"));
+        JointMaskEntry jointMaskEntry = JointMaskEntry.builder()
+                .defaultMask(JointMask.JointMaskSet.of(jointMaskSet))
                 .create();
 
-        this.addProperty(ClientAnimationProperties.JOINT_MASK, jointMask);
+        this.addProperty(ClientAnimationProperties.JOINT_MASK, jointMaskEntry);
     }
 
     public SpecialAttackAnimation(float f, float f1, float f2, float f3, @Nullable Collider collider, Joint joint, String s, Armature armature) {
