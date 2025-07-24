@@ -1,8 +1,0 @@
-{
-  "parent": "annoyingvillagers:custom/wooden_door",
-  "textures": {
-    "1": "annoyingvillagers:blocks/wooden_door",
-    "2": "annoyingvillagers:blocks/wooden_door",
-    "particle": "annoyingvillagers:items/wooden_door"
-  }
-}

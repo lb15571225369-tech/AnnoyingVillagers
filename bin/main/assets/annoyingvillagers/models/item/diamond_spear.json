@@ -1,7 +1,0 @@
-{
-  "parent": "annoyingvillagers:custom/diamond_spear",
-  "textures": {
-    "0": "annoyingvillagers:blocks/diamond_spear",
-    "particle": "annoyingvillagers:items/diamond_spear"
-  }
-}

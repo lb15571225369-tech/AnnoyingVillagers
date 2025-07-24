@@ -1,8 +1,0 @@
-{
-  "parent": "annoyingvillagers:custom/hard_great_sword_skill",
-  "textures": {
-    "1": "annoyingvillagers:blocks/hard_great_sword",
-    "2": "annoyingvillagers:blocks/hard_skill",
-    "particle": "annoyingvillagers:items/hard_great_sword"
-  }
-}
