@@ -1,8 +1,8 @@
 {
   "parent": "annoyingvillagers:custom/dark_ob_ss",
   "textures": {
-    "all": "annoyingvillagers:blocks/dark_ob",
-    "particle": "annoyingvillagers:blocks/dark_ob",
-    "1": "annoyingvillagers:blocks/dark_ob"
+    "all": "annoyingvillagers:block/dark_ob",
+    "particle": "annoyingvillagers:block/dark_ob",
+    "1": "annoyingvillagers:block/dark_ob"
   }
 }

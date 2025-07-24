@@ -2,8 +2,8 @@
 	"credit": "By Pugilist_Steve",
 	"texture_size": [32, 32],
 	"textures": {
-		"0": "annoyingvillagers:items/bluedemontrident",
-		"particle": "annoyingvillagers:items/bluedemontrident"
+		"0": "annoyingvillagers:item/bluedemontrident",
+		"particle": "annoyingvillagers:item/bluedemontrident"
 	},
 	"elements": [
 		{

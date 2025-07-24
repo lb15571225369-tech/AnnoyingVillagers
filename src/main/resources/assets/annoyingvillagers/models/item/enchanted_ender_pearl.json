@@ -1,7 +1,7 @@
 {
   "parent": "annoyingvillagers:custom/ender_pearl",
   "textures": {
-    "0": "annoyingvillagers:blocks/ender_pearl",
-    "particle": "annoyingvillagers:items/ender_pearl"
+    "0": "annoyingvillagers:block/ender_pearl",
+    "particle": "annoyingvillagers:item/ender_pearl"
   }
 }

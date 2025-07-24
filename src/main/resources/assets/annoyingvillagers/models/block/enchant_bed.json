@@ -1,8 +1,8 @@
 {
   "parent": "annoyingvillagers:custom/enchant_bed_model",
   "textures": {
-    "all": "annoyingvillagers:blocks/bed",
-    "particle": "annoyingvillagers:blocks/bed",
-    "0": "annoyingvillagers:blocks/bed"
+    "all": "annoyingvillagers:block/bed",
+    "particle": "annoyingvillagers:block/bed",
+    "0": "annoyingvillagers:block/bed"
   }
 }

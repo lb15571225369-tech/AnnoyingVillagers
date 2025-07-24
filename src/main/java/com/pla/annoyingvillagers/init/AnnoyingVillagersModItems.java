@@ -147,7 +147,7 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> COMPRESSED_DIAMOND_HELMET = AnnoyingVillagersModItems.REGISTRY.register("compressed_diamond_helmet", () -> {
         return new CompressedDiamondArmorItem.Helmet();
     });
-    public static final RegistryObject<Item> CCOMPRESSED_DIAMOND_CHESTPLATE = AnnoyingVillagersModItems.REGISTRY.register("compressed_diamond_chestplate", () -> {
+    public static final RegistryObject<Item> COMPRESSED_DIAMOND_CHESTPLATE = AnnoyingVillagersModItems.REGISTRY.register("compressed_diamond_chestplate", () -> {
         return new CompressedDiamondArmorItem.Chestplate();
     });
     public static final RegistryObject<Item> COMPRESSED_DIAMOND_LEGGINGS = AnnoyingVillagersModItems.REGISTRY.register("compressed_diamond_leggings", () -> {

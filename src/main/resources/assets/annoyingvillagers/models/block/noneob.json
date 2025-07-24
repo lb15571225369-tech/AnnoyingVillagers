@@ -1,12 +1,12 @@
 {
   "parent": "block/cube",
   "textures": {
-    "down": "annoyingvillagers:blocks/empty",
-    "up": "annoyingvillagers:blocks/empty",
-    "north": "annoyingvillagers:blocks/empty",
-    "east": "annoyingvillagers:blocks/empty",
-    "south": "annoyingvillagers:blocks/empty",
-    "west": "annoyingvillagers:blocks/empty",
-    "particle": "annoyingvillagers:blocks/empty"
+    "down": "annoyingvillagers:block/empty",
+    "up": "annoyingvillagers:block/empty",
+    "north": "annoyingvillagers:block/empty",
+    "east": "annoyingvillagers:block/empty",
+    "south": "annoyingvillagers:block/empty",
+    "west": "annoyingvillagers:block/empty",
+    "particle": "annoyingvillagers:block/empty"
   }
 }

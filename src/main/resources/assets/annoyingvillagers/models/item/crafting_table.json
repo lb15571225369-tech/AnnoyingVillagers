@@ -1,7 +1,7 @@
 {
   "parent": "annoyingvillagers:custom/crafting_table",
   "textures": {
-    "0": "annoyingvillagers:blocks/crafting_table",
-    "particle": "annoyingvillagers:items/crafting_table"
+    "0": "annoyingvillagers:block/crafting_table",
+    "particle": "annoyingvillagers:item/crafting_table"
   }
 }
