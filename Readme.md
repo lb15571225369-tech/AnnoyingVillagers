@@ -312,3 +312,8 @@
 - sounds/entity/old_idle → sounds/entity/new_idle
 - models/armor/ancient → models/armor/modern
 ---
+
+## 1.20.1 changes
+- predicates: guard_break, knock_down, attack_level, stamina, using_item -> add indestructible prefix
+- wom:biped/combat/ruine_dash -> wom:biped/combat/ruine_chatiment
+- epicfight:biped/living/eat_offhand -> 

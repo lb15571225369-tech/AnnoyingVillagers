@@ -202,8 +202,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 3.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 3.0, "max": 12.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"guard": 1,
 							"play_speed": 1.8
@@ -337,7 +337,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"guard_break", "invert": false}, {"predicate":"within_eye_height"}
+								{"predicate":"indestructible:guard_break", "invert": false}, {"predicate":"within_eye_height"}
 							],
 							"animation": "epicfight:biped/skill/the_guillotine",
 							"play_speed": 1.5
@@ -458,7 +458,7 @@
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
-							"animation": "wom:biped/combat/ruine_dash",
+							"animation": "wom:biped/combat/ruine_chatiment",
 							"play_speed": 2.6
 						},
 						{
@@ -1087,7 +1087,7 @@
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 4.5}
 							],
-							"animation": "wom:biped/combat/ruine_dash",
+							"animation": "wom:biped/combat/ruine_chatiment",
 							"convert_time": 0.15,
 							"play_speed": 2.2
 						},
@@ -1119,7 +1119,7 @@
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 4.5}
 							],
-							"animation": "wom:biped/combat/ruine_dash",
+							"animation": "wom:biped/combat/ruine_chatiment",
 							"convert_time": 0.15,
 							"play_speed": 2.2
 						},
@@ -1133,8 +1133,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 3.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 3.0, "max": 12.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"guard": 1,
 							"play_speed": 1.8
@@ -1268,7 +1268,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"guard_break", "invert": false}, {"predicate":"within_eye_height"}
+								{"predicate":"indestructible:guard_break", "invert": false}, {"predicate":"within_eye_height"}
 							],
 							"animation": "epicfight:biped/skill/the_guillotine",
 							"play_speed": 1.5
@@ -1596,7 +1596,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"guard_break", "invert": false}, {"predicate":"within_eye_height"}
+								{"predicate":"indestructible:guard_break", "invert": false}, {"predicate":"within_eye_height"}
 							],
 							"animation": "epicfight:biped/skill/the_guillotine",
 							"play_speed": 1.5
@@ -1757,8 +1757,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 3.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 3.0, "max": 12.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"guard": 1,
 							"play_speed": 1.8
@@ -1878,7 +1878,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"guard_break", "invert": false}, {"predicate":"within_eye_height"}
+								{"predicate":"indestructible:guard_break", "invert": false}, {"predicate":"within_eye_height"}
 							],
 							"animation": "epicfight:biped/skill/the_guillotine",
 							"play_speed": 1.5
@@ -2117,7 +2117,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_distance", "min": 1.5, "max": 3.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 1.5, "max": 3.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "epicfight:biped/skill/step_right"
 						}
@@ -2130,7 +2130,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"guard_break", "invert": false}, {"predicate":"within_eye_height"}
+								{"predicate":"indestructible:guard_break", "invert": false}, {"predicate":"within_eye_height"}
 							],
 							"animation": "epicfight:biped/skill/the_guillotine",
 							"play_speed": 1
@@ -2151,7 +2151,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 3.0, "max": 8.0},{"predicate": "attack_level", "min":1,"max":2}
+								{"predicate":"within_distance", "min": 3.0, "max": 8.0},{"predicate":"indestructible:attack_level", "min":1,"max":2}
 							],
 							"guard": 1
 						}
@@ -2165,8 +2165,8 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 2.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 2.0, "max": 12.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"guard": 40
 						}
@@ -2256,7 +2256,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_distance", "min": 1.5, "max": 3.5},{"predicate": "attack_level", "min":1,"max":2}
+								{"predicate":"within_distance", "min": 1.5, "max": 3.5},{"predicate":"indestructible:attack_level", "min":1,"max":2}
 							],
 							"animation": "epicfight:biped/skill/step_left"
 						},
@@ -2277,7 +2277,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_distance", "min": 1.5, "max": 3.5},{"predicate": "attack_level", "min":1,"max":2}
+								{"predicate":"within_distance", "min": 1.5, "max": 3.5},{"predicate":"indestructible:attack_level", "min":1,"max":2}
 							],
 							"animation": "epicfight:biped/skill/step_right"
 						},
@@ -2297,7 +2297,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"guard_break", "invert": false}, {"predicate":"within_eye_height"}
+								{"predicate":"indestructible:guard_break", "invert": false}, {"predicate":"within_eye_height"}
 							],
 							"animation": "epicfight:biped/skill/the_guillotine",
 							"play_speed": 1

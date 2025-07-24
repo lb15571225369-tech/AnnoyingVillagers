@@ -30,7 +30,6 @@ import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
 import reascer.wom.gameasset.WOMWeaponColliders;
 import reascer.wom.particle.WOMParticles;
 import yesman.epicfight.api.animation.Joint;
-import yesman.epicfight.api.animation.Pose;
 import yesman.epicfight.api.animation.property.AnimationEvent.AnimationEventConsumer;
 import yesman.epicfight.api.animation.property.AnimationEvent.Side;
 import yesman.epicfight.api.animation.property.AnimationEvent.TimePeriodEvent;
@@ -39,20 +38,10 @@ import yesman.epicfight.api.animation.property.AnimationProperty.ActionAnimation
 import yesman.epicfight.api.animation.property.AnimationProperty.AttackAnimationProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.AttackPhaseProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.StaticAnimationProperty;
-import yesman.epicfight.api.animation.types.ActionAnimation;
-import yesman.epicfight.api.animation.types.AttackAnimation;
+import yesman.epicfight.api.animation.types.*;
 import yesman.epicfight.api.animation.types.AttackAnimation.Phase;
-import yesman.epicfight.api.animation.types.BasicAttackAnimation;
-import yesman.epicfight.api.animation.types.DashAttackAnimation;
-import yesman.epicfight.api.animation.types.EntityState;
-import yesman.epicfight.api.animation.types.GuardAnimation;
-import yesman.epicfight.api.animation.types.KnockdownAnimation;
-import yesman.epicfight.api.animation.types.LongHitAnimation;
-import yesman.epicfight.api.animation.types.MovementAnimation;
-import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.collider.Collider;
 import yesman.epicfight.api.forgeevent.AnimationRegistryEvent;
-import yesman.epicfight.api.model.Armature;
 import yesman.epicfight.api.utils.HitEntityList.Priority;
 import yesman.epicfight.api.utils.LevelUtil;
 import yesman.epicfight.api.utils.TimePairList;
@@ -73,9 +62,10 @@ import yesman.epicfight.world.damagesource.ExtraDamageInstance;
 import yesman.epicfight.world.damagesource.StunType;
 
 public class AVAnimations {
+    public static StaticAnimation EAT_OFFHAND;
+    public static StaticAnimation DRINK_OFFHAND;
 
     public static StaticAnimation COUNTER;
-
     public static StaticAnimation FIST_GUARD;
     public static StaticAnimation FIST_DASH;
     public static StaticAnimation WHIRLWIND_Kick;
@@ -221,6 +211,8 @@ public class AVAnimations {
 
     private static void build() {
         HumanoidArmature humanoidarmature = Armatures.BIPED;
+        AVAnimations.EAT_OFFHAND = new StaticAnimation(0.35F, true, "biped/living/eat_offhand", humanoidarmature);
+        AVAnimations.DRINK_OFFHAND = new StaticAnimation(0.35F, true, "biped/living/drink_offhand", humanoidarmature);
         AVAnimations.COUNTER = (new BasicMultipleAttackAnimation(0.3F, 0.08F, 0.1F, 0.15F, 0.525F, ColliderPreset.FIST, humanoidarmature.legR, "biped/guard/counter", humanoidarmature)).addProperty(AttackPhaseProperty.SWING_SOUND, (SoundEvent) EpicFightSounds.WHOOSH.get()).addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT).addProperty(AttackPhaseProperty.HIT_SOUND, (SoundEvent) EpicFightSounds.BLUNT_HIT.get()).addProperty(AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageType.COUNTER)).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG).addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(1.0F)).addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(0.5F)).addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.AIR_BURST).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(1.0F));
         AVAnimations.LAY_IDLE = new StaticAnimation(true, "biped/idle/lay", humanoidarmature);
         AVAnimations.PUSH_UP_IDLE = new StaticAnimation(true, "biped/idle/push_up", humanoidarmature);

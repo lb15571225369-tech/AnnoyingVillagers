@@ -205,8 +205,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 0.0, "max": 12.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"guard": 1,
 							"counter": "epicfight:biped/skill/sweeping_edge",
@@ -311,9 +311,9 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"using_item", "edible": true}, {"predicate":"within_distance", "min": 3.0, "max": 100.8}
+								{"predicate":"indestructible:using_item", "edible": true}, {"predicate":"within_distance", "min": 3.0, "max": 100.8}
 							],
-							"animation": "epicfight:biped/living/eat_offhand",
+							"animation": "annoyingvillagers:biped/living/eat_offhand",
 														"play_speed": 1.4,
 							"command_list": [
 								{"command":"execute as @s at @s anchored eyes run playsound minecraft:random.eat player @p", "execute_at_target":false}, {"command":"execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", "execute_at_target":false}, {"command":"execute as @s at @s anchored eyes run effect give @s minecraft:regeneration 10 4", "execute_at_target":false}]
@@ -400,7 +400,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"guard_break", "invert": false}, {"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 1.0, "max": 2.0}
+								{"predicate":"indestructible:guard_break", "invert": false}, {"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 1.0, "max": 2.0}
 							],
 							"animation": "wom:biped/combat/torment_charged_attack_2",
 							"command_list": [
@@ -636,9 +636,9 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"using_item", "edible": true}, {"predicate":"within_distance", "min": 3.0, "max": 100.8}
+								{"predicate":"indestructible:using_item", "edible": true}, {"predicate":"within_distance", "min": 3.0, "max": 100.8}
 							],
-							"animation": "epicfight:biped/living/eat_offhand",
+							"animation": "annoyingvillagers:biped/living/eat_offhand",
 							"command_list": [
 								{"command":"effect give @s minecraft:regeneration 3 4", "execute_at_target":false}, {"command":"playsound minecraft:random.eat player @p", "execute_at_target":false}, {"command":"execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", "execute_at_target":false}
 							]
@@ -739,7 +739,7 @@
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
-							"animation": "wom:biped/combat/ruine_dash",
+							"animation": "wom:biped/combat/ruine_chatiment",
 							"play_speed": 2.6
 						},
 						{
@@ -1362,7 +1362,7 @@
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 4.5}
 							],
-							"animation": "wom:biped/combat/ruine_dash",
+							"animation": "wom:biped/combat/ruine_chatiment",
 							"play_speed": 1.2
 						},
 						{
@@ -1390,7 +1390,7 @@
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 4.5}
 							],
-							"animation": "wom:biped/combat/ruine_dash",
+							"animation": "wom:biped/combat/ruine_chatiment",
 							"play_speed": 1.2													},
 						{
 							"conditions": [
@@ -1410,8 +1410,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 3.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 3.0, "max": 12.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"guard": 1,
 							"play_speed": 1.8
@@ -1425,9 +1425,9 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"using_item", "edible": true}, {"predicate":"within_distance", "min": 3.0, "max": 100.8}
+								{"predicate":"indestructible:using_item", "edible": true}, {"predicate":"within_distance", "min": 3.0, "max": 100.8}
 							],
-							"animation": "epicfight:biped/living/eat_offhand",
+							"animation": "annoyingvillagers:biped/living/eat_offhand",
 							"command_list": [
 								{"command":"effect give @s minecraft:regeneration 3 4", "execute_at_target":false}, {"command":"playsound minecraft:random.eat player @p", "execute_at_target":false}, {"command":"execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", "execute_at_target":false}
 							]
@@ -1601,7 +1601,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"guard_break", "invert": false}, {"predicate":"within_eye_height"}
+								{"predicate":"indestructible:guard_break", "invert": false}, {"predicate":"within_eye_height"}
 							],
 							"animation": "wom:biped/combat/torment_charged_attack_2",
 							"play_speed": 0.8
@@ -1770,7 +1770,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"guard_break", "invert": false}, {"predicate":"within_eye_height"}
+								{"predicate":"indestructible:guard_break", "invert": false}, {"predicate":"within_eye_height"}
 							],
 							"animation": "wom:biped/combat/torment_charged_attack_2",
 							"play_speed": 0.8
@@ -1803,9 +1803,9 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"using_item", "edible": true}, {"predicate":"within_distance", "min": 3.0, "max": 100.8}
+								{"predicate":"indestructible:using_item", "edible": true}, {"predicate":"within_distance", "min": 3.0, "max": 100.8}
 							],
-							"animation": "epicfight:biped/living/eat_offhand",
+							"animation": "annoyingvillagers:biped/living/eat_offhand",
 							"play_speed": 1.4,
 							"command_list": [
 								{"command":"effect give @s minecraft:regeneration 3 4", "execute_at_target":false}, {"command":"playsound minecraft:random.eat player @p", "execute_at_target":false}, {"command":"execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", "execute_at_target":false}
@@ -1948,8 +1948,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 3.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 3.0, "max": 12.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"guard": 1,
 							"play_speed": 1.8
@@ -2074,7 +2074,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"guard_break", "invert": false}, {"predicate":"within_eye_height"}
+								{"predicate":"indestructible:guard_break", "invert": false}, {"predicate":"within_eye_height"}
 							],
 							"animation": "wom:biped/combat/torment_charged_attack_2",
 							"play_speed": 0.8
@@ -2402,7 +2402,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 1.5, "max": 3.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 1.5, "max": 3.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "epicfight:biped/skill/step_right"
 						}
@@ -2415,7 +2415,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"guard_break", "invert": false}, {"predicate":"within_eye_height"}
+								{"predicate":"indestructible:guard_break", "invert": false}, {"predicate":"within_eye_height"}
 							],
 							"animation": "wom:biped/combat/torment_charged_attack_2",
 							"play_speed": 1
@@ -2436,7 +2436,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 3.0, "max": 8.0},{"predicate": "attack_level", "min":1,"max":2}
+								{"predicate":"within_distance", "min": 3.0, "max": 8.0},{"predicate":"indestructible:attack_level", "min":1,"max":2}
 							],
 							"guard": 1
 						}
@@ -2450,7 +2450,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 3.0, "max": 8.0},{"predicate": "attack_level", "min":1,"max":2}
+								{"predicate":"within_distance", "min": 3.0, "max": 8.0},{"predicate":"indestructible:attack_level", "min":1,"max":2}
 							],
 							"guard": 45,
 							"counter": "epicfight:biped/skill/sweeping_edge",
@@ -2573,7 +2573,7 @@
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 5.0}
 							],
-							"animation": "wom:biped/combat/ruine_dash",
+							"animation": "wom:biped/combat/ruine_chatiment",
 							"play_speed": 1.4
 						},
 						{
@@ -2670,7 +2670,7 @@
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 3.0}
 							],
-							"animation": "wom:biped/combat/ruine_dash",
+							"animation": "wom:biped/combat/ruine_chatiment",
 							"play_speed": 1.9
 						},
 						{
@@ -2784,7 +2784,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 1.5, "max": 3.5},{"predicate": "attack_level", "min":1,"max":2}
+								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 1.5, "max": 3.5},{"predicate":"indestructible:attack_level", "min":1,"max":2}
 							],
 							"animation": "epicfight:biped/skill/step_left"
 						},
@@ -2804,9 +2804,9 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"using_item", "edible": true}, {"predicate":"within_distance", "min": 3.0, "max": 100.8}
+								{"predicate":"indestructible:using_item", "edible": true}, {"predicate":"within_distance", "min": 3.0, "max": 100.8}
 							],
-							"animation": "epicfight:biped/living/eat_offhand",
+							"animation": "annoyingvillagers:biped/living/eat_offhand",
 														"play_speed": 1.4,
 							"command_list": [
 								{"command":"effect give @s minecraft:regeneration 3 4", "execute_at_target":false}, {"command":"playsound minecraft:random.eat player @p", "execute_at_target":false}, {"command":"execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", "execute_at_target":false}
@@ -2822,7 +2822,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 1.5, "max": 3.5},{"predicate": "attack_level", "min":1,"max":2}
+								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 1.5, "max": 3.5},{"predicate":"indestructible:attack_level", "min":1,"max":2}
 							],
 							"animation": "epicfight:biped/skill/step_right"
 						},
@@ -2842,7 +2842,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"guard_break", "invert": false}, {"predicate":"within_eye_height"}
+								{"predicate":"indestructible:guard_break", "invert": false}, {"predicate":"within_eye_height"}
 							],
 							"animation": "wom:biped/combat/torment_charged_attack_2",
 							"play_speed": 1

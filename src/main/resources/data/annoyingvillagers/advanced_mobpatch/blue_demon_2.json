@@ -103,8 +103,8 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 1.9}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.9}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"animation": "epicfight:biped/living/idle",
 							"play_speed": 1.1,
@@ -128,8 +128,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 2.0}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 0.0, "max": 2.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"animation": "epicfight:biped/living/idle",
 							"convert_time": 0.15,
@@ -146,8 +146,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 0.0, "max": 12.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"animation": "epicfight:biped/living/idle",
 							"guard": 1,
@@ -163,8 +163,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 0.0, "max": 12.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"animation": "epicfight:biped/living/idle",
 							"guard": 1,
@@ -181,8 +181,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 0.0, "max": 12.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"animation": "epicfight:biped/living/idle",
 							"guard": 1,
@@ -199,8 +199,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 0.0, "max": 12.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"animation": "epicfight:biped/living/idle",
 							"guard": 1,
@@ -217,8 +217,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 5.0}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 0.0, "max": 5.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"animation": "epicfight:biped/living/idle",
 							"guard": 1,
@@ -235,8 +235,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 0.0, "max": 12.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"animation": "epicfight:biped/living/idle",
 							"guard": 1,
@@ -253,8 +253,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 1.8}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.8}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"animation": "epicfight:biped/living/idle",
 							"guard": 1,
@@ -271,8 +271,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 1.9}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.9}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"animation": "epicfight:biped/living/idle",
 							"guard": 1,
@@ -289,8 +289,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 1.0, "max": 1.0}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 1.0, "max": 1.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"animation": "epicfight:biped/living/idle",
 							"guard": 1,
@@ -305,8 +305,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 3.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 3.0, "max": 12.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"animation": "epicfight:biped/living/idle",
 							"guard": 1,
@@ -372,7 +372,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 1.5}, {"predicate":"knock_down", "invert": false}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.5}, {"predicate":"indestructible:knock_down", "invert": false}
 							],
 							"animation": "epicfight:biped/skill/knockdown_wakeup_left"
 						}
@@ -386,7 +386,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 1.5}, {"predicate":"knock_down", "invert": false}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.5}, {"predicate":"indestructible:knock_down", "invert": false}
 							],
 							"animation": "epicfight:biped/skill/knockdown_wakeup_right"
 						}
@@ -429,13 +429,13 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 8.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 8.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "epicfight:biped/skill/step_right"
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/skill/gezets_auto_1",
 							"guard": 1,
@@ -443,7 +443,7 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/skill/gezets_auto_1",
 							"guard": 1,
@@ -451,7 +451,7 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/skill/gezets_auto_1",
 							"guard": 1,
@@ -459,7 +459,7 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/skill/gezets_auto_1",
 							"guard": 1,
@@ -467,7 +467,7 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/skill/gezets_auto_1",
 							"guard": 1,
@@ -475,7 +475,7 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/skill/gezets_auto_1",
 							"guard": 1,
@@ -483,7 +483,7 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/skill/gezets_auto_1",
 							"guard": 1,
@@ -491,7 +491,7 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/skill/gezets_auto_1",
 							"guard": 1,
@@ -499,7 +499,7 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/skill/gezets_auto_1",
 							"guard": 1,
@@ -507,7 +507,7 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/skill/gezets_auto_1",
 							"guard": 1,
@@ -515,7 +515,7 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/skill/gezets_auto_1",
 							"guard": 1,
@@ -523,7 +523,7 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/skill/gezets_auto_1",
 							"guard": 1,
@@ -531,7 +531,7 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/skill/gezets_auto_1",
 							"guard": 1,
@@ -539,7 +539,7 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/skill/gezets_auto_1",
 							"guard": 1,
@@ -547,7 +547,7 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/skill/gezets_auto_1",
 							"guard": 1,
@@ -601,8 +601,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 8.0}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 0.0, "max": 8.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"animation": "wom:biped/combat/torment_auto_1",	
 							"play_speed": 1.1
@@ -616,8 +616,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 10.0}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 0.0, "max": 10.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"animation": "wom:biped/combat/torment_auto_3",
 							"play_speed": 1.1
@@ -631,8 +631,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 0.0, "max": 12.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"animation": "wom:biped/combat/torment_dash",
 							"play_speed": 1.1
@@ -646,8 +646,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 0.0, "max": 12.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"animation": "epicfight:biped/living/idle",
 							"play_speed": 1.1
@@ -661,8 +661,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 0.0, "max": 12.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"animation": "wom:biped/combat/torment_charged_attack_2",
 							"play_speed": 1.1
@@ -676,8 +676,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 5.0}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 0.0, "max": 5.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"animation": "wom:biped/skill/torment_berserk_dash",
 							"play_speed": 1.1
@@ -691,8 +691,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 0.0, "max": 12.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"animation": "wom:biped/skill/torment_berserk_auto_2",
 							"play_speed": 1.1
@@ -706,8 +706,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 1.8}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.8}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"animation": "wom:biped/skill/torment_berserk_airslam",
 							"play_speed": 1.1
@@ -723,8 +723,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 1.9}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.9}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"animation": "epicfight:biped/living/idle",
 							"play_speed": 1.1
@@ -738,8 +738,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 1.0, "max": 1.0}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 1.0, "max": 1.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"animation": "epicfight:biped/living/idle",
 							"play_speed": 1.1
@@ -753,8 +753,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 3.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 3.0, "max": 12.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"animation": "epicfight:biped/living/idle",
 							"guard": 1,
@@ -784,7 +784,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 1.5}, {"predicate":"knock_down", "invert": false}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.5}, {"predicate":"indestructible:knock_down", "invert": false}
 							],
 							"animation": "epicfight:biped/skill/knockdown_wakeup_left"
 						}
@@ -798,7 +798,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 1.5}, {"predicate":"knock_down", "invert": false}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.5}, {"predicate":"indestructible:knock_down", "invert": false}
 							],
 							"animation": "epicfight:biped/skill/knockdown_wakeup_right"
 						}
@@ -826,13 +826,13 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 8.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 8.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "epicfight:biped/skill/step_right"
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 10.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/skill/torment_berserk_airslam",
 							"play_speed": 1.1
@@ -846,98 +846,98 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 14.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 14.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/skill/torment_berserk_dash",
 							"play_speed": 1.7
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 14.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 14.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/skill/torment_berserk_dash",
 							"play_speed": 1.1
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 14.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 14.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/skill/torment_berserk_dash",
 							"play_speed": 1.1
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 15.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 15.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/skill/torment_berserk_dash",
 							"play_speed": 1.2
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 16.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 16.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/skill/torment_berserk_airslam",
 							"play_speed": 1.1
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 17.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 17.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/skill/torment_berserk_dash",
 							"play_speed": 1.1
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 18.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 18.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/skill/torment_berserk_dash",
 							"play_speed": 1.1
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 19.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 19.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/skill/torment_berserk_dash",
 							"play_speed": 1.1
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 20.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 20.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/skill/torment_berserk_dash",
 							"play_speed": 1.1
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 20.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 20.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/skill/torment_berserk_dash",
 							"play_speed": 1.1
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 20.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 20.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/skill/torment_berserk_airslam",
 							"play_speed": 1.1
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 25},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 25},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/combat/torment_airslam",
 							"play_speed": 1.1
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 25.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 25.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/combat/torment_auto_1",
 							"play_speed": 1.1
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0, "max": 28.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0, "max": 28.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "wom:biped/combat/torment_dash",
 							"play_speed": 1.1
@@ -965,7 +965,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 4.0},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "epicfight:biped/living/idle",
 							"convert_time": 1,
@@ -980,8 +980,8 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 1.9}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.9}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"animation": "epicfight:biped/living/idle",
 							"guard": 1
@@ -1083,8 +1083,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 3.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 3.0, "max": 12.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"animation": "epicfight:biped/living/idle",
 							"guard": 1
@@ -1132,7 +1132,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 1.5}, {"predicate":"knock_down", "invert": false}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.5}, {"predicate":"indestructible:knock_down", "invert": false}
 							],
 							"animation": "epicfight:biped/skill/knockdown_wakeup_left"
 						}
@@ -1146,7 +1146,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 1.5}, {"predicate":"knock_down", "invert": false}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.5}, {"predicate":"indestructible:knock_down", "invert": false}
 							],
 							"animation": "epicfight:biped/skill/knockdown_wakeup_right"
 						}
@@ -1189,7 +1189,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_distance", "min": 1.5, "max": 3.5},{"predicate": "attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 1.5, "max": 3.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "epicfight:biped/skill/step_right"
 						},
@@ -1209,7 +1209,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"guard_break", "invert": false}, {"predicate":"within_eye_height"}
+								{"predicate":"indestructible:guard_break", "invert": false}, {"predicate":"within_eye_height"}
 							],
 							"animation": "epicfight:biped/skill/the_guillotine",
 							"play_speed": 1
@@ -1230,7 +1230,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 3.0, "max": 8.0},{"predicate": "attack_level", "min":1,"max":2}
+								{"predicate":"within_distance", "min": 3.0, "max": 8.0},{"predicate":"indestructible:attack_level", "min":1,"max":2}
 							],
 							"animation": "epicfight:biped/living/idle",
 							"guard": 45
@@ -1245,8 +1245,8 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 2.0, "max": 12.0}, {"predicate":"guard_break", "invert": true},
-								{"predicate":"knock_down", "invert": true}, {"predicate": "stamina", "stamina": 0.3, "comparator": "greater_ratio"}
+								{"predicate":"within_distance", "min": 2.0, "max": 12.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"animation": "epicfight:biped/living/idle",
 							"guard": 40
@@ -1337,7 +1337,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_distance", "min": 1.5, "max": 3.5},{"predicate": "attack_level", "min":1,"max":2}
+								{"predicate":"within_distance", "min": 1.5, "max": 3.5},{"predicate":"indestructible:attack_level", "min":1,"max":2}
 							],
 							"animation": "epicfight:biped/skill/step_left"
 						},
@@ -1358,7 +1358,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_distance", "min": 1.5, "max": 3.5},{"predicate": "attack_level", "min":1,"max":2}
+								{"predicate":"within_distance", "min": 1.5, "max": 3.5},{"predicate":"indestructible:attack_level", "min":1,"max":2}
 							],
 							"animation": "epicfight:biped/skill/step_right"
 						},
@@ -1378,7 +1378,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"guard_break", "invert": false}, {"predicate":"within_eye_height"}
+								{"predicate":"indestructible:guard_break", "invert": false}, {"predicate":"within_eye_height"}
 							],
 							"animation": "epicfight:biped/skill/the_guillotine",
 							"play_speed": 1
