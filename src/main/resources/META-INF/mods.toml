@@ -1,15 +1,12 @@
 modLoader="javafml"
-loaderVersion="[40,)"
-license="All rights reserved"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
 [[mods]]
-modId="annoyingvillagers"
-version="${file.jarVersion}"
-displayName="Annoying Villagers"
-credits="Thanks for Chinese dev team"
-authors="pla_is_me"
-description='''
-Pla ported this mod from annoying villlagers modpack Chinese version.
-'''
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+authors="${mod_authors}"
+description='''${mod_description}'''
 [[dependencies.annoyingvillagers]]
     modId="forge"
     mandatory=true
@@ -25,7 +22,7 @@ Pla ported this mod from annoying villlagers modpack Chinese version.
 [[dependencies.annoyingvillagers]]
     modId="epicfight"
     mandatory=true
-    versionRange="[20.11, )"
+    versionRange="[20.9.7]"
     ordering="AFTER"
     side="BOTH"
 [[dependencies.annoyingvillagers]]
