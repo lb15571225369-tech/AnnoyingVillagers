@@ -32,7 +32,7 @@ public class NpcKickProcedure {
     @SubscribeEvent
     public static void onEntityAttacked(LivingAttackEvent livingattackevent) {
         if (livingattackevent != null && livingattackevent.getEntity() != null) {
-            execute(livingattackevent, livingattackevent.getEntity().level, livingattackevent.getEntity(), livingattackevent.getSource().getEntity());
+            execute(livingattackevent, livingattackevent.getEntity().level(), livingattackevent.getEntity(), livingattackevent.getSource().getEntity());
         }
 
     }
@@ -80,7 +80,7 @@ public class NpcKickProcedure {
                                             if (entity1.isAlive()) {
                                                 Entity entity2 = entity1;
 
-                                                if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                                if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                                     try {
                                                         entity2.getServer().getCommands().getDispatcher().execute(
                                                                 "indestructible @s play \"annoyingvillagers:biped/combat/kick_1\" 0 1",
@@ -100,7 +100,7 @@ public class NpcKickProcedure {
                                             if (entity1.isAlive()) {
                                                 Entity entity2 = entity1;
 
-                                                if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                                if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                                     try {
                                                         entity2.getServer().getCommands().getDispatcher().execute(
                                                                 "indestructible @s play \"annoyingvillagers:biped/combat/kick_2\" 0 1",
@@ -120,7 +120,7 @@ public class NpcKickProcedure {
                                             if (entity1.isAlive()) {
                                                 Entity entity2 = entity1;
 
-                                                if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                                if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                                     try {
                                                         entity2.getServer().getCommands().getDispatcher().execute(
                                                                 "indestructible @s play \"annoyingvillagers:biped/combat/kick_3\" 0 1",

@@ -42,7 +42,7 @@ public class PlayerNpcJoinGameProcedure {
 
     private static void execute(@Nullable Event event, LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) {
         if (entity != null) {
-            if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("annoying_villagersbychentu:bei_gan_ran_jian_bing_guo_zi") && !entity.level.isClientSide() && entity.getServer() != null) {
+            if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("annoying_villagersbychentu:bei_gan_ran_jian_bing_guo_zi") && !entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute(
                             "kill @s",
@@ -55,7 +55,7 @@ public class PlayerNpcJoinGameProcedure {
             LivingEntity livingentity;
 
             if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("player_mobs:player_mob")) {
-                if (!entity.level.isClientSide() && entity.getServer() != null) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
                     List<String> commands = EquipmentDataLoader.getEquipCommands(0.7f, entity);
                     for (String cmd : commands) {
                         try {
@@ -78,7 +78,7 @@ public class PlayerNpcJoinGameProcedure {
                     levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("\u00a7e" + entity.getDisplayName().getString() + "\u00a7e has joined the game"), false);
                 }
 
-                if (!entity.level.isClientSide() && entity.getServer() != null) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
                     try {
                         entity.getServer().getCommands().getDispatcher().execute(
                                 "team modify villagers friendlyFire false",
@@ -96,7 +96,7 @@ public class PlayerNpcJoinGameProcedure {
                 ((LivingEntity) entity).getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0D);
                 if (entity instanceof LivingEntity) {
                     livingentity = (LivingEntity) entity;
-                    if (!livingentity.level.isClientSide()) {
+                    if (!livingentity.level().isClientSide()) {
                         livingentity.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 9999999, 0, false, false));
                     }
                 }
@@ -116,7 +116,7 @@ public class PlayerNpcJoinGameProcedure {
                         if (i >= 12) {
                             Entity entity1 = entity;
 
-                            if (!entity1.level.isClientSide() && entity1.getServer() != null) {
+                            if (!entity1.level().isClientSide() && entity1.getServer() != null) {
                                 try {
                                     entity1.getServer().getCommands().getDispatcher().execute(
                                             "tag @s add 1",
@@ -127,7 +127,7 @@ public class PlayerNpcJoinGameProcedure {
                             }
 
                             entity1 = entity;
-                            if (!entity1.level.isClientSide() && entity1.getServer() != null) {
+                            if (!entity1.level().isClientSide() && entity1.getServer() != null) {
                                 try {
                                     entity1.getServer().getCommands().getDispatcher().execute(
                                             "tag @s add 2",
@@ -138,7 +138,7 @@ public class PlayerNpcJoinGameProcedure {
                             }
 
                             entity1 = entity;
-                            if (!entity1.level.isClientSide() && entity1.getServer() != null) {
+                            if (!entity1.level().isClientSide() && entity1.getServer() != null) {
                                 try {
                                     entity1.getServer().getCommands().getDispatcher().execute(
                                             "tag @s add 3",
@@ -149,7 +149,7 @@ public class PlayerNpcJoinGameProcedure {
                             }
 
                             entity1 = entity;
-                            if (!entity1.level.isClientSide() && entity1.getServer() != null) {
+                            if (!entity1.level().isClientSide() && entity1.getServer() != null) {
                                 try {
                                     entity1.getServer().getCommands().getDispatcher().execute(
                                             "tag @s add 4",
@@ -162,7 +162,7 @@ public class PlayerNpcJoinGameProcedure {
                     }
                 };
                 if (Math.random() <= 0.3D) {
-                    if (!entity.level.isClientSide() && entity.getServer() != null) {
+                    if (!entity.level().isClientSide() && entity.getServer() != null) {
                         try {
                             entity.getServer().getCommands().getDispatcher().execute(
                                     "team add player",
@@ -172,7 +172,7 @@ public class PlayerNpcJoinGameProcedure {
                         }
                     }
 
-                    if (!entity.level.isClientSide() && entity.getServer() != null) {
+                    if (!entity.level().isClientSide() && entity.getServer() != null) {
                         try {
                             entity.getServer().getCommands().getDispatcher().execute(
                                     "team join player @s",
@@ -200,12 +200,12 @@ public class PlayerNpcJoinGameProcedure {
             if (f == 40.0F && entity instanceof LivingEntity) {
                 LivingEntity livingentity1 = (LivingEntity)entity;
 
-                if (!livingentity1.level.isClientSide()) {
+                if (!livingentity1.level().isClientSide()) {
                     livingentity1.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 9999999, 0, false, false));
                 }
             }
 
-            if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:villager") && !entity.level.isClientSide() && entity.getServer() != null) {
+            if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:villager") && !entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute(
                             "team join villagers @s",
@@ -215,7 +215,7 @@ public class PlayerNpcJoinGameProcedure {
                 }
             }
 
-            if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("epicfight:dodge_left") && !entity.level.isClientSide() && entity.getServer() != null) {
+            if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("epicfight:dodge_left") && !entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute(
                             "playsound annoyingvillagers:whoosh neutral @p",
@@ -225,7 +225,7 @@ public class PlayerNpcJoinGameProcedure {
                 }
             }
 
-            if ((entity instanceof Monster monster) && !entity.level.isClientSide() && entity.getServer() != null) {
+            if ((entity instanceof Monster monster) && !entity.level().isClientSide() && entity.getServer() != null) {
                 monster.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(
                         monster,
                         PlayerMobEntity.class,
@@ -233,7 +233,7 @@ public class PlayerNpcJoinGameProcedure {
                 ));
             }
 
-            if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("guardvillagers:guard") && !entity.level.isClientSide() && entity.getServer() != null) {
+            if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("guardvillagers:guard") && !entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute(
                             "team join villagers @s",
@@ -250,8 +250,8 @@ public class PlayerNpcJoinGameProcedure {
                 }
             }
 
-            if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:zombie") && !entity.level.isClientSide() && entity.getServer() != null) {
-                if (!entity.level.isClientSide() && entity.getServer() != null) {
+            if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:zombie") && !entity.level().isClientSide() && entity.getServer() != null) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
                     try {
                         entity.getServer().getCommands().getDispatcher().execute(
                                 "data merge entity @s {CanPickUpLoot: 1b}",
@@ -259,7 +259,7 @@ public class PlayerNpcJoinGameProcedure {
                     } catch (CommandSyntaxException e) {
                         
                     }
-                    if (entity.level.getRandom().nextFloat() < 0.5f) {
+                    if (entity.level().getRandom().nextFloat() < 0.5f) {
                         List<String> commands = EquipmentDataLoader.getEquipCommands(0.0f, entity);
                         for (String cmd : commands) {
                             try {
@@ -272,7 +272,7 @@ public class PlayerNpcJoinGameProcedure {
                             }
                         }
                     }
-                    if (entity.level.getRandom().nextFloat() < 0.5f) {
+                    if (entity.level().getRandom().nextFloat() < 0.5f) {
                         EquipmentDataLoader.getRandomSpecificSlot("CHEST").ifPresent(cmd -> {
                             try {
                                 entity.getServer().getCommands().getDispatcher().execute(
@@ -287,8 +287,8 @@ public class PlayerNpcJoinGameProcedure {
                 }
             }
 
-            if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:skeleton") && !entity.level.isClientSide() && entity.getServer() != null) {
-                if (!entity.level.isClientSide() && entity.getServer() != null) {
+            if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:skeleton") && !entity.level().isClientSide() && entity.getServer() != null) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
                     try {
                         entity.getServer().getCommands().getDispatcher().execute(
                                 "data merge entity @s {CanPickUpLoot: 1b}",
@@ -296,7 +296,7 @@ public class PlayerNpcJoinGameProcedure {
                     } catch (CommandSyntaxException e) {
                         
                     }
-                    if (entity.level.getRandom().nextFloat() < 0.6f) {
+                    if (entity.level().getRandom().nextFloat() < 0.6f) {
                         EquipmentDataLoader.getRandomSpecificSlot("CHEST").ifPresent(cmd -> {
                             try {
                                 entity.getServer().getCommands().getDispatcher().execute(
@@ -308,7 +308,7 @@ public class PlayerNpcJoinGameProcedure {
                             }
                         });
                     }
-                    if (entity.level.getRandom().nextFloat() < 0.6f) {
+                    if (entity.level().getRandom().nextFloat() < 0.6f) {
                         EquipmentDataLoader.getRandomSpecificSlot("HEAD").ifPresent(cmd -> {
                             try {
                                 entity.getServer().getCommands().getDispatcher().execute(

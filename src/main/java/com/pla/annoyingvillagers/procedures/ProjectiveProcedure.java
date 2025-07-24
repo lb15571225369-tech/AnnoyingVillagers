@@ -38,7 +38,7 @@ public class ProjectiveProcedure {
     @SubscribeEvent
     public static void onEntityAttacked(LivingAttackEvent livingattackevent) {
         if (livingattackevent != null && livingattackevent.getEntity() != null) {
-            execute(livingattackevent, livingattackevent.getEntity().level, livingattackevent.getEntity().getX(), livingattackevent.getEntity().getY(), livingattackevent.getEntity().getZ(), livingattackevent.getEntity(), livingattackevent.getSource().getDirectEntity(), (double) livingattackevent.getAmount());
+            execute(livingattackevent, livingattackevent.getEntity().level(), livingattackevent.getEntity().getX(), livingattackevent.getEntity().getY(), livingattackevent.getEntity().getZ(), livingattackevent.getEntity(), livingattackevent.getSource().getDirectEntity(), (double) livingattackevent.getAmount());
         }
 
     }
@@ -113,7 +113,7 @@ public class ProjectiveProcedure {
                         }
                     }
 
-                    if (!entity1.level.isClientSide() && entity1.getServer() != null) {
+                    if (!entity1.level().isClientSide() && entity1.getServer() != null) {
                         try {
                             entity1.getServer().getCommands().getDispatcher().execute(
                                     "execute at @s run particle annoyingvillagers:spark ~ ~ ~ 0 0 0 0.1 10",
@@ -139,7 +139,7 @@ public class ProjectiveProcedure {
                     ItemStack itemstack4;
 
                     if (EnchantmentHelper.getItemEnchantmentLevel(enchantment, itemstack) != 0) {
-                        if (entity instanceof LivingEntity && !livingentity3.level.isClientSide()) {
+                        if (entity instanceof LivingEntity && !livingentity3.level().isClientSide()) {
                             ItemStack chestItem = livingentity3.getItemBySlot(EquipmentSlot.CHEST);
                             int level = net.minecraft.world.item.enchantment.EnchantmentHelper.getItemEnchantmentLevel(
                                     PROJECTILE_PROTECTION, chestItem
@@ -179,7 +179,7 @@ public class ProjectiveProcedure {
                         }
 
                         if (EnchantmentHelper.getItemEnchantmentLevel(enchantment, itemstack) != 0) {
-                            if (entity instanceof LivingEntity && !livingentity3.level.isClientSide()) {
+                            if (entity instanceof LivingEntity && !livingentity3.level().isClientSide()) {
                                 ItemStack legArmor = livingentity3.getItemBySlot(EquipmentSlot.LEGS);
                                 int enchantLevel = net.minecraft.world.item.enchantment.EnchantmentHelper.getItemEnchantmentLevel(
                                         net.minecraft.world.item.enchantment.Enchantments.PROJECTILE_PROTECTION,
@@ -221,7 +221,7 @@ public class ProjectiveProcedure {
                             }
 
                             if (EnchantmentHelper.getItemEnchantmentLevel(enchantment, itemstack) != 0) {
-                                if (entity instanceof LivingEntity livingEntity && !livingEntity.level.isClientSide()) {
+                                if (entity instanceof LivingEntity livingEntity && !livingEntity.level().isClientSide()) {
                                     ItemStack boots = livingEntity.getItemBySlot(EquipmentSlot.FEET);
                                     int enchantLevel = net.minecraft.world.item.enchantment.EnchantmentHelper.getItemEnchantmentLevel(
                                             net.minecraft.world.item.enchantment.Enchantments.PROJECTILE_PROTECTION,

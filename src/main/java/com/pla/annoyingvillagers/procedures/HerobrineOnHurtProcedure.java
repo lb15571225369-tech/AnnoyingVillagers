@@ -11,7 +11,7 @@ public class HerobrineOnHurtProcedure {
 
     public static void execute(Entity entity) {
         if (entity != null) {
-            if (Math.random() <= 0.5D && !entity.level.isClientSide() && entity.getServer() != null) {
+            if (Math.random() <= 0.5D && !entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute(
                             "effect give @s annoyingvillagers:block 1 0 true",
@@ -24,7 +24,7 @@ public class HerobrineOnHurtProcedure {
             if (entity instanceof LivingEntity) {
                 LivingEntity livingentity = (LivingEntity) entity;
 
-                if (!livingentity.level.isClientSide()) {
+                if (!livingentity.level().isClientSide()) {
                     livingentity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.NPC_KICK_EFFECT.get(), 10, 0, false, false));
                 }
             }

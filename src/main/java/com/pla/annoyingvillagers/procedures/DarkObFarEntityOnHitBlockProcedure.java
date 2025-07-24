@@ -14,13 +14,13 @@ public class DarkObFarEntityOnHitBlockProcedure {
 
     public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) {
         if (entity != null) {
-            if (levelaccessor.isEmptyBlock(new BlockPos(d0, d1 + 1.0D, d2))) {
-                levelaccessor.setBlock(new BlockPos(d0, d1 + 1.0D, d2), ((Block) AnnoyingVillagersModBlocks.DARK_OB_UP.get()).defaultBlockState(), 3);
+            if (levelaccessor.isEmptyBlock(new BlockPos((int) d0, (int) d1 + 1, (int) d2))) {
+                levelaccessor.setBlock(new BlockPos((int) d0, (int) d1 + 1, (int) d2), ((Block) AnnoyingVillagersModBlocks.DARK_OB_UP.get()).defaultBlockState(), 3);
                 entity.setDeltaMovement(new Vec3(0.0D, 0.0D, 0.0D));
                 if (entity instanceof LivingEntity) {
                     LivingEntity livingentity = (LivingEntity) entity;
 
-                    if (!livingentity.level.isClientSide()) {
+                    if (!livingentity.level().isClientSide()) {
                         livingentity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, 8, false, false));
                     }
                 }

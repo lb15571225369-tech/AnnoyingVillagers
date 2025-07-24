@@ -4,10 +4,8 @@ import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.util.DelayedTask;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -17,12 +15,8 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.TickEvent.ServerTickEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -35,7 +29,7 @@ public class VillagersAssistanceProcedure {
     @SubscribeEvent
     public static void onEntityAttacked(LivingHurtEvent livinghurtevent) {
         if (livinghurtevent != null && livinghurtevent.getEntity() != null) {
-            execute(livinghurtevent, livinghurtevent.getEntity().level, livinghurtevent.getEntity().getX(), livinghurtevent.getEntity().getY(), livinghurtevent.getEntity().getZ(), livinghurtevent.getEntity());
+            execute(livinghurtevent, livinghurtevent.getEntity().level(), livinghurtevent.getEntity().getX(), livinghurtevent.getEntity().getY(), livinghurtevent.getEntity().getZ(), livinghurtevent.getEntity());
         }
 
     }
@@ -56,7 +50,7 @@ public class VillagersAssistanceProcedure {
 
                     new DelayedTask(11) {
                         private void summonFirework(Entity entity) {
-                            if (!entity.level.isClientSide() && entity.getServer() != null) {
+                            if (!entity.level().isClientSide() && entity.getServer() != null) {
                                 try {
                                     entity.getServer().getCommands().getDispatcher().execute(
                                             "summon firework_rocket ~ ~10 ~ {LifeTime:10,FireworksItem:{id:firework_rocket,Count:1,tag:{Fireworks:{Explosions:[{Type:3,Colors:[0],Flicker:1}]}},display:{Name:\"Black Creeper Firework\"}}}",
@@ -77,7 +71,7 @@ public class VillagersAssistanceProcedure {
                                 String path = parts[1];
                                 SoundEvent sound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(namespace, path));
                                 if (!lvl.isClientSide()) {
-                                    lvl.playSound(null, new BlockPos(x, y, z), sound, SoundSource.NEUTRAL, 1.0F, 2.0F);
+                                    lvl.playSound(null, new BlockPos((int) x, (int) y, (int) z), sound, SoundSource.NEUTRAL, 1.0F, 2.0F);
                                 } else {
                                     lvl.playLocalSound(x, y, z, sound, SoundSource.NEUTRAL, 1.0F, 2.0F, false);
                                 }
@@ -94,7 +88,7 @@ public class VillagersAssistanceProcedure {
                         }
 
                         private void summon(Entity entity, String type, double dx, double dy, double dz) {
-                            if (!entity.level.isClientSide() && entity.getServer() != null) {
+                            if (!entity.level().isClientSide() && entity.getServer() != null) {
                                 try {
                                     entity.getServer().getCommands().getDispatcher().execute(
                                             String.format("summon annoyingvillagers:%s ~%.1f ~%.1f ~%.1f", type, dx, dy, dz),
@@ -114,7 +108,7 @@ public class VillagersAssistanceProcedure {
                                 }
                             }
 
-                            if (entity instanceof LivingEntity living && !living.level.isClientSide()) {
+                            if (entity instanceof LivingEntity living && !living.level().isClientSide()) {
                                 living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 60, 1, false, false));
                             }
 

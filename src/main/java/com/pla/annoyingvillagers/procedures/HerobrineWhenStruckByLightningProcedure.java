@@ -15,7 +15,7 @@ public class HerobrineWhenStruckByLightningProcedure {
 
     public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) {
         if (entity != null) {
-            if (!entity.level.isClientSide()) {
+            if (!entity.level().isClientSide()) {
                 entity.discard();
             }
 

@@ -39,7 +39,7 @@ public class LegendarySwordWhenInInventoryProcedure {
                 if (i <= 5 && entity instanceof LivingEntity) {
                     LivingEntity livingentity1 = (LivingEntity) entity;
 
-                    if (!livingentity1.level.isClientSide()) {
+                    if (!livingentity1.level().isClientSide()) {
                         livingentity1.addEffect(new MobEffectInstance(MobEffects.SATURATION, 15, 0, false, false));
                     }
                 }
@@ -65,13 +65,13 @@ public class LegendarySwordWhenInInventoryProcedure {
                 if (itemstack.getOrCreateTag().getString("l_g_ower").equals(entity.getUUID().toString())) {
                     if (entity instanceof Player) {
                         player1 = (Player) entity;
-                        if (!player1.level.isClientSide()) {
+                        if (!player1.level().isClientSide()) {
                             player1.displayClientMessage(Component.literal("You are the owner of this weapon."), false);
                         }
                     }
                 } else if (entity instanceof Player) {
                     player1 = (Player) entity;
-                    if (!player1.level.isClientSide()) {
+                    if (!player1.level().isClientSide()) {
                         player1.displayClientMessage(Component.literal("You are not the owner of this weapon. It will not obey your commands."), false);
                     }
                 }
@@ -80,21 +80,21 @@ public class LegendarySwordWhenInInventoryProcedure {
             if (!itemstack.getOrCreateTag().getString("l_g_ower").equals(entity.getUUID().toString())) {
                 if (entity instanceof LivingEntity) {
                     livingentity = (LivingEntity) entity;
-                    if (!livingentity.level.isClientSide()) {
+                    if (!livingentity.level().isClientSide()) {
                         livingentity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 5, 3, false, false));
                     }
                 }
 
                 if (entity instanceof LivingEntity) {
                     livingentity = (LivingEntity) entity;
-                    if (!livingentity.level.isClientSide()) {
+                    if (!livingentity.level().isClientSide()) {
                         livingentity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 5, 3, false, false));
                     }
                 }
 
                 if (entity instanceof LivingEntity) {
                     livingentity = (LivingEntity) entity;
-                    if (!livingentity.level.isClientSide()) {
+                    if (!livingentity.level().isClientSide()) {
                         livingentity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 5, 3, false, false));
                     }
                 }
@@ -109,14 +109,14 @@ public class LegendarySwordWhenInInventoryProcedure {
                 if (i <= 5) {
                     if (entity instanceof Player) {
                         player = (Player) entity;
-                        if (!player.level.isClientSide()) {
+                        if (!player.level().isClientSide()) {
                             player.displayClientMessage(Component.literal("You are not strong enough to wield this weapon"), true);
                         }
                     }
 
                     if (entity instanceof Player) {
                         player = (Player) entity;
-                        if (!player.level.isClientSide()) {
+                        if (!player.level().isClientSide()) {
                             player.displayClientMessage(Component.literal("You are not strong enough to wield this weapon"), false);
                         }
                     }
@@ -124,7 +124,7 @@ public class LegendarySwordWhenInInventoryProcedure {
                     if (entity instanceof LivingEntity) {
                         LivingEntity livingentity2 = (LivingEntity) entity;
 
-                        if (!livingentity2.level.isClientSide()) {
+                        if (!livingentity2.level().isClientSide()) {
                             livingentity2.addEffect(new MobEffectInstance(MobEffects.WITHER, 160, 3, false, false));
                         }
                     }

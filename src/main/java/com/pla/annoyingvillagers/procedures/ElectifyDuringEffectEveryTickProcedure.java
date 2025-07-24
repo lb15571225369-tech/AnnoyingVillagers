@@ -22,7 +22,7 @@ public class ElectifyDuringEffectEveryTickProcedure {
     public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) {
         if (entity != null) {
             if (Math.random() <= 0.1D) {
-                if (!entity.level.isClientSide() && entity.getServer() != null) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
                     try {
                         entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:electric_spark ^ ^ ^ 0.3 1.2 0.3 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                     } catch (CommandSyntaxException e) {
@@ -42,7 +42,7 @@ public class ElectifyDuringEffectEveryTickProcedure {
             }
 
             if (Math.random() <= 0.001D) {
-                entity.hurt(DamageSource.GENERIC, 1.0F);
+                entity.hurt(entity.level().damageSources().generic(), 1.0F);
             }
 
         }

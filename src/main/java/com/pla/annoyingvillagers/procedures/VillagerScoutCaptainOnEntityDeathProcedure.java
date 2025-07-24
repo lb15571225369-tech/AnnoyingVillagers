@@ -19,7 +19,7 @@ public class VillagerScoutCaptainOnEntityDeathProcedure {
 
     public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity) {
         if (entity != null) {
-            if (Math.random() <= 0.2D && !entity.level.isClientSide() && entity.getServer() != null) {
+            if (Math.random() <= 0.2D && !entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute(
                             "effect give @p annoyingvillagers:wanted 600 0",
@@ -367,7 +367,7 @@ public class VillagerScoutCaptainOnEntityDeathProcedure {
                     if (Math.random() <= 0.3D) {
                         Entity entity1 = entity;
 
-                        if (!entity1.level.isClientSide() && entity1.getServer() != null) {
+                        if (!entity1.level().isClientSide() && entity1.getServer() != null) {
                             try {
                                 entity1.getServer().getCommands().getDispatcher().execute(
                                         "summon firework_rocket ~ ~10 ~ {LifeTime:10,FireworksItem:{id:firework_rocket,Count:1,tag:{Fireworks:{Explosions:[{Type:3,Colors:[0],Flicker:1}]}},display:{Name:\"Black Creeper Firework\"}}}",
@@ -389,7 +389,7 @@ public class VillagerScoutCaptainOnEntityDeathProcedure {
 
                                 Entity entity2 = entity;
 
-                                if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                     try {
                                         entity2.getServer().getCommands().getDispatcher().execute(
                                                 "summon annoyingvillagers:villager_scout ^ ^ ^10",
@@ -400,7 +400,7 @@ public class VillagerScoutCaptainOnEntityDeathProcedure {
                                 }
 
                                 entity2 = entity;
-                                if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                     try {
                                         entity2.getServer().getCommands().getDispatcher().execute(
                                                 "summon annoyingvillagers:villager_scout ^ ^ ^15",
@@ -411,7 +411,7 @@ public class VillagerScoutCaptainOnEntityDeathProcedure {
                                 }
 
                                 entity2 = entity;
-                                if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                     try {
                                         entity2.getServer().getCommands().getDispatcher().execute(
                                                 "summon annoyingvillagers:blue_villager_general ^10 ^ ^20",

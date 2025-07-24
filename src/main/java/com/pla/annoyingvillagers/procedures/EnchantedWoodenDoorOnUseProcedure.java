@@ -31,14 +31,14 @@ public class EnchantedWoodenDoorOnUseProcedure {
 
             if (entity instanceof LivingEntity) {
                 livingentity = (LivingEntity) entity;
-                if (!livingentity.level.isClientSide()) {
+                if (!livingentity.level().isClientSide()) {
                     livingentity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 1, 5, false, false));
                 }
             }
 
             if (entity instanceof LivingEntity) {
                 livingentity = (LivingEntity) entity;
-                if (!livingentity.level.isClientSide()) {
+                if (!livingentity.level().isClientSide()) {
                     livingentity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 2, 10, false, false));
                 }
             }

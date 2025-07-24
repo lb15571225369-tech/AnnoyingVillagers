@@ -14,7 +14,7 @@ public class CraftingTableOnUseProcedure {
             if (entity instanceof LivingEntity) {
                 LivingEntity livingentity = (LivingEntity) entity;
 
-                if (!livingentity.level.isClientSide()) {
+                if (!livingentity.level().isClientSide()) {
                     livingentity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 20, 3));
                 }
             }

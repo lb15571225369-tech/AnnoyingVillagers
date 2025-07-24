@@ -4,9 +4,7 @@ import com.pla.annoyingvillagers.entity.VillagerScoutCaptainEntity;
 import com.pla.annoyingvillagers.entity.VillagerScoutEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.util.DelayedTask;
-import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -24,7 +22,7 @@ public class WantedMobEffectOnStartProcedure {
             if (entity instanceof Player) {
                 Player player = (Player)entity;
 
-                if (!player.level.isClientSide()) {
+                if (!player.level().isClientSide()) {
                     player.displayClientMessage(Component.literal("You're now wanted!"), false);
                 }
             }

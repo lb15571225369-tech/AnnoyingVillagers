@@ -24,7 +24,7 @@ public class EnchantBedRightClickOnBlockProcedure {
                 if (livingentity.hasEffect((MobEffect) AnnoyingVillagersModMobEffects.ENCHANT_BED_EFFECT.get())) {
                     if (entity instanceof Player) {
                         player = (Player) entity;
-                        if (!player.level.isClientSide()) {
+                        if (!player.level().isClientSide()) {
                             player.displayClientMessage(Component.literal("You have already used the Enchant Bed!"), true);
                             return;
                         }
@@ -49,7 +49,7 @@ public class EnchantBedRightClickOnBlockProcedure {
                     levelaccessor.setBlock(new BlockPos((int) d0, (int) d1, (int) d2), Blocks.AIR.defaultBlockState(), 3);
                     if (entity instanceof Player) {
                         player = (Player) entity;
-                        if (!player.level.isClientSide()) {
+                        if (!player.level().isClientSide()) {
                             player.displayClientMessage(Component.literal("The Enchant Bed has expired, you can no longer use it."), true);
                         }
                     }
@@ -57,21 +57,21 @@ public class EnchantBedRightClickOnBlockProcedure {
                     if (entity instanceof LivingEntity) {
                         LivingEntity livingentity1 = (LivingEntity) entity;
 
-                        if (!livingentity1.level.isClientSide()) {
+                        if (!livingentity1.level().isClientSide()) {
                             livingentity1.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.ENCHANT_BED_EFFECT.get(), 999999, 0, false, false));
                         }
                     }
 
                     if (entity instanceof Player) {
                         player = (Player) entity;
-                        if (!player.level.isClientSide()) {
+                        if (!player.level().isClientSide()) {
                             player.displayClientMessage(Component.literal("You used the Enchant Bed once. Experience level -1."), true);
                         }
                     }
 
                     if (entity instanceof Player) {
                         player = (Player) entity;
-                        if (!player.level.isClientSide()) {
+                        if (!player.level().isClientSide()) {
                             player.displayClientMessage(Component.literal("Respawn point has been reset."), false);
                         }
                     }
@@ -84,14 +84,14 @@ public class EnchantBedRightClickOnBlockProcedure {
                     if (entity instanceof ServerPlayer) {
                         ServerPlayer serverplayer = (ServerPlayer) entity;
 
-                        serverplayer.setRespawnPosition(serverplayer.level.dimension(), new BlockPos((int) d0, (int) d1, (int) d2), serverplayer.getYRot(), true, false);
+                        serverplayer.setRespawnPosition(serverplayer.level().dimension(), new BlockPos((int) d0, (int) d1, (int) d2), serverplayer.getYRot(), true, false);
                     }
 
                     entity.getPersistentData().putDouble("en_bed", entity.getPersistentData().getDouble("en_bed") + 1.0D);
                 }
             } else if (entity instanceof Player) {
                 player = (Player) entity;
-                if (!player.level.isClientSide()) {
+                if (!player.level().isClientSide()) {
                     player.displayClientMessage(Component.literal("Your experience level is too low. You must be above level 2 to use this!"), true);
                 }
             }

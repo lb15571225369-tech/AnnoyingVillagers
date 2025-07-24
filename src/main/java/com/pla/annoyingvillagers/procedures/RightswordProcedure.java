@@ -42,7 +42,7 @@ public class RightswordProcedure {
             }
 
             if (itemstack.getItem() instanceof SwordItem) {
-                if (!entity.level.isClientSide() && entity.getServer() != null) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
                     try {
                         entity.getServer().getCommands().getDispatcher().execute(
                                 "epicfight mode battle @s",
@@ -61,7 +61,7 @@ public class RightswordProcedure {
                 }
 
                 if (itemstack.getItem() instanceof AxeItem) {
-                    if (!entity.level.isClientSide() && entity.getServer() != null) {
+                    if (!entity.level().isClientSide() && entity.getServer() != null) {
                         try {
                             entity.getServer().getCommands().getDispatcher().execute(
                                     "epicfight mode battle @s",
@@ -80,7 +80,7 @@ public class RightswordProcedure {
                     }
 
                     if (itemstack.getItem() instanceof TridentItem) {
-                        if (!entity.level.isClientSide() && entity.getServer() != null) {
+                        if (!entity.level().isClientSide() && entity.getServer() != null) {
                             try {
                                 entity.getServer().getCommands().getDispatcher().execute(
                                         "epicfight mode battle @s",
@@ -98,7 +98,7 @@ public class RightswordProcedure {
                             itemstack = ItemStack.EMPTY;
                         }
 
-                        if (itemstack.getItem() instanceof PickaxeItem && !entity.level.isClientSide() && entity.getServer() != null) {
+                        if (itemstack.getItem() instanceof PickaxeItem && !entity.level().isClientSide() && entity.getServer() != null) {
                             try {
                                 entity.getServer().getCommands().getDispatcher().execute(
                                         "epicfight mode battle @s",

@@ -14,9 +14,6 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.TickEvent.ServerTickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickItem;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -49,7 +46,7 @@ public class RightefProcedure {
                 itemstack = ItemStack.EMPTY;
             }
 
-            if (EnchantmentHelper.getItemEnchantmentLevel(enchantment, itemstack) != 0 && !entity.level.isClientSide() && entity.getServer() != null) {
+            if (EnchantmentHelper.getItemEnchantmentLevel(enchantment, itemstack) != 0 && !entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute(
                             "effect give @s annoyingvillagers:electify 4 0 true",

@@ -34,7 +34,7 @@ public class PlayerMobProcedure {
     @SubscribeEvent
     public static void onEntityAttacked(LivingAttackEvent livingattackevent) {
         if (livingattackevent != null && livingattackevent.getEntity() != null) {
-            execute(livingattackevent, livingattackevent.getEntity().level, livingattackevent.getEntity(), livingattackevent.getSource().getEntity());
+            execute(livingattackevent, livingattackevent.getEntity().level(), livingattackevent.getEntity(), livingattackevent.getSource().getEntity());
         }
 
     }
@@ -65,7 +65,7 @@ public class PlayerMobProcedure {
                     if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("player_mobs:player_mob")) {
                         if (Math.random() <= 0.3D && entity instanceof LivingEntity) {
                             livingentity1 = (LivingEntity)entity;
-                            if (!livingentity1.level.isClientSide()) {
+                            if (!livingentity1.level().isClientSide()) {
                                 livingentity1.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 1, 1, false, false));
                             }
                         }
@@ -83,7 +83,7 @@ public class PlayerMobProcedure {
                                 livingentity2.yHeadRotO = livingentity2.getYRot();
                             }
 
-                            level = entity.level;
+                            level = entity.level();
                             if (!level.isClientSide()) {
                                 projectile = new ThrownEnderpearl(EntityType.ENDER_PEARL, level);
                                 projectile.setOwner(entity);
@@ -113,7 +113,7 @@ public class PlayerMobProcedure {
                                     }
 
                                     entity2 = entity;
-                                    Level level1 = entity2.level;
+                                    Level level1 = entity2.level();
 
                                     if (!level1.isClientSide()) {
                                         Projectile projectile1 = new ThrownEnderpearl(EntityType.ENDER_PEARL, level1);
@@ -147,7 +147,7 @@ public class PlayerMobProcedure {
                                     }
 
                                     entity2 = entity;
-                                    Level level1 = entity2.level;
+                                    Level level1 = entity2.level();
 
                                     if (!level1.isClientSide()) {
                                         Projectile projectile1 = new ThrownEnderpearl(EntityType.ENDER_PEARL, level1);
@@ -189,7 +189,7 @@ public class PlayerMobProcedure {
                                             if (entity instanceof LivingEntity) {
                                                 LivingEntity livingentity5 = (LivingEntity)entity;
 
-                                                if (!livingentity5.level.isClientSide()) {
+                                                if (!livingentity5.level().isClientSide()) {
                                                     livingentity5.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 60, 2, false, false));
                                                 }
                                             }
@@ -209,7 +209,7 @@ public class PlayerMobProcedure {
                                         @Override
                                         public void run() {
                                             Entity entity3 = entity;
-                                            Level level2 = entity3.level;
+                                            Level level2 = entity3.level();
 
                                             if (!level2.isClientSide()) {
                                                 Projectile projectile2 = new ThrownEnderpearl(EntityType.ENDER_PEARL, level2);
@@ -320,7 +320,7 @@ public class PlayerMobProcedure {
                     if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("guardvillagers:guard")) {
                         if (Math.random() <= 0.35D && entity instanceof LivingEntity) {
                             livingentity1 = (LivingEntity)entity;
-                            if (!livingentity1.level.isClientSide()) {
+                            if (!livingentity1.level().isClientSide()) {
                                 livingentity1.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.BLOCK.get(), 1, 1, false, false));
                             }
                         }
@@ -338,7 +338,7 @@ public class PlayerMobProcedure {
                                 livingentity2.yHeadRotO = livingentity2.getYRot();
                             }
 
-                            level = entity.level;
+                            level = entity.level();
                             if (!level.isClientSide()) {
                                 projectile = new ThrownEnderpearl(EntityType.ENDER_PEARL, level);
                                 projectile.setOwner(entity);
@@ -361,7 +361,7 @@ public class PlayerMobProcedure {
                                 livingentity2.yHeadRotO = livingentity2.getYRot();
                             }
 
-                            level = entity.level;
+                            level = entity.level();
                             if (!level.isClientSide()) {
                                 projectile = new ThrownEnderpearl(EntityType.ENDER_PEARL, level);
                                 projectile.setOwner(entity);
@@ -394,14 +394,14 @@ public class PlayerMobProcedure {
                                             if (entity instanceof LivingEntity) {
                                                 LivingEntity livingentity4 = (LivingEntity)entity;
 
-                                                if (!livingentity4.level.isClientSide()) {
+                                                if (!livingentity4.level().isClientSide()) {
                                                     livingentity4.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 60, 2, false, false));
                                                 }
                                             }
                                         }
                                     };
                                     entity2 = entity;
-                                    Level level1 = entity2.level;
+                                    Level level1 = entity2.level();
 
                                     if (!level1.isClientSide()) {
                                         Projectile projectile1 = new ThrownEnderpearl(EntityType.ENDER_PEARL, level1);
@@ -462,7 +462,7 @@ public class PlayerMobProcedure {
                                             }
 
                                             entity3 = entity;
-                                            Level level2 = entity3.level;
+                                            Level level2 = entity3.level();
 
                                             if (!level2.isClientSide()) {
                                                 Projectile projectile2 =  new ThrownEnderpearl(EntityType.ENDER_PEARL, level2);

@@ -1,0 +1,10 @@
+{
+  "type": "annoyingvillagers:entities",
+  "biomes": "#minecraft:is_overworld",
+  "entity": {
+    "type": "annoyingvillagers:blue_villager_general",
+    "weight": 5,
+    "minCount": 1,
+    "maxCount": 3
+  }
+}

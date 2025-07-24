@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -17,7 +18,7 @@ public class HitWallProcedure {
     @SubscribeEvent
     public static void onEntityAttacked(LivingHurtEvent livinghurtevent) {
         if (livinghurtevent != null && livinghurtevent.getEntity() != null) {
-            execute(livinghurtevent, livinghurtevent.getEntity().level, livinghurtevent.getSource(), livinghurtevent.getEntity(), (double) livinghurtevent.getAmount());
+            execute(livinghurtevent, livinghurtevent.getEntity().level(), livinghurtevent.getSource(), livinghurtevent.getEntity(), (double) livinghurtevent.getAmount());
         }
 
     }
@@ -28,8 +29,8 @@ public class HitWallProcedure {
 
     private static void execute(@Nullable Event event, LevelAccessor levelaccessor, DamageSource damagesource, Entity entity, double d0) {
         if (entity != null) {
-            if (damagesource == DamageSource.FLY_INTO_WALL) {
-                if (!entity.level.isClientSide() && entity.getServer() != null) {
+            if (damagesource.is(DamageTypes.FLY_INTO_WALL)) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
                     try {
                         entity.getServer().getCommands().getDispatcher().execute(
                                 "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10",
@@ -39,8 +40,8 @@ public class HitWallProcedure {
                     }
                 }
 
-                entity.hurt(DamageSource.GENERIC, 10.0F);
-                if (!entity.level.isClientSide() && entity.getServer() != null) {
+                entity.hurt(entity.level().damageSources().generic(), 10.0F);
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
                     try {
                         entity.getServer().getCommands().getDispatcher().execute(
                                 "impactful @s shake 20 5 6",
@@ -49,8 +50,8 @@ public class HitWallProcedure {
                         
                     }
                 }
-            } else if (damagesource == DamageSource.FALL) {
-                if (!entity.level.isClientSide() && entity.getServer() != null) {
+            } else if (damagesource.is(DamageTypes.FALL)) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
                     try {
                         entity.getServer().getCommands().getDispatcher().execute(
                                 "particle minecraft:campfire_signal_smoke ~ ~ ~ 0 0 0 0.02 5",
@@ -61,7 +62,7 @@ public class HitWallProcedure {
                 }
 
                 if (d0 >= 10.0D) {
-                    if (!entity.level.isClientSide() && entity.getServer() != null) {
+                    if (!entity.level().isClientSide() && entity.getServer() != null) {
                         try {
                             entity.getServer().getCommands().getDispatcher().execute(
                                     "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10",

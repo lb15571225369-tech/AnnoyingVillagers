@@ -165,7 +165,7 @@ public class VillagerScoutSmartSkillProcedure {
                                         public void run() {
                                             Entity entity2 = entity;
 
-                                            if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                            if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                                 try {
                                                     entity2.getServer().getCommands().getDispatcher().execute(
                                                             "indestructible @s play \"epicfight:biped/combat/bow_shot_mid\" 0 1",
@@ -176,7 +176,7 @@ public class VillagerScoutSmartSkillProcedure {
                                             }
 
                                             entity2 = entity;
-                                            Level level = entity2.level;
+                                            Level level = entity2.level();
 
                                             if (!level.isClientSide()) {
                                                 Projectile projectile = new Arrow(EntityType.ARROW, level);
@@ -263,7 +263,7 @@ public class VillagerScoutSmartSkillProcedure {
                                             public void run() {
                                                 Entity entity2 = entity;
 
-                                                if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                                if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                                     try {
                                                         entity2.getServer().getCommands().getDispatcher().execute(
                                                                 "indestructible @s play \"epicfight:biped/combat/bow_shot_mid\" 0 1",
@@ -274,7 +274,7 @@ public class VillagerScoutSmartSkillProcedure {
                                                 }
 
                                                 entity2 = entity;
-                                                Level level = entity2.level;
+                                                Level level = entity2.level();
 
                                                 if (!level.isClientSide()) {
                                                     Projectile projectile = new Arrow(EntityType.ARROW, level);

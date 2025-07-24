@@ -35,7 +35,7 @@ public class WrestlingProcedure {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onRightClickEntity(EntityInteract entityinteract) {
         if (entityinteract.getHand() == entityinteract.getEntity().getUsedItemHand()) {
-            execute(entityinteract.getEntity(), entityinteract.getEntity().getLevel());
+            execute(entityinteract.getEntity(), entityinteract.getEntity().level());
         }
     }
 

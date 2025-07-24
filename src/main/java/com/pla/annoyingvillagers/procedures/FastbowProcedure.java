@@ -85,7 +85,7 @@ public class FastbowProcedure {
                     }
 
                     if (EnchantmentHelper.getItemEnchantmentLevel(enchantment, itemstack1) != 0) {
-                        Level level = entity.level;
+                        Level level = entity.level();
 
                         if (!level.isClientSide()) {
                             Enchantment enchantment1 = (Enchantment)AnnoyingVillagersModEnchantments.FAST_SHOT.get();

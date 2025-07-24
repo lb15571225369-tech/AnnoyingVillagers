@@ -218,7 +218,7 @@ public class BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure {
 
                 if (entity1 instanceof LivingEntity) {
                     livingentity = (LivingEntity)entity1;
-                    if (!livingentity.level.isClientSide()) {
+                    if (!livingentity.level().isClientSide()) {
                         livingentity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 99999, 1, false, false));
                     }
                 }
@@ -233,7 +233,7 @@ public class BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure {
 
                 if (entity1 instanceof LivingEntity) {
                     livingentity = (LivingEntity)entity1;
-                    if (!livingentity.level.isClientSide()) {
+                    if (!livingentity.level().isClientSide()) {
                         livingentity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 99999, 9, false, false));
                     }
                 }
@@ -248,7 +248,7 @@ public class BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure {
 
                 if (entity1 instanceof LivingEntity) {
                     livingentity = (LivingEntity)entity1;
-                    if (!livingentity.level.isClientSide()) {
+                    if (!livingentity.level().isClientSide()) {
                         livingentity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 99999, 1, false, false));
                     }
                 }
@@ -307,7 +307,7 @@ public class BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure {
 
                 if (entity1 instanceof LivingEntity) {
                     livingentity = (LivingEntity)entity1;
-                    if (!livingentity.level.isClientSide()) {
+                    if (!livingentity.level().isClientSide()) {
                         livingentity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 99999, 1, false, false));
                     }
                 }
@@ -322,7 +322,7 @@ public class BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure {
 
                 if (entity1 instanceof LivingEntity) {
                     livingentity = (LivingEntity)entity1;
-                    if (!livingentity.level.isClientSide()) {
+                    if (!livingentity.level().isClientSide()) {
                         livingentity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 99999, 9, false, false));
                     }
                 }
@@ -337,13 +337,13 @@ public class BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure {
 
                 if (entity1 instanceof LivingEntity) {
                     livingentity = (LivingEntity)entity1;
-                    if (!livingentity.level.isClientSide()) {
+                    if (!livingentity.level().isClientSide()) {
                         livingentity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 99999, 1, false, false));
                     }
                 }
             }
 
-            if (!entity.level.isClientSide() && entity.getServer() != null) {
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute("team add villagers", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
 

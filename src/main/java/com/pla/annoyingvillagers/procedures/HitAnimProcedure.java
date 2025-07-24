@@ -37,7 +37,7 @@ public class HitAnimProcedure {
                 DynamicAnimation dynamicanimation = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
 
                 if (dynamicanimation instanceof HitAnimation) {
-                    if (!entity.level.isClientSide() && entity.getServer() != null) {
+                    if (!entity.level().isClientSide() && entity.getServer() != null) {
                         try {
                             entity.getServer().getCommands().getDispatcher().execute(
                                     "indestructible @s play \"annoyingvillagers:biped/combat/hit_left\" 0 1",
@@ -47,7 +47,7 @@ public class HitAnimProcedure {
                         }
                     }
                 } else if (dynamicanimation == AVAnimations.HIT_LEFT) {
-                    if (!entity.level.isClientSide() && entity.getServer() != null) {
+                    if (!entity.level().isClientSide() && entity.getServer() != null) {
                         try {
                             entity.getServer().getCommands().getDispatcher().execute(
                                     "indestructible @s play \"annoyingvillagers:biped/combat/hit_right\" 0 1",
@@ -56,7 +56,7 @@ public class HitAnimProcedure {
                             
                         }
                     }
-                } else if (dynamicanimation == AVAnimations.HIT_RIGHT && !entity.level.isClientSide() && entity.getServer() != null) {
+                } else if (dynamicanimation == AVAnimations.HIT_RIGHT && !entity.level().isClientSide() && entity.getServer() != null) {
                     try {
                         entity.getServer().getCommands().getDispatcher().execute(
                                 "indestructible @s play \"annoyingvillagers:biped/combat/hit_right\" 0 1",

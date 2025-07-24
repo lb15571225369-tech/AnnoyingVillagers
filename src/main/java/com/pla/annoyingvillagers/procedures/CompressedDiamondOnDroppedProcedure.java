@@ -9,7 +9,7 @@ public class CompressedDiamondOnDroppedProcedure {
 
     public static void execute(LevelAccessor levelaccessor, Entity entity) {
         if (entity != null) {
-            entity.hurt(DamageSource.GENERIC, 7.0F);
+            entity.hurt(entity.level().damageSources().generic(), 7.0F);
         }
     }
 }

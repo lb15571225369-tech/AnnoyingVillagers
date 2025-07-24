@@ -32,7 +32,7 @@ public class Herobrine2DieProcedure {
     public static void execute(LevelAccessor world, double x, double y, double z, Entity sourceEntity, Entity targetEntity) {
         if (sourceEntity == null || targetEntity == null) return;
 
-        if (!sourceEntity.level.isClientSide() && sourceEntity.getServer() != null) {
+        if (!sourceEntity.level().isClientSide() && sourceEntity.getServer() != null) {
             try {
                 sourceEntity.getServer().getCommands().getDispatcher().execute(
                         "tag @a remove aim",
@@ -79,7 +79,7 @@ public class Herobrine2DieProcedure {
         if (Math.random() <= 0.5 && targetEntity instanceof LivingEntity living) {
             living.removeAllEffects();
             living.setHealth(4.0F);
-            if (!living.level.isClientSide()) {
+            if (!living.level().isClientSide()) {
                 living.addEffect(new MobEffectInstance(MobEffects.WITHER, 9999, 3, false, false));
             }
         }
@@ -137,7 +137,7 @@ public class Herobrine2DieProcedure {
     private static boolean isSpectatorGamemode(Entity entity) {
         if (entity instanceof ServerPlayer sp) {
             return sp.gameMode.getGameModeForPlayer() == GameType.SPECTATOR;
-        } else if (entity instanceof Player player && entity.level.isClientSide()) {
+        } else if (entity instanceof Player player && entity.level().isClientSide()) {
             var info = Minecraft.getInstance().getConnection().getPlayerInfo(player.getGameProfile().getId());
             return info != null && info.getGameMode() == GameType.SPECTATOR;
         }

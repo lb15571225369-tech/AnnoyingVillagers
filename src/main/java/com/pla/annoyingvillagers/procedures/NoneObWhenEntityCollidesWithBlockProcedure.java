@@ -9,7 +9,7 @@ public class NoneObWhenEntityCollidesWithBlockProcedure {
 
     public static void execute(LevelAccessor levelaccessor, final Entity entity) {
         if (entity != null) {
-            if (!entity.level.isClientSide() && entity.getServer() != null) {
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute(
                             "execute as @s at @s anchored eyes run setblock ^ ^ ^ minecraft:air",
@@ -21,7 +21,7 @@ public class NoneObWhenEntityCollidesWithBlockProcedure {
             new DelayedTask(20) {
                 @Override
                 public void run() {
-                    if (!entity.level.isClientSide() && entity.getServer() != null) {
+                    if (!entity.level().isClientSide() && entity.getServer() != null) {
                         try {
                             entity.getServer().getCommands().getDispatcher().execute(
                                     "execute as @s at @s anchored eyes run setblock ^ ^ ^1 annoyingvillagers:darkob",
@@ -36,7 +36,7 @@ public class NoneObWhenEntityCollidesWithBlockProcedure {
             new DelayedTask(2) {
                 @Override
                 public void run() {
-                    if (!entity.level.isClientSide() && entity.getServer() != null) {
+                    if (!entity.level().isClientSide() && entity.getServer() != null) {
                         try {
                             entity.getServer().getCommands().getDispatcher().execute(
                                     "execute as @s at @s anchored eyes run setblock ^ ^ ^ annoyingvillagers:darkob",
@@ -51,7 +51,7 @@ public class NoneObWhenEntityCollidesWithBlockProcedure {
             new DelayedTask(2) {
                 @Override
                 public void run() {
-                    if (!entity.level.isClientSide() && entity.getServer() != null) {
+                    if (!entity.level().isClientSide() && entity.getServer() != null) {
                         try {
                             entity.getServer().getCommands().getDispatcher().execute(
                                     "execute as @s at @s anchored eyes run setblock ^ ^ ^-1 annoyingvillagers:darkob",
@@ -67,7 +67,7 @@ public class NoneObWhenEntityCollidesWithBlockProcedure {
             new DelayedTask(2) {
                 @Override
                 public void run() {
-                    if (!entity.level.isClientSide() && entity.getServer() != null) {
+                    if (!entity.level().isClientSide() && entity.getServer() != null) {
                         try {
                             entity.getServer().getCommands().getDispatcher().execute(
                                     "execute as @s at @s anchored eyes run setblock ^ ^ ^-2 annoyingvillagers:darkob",
@@ -83,7 +83,7 @@ public class NoneObWhenEntityCollidesWithBlockProcedure {
             new DelayedTask(2) {
                 @Override
                 public void run() {
-                    if (!entity.level.isClientSide() && entity.getServer() != null) {
+                    if (!entity.level().isClientSide() && entity.getServer() != null) {
                         try {
                             entity.getServer().getCommands().getDispatcher().execute(
                                     "execute as @s at @s anchored eyes run setblock ^ ^ ^-3 annoyingvillagers:darkob",

@@ -46,7 +46,7 @@ public class DarkObBlockOnEntityInsideProcedure {
                 }
             }
 
-            if (!entity.level.isClientSide() && entity.getServer() != null) {
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
 
@@ -56,7 +56,7 @@ public class DarkObBlockOnEntityInsideProcedure {
                 }
             }
 
-            entity.hurt(DamageSource.MAGIC, 4.0F);
+            entity.hurt(entity.level().damageSources().magic(), 4.0F);
             entity.setDeltaMovement(new Vec3(Mth.nextDouble(AnnoyingVillagers.randomSource, -1.0D, -6.0D) * entity.getLookAngle().x, 0.0D, Mth.nextDouble(AnnoyingVillagers.randomSource, -1.0D, -6.0D) * entity.getLookAngle().z));
             LivingEntity livingentity1;
             ItemStack itemstack;

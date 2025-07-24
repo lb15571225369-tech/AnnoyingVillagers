@@ -72,13 +72,13 @@ public class FishingRodUseProcedure {
                                 .stream()
                                 .sorted(Comparator.comparingDouble(entity2 -> entity2.distanceToSqr(d0, d1, d2)))
                                 .findFirst()
-                                .orElse(null) == entity1 && entity1.isOnGround()) {
+                                .orElse(null) == entity1 && entity1.onGround()) {
                             entity1.lookAt(Anchor.EYES, new Vec3(entity.getX(), entity.getY(), entity.getZ()));
                             entity.setDeltaMovement(new Vec3(0.0D, 0.9D, 0.0D));
                             if (entity instanceof LivingEntity) {
                                 LivingEntity livingentity1 = (LivingEntity)entity;
 
-                                if (!livingentity1.level.isClientSide()) {
+                                if (!livingentity1.level().isClientSide()) {
                                     livingentity1.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 5, 2, false, false));
                                 }
                             }

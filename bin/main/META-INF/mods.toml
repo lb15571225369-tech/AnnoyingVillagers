@@ -1,0 +1,54 @@
+modLoader="javafml"
+loaderVersion="[40,)"
+license="All rights reserved"
+[[mods]]
+modId="annoyingvillagers"
+version="${file.jarVersion}"
+displayName="Annoying Villagers"
+credits="Thanks for Chinese dev team"
+authors="pla_is_me"
+description='''
+Pla ported this mod from annoying villlagers modpack Chinese version.
+'''
+[[dependencies.annoyingvillagers]]
+    modId="forge"
+    mandatory=true
+    versionRange="${forge_version_range}"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.annoyingvillagers]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.annoyingvillagers]]
+    modId="epicfight"
+    mandatory=true
+    versionRange="[20.11, )"
+    ordering="AFTER"
+    side="BOTH"
+[[dependencies.annoyingvillagers]]
+    modId="wom"
+    mandatory=true
+    versionRange="[20.1, )"
+    ordering="AFTER"
+    side="BOTH"
+[[dependencies.annoyingvillagers]]
+    modId="falchionmoveset"
+    mandatory=true
+    versionRange="[20.8, )"
+    ordering="AFTER"
+    side="BOTH"
+[[dependencies.annoyingvillagers]]
+    modId="indestructible"
+    mandatory=true
+    versionRange="[20.9, )"
+    ordering="AFTER"
+    side="BOTH"
+[[dependencies.annoyingvillagers]]
+    modId="player_mobs"
+    mandatory=true
+    versionRange="[4.1, )"
+    ordering="AFTER"
+    side="BOTH"

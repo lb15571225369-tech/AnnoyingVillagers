@@ -40,7 +40,7 @@ public class WoopieTheSwordItemOnUseProcedure {
 
                     if (itemstack1.getItem() == AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get()) {
                         itemstack.getOrCreateTag().putDouble("woopie_dash", itemstack.getOrCreateTag().getDouble("woopie_dash") - 1.0D);
-                        if (!entity.level.isClientSide() && entity.getServer() != null) {
+                        if (!entity.level().isClientSide() && entity.getServer() != null) {
                             try {
                                 entity.getServer().getCommands().getDispatcher().execute(
                                         "indestructible @s play \"annoyingvillagers:biped/combat/rush_sword\" 0 1",
@@ -54,14 +54,14 @@ public class WoopieTheSwordItemOnUseProcedure {
                                 if (entity instanceof LivingEntity) {
                                     LivingEntity livingentity1 = (LivingEntity)entity;
 
-                                    if (!livingentity1.level.isClientSide()) {
+                                    if (!livingentity1.level().isClientSide()) {
                                         livingentity1.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 6, 10, false, false));
                                     }
                                 }
 
                                 Entity entity1 = entity;
 
-                                if (!entity1.level.isClientSide() && entity1.getServer() != null) {
+                                if (!entity1.level().isClientSide() && entity1.getServer() != null) {
                                     try {
                                         entity1.getServer().getCommands().getDispatcher().execute(
                                                 "execute at @s run particle annoyingvillagers:blue_spark ~ ~1 ~ 0 0 0 0.1 500",
@@ -113,12 +113,12 @@ public class WoopieTheSwordItemOnUseProcedure {
                             if (entity instanceof LivingEntity) {
                                 LivingEntity livingentity2 = (LivingEntity)entity;
 
-                                if (!livingentity2.level.isClientSide()) {
+                                if (!livingentity2.level().isClientSide()) {
                                     livingentity2.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 6, 10, false, false));
                                 }
                             }
 
-                            if (!entity.level.isClientSide() && entity.getServer() != null) {
+                            if (!entity.level().isClientSide() && entity.getServer() != null) {
                                 try {
                                     entity.getServer().getCommands().getDispatcher().execute(
                                             "execute at @s run particle annoyingvillagers:blue_spark ~ ~1 ~ 0 0 0 0.1 500",
@@ -158,7 +158,7 @@ public class WoopieTheSwordItemOnUseProcedure {
                 } else if (entity instanceof Player) {
                     Player player1 = (Player)entity;
 
-                    if (!player1.level.isClientSide()) {
+                    if (!player1.level().isClientSide()) {
                         player1.displayClientMessage(Component.literal("Not Enough Energy!"), true);
                     }
                 }

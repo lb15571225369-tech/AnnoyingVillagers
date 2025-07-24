@@ -45,14 +45,14 @@ public class GoldenAppleEatProcedure {
 
                     if (entity instanceof LivingEntity) {
                         livingentity1 = (LivingEntity) entity;
-                        if (!livingentity1.level.isClientSide()) {
+                        if (!livingentity1.level().isClientSide()) {
                             livingentity1.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 80, 2, false, false));
                         }
                     }
 
                     if (entity instanceof LivingEntity) {
                         livingentity1 = (LivingEntity) entity;
-                        if (!livingentity1.level.isClientSide()) {
+                        if (!livingentity1.level().isClientSide()) {
                             livingentity1.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 200, 1, false, false));
                         }
                     }
@@ -62,14 +62,14 @@ public class GoldenAppleEatProcedure {
             if (itemstack.getItem().isEdible() && EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, itemstack) != 0) {
                 if (entity instanceof LivingEntity) {
                     livingentity = (LivingEntity) entity;
-                    if (!livingentity.level.isClientSide()) {
+                    if (!livingentity.level().isClientSide()) {
                         livingentity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 80, EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, itemstack), false, false));
                     }
                 }
 
                 if (entity instanceof LivingEntity) {
                     livingentity = (LivingEntity) entity;
-                    if (!livingentity.level.isClientSide()) {
+                    if (!livingentity.level().isClientSide()) {
                         livingentity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 60, EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, itemstack), false, false));
                     }
                 }

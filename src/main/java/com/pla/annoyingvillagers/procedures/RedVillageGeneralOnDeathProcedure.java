@@ -456,7 +456,7 @@ public class RedVillageGeneralOnDeathProcedure {
                 }
             };
             if (Math.random() <= 0.11D) {
-                if (!entity.level.isClientSide() && entity.getServer() != null) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
                     try {
                         entity.getServer().getCommands().getDispatcher().execute(
                                 "summon firework_rocket ~ ~10 ~ {LifeTime:10,FireworksItem:{id:firework_rocket,Count:1,tag:{Fireworks:{Explosions:[{Type:3,Colors:[0],Flicker:1}]}},display:{Name:\"Black Creeper Firework\"}}}",
@@ -478,7 +478,7 @@ public class RedVillageGeneralOnDeathProcedure {
 
                         Entity entity1 = entity;
 
-                        if (!entity1.level.isClientSide() && entity1.getServer() != null) {
+                        if (!entity1.level().isClientSide() && entity1.getServer() != null) {
                             try {
                                 entity1.getServer().getCommands().getDispatcher().execute(
                                         "summon annoyingvillagers:villager_scout ^ ^ ^10",
@@ -489,7 +489,7 @@ public class RedVillageGeneralOnDeathProcedure {
                         }
 
                         entity1 = entity;
-                        if (!entity1.level.isClientSide() && entity1.getServer() != null) {
+                        if (!entity1.level().isClientSide() && entity1.getServer() != null) {
                             try {
                                 entity1.getServer().getCommands().getDispatcher().execute(
                                         "summon annoyingvillagers:villager_scout ^ ^ ^15",
@@ -500,7 +500,7 @@ public class RedVillageGeneralOnDeathProcedure {
                         }
 
                         entity1 = entity;
-                        if (!entity1.level.isClientSide() && entity1.getServer() != null) {
+                        if (!entity1.level().isClientSide() && entity1.getServer() != null) {
                             try {
                                 entity1.getServer().getCommands().getDispatcher().execute(
                                         "summon annoyingvillagers:blue_villager_general ^10 ^ ^20",

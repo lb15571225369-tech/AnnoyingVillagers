@@ -26,7 +26,7 @@ public class HerobrineOnInitialSpawnProcedure {
                 levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("Herobrine has spawned a new possessed body."), false);
             }
 
-            if (!entity.level.isClientSide() && entity.getServer() != null) {
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute(
                             "fill ~-2 ~ ~-2 ~2 ~3 ~2 minecraft:air",
@@ -36,7 +36,7 @@ public class HerobrineOnInitialSpawnProcedure {
                 }
             }
 
-            if (!entity.level.isClientSide() && entity.getServer() != null) {
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute(
                             "team add herobrinexintu",
@@ -46,7 +46,7 @@ public class HerobrineOnInitialSpawnProcedure {
                 }
             }
 
-            if (!entity.level.isClientSide() && entity.getServer() != null) {
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute(
                             "team join herobrinexintu @s",

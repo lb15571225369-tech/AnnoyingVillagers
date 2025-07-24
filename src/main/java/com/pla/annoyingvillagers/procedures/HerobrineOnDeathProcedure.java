@@ -21,7 +21,7 @@ public class HerobrineOnDeathProcedure {
     public static void execute(LevelAccessor world, double x, double y, double z, Entity source) {
         if (source == null) return;
 
-        if (!source.level.isClientSide() && source.getServer() != null) {
+        if (!source.level().isClientSide() && source.getServer() != null) {
             try {
                 source.getServer().getCommands().getDispatcher().execute(
                         "tag @a remove aim",
@@ -36,7 +36,7 @@ public class HerobrineOnDeathProcedure {
         if (source.isVehicle() && source.getType().toString().equals("minecraft:player")) {
             for (Entity passenger : new ArrayList<>(source.getPassengers())) {
                 if (isSpectatorGamemode(passenger)) {
-                    if (!passenger.level.isClientSide() && passenger.getServer() != null) {
+                    if (!passenger.level().isClientSide() && passenger.getServer() != null) {
                         try {
                             passenger.getServer().getCommands().getDispatcher().execute(
                                     "tag @s remove sp",
@@ -101,7 +101,7 @@ public class HerobrineOnDeathProcedure {
     private static boolean isSpectatorGamemode(Entity entity) {
         if (entity instanceof ServerPlayer sp) {
             return sp.gameMode.getGameModeForPlayer() == GameType.SPECTATOR;
-        } else if (entity instanceof Player player && entity.level.isClientSide()) {
+        } else if (entity instanceof Player player && entity.level().isClientSide()) {
             var info = Minecraft.getInstance().getConnection().getPlayerInfo(player.getGameProfile().getId());
             return info != null && info.getGameMode() == GameType.SPECTATOR;
         }

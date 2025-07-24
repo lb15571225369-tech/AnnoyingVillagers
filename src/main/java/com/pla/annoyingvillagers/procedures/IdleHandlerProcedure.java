@@ -30,8 +30,8 @@ public class IdleHandlerProcedure {
     @SubscribeEvent
     public static void onLivingTick(LivingEvent.LivingTickEvent event) {
         if (!(event.getEntity() instanceof Mob mob)) return;
-        if (mob.level.isClientSide()) return;
-        if (event.getEntity() != null && !mob.level.isClientSide() && (ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("minecraft:zombie") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("minecraft:skeleton") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("annoyingvillagers:villager_scout") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("annoyingvillagers:villager_scout_captain"))) {
+        if (mob.level().isClientSide()) return;
+        if (event.getEntity() != null && !mob.level().isClientSide() && (ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("minecraft:zombie") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("minecraft:skeleton") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("annoyingvillagers:villager_scout") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("annoyingvillagers:villager_scout_captain"))) {
             performIdleAction(mob, IdleAction.BURN_ITEM);
         }
         if (event.getEntity() != null && ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("player_mobs:player_mob")) {
@@ -96,7 +96,7 @@ public class IdleHandlerProcedure {
         }
         switch (action) {
             case BURN_ITEM -> {
-                List<ItemEntity> nearbyItems = mob.level.getEntitiesOfClass(ItemEntity.class, mob.getBoundingBox().inflate(2));
+                List<ItemEntity> nearbyItems = mob.level().getEntitiesOfClass(ItemEntity.class, mob.getBoundingBox().inflate(2));
                 if (!nearbyItems.isEmpty() && !data.contains("av_idle_burn_backup_main_hand")) {
                     ItemStack held = mob.getMainHandItem();
                     if (!held.isEmpty() && held.getItem() != Items.FLINT_AND_STEEL) {

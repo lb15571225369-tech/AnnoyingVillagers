@@ -25,6 +25,7 @@ import com.pla.annoyingvillagers.animations.types.HeavyAttackAnimation;
 import com.pla.annoyingvillagers.animations.types.KickAttackAnimation;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import reascer.wom.gameasset.WOMAnimations;
+import yesman.epicfight.api.animation.AnimationProvider;
 import yesman.epicfight.api.animation.types.AttackAnimation;
 import yesman.epicfight.api.animation.types.DashAttackAnimation;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
@@ -46,7 +47,7 @@ public class ParryProcedure {
     @SubscribeEvent
     public static void onEntityAttacked(LivingAttackEvent livingattackevent) {
         if (livingattackevent != null && livingattackevent.getEntity() != null) {
-            execute(livingattackevent, livingattackevent.getEntity().level, livingattackevent.getEntity(), livingattackevent.getSource().getEntity());
+            execute(livingattackevent, livingattackevent.getEntity().level(), livingattackevent.getEntity(), livingattackevent.getSource().getEntity());
         }
 
     }
@@ -92,7 +93,7 @@ public class ParryProcedure {
                                             event.setCanceled(true);
                                         }
 
-                                        if (!entity.level.isClientSide() && entity.getServer() != null) {
+                                        if (!entity.level().isClientSide() && entity.getServer() != null) {
                                             try {
                                                 entity.getServer().getCommands().getDispatcher().execute(
                                                         "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
@@ -106,7 +107,7 @@ public class ParryProcedure {
                                         }
 
                                         humanoidmobpatch1.playSound((SoundEvent) EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
-                                        if (entity1 instanceof Player && !entity1.level.isClientSide() && entity1.getServer() != null) {
+                                        if (entity1 instanceof Player && !entity1.level().isClientSide() && entity1.getServer() != null) {
                                             try {
                                                 entity1.getServer().getCommands().getDispatcher().execute(
                                                         "impactful @s shake 15 5 6",
@@ -134,7 +135,7 @@ public class ParryProcedure {
                                                 event.setCanceled(true);
                                             }
 
-                                            if (!entity.level.isClientSide() && entity.getServer() != null) {
+                                            if (!entity.level().isClientSide() && entity.getServer() != null) {
                                                 try {
                                                     entity.getServer().getCommands().getDispatcher().execute(
                                                             "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
@@ -150,7 +151,7 @@ public class ParryProcedure {
                                             humanoidmobpatch1.playSound((SoundEvent) EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
                                             entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * -0.2D, 0.0D, entity.getLookAngle().z * -0.2D));
                                             entity1.setDeltaMovement(new Vec3(entity1.getLookAngle().x * -0.2D, 0.0D, entity1.getLookAngle().z * -0.2D));
-                                            if (entity1 instanceof Player && !entity1.level.isClientSide() && entity1.getServer() != null) {
+                                            if (entity1 instanceof Player && !entity1.level().isClientSide() && entity1.getServer() != null) {
                                                 try {
                                                     entity1.getServer().getCommands().getDispatcher().execute(
                                                             "impactful @s shake 15 5 6",
@@ -175,7 +176,7 @@ public class ParryProcedure {
                                             if (entity.isAlive()) {
                                                 Entity entity2 = entity;
 
-                                                if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                                if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                                     try {
                                                         entity2.getServer().getCommands().getDispatcher().execute(
                                                                 "indestructible @s play \"epicfight:biped/skill/guard_break1\" 0 10",
@@ -200,7 +201,7 @@ public class ParryProcedure {
                     dynamicanimation = playerpatch.getAnimator().getPlayerFor((DynamicAnimation)null).getAnimation();
                     dynamicanimation1 = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation)null).getAnimation();
                     CapabilityItem capabilityitem = EpicFightCapabilities.getItemStackCapability(((Player)playerpatch.getOriginal()).getMainHandItem());
-                    List<StaticAnimation> list = capabilityitem.getAutoAttckMotion(playerpatch);
+                    List<AnimationProvider<?>> list = capabilityitem.getAutoAttckMotion(playerpatch);
 
                     if (!(dynamicanimation1 instanceof KickAttackAnimation) && dynamicanimation1 != GuardAnimations.MOB_COUNTER_ATTACK && !(dynamicanimation1 instanceof HeavyAttackAnimation) && dynamicanimation1 != Animations.STEEL_WHIRLWIND && dynamicanimation1 != Animations.METEOR_SLAM && dynamicanimation1 != Animations.GREATSWORD_DASH && dynamicanimation1 != Animations.SWEEPING_EDGE && dynamicanimation1 != Animations.UCHIGATANA_SHEATHING_AUTO && dynamicanimation1 != Animations.UCHIGATANA_SHEATHING_DASH && dynamicanimation1 != Animations.THE_GUILLOTINE && dynamicanimation1 != Animations.BATTOJUTSU && dynamicanimation1 != Animations.BATTOJUTSU_DASH && dynamicanimation1 != Animations.BLADE_RUSH_COMBO3 && dynamicanimation1 != AVAnimations.Hacker_sword_skill_1 && !(dynamicanimation1 instanceof ExecuteAttackAnimation) && dynamicanimation1 != AVAnimations.SpinningDeath && dynamicanimation1 != WOMAnimations.TORMENT_AUTO_3 && dynamicanimation1 != WOMAnimations.SOLAR_AUTO_3 && dynamicanimation1 != WOMAnimations.SOLAR_AUTO_4 && dynamicanimation1 != AVAnimations.Legendary_Sword_Wake_Up_Attack && dynamicanimation1 != AVAnimations.DUAL_SWORD_AUTO5 && dynamicanimation1 != WOMAnimations.SOLAR_AUTO_2) {
                         if (dynamicanimation1 instanceof AttackAnimation && dynamicanimation instanceof AttackAnimation && !(dynamicanimation instanceof KickAttackAnimation) && !list.contains(dynamicanimation) && !(dynamicanimation instanceof DashAttackAnimation)) {
@@ -218,7 +219,7 @@ public class ParryProcedure {
                                     event.setCanceled(true);
                                 }
                                 playerpatch.playSound((SoundEvent) EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
-                                if (!entity.level.isClientSide() && entity.getServer() != null) {
+                                if (!entity.level().isClientSide() && entity.getServer() != null) {
                                     try {
                                         entity.getServer().getCommands().getDispatcher().execute(
                                                 "impactful @s shake 15 5 6",
@@ -233,7 +234,7 @@ public class ParryProcedure {
                                         
                                     }
                                 }
-                                if (entity1 instanceof Player && !entity1.level.isClientSide() && entity1.getServer() != null) {
+                                if (entity1 instanceof Player && !entity1.level().isClientSide() && entity1.getServer() != null) {
                                     try {
                                         entity1.getServer().getCommands().getDispatcher().execute(
                                                 "impactful @s shake 15 5 6",
@@ -247,8 +248,8 @@ public class ParryProcedure {
                     } else if (list.contains(dynamicanimation)) {
                         playerpatch.playSound((SoundEvent) EpicFightSounds.NEUTRALIZE_MOBS.get(), -0.05F, 0.1F);
                         if (entity.isAlive()) {
-                            ((HitParticleType)EpicFightParticles.AIR_BURST.get()).spawnParticleWithArgument((ServerLevel)entity.level, entity, entity1);
-                            if (!entity.level.isClientSide() && entity.getServer() != null) {
+                            ((HitParticleType)EpicFightParticles.AIR_BURST.get()).spawnParticleWithArgument((ServerLevel)entity.level(), entity, entity1);
+                            if (!entity.level().isClientSide() && entity.getServer() != null) {
                                 try {
                                     entity.getServer().getCommands().getDispatcher().execute(
                                             "effect give @s cgm:blinded 1 1 true",
@@ -265,7 +266,7 @@ public class ParryProcedure {
                                         public void run() {
                                             Entity entity2 = entity;
 
-                                            if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                            if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                                 try {
                                                     entity2.getServer().getCommands().getDispatcher().execute(
                                                             "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
@@ -276,7 +277,7 @@ public class ParryProcedure {
                                             }
 
                                             entity2 = entity;
-                                            if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                            if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                                 try {
                                                     entity2.getServer().getCommands().getDispatcher().execute(
                                                             "indestructible @s play \"annoyingvillagers:biped/combat/guard_break_attack\" 0 10",
@@ -296,7 +297,7 @@ public class ParryProcedure {
                                     public void run() {
                                         Entity entity2 = entity;
 
-                                        if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                        if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                             try {
                                                 entity2.getServer().getCommands().getDispatcher().execute(
                                                         "indestructible @s play \"epicfight:biped/skill/guard_break1\" 0 10",
@@ -323,7 +324,7 @@ public class ParryProcedure {
                     if (dynamicanimation1 instanceof AttackAnimation) {
                         livingentitypatch1.playSound((SoundEvent) EpicFightSounds.NEUTRALIZE_MOBS.get(), -0.05F, 0.1F);
                         if (entity.isAlive()) {
-                            if (!entity.level.isClientSide() && entity.getServer() != null) {
+                            if (!entity.level().isClientSide() && entity.getServer() != null) {
                                 try {
                                     entity.getServer().getCommands().getDispatcher().execute(
                                             "effect give @s cgm:blinded 1 1 true",
@@ -339,7 +340,7 @@ public class ParryProcedure {
                                     if (entity.isAlive()) {
                                         Entity entity2 = entity;
 
-                                        if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                        if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                             try {
                                                 entity2.getServer().getCommands().getDispatcher().execute(
                                                         "indestructible @s play \"epicfight:biped/skill/guard_break1\" 0 10",
@@ -358,7 +359,7 @@ public class ParryProcedure {
                         }
 
                         livingentitypatch1.playSound((SoundEvent) EpicFightSounds.NEUTRALIZE_MOBS.get(), -0.05F, 0.1F);
-                        if (!entity.level.isClientSide() && entity.getServer() != null) {
+                        if (!entity.level().isClientSide() && entity.getServer() != null) {
                             try {
                                 entity.getServer().getCommands().getDispatcher().execute(
                                         "particle epicfight:air_burst ~ ~1.5 ~ 0 0 0 8 1",
@@ -369,7 +370,7 @@ public class ParryProcedure {
                         }
 
                         if (livingentitypatch1.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.FIST) {
-                            if (!entity.level.isClientSide() && entity.getServer() != null) {
+                            if (!entity.level().isClientSide() && entity.getServer() != null) {
                                 try {
                                     entity.getServer().getCommands().getDispatcher().execute(
                                             "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
@@ -387,7 +388,7 @@ public class ParryProcedure {
                         entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * -0.2D, 0.0D, entity.getLookAngle().z * -0.2D));
                         entity1.setDeltaMovement(new Vec3(entity1.getLookAngle().x * -0.2D, 0.0D, entity1.getLookAngle().z * -0.2D));
                         if (entity instanceof Player) {
-                            if (!entity.level.isClientSide() && entity.getServer() != null) {
+                            if (!entity.level().isClientSide() && entity.getServer() != null) {
                                 try {
                                     entity.getServer().getCommands().getDispatcher().execute(
                                             "effect give @s cgm:blinded 1 1 true",
@@ -399,7 +400,7 @@ public class ParryProcedure {
                                     
                                 }
                             }
-                        } else if (!entity.level.isClientSide() && entity.getServer() != null) {
+                        } else if (!entity.level().isClientSide() && entity.getServer() != null) {
                             try {
                                 entity.getServer().getCommands().getDispatcher().execute(
                                         "execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100",
@@ -410,7 +411,7 @@ public class ParryProcedure {
                         }
 
                         if (entity1 instanceof Player) {
-                            if (!entity1.level.isClientSide() && entity1.getServer() != null) {
+                            if (!entity1.level().isClientSide() && entity1.getServer() != null) {
                                 try {
                                     entity1.getServer().getCommands().getDispatcher().execute(
                                             "impactful @s shake 15 5 6",
@@ -430,7 +431,7 @@ public class ParryProcedure {
                                 public void run() {
                                     Entity entity2 = entity;
 
-                                    if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                    if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                         try {
                                             entity2.getServer().getCommands().getDispatcher().execute(
                                                     "indestructible @s play \"annoyingvillagers:biped/combat/guard_break_attack\" 0 10",
@@ -441,7 +442,7 @@ public class ParryProcedure {
                                     }
 
                                     entity2 = entity1;
-                                    if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                    if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                         try {
                                             entity2.getServer().getCommands().getDispatcher().execute(
                                                     "indestructible @s play \"annoyingvillagers:biped/combat/guard_break_attack\" 0 10",
@@ -454,7 +455,7 @@ public class ParryProcedure {
                             };
                         }
 
-                        ((HitParticleType) EpicFightParticles.AIR_BURST.get()).spawnParticleWithArgument((ServerLevel) entity.level, entity, entity1);
+                        ((HitParticleType) EpicFightParticles.AIR_BURST.get()).spawnParticleWithArgument((ServerLevel) entity.level(), entity, entity1);
                     }
                 }
             }

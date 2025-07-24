@@ -26,7 +26,7 @@ public class KickOnKeyReleasedProcedure {
 
                 if (itemstack.getItem() instanceof SwordItem) {
                     if (entity.getPersistentData().getDouble("dash_auto") != 1.0D) {
-                        if (!entity.level.isClientSide() && entity.getServer() != null) {
+                        if (!entity.level().isClientSide() && entity.getServer() != null) {
                             try {
                                 entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"wom:biped/combat/torment_charged_attack_2\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                             } catch (CommandSyntaxException e) {
@@ -52,7 +52,7 @@ public class KickOnKeyReleasedProcedure {
                     }
 
                     if (itemstack.getItem() instanceof AxeItem && entity.getPersistentData().getDouble("dash_auto") != 1.0D) {
-                        if (!entity.level.isClientSide() && entity.getServer() != null) {
+                        if (!entity.level().isClientSide() && entity.getServer() != null) {
                             try {
                                 entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"wom:biped/combat/torment_charged_attack_2\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                             } catch (CommandSyntaxException e) {

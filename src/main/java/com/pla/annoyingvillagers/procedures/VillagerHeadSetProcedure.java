@@ -52,7 +52,7 @@ public class VillagerHeadSetProcedure {
 
                     if (!entity.getPersistentData().getBoolean("villager_head")) {
                         if (!entity.getPersistentData().getBoolean("villager_head_used")) {
-                            if (!entity.level.isClientSide() && entity.getServer() != null) {
+                            if (!entity.level().isClientSide() && entity.getServer() != null) {
                                 try {
                                     entity.getServer().getCommands().getDispatcher().execute(
                                             "team leave @s[team=villagers]",
@@ -64,7 +64,7 @@ public class VillagerHeadSetProcedure {
 
                             if (entity instanceof Player) {
                                 player = (Player)entity;
-                                if (!player.level.isClientSide()) {
+                                if (!player.level().isClientSide()) {
                                     player.displayClientMessage(Component.literal("Switched to Attack Mode"), false);
                                 }
                             }
@@ -79,13 +79,13 @@ public class VillagerHeadSetProcedure {
                             };
                         } else if (entity instanceof Player) {
                             player = (Player)entity;
-                            if (!player.level.isClientSide()) {
+                            if (!player.level().isClientSide()) {
                                 player.displayClientMessage(Component.literal("On Cooldown"), true);
                             }
                         }
                     } else if (entity.getPersistentData().getBoolean("villager_head")) {
                         if (!entity.getPersistentData().getBoolean("villager_head_used")) {
-                            if (!entity.level.isClientSide() && entity.getServer() != null) {
+                            if (!entity.level().isClientSide() && entity.getServer() != null) {
                                 try {
                                     entity.getServer().getCommands().getDispatcher().execute(
                                             "team join villagers @s",
@@ -97,7 +97,7 @@ public class VillagerHeadSetProcedure {
 
                             if (entity instanceof Player) {
                                 player = (Player)entity;
-                                if (!player.level.isClientSide()) {
+                                if (!player.level().isClientSide()) {
                                     player.displayClientMessage(Component.literal("Switched to Disguise Mode"), false);
                                 }
                             }
@@ -113,7 +113,7 @@ public class VillagerHeadSetProcedure {
 
                         } else if (entity instanceof Player) {
                             player = (Player)entity;
-                            if (!player.level.isClientSide()) {
+                            if (!player.level().isClientSide()) {
                                 player.displayClientMessage(Component.literal("On Cooldown"), true);
                             }
                         }

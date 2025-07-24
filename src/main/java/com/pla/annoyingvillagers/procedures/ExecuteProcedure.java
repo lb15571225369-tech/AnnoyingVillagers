@@ -38,7 +38,7 @@ public class ExecuteProcedure {
     public static void onRightClickEntity(EntityInteract entityinteract) {
         if (entityinteract.getHand() == entityinteract.getEntity().getUsedItemHand()) {
             Player player = entityinteract.getEntity();
-            Level level = entityinteract.getEntity().getLevel();
+            Level level = entityinteract.getEntity().level();
 
             if (player != null && level != null) {
                 if (!level.isClientSide()) {

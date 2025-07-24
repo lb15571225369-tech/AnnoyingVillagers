@@ -69,7 +69,7 @@ public class BoomlitProcedure {
                 
             }
         }
-        if (!levelaccessor.isEmptyBlock(new BlockPos(d0, d1 - 1.0D, d2)) && levelaccessor instanceof ServerLevel) {
+        if (!levelaccessor.isEmptyBlock(new BlockPos((int) d0, (int) d1 - 1, (int)  d2)) && levelaccessor instanceof ServerLevel) {
             serverlevel = (ServerLevel)levelaccessor;
             try {
                 serverlevel.getServer().getCommands().getDispatcher().execute("particle epicfight:ground_slam ~ ~-3 ~ 0 0 0 2 90", (new CommandSourceStack(CommandSource.NULL, new Vec3(d0, d1, d2), Vec2.ZERO, serverlevel, 4, "", Component.literal(""), serverlevel.getServer(), (Entity)null)).withSuppressedOutput());
@@ -220,7 +220,7 @@ public class BoomlitProcedure {
                     DynamicAnimation dynamicanimation1 = livingentitypatch1.getAnimator().getPlayerFor((DynamicAnimation)null).getAnimation();
 
                     if (dynamicanimation1 != AVAnimations.HARD_GREAT_SWORD_GUARD_SKILL) {
-                        if (!entity.level.isClientSide() && entity.getServer() != null) {
+                        if (!entity.level().isClientSide() && entity.getServer() != null) {
                             try {
                                 entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                             } catch (CommandSyntaxException e) {
@@ -231,7 +231,7 @@ public class BoomlitProcedure {
                         if (entity.getPersistentData().getBoolean("a_player") && entity instanceof LivingEntity) {
                             LivingEntity livingentity3 = (LivingEntity)entity;
 
-                            if (!livingentity3.level.isClientSide()) {
+                            if (!livingentity3.level().isClientSide()) {
                                 livingentity3.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.NPC_KICK_EFFECT.get(), 10, 0, false, false));
                             }
                         }
@@ -251,7 +251,7 @@ public class BoomlitProcedure {
 
         while(iterator.hasNext()) {
             entity = (Entity)iterator.next();
-            if (entity instanceof Player && !entity.level.isClientSide() && entity.getServer() != null) {
+            if (entity instanceof Player && !entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute("impactful @s shake 40 6 6", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 } catch (CommandSyntaxException e) {

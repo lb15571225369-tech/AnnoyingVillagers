@@ -32,7 +32,7 @@ public class HardGreatSwordSkillRightClickInAirProcedure {
             tag.putDouble("power", currentPower - 10.0D);
 
             // Play animation
-            if (!entity.level.isClientSide() && entity.getServer() != null) {
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute(
                             "indestructible @s play \"annoyingvillagers:biped/combat/hard_great_sword_skill\" 0 1",
@@ -44,7 +44,7 @@ public class HardGreatSwordSkillRightClickInAirProcedure {
             }
 
             // Apply potion effect
-            if (entity instanceof LivingEntity living && !living.level.isClientSide()) {
+            if (entity instanceof LivingEntity living && !living.level().isClientSide()) {
                 living.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.EC_PLAYER.get(), 160, 0, false, false));
             }
 
@@ -52,7 +52,7 @@ public class HardGreatSwordSkillRightClickInAirProcedure {
             new DelayedTask(4) {
                 @Override
                 public void run() {
-                    if (!entity.level.isClientSide() && entity.getServer() != null) {
+                    if (!entity.level().isClientSide() && entity.getServer() != null) {
                         try {
                             entity.getServer().getCommands().getDispatcher().execute(
                                     "execute at @s run particle annoyingvillagers:red_spark ^ ^1.5 ^1 0 0 0 0.6 35",
@@ -66,7 +66,7 @@ public class HardGreatSwordSkillRightClickInAirProcedure {
                     if (world instanceof Level level) {
                         SoundEvent sound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "hard_great_sword_skill"));
                         if (!level.isClientSide()) {
-                            level.playSound(null, new BlockPos(x, y, z), sound, SoundSource.NEUTRAL, 1.0F, 1.0F);
+                            level.playSound(null, new BlockPos((int) x, (int) y, (int) z), sound, SoundSource.NEUTRAL, 1.0F, 1.0F);
                         } else {
                             level.playLocalSound(x, y, z, sound, SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                         }
@@ -74,7 +74,7 @@ public class HardGreatSwordSkillRightClickInAirProcedure {
                 }
             };
 
-        } else if (entity instanceof Player player && !player.level.isClientSide()) {
+        } else if (entity instanceof Player player && !player.level().isClientSide()) {
             player.displayClientMessage(
                     Component.literal("Not enough energy. Current charge: " + (int) currentPower + "/10"),
                     true

@@ -63,7 +63,7 @@ public class BlueVillagerGeneralOnHurtProcedure {
                             livingentity1.yHeadRotO = livingentity1.getYRot();
                         }
 
-                        level = entity.level;
+                        level = entity.level();
                         if (!level.isClientSide()) {
                             projectile = new ThrownEnderpearl(EntityType.ENDER_PEARL, level);
                             projectile.setOwner(entity);
@@ -76,7 +76,7 @@ public class BlueVillagerGeneralOnHurtProcedure {
                             new DelayedTask(40) {
                                 public void run() {
                                     Entity entity2 = entity;
-                                    Level level1 = entity2.level;
+                                    Level level1 = entity2.level();
 
                                     if (!level1.isClientSide()) {
                                         Projectile projectile1 = new ThrownEnderpearl(EntityType.ENDER_PEARL, level1);
@@ -189,7 +189,7 @@ public class BlueVillagerGeneralOnHurtProcedure {
                     };
                     if (Math.random() <= 0.3D && entity instanceof LivingEntity) {
                         livingentity2 = (LivingEntity)entity;
-                        if (!livingentity2.level.isClientSide()) {
+                        if (!livingentity2.level().isClientSide()) {
                             livingentity2.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 1, 1, false, false));
                         }
                     }
@@ -207,7 +207,7 @@ public class BlueVillagerGeneralOnHurtProcedure {
                             livingentity1.yHeadRotO = livingentity1.getYRot();
                         }
 
-                        level = entity.level;
+                        level = entity.level();
                         if (!level.isClientSide()) {
                             projectile = new ThrownEnderpearl(EntityType.ENDER_PEARL, level);
                             projectile.setOwner(entity);
@@ -236,7 +236,7 @@ public class BlueVillagerGeneralOnHurtProcedure {
                                 }
 
                                 entity2 = entity;
-                                Level level1 = entity2.level;
+                                Level level1 = entity2.level();
 
                                 if (!level1.isClientSide()) {
                                     Projectile projectile1 = new ThrownEnderpearl(EntityType.ENDER_PEARL, level1);
@@ -268,7 +268,7 @@ public class BlueVillagerGeneralOnHurtProcedure {
                                 }
 
                                 entity2 = entity;
-                                Level level1 = entity2.level;
+                                Level level1 = entity2.level();
 
                                 if (!level1.isClientSide()) {
                                     Projectile projectile1 = new ThrownEnderpearl(EntityType.ENDER_PEARL, level1);
@@ -314,7 +314,7 @@ public class BlueVillagerGeneralOnHurtProcedure {
                                 new DelayedTask(80) {
                                     public void run() {
                                         Entity entity3 = entity;
-                                        Level level2 = entity3.level;
+                                        Level level2 = entity3.level();
 
                                         if (!level2.isClientSide()) {
                                             Projectile projectile2 = new ThrownEnderpearl(EntityType.ENDER_PEARL, level2);

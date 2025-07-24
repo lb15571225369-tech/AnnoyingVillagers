@@ -21,7 +21,7 @@ public class ImpactAttackProcedure {
     @SubscribeEvent
     public static void onEntityAttacked(LivingAttackEvent livingattackevent) {
         if (livingattackevent != null && livingattackevent.getEntity() != null) {
-            execute(livingattackevent, livingattackevent.getEntity().level, livingattackevent.getEntity(), livingattackevent.getSource().getDirectEntity(), livingattackevent.getSource().getEntity(), (double) livingattackevent.getAmount());
+            execute(livingattackevent, livingattackevent.getEntity().level(), livingattackevent.getEntity(), livingattackevent.getSource().getDirectEntity(), livingattackevent.getSource().getEntity(), (double) livingattackevent.getAmount());
         }
 
     }
@@ -47,8 +47,8 @@ public class ImpactAttackProcedure {
             }
 
             if (entity1 instanceof ThrownTrident && entity2 instanceof BlueDemonEntity) {
-                entity.hurt(DamageSource.MAGIC, (float) (d0 * 7.0D));
-                if (!entity.level.isClientSide() && entity.getServer() != null) {
+                entity.hurt(entity.level().damageSources().magic(), (float) (d0 * 7.0D));
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
                     try {
                         entity.getServer().getCommands().getDispatcher().execute(
                                 "effect give @s annoyingvillagers:electify 5 0 true",

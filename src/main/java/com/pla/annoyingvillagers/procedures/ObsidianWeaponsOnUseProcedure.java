@@ -67,7 +67,7 @@ public class ObsidianWeaponsOnUseProcedure {
                     player.getCooldowns().addCooldown(itemstack.getItem(), 20);
                 }
 
-                if (!entity.level.isClientSide() && entity.getServer() != null) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
                     try {
                         entity.getServer().getCommands().getDispatcher().execute(
                                 "execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:obsidian keep",
@@ -82,7 +82,7 @@ public class ObsidianWeaponsOnUseProcedure {
                     public void run() {
                         Entity entity1 = entity;
 
-                        if (!entity1.level.isClientSide() && entity1.getServer() != null) {
+                        if (!entity1.level().isClientSide() && entity1.getServer() != null) {
                             try {
                                 entity1.getServer().getCommands().getDispatcher().execute(
                                         "execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:obsidian keep",
@@ -99,7 +99,7 @@ public class ObsidianWeaponsOnUseProcedure {
                     public void run() {
                         Entity entity2 = entity;
 
-                        if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                        if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                             try {
                                 entity2.getServer().getCommands().getDispatcher().execute(
                                         "execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:obsidian keep",
@@ -116,7 +116,7 @@ public class ObsidianWeaponsOnUseProcedure {
                     public void run() {
                         Entity entity3 = entity;
 
-                        if (!entity3.level.isClientSide() && entity3.getServer() != null) {
+                        if (!entity3.level().isClientSide() && entity3.getServer() != null) {
                             try {
                                 entity3.getServer().getCommands().getDispatcher().execute(
                                         "execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:obsidian keep",
@@ -133,7 +133,7 @@ public class ObsidianWeaponsOnUseProcedure {
                     public void run() {
                         Entity entity4 = entity;
 
-                        if (!entity4.level.isClientSide() && entity4.getServer() != null) {
+                        if (!entity4.level().isClientSide() && entity4.getServer() != null) {
                             try {
                                 entity4.getServer().getCommands().getDispatcher().execute(
                                         "execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:obsidian keep",
@@ -150,7 +150,7 @@ public class ObsidianWeaponsOnUseProcedure {
                     public void run() {
                         Entity entity5 = entity;
 
-                        if (!entity5.level.isClientSide() && entity5.getServer() != null) {
+                        if (!entity5.level().isClientSide() && entity5.getServer() != null) {
                             try {
                                 entity5.getServer().getCommands().getDispatcher().execute(
                                         "execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:obsidian keep",
@@ -167,7 +167,7 @@ public class ObsidianWeaponsOnUseProcedure {
                     public void run() {
                         Entity entity6 = entity;
 
-                        if (!entity6.level.isClientSide() && entity6.getServer() != null) {
+                        if (!entity6.level().isClientSide() && entity6.getServer() != null) {
                             try {
                                 entity6.getServer().getCommands().getDispatcher().execute(
                                         "execute as @s at @s anchored eyes run setblock ^ ^ ^8 annoyingvillagers:obsidian keep",
@@ -184,7 +184,7 @@ public class ObsidianWeaponsOnUseProcedure {
                     public void run() {
                         Entity entity7 = entity;
 
-                        if (!entity7.level.isClientSide() && entity7.getServer() != null) {
+                        if (!entity7.level().isClientSide() && entity7.getServer() != null) {
                             try {
                                 entity7.getServer().getCommands().getDispatcher().execute(
                                         "execute as @s at @s anchored eyes run setblock ^ ^ ^9 annoyingvillagers:obsidian keep",
@@ -201,7 +201,7 @@ public class ObsidianWeaponsOnUseProcedure {
                     public void run() {
                         Entity entity8 = entity;
 
-                        if (!entity8.level.isClientSide() && entity8.getServer() != null) {
+                        if (!entity8.level().isClientSide() && entity8.getServer() != null) {
                             try {
                                 entity8.getServer().getCommands().getDispatcher().execute(
                                         "execute as @s at @s anchored eyes run setblock ^ ^ ^10 annoyingvillagers:obsidian keep",
@@ -249,7 +249,7 @@ public class ObsidianWeaponsOnUseProcedure {
                         }
                     }
 
-                    if (!entity.level.isClientSide() && entity.getServer() != null) {
+                    if (!entity.level().isClientSide() && entity.getServer() != null) {
                         try {
                             entity.getServer().getCommands().getDispatcher().execute(
                                     "execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:obsidian keep",
@@ -264,7 +264,7 @@ public class ObsidianWeaponsOnUseProcedure {
                         public void run() {
                             Entity entity1 = entity;
 
-                            if (!entity1.level.isClientSide() && entity1.getServer() != null) {
+                            if (!entity1.level().isClientSide() && entity1.getServer() != null) {
                                 try {
                                     entity1.getServer().getCommands().getDispatcher().execute(
                                             "execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:obsidian keep",
@@ -281,7 +281,7 @@ public class ObsidianWeaponsOnUseProcedure {
                         public void run() {
                             Entity entity2 = entity;
 
-                            if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                            if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                 try {
                                     entity2.getServer().getCommands().getDispatcher().execute(
                                             "execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:obsidian keep",
@@ -298,7 +298,7 @@ public class ObsidianWeaponsOnUseProcedure {
                         public void run() {
                             Entity entity3 = entity;
 
-                            if (!entity3.level.isClientSide() && entity3.getServer() != null) {
+                            if (!entity3.level().isClientSide() && entity3.getServer() != null) {
                                 try {
                                     entity3.getServer().getCommands().getDispatcher().execute(
                                             "execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:obsidian keep",
@@ -315,7 +315,7 @@ public class ObsidianWeaponsOnUseProcedure {
                         public void run() {
                             Entity entity4 = entity;
 
-                            if (!entity4.level.isClientSide() && entity4.getServer() != null) {
+                            if (!entity4.level().isClientSide() && entity4.getServer() != null) {
                                 try {
                                     entity4.getServer().getCommands().getDispatcher().execute(
                                             "execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:obsidian keep",
@@ -332,7 +332,7 @@ public class ObsidianWeaponsOnUseProcedure {
                         public void run() {
                             Entity entity5 = entity;
 
-                            if (!entity5.level.isClientSide() && entity5.getServer() != null) {
+                            if (!entity5.level().isClientSide() && entity5.getServer() != null) {
                                 try {
                                     entity5.getServer().getCommands().getDispatcher().execute(
                                             "execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:obsidian keep",
@@ -349,7 +349,7 @@ public class ObsidianWeaponsOnUseProcedure {
                         public void run() {
                             Entity entity6 = entity;
 
-                            if (!entity6.level.isClientSide() && entity6.getServer() != null) {
+                            if (!entity6.level().isClientSide() && entity6.getServer() != null) {
                                 try {
                                     entity6.getServer().getCommands().getDispatcher().execute(
                                             "execute as @s at @s anchored eyes run setblock ^ ^ ^8 annoyingvillagers:obsidian keep",
@@ -366,7 +366,7 @@ public class ObsidianWeaponsOnUseProcedure {
                         public void run() {
                             Entity entity7 = entity;
 
-                            if (!entity7.level.isClientSide() && entity7.getServer() != null) {
+                            if (!entity7.level().isClientSide() && entity7.getServer() != null) {
                                 try {
                                     entity7.getServer().getCommands().getDispatcher().execute(
                                             "execute as @s at @s anchored eyes run setblock ^ ^ ^9 annoyingvillagers:obsidian keep",
@@ -383,7 +383,7 @@ public class ObsidianWeaponsOnUseProcedure {
                         public void run() {
                             Entity entity8 = entity;
 
-                            if (!entity8.level.isClientSide() && entity8.getServer() != null) {
+                            if (!entity8.level().isClientSide() && entity8.getServer() != null) {
                                 try {
                                     entity8.getServer().getCommands().getDispatcher().execute(
                                             "execute as @s at @s anchored eyes run setblock ^ ^ ^10 annoyingvillagers:obsidian keep",

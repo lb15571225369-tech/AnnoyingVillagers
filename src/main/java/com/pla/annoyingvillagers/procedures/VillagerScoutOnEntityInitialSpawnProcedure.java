@@ -158,7 +158,7 @@ public class VillagerScoutOnEntityInitialSpawnProcedure {
                     entity.startRiding(nearestSheep);
 
                     // Apply damage resistance to the sheep
-                    if (nearestSheep instanceof LivingEntity livingSheep && !livingSheep.level.isClientSide()) {
+                    if (nearestSheep instanceof LivingEntity livingSheep && !livingSheep.level().isClientSide()) {
                         livingSheep.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 99999, 1, false, false));
                     }
                 }
@@ -171,7 +171,7 @@ public class VillagerScoutOnEntityInitialSpawnProcedure {
                         .findFirst()
                         .orElse(null);
 
-                if (entity1 instanceof LivingEntity livingEntity && !livingEntity.level.isClientSide()) {
+                if (entity1 instanceof LivingEntity livingEntity && !livingEntity.level().isClientSide()) {
                     livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 99999, 9, false, false));
                 }
             }
@@ -221,7 +221,7 @@ public class VillagerScoutOnEntityInitialSpawnProcedure {
                     entity.startRiding(nearestChicken);
 
                     // Apply resistance effect to the chicken
-                    if (nearestChicken instanceof LivingEntity livingChicken && !livingChicken.level.isClientSide()) {
+                    if (nearestChicken instanceof LivingEntity livingChicken && !livingChicken.level().isClientSide()) {
                         livingChicken.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 99999, 1, false, false));
                     }
                 }
@@ -236,7 +236,7 @@ public class VillagerScoutOnEntityInitialSpawnProcedure {
                         .orElse(null);
                 if (entity1 instanceof LivingEntity) {
                     livingentity = (LivingEntity)entity1;
-                    if (!livingentity.level.isClientSide()) {
+                    if (!livingentity.level().isClientSide()) {
                         livingentity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 99999, 9, false, false));
                     }
                 }
@@ -247,7 +247,7 @@ public class VillagerScoutOnEntityInitialSpawnProcedure {
                 livingentity.removeEffect(MobEffects.REGENERATION);
             }
 
-            if (!entity.level.isClientSide() && entity.getServer() != null) {
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute(
                             "team add villagers",

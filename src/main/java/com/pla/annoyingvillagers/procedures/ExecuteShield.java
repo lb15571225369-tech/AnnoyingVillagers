@@ -36,7 +36,7 @@ public class ExecuteShield {
     public static void onRightClickEntity(RightClickItem rightclickitem) {
         if (rightclickitem.getHand() == rightclickitem.getEntity().getUsedItemHand()) {
             Player player = rightclickitem.getEntity();
-            Level level = rightclickitem.getEntity().getLevel();
+            Level level = rightclickitem.getEntity().level();
 
             if (player != null && level != null) {
                 if (!level.isClientSide()) {

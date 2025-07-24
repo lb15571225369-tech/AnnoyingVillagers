@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "package": "com.pla.annoyingvillagers.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "annoyingvillagers.mixins.refmap.json",
+  "mixins": [
+    "NoKnockDownProMixin",
+    "KnockDownCheckMixin",
+    "MoreParryMixin",
+    "PlayerMobMixinRemapFalse",
+    "PlayerMobMixinRemapTrue",
+    "MobMixin",
+    "EntityMixin"
+  ],
+  "client": [
+  ],
+  "minVersion": "0.8"
+}

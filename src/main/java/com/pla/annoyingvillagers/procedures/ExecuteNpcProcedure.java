@@ -39,7 +39,7 @@ public class ExecuteNpcProcedure {
     @SubscribeEvent
     public static void onEntityAttacked(LivingAttackEvent livingattackevent) {
         if (livingattackevent != null && livingattackevent.getEntity() != null) {
-            execute(livingattackevent, livingattackevent.getEntity().level, livingattackevent.getEntity(), livingattackevent.getSource().getEntity());
+            execute(livingattackevent, livingattackevent.getEntity().level(), livingattackevent.getEntity(), livingattackevent.getSource().getEntity());
         }
 
     }
@@ -94,35 +94,35 @@ public class ExecuteNpcProcedure {
 
                                                         if (entity instanceof LivingEntity) {
                                                             livingentity2 = (LivingEntity)entity;
-                                                            if (!livingentity2.level.isClientSide()) {
+                                                            if (!livingentity2.level().isClientSide()) {
                                                                 livingentity2.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.EC.get(), 80, 0, false, false));
                                                             }
                                                         }
 
                                                         if (entity1 instanceof LivingEntity) {
                                                             livingentity2 = (LivingEntity)entity1;
-                                                            if (!livingentity2.level.isClientSide()) {
+                                                            if (!livingentity2.level().isClientSide()) {
                                                                 livingentity2.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.EC.get(), 80, 0, false, false));
                                                             }
                                                         }
 
                                                         if (entity1 instanceof LivingEntity) {
                                                             livingentity2 = (LivingEntity)entity1;
-                                                            if (!livingentity2.level.isClientSide()) {
+                                                            if (!livingentity2.level().isClientSide()) {
                                                                 livingentity2.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 0, false, false));
                                                             }
                                                         }
 
                                                         if (entity instanceof LivingEntity) {
                                                             livingentity2 = (LivingEntity)entity;
-                                                            if (!livingentity2.level.isClientSide()) {
+                                                            if (!livingentity2.level().isClientSide()) {
                                                                 livingentity2.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 0, false, false));
                                                             }
                                                         }
 
                                                         if (entity instanceof LivingEntity) {
                                                             livingentity2 = (LivingEntity)entity;
-                                                            if (!livingentity2.level.isClientSide()) {
+                                                            if (!livingentity2.level().isClientSide()) {
                                                                 livingentity2.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20, 5, false, false));
                                                             }
                                                         }
@@ -130,7 +130,7 @@ public class ExecuteNpcProcedure {
                                                         entity.lookAt(Anchor.EYES, new Vec3(entity1.getX(), entity1.getY() + 1.0D, entity1.getZ()));
                                                         Entity entity2 = entity;
 
-                                                        if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                                        if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                                             try {
                                                                 entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 4 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
 
@@ -140,7 +140,7 @@ public class ExecuteNpcProcedure {
                                                             }
                                                         }
 
-                                                        if (!entity.level.isClientSide()) {
+                                                        if (!entity.level().isClientSide()) {
                                                             humanoidmobpatch.playAnimationSynchronized(WOMAnimations.TORMENT_CHARGED_ATTACK_1, 0.0F);
                                                             livingentitypatch.playAnimationSynchronized(AVAnimations.EXECUTED_SKILL, 0.0F);
                                                         }
@@ -162,35 +162,35 @@ public class ExecuteNpcProcedure {
 
                                                             if (entity instanceof LivingEntity) {
                                                                 livingentity2 = (LivingEntity)entity;
-                                                                if (!livingentity2.level.isClientSide()) {
+                                                                if (!livingentity2.level().isClientSide()) {
                                                                     livingentity2.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.EC.get(), 140, 0, false, false));
                                                                 }
                                                             }
 
                                                             if (entity1 instanceof LivingEntity) {
                                                                 livingentity2 = (LivingEntity)entity1;
-                                                                if (!livingentity2.level.isClientSide()) {
+                                                                if (!livingentity2.level().isClientSide()) {
                                                                     livingentity2.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.EC.get(), 80, 0, false, false));
                                                                 }
                                                             }
 
                                                             if (entity1 instanceof LivingEntity) {
                                                                 livingentity2 = (LivingEntity)entity1;
-                                                                if (!livingentity2.level.isClientSide()) {
+                                                                if (!livingentity2.level().isClientSide()) {
                                                                     livingentity2.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 50, 0, false, false));
                                                                 }
                                                             }
 
                                                             if (entity instanceof LivingEntity) {
                                                                 livingentity2 = (LivingEntity)entity;
-                                                                if (!livingentity2.level.isClientSide()) {
+                                                                if (!livingentity2.level().isClientSide()) {
                                                                     livingentity2.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 50, 0, false, false));
                                                                 }
                                                             }
 
                                                             if (entity instanceof LivingEntity) {
                                                                 livingentity2 = (LivingEntity)entity;
-                                                                if (!livingentity2.level.isClientSide()) {
+                                                                if (!livingentity2.level().isClientSide()) {
                                                                     livingentity2.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20, 5, false, false));
                                                                 }
                                                             }
@@ -199,21 +199,21 @@ public class ExecuteNpcProcedure {
                                                             entity.lookAt(Anchor.EYES, new Vec3(entity1.getX(), entity1.getY() + 1.0D, entity1.getZ()));
                                                             Entity entity2 = entity1;
 
-                                                            if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                                            if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                                                 try {
                                                                     entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/execute_greatsword\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                 } catch (CommandSyntaxException e) {
                                                                     
                                                                 }
                                                             }
-                                                            if (!entity.level.isClientSide()) {
+                                                            if (!entity.level().isClientSide()) {
                                                                 livingentitypatch.playAnimationSynchronized(AVAnimations.EXECUTE_GREATSWORD_HIT, 0.0F);
                                                             }
 
 
                                                             ((LivingEntity)livingentitypatch.getOriginal()).addEffect(new MobEffectInstance((MobEffect)EpicFightMobEffects.STUN_IMMUNITY.get(), 60, 0, false, false));
                                                             entity2 = entity1;
-                                                            if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                                            if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                                                 try {
                                                                     entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 6 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
 
@@ -252,35 +252,35 @@ public class ExecuteNpcProcedure {
                                                                     entity.getPersistentData().putBoolean("kick_x", true);
                                                                     if (entity instanceof LivingEntity) {
                                                                         livingentity3 = (LivingEntity)entity;
-                                                                        if (!livingentity3.level.isClientSide()) {
+                                                                        if (!livingentity3.level().isClientSide()) {
                                                                             livingentity3.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.EC.get(), 80, 0, false, false));
                                                                         }
                                                                     }
 
                                                                     if (entity1 instanceof LivingEntity) {
                                                                         livingentity3 = (LivingEntity)entity1;
-                                                                        if (!livingentity3.level.isClientSide()) {
+                                                                        if (!livingentity3.level().isClientSide()) {
                                                                             livingentity3.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.EC.get(), 80, 0, false, false));
                                                                         }
                                                                     }
 
                                                                     if (entity1 instanceof LivingEntity) {
                                                                         livingentity3 = (LivingEntity)entity1;
-                                                                        if (!livingentity3.level.isClientSide()) {
+                                                                        if (!livingentity3.level().isClientSide()) {
                                                                             livingentity3.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 50, 0, false, false));
                                                                         }
                                                                     }
 
                                                                     if (entity instanceof LivingEntity) {
                                                                         livingentity3 = (LivingEntity)entity;
-                                                                        if (!livingentity3.level.isClientSide()) {
+                                                                        if (!livingentity3.level().isClientSide()) {
                                                                             livingentity3.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 50, 0, false, false));
                                                                         }
                                                                     }
 
                                                                     if (entity instanceof LivingEntity) {
                                                                         livingentity3 = (LivingEntity)entity;
-                                                                        if (!livingentity3.level.isClientSide()) {
+                                                                        if (!livingentity3.level().isClientSide()) {
                                                                             livingentity3.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20, 5, false, false));
                                                                         }
                                                                     }
@@ -288,19 +288,19 @@ public class ExecuteNpcProcedure {
                                                                     entity1.lookAt(Anchor.EYES, new Vec3(entity.getX(), entity.getY() + 1.0D, entity.getZ()));
                                                                     entity.lookAt(Anchor.EYES, new Vec3(entity1.getX(), entity1.getY() + 1.0D, entity1.getZ()));
                                                                     entity2 = entity1;
-                                                                    if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                                                    if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                                                         try {
                                                                             entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/execute_boss\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                         } catch (CommandSyntaxException e) {
                                                                             
                                                                         }
                                                                     }
-                                                                    if (!entity.level.isClientSide()) {
+                                                                    if (!entity.level().isClientSide()) {
                                                                         livingentitypatch.playAnimationSynchronized(AVAnimations.BOSS_EXECUTE_HIT, 0.0F);
                                                                     }
 
                                                                     entity2 = entity1;
-                                                                    if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                                                    if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                                                         try {
                                                                             entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 3 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                         } catch (CommandSyntaxException e) {
@@ -315,35 +315,35 @@ public class ExecuteNpcProcedure {
                                                                 entity.getPersistentData().putBoolean("kick_x", true);
                                                                 if (entity instanceof LivingEntity) {
                                                                     livingentity3 = (LivingEntity)entity;
-                                                                    if (!livingentity3.level.isClientSide()) {
+                                                                    if (!livingentity3.level().isClientSide()) {
                                                                         livingentity3.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.EC.get(), 80, 0, false, false));
                                                                     }
                                                                 }
 
                                                                 if (entity1 instanceof LivingEntity) {
                                                                     livingentity3 = (LivingEntity)entity1;
-                                                                    if (!livingentity3.level.isClientSide()) {
+                                                                    if (!livingentity3.level().isClientSide()) {
                                                                         livingentity3.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.EC.get(), 80, 0, false, false));
                                                                     }
                                                                 }
 
                                                                 if (entity1 instanceof LivingEntity) {
                                                                     livingentity3 = (LivingEntity)entity1;
-                                                                    if (!livingentity3.level.isClientSide()) {
+                                                                    if (!livingentity3.level().isClientSide()) {
                                                                         livingentity3.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 50, 0, false, false));
                                                                     }
                                                                 }
 
                                                                 if (entity instanceof LivingEntity) {
                                                                     livingentity3 = (LivingEntity)entity;
-                                                                    if (!livingentity3.level.isClientSide()) {
+                                                                    if (!livingentity3.level().isClientSide()) {
                                                                         livingentity3.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 50, 0, false, false));
                                                                     }
                                                                 }
 
                                                                 if (entity instanceof LivingEntity) {
                                                                     livingentity3 = (LivingEntity)entity;
-                                                                    if (!livingentity3.level.isClientSide()) {
+                                                                    if (!livingentity3.level().isClientSide()) {
                                                                         livingentity3.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20, 5, false, false));
                                                                     }
                                                                 }
@@ -351,18 +351,18 @@ public class ExecuteNpcProcedure {
                                                                 entity1.lookAt(Anchor.EYES, new Vec3(entity.getX(), entity.getY() + 1.0D, entity.getZ()));
                                                                 entity.lookAt(Anchor.EYES, new Vec3(entity1.getX(), entity1.getY() + 1.0D, entity1.getZ()));
                                                                 entity2 = entity1;
-                                                                if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                                                if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                                                     try {
                                                                         entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/wrestling\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                     } catch (CommandSyntaxException e) {
                                                                         
                                                                     }
                                                                 }
-                                                                if (!entity.level.isClientSide()) {
+                                                                if (!entity.level().isClientSide()) {
                                                                     livingentitypatch.playAnimationSynchronized(AVAnimations.WRESTLING_HIT, 0.0F);
                                                                 }
                                                                 entity2 = entity1;
-                                                                if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                                                if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                                                     try {
                                                                         entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 3 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                     } catch (CommandSyntaxException e) {
@@ -388,35 +388,35 @@ public class ExecuteNpcProcedure {
 
                                                         if (entity instanceof LivingEntity) {
                                                             livingentity2 = (LivingEntity)entity;
-                                                            if (!livingentity2.level.isClientSide()) {
+                                                            if (!livingentity2.level().isClientSide()) {
                                                                 livingentity2.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.EC.get(), 80, 0, false, false));
                                                             }
                                                         }
 
                                                         if (entity1 instanceof LivingEntity) {
                                                             livingentity2 = (LivingEntity)entity1;
-                                                            if (!livingentity2.level.isClientSide()) {
+                                                            if (!livingentity2.level().isClientSide()) {
                                                                 livingentity2.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.EC.get(), 80, 0, false, false));
                                                             }
                                                         }
 
                                                         if (entity1 instanceof LivingEntity) {
                                                             livingentity2 = (LivingEntity)entity1;
-                                                            if (!livingentity2.level.isClientSide()) {
+                                                            if (!livingentity2.level().isClientSide()) {
                                                                 livingentity2.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 50, 0, false, false));
                                                             }
                                                         }
 
                                                         if (entity instanceof LivingEntity) {
                                                             livingentity2 = (LivingEntity)entity;
-                                                            if (!livingentity2.level.isClientSide()) {
+                                                            if (!livingentity2.level().isClientSide()) {
                                                                 livingentity2.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 50, 0, false, false));
                                                             }
                                                         }
 
                                                         if (entity instanceof LivingEntity) {
                                                             livingentity2 = (LivingEntity)entity;
-                                                            if (!livingentity2.level.isClientSide()) {
+                                                            if (!livingentity2.level().isClientSide()) {
                                                                 livingentity2.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20, 5, false, false));
                                                             }
                                                         }
@@ -425,20 +425,20 @@ public class ExecuteNpcProcedure {
                                                         entity.lookAt(Anchor.EYES, new Vec3(entity1.getX(), entity1.getY() + 1.0D, entity1.getZ()));
                                                         Entity entity2 = entity1;
 
-                                                        if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                                        if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                                             try {
                                                                 entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/execute_longsword\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                             } catch (CommandSyntaxException e) {
                                                                 
                                                             }
                                                         }
-                                                        if (!entity.level.isClientSide()) {
+                                                        if (!entity.level().isClientSide()) {
                                                             livingentitypatch.playAnimationSynchronized(AVAnimations.EXECUTE_LONGSWORD_HIT, 0.0F);
                                                         }
 
                                                         ((LivingEntity)livingentitypatch.getOriginal()).addEffect(new MobEffectInstance((MobEffect)EpicFightMobEffects.STUN_IMMUNITY.get(), 60, 0, false, false));
                                                         entity2 = entity1;
-                                                        if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                                        if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                                             try {
                                                                 entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 4 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
 
@@ -465,35 +465,35 @@ public class ExecuteNpcProcedure {
 
                                                     if (entity instanceof LivingEntity) {
                                                         livingentity2 = (LivingEntity)entity;
-                                                        if (!livingentity2.level.isClientSide()) {
+                                                        if (!livingentity2.level().isClientSide()) {
                                                             livingentity2.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.EC.get(), 120, 0, false, false));
                                                         }
                                                     }
 
                                                     if (entity1 instanceof LivingEntity) {
                                                         livingentity2 = (LivingEntity)entity1;
-                                                        if (!livingentity2.level.isClientSide()) {
+                                                        if (!livingentity2.level().isClientSide()) {
                                                             livingentity2.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.EC.get(), 40, 0, false, false));
                                                         }
                                                     }
 
                                                     if (entity1 instanceof LivingEntity) {
                                                         livingentity2 = (LivingEntity)entity1;
-                                                        if (!livingentity2.level.isClientSide()) {
+                                                        if (!livingentity2.level().isClientSide()) {
                                                             livingentity2.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 29, 0, false, false));
                                                         }
                                                     }
 
                                                     if (entity instanceof LivingEntity) {
                                                         livingentity2 = (LivingEntity)entity;
-                                                        if (!livingentity2.level.isClientSide()) {
+                                                        if (!livingentity2.level().isClientSide()) {
                                                             livingentity2.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 29, 0, false, false));
                                                         }
                                                     }
 
                                                     if (entity instanceof LivingEntity) {
                                                         livingentity2 = (LivingEntity)entity;
-                                                        if (!livingentity2.level.isClientSide()) {
+                                                        if (!livingentity2.level().isClientSide()) {
                                                             livingentity2.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20, 5, false, false));
                                                         }
                                                     }
@@ -502,7 +502,7 @@ public class ExecuteNpcProcedure {
                                                     entity.lookAt(Anchor.EYES, new Vec3(entity1.getX(), entity1.getY() + 1.0D, entity1.getZ()));
                                                     Entity entity2 = entity1;
 
-                                                    if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                                    if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                                         try {
                                                             entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 3 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
 
@@ -533,35 +533,35 @@ public class ExecuteNpcProcedure {
 
                                                 if (entity instanceof LivingEntity) {
                                                     livingentity2 = (LivingEntity)entity;
-                                                    if (!livingentity2.level.isClientSide()) {
+                                                    if (!livingentity2.level().isClientSide()) {
                                                         livingentity2.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.EC.get(), 120, 0, false, false));
                                                     }
                                                 }
 
                                                 if (entity1 instanceof LivingEntity) {
                                                     livingentity2 = (LivingEntity)entity1;
-                                                    if (!livingentity2.level.isClientSide()) {
+                                                    if (!livingentity2.level().isClientSide()) {
                                                         livingentity2.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.EC.get(), 40, 0, false, false));
                                                     }
                                                 }
 
                                                 if (entity1 instanceof LivingEntity) {
                                                     livingentity2 = (LivingEntity)entity1;
-                                                    if (!livingentity2.level.isClientSide()) {
+                                                    if (!livingentity2.level().isClientSide()) {
                                                         livingentity2.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 29, 0, false, false));
                                                     }
                                                 }
 
                                                 if (entity instanceof LivingEntity) {
                                                     livingentity2 = (LivingEntity)entity;
-                                                    if (!livingentity2.level.isClientSide()) {
+                                                    if (!livingentity2.level().isClientSide()) {
                                                         livingentity2.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 29, 0, false, false));
                                                     }
                                                 }
 
                                                 if (entity instanceof LivingEntity) {
                                                     livingentity2 = (LivingEntity)entity;
-                                                    if (!livingentity2.level.isClientSide()) {
+                                                    if (!livingentity2.level().isClientSide()) {
                                                         livingentity2.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20, 5, false, false));
                                                     }
                                                 }
@@ -570,7 +570,7 @@ public class ExecuteNpcProcedure {
                                                 entity.lookAt(Anchor.EYES, new Vec3(entity1.getX(), entity1.getY() + 1.0D, entity1.getZ()));
                                                 Entity entity2 = entity1;
 
-                                                if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                                if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                                     try {
                                                         entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 4 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
 
@@ -580,11 +580,11 @@ public class ExecuteNpcProcedure {
                                                     }
                                                 }
 
-                                                if (!entity.level.isClientSide()) {
+                                                if (!entity.level().isClientSide()) {
                                                     livingentitypatch.playAnimationSynchronized(AVAnimations.EXECUTE_DUAL_HIT, 0.0F);
                                                 }
                                                 entity2 = entity;
-                                                if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                                if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                                     try {
                                                         entity2.getServer().getCommands().getDispatcher().execute("effect give @s epicfight:stun_immunity 4 5 true", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                     } catch (CommandSyntaxException e) {

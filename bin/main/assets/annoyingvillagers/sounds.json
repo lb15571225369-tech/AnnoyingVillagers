@@ -1,0 +1,411 @@
+{
+  "entity.weapon.sword_whoosh": {
+    "category": "master",
+    "subtitle": "entity.weapon.sword_whoosh",
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/weapon/sword_whoosh",
+        "stream": true
+      },
+      {
+        "name": "annoyingvillagers:entity/weapon/sword_whoosh2",
+        "stream": true
+      },
+      {
+        "name": "annoyingvillagers:entity/weapon/sword_whoosh3",
+        "stream": true
+      },
+      {
+        "name": "annoyingvillagers:entity/weapon/sword_whoosh4",
+        "stream": true
+      },
+      {
+        "name": "annoyingvillagers:entity/weapon/sword_whoosh5",
+        "stream": true
+      },
+      {
+        "name": "annoyingvillagers:entity/weapon/sword_whoosh6",
+        "stream": true
+      }
+    ]
+  },
+  "entity.weapon.kick": {
+    "category": "master",
+    "subtitle": "entity.weapon.kick",
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/weapon/kick",
+        "stream": true
+      }
+    ]
+  },
+  "tridentfs_skill": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:tridentfs_skill",
+        "stream": false
+      }
+    ]
+  },
+  "electify": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:electify_1",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:electify_2",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:electify_3",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:electify_4",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:electify_5",
+        "stream": false
+      }
+    ]
+  },
+  "bluedemonsayyc": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:bluedemonsayyc",
+        "stream": false
+      }
+    ]
+  },
+  "bluedemon_say_player_interesting": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:bluedemon_say_player_interesting",
+        "stream": false
+      }
+    ]
+  },
+  "bluedemon_say_you_no_know": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:bluedemon_say_you_no_know",
+        "stream": false
+      }
+    ]
+  },
+  "bluedemonsayplayer": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:bluedemonsayplayer",
+        "stream": false
+      }
+    ]
+  },
+  "bluedemonsaydontbe": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:bluedemonsaydontbe",
+        "stream": false
+      }
+    ]
+  },
+  "ob_place": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:metal1",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:metal2",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:metal3",
+        "stream": false
+      }
+    ]
+  },
+  "metal_hit": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:metal_hit_1",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:metal_hit_2",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:metal_hit_3",
+        "stream": false
+      }
+    ]
+  },
+  "target_block_hit": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:target_block_hit_1",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:target_block_hit_2",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:target_block_hit_3",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:target_block_hit_4",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:target_block_hit_5",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:target_block_hit_6",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:target_block_hit_7",
+        "stream": false
+      }
+    ]
+  },
+  "lost": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:lost",
+        "stream": false
+      }
+    ]
+  },
+  "silent": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:silent",
+        "stream": false
+      }
+    ]
+  },
+  "obsidian_place": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:block_place",
+        "stream": false
+      }
+    ]
+  },
+  "pop": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:pop",
+        "stream": false
+      }
+    ]
+  },
+  "obsidian_hit": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:obsidian_hit",
+        "stream": false
+      }
+    ]
+  },
+  "heavy_hit": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:break",
+        "stream": false
+      }
+    ]
+  },
+  "woosh_hard": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:blunt_swing1",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:blunt_swing2",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:blunt_swing3",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:blunt_swing4",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:blunt_swing5",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:swoosh1",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:swoosh2",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:swoosh3",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:swoosh4",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:swoosh5",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:swoosh6",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:swoosh7",
+        "stream": false
+      }
+    ]
+  },
+  "soul_legend": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:soul_legend",
+        "stream": false
+      }
+    ]
+  },
+  "wing": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:wing",
+        "stream": false
+      }
+    ]
+  },
+  "l_g_w_u": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:l_g_wake_up",
+        "stream": false
+      }
+    ]
+  },
+  "legendary_sword_awakening": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:legendary_sword_awakening",
+        "stream": false
+      }
+    ]
+  },
+  "whoosh": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:whoosh",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:whoosh2",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:whoosh3",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:whoosh4",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:whoosh5",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:whoosh6",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:whoosh7",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:whoosh8",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:whoosh9",
+        "stream": false
+      }
+    ]
+  },
+  "get_out": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:jump1",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:jump2",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:jump3",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:jump4",
+        "stream": false
+      }
+    ]
+  },
+  "throw": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:throw",
+        "stream": false
+      }
+    ]
+  },
+  "cooldown": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:roll_cooldown_ready",
+        "stream": false
+      }
+    ]
+  },
+  "himsayenough": {
+    "subtitle": "subtitles.himsayenough",
+    "sounds": [
+      {
+        "name": "annoyingvillagers:himgoule",
+        "stream": false
+      }
+    ]
+  },
+  "himattack": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:attack",
+        "stream": false
+      }
+    ]
+  },
+  "himattack2": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:himattack",
+        "stream": false
+      }
+    ]
+  }
+}

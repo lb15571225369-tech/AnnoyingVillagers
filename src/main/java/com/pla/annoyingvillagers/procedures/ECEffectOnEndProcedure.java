@@ -24,7 +24,7 @@ public class ECEffectOnEndProcedure {
                 if ((dynamicanimation instanceof LongHitAnimation || dynamicanimation == Animations.BIPED_COMMON_NEUTRALIZED || dynamicanimation == Animations.BIPED_KNOCKDOWN) && entity instanceof LivingEntity) {
                     LivingEntity livingentity = (LivingEntity) entity;
 
-                    if (!livingentity.level.isClientSide()) {
+                    if (!livingentity.level().isClientSide()) {
                         livingentity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.EC.get(), 2, 0, false, false));
                     }
                 }

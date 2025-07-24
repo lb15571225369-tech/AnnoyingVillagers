@@ -48,7 +48,7 @@ public class VillagerHeadRightOnUseProcedure {
                     }, 1, player1.inventoryMenu.getCraftSlots());
                 }
 
-                if (!entity.level.isClientSide() && entity.getServer() != null) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
                     try {
                         entity.getServer().getCommands().getDispatcher().execute(
                                 "team join villagers @s",
@@ -61,14 +61,14 @@ public class VillagerHeadRightOnUseProcedure {
                 entity.getPersistentData().putBoolean("villager_player", true);
                 if (entity instanceof Player) {
                     player1 = (Player) entity;
-                    if (!player1.level.isClientSide()) {
+                    if (!player1.level().isClientSide()) {
                         player1.displayClientMessage(Component.literal("You have put on the villager helmet. Villager soldiers will no longer attack you."), false);
                     }
                 }
 
                 if (entity instanceof Player) {
                     player1 = (Player) entity;
-                    if (!player1.level.isClientSide()) {
+                    if (!player1.level().isClientSide()) {
                         player1.displayClientMessage(Component.literal("Sneak + Right-Click to toggle Disguise/Attack Mode"), false);
                     }
                 }

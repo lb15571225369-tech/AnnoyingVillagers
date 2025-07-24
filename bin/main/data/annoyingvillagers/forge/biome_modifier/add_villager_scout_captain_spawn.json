@@ -1,0 +1,10 @@
+{
+  "type": "annoyingvillagers:entities",
+  "biomes": "#minecraft:is_overworld",
+  "entity": {
+    "type": "annoyingvillagers:villager_scout_captain",
+    "weight": 6,
+    "minCount": 1,
+    "maxCount": 2
+  }
+}

@@ -44,7 +44,7 @@ public class HerobrineOnEntityTickUpdateProcedure {
                 }
 
                 if (entity1 == livingentity) {
-                    if (!entity1.level.isClientSide() && entity1.getServer() != null) {
+                    if (!entity1.level().isClientSide() && entity1.getServer() != null) {
                         try {
                             entity1.getServer().getCommands().getDispatcher().execute(
                                     "tag @s add aim",
@@ -80,7 +80,7 @@ public class HerobrineOnEntityTickUpdateProcedure {
                         }
                     }
 
-                    if (!entity1.level.isClientSide() && entity1.getServer() != null) {
+                    if (!entity1.level().isClientSide() && entity1.getServer() != null) {
                         try {
                             entity1.getServer().getCommands().getDispatcher().execute(
                                     "tag @s remove aim",
@@ -96,7 +96,7 @@ public class HerobrineOnEntityTickUpdateProcedure {
                 entity.stopRiding();
             }
 
-            if (!entity.level.isClientSide() && entity.getServer() != null) {
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute(
                             "fill ~-1 ~ ~ ~ ~ ~ minecraft:air replace",
@@ -119,7 +119,7 @@ public class HerobrineOnEntityTickUpdateProcedure {
                                 if (dynamicanimation instanceof KnockdownAnimation) {
                                     Entity entity2 = entity;
 
-                                    if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                    if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                         try {
                                             entity2.getServer().getCommands().getDispatcher().execute(
                                                     "indestructible @s play \"epicfight:biped/skill/knockdown_wakeup_left\" 0 1",

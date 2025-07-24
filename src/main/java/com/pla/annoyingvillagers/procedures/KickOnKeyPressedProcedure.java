@@ -24,7 +24,7 @@ public class KickOnKeyPressedProcedure {
     private static boolean isSpectatorGamemode(Entity entity) {
         if (entity instanceof ServerPlayer serverPlayer) {
             return serverPlayer.gameMode.getGameModeForPlayer() == GameType.SPECTATOR;
-        } else if (entity instanceof Player player && entity.level.isClientSide()) {
+        } else if (entity instanceof Player player && entity.level().isClientSide()) {
             var info = Minecraft.getInstance().getConnection().getPlayerInfo(player.getGameProfile().getId());
             return info != null && info.getGameMode() == GameType.SPECTATOR;
         }
@@ -64,14 +64,14 @@ public class KickOnKeyPressedProcedure {
                                         if (entity.isSprinting()) {
                                             PlayerPatch<?> playerpatch = (PlayerPatch)EpicFightCapabilities.getEntityPatch(entity, PlayerPatch.class);
 
-                                            if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.FIST && !entity.level.isClientSide() && entity.getServer() != null) {
+                                            if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.FIST && !entity.level().isClientSide() && entity.getServer() != null) {
                                                 try {
                                                     entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/kick_combo\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                 } catch (CommandSyntaxException e) {
                                                     
                                                 }
                                             }
-                                        } else if (!entity.level.isClientSide() && entity.getServer() != null) {
+                                        } else if (!entity.level().isClientSide() && entity.getServer() != null) {
                                             try {
                                                 entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/kick_h\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                             } catch (CommandSyntaxException e) {
@@ -82,7 +82,7 @@ public class KickOnKeyPressedProcedure {
                                         if (entity.isSprinting()) {
                                             if (entity.getPersistentData().getDouble("air_kick") != 1.0D) {
                                                 entity.getPersistentData().putDouble("air_kick", 1.0D);
-                                                if (!entity.level.isClientSide() && entity.getServer() != null) {
+                                                if (!entity.level().isClientSide() && entity.getServer() != null) {
                                                     try {
                                                         entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/kick_rush\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                     } catch (CommandSyntaxException e) {
@@ -101,7 +101,7 @@ public class KickOnKeyPressedProcedure {
                                             }
                                         } else if (entity.getPersistentData().getDouble("kick") < 1.0D) {
                                             entity.getPersistentData().putDouble("kick", 1.5D);
-                                            if (!entity.level.isClientSide() && entity.getServer() != null) {
+                                            if (!entity.level().isClientSide() && entity.getServer() != null) {
                                                 try {
                                                     entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/kick_1\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                 } catch (CommandSyntaxException e) {
@@ -118,7 +118,7 @@ public class KickOnKeyPressedProcedure {
                                             };
                                         } else if (entity.getPersistentData().getDouble("kick") == 2.0D) {
                                             entity.getPersistentData().putDouble("kick", 2.5D);
-                                            if (!entity.level.isClientSide() && entity.getServer() != null) {
+                                            if (!entity.level().isClientSide() && entity.getServer() != null) {
                                                 try {
                                                     entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/kick_2\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                 } catch (CommandSyntaxException e) {
@@ -135,7 +135,7 @@ public class KickOnKeyPressedProcedure {
                                             };
                                         } else if (entity.getPersistentData().getDouble("kick") == 3.0D) {
                                             entity.getPersistentData().putDouble("kick", 3.5D);
-                                            if (!entity.level.isClientSide() && entity.getServer() != null) {
+                                            if (!entity.level().isClientSide() && entity.getServer() != null) {
                                                 try {
                                                     entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/kick_3\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                 } catch (CommandSyntaxException e) {
@@ -159,7 +159,7 @@ public class KickOnKeyPressedProcedure {
                                             PlayerPatch<?> playerpatch1 = (PlayerPatch)EpicFightCapabilities.getEntityPatch(entity, PlayerPatch.class);
 
                                             if (playerpatch1.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.FIST) {
-                                                if (!entity.level.isClientSide() && entity.getServer() != null) {
+                                                if (!entity.level().isClientSide() && entity.getServer() != null) {
                                                     try {
                                                         entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/kick_c\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                     } catch (CommandSyntaxException e) {
@@ -181,7 +181,7 @@ public class KickOnKeyPressedProcedure {
                                         }
                                     }
                                 } else {
-                                    if (!entity.level.isClientSide() && entity.getServer() != null) {
+                                    if (!entity.level().isClientSide() && entity.getServer() != null) {
                                         try {
                                             entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/skill/roll_backward\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                         } catch (CommandSyntaxException e) {

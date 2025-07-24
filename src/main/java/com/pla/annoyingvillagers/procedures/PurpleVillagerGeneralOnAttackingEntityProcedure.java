@@ -59,7 +59,7 @@ public class PurpleVillagerGeneralOnAttackingEntityProcedure {
                 Level level;
 
                 if (itemstack.getItem() == Blocks.OBSIDIAN.asItem()) {
-                    if (!entity.level.isClientSide()) {
+                    if (!entity.level().isClientSide()) {
                         entity.discard();
                     }
 
@@ -81,7 +81,7 @@ public class PurpleVillagerGeneralOnAttackingEntityProcedure {
                         }
                     }
 
-                    if (!entity.level.isClientSide() && entity.getServer() != null) {
+                    if (!entity.level().isClientSide() && entity.getServer() != null) {
                         try {
                             entity.getServer().getCommands().getDispatcher().execute(
                                     "summon annoying_villagersbychentu:lvcunqifulu ^ ^ ^ {VillagerData:{level:4,profession:\"minecraft:weaponsmith\"}}",
@@ -122,7 +122,7 @@ public class PurpleVillagerGeneralOnAttackingEntityProcedure {
                     livingentity4 = livingentity1;
                     if (livingentity4 instanceof Player) {
                         player = (Player)livingentity4;
-                        if (!player.level.isClientSide()) {
+                        if (!player.level().isClientSide()) {
                             player.displayClientMessage(Component.literal("Target Captured"), true);
                         }
                     }
@@ -144,11 +144,11 @@ public class PurpleVillagerGeneralOnAttackingEntityProcedure {
                     }
 
                     if (itemstack.getItem() == Blocks.OBSIDIAN.asItem()) {
-                        if (!entity.level.isClientSide()) {
+                        if (!entity.level().isClientSide()) {
                             entity.discard();
                         }
 
-                        if (!entity.level.isClientSide() && entity.getServer() != null) {
+                        if (!entity.level().isClientSide() && entity.getServer() != null) {
                             try {
                                 entity.getServer().getCommands().getDispatcher().execute(
                                         "summon annoying_villagersbychentu:lvcunqifulu ^ ^ ^ {VillagerData:{level:4,profession:\"minecraft:weaponsmith\"}}",
@@ -205,7 +205,7 @@ public class PurpleVillagerGeneralOnAttackingEntityProcedure {
 
                         if (entity2 instanceof Player) {
                             player1 = (Player)entity2;
-                            if (!player1.level.isClientSide()) {
+                            if (!player1.level().isClientSide()) {
                                 player1.displayClientMessage(Component.literal("Target Captured"), true);
                             }
                         }

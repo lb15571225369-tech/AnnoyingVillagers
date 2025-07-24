@@ -66,7 +66,7 @@ public class NpcRollUpProcedure {
                                     if (dynamicanimation instanceof KickAttackAnimation && entity instanceof LivingEntity) {
                                         LivingEntity livingentity2 = (LivingEntity) entity;
 
-                                        if (!livingentity2.level.isClientSide()) {
+                                        if (!livingentity2.level().isClientSide()) {
                                             livingentity2.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.NPC_KICK_EFFECT.get(), 12, 0, false, false));
                                         }
                                     }
@@ -93,7 +93,7 @@ public class NpcRollUpProcedure {
                         if (!flag && entity.isAlive() && entity instanceof LivingEntity) {
                             LivingEntity livingentity3 = (LivingEntity) entity;
 
-                            if (!livingentity3.level.isClientSide()) {
+                            if (!livingentity3.level().isClientSide()) {
                                 livingentity3.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.NPC_KICK_EFFECT.get(), 10, 0, false, false));
                             }
                         }

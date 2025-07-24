@@ -43,7 +43,7 @@ public class PlayerNpcDeadProcedure {
     @SubscribeEvent
     public static void onEntityDeath(LivingDeathEvent livingdeathevent) {
         if (livingdeathevent != null && livingdeathevent.getEntity() != null) {
-            execute(livingdeathevent, livingdeathevent.getEntity().level, livingdeathevent.getEntity().getX(), livingdeathevent.getEntity().getY(), livingdeathevent.getEntity().getZ(), livingdeathevent.getEntity(), livingdeathevent.getSource().getEntity());
+            execute(livingdeathevent, livingdeathevent.getEntity().level(), livingdeathevent.getEntity().getX(), livingdeathevent.getEntity().getY(), livingdeathevent.getEntity().getZ(), livingdeathevent.getEntity(), livingdeathevent.getSource().getEntity());
         }
 
     }
@@ -432,7 +432,7 @@ public class PlayerNpcDeadProcedure {
 
                         if (Math.random() <= 0.05D) {
                             entity2 = entity;
-                            if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                            if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                 try {
                                     entity2.getServer().getCommands().getDispatcher().execute(
                                             "tellraw @a [{\"text\":\"<\"},{\"selector\":\"@s\"},{\"text\":\"> " + entity1.getDisplayName().getString() + " Bro, I'll remember you for this\ud83d\ude21\"}]",
@@ -559,7 +559,7 @@ public class PlayerNpcDeadProcedure {
                                 }
                             } else if (Math.random() <= 0.05D) {
                                 entity2 = entity;
-                                if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                     try {
                                         entity2.getServer().getCommands().getDispatcher().execute(
                                                 "tellraw @a [{\"text\":\"<\"},{\"selector\":\"@s\"},{\"text\":\"> Don't leave, I'm calling some people\ud83d\ude21\ud83d\ude21\ud83d\ude21\"}]",

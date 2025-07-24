@@ -59,7 +59,7 @@ public class BlueVillagerGeneralOnAttackingEntityProcedure {
                 Level level;
 
                 if (itemstack.getItem() == Blocks.OBSIDIAN.asItem()) {
-                    if (!entity.level.isClientSide()) {
+                    if (!entity.level().isClientSide()) {
                         entity.discard();
                     }
 
@@ -81,7 +81,7 @@ public class BlueVillagerGeneralOnAttackingEntityProcedure {
                         }
                     }
 
-                    if (!entity.level.isClientSide() && entity.getServer() != null) {
+                    if (!entity.level().isClientSide() && entity.getServer() != null) {
                         try {
                             entity.getServer().getCommands().getDispatcher().execute("summon annoying_villagersbychentu:lan_cun_qi_fu_lu ^ ^ ^ {VillagerData:{level:4,profession:\"minecraft:weaponsmith\"}}", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                         } catch (CommandSyntaxException e) {
@@ -120,7 +120,7 @@ public class BlueVillagerGeneralOnAttackingEntityProcedure {
                     livingentity4 = livingentity1;
                     if (livingentity4 instanceof Player) {
                         player = (Player)livingentity4;
-                        if (!player.level.isClientSide()) {
+                        if (!player.level().isClientSide()) {
                             player.displayClientMessage(Component.literal("Target captured"), false);
                         }
                     }
@@ -143,7 +143,7 @@ public class BlueVillagerGeneralOnAttackingEntityProcedure {
                     }
 
                     if (itemstack.getItem() == Blocks.OBSIDIAN.asItem()) {
-                        if (!entity.level.isClientSide()) {
+                        if (!entity.level().isClientSide()) {
                             entity.discard();
                         }
 
@@ -165,7 +165,7 @@ public class BlueVillagerGeneralOnAttackingEntityProcedure {
                             }
                         }
 
-                        if (!entity.level.isClientSide() && entity.getServer() != null) {
+                        if (!entity.level().isClientSide() && entity.getServer() != null) {
                             try {
                                 entity.getServer().getCommands().getDispatcher().execute("summon annoying_villagersbychentu:lan_cun_qi_fu_lu ^ ^ ^ {VillagerData:{level:4,profession:\"minecraft:weaponsmith\"}}", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                             } catch (CommandSyntaxException e) {
@@ -202,7 +202,7 @@ public class BlueVillagerGeneralOnAttackingEntityProcedure {
 
                         if (entity2 instanceof Player) {
                             player1 = (Player)entity2;
-                            if (!player1.level.isClientSide()) {
+                            if (!player1.level().isClientSide()) {
                                 player1.displayClientMessage(Component.literal("Target captured"), false);
                             }
                         }

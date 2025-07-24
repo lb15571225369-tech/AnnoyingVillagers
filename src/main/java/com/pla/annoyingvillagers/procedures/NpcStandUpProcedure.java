@@ -25,7 +25,7 @@ public class NpcStandUpProcedure {
     @SubscribeEvent
     public static void onEntityAttacked(LivingAttackEvent livingattackevent) {
         if (livingattackevent != null && livingattackevent.getEntity() != null) {
-            execute(livingattackevent, livingattackevent.getEntity().level, livingattackevent.getEntity());
+            execute(livingattackevent, livingattackevent.getEntity().level(), livingattackevent.getEntity());
         }
 
     }
@@ -49,7 +49,7 @@ public class NpcStandUpProcedure {
 
                                 if (Math.random() <= 0.4D) {
                                     entity1 = entity;
-                                    if (!entity1.level.isClientSide() && entity1.getServer() != null) {
+                                    if (!entity1.level().isClientSide() && entity1.getServer() != null) {
                                         try {
                                             entity1.getServer().getCommands().getDispatcher().execute(
                                                     "indestructible @s play \"epicfight:biped/skill/knockdown_wakeup_left\" 0 1",
@@ -60,7 +60,7 @@ public class NpcStandUpProcedure {
                                     }
                                 } else {
                                     entity1 = entity;
-                                    if (!entity1.level.isClientSide() && entity1.getServer() != null) {
+                                    if (!entity1.level().isClientSide() && entity1.getServer() != null) {
                                         try {
                                             entity1.getServer().getCommands().getDispatcher().execute(
                                                     "indestructible @s play \"epicfight:biped/skill/knockdown_wakeup_right\" 0 1",

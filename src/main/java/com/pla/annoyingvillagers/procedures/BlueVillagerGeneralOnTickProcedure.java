@@ -72,7 +72,7 @@ public class BlueVillagerGeneralOnTickProcedure {
             if (livingentity == nearestMob && Math.random() <= 0.01D && entity instanceof LivingEntity) {
                 LivingEntity livingentity1 = (LivingEntity) entity;
 
-                if (!livingentity1.level.isClientSide()) {
+                if (!livingentity1.level().isClientSide()) {
                     livingentity1.addEffect(
                             new MobEffectInstance(
                                     AnnoyingVillagersModMobEffects.BLOCK.get(),
@@ -189,7 +189,7 @@ public class BlueVillagerGeneralOnTickProcedure {
                                             public void run() {
                                                 Entity entity2 = entity;
 
-                                                if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                                if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                                     try {
                                                         entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/combat/bow_shot_mid\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                     } catch (CommandSyntaxException e) {
@@ -198,7 +198,7 @@ public class BlueVillagerGeneralOnTickProcedure {
                                                 }
 
                                                 entity2 = entity;
-                                                Level level = entity2.level;
+                                                Level level = entity2.level();
 
                                                 if (!level.isClientSide()) {
                                                     Projectile projectile = new Arrow(EntityType.ARROW, level);
@@ -285,7 +285,7 @@ public class BlueVillagerGeneralOnTickProcedure {
                                             new DelayedTask(Mth.nextInt(AnnoyingVillagers.randomSource, 1, 10)) {
                                                 public void run() {
                                                     Entity entity2 = entity;
-                                                    Level level = entity2.level;
+                                                    Level level = entity2.level();
 
                                                     if (!level.isClientSide()) {
                                                         Projectile projectile = new Arrow(EntityType.ARROW, level);
@@ -299,7 +299,7 @@ public class BlueVillagerGeneralOnTickProcedure {
                                                     }
 
                                                     entity2 = entity;
-                                                    if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                                                    if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                                         try {
                                                             entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/combat/bow_shot_mid\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                         } catch (CommandSyntaxException e) {

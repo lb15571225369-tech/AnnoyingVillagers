@@ -43,17 +43,17 @@ public class LegendarySwordMobItemOnUseProcedure {
                 while(iterator.hasNext()) {
                     Entity entity1 = (Entity)iterator.next();
 
-                    entity1.hurt(DamageSource.MAGIC, 2.0F);
+                    entity1.hurt(entity1.level().damageSources().magic(), 2.0F);
                     if (entity1 instanceof LivingEntity) {
                         LivingEntity livingentity = (LivingEntity)entity1;
 
-                        if (!livingentity.level.isClientSide()) {
+                        if (!livingentity.level().isClientSide()) {
                             livingentity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 5, false, false));
                         }
                     }
                 }
 
-                if (!entity.level.isClientSide() && entity.getServer() != null) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
                     try {
                         entity.getServer().getCommands().getDispatcher().execute(
                                 "execute at @s run particle minecraft:totem_of_undying ^ ^1.5 ^ 0 0 0 1 1000",
@@ -63,7 +63,7 @@ public class LegendarySwordMobItemOnUseProcedure {
                     }
                 }
 
-                if (!entity.level.isClientSide() && entity.getServer() != null) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
                     try {
                         entity.getServer().getCommands().getDispatcher().execute(
                                 "execute at @s run particle epicfight:air_burst ^ ^1.5 ^ 0 0 0 8 1",
@@ -136,14 +136,14 @@ public class LegendarySwordMobItemOnUseProcedure {
 
                 if (entity instanceof LivingEntity) {
                     livingentity2 = (LivingEntity)entity;
-                    if (!livingentity2.level.isClientSide()) {
+                    if (!livingentity2.level().isClientSide()) {
                         livingentity2.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.ENDURANCE.get(), 50, 1, false, false));
                     }
                 }
 
                 if (entity instanceof LivingEntity) {
                     livingentity2 = (LivingEntity)entity;
-                    if (!livingentity2.level.isClientSide()) {
+                    if (!livingentity2.level().isClientSide()) {
                         livingentity2.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 50, 2, false, false));
                     }
                 }

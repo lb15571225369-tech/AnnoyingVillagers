@@ -27,8 +27,8 @@ public class FallRollProcedure {
 
     private static void execute(@Nullable Event event, DamageSource damagesource, Entity entity) {
         if (entity != null) {
-            if (damagesource == DamageSource.FALL && entity.isShiftKeyDown()) {
-                if (!entity.level.isClientSide() && entity.getServer() != null) {
+            if (damagesource == entity.level().damageSources().fall() && entity.isShiftKeyDown()) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
                     try {
                         entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/skill/roll_forward\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                     } catch (CommandSyntaxException e) {

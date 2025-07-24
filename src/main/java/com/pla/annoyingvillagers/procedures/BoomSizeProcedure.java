@@ -30,8 +30,8 @@ public class BoomSizeProcedure {
 
         if (!level.isClientSide()) {
             // Perform explosion twice as in original (if intentional)
-            level.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) size, Explosion.BlockInteraction.DESTROY);
-            level.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) size, Explosion.BlockInteraction.DESTROY);
+            level.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) size, Level.ExplosionInteraction.BLOCK);
+            level.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) size, Level.ExplosionInteraction.BLOCK);
         }
     }
 }

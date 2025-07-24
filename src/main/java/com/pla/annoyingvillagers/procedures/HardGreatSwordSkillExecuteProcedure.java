@@ -71,7 +71,7 @@ public class HardGreatSwordSkillExecuteProcedure {
                         }
 
                         livingentitypatch.playSound((SoundEvent) EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
-                        if (!entity.level.isClientSide() && entity.getServer() != null) {
+                        if (!entity.level().isClientSide() && entity.getServer() != null) {
                             try {
                                 entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
 
@@ -92,7 +92,7 @@ public class HardGreatSwordSkillExecuteProcedure {
                         }
 
                         livingentitypatch.playSound((SoundEvent) EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
-                        if (!entity.level.isClientSide() && entity.getServer() != null) {
+                        if (!entity.level().isClientSide() && entity.getServer() != null) {
                             try {
                                 entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
 

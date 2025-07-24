@@ -24,7 +24,7 @@ public class NpcJumpProcedure {
 
     private static void execute(@Nullable Event event, Entity entity) {
         if (entity != null) {
-            if (!(entity instanceof Player) && !entity.level.isClientSide() && entity.getServer() != null) {
+            if (!(entity instanceof Player) && !entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute(
                             "indestructible @s play \"epicfight:biped/living/jump\" 0 1",

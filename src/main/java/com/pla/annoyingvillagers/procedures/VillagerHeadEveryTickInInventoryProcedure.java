@@ -24,7 +24,7 @@ public class VillagerHeadEveryTickInInventoryProcedure {
             }
 
             if (itemstack.getItem() != AnnoyingVillagersModItems.VILLAGER_HEAD.get() && entity.getPersistentData().getBoolean("villager_player")) {
-                if (!entity.level.isClientSide() && entity.getServer() != null) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
                     try {
                         entity.getServer().getCommands().getDispatcher().execute(
                                 "team leave @s[team=villagers]",
@@ -38,7 +38,7 @@ public class VillagerHeadEveryTickInInventoryProcedure {
                 if (entity instanceof Player) {
                     Player player = (Player) entity;
 
-                    if (!player.level.isClientSide()) {
+                    if (!player.level().isClientSide()) {
                         player.displayClientMessage(Component.literal("You have removed your helmet. Villager soldiers will now attack you."), false);
                     }
                 }

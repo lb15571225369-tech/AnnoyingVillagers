@@ -32,7 +32,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
             boolean flag = false;
 
             if (!flag) {
-                if (!entity.level.isClientSide() && entity.getServer() != null) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
                     try {
                         entity.getServer().getCommands().getDispatcher().execute(
                                 "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
@@ -135,13 +135,13 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                     itemstack1.setDamageValue(0);
                 }
 
-                entity.hurt(DamageSource.GENERIC, 11.5F);
+                entity.hurt(entity.level().damageSources().generic(), 11.5F);
                 entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * -2.0D, 0.4D, entity.getLookAngle().z * -2.0D));
                 if (Math.random() == 0.5D) {
                     if (entity instanceof LivingEntity) {
                         LivingEntity livingentity2 = (LivingEntity) entity;
 
-                        if (!livingentity2.level.isClientSide()) {
+                        if (!livingentity2.level().isClientSide()) {
                             livingentity2.addEffect(new MobEffectInstance(MobEffects.POISON, 300, 2, false, true));
                         }
                     }
@@ -173,13 +173,13 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                         itemstack1.setDamageValue(0);
                     }
 
-                    entity.hurt(DamageSource.GENERIC, 15.5F);
+                    entity.hurt(entity.level().damageSources().generic(), 15.5F);
                     new DelayedTask(1) {
                         @Override
                         public void run() {
                             Entity entity1 = entity;
 
-                            if (!entity1.level.isClientSide() && entity1.getServer() != null) {
+                            if (!entity1.level().isClientSide() && entity1.getServer() != null) {
                                 try {
                                     entity1.getServer().getCommands().getDispatcher().execute(
                                             "indestructible @s play \"epicfight:biped/combat/hit_long\" 0 10",
@@ -241,13 +241,13 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                             itemstack1.setDamageValue(0);
                         }
 
-                        entity.hurt(DamageSource.GENERIC, 17.5F);
+                        entity.hurt(entity.level().damageSources().generic(), 17.5F);
                         new DelayedTask(1) {
                             @Override
                             public void run() {
                                 Entity entity1 = entity;
 
-                                if (!entity1.level.isClientSide() && entity1.getServer() != null) {
+                                if (!entity1.level().isClientSide() && entity1.getServer() != null) {
                                     try {
                                         entity1.getServer().getCommands().getDispatcher().execute(
                                                 "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10",

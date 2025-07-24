@@ -21,7 +21,7 @@ public class SkeletonChangeProcedure {
 
     @SubscribeEvent
     public static void onEntityStruckByLightning(EntityStruckByLightningEvent entitystruckbylightningevent) {
-        execute(entitystruckbylightningevent, entitystruckbylightningevent.getEntity().level, entitystruckbylightningevent.getEntity().getX(), entitystruckbylightningevent.getEntity().getY(), entitystruckbylightningevent.getEntity().getZ(), entitystruckbylightningevent.getEntity());
+        execute(entitystruckbylightningevent, entitystruckbylightningevent.getEntity().level(), entitystruckbylightningevent.getEntity().getX(), entitystruckbylightningevent.getEntity().getY(), entitystruckbylightningevent.getEntity().getZ(), entitystruckbylightningevent.getEntity());
     }
 
     public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) {
@@ -31,7 +31,7 @@ public class SkeletonChangeProcedure {
     private static void execute(@Nullable Event event, LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) {
         if (entity != null) {
             if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:skeleton")) {
-                if (!entity.level.isClientSide()) {
+                if (!entity.level().isClientSide()) {
                     entity.discard();
                 }
 

@@ -41,7 +41,7 @@ public class EnderPearlLongTimeKillProcedure {
                     new DelayedTask(200) {
                         @Override
                         public void run() {
-                            if (entity.isAlive() && !entity.level.isClientSide()) {
+                            if (entity.isAlive() && !entity.level().isClientSide()) {
                                 entity.discard();
                             }
                         }
@@ -50,7 +50,7 @@ public class EnderPearlLongTimeKillProcedure {
                     new DelayedTask(200) {
                         @Override
                         public void run() {
-                            if (entity.isAlive() && !entity.level.isClientSide()) {
+                            if (entity.isAlive() && !entity.level().isClientSide()) {
                                 entity.discard();
                             }
                         }

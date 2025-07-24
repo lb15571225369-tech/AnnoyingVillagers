@@ -33,7 +33,7 @@ public class NpcKickEffectOnEndProcedure {
                     if (livingentitypatch != null) {
                         DynamicAnimation dynamicanimation = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
 
-                        if ((dynamicanimation instanceof LongHitAnimation || dynamicanimation == Animations.BIPED_COMMON_NEUTRALIZED || dynamicanimation == Animations.BIPED_KNOCKDOWN) && !entity.level.isClientSide() && entity.getServer() != null) {
+                        if ((dynamicanimation instanceof LongHitAnimation || dynamicanimation == Animations.BIPED_COMMON_NEUTRALIZED || dynamicanimation == Animations.BIPED_KNOCKDOWN) && !entity.level().isClientSide() && entity.getServer() != null) {
                             try {
                                 entity.getServer().getCommands().getDispatcher().execute(
                                         "indestructible @s play \"epicfight:biped/skill/roll_backward\" 0 1",
@@ -46,7 +46,7 @@ public class NpcKickEffectOnEndProcedure {
                 } else if (entity instanceof LivingEntity) {
                     LivingEntity livingentity1 = (LivingEntity) entity;
 
-                    if (!livingentity1.level.isClientSide()) {
+                    if (!livingentity1.level().isClientSide()) {
                         livingentity1.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.NPC_KICK_EFFECT.get(), 3, 0, false, false));
                     }
                 }

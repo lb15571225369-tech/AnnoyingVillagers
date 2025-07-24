@@ -12,7 +12,7 @@ public class EmeraldArmorJumpBootProcedure {
             if (entity instanceof LivingEntity) {
                 LivingEntity livingentity = (LivingEntity) entity;
 
-                if (!livingentity.level.isClientSide()) {
+                if (!livingentity.level().isClientSide()) {
                     livingentity.addEffect(new MobEffectInstance(MobEffects.JUMP, 100, 1));
                 }
             }

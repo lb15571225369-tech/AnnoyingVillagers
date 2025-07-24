@@ -1,0 +1,10 @@
+{
+	"type": "sword",
+	"attributes": {
+		"common": {
+  			"impact": 1.5,
+			"max_strikes": 3,
+                  "speed_bonus": 1.1
+		}
+	}
+}

@@ -39,7 +39,7 @@ public class EnderPearlKillProcedure {
                     event.setCanceled(true);
                 }
 
-                if (!entity.level.isClientSide()) {
+                if (!entity.level().isClientSide()) {
                     entity.discard();
                 }
             }

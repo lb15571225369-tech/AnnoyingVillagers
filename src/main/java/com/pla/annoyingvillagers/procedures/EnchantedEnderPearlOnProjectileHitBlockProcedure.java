@@ -41,7 +41,7 @@ public class EnchantedEnderPearlOnProjectileHitBlockProcedure {
                 serverlevel.sendParticles(ParticleTypes.PORTAL, d0, d1, d2, 50, 4.0D, 4.0D, 4.0D, 1.0D);
             }
 
-            if (!entity.level.isClientSide() && entity.getServer() != null) {
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:ender ~ ~1 ~ 0 0 0 0.5 16", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 } catch (CommandSyntaxException e) {

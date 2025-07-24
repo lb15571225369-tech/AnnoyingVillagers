@@ -40,14 +40,14 @@ public class LegendarySwordUseProcedure {
                                 Level level = (Level)levelaccessor;
 
                                 if (!level.isClientSide()) {
-                                    level.playSound((Player)null, new BlockPos(entity.getX(), entity.getY(), entity.getZ()), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "heavy_attack_legendary_sword")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                    level.playSound((Player)null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "heavy_attack_legendary_sword")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                 } else {
                                     level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "heavy_attack_legendary_sword")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                 }
                             }
 
                             itemstack.getOrCreateTag().putDouble("power", itemstack.getOrCreateTag().getDouble("power") - 25.0D);
-                            if (!entity.level.isClientSide() && entity.getServer() != null) {
+                            if (!entity.level().isClientSide() && entity.getServer() != null) {
                                 try {
                                     entity.getServer().getCommands().getDispatcher().execute(
                                             "indestructible @s play \"annoyingvillagers:biped/combat/legendary_sword_wake_up_attack\" 0 1",
@@ -57,7 +57,7 @@ public class LegendarySwordUseProcedure {
                                 }
                             }
 
-                            if (!entity.level.isClientSide() && entity.getServer() != null) {
+                            if (!entity.level().isClientSide() && entity.getServer() != null) {
                                 try {
                                     entity.getServer().getCommands().getDispatcher().execute(
                                             "execute at @s run particle annoyingvillagers:blue_spark ~ ~1 ~ 0 0 0 0.1 500",
@@ -70,7 +70,7 @@ public class LegendarySwordUseProcedure {
                             entity.setDeltaMovement(new Vec3(0.0D, 0.2D, 0.0D));
                         } else if (entity instanceof Player) {
                             player = (Player)entity;
-                            if (!player.level.isClientSide()) {
+                            if (!player.level().isClientSide()) {
                                 compoundtag = itemstack.getOrCreateTag();
                                 player.displayClientMessage(Component.literal("Not enough energy. Current charge: " + (int) compoundtag.getDouble("power") + "/25"), true);
                             }
@@ -82,7 +82,7 @@ public class LegendarySwordUseProcedure {
                         }
 
                         entity.setDeltaMovement(new Vec3(0.0D, 1.3D, 0.0D));
-                        if (!entity.level.isClientSide() && entity.getServer() != null) {
+                        if (!entity.level().isClientSide() && entity.getServer() != null) {
                             try {
                                 entity.getServer().getCommands().getDispatcher().execute(
                                         "playsound epicfight:sfx.entity_move neutral @p",
@@ -104,7 +104,7 @@ public class LegendarySwordUseProcedure {
                             public void run() {
                                 Entity entity1 = entity;
 
-                                if (!entity1.level.isClientSide() && entity1.getServer() != null) {
+                                if (!entity1.level().isClientSide() && entity1.getServer() != null) {
                                     try {
                                         entity1.getServer().getCommands().getDispatcher().execute(
                                                 "playsound annoyingvillagers:heavy_attack_start neutral @a ~ ~ ~",
@@ -120,7 +120,7 @@ public class LegendarySwordUseProcedure {
                                 if (levelaccessor1 instanceof Level) {
                                     level1 = (Level)levelaccessor1;
                                     if (!level1.isClientSide()) {
-                                        level1.playSound((Player)null, new BlockPos(entity.getX(), entity.getY(), entity.getZ()), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "heavy_attack_legendary_sword")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                        level1.playSound((Player)null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "heavy_attack_legendary_sword")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                     } else {
                                         level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "heavy_attack_legendary_sword")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                     }
@@ -130,7 +130,7 @@ public class LegendarySwordUseProcedure {
                                 if (levelaccessor1 instanceof Level) {
                                     level1 = (Level)levelaccessor1;
                                     if (!level1.isClientSide()) {
-                                        level1.playSound((Player)null, new BlockPos(entity.getX(), entity.getY(), entity.getZ()), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "heavy_attack_legendary_sword_2")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                        level1.playSound((Player)null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "heavy_attack_legendary_sword_2")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                     } else {
                                         level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "heavy_attack_legendary_sword_2")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                     }
@@ -144,7 +144,7 @@ public class LegendarySwordUseProcedure {
                                 }
 
                                 entity1 = entity;
-                                if (!entity1.level.isClientSide() && entity1.getServer() != null) {
+                                if (!entity1.level().isClientSide() && entity1.getServer() != null) {
                                     try {
                                         entity1.getServer().getCommands().getDispatcher().execute(
                                                 "execute as @s at @s anchored eyes run particle minecraft:totem_of_undying ~ ~ ~ 0 0 0 0.5 100",
@@ -155,7 +155,7 @@ public class LegendarySwordUseProcedure {
                                 }
 
                                 entity1 = entity;
-                                if (!entity1.level.isClientSide() && entity1.getServer() != null) {
+                                if (!entity1.level().isClientSide() && entity1.getServer() != null) {
                                     try {
                                         entity1.getServer().getCommands().getDispatcher().execute(
                                                 "indestructible @s play \"annoyingvillagers:biped/combat/legendary_sword_heavy_attack\" 0 1",
@@ -168,14 +168,14 @@ public class LegendarySwordUseProcedure {
                         };
                     } else if (entity instanceof Player) {
                         player = (Player)entity;
-                        if (!player.level.isClientSide()) {
+                        if (!player.level().isClientSide()) {
                             compoundtag = itemstack.getOrCreateTag();
                             player.displayClientMessage(Component.literal("Not enough energy. Current charge: " + (int) compoundtag.getDouble("power") + "/20"), true);
                         }
                     }
                 } else if (entity instanceof Player) {
                     player = (Player)entity;
-                    if (!player.level.isClientSide()) {
+                    if (!player.level().isClientSide()) {
                         player.displayClientMessage(Component.literal("You are not the owner of this weapon and cannot control this skill."), true);
                     }
                 }

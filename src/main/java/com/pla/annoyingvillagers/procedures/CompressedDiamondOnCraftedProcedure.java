@@ -21,7 +21,7 @@ public class CompressedDiamondOnCraftedProcedure {
             if (entity instanceof LivingEntity) {
                 LivingEntity livingentity = (LivingEntity) entity;
 
-                if (!livingentity.level.isClientSide()) {
+                if (!livingentity.level().isClientSide()) {
                     livingentity.addEffect(new MobEffectInstance(MobEffects.POISON, 20, 2, false, false));
                 }
             }
@@ -34,7 +34,7 @@ public class CompressedDiamondOnCraftedProcedure {
                 }
             }
 
-            entity.hurt(DamageSource.GENERIC, 5.0F);
+            entity.hurt(entity.level().damageSources().generic(), 5.0F);
             if (entity instanceof ServerPlayer) {
                 ServerPlayer serverplayer = (ServerPlayer) entity;
 

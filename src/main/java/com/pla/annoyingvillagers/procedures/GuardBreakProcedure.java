@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.procedures;
 
-import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -12,7 +11,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -39,7 +37,7 @@ public class GuardBreakProcedure {
     @SubscribeEvent
     public static void onEntityAttacked(LivingAttackEvent livingattackevent) {
         if (livingattackevent != null && livingattackevent.getEntity() != null) {
-            execute(livingattackevent, livingattackevent.getEntity().level, livingattackevent.getEntity().getX(), livingattackevent.getEntity().getY(), livingattackevent.getEntity().getZ(), livingattackevent.getEntity(), livingattackevent.getSource().getEntity());
+            execute(livingattackevent, livingattackevent.getEntity().level(), livingattackevent.getEntity().getX(), livingattackevent.getEntity().getY(), livingattackevent.getEntity().getZ(), livingattackevent.getEntity(), livingattackevent.getSource().getEntity());
         }
 
     }
@@ -51,7 +49,7 @@ public class GuardBreakProcedure {
     private static boolean isCreativeMode(Entity entity) {
         if (entity instanceof ServerPlayer serverPlayer) {
             return serverPlayer.gameMode.getGameModeForPlayer() == GameType.CREATIVE;
-        } else if (entity instanceof Player player && player.level.isClientSide()) {
+        } else if (entity instanceof Player player && player.level().isClientSide()) {
             var info = Minecraft.getInstance().getConnection().getPlayerInfo(player.getGameProfile().getId());
             return info != null && info.getGameMode() == GameType.CREATIVE;
         }
@@ -110,7 +108,7 @@ public class GuardBreakProcedure {
                 }
 
                 entity.getPersistentData().putBoolean("s_g", false);
-                if (!entity1.level.isClientSide() && entity1.getServer() != null) {
+                if (!entity1.level().isClientSide() && entity1.getServer() != null) {
                     try {
                         entity1.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/skill/guard_break1\" 0 1", entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
 
@@ -171,14 +169,14 @@ public class GuardBreakProcedure {
                             if (entity1 instanceof LivingEntity) {
                                 LivingEntity livingentity4 = (LivingEntity)entity1;
 
-                                if (!livingentity4.level.isClientSide()) {
+                                if (!livingentity4.level().isClientSide()) {
                                     livingentity4.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 20, 2, false, false));
                                 }
                             }
 
                             Entity entity2 = entity1;
 
-                            if (!entity2.level.isClientSide() && entity2.getServer() != null) {
+                            if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                 try {
                                     entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/skill/grasping_spire_second\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                 } catch (CommandSyntaxException e) {
