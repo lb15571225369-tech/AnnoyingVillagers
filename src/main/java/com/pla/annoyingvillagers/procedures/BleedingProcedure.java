@@ -37,6 +37,16 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 @EventBusSubscriber
 public class BleedingProcedure {
+    public static final ItemStack HOSTILE_HEALING_POTION;
+    public static final ItemStack EATING_GOLDEN_APPLE;
+
+    static {
+        HOSTILE_HEALING_POTION = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.HARMING);
+        HOSTILE_HEALING_POTION.setCount(1);
+        EATING_GOLDEN_APPLE = new ItemStack(Items.GOLDEN_APPLE);
+        EATING_GOLDEN_APPLE.setCount(1);
+    }
+
 
     @SubscribeEvent
     public static void onEntityAttacked(LivingHurtEvent livinghurtevent) {
@@ -51,6 +61,7 @@ public class BleedingProcedure {
     }
 
     private static void execute(@Nullable Event event, LevelAccessor levelaccessor, final int d0, final int d1, final int d2, final Entity entity, Entity entity1, double d3) {
+
         if (entity != null && entity1 != null) {
             LivingEntity livingentity;
 
@@ -136,14 +147,14 @@ public class BleedingProcedure {
 
                                                                 if (entity instanceof LivingEntity) {
                                                                     livingentity5 = (LivingEntity)entity;
-                                                                    ItemStack itemstack = new ItemStack(Items.GOLDEN_APPLE);
+                                                                    ItemStack offhand = livingentity5.getOffhandItem();
+                                                                    if (offhand != EATING_GOLDEN_APPLE) {
+                                                                        livingentity5.setItemInHand(InteractionHand.OFF_HAND, EATING_GOLDEN_APPLE);
+                                                                        if (livingentity5 instanceof Player) {
+                                                                            Player player = (Player)livingentity5;
 
-                                                                    itemstack.setCount(1);
-                                                                    livingentity5.setItemInHand(InteractionHand.OFF_HAND, itemstack);
-                                                                    if (livingentity5 instanceof Player) {
-                                                                        Player player = (Player)livingentity5;
-
-                                                                        player.getInventory().setChanged();
+                                                                            player.getInventory().setChanged();
+                                                                        }
                                                                     }
                                                                 }
 
@@ -229,14 +240,14 @@ public class BleedingProcedure {
 
                                                                                 if (entity instanceof LivingEntity) {
                                                                                     livingentity6 = (LivingEntity)entity;
-                                                                                    ItemStack itemstack1 = new ItemStack(Items.GOLDEN_APPLE);
+                                                                                    ItemStack offhand = livingentity6.getOffhandItem();
+                                                                                    if (offhand != EATING_GOLDEN_APPLE) {
+                                                                                        livingentity6.setItemInHand(InteractionHand.OFF_HAND, EATING_GOLDEN_APPLE);
+                                                                                        if (livingentity6 instanceof Player) {
+                                                                                            Player player = (Player)livingentity6;
 
-                                                                                    itemstack1.setCount(1);
-                                                                                    livingentity6.setItemInHand(InteractionHand.OFF_HAND, itemstack1);
-                                                                                    if (livingentity6 instanceof Player) {
-                                                                                        Player player1 = (Player)livingentity6;
-
-                                                                                        player1.getInventory().setChanged();
+                                                                                            player.getInventory().setChanged();
+                                                                                        }
                                                                                     }
                                                                                 }
 
@@ -471,14 +482,14 @@ public class BleedingProcedure {
 
                                                                                                                                 if (entity instanceof LivingEntity) {
                                                                                                                                     livingentity7 = (LivingEntity)entity;
-                                                                                                                                    ItemStack itemstack2 = new ItemStack(Items.ENDER_PEARL);
+                                                                                                                                    ItemStack offhand = livingentity7.getOffhandItem();
+                                                                                                                                    if (offhand != EATING_GOLDEN_APPLE) {
+                                                                                                                                        livingentity7.setItemInHand(InteractionHand.OFF_HAND, EATING_GOLDEN_APPLE);
+                                                                                                                                        if (livingentity7 instanceof Player) {
+                                                                                                                                            Player player = (Player)livingentity7;
 
-                                                                                                                                    itemstack2.setCount(1);
-                                                                                                                                    livingentity7.setItemInHand(InteractionHand.OFF_HAND, itemstack2);
-                                                                                                                                    if (livingentity7 instanceof Player) {
-                                                                                                                                        Player player2 = (Player)livingentity7;
-
-                                                                                                                                        player2.getInventory().setChanged();
+                                                                                                                                            player.getInventory().setChanged();
+                                                                                                                                        }
                                                                                                                                     }
                                                                                                                                 }
 
@@ -551,14 +562,14 @@ public class BleedingProcedure {
                                                             entity.getPersistentData().putBoolean("eating", true);
                                                             if (entity instanceof LivingEntity) {
                                                                 LivingEntity livingentity5 = (LivingEntity)entity;
-                                                                ItemStack itemstack = new ItemStack(Items.GOLDEN_APPLE);
+                                                                ItemStack offhand = livingentity5.getOffhandItem();
+                                                                if (offhand != EATING_GOLDEN_APPLE) {
+                                                                    livingentity5.setItemInHand(InteractionHand.OFF_HAND, EATING_GOLDEN_APPLE);
+                                                                    if (livingentity5 instanceof Player) {
+                                                                        Player player = (Player)livingentity5;
 
-                                                                itemstack.setCount(1);
-                                                                livingentity5.setItemInHand(InteractionHand.OFF_HAND, itemstack);
-                                                                if (livingentity5 instanceof Player) {
-                                                                    Player player = (Player)livingentity5;
-
-                                                                    player.getInventory().setChanged();
+                                                                        player.getInventory().setChanged();
+                                                                    }
                                                                 }
                                                             }
 
@@ -636,14 +647,14 @@ public class BleedingProcedure {
 
                                                                             if (entity instanceof LivingEntity) {
                                                                                 livingentity6 = (LivingEntity)entity;
-                                                                                ItemStack itemstack1 = new ItemStack(Items.GOLDEN_APPLE);
+                                                                                ItemStack offhand = livingentity6.getOffhandItem();
+                                                                                if (offhand != EATING_GOLDEN_APPLE) {
+                                                                                    livingentity6.setItemInHand(InteractionHand.OFF_HAND, EATING_GOLDEN_APPLE);
+                                                                                    if (livingentity6 instanceof Player) {
+                                                                                        Player player = (Player)livingentity6;
 
-                                                                                itemstack1.setCount(1);
-                                                                                livingentity6.setItemInHand(InteractionHand.OFF_HAND, itemstack1);
-                                                                                if (livingentity6 instanceof Player) {
-                                                                                    Player player1 = (Player)livingentity6;
-
-                                                                                    player1.getInventory().setChanged();
+                                                                                        player.getInventory().setChanged();
+                                                                                    }
                                                                                 }
                                                                             }
 
@@ -948,12 +959,14 @@ public class BleedingProcedure {
 
                                                             if (entity instanceof LivingEntity) {
                                                                 livingentity2 = (LivingEntity) zombie;
-                                                                ItemStack itemstack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.HARMING);
-                                                                itemstack.setCount(1);
-                                                                livingentity2.setItemInHand(InteractionHand.OFF_HAND, itemstack);
-                                                                if (livingentity2 instanceof Player) {
-                                                                    Player player = (Player) livingentity2;
-                                                                    player.getInventory().setChanged();
+                                                                ItemStack offhand = livingentity2.getOffhandItem();
+                                                                if (offhand != HOSTILE_HEALING_POTION) {
+                                                                    livingentity2.setItemInHand(InteractionHand.OFF_HAND, HOSTILE_HEALING_POTION);
+                                                                    if (livingentity2 instanceof Player) {
+                                                                        Player player = (Player)livingentity2;
+
+                                                                        player.getInventory().setChanged();
+                                                                    }
                                                                 }
                                                             }
 
@@ -1021,14 +1034,14 @@ public class BleedingProcedure {
 
                                                                             if (zombie instanceof LivingEntity) {
                                                                                 livingentity6 = (LivingEntity) zombie;
-                                                                                ItemStack itemstack1 = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.HARMING);
+                                                                                ItemStack offhand = livingentity6.getOffhandItem();
+                                                                                if (offhand != HOSTILE_HEALING_POTION) {
+                                                                                    livingentity6.setItemInHand(InteractionHand.OFF_HAND, HOSTILE_HEALING_POTION);
+                                                                                    if (livingentity6 instanceof Player) {
+                                                                                        Player player = (Player)livingentity6;
 
-                                                                                itemstack1.setCount(1);
-                                                                                livingentity6.setItemInHand(InteractionHand.OFF_HAND, itemstack1);
-                                                                                if (livingentity6 instanceof Player) {
-                                                                                    Player player1 = (Player) livingentity6;
-
-                                                                                    player1.getInventory().setChanged();
+                                                                                        player.getInventory().setChanged();
+                                                                                    }
                                                                                 }
                                                                             }
 
