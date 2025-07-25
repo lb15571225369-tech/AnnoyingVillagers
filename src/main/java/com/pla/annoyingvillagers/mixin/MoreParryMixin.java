@@ -9,22 +9,16 @@ import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import reascer.wom.gameasset.WOMAnimations;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.gameasset.Animations;
-import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.guard.GuardSkill;
 import yesman.epicfight.skill.guard.ParryingSkill;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.Styles;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
 
 @Mixin(value = {ParryingSkill.class}, remap = false)
-public abstract class MoreParryMixin extends GuardSkill {
-
-    public MoreParryMixin(Builder builder) {
-        super(builder);
-    }
-
+public abstract class MoreParryMixin {
     @Inject(method = {"createActiveGuardBuilder"}, at = {@At("RETURN")})
-    private static void InjectAdvancedGuardMotion(CallbackInfoReturnable<Builder> callbackinforeturnable) {
-        Builder builder = (Builder) callbackinforeturnable.getReturnValue();
+    private static void InjectAdvancedGuardMotion(CallbackInfoReturnable<GuardSkill.Builder> callbackinforeturnable) {
+        GuardSkill.Builder builder = (GuardSkill.Builder) callbackinforeturnable.getReturnValue();
 
         builder.addAdvancedGuardMotion(WeaponCategories.GREATSWORD, (capabilityitem, playerpatch) -> {
             return new StaticAnimation[]{Animations.GREATSWORD_GUARD_HIT};
@@ -63,6 +57,4 @@ public abstract class MoreParryMixin extends GuardSkill {
             return AVAnimations.HARD_GREAT_SWORD_GUARD;
         });
     }
-
-    public void onInitiate(SkillContainer skillcontainer) {}
 }
