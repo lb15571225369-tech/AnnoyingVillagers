@@ -2,10 +2,7 @@ package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -19,7 +16,7 @@ import javax.annotation.Nullable;
 public class AddStarterSkillProcedure {
     @SubscribeEvent
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent playerloggedinevent) {
-        execute(playerloggedinevent, playerloggedinevent.getEntity().level, playerloggedinevent.getEntity().getX(), playerloggedinevent.getEntity().getY(), playerloggedinevent.getEntity().getZ(), playerloggedinevent.getEntity());
+        execute(playerloggedinevent, playerloggedinevent.getEntity().level(), playerloggedinevent.getEntity().getX(), playerloggedinevent.getEntity().getY(), playerloggedinevent.getEntity().getZ(), playerloggedinevent.getEntity());
     }
 
     public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) {
@@ -31,7 +28,7 @@ public class AddStarterSkillProcedure {
             if (!entity.getPersistentData().getBoolean("init_epic_fight_skill")) {
                 entity.getPersistentData().putBoolean("init_epic_fight_skill", true);
 
-                if (!entity.level.isClientSide() && entity.getServer() != null) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
                     CommandSourceStack source = entity.createCommandSourceStack()
                             .withSuppressedOutput()
                             .withPermission(4);
@@ -59,14 +56,14 @@ public class AddStarterSkillProcedure {
                 if (levelaccessor instanceof Level) {
                     level = (Level)levelaccessor;
                     if (!level.isClientSide()) {
-                        level.explode((Entity)null, d0, d1, d2, 20.0F, Explosion.BlockInteraction.NONE);
+                        level.explode((Entity)null, d0, d1, d2, 20.0F, Level.ExplosionInteraction.NONE);
                     }
                 }
 
                 if (levelaccessor instanceof Level) {
                     level = (Level)levelaccessor;
                     if (!level.isClientSide()) {
-                        level.explode((Entity)null, d0, d1, d2, 20.0F, Explosion.BlockInteraction.DESTROY);
+                        level.explode((Entity)null, d0, d1, d2, 20.0F, Level.ExplosionInteraction.BLOCK);
                     }
                 }
 
