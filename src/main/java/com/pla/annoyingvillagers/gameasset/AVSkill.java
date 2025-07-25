@@ -6,6 +6,7 @@ import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.animations.types.HeavyAttackAnimation;
 import com.pla.annoyingvillagers.compat.efdg.skill.DualGreatswordSkill;
 import com.pla.annoyingvillagers.compat.efdg.skill.EarthquakeSkill;
+import com.pla.annoyingvillagers.skill.DualDancingEdge;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -21,6 +22,7 @@ import yesman.epicfight.api.forgeevent.SkillBuildEvent;
 import yesman.epicfight.api.utils.math.ValueModifier;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.skill.Skill;
+import yesman.epicfight.skill.SkillCategories;
 import yesman.epicfight.skill.passive.PassiveSkill;
 import yesman.epicfight.skill.weaponinnate.SimpleWeaponInnateSkill;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
@@ -28,7 +30,7 @@ import yesman.epicfight.world.damagesource.ExtraDamageInstance;
 import yesman.epicfight.world.damagesource.EpicFightDamageType;
 import yesman.epicfight.world.item.EpicFightCreativeTabs;
 
-@EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Bus.FORGE)
+@EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Bus.MOD)
 public class AVSkill {
 
     public static Skill DUAL_DANCING_EDGE;
@@ -41,24 +43,20 @@ public class AVSkill {
     public static void buildSkillEvent(SkillBuildEvent skillbuildevent) {
         SkillBuildEvent.ModRegistryWorker modRegistry = skillbuildevent.createRegistryWorker(AnnoyingVillagers.MODID);
 
-        WeaponInnateSkill weaponinnateskill = modRegistry.build(
+        WeaponInnateSkill dualDancingEdgeSkill = (WeaponInnateSkill) modRegistry.build(
                 "dual_dancing_edge",
-                SimpleWeaponInnateSkill::new,
-                SimpleWeaponInnateSkill.createSimpleWeaponInnateBuilder()
-                        .setAnimations(() -> (AttackAnimation) AnimationManager.getInstance()
-                                .byKeyOrThrow(new ResourceLocation(AnnoyingVillagers.MODID, "biped/combat/dancing_edge"))
-                        )
-        );
-        weaponinnateskill.newProperty()
+                DualDancingEdge::new,
+                WeaponInnateSkill.createWeaponInnateBuilder().setCreativeTab(EpicFightCreativeTabs.ITEMS.get()));
+
+        dualDancingEdgeSkill.newProperty()
                 .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.adder(3.0F))
                 .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.5F))
                 .addProperty(AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.adder(20.0F))
                 .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.6F))
                 .addProperty(AttackPhaseProperty.EXTRA_DAMAGE, Set.of(ExtraDamageInstance.SWEEPING_EDGE_ENCHANTMENT.create(new float[0])))
-                .addProperty(AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageType.WEAPON_INNATE))
-                .registerPropertiesToAnimation();
+                .addProperty(AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageType.WEAPON_INNATE));
 
-        AVSkill.DUAL_DANCING_EDGE = weaponinnateskill;
+        AVSkill.DUAL_DANCING_EDGE = dualDancingEdgeSkill;
         AVSkill.SPINNING_DEATH = modRegistry.build("spinning_death", SpinningDeath::new, SpinningDeath.createWeaponInnateBuilder().setCreativeTab(EpicFightCreativeTabs.ITEMS.get()));
         AVSkill.CLASH = modRegistry.build("clash", Clash::new, PassiveSkill.createPassiveBuilder());
         AVSkill.EARTHQUAKE = modRegistry.build("earthquake", EarthquakeSkill::new, EarthquakeSkill.createWeaponInnateBuilder().setCreativeTab(EpicFightCreativeTabs.ITEMS.get()));

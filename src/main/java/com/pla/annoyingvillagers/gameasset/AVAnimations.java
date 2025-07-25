@@ -26,6 +26,7 @@ import com.pla.annoyingvillagers.animations.types.AttackBreakAnimation;
 import com.pla.annoyingvillagers.animations.types.ExecuteAttackAnimation;
 import com.pla.annoyingvillagers.animations.types.HeavyAttackAnimation;
 import com.pla.annoyingvillagers.animations.types.KickAttackAnimation;
+import net.minecraftforge.fml.common.Mod;
 import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
 import reascer.wom.gameasset.WOMWeaponColliders;
 import reascer.wom.particle.WOMParticles;
@@ -61,6 +62,7 @@ import yesman.epicfight.world.damagesource.EpicFightDamageType;
 import yesman.epicfight.world.damagesource.ExtraDamageInstance;
 import yesman.epicfight.world.damagesource.StunType;
 
+@Mod.EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AVAnimations {
     public static StaticAnimation EAT_OFFHAND;
     public static StaticAnimation DRINK_OFFHAND;
@@ -90,7 +92,7 @@ public class AVAnimations {
     public static StaticAnimation KICK_RUSH;
     public static StaticAnimation FIST_UP;
     public static StaticAnimation RUSH_SWORD;
-    public static StaticAnimation DualDancingEdge;
+    public static StaticAnimation DUAL_DANCING_EDGE;
     public static StaticAnimation LEFT_KNOCKDOWN;
     public static StaticAnimation AXE_DUAL_AUTO_1;
     public static StaticAnimation AXE_DUAL_AUTO_2;
@@ -273,7 +275,7 @@ public class AVAnimations {
         AVAnimations.KICK_RUSH = (new KickAttackAnimation(0.05F, 0.05F, 0.1F, 0.4F, 0.6F, WOMWeaponColliders.KICK, humanoidarmature.legR, "biped/combat/kick_rush", humanoidarmature)).addProperty(AttackPhaseProperty.SWING_SOUND, (SoundEvent) AVSounds.KICK.get()).addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT).addProperty(AttackPhaseProperty.HIT_SOUND, (SoundEvent) EpicFightSounds.BLUNT_HIT.get()).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(6.0F)).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN).addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE);
         AVAnimations.FIST_UP = (new KickAttackAnimation(0.15F, 0.25F, 0.45F, 0.85F, 0.95F, WOMWeaponColliders.KICK, humanoidarmature.toolR, "biped/combat/fist_up", humanoidarmature)).addProperty(AttackPhaseProperty.SWING_SOUND, (SoundEvent) EpicFightSounds.WHOOSH.get()).addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.AIR_BURST).addProperty(AttackPhaseProperty.SWING_SOUND, (SoundEvent) AVSounds.KICK.get()).addProperty(AttackPhaseProperty.HIT_SOUND, (SoundEvent) EpicFightSounds.BLUNT_HIT_HARD.get()).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(8.2F)).addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(2.5F)).addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE);
         AVAnimations.RUSH_SWORD = (new BasicMultipleAttackAnimation(0.15F, 0.0F, 0.1F, 0.26F, 0.75F, ColliderPreset.SWORD, humanoidarmature.toolR, "biped/combat/rush_sword", humanoidarmature)).addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG).addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.BLADE_RUSH_SKILL).addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE);
-        AVAnimations.DualDancingEdge = (new BasicMultipleAttackAnimation(0.25F, "biped/combat/dancing_edge", humanoidarmature, new Phase[]{new Phase(0.0F, 0.2F, 0.31F, 0.4F, 0.4F, humanoidarmature.toolR, (Collider) null), new Phase(0.4F, 0.5F, 0.61F, 0.65F, 0.65F, InteractionHand.OFF_HAND, humanoidarmature.toolL, (Collider) null), new Phase(0.65F, 0.76F, 0.85F, 1.15F, Float.MAX_VALUE, humanoidarmature.toolR, (Collider) null)})).addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6F).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD, 1).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE, 2).addProperty(ActionAnimationProperty.MOVE_VERTICAL, true);
+        AVAnimations.DUAL_DANCING_EDGE = (new BasicMultipleAttackAnimation(0.25F, "biped/combat/dancing_edge", humanoidarmature, new Phase[]{new Phase(0.0F, 0.2F, 0.31F, 0.4F, 0.4F, humanoidarmature.toolR, (Collider) null), new Phase(0.4F, 0.5F, 0.61F, 0.65F, 0.65F, InteractionHand.OFF_HAND, humanoidarmature.toolL, (Collider) null), new Phase(0.65F, 0.76F, 0.85F, 1.15F, Float.MAX_VALUE, humanoidarmature.toolR, (Collider) null)})).addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6F).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD, 1).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE, 2).addProperty(ActionAnimationProperty.MOVE_VERTICAL, true);
         AVAnimations.LEFT_KNOCKDOWN = new KnockdownAnimation(0.08F, "biped/other/left_kd", humanoidarmature);
         AVAnimations.AXE_DUAL_AUTO_1 = (new BasicAttackAnimation(0.05F, "biped/combat/axe_dual_auto_1", humanoidarmature, new Phase[]{(new Phase(0.0F, 0.1F, 0.35F, 0.45F, 0.4F, 0.5F, humanoidarmature.toolL, (Collider) null)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.4F)).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.SHORT), new Phase(0.0F, 0.6F, 0.7F, 0.8F, 0.9F, humanoidarmature.toolR, (Collider) null)})).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.4F)).addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.SHORT);
         AVAnimations.AXE_DUAL_AUTO_2 = (new BasicAttackAnimation(0.05F, "biped/combat/axe_dual_auto_2", humanoidarmature, new Phase[]{(new Phase(0.0F, 0.1F, 0.35F, 0.5F, 0.4F, 0.5F, humanoidarmature.toolR, (Collider) null)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.4F)).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD), new Phase(0.2F, 0.7F, 0.8F, 0.9F, 0.9F, humanoidarmature.toolL, (Collider) null)})).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.4F)).addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD);
