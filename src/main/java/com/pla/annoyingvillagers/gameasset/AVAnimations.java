@@ -55,6 +55,7 @@ import yesman.epicfight.gameasset.ColliderPreset;
 import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.model.armature.HumanoidArmature;
 import yesman.epicfight.particle.EpicFightParticles;
+import yesman.epicfight.skill.SkillDataKey;
 import yesman.epicfight.skill.SkillSlots;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
@@ -396,7 +397,7 @@ public class AVAnimations {
             }
         }).addEvents(new TimeStampedEvent[]{TimeStampedEvent.create(0.4F, AVAnimations.ReuseableEvents.GROUNDSLAM_SMALL, Side.CLIENT)});
         AVAnimations.GREATSWORD_DUAL_EARTHQUAKE = (new SpecialAttackAnimation(0.15F, "biped/skill/greatsword_dual_earthquake", humanoidarmature, new Phase[]{new Phase(0.0F, 1.1F, 1.1F, 1.25F, 1.25F, humanoidarmature.toolR, AVCollider.GREATSWORD_DOUBLESWING), new Phase(1.25F, 1.3F, 1.4F, 1.5F, Float.MAX_VALUE, humanoidarmature.rootJoint, AVCollider.GREATSWORD_DUAL)})).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.2F)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2.4F), 1).addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(2.0F), 1).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.SHORT, 1).addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.05F).addEvents(new TimeStampedEvent[]{TimeStampedEvent.create(1.25F, AVAnimations.ReuseableEvents.GROUNDSLAM_SMALL, Side.CLIENT), TimeStampedEvent.create(1.45F, (livingentitypatch, staticanimation, aobject) -> {
-            ((PlayerPatch) livingentitypatch).getSkill(SkillSlots.WEAPON_INNATE).getDataManager().setDataSync(EarthquakeSkill.SUPERARMOR, false, (ServerPlayer) livingentitypatch.getOriginal());
+            ((PlayerPatch) livingentitypatch).getSkill(SkillSlots.WEAPON_INNATE).getDataManager().setDataSync((SkillDataKey)AVSkillDataKeys.SUPERARMOR.get(), false, (ServerPlayer) livingentitypatch.getOriginal());
         }, Side.SERVER)});
         AVAnimations.GREATSWORD_DUAL_IDLE = new StaticAnimation(0.1F, true, "biped/living/greatsword_dual_idle", humanoidarmature);
         AVAnimations.GREATSWORD_DUAL_WALK = new MovementAnimation(0.1F, true, "biped/living/greatsword_dual_walk", humanoidarmature);

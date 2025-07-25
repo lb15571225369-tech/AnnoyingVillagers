@@ -9,6 +9,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import com.pla.annoyingvillagers.gameasset.AVSkillDataKeys;
 import com.pla.annoyingvillagers.init.*;
 import com.pla.annoyingvillagers.network.TextboxSetMessage;
 import com.pla.annoyingvillagers.procedures.NpcGearLoadProcedure;
@@ -61,6 +62,7 @@ public class AnnoyingVillagers {
         AnnoyingVillagersModEnchantments.REGISTRY.register(modEventBus);
         AnnoyingVillagersModMobEffects.REGISTRY.register(modEventBus);
         AnnoyingVillagersModParticleTypes.REGISTRY.register(modEventBus);
+        AVSkillDataKeys.DATA_KEYS.register(modEventBus);
         AnnoyingVillagersModCreativeTabs.register(modEventBus);
         AnnoyingVillagersModBiomeModifiers.register(modEventBus);
         AnnoyingVillagersModSounds.register(modEventBus);
