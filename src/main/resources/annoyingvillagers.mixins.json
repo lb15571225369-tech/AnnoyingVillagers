@@ -7,6 +7,7 @@
     "NoKnockDownProMixin",
     "KnockDownCheckMixin",
     "MoreParryMixin",
+    "AttributeInstanceMixin",
     "PlayerMobMixinRemapFalse",
     "PlayerMobMixinRemapTrue",
     "MobMixin",
