@@ -99,7 +99,7 @@ public abstract class CompressedDiamondArmorItem extends ArmorItem {
     public static class Helmet extends CompressedDiamondArmorItem {
 
         public Helmet() {
-            super(Type.BOOTS, (new Properties()));
+            super(Type.HELMET, (new Properties()));
         }
 
         public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlot equipmentslot, String s) {
