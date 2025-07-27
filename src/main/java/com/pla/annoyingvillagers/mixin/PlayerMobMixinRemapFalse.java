@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.mixin;
 
 import com.pla.annoyingvillagers.entity.*;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.OpenDoorGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
@@ -23,6 +24,28 @@ import java.util.List;
 
 @Mixin(value = {PlayerMobEntity.class}, remap = false)
 public class PlayerMobMixinRemapFalse {
+    void attackAllMonstersGoals(PlayerMobEntity playerMobEntity) {
+        playerMobEntity.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(playerMobEntity, Monster.class, true));
+        playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, HerobrineEntity.class, true));
+        playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, Herobrine2Entity.class, true));
+        playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, BlueDemonEntity.class, true));
+        playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, BlueDemon2Entity.class, true));
+    }
+
+    void runAwayFromHerobrineGoals(PlayerMobEntity playerMobEntity) {
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, HerobrineEntity.class, 20.0F, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, Herobrine2Entity.class, 20.0F, 1.2D, 1.8D));
+    }
+
+    void runAwayFromVillagerArmyGoals(PlayerMobEntity playerMobEntity) {
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, VillagerScoutEntity.class, 12.0F, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, VillagerScoutCaptainEntity.class, 12.0F, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, BlueVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, GreenVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, RedVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, PurpleVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
+    }
+
     @Inject(method = "addBehaviourGoals", at = @At("HEAD"), cancellable = true)
     private void injectTargetingAI(CallbackInfo ci) {
         PlayerMobEntity self = (PlayerMobEntity) (Object) this;
@@ -51,14 +74,11 @@ public class PlayerMobMixinRemapFalse {
         switch (role) {
             case "hostile_hunter" -> {
                 self.goalSelector.addGoal(2, new MeleeAttackGoal(self, 1.2D, false));
-                self.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(self, Monster.class, true));
                 self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, Player.class, true));
-                self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, HerobrineEntity.class, true));
-                self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, Herobrine2Entity.class, true));
-                self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, BlueDemonEntity.class, true));
-                self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, BlueDemon2Entity.class, true));
+                attackAllMonstersGoals(self);
             }
             case "village_hunter" -> {
+                runAwayFromHerobrineGoals(self);
                 self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Villager.class, true));
                 self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, IronGolem.class, true));
                 self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, VillagerScoutEntity.class, true));
@@ -70,16 +90,17 @@ public class PlayerMobMixinRemapFalse {
                 self.goalSelector.addGoal(3, new MeleeAttackGoal(self, 1.2D, false));
             }
             case "monster_hunter" -> {
-                self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Monster.class, true));
-                self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, HerobrineEntity.class, true));
-                self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Herobrine2Entity.class, true));
-                self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, BlueDemonEntity.class, true));
-                self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, BlueDemon2Entity.class, true));
+                attackAllMonstersGoals(self);
+                runAwayFromVillagerArmyGoals(self);
             }
             case "player_hunter" -> {
+                runAwayFromHerobrineGoals(self);
+                runAwayFromVillagerArmyGoals(self);
                 self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Player.class, true));
             }
             case "animal_hunter" -> {
+                runAwayFromHerobrineGoals(self);
+                runAwayFromVillagerArmyGoals(self);
                 self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Animal.class, true));
             }
         }

@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.entity.Herobrine2Entity;
 import com.pla.annoyingvillagers.entity.HerobrineEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.util.DelayedTask;
@@ -13,7 +14,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Random;
 
-public class HerobrineOnAwardKillScoreProcedure {
+public class Herobrine2OnAwardKillScoreProcedure {
 
     public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
         if (entity == null) return;
@@ -24,8 +25,7 @@ public class HerobrineOnAwardKillScoreProcedure {
                 public void run() {
                     if (!(world instanceof ServerLevel serverLevel)) return;
 
-                    HerobrineEntity herobrine = new HerobrineEntity(AnnoyingVillagersModEntities.HEROBRINE.get(), serverLevel);
-
+                    Herobrine2Entity herobrine = new Herobrine2Entity(AnnoyingVillagersModEntities.HEROBRINE_2.get(), serverLevel);
                     herobrine.moveTo(x, y, z, world.getRandom().nextFloat() * 360.0F, 0.0F);
 
                     if (entity instanceof LivingEntity victim) {

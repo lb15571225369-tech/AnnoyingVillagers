@@ -23,7 +23,12 @@ public class HerobrineOnInitialSpawnProcedure {
     public static void execute(LevelAccessor levelaccessor, final Entity entity) {
         if (entity != null) {
             if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("Herobrine has spawned a new possessed body."), false);
+                String killedName = entity.getPersistentData().getString("killed_name");
+                if (!killedName.isEmpty()) {
+                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal(killedName + " has been possessed by §5Herobrine§r."), false);
+                } else {
+                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("§5Herobrine§r has spawned a new possessed body."), false);
+                }
             }
 
             if (!entity.level().isClientSide() && entity.getServer() != null) {

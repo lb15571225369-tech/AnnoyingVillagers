@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
+import com.pla.annoyingvillagers.procedures.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -41,13 +42,6 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.procedures.Herobrine2DieProcedure;
-import com.pla.annoyingvillagers.procedures.HerobrineOnEntityTickUpdateProcedure;
-import com.pla.annoyingvillagers.procedures.HerobrineOnHurtProcedure;
-import com.pla.annoyingvillagers.procedures.HerobrineWhenEntityFallsProcedure;
-import com.pla.annoyingvillagers.procedures.HerobrineOnAwardKillScoreProcedure;
-import com.pla.annoyingvillagers.procedures.HerobrineOnInitialSpawnProcedure;
-import com.pla.annoyingvillagers.procedures.HerobrineNaturalSpawnProcedure;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
 @EventBusSubscriber
@@ -141,7 +135,9 @@ public class Herobrine2Entity extends Monster {
 
     public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
         super.awardKillScore(entity, i, damagesource);
-        HerobrineOnAwardKillScoreProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), entity);
+        if (random.nextFloat() < 0.2F) {
+            Herobrine2OnAwardKillScoreProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), entity);
+        }
     }
 
     public void baseTick() {
