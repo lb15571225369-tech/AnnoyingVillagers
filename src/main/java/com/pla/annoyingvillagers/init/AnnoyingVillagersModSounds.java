@@ -22,7 +22,6 @@ public class AnnoyingVillagersModSounds {
     public static final RegistryObject<SoundEvent> OB_PLACE = register("ob_place");
     public static final RegistryObject<SoundEvent> METAL_HIT = register("metal_hit");
     public static final RegistryObject<SoundEvent> TARGET_BLOCK_HIT = register("target_block_hit");
-    public static final RegistryObject<SoundEvent> DASH_STAR = register("dash_star");
     public static final RegistryObject<SoundEvent> ITEM_HIT = register("item_hit");
     public static final RegistryObject<SoundEvent> PIN = register("pin");
     public static final RegistryObject<SoundEvent> G_HIT = register("g_hit");

@@ -642,31 +642,6 @@ public class PlayerNpcDeadProcedure {
                     }
                 };
             }
-
-            if (ForgeRegistries.ENTITY_TYPES.getKey(entity1.getType()).toString().equals("minecraft:player")) {
-                float f;
-
-                if (entity1 instanceof LivingEntity) {
-                    LivingEntity livingentity = (LivingEntity)entity1;
-
-                    f = livingentity.getHealth();
-                } else {
-                    f = -1.0F;
-                }
-
-                if (f <= 7.0F) {
-                    if (levelaccessor instanceof Level) {
-                        Level level = (Level)levelaccessor;
-
-                        if (!level.isClientSide()) {
-                            level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "dash_star")), SoundSource.RECORDS, 2.0F, 1.0F);
-                        } else {
-                            level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "dash_star")), SoundSource.RECORDS, 2.0F, 1.0F, false);
-                        }
-                    }
-                }
-            }
-
         }
     }
 }
