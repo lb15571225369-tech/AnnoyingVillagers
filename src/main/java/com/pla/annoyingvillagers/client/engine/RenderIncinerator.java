@@ -27,36 +27,36 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 public class RenderIncinerator extends RenderItemBase {
 
     @OnlyIn(Dist.CLIENT)
-    public void renderItemInHand(ItemStack itemstack, LivingEntityPatch<?> livingentitypatch, InteractionHand interactionhand, HumanoidArmature humanoidarmature, OpenMatrix4f[] aopenmatrix4f, MultiBufferSource multibuffersource, PoseStack posestack, int i) {
-        if (livingentitypatch instanceof LivingEntityPatch) {
+    @Override
+    public void renderItemInHand(ItemStack stack, LivingEntityPatch<?> entitypatch, InteractionHand hand, HumanoidArmature armature, OpenMatrix4f[] poses, MultiBufferSource buffer, PoseStack poseStack, int packedLight, float partialTicks) {
+        if (entitypatch instanceof LivingEntityPatch) {
             OpenMatrix4f openmatrix4f = new OpenMatrix4f(this.mainhandcorrectionMatrix);
 
-            openmatrix4f.mulFront(aopenmatrix4f[humanoidarmature.toolR.getId()]);
-            DynamicAnimation dynamicanimation = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
+            openmatrix4f.mulFront(poses[armature.toolR.getId()]);
+            DynamicAnimation dynamicanimation = entitypatch.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
             ItemStack itemstack1;
 
             if (dynamicanimation != AVAnimations.Legendary_Sword_Heavy_Attack && dynamicanimation != WOMAnimations.SOLAR_AUTO_2) {
                 if (dynamicanimation == AVAnimations.Legendary_Sword_Wake_Up_Attack) {
                     itemstack1 = new ItemStack((ItemLike) AnnoyingVillagersModItems.WAKE_UP_LEGENDARY_SWORD.get());
-                    posestack.pushPose();
-                    this.mulPoseStack(posestack, openmatrix4f);
-                    Minecraft.getInstance().getItemRenderer().renderStatic(itemstack1, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, i, OverlayTexture.NO_OVERLAY, posestack, multibuffersource, livingentitypatch.getOriginal().level(), 0);
-                    posestack.popPose();
+                    poseStack.pushPose();
+                    this.mulPoseStack(poseStack, openmatrix4f);
+                    Minecraft.getInstance().getItemRenderer().renderStatic(itemstack1, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, entitypatch.getOriginal().level(), 0);
+                    poseStack.popPose();
                 } else {
                     itemstack1 = new ItemStack((ItemLike) AnnoyingVillagersModItems.LEGENDARY_SWORD.get());
-                    posestack.pushPose();
-                    this.mulPoseStack(posestack, openmatrix4f);
-                    Minecraft.getInstance().getItemRenderer().renderStatic(itemstack1, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, i, OverlayTexture.NO_OVERLAY, posestack, multibuffersource, livingentitypatch.getOriginal().level(), 0);
-                    posestack.popPose();
+                    poseStack.pushPose();
+                    this.mulPoseStack(poseStack, openmatrix4f);
+                    Minecraft.getInstance().getItemRenderer().renderStatic(itemstack1, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, entitypatch.getOriginal().level(), 0);
+                    poseStack.popPose();
                 }
             } else {
                 itemstack1 = new ItemStack((ItemLike) AnnoyingVillagersModItems.HEAVY_ATTACK_LEGENDARY_SWORD.get());
-                posestack.pushPose();
-                this.mulPoseStack(posestack, openmatrix4f);
-                Minecraft.getInstance().getItemRenderer().renderStatic(itemstack1, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, i, OverlayTexture.NO_OVERLAY, posestack, multibuffersource, livingentitypatch.getOriginal().level(), 0);
-                posestack.popPose();
+                poseStack.pushPose();
+                this.mulPoseStack(poseStack, openmatrix4f);
+                Minecraft.getInstance().getItemRenderer().renderStatic(itemstack1, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, entitypatch.getOriginal().level(), 0);
+                poseStack.popPose();
             }
         }
-
     }
 }
