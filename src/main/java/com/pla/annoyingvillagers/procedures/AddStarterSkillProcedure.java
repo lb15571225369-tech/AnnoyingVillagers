@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -71,12 +72,14 @@ public class AddStarterSkillProcedure {
             }
 
             entity.getPersistentData().putBoolean("kick_x", false);
+            entity.getPersistentData().putBoolean("ender_pearl_used", false);
             entity.getPersistentData().putDouble("air_kick", 0.0D);
             entity.getPersistentData().putDouble("kick", 0.0D);
             entity.getPersistentData().putDouble("axe_a", 0.0D);
             entity.getPersistentData().putDouble("sword_a", 0.0D);
             entity.getPersistentData().putDouble("fist_a", 0.0D);
             entity.getPersistentData().putDouble("dash_auto", 0.0D);
+            AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: AddStarterSkillProcedure ender_pearl_used is {}", entity.getPersistentData().getBoolean("ender_pearl_used"));
         }
     }
 }

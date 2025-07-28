@@ -58,12 +58,12 @@ public class EnchantedEnderPearlItem extends Item {
             double d0 = serverplayer.getX();
             double d1 = serverplayer.getY();
             double d2 = serverplayer.getZ();
-            EnchantedEnderPearlEntity fumomoyingzhenzhuentity = EnchantedEnderPearlEntity.shoot(level, serverplayer, (Random) level.getRandom(), 1.3F, 0.0D, 0);
+            EnchantedEnderPearlEntity enchantedEnderPearl = EnchantedEnderPearlEntity.shoot(level, serverplayer, (Random) level.getRandom(), 1.3F, 0.0D, 0);
 
             itemstack.hurtAndBreak(1, serverplayer, (serverplayer1) -> {
                 serverplayer1.broadcastBreakEvent(serverplayer.getUsedItemHand());
             });
-            fumomoyingzhenzhuentity.pickup = Pickup.DISALLOWED;
+            enchantedEnderPearl.pickup = Pickup.DISALLOWED;
             EnchantedEnderPearlWhenItemUsedProcedure.execute(serverplayer, itemstack);
         }
 

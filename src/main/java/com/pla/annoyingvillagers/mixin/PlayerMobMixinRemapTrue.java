@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.mixin;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.compat.player_mobs.ModCapabilities;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -48,12 +49,13 @@ public class PlayerMobMixinRemapTrue {
             return;
         }
 
+        float spawnRate = AnnoyingVillagersConfig.PLAYER_NPC_SPAWN_RATE.get().floatValue();
         if (world instanceof ServerLevel level && level.isDay()) {
             float roll = world.getRandom().nextFloat();
 
-            if (roll < 0.8F) {
+            if (roll < 1.0F - spawnRate) {
                 self.discard();
-            } else if (roll < 0.9F) {
+            } else if (roll < 1.0F - spawnRate + spawnRate / 2.0F) {
                 BlockPos pos = self.blockPosition();
                 int currentY = pos.getY();
                 int surfaceY = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, pos).getY();
@@ -80,7 +82,7 @@ public class PlayerMobMixinRemapTrue {
                 }
             }
         } else {
-            if (world.getRandom().nextFloat() < 0.8F) {
+            if (world.getRandom().nextFloat() < 1.0F - spawnRate) {
                 self.discard();
             }
         }

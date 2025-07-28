@@ -1,18 +1,12 @@
 package com.pla.annoyingvillagers.procedures;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.Herobrine2Entity;
-import com.pla.annoyingvillagers.entity.HerobrineEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import java.util.Random;
 
 public class Herobrine2OnAwardKillScoreProcedure {
 

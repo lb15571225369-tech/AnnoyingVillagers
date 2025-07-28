@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.procedures.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -135,7 +136,7 @@ public class Herobrine2Entity extends Monster {
 
     public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
         super.awardKillScore(entity, i, damagesource);
-        if (random.nextFloat() < 0.2F) {
+        if (random.nextFloat() < AnnoyingVillagersConfig.HEROBRINE_POSSESS_RATE.get().floatValue()) {
             Herobrine2OnAwardKillScoreProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), entity);
         }
     }

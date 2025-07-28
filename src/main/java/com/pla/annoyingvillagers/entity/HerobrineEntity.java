@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -69,8 +70,6 @@ public class HerobrineEntity extends Monster {
         this.setCustomName(Component.literal("§5Herobrine§r"));
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
-        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Blocks.OBSIDIAN));
-        this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Blocks.OBSIDIAN));
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -153,7 +152,7 @@ public class HerobrineEntity extends Monster {
 
     public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
         super.awardKillScore(entity, i, damagesource);
-        if (random.nextFloat() < 0.2F) {
+        if (random.nextFloat() < AnnoyingVillagersConfig.HEROBRINE_POSSESS_RATE.get().floatValue()) {
             HerobrineOnAwardKillScoreProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), entity);
         }
     }

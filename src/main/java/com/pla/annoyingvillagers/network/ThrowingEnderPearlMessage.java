@@ -48,12 +48,14 @@ public class ThrowingEnderPearlMessage {
         double d0 = player.getX();
         double d1 = player.getY();
         double d2 = player.getZ();
+        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: ThrowingEnderPearlMessage pressAction called");
 
-        if (level.hasChunkAt(player.blockPosition())) {
+        if (level.hasChunkAt(player.blockPosition()) && !level.isClientSide()) {
             if (i == 0) {
+                AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: ThrowingEnderPearlMessage calling ThrowingPearlKeyPressedProcedure");
+                AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: ender_pearl_used is {}", player.getPersistentData().getBoolean("ender_pearl_used"));
                 ThrowingPearlKeyPressedProcedure.execute(level, player);
             }
-
         }
     }
 

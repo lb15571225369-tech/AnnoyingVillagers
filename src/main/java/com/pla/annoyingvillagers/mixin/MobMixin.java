@@ -1,7 +1,5 @@
 package com.pla.annoyingvillagers.mixin;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.compat.player_mobs.ModCapabilities;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.world.damagesource.DamageSource;

@@ -85,31 +85,31 @@ public class EnchantedEnderPearlEntity extends AbstractArrow implements ItemSupp
     }
 
     public static EnchantedEnderPearlEntity shoot(Level level, LivingEntity livingentity, Random random, float f, double d0, int i) {
-        EnchantedEnderPearlEntity fumomoyingzhenzhuentity = new EnchantedEnderPearlEntity((EntityType) AnnoyingVillagersModEntities.ENCHANTED_ENDER_PEARL_PROJECTILE.get(), livingentity, level);
+        EnchantedEnderPearlEntity enchantedEnderPearl = new EnchantedEnderPearlEntity((EntityType) AnnoyingVillagersModEntities.ENCHANTED_ENDER_PEARL_PROJECTILE.get(), livingentity, level);
 
-        fumomoyingzhenzhuentity.shoot(livingentity.getViewVector(1.0F).x, livingentity.getViewVector(1.0F).y, livingentity.getViewVector(1.0F).z, f * 2.0F, 0.0F);
-        fumomoyingzhenzhuentity.setSilent(true);
-        fumomoyingzhenzhuentity.setCritArrow(false);
-        fumomoyingzhenzhuentity.setBaseDamage(d0);
-        fumomoyingzhenzhuentity.setKnockback(i);
-        level.addFreshEntity(fumomoyingzhenzhuentity);
+        enchantedEnderPearl.shoot(livingentity.getViewVector(1.0F).x, livingentity.getViewVector(1.0F).y, livingentity.getViewVector(1.0F).z, f * 2.0F, 0.0F);
+        enchantedEnderPearl.setSilent(true);
+        enchantedEnderPearl.setCritArrow(false);
+        enchantedEnderPearl.setBaseDamage(d0);
+        enchantedEnderPearl.setKnockback(i);
+        level.addFreshEntity(enchantedEnderPearl);
         level.playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "throw")), SoundSource.PLAYERS, 1.0F, 1.0F / (random.nextFloat() * 0.5F + 1.0F) + f / 2.0F);
-        return fumomoyingzhenzhuentity;
+        return enchantedEnderPearl;
     }
 
     public static EnchantedEnderPearlEntity shoot(LivingEntity livingentity, LivingEntity livingentity1) {
-        EnchantedEnderPearlEntity fumomoyingzhenzhuentity = new EnchantedEnderPearlEntity((EntityType) AnnoyingVillagersModEntities.ENCHANTED_ENDER_PEARL_PROJECTILE.get(), livingentity, livingentity.level());
+        EnchantedEnderPearlEntity enchantedEnderPearl = new EnchantedEnderPearlEntity((EntityType) AnnoyingVillagersModEntities.ENCHANTED_ENDER_PEARL_PROJECTILE.get(), livingentity, livingentity.level());
         double d0 = livingentity1.getX() - livingentity.getX();
         double d1 = livingentity1.getY() + (double) livingentity1.getEyeHeight() - 1.1D;
         double d2 = livingentity1.getZ() - livingentity.getZ();
 
-        fumomoyingzhenzhuentity.shoot(d0, d1 - fumomoyingzhenzhuentity.getY() + Math.hypot(d0, d2) * 0.20000000298023224D, d2, 2.6F, 12.0F);
-        fumomoyingzhenzhuentity.setSilent(true);
-        fumomoyingzhenzhuentity.setBaseDamage(0.0D);
-        fumomoyingzhenzhuentity.setKnockback(0);
-        fumomoyingzhenzhuentity.setCritArrow(false);
-        livingentity.level().addFreshEntity(fumomoyingzhenzhuentity);
+        enchantedEnderPearl.shoot(d0, d1 - enchantedEnderPearl.getY() + Math.hypot(d0, d2) * 0.20000000298023224D, d2, 2.6F, 12.0F);
+        enchantedEnderPearl.setSilent(true);
+        enchantedEnderPearl.setBaseDamage(0.0D);
+        enchantedEnderPearl.setKnockback(0);
+        enchantedEnderPearl.setCritArrow(false);
+        livingentity.level().addFreshEntity(enchantedEnderPearl);
         livingentity.level().playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "throw")), SoundSource.PLAYERS, 1.0F, 1.0F / ((new Random()).nextFloat() * 0.5F + 1.0F));
-        return fumomoyingzhenzhuentity;
+        return enchantedEnderPearl;
     }
 }
