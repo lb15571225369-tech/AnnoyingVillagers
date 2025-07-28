@@ -20,7 +20,6 @@ public class ThrowingPearlKeyPressedProcedure {
 
     public static void execute(LevelAccessor levelaccessor, final Entity entity) {
         if (entity != null) {
-            AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: ThrowingPearlKeyPressedProcedure execute is called");
             Level level;
             Projectile projectile;
 
@@ -28,11 +27,9 @@ public class ThrowingPearlKeyPressedProcedure {
                 Player player = (Player)entity;
 
                 if (player.getInventory().contains(new ItemStack((ItemLike) AnnoyingVillagersModItems.ENCHANTED_ENDER_PEARL.get()))) {
-                    AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: ender_pearl_used is {}", entity.getPersistentData().getBoolean("ender_pearl_used"));
                     if (!entity.getPersistentData().getBoolean("ender_pearl_used")) {
                         entity.getPersistentData().putBoolean("ender_pearl_used", true);
                         level = entity.level();
-                        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: ThrowingPearlKeyPressedProcedure shooting");
                         projectile = new EnchantedEnderPearlEntity((EntityType) AnnoyingVillagersModEntities.ENCHANTED_ENDER_PEARL_PROJECTILE.get(), level);
                         projectile.setOwner(entity);
                         ((EnchantedEnderPearlEntity) projectile).setBaseDamage((double)0.0F);

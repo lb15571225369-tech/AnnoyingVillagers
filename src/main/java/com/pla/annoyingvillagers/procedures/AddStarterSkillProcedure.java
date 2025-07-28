@@ -79,7 +79,6 @@ public class AddStarterSkillProcedure {
             entity.getPersistentData().putDouble("sword_a", 0.0D);
             entity.getPersistentData().putDouble("fist_a", 0.0D);
             entity.getPersistentData().putDouble("dash_auto", 0.0D);
-            AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: AddStarterSkillProcedure ender_pearl_used is {}", entity.getPersistentData().getBoolean("ender_pearl_used"));
         }
     }
 }
