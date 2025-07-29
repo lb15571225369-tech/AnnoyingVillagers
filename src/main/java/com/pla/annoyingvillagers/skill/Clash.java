@@ -84,8 +84,8 @@ public class Clash extends PassiveSkill {
                     }
 
                     serverplayer.setDeltaMovement(new Vec3(serverplayer.getLookAngle().x * -0.2D, 0.0D, serverplayer.getLookAngle().z * -0.2D));
-                    if (serverplayer.level() instanceof ServerLevel) {
-                        ((HitParticleType) EpicFightParticles.HIT_BLUNT.get()).spawnParticleWithArgument((ServerLevel) serverplayer.level(), HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, serverplayer, damagesource.getEntity());
+                    if (serverplayer.level() instanceof ServerLevel serverLevel) {
+                        ((HitParticleType) EpicFightParticles.HIT_BLUNT.get()).spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, serverplayer, damagesource.getEntity());
                     }
 
                     ItemStack itemstack = ((Player) playerpatch.getOriginal()).getMainHandItem();

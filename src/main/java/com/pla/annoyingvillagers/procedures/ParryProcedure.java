@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
@@ -29,7 +28,6 @@ import yesman.epicfight.api.animation.AnimationProvider;
 import yesman.epicfight.api.animation.types.AttackAnimation;
 import yesman.epicfight.api.animation.types.DashAttackAnimation;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
-import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.particle.EpicFightParticles;
@@ -247,8 +245,8 @@ public class ParryProcedure {
                         }
                     } else if (list.contains(dynamicanimation)) {
                         playerpatch.playSound((SoundEvent) EpicFightSounds.NEUTRALIZE_MOBS.get(), -0.05F, 0.1F);
-                        if (entity.isAlive()) {
-                            ((HitParticleType)EpicFightParticles.AIR_BURST.get()).spawnParticleWithArgument((ServerLevel)entity.level(), entity, entity1);
+                        if (entity.isAlive() && entity.level() instanceof ServerLevel serverLevel) {
+                            ((HitParticleType)EpicFightParticles.AIR_BURST.get()).spawnParticleWithArgument(serverLevel, entity, entity1);
                             if (!entity.level().isClientSide() && entity.getServer() != null) {
                                 try {
                                     entity.getServer().getCommands().getDispatcher().execute(
@@ -455,7 +453,9 @@ public class ParryProcedure {
                             };
                         }
 
-                        ((HitParticleType) EpicFightParticles.AIR_BURST.get()).spawnParticleWithArgument((ServerLevel) entity.level(), entity, entity1);
+                        if (entity.level() instanceof ServerLevel serverLevel) {
+                            ((HitParticleType) EpicFightParticles.AIR_BURST.get()).spawnParticleWithArgument(serverLevel, entity, entity1);
+                        }
                     }
                 }
             }
