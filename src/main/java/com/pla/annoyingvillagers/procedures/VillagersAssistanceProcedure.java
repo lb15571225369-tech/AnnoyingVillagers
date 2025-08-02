@@ -61,7 +61,7 @@ public class VillagersAssistanceProcedure {
                                 }
                             }
 
-                            playSound(levelaccessor, d0, d1, d2, "entity.firework_rocket.launch");
+                            playSound(levelaccessor, d0, d1, d2, "minecraft:entity.firework_rocket.launch");
                         }
 
                         private void playSound(LevelAccessor level, double x, double y, double z, String soundId) {
@@ -120,7 +120,7 @@ public class VillagersAssistanceProcedure {
                                 new DelayedTask(50) {
                                     @Override
                                     public void run() {
-                                        playSound(levelaccessor, d0, d1, d2, "entity.experience_orb.pickup");
+                                        playSound(levelaccessor, d0, d1, d2, "minecraft:entity.experience_orb.pickup");
 
                                         if (Math.random() <= 0.6) {
                                             broadcast("Villager Scout", "What the matter?");
