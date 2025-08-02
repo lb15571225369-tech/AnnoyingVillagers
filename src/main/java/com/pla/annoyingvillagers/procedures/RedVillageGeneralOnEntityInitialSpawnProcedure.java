@@ -192,16 +192,18 @@ public class RedVillageGeneralOnEntityInitialSpawnProcedure {
                     levelaccessor.addFreshEntity(cow);
                 }
 
-                entity.startRiding(
-                        levelaccessor.getEntitiesOfClass(
+                Entity rideTarget = levelaccessor.getEntitiesOfClass(
                                 Cow.class,
                                 AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D),
                                 cow -> true
                         ).stream()
                         .sorted(Comparator.comparingDouble(e -> e.distanceToSqr(d0, d1, d2)))
                         .findFirst()
-                        .orElse(null)
-                );
+                        .orElse(null);
+
+                if (rideTarget != null) {
+                    entity.startRiding(rideTarget);
+                }
                 Entity entity1 = levelaccessor.getEntitiesOfClass(
                                 Cow.class,
                                 AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D),

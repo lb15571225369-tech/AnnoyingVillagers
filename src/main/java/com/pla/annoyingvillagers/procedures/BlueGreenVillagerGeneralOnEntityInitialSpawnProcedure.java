@@ -287,15 +287,18 @@ public class BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure {
                     levelaccessor.addFreshEntity(polarbear);
                 }
 
-                entity.startRiding(
-                        levelaccessor.getEntitiesOfClass(PolarBear.class,
-                                        AABB.ofSize(new Vec3(d0, d1, d2), 2.0D, 2.0D, 2.0D),
-                                        polarbear -> true)
-                                .stream()
-                                .sorted(Comparator.comparingDouble(e -> e.distanceToSqr(d0, d1, d2)))
-                                .findFirst()
-                                .orElse(null)
-                );
+                Entity rideTarget = levelaccessor.getEntitiesOfClass(
+                                PolarBear.class,
+                                AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D),
+                                cow -> true
+                        ).stream()
+                        .sorted(Comparator.comparingDouble(e -> e.distanceToSqr(d0, d1, d2)))
+                        .findFirst()
+                        .orElse(null);
+
+                if (rideTarget != null) {
+                    entity.startRiding(rideTarget);
+                }
 
                 entity1 = levelaccessor.getEntitiesOfClass(PolarBear.class,
                                 AABB.ofSize(new Vec3(d0, d1, d2), 2.0D, 2.0D, 2.0D),

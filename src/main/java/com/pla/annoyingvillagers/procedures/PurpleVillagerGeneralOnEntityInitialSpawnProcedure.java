@@ -194,15 +194,18 @@ public class PurpleVillagerGeneralOnEntityInitialSpawnProcedure {
                     }
                 }
 
-                entity.startRiding(
-                        levelaccessor.getEntitiesOfClass(Cow.class,
-                                        AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D),
-                                        cow -> true
-                                ).stream()
-                                .sorted(Comparator.comparingDouble(e -> e.distanceToSqr(d0, d1, d2)))
-                                .findFirst()
-                                .orElse(null)
-                );
+                Entity rideTarget = levelaccessor.getEntitiesOfClass(
+                                Cow.class,
+                                AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D),
+                                cow -> true
+                        ).stream()
+                        .sorted(Comparator.comparingDouble(e -> e.distanceToSqr(d0, d1, d2)))
+                        .findFirst()
+                        .orElse(null);
+
+                if (rideTarget != null) {
+                    entity.startRiding(rideTarget);
+                }
             }
 
             if (!entity.level().isClientSide() && entity.getServer() != null) {
