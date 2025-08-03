@@ -37,7 +37,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
-import net.minecraftforge.common.DungeonHooks;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
@@ -154,7 +153,6 @@ public class Herobrine2Entity extends Monster {
 
             return HerobrineNaturalSpawnProcedure.execute(serverlevelaccessor, (double) i, (double) j, (double) k);
         });
-        DungeonHooks.addDungeonMob((EntityType) AnnoyingVillagersModEntities.HEROBRINE_2.get(), 180);
     }
 
     public static Builder createAttributes() {

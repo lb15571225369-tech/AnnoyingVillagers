@@ -23,7 +23,6 @@ import yesman.epicfight.model.armature.HumanoidArmature;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 @OnlyIn(Dist.CLIENT)
-@EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Bus.FORGE)
 public class HardGreatSwordRender extends RenderItemBase {
 
     @OnlyIn(Dist.CLIENT)

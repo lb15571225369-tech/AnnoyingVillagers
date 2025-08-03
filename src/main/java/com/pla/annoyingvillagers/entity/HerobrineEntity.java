@@ -35,7 +35,6 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.FrostWalkerEnchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
@@ -170,7 +169,6 @@ public class HerobrineEntity extends Monster {
 
             return HerobrineNaturalSpawnProcedure.execute(serverlevelaccessor, (double) i, (double) j, (double) k);
         });
-        DungeonHooks.addDungeonMob((EntityType) AnnoyingVillagersModEntities.HEROBRINE.get(), 180);
     }
 
     public static Builder createAttributes() {

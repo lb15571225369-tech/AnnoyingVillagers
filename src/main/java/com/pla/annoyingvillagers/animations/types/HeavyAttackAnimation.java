@@ -10,6 +10,8 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.GameRules.BooleanValue;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import yesman.epicfight.api.animation.Joint;
 import yesman.epicfight.api.animation.property.AnimationProperty.ActionAnimationProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.AttackAnimationProperty;
@@ -36,32 +38,34 @@ public class HeavyAttackAnimation extends AttackAnimation {
             float mfloat = Float.parseFloat(String.format(Locale.US, "%.2f", 1.0F / this.getTotalTime()));
             this.addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, mfloat);
         }
-        Set<JointMask> jointMaskSet = new HashSet<>();
-        jointMaskSet.add(JointMask.of("Root", JointMask.KEEP_CHILD_LOCROT));
-        jointMaskSet.add(JointMask.of("Torso"));
-        jointMaskSet.add(JointMask.of("Chest"));
-        jointMaskSet.add(JointMask.of("Head"));
-        jointMaskSet.add(JointMask.of("Shoulder_R"));
-        jointMaskSet.add(JointMask.of("Arm_R"));
-        jointMaskSet.add(JointMask.of("Hand_R"));
-        jointMaskSet.add(JointMask.of("Elbow_R"));
-        jointMaskSet.add(JointMask.of("Tool_R"));
-        jointMaskSet.add(JointMask.of("Shoulder_L"));
-        jointMaskSet.add(JointMask.of("Arm_L"));
-        jointMaskSet.add(JointMask.of("Hand_L"));
-        jointMaskSet.add(JointMask.of("Elbow_L"));
-        jointMaskSet.add(JointMask.of("Tool_L"));
-        jointMaskSet.add(JointMask.of("Thigh_R"));
-        jointMaskSet.add(JointMask.of("Leg_R"));
-        jointMaskSet.add(JointMask.of("Knee_R"));
-        jointMaskSet.add(JointMask.of("Thigh_L"));
-        jointMaskSet.add(JointMask.of("Leg_L"));
-        jointMaskSet.add(JointMask.of("Knee_L"));
-        JointMaskEntry jointMaskEntry = JointMaskEntry.builder()
-                .defaultMask(JointMask.JointMaskSet.of(jointMaskSet))
-                .create();
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            Set<JointMask> jointMaskSet = new HashSet<>();
+            jointMaskSet.add(JointMask.of("Root", JointMask.KEEP_CHILD_LOCROT));
+            jointMaskSet.add(JointMask.of("Torso"));
+            jointMaskSet.add(JointMask.of("Chest"));
+            jointMaskSet.add(JointMask.of("Head"));
+            jointMaskSet.add(JointMask.of("Shoulder_R"));
+            jointMaskSet.add(JointMask.of("Arm_R"));
+            jointMaskSet.add(JointMask.of("Hand_R"));
+            jointMaskSet.add(JointMask.of("Elbow_R"));
+            jointMaskSet.add(JointMask.of("Tool_R"));
+            jointMaskSet.add(JointMask.of("Shoulder_L"));
+            jointMaskSet.add(JointMask.of("Arm_L"));
+            jointMaskSet.add(JointMask.of("Hand_L"));
+            jointMaskSet.add(JointMask.of("Elbow_L"));
+            jointMaskSet.add(JointMask.of("Tool_L"));
+            jointMaskSet.add(JointMask.of("Thigh_R"));
+            jointMaskSet.add(JointMask.of("Leg_R"));
+            jointMaskSet.add(JointMask.of("Knee_R"));
+            jointMaskSet.add(JointMask.of("Thigh_L"));
+            jointMaskSet.add(JointMask.of("Leg_L"));
+            jointMaskSet.add(JointMask.of("Knee_L"));
+            JointMaskEntry jointMaskEntry = JointMaskEntry.builder()
+                    .defaultMask(JointMask.JointMaskSet.of(jointMaskSet))
+                    .create();
 
-        this.addProperty(ClientAnimationProperties.JOINT_MASK, jointMaskEntry);
+            this.addProperty(ClientAnimationProperties.JOINT_MASK, jointMaskEntry);
+        }
     }
 
     public HeavyAttackAnimation(float f, float f1, float f2, float f3, @Nullable Collider collider, Joint joint, String s, Armature armature) {
