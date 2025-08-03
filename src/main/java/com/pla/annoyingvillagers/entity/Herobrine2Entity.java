@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.procedures.*;
+import com.pla.annoyingvillagers.util.CommonGoals;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -66,19 +67,7 @@ public class Herobrine2Entity extends Monster {
 
     protected void registerGoals() {
         super.registerGoals();
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this, new Class[0]));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, Player.class, true, false));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, PlayerMobEntity.class, true, false));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, BlueDemonEntity.class, true, false));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, BlueDemon2Entity.class, true, false));
-        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.2D, false) {
-            protected double getAttackReachSqr(LivingEntity livingentity) {
-                return (double) (this.mob.getBbWidth() * this.mob.getBbWidth() + livingentity.getBbWidth());
-            }
-        });
-        this.goalSelector.addGoal(4, new RandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(6, new FloatGoal(this));
+        CommonGoals.registerGoalForHostileNpc(this);
     }
 
     public MobType getMobType() {

@@ -1,0 +1,7 @@
+{
+  "parent": "annoyingvillagers:custom/diamond_battle_axe",
+  "textures": {
+    "0": "annoyingvillagers:block/diamond_battle_axe",
+    "particle": "annoyingvillagers:item/diamond_battle_axe"
+  }
+}

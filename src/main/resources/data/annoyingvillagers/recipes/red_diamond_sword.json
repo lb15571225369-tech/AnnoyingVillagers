@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " 1 ",
+    "345",
+    " 7 "
+  ],
+  "key": {
+    "1": {
+      "item": "annoyingvillagers:ruby"
+    },
+    "3": {
+      "item": "annoyingvillagers:ruby"
+    },
+    "4": {
+      "item": "minecraft:diamond_sword"
+    },
+    "5": {
+      "item": "annoyingvillagers:ruby"
+    },
+    "7": {
+      "item": "annoyingvillagers:ruby"
+    }
+  },
+  "result": {
+    "item": "annoyingvillagers:red_diamond_sword",
+    "count": 1
+  }
+}

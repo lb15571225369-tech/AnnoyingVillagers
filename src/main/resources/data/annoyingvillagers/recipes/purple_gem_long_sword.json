@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "0",
+    "1",
+    "2"
+  ],
+  "key": {
+    "0": {
+      "item": "annoyingvillagers:purple_gem"
+    },
+    "1": {
+      "item": "annoyingvillagers:purple_gem"
+    },
+    "2": {
+      "item": "annoyingvillagers:diamond_long_sword"
+    }
+  },
+  "result": {
+    "item": "annoyingvillagers:purple_gem_long_sword",
+    "count": 1
+  }
+}

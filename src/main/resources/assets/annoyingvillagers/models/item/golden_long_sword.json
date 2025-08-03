@@ -1,0 +1,7 @@
+{
+  "parent": "annoyingvillagers:custom/golden_long_sword",
+  "textures": {
+    "0": "annoyingvillagers:block/golden_long_sword",
+    "particle": "annoyingvillagers:item/golden_long_sword"
+  }
+}

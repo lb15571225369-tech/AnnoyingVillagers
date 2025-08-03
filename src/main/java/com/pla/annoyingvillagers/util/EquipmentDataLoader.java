@@ -93,10 +93,10 @@ public class EquipmentDataLoader extends SimpleJsonResourceReloadListener {
 
             String itemId;
             if (slot.equals("OFFHAND") && oneHandWeaponInMainHand != null) {
-                if (new Random().nextBoolean()) {
+                if (new Random().nextFloat() < 0.25f) {
                     itemId = oneHandWeaponInMainHand;
                 } else {
-                    itemId = pool.get(RANDOM.nextInt(pool.size()));
+                    continue;
                 }
             } else {
                 itemId = pool.get(RANDOM.nextInt(pool.size()));

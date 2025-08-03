@@ -407,5 +407,124 @@
         "stream": false
       }
     ]
+  },
+  "youareweak": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:youareweak",
+        "stream": false
+      }
+    ]
+  },
+  "himsaytaiyuchunle": {
+    "subtitle": "subtitles.himsaytaiyuchunle",
+    "sounds": [
+      {
+        "name": "annoyingvillagers:himsaytaiyuchunle",
+        "stream": false
+      }
+    ]
+  },
+  "areyoutalkingaboutme": {
+    "subtitle": "subtitles.areyoutalkingaboutme",
+    "sounds": [
+      {
+        "name": "annoyingvillagers:are_you_talking_about_me",
+        "stream": false
+      }
+    ]
+  },
+  "stevesaywhyfighting": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:whykeepfighting",
+        "stream": false
+      }
+    ]
+  },
+  "stevechuanqi": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:stevechuanqi2",
+        "stream": false
+      }
+    ]
+  },
+  "steveattack": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:steve_attack",
+        "stream": false
+      }
+    ]
+  },
+  "zhanshenzhirenjuexing": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:zhanshenzhurenjuexing",
+        "stream": false
+      }
+    ]
+  },
+  "heavy_attack_start": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:heavy_attack_l_g",
+        "stream": false
+      }
+    ]
+  },
+  "stevesayno": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:no",
+        "stream": false
+      }
+    ]
+  },
+  "stevesayiwanttuseuthere": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:stevechuanqi4",
+        "stream": false
+      }
+    ]
+  },
+  "stevesaywhy": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:why",
+        "stream": false
+      }
+    ]
+  },
+  "stevespawn": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:stevespeak4",
+        "stream": false
+      }
+    ]
+  },
+  "stevewin": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:stevewin",
+        "stream": false
+      },
+      {
+        "name": "annoyingvillagers:stevespeak3",
+        "stream": false
+      }
+    ]
+  },
+  "steve2": {
+    "subtitle": "subtitles.steve2",
+    "sounds": [
+      {
+        "name": "annoyingvillagers:steve2",
+        "stream": false
+      }
+    ]
   }
 }

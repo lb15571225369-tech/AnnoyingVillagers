@@ -1,0 +1,10 @@
+{
+	"type": "epicfight:tachi",
+	"attributes": {
+		"common": {
+  			"impact": 1.6,
+			"max_strikes": 8,
+                  "speed_bonus": 1.0
+		}
+	}
+}

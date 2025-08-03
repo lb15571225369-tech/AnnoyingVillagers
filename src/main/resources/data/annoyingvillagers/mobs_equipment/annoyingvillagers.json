@@ -4,17 +4,48 @@
     "diamond_dagger",
     "crafting_table",
     "enchanted_wooden_door",
-    "wooden_door"
+    "wooden_door",
+    "diamond_magnet_sword",
+    "blue_flame_sword",
+    "diamond_great_blade",
+    "diamond_long_blade",
+    "diamond_halberd",
+    "diamond_scythe",
+    "diamond_twinblade",
+    "diamond_giant_axe",
+    "diamond_battle_axe",
+    "diamond_glaive",
+    "diamond_double_bit_axe",
+    "hooked_golden_sword",
+    "golden_long_sword",
+    "iron_long_sword",
+    "hooked_iron_sword",
+    "iron_cleaver",
+    "iron_glaive",
+    "iron_scythe",
+    "iron_spear",
+    "iron_poleaxe",
+    "emerald_double_bit_axe",
+    "emerald_sword",
+    "red_diamond_sword"
   ],
   "OFFHAND": [
   ],
   "FEET": [
+    "ruby_boots",
+    "unlight_diamond_boots"
   ],
   "LEGS": [
+    "ruby_leggings",
+    "unlight_diamond_leggings"
   ],
   "CHEST": [
+    "ruby_chestplate",
+    "unlight_diamond_chestplate"
   ],
   "HEAD": [
-    "villager_scout_helmet"
+    "villager_scout_helmet",
+    "ruby_helmet",
+    "unlight_diamond_helmet"
   ]
 }

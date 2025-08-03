@@ -1,0 +1,7 @@
+{
+  "parent": "annoyingvillagers:custom/ruby_great_sword",
+  "textures": {
+    "0": "annoyingvillagers:block/ruby_great_sword",
+    "particle": "annoyingvillagers:item/ruby_great_sword"
+  }
+}

@@ -37,6 +37,10 @@
 - LanCunQiEntity -> BlueVillagerGeneralEntity
 - LuCunQiEntity -> PurpleVillagerGeneralEntity
 - ZiCunQiEntity -> GreenVillagerGeneralEntity
+- AlexdeadEntity -> AlexDeadEntity
+- AlexVillagerEntity -> JevEntity
+- BeiganrandekelisiEntity-> InfectedChrisEntity
+- FennudeshidifuEntity -> AngrySteveEntity
 
 - AnyingheiyaoshiwuqiItem -> ShadowObsidianWeaponItem
 - CchunduzuanshiItem -> CompressedDiamondItem
@@ -203,6 +207,7 @@
 - ZuanShiJuJianDangShiTiBeiGongJuJiZhongShiProcedure -> DiamondGreatSwordItemOnHurtProcedure
 - ZuanShiJuJianDangYouJianDianJiKongQiShiShiTiDeWeiZhiProcedure -> DiamondGreatSwordItemOnUseProcedure
 - NpcKickEffectDangXiaoGuoJieShuShiProcedure -> NpcKickEffectOnEndProcedure
+- SteveDeadShiTiChuShiShengChengShiProcedure ->DeadEntitySpawnProcedure
 ---
 
 ## Variable Mappings
@@ -241,6 +246,8 @@
 - hong_cun_qi -> red_villager_general
 - zi_cun_qi -> purple_villager_general
 - projectile_fumomoyingzhenzhu -> projectile_enchanted_ender_pearl
+- beiganrandekelisi -> infected_chris
+- fennudeshidifu -> angry_steve
 
 - cun_min_zhen_cha_bing_spawn_egg -> villager_scout_spawn_egg
 - cczdz_spawn_egg -> villager_scout_captain_spawn_egg
@@ -317,3 +324,45 @@
 - predicates: guard_break, knock_down, attack_level, stamina, using_item -> add indestructible prefix
 - wom:biped/combat/ruine_dash -> wom:biped/combat/ruine_chatiment
 - epicfight:biped/living/eat_offhand -> 
+
+# 1.2 Items
+- ZHAN_SHEN_ZHI_REN - heavy_attack_legendary_sword_mob
+- JX_ZHANSHENZHIREN - axe_attack_legendary_sword_mob_awakened
+- JXZSZR_2 - heavy_attack_legendary_sword_mob_awakened
+- JIYAN - bedrock_weapon
+- HHONGBAOSHIJIAN - RubySword
+- HHONGBAOSHI - Ruby
+- HONG_BAO_SHI_JU_JIAN - ruby_great_sword
+- HHONGZUANSHIJIAN - RubyDiamondSword
+- ZZIBAOSHI - PurpleGem
+- ZIZIBAOSHICHANGJIAN - purple_gem_long_sword
+- SUNARMOUR_HELMET - RubyHelmet
+- SUNARMOUR_CHESTPLATE - RubyChestplate
+- SUNARMOUR_LEGGINGS - RubyLegging
+- SUNARMOUR_BOOTS - - RubyBoots
+- WEI_DA_DE_JIAN - Removed
+- SHENG_QI_SHI_ZHI_JIAN -> paladin_sword
+- LAN_YAN_JIAN - blue_flame_sword
+- ZUAN_SHI_BAO_NENG_JIAN - diamond_magnet_sword
+- FFENGYUANSUXIYANGJIAN ffj (recipe) - Diamond Sabre
+- ZUAN_SHI_JU_REN - diamond_great_blade
+- ZUAN_SHI_WAN_BING_REN - diamond_long_blade
+- ZUAN_SHI_MAO - diamond_halberd
+- ZZUANSHILIANDAO - diamond_scythe
+- ZUAN_SHI_SHUANG_LING_REN - diamond_twinblade
+- ZUAN_SHI_JU_FU - diamond_giant_axe
+- ZUAN_SHI_ZHAN_FU - diamond_battle_axe
+- ZUAN_SHI_CHANG_FU - diamond_glaive
+- ZZUANSHISHUANGKANFU - diamond_double_bit_axe
+- JJINGOUJIAN - Golden Hook Sword
+- JJINCHANGJIAN - golden_long_sword
+- CCBF - iron_poleaxe
+- TTIECHANGJIAN - iron_long_sword
+- TTIEGOUJIAN - hooked_iron_sword
+- TTIEZHIJUPIDAO - iron_cleaver
+- TTIELIANDAO - iron_scythe
+- TTIELIAN - iron_glaive
+- TTIEJI - iron_spear
+- LLBSJ - emerald_sword
+- LLVBAOSHISHUANGKANFU - emerald_double_bit_axe
+- VILLAGERHEAD_3 - jev_glasses

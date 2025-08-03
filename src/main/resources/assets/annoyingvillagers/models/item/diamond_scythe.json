@@ -1,0 +1,7 @@
+{
+  "parent": "annoyingvillagers:custom/diamond_scythe",
+  "textures": {
+    "0": "annoyingvillagers:block/diamond_scythe",
+    "particle": "annoyingvillagers:item/diamond_scythe"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "012",
+    "3 5"
+  ],
+  "key": {
+    "0": {
+      "item": "minecraft:ruby"
+    },
+    "1": {
+      "item": "minecraft:ruby"
+    },
+    "2": {
+      "item": "minecraft:ruby"
+    },
+    "3": {
+      "item": "minecraft:ruby"
+    },
+    "5": {
+      "item": "minecraft:ruby"
+    }
+  },
+  "result": {
+    "item": "annoyingvillagers:ruby_helmet",
+    "count": 1
+  }
+}

@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
+import com.pla.annoyingvillagers.util.CommonGoals;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -14,7 +15,6 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
@@ -23,21 +23,13 @@ import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.network.NetworkHooks;
@@ -50,7 +42,6 @@ import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityDamageProcedure;
 import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityDeathProcedure;
 import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityKillOtherEntityProcedure;
 import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityInitialSpawnProcedure;
-import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
 @EventBusSubscriber
 public class BlueDemonEntity extends Monster {
@@ -77,19 +68,7 @@ public class BlueDemonEntity extends Monster {
 
     protected void registerGoals() {
         super.registerGoals();
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this, new Class[0]));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, Player.class, true, false));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, PlayerMobEntity.class, true, false));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, HerobrineEntity.class, true, false));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, Herobrine2Entity.class, true, false));
-        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.2D, false) {
-            protected double getAttackReachSqr(LivingEntity livingentity) {
-                return (double) (this.mob.getBbWidth() * this.mob.getBbWidth() + livingentity.getBbWidth());
-            }
-        });
-        this.goalSelector.addGoal(4, new RandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(6, new FloatGoal(this));
+        CommonGoals.registerGoalForHostileNpc(this);
     }
 
     public MobType getMobType() {

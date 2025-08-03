@@ -1,0 +1,7 @@
+{
+  "parent": "annoyingvillagers:custom/iron_poleaxe",
+  "textures": {
+    "0": "annoyingvillagers:block/iron_poleaxe",
+    "particle": "annoyingvillagers:item/iron_poleaxe"
+  }
+}

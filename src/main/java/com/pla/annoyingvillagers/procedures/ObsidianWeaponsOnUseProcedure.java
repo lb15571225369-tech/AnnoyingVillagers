@@ -39,7 +39,7 @@ public class ObsidianWeaponsOnUseProcedure {
             Level level;
             Player player;
 
-            if (itemstack1.getItem() == AnnoyingVillagersModItems.OBSIDIAN_WEAPONS.get()) {
+            if (itemstack1.getItem() == AnnoyingVillagersModItems.OBSIDIAN_WEAPON.get()) {
                 if (entity instanceof LivingEntity) {
                     livingentity1 = (LivingEntity)entity;
                     itemstack1 = livingentity1.getMainHandItem();
@@ -221,7 +221,7 @@ public class ObsidianWeaponsOnUseProcedure {
                     itemstack1 = ItemStack.EMPTY;
                 }
 
-                if (itemstack1.getItem() == AnnoyingVillagersModItems.OBSIDIAN_WEAPONS.get()) {
+                if (itemstack1.getItem() == AnnoyingVillagersModItems.OBSIDIAN_WEAPON.get()) {
                     if (entity instanceof LivingEntity) {
                         livingentity1 = (LivingEntity)entity;
                         itemstack1 = livingentity1.getOffhandItem();

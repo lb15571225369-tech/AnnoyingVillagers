@@ -50,6 +50,22 @@ public class AnnoyingVillagersModSounds {
     public static final RegistryObject<SoundEvent> HIMSAYENOUGH = register("himsayenough");
     public static final RegistryObject<SoundEvent> HIMATTACK = register("himattack");
     public static final RegistryObject<SoundEvent> HIMATTACK2 = register("himattack2");
+    public static final RegistryObject<SoundEvent> YOU_ARE_WEAK = register("youareweak");
+    public static final RegistryObject<SoundEvent> HEROBRINE_SAY = register("himsaytaiyuchunle");
+    public static final RegistryObject<SoundEvent> ARE_YOU_TALKING_ABOUT_ME = register("areyoutalkingaboutme");
+    public static final RegistryObject<SoundEvent> STEVE_SAY_1 = register("stevechuanqi");
+    public static final RegistryObject<SoundEvent> STEVE_ATTACK = register("steveattack");
+    public static final RegistryObject<SoundEvent> ZHAN_SHEN = register("zhanshenzhirenjuexing");
+    public static final RegistryObject<SoundEvent> STEVE_SAY_NO = register("stevesayno");
+    public static final RegistryObject<SoundEvent> STEVE_SAY_USE_THERE = register("stevesayiwanttuseuthere");
+    public static final RegistryObject<SoundEvent> STEVE_SAY_WHY = register("stevesaywhy");
+    public static final RegistryObject<SoundEvent> STEVE_SAY_WHY_KEEP_FIGHTING = register("stevesaywhyfighting");
+    public static final RegistryObject<SoundEvent> STEVE_SPAWN = register("stevespawn");
+    public static final RegistryObject<SoundEvent> STEVE_WIN = register("stevewin");
+    public static final RegistryObject<SoundEvent> STEVE_2 = register("steve2");
+    public static final RegistryObject<SoundEvent> COOL_DOWN = register("cooldown");
+    public static final RegistryObject<SoundEvent> GET_OUT = register("get_out");
+    public static final RegistryObject<SoundEvent> L_G_W_U = register("l_g_w_u");
 
     private static RegistryObject<SoundEvent> register(String name) {
         return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(AnnoyingVillagers.MODID, name)));

@@ -5,7 +5,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class PlayerMobInventory implements IPlayerMobInventory, INBTSerializable<CompoundTag> {
-    private final ItemStackHandler inventory = new ItemStackHandler(18);
+    private final ItemStackHandler inventory = new ItemStackHandler(27);
 
     @Override
     public ItemStackHandler getInventory() {

@@ -1,7 +1,7 @@
 {
   "pools": [
     {
-      "rolls": 8,
+      "rolls": 6,
       "entries": [
         {
           "type": "minecraft:item",
@@ -35,21 +35,6 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 1,
-          "name": "minecraft:lime_bed"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 1,
-          "name": "minecraft:white_bed"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 1,
-          "name": "minecraft:yellow_bed"
-        },
-        {
-          "type": "minecraft:item",
           "weight": 3,
           "name": "minecraft:rotten_flesh"
         },
@@ -61,12 +46,32 @@
         {
           "type": "minecraft:item",
           "weight": 5,
-          "name": "minecraft:raw_iron"
+          "name": "minecraft:iron_ingot"
         },
         {
           "type": "minecraft:item",
           "weight": 5,
-          "name": "minecraft:raw_gold"
+          "name": "minecraft:iron_ingot"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "name": "minecraft:iron_ingot"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "name": "minecraft:gold_ingot"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "name": "minecraft:gold_ingot"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "name": "minecraft:gold_ingot"
         },
         {
           "type": "minecraft:item",
@@ -82,26 +87,6 @@
           "type": "minecraft:item",
           "weight": 1,
           "name": "minecraft:arrow"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 1,
-          "name": "minecraft:diamond_pickaxe"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 1,
-          "name": "minecraft:diamond_shovel"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 8,
-          "name": "minecraft:diamond"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 8,
-          "name": "minecraft:diamond"
         },
         {
           "type": "minecraft:item",
@@ -131,11 +116,6 @@
         {
           "type": "minecraft:item",
           "weight": 2,
-          "name": "minecraft:ender_pearl"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 8,
           "name": "minecraft:ender_pearl"
         },
         {

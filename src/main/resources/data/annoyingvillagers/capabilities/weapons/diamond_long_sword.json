@@ -1,10 +1,10 @@
 {
-	"type": "epicfight:sword",
+	"type": "tachi",
 	"attributes": {
 		"common": {
-  			"impact": 1.5,
-			"max_strikes": 3,
-                  "speed_bonus": 1.1
+  			"impact": 1.6,
+			"max_strikes": 8,
+                  "speed_bonus": 1.0
 		}
 	}
 }

@@ -1,0 +1,11 @@
+{
+	"type": "epicfight:redgreatsword",
+	"attributes": {
+		"common": {
+			"armor_negation":20.0,
+  			"impact": 10.7,
+			"max_strikes": 30,
+                  "speed_bonus": 0.2
+		}
+	}
+}

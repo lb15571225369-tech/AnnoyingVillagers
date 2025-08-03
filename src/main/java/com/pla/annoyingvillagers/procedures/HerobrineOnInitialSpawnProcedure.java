@@ -44,7 +44,7 @@ public class HerobrineOnInitialSpawnProcedure {
             if (!entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute(
-                            "team add herobrinexintu",
+                            "team add herobrine",
                             entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 } catch (CommandSyntaxException e) {
                     
@@ -54,7 +54,7 @@ public class HerobrineOnInitialSpawnProcedure {
             if (!entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute(
-                            "team join herobrinexintu @s",
+                            "team join herobrine @s",
                             entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 } catch (CommandSyntaxException e) {
                     

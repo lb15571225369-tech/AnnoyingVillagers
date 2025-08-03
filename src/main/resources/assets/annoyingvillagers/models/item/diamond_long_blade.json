@@ -1,0 +1,7 @@
+{
+  "parent": "annoyingvillagers:custom/diamond_long_blade",
+  "textures": {
+    "0": "annoyingvillagers:block/diamond_long_blade",
+    "particle": "annoyingvillagers:item/diamond_long_blade"
+  }
+}
