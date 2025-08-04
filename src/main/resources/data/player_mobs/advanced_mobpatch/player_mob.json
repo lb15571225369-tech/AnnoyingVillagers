@@ -1762,20 +1762,6 @@
 							"animation": "epicfight:biped/skill/step_right"
 						}
 					]
-				},
-				{
-					"weight": 99,
-					"canBeInterrupted": false,
-					"looping": false,
-					"behaviors": [
-						{
-							"conditions": [
-								{"predicate":"indestructible:guard_break", "invert": false}, {"predicate":"within_eye_height"}
-							],
-							"animation": "wom:biped/combat/torment_charged_attack_2",
-							"play_speed": 0.8
-						}
-					]
 				}
 			]
 		},
@@ -2064,20 +2050,6 @@
 								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 1.0, "max": 7.0}
 							],
 							"animation": "epicfight:biped/skill/step_right"
-						}
-					]
-				},
-				{
-					"weight": 99,
-					"canBeInterrupted": false,
-					"looping": false,
-					"behaviors": [
-						{
-							"conditions": [
-								{"predicate":"indestructible:guard_break", "invert": false}, {"predicate":"within_eye_height"}
-							],
-							"animation": "wom:biped/combat/torment_charged_attack_2",
-							"play_speed": 0.8
 						}
 					]
 				}
@@ -2405,20 +2377,6 @@
 								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 1.5, "max": 3.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "epicfight:biped/skill/step_right"
-						}
-					]
-				},
-                {
-					"weight": 99,
-					"canBeInterrupted": false,
-					"looping": false,
-					"behaviors": [
-						{
-							"conditions": [
-								{"predicate":"indestructible:guard_break", "invert": false}, {"predicate":"within_eye_height"}
-							],
-							"animation": "wom:biped/combat/torment_charged_attack_2",
-							"play_speed": 1
 						}
 					]
 				}

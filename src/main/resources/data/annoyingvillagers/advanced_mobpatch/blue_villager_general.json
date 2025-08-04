@@ -242,7 +242,7 @@
 							"guard": 1,
 							"play_speed": 1.8
 						}
-                        ]                 
+                        ]
 				},
 				{
 					"weight": 0.5,
@@ -362,20 +362,6 @@
 								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 1.0, "max": 7.0}
 							],
 							"animation": "epicfight:biped/skill/step_right"
-						}
-					]
-				},
-				{
-					"weight": 99,
-					"canBeInterrupted": false,
-					"looping": false,
-					"behaviors": [
-						{
-							"conditions": [
-								{"predicate":"indestructible:guard_break", "invert": false}, {"predicate":"within_eye_height"}
-							],
-							"animation": "epicfight:biped/skill/the_guillotine",
-							"play_speed": 1.5
 						}
 					]
 				}
@@ -616,20 +602,6 @@
 							"animation": "epicfight:biped/skill/step_right"
 						}
 					]
-				},
-                {
-					"weight": 99,
-					"canBeInterrupted": false,
-					"looping": false,
-					"behaviors": [
-						{
-							"conditions": [
-								{"predicate":"indestructible:guard_break", "invert": false}, {"predicate":"within_eye_height"}
-							],
-							"animation": "epicfight:biped/skill/the_guillotine",
-							"play_speed": 1
-						}
-					]
 				}
 			]
 		},
@@ -781,20 +753,6 @@
 							],
 							"animation": "epicfight:biped/combat/greatsword_dash",
 							"play_speed": 1.1
-						}
-					]
-				},
-                {
-					"weight": 99,
-					"canBeInterrupted": false,
-					"looping": false,
-					"behaviors": [
-						{
-							"conditions": [
-								{"predicate":"indestructible:guard_break", "invert": false}, {"predicate":"within_eye_height"}
-							],
-							"animation": "epicfight:biped/skill/the_guillotine",
-							"play_speed": 1
 						}
 					]
 				}

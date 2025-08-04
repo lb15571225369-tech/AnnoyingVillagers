@@ -12,6 +12,8 @@
     "PlayerMobMixinRemapTrue",
     "MobMixin",
     "EntityMixin",
+    "SkeletonMixin",
+    "ZombieMixin",
     "SkillBookScreenMixin"
   ],
   "client": [

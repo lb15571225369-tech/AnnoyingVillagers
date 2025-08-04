@@ -1,27 +1,22 @@
 package com.pla.annoyingvillagers.entity;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.ai.goal.OpenDoorGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
@@ -30,14 +25,32 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ThrownEgg;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.UUID;
 
 @EventBusSubscriber
 public class BbqEntity extends PathfinderMob {
+    private UUID followTargetUUID;
+    private Monster followTarget;
+
+    public void setFollowTarget(Monster followTarget) {
+        if (followTarget instanceof BlueDemonEntity || followTarget instanceof BlueDemon2Entity) {
+            this.followTarget = followTarget;
+            this.followTargetUUID = followTarget.getUUID();
+        }
+    }
+
+    public void setFollowTargetUUID(UUID followTargetUUID) {
+        this.followTargetUUID = followTargetUUID;
+    }
+
     public BbqEntity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.BBQ.get(), level);
     }
@@ -62,6 +75,28 @@ public class BbqEntity extends PathfinderMob {
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal(this, Herobrine2Entity.class, false, false));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal(this, HerobrineEntity.class, false, false));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal(this, Herobrine3Entity.class, false, false));
+        this.goalSelector.addGoal(2, new Goal() {
+            @Override
+            public boolean canUse() {
+                return followTarget != null && followTarget.isAlive();
+            }
+
+            @Override
+            public void tick() {
+                if (followTarget != null && followTarget.isAlive()) {
+                    getNavigation().moveTo(followTarget, 2.0D);
+                }
+            }
+
+            @Override
+            public boolean canContinueToUse() {
+                return followTarget != null && followTarget.isAlive() && distanceTo(followTarget) > 2.0D;
+            }
+        });
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, (target) -> followTarget != null
+                && followTarget.isAlive()
+                && target != null
+                && target.getLastHurtMob() == followTarget));
         this.targetSelector.addGoal(5, new NearestAttackableTargetGoal(this, VillagerScoutEntity.class, false, false));
         this.targetSelector.addGoal(6, new NearestAttackableTargetGoal(this, RedVillagerGeneralEntity.class, false, false));
         this.targetSelector.addGoal(7, new NearestAttackableTargetGoal(this, BlueVillagerGeneralEntity.class, false, false));
@@ -97,6 +132,50 @@ public class BbqEntity extends PathfinderMob {
 
     public SoundEvent getDeathSound() {
         return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
+    }
+
+    @Override
+    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
+        if (!this.level().isClientSide() && this.getServer() != null) {
+            try {
+                this.getServer().getCommands().getDispatcher().execute(
+                        "team add blue_demon",
+                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+            } catch (CommandSyntaxException e) {
+            }
+            try {
+                this.getServer().getCommands().getDispatcher().execute(
+                        "team modify blue_demon friendlyFire false",
+                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+            } catch (CommandSyntaxException e) {
+            }
+            try {
+                this.getServer().getCommands().getDispatcher().execute(
+                        "team join blue_demon @s",
+                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+            } catch (CommandSyntaxException e) {
+            }
+        }
+        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (!level().isClientSide) {
+            if (followTarget == null && followTargetUUID != null) {
+                Entity entity = ((ServerLevel) level()).getEntity(followTargetUUID);
+                if (entity instanceof Monster monster) {
+                    followTarget = monster;
+                } else {
+                    followTargetUUID = null;
+                }
+            }
+            if (followTarget != null && !followTarget.isAlive()) {
+                followTarget = null;
+                followTargetUUID = null;
+            }
+        }
     }
 
     public boolean hurt(DamageSource damagesource, float f) {

@@ -12,6 +12,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -84,7 +85,7 @@ public class EnchantedEnderPearlEntity extends AbstractArrow implements ItemSupp
 
     }
 
-    public static EnchantedEnderPearlEntity shoot(Level level, LivingEntity livingentity, Random random, float f, double d0, int i) {
+    public static EnchantedEnderPearlEntity shoot(Level level, LivingEntity livingentity, RandomSource random, float f, double d0, int i) {
         EnchantedEnderPearlEntity enchantedEnderPearl = new EnchantedEnderPearlEntity((EntityType) AnnoyingVillagersModEntities.ENCHANTED_ENDER_PEARL_PROJECTILE.get(), livingentity, level);
 
         enchantedEnderPearl.shoot(livingentity.getViewVector(1.0F).x, livingentity.getViewVector(1.0F).y, livingentity.getViewVector(1.0F).z, f * 2.0F, 0.0F);

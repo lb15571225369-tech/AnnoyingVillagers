@@ -55,16 +55,13 @@ public class EnchantedEnderPearlItem extends Item {
     public void releaseUsing(ItemStack itemstack, Level level, LivingEntity livingentity, int i) {
         if (!level.isClientSide() && livingentity instanceof ServerPlayer) {
             ServerPlayer serverplayer = (ServerPlayer) livingentity;
-            double d0 = serverplayer.getX();
-            double d1 = serverplayer.getY();
-            double d2 = serverplayer.getZ();
-            EnchantedEnderPearlEntity enchantedEnderPearl = EnchantedEnderPearlEntity.shoot(level, serverplayer, (Random) level.getRandom(), 1.3F, 0.0D, 0);
+            EnchantedEnderPearlEntity enchantedEnderPearl = EnchantedEnderPearlEntity.shoot(level, serverplayer, AnnoyingVillagers.randomSource, 1.3F, 0.0D, 0);
 
             itemstack.hurtAndBreak(1, serverplayer, (serverplayer1) -> {
                 serverplayer1.broadcastBreakEvent(serverplayer.getUsedItemHand());
             });
             enchantedEnderPearl.pickup = Pickup.DISALLOWED;
-            EnchantedEnderPearlWhenItemUsedProcedure.execute(serverplayer, itemstack);
+            serverplayer.getCooldowns().addCooldown(itemstack.getItem(), 20);
         }
 
     }

@@ -8,21 +8,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
@@ -43,10 +38,27 @@ import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityDeathProcedure;
 import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityKillOtherEntityProcedure;
 import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityInitialSpawnProcedure;
 
+import java.util.UUID;
+
 @EventBusSubscriber
 public class BlueDemonEntity extends Monster {
+    private BbqEntity bbqEntityToProtect;
+    private UUID bbqUUID;
+
+    public void setProtectingBbq(BbqEntity bbqEntity) {
+        this.bbqEntityToProtect = bbqEntity;
+    }
+
+    public void setBbqUUID(UUID bbqUUID) {
+        this.bbqUUID = bbqUUID;
+    }
+
     public BlueDemonEntity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.BLUE_DEMON.get(), level);
+    }
+
+    public UUID getBbqUUID() {
+        return bbqUUID;
     }
 
     public BlueDemonEntity(EntityType<BlueDemonEntity> entitytype, Level level) {
@@ -68,7 +80,46 @@ public class BlueDemonEntity extends Monster {
 
     protected void registerGoals() {
         super.registerGoals();
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, (target) -> bbqEntityToProtect != null
+                && bbqEntityToProtect.isAlive()
+                && target != null
+                && target.getLastHurtMob() == bbqEntityToProtect));
         CommonGoals.registerGoalForHostileNpc(this);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (!level().isClientSide) {
+            if (bbqEntityToProtect == null && bbqUUID != null) {
+                Entity entity = ((ServerLevel) level()).getEntity(bbqUUID);
+                if (entity instanceof BbqEntity bbqEntity) {
+                    bbqEntityToProtect = bbqEntity;
+                } else {
+                    bbqUUID = null;
+                }
+            }
+            if (bbqEntityToProtect != null && !bbqEntityToProtect.isAlive()) {
+                bbqEntityToProtect = null;
+                bbqUUID = null;
+            }
+        }
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        if (bbqUUID != null) {
+            tag.putUUID("BbqUUID", bbqUUID);
+        }
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.hasUUID("BbqUUID")) {
+            bbqUUID = tag.getUUID("BbqUUID");
+        }
     }
 
     public MobType getMobType() {
@@ -112,7 +163,7 @@ public class BlueDemonEntity extends Monster {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
 
-        BlueDemonOnEntityInitialSpawnProcedure.execute(this);
+        BlueDemonOnEntityInitialSpawnProcedure.execute(serverlevelaccessor, this);
         return spawngroupdata1;
     }
 

@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.util;
 
 import com.pla.annoyingvillagers.entity.*;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
@@ -93,35 +94,29 @@ public class CommonGoals {
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal(mob, Herobrine3Entity.class, false, false));
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal(mob, BlueDemonEntity.class, false, false));
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal(mob, BlueDemon2Entity.class, false, false));
-        mob.targetSelector.addGoal(2, new NearestAttackableTargetGoal(mob, Monster.class, false, false));
+        mob.targetSelector.addGoal(2, new NearestAttackableTargetGoal(mob, Monster.class, false, (target) -> !(target instanceof PlayerMobEntity)));
         mob.goalSelector.addGoal(2, new MeleeAttackGoal(mob, 1.2D, false) {
             protected double getAttackReachSqr(LivingEntity livingentity) {
                 return (double) (mob.getBbWidth() * mob.getBbWidth() + livingentity.getBbWidth());
             }
         });
-//        mob.targetSelector.addGoal(3, new NearestAttackableTargetGoal(mob, HbGaoJiFenShenEntity.class, false, false));
-//        mob.targetSelector.addGoal(4, new NearestAttackableTargetGoal(mob, Herobrine7Entity.class, false, false));
-//        mob.targetSelector.addGoal(5, new NearestAttackableTargetGoal(mob, DiJiherobrineEntity.class, false, false));
-//        mob.targetSelector.addGoal(6, new NearestAttackableTargetGoal(mob, LingZhiEntity.class, false, false));
-        mob.targetSelector.addGoal(7, new NearestAttackableTargetGoal(mob, BlueVillagerGeneralEntity.class, false, false));
-        mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal(mob, GreenVillagerGeneralEntity.class, false, false));
-        mob.targetSelector.addGoal(9, new NearestAttackableTargetGoal(mob, RedVillagerGeneralEntity.class, false, false));
-        mob.targetSelector.addGoal(10, new NearestAttackableTargetGoal(mob, PurpleVillagerGeneralEntity.class, false, false));
-        mob.targetSelector.addGoal(11, new NearestAttackableTargetGoal(mob, VillagerScoutCaptainEntity.class, false, false));
-        mob.targetSelector.addGoal(12, new NearestAttackableTargetGoal(mob, VillagerScoutEntity.class, false, false));
-//        mob.targetSelector.addGoal(13, new NearestAttackableTargetGoal(mob, ShiTi303Entity.class, false, false));
-//        mob.targetSelector.addGoal(14, new NearestAttackableTargetGoal(mob, ZaiEZhiWangEntity.class, false, false));
-        mob.goalSelector.addGoal(15, new MeleeAttackGoal(mob, 1.5D, false) {
+        mob.goalSelector.addGoal(2, new AvoidEntityGoal<>(mob, VillagerScoutEntity.class, 12.0F, 1.2D, 1.8D));
+        mob.goalSelector.addGoal(2, new AvoidEntityGoal<>(mob, VillagerScoutCaptainEntity.class, 12.0F, 1.2D, 1.8D));
+        mob.goalSelector.addGoal(2, new AvoidEntityGoal<>(mob, BlueVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
+        mob.goalSelector.addGoal(2, new AvoidEntityGoal<>(mob, GreenVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
+        mob.goalSelector.addGoal(2, new AvoidEntityGoal<>(mob, RedVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
+        mob.goalSelector.addGoal(2, new AvoidEntityGoal<>(mob, PurpleVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
+        mob.goalSelector.addGoal(3, new MeleeAttackGoal(mob, 1.5D, false) {
             protected double getAttackReachSqr(LivingEntity livingentity) {
                 return (double) (mob.getBbWidth() * mob.getBbWidth() + livingentity.getBbWidth());
             }
         });
-        mob.goalSelector.addGoal(16, new RandomStrollGoal(mob, 1.0D));
-        mob.goalSelector.addGoal(17, new OpenDoorGoal(mob, true));
-        mob.targetSelector.addGoal(18, new HurtByTargetGoal(mob, new Class[0]));
-        mob.goalSelector.addGoal(19, new OpenDoorGoal(mob, false));
-        mob.goalSelector.addGoal(20, new RandomLookAroundGoal(mob));
-        mob.goalSelector.addGoal(21, new FloatGoal(mob));
+        mob.goalSelector.addGoal(4, new RandomStrollGoal(mob, 1.0D));
+        mob.goalSelector.addGoal(5, new OpenDoorGoal(mob, true));
+        mob.targetSelector.addGoal(6, new HurtByTargetGoal(mob, new Class[0]));
+        mob.goalSelector.addGoal(7, new OpenDoorGoal(mob, false));
+        mob.goalSelector.addGoal(8, new RandomLookAroundGoal(mob));
+        mob.goalSelector.addGoal(9, new FloatGoal(mob));
     }
 
     public static void registerGoalForCrazyNpc(PathfinderMob mob) {
@@ -161,5 +156,47 @@ public class CommonGoals {
         mob.goalSelector.addGoal(23, new RandomStrollGoal(mob, 1.0D));
         mob.goalSelector.addGoal(24, new RandomLookAroundGoal(mob));
         mob.goalSelector.addGoal(25, new FloatGoal(mob));
+    }
+
+    public static void attackAllMonstersGoals(PlayerMobEntity playerMobEntity) {
+        playerMobEntity.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(playerMobEntity, Monster.class, true, (target) -> !(target instanceof PlayerMobEntity)));
+        playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, HerobrineEntity.class, true));
+        playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, Herobrine2Entity.class, true));
+        playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, Herobrine3Entity.class, true));
+        playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, BlueDemonEntity.class, true));
+        playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, BlueDemon2Entity.class, true));
+    }
+
+    public static void runAwayFromHerobrineGoals(PlayerMobEntity playerMobEntity) {
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, HerobrineEntity.class, 20.0F, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, Herobrine2Entity.class, 20.0F, 1.2D, 1.8D));
+        playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, Herobrine3Entity.class, true));
+    }
+
+    public static void runAwayFromVillagerArmyGoals(PlayerMobEntity playerMobEntity) {
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, VillagerScoutEntity.class, 12.0F, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, VillagerScoutCaptainEntity.class, 12.0F, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, BlueVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, GreenVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, RedVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, PurpleVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
+    }
+
+    public static void attackAllNpcGoals(Mob playerMobEntity) {
+        playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, AlexEntity.class, true));
+        playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, JevEntity.class, true));
+        playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, ChrisEntity.class, true));
+        playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, SteveEntity.class, true));
+        playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, Steve2Entity.class, true));
+        playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, AngrySteveEntity.class, true));
+    }
+
+    public static void attackAllVillagerArmyGoal(Mob playerMobEntity) {
+        playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, VillagerScoutEntity.class, true));
+        playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, VillagerScoutCaptainEntity.class, true));
+        playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, RedVillagerGeneralEntity.class, true));
+        playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, BlueVillagerGeneralEntity.class, true));
+        playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, GreenVillagerGeneralEntity.class, true));
+        playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, PurpleVillagerGeneralEntity.class, true));
     }
 }

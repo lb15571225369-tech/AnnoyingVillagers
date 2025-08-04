@@ -11,22 +11,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -37,8 +31,23 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.UUID;
+
 @EventBusSubscriber
 public class AlexEntity extends PathfinderMob {
+    private JevEntity jevToProtect;
+    private UUID jevUUID;
+    private boolean jevDeathMessageSent = false;
+
+    public void setProtectingJev(JevEntity jev) {
+        this.jevToProtect = jev;
+    }
+
+    public void setJevUUID(UUID jevUUID) {
+        this.jevUUID = jevUUID;
+    }
+
     public AlexEntity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.ALEX.get(), level);
     }
@@ -61,8 +70,31 @@ public class AlexEntity extends PathfinderMob {
 
     protected void registerGoals() {
         super.registerGoals();
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, (target) -> jevToProtect != null
+                && jevToProtect.isAlive()
+                && target != null
+                && target.getLastHurtMob() == jevToProtect));
         CommonGoals.registerGoalForNeutralNpc(this);
     }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        if (jevUUID != null) {
+            tag.putUUID("JevUUID", jevUUID);
+        }
+        tag.putBoolean("JevDeathMessageSent", jevDeathMessageSent);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.hasUUID("JevUUID")) {
+            jevUUID = tag.getUUID("JevUUID");
+        }
+        jevDeathMessageSent = tag.getBoolean("JevDeathMessageSent");
+    }
+
 
     public MobType getMobType() {
         return MobType.UNDEFINED;
@@ -123,6 +155,44 @@ public class AlexEntity extends PathfinderMob {
     public void baseTick() {
         super.baseTick();
         AlexOnTickProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (!level().isClientSide) {
+            if (jevToProtect == null && jevUUID != null) {
+                Entity entity = ((ServerLevel) level()).getEntity(jevUUID);
+                if (entity instanceof JevEntity jev) {
+                    jevToProtect = jev;
+                } else {
+                    jevUUID = null;
+                }
+            }
+            if (jevToProtect != null && !jevToProtect.isAlive()) {
+                if (!jevDeathMessageSent) {
+                    jevDeathMessageSent = true;
+                    if (level() instanceof ServerLevel serverLevel) {
+                        String[] JEV_DEATH_LINES = {
+                                "Jev...? Jev!? No... please no...",
+                                "Not you too, Jev...",
+                                "They killed him... They actually killed Jev...",
+                                "I told you to stay back, Jev...",
+                                "You idiot... you weren't supposed to die...",
+                                "Damn it, Jev... you were all I had left...",
+                                "Rest now, Jev... I'll handle this.",
+                                "Heh... even in death, you're still loyal, Jev...",
+                                "They’ll pay for this... I swear it, Jev"
+                        };
+
+                        String message = JEV_DEATH_LINES[level().getRandom().nextInt(JEV_DEATH_LINES.length)];
+                        serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Jev> " + message), false);
+                    }
+                }
+                jevToProtect = null;
+                jevUUID = null;
+            }
+        }
     }
 
     public static void init() {

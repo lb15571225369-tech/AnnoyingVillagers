@@ -1,14 +1,19 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.entity.AlexDeadEntity;
+import com.pla.annoyingvillagers.entity.SteveDeadEntity;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -73,7 +78,21 @@ public class Steve2OnDeathProcedure {
                 }
 
                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Steve> No!"), false);
+                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Steve> Noooooooooooooooooooooooooo!"), false);
+                }
+
+                if (levelaccessor instanceof ServerLevel) {
+                    ServerLevel serverlevel = (ServerLevel)levelaccessor;
+                    SteveDeadEntity steveDeadEntity = new SteveDeadEntity((EntityType) AnnoyingVillagersModEntities.STEVE_DEAD.get(), serverlevel);
+
+                    steveDeadEntity.moveTo(d0, d1, d2, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                    if (steveDeadEntity instanceof Mob) {
+                        Mob mob = (Mob)steveDeadEntity;
+
+                        mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(steveDeadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                    }
+
+                    levelaccessor.addFreshEntity(steveDeadEntity);
                 }
                 new DelayedTask(20) {
                     public void run() {

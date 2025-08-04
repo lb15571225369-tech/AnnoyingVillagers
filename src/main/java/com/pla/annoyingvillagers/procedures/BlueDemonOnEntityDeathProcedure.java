@@ -1,7 +1,10 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.entity.BbqEntity;
+import com.pla.annoyingvillagers.entity.BlueDemonEntity;
 import com.pla.annoyingvillagers.util.DelayedTask;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.LevelAccessor;
 
@@ -20,9 +23,14 @@ public class BlueDemonOnEntityDeathProcedure {
             } catch (CommandSyntaxException e) {
                 
             }
-        }
-
-        if (!entity.level().isClientSide()) {
+            if (entity instanceof BlueDemonEntity blueDemon && blueDemon.getBbqUUID() != null) {
+                if (world instanceof ServerLevel serverLevel) {
+                    Entity bbq = serverLevel.getEntity(blueDemon.getBbqUUID());
+                    if (bbq instanceof BbqEntity && bbq.isAlive()) {
+                        bbq.discard();
+                    }
+                }
+            }
             entity.discard();
         }
 

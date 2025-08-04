@@ -330,7 +330,7 @@ public class ChrisOnHurtProcedure {
                 if (Math.random() <= 0.32D && entity instanceof LivingEntity) {
                     livingentity = (LivingEntity)entity;
                     if (!livingentity.level().isClientSide()) {
-                        livingentity.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.TAOTUOBUFF.get(), 1, 1, false, false));
+                        livingentity.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.ESCAPE.get(), 1, 1, false, false));
                     }
                 }
             }

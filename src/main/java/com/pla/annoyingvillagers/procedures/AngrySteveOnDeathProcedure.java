@@ -20,6 +20,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -33,7 +34,7 @@ public class AngrySteveOnDeathProcedure {
             if (!entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute(
-                            "tellraw @a {\"text\":\"<Steve> No !!\"}",
+                            "tellraw @a {\"text\":\"<Steve> Nooooooooooooooo !!\"}",
                             entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 } catch (CommandSyntaxException e) {
                 }
@@ -413,7 +414,9 @@ public class AngrySteveOnDeathProcedure {
                     if (levelaccessor1 instanceof Level) {
                         level1 = (Level)levelaccessor1;
                         if (!level1.isClientSide()) {
-                            itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, new ItemStack(Blocks.LADDER));
+                            ItemStack enchantedLadder = new ItemStack(Blocks.LADDER);
+                            enchantedLadder.enchant(Enchantments.MENDING, 5);
+                            itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, enchantedLadder);
                             itementity.setPickUpDelay(10);
                             level1.addFreshEntity(itementity);
                         }
@@ -423,7 +426,9 @@ public class AngrySteveOnDeathProcedure {
                     if (levelaccessor1 instanceof Level) {
                         level1 = (Level)levelaccessor1;
                         if (!level1.isClientSide()) {
-                            itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, new ItemStack(Blocks.LADDER));
+                            ItemStack enchantedLadder = new ItemStack(Blocks.OAK_TRAPDOOR);
+                            enchantedLadder.enchant(Enchantments.UNBREAKING, 5);
+                            itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, enchantedLadder);
                             itementity.setPickUpDelay(10);
                             level1.addFreshEntity(itementity);
                         }

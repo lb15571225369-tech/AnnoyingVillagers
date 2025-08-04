@@ -50,7 +50,7 @@ public class AnnoyingVillagersModMobEffects {
     public static final RegistryObject<MobEffect> HEROBRINE = AnnoyingVillagersModMobEffects.REGISTRY.register("herobrine", () -> {
         return new HerobrineMobEffect();
     });
-    public static final RegistryObject<MobEffect> TAOTUOBUFF = AnnoyingVillagersModMobEffects.REGISTRY.register("taotuobuff", () -> {
+    public static final RegistryObject<MobEffect> ESCAPE = AnnoyingVillagersModMobEffects.REGISTRY.register("escape", () -> {
         return new EscapeMobEffect();
     });
 }

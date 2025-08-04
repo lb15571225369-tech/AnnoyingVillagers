@@ -944,7 +944,7 @@ public class BleedingProcedure {
                                     @Override
                                     public void run() {
                                         if (zombie.isAlive()) {
-                                            if (zombie.getHealth() <= 15.0F) {
+                                            if (zombie.getHealth() <= 10.0F) {
                                                 LivingEntityPatch<?> livingentitypatch2 = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                                                 ItemStack oldItem = zombie.getOffhandItem();
                                                 Entity entity2;

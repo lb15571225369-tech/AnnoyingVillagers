@@ -324,6 +324,7 @@
 - predicates: guard_break, knock_down, attack_level, stamina, using_item -> add indestructible prefix
 - wom:biped/combat/ruine_dash -> wom:biped/combat/ruine_chatiment
 - epicfight:biped/living/eat_offhand -> 
+- remove the_guillotine animation with weight 99
 
 # 1.2 Items
 - ZHAN_SHEN_ZHI_REN - heavy_attack_legendary_sword_mob

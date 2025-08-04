@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.entity.AlexEntity;
 import com.pla.annoyingvillagers.entity.JevEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import net.minecraft.nbt.CompoundTag;
@@ -52,16 +53,22 @@ public class AlexOnSpawnProcedure {
             itemstack.enchant(Enchantments.SWEEPING_EDGE, 4);
             if (levelaccessor instanceof ServerLevel) {
                 ServerLevel serverlevel = (ServerLevel) levelaccessor;
-                JevEntity alexvillagerentity = new JevEntity((EntityType) AnnoyingVillagersModEntities.JEV.get(), serverlevel);
+                JevEntity jevEntity = new JevEntity((EntityType) AnnoyingVillagersModEntities.JEV.get(), serverlevel);
+                levelaccessor.addFreshEntity(jevEntity);
 
-                alexvillagerentity.moveTo(d0 + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), d1 + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), d2 + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                if (alexvillagerentity instanceof Mob) {
-                    Mob mob = (Mob) alexvillagerentity;
-
-                    mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(alexvillagerentity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
+                jevEntity.moveTo(d0 + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), d1 + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), d2 + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                if (jevEntity instanceof Mob) {
+                    Mob mob = (Mob) jevEntity;
+                    if (entity instanceof AlexEntity alex) {
+                        jevEntity.setFollowTarget(alex);
+                        jevEntity.setFollowTargetUUID(alex.getUUID());
+                    }
+                    mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(jevEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
                 }
 
-                levelaccessor.addFreshEntity(alexvillagerentity);
+                levelaccessor.addFreshEntity(jevEntity);
+                ((AlexEntity) entity).setJevUUID(jevEntity.getUUID());
+                ((AlexEntity) entity).setProtectingJev(jevEntity);
             }
 
             if (!entity.level().isClientSide() && entity.getServer() != null) {
@@ -81,6 +88,27 @@ public class AlexOnSpawnProcedure {
             }
 
             entity.getPersistentData().putBoolean("a_player", true);
+
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
+                try {
+                    entity.getServer().getCommands().getDispatcher().execute(
+                            "team add alex",
+                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+                }
+                try {
+                    entity.getServer().getCommands().getDispatcher().execute(
+                            "team modify alex friendlyFire false",
+                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+                }
+                try {
+                    entity.getServer().getCommands().getDispatcher().execute(
+                            "team join alex @s",
+                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+                }
+            }
         }
     }
 }

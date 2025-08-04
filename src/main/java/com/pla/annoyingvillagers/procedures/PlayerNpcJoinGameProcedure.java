@@ -250,7 +250,7 @@ public class PlayerNpcJoinGameProcedure {
                 }
             }
 
-            if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:zombie") && !entity.level().isClientSide() && entity.getServer() != null) {
+            if ((ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:zombie") || ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:husk")) && !entity.level().isClientSide() && entity.getServer() != null) {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
                     try {
                         entity.getServer().getCommands().getDispatcher().execute(

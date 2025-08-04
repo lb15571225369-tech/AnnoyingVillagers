@@ -433,20 +433,6 @@
 							"animation": "epicfight:biped/skill/step_right"
 						}
 					]
-				},
-                {
-					"weight": 99,
-					"canBeInterrupted": false,
-					"looping": false,
-					"behaviors": [
-						{
-							"conditions": [
-								{"predicate":"indestructible:guard_break", "invert": false}, {"predicate":"within_eye_height"}
-							],
-							"animation": "epicfight:biped/skill/the_guillotine",
-							"play_speed": 10
-						}
-					]
 				}
 			]
 		},
@@ -1137,20 +1123,6 @@
 							],
 							"animation": "epicfight:biped/combat/greatsword_dash",
 							"play_speed": 1.1
-						}
-					]
-				},
-                {
-					"weight": 99,
-					"canBeInterrupted": false,
-					"looping": false,
-					"behaviors": [
-						{
-							"conditions": [
-								{"predicate":"indestructible:guard_break", "invert": false}, {"predicate":"within_eye_height"}
-							],
-							"animation": "epicfight:biped/skill/the_guillotine",
-							"play_speed": 1
 						}
 					]
 				}
