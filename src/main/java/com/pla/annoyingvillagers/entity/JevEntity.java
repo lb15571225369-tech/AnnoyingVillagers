@@ -1,8 +1,10 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.util.PathfinderMobInventory;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -18,13 +20,11 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -32,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public class JevEntity extends PathfinderMob {
+public class JevEntity extends PathfinderMobInventory {
     private UUID followTargetUUID;
     private AlexEntity followTarget;
     private boolean alexDeathMessageSent = false;
@@ -57,6 +57,7 @@ public class JevEntity extends PathfinderMob {
         this.setCustomName(Component.literal("Jev"));
         this.setPersistenceRequired();
         this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.JEV_BOOK.get()));
+        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.JEV_PENCIL.get()));
         this.setItemSlot(EquipmentSlot.HEAD, new ItemStack((ItemLike) AnnoyingVillagersModItems.JEV_GLASSES.get()));
     }
 
@@ -120,14 +121,15 @@ public class JevEntity extends PathfinderMob {
     @Override
     public void die(DamageSource pDamageSource) {
         super.die(pDamageSource);
-        if (this.level() instanceof ServerLevel levelaccessor) {
+        if (this.level() instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
             ServerLevel serverlevel = levelaccessor;
-            Villager villager = new Villager(EntityType.VILLAGER, serverlevel);
-
-            villager.moveTo(this.getX(), this.getY(), this.getZ(), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-            villager.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(villager.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-            levelaccessor.addFreshEntity(villager);
-            villager.hurt(villager.level().damageSources().fellOutOfWorld(), Float.MAX_VALUE);
+            JevDeadEntity jevDeadEntity = new JevDeadEntity((EntityType) AnnoyingVillagersModEntities.JEV_DEAD.get(), serverlevel);
+            jevDeadEntity.moveTo(this.getX(), this.getY(), this.getZ(), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+            if (jevDeadEntity instanceof Mob) {
+                Mob mob = (Mob)jevDeadEntity;
+                mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(jevDeadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+            }
+            levelaccessor.addFreshEntity(jevDeadEntity);
         }
     }
 

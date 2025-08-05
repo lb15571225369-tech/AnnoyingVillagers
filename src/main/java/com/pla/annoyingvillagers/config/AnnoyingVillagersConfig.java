@@ -8,6 +8,7 @@ public class AnnoyingVillagersConfig {
 
     public static ForgeConfigSpec.ConfigValue<Double> PLAYER_NPC_SPAWN_RATE;
     public static ForgeConfigSpec.ConfigValue<Double> HEROBRINE_POSSESS_RATE;
+    public static ForgeConfigSpec.ConfigValue<Boolean> PHYSIC_MOD_COMPAT;
 
     static {
         PLAYER_NPC_SPAWN_RATE = BUILDER.comment(
@@ -24,6 +25,10 @@ public class AnnoyingVillagersConfig {
                         "Minimum: 0",
                         "Maximum: 1")
                 .defineInRange("herobrinePossessRate", 0.2, 0, 1);
+        PHYSIC_MOD_COMPAT = BUILDER.comment(
+                        "Spawn dead body for the mob on killed",
+                        "Install Physic Mod to see the effect")
+                .define("physicModCompat", true);
         SPEC = BUILDER.build();
     }
 }

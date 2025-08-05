@@ -10,6 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -112,6 +113,16 @@ public class Herobrine2Entity extends Monster {
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
+        if (this.level() instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
+            ServerLevel serverlevel = levelaccessor;
+            DarkHerobrineDeadEntity deadEntity = new DarkHerobrineDeadEntity((EntityType) AnnoyingVillagersModEntities.DARK_HEROBRINE_DEAD.get(), serverlevel);
+            deadEntity.moveTo(this.getX(), this.getY(), this.getZ(), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+            if (deadEntity instanceof Mob) {
+                Mob mob = (Mob) deadEntity;
+                mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
+            }
+            levelaccessor.addFreshEntity(deadEntity);
+        }
         Herobrine2DieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
     }
 

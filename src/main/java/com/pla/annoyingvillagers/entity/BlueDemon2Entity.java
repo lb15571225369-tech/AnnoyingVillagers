@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -114,6 +115,16 @@ public class BlueDemon2Entity extends Monster {
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
+        if (this.level() instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
+            ServerLevel serverlevel = levelaccessor;
+            BlueDemonDeadEntity deadEntity = new BlueDemonDeadEntity((EntityType) AnnoyingVillagersModEntities.BLUE_DEMON_DEAD.get(), serverlevel);
+            deadEntity.moveTo(this.getX(), this.getY(), this.getZ(), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+            if (deadEntity instanceof Mob) {
+                Mob mob = (Mob)deadEntity;
+                mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+            }
+            levelaccessor.addFreshEntity(deadEntity);
+        }
         BlueDemon2OnEntityDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 

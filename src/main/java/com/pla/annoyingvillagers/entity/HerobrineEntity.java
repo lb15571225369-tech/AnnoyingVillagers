@@ -117,6 +117,16 @@ public class HerobrineEntity extends Monster {
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
+        if (this.level() instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
+            ServerLevel serverlevel = levelaccessor;
+            HerobrineDeadEntity deadEntity = new HerobrineDeadEntity((EntityType) AnnoyingVillagersModEntities.HEROBRINE_DEAD.get(), serverlevel);
+            deadEntity.moveTo(this.getX(), this.getY(), this.getZ(), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+            if (deadEntity instanceof Mob) {
+                Mob mob = (Mob) deadEntity;
+                mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
+            }
+            levelaccessor.addFreshEntity(deadEntity);
+        }
         HerobrineOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 

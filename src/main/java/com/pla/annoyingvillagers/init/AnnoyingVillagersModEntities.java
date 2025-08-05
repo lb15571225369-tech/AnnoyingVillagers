@@ -35,7 +35,6 @@ public class AnnoyingVillagersModEntities {
     public static final RegistryObject<EntityType<RedVillagerGeneralEntity>> RED_VILLAGER_GENERAL = register("red_villager_general", Builder.<RedVillagerGeneralEntity>of(RedVillagerGeneralEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(RedVillagerGeneralEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<GreenVillagerGeneralEntity>> PURPLE_VILLAGER_GENERAL = register("purple_villager_general", Builder.<GreenVillagerGeneralEntity>of(GreenVillagerGeneralEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(GreenVillagerGeneralEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<EnchantedEnderPearlEntity>> ENCHANTED_ENDER_PEARL_PROJECTILE = register("projectile_enchanted_ender_pearl", Builder.<EnchantedEnderPearlEntity>of(EnchantedEnderPearlEntity::new, MobCategory.MISC).setCustomClientFactory(EnchantedEnderPearlEntity::new).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).sized(0.5F, 0.5F));
-    public static final RegistryObject<EntityType<AlexDeadEntity>> ALEX_DEAD = register("alex_dead", Builder.<AlexDeadEntity>of(AlexDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(AlexDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<AlexEntity>> ALEX = register("alex", Builder.<AlexEntity>of(AlexEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(AlexEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<JevEntity>> JEV = register("jev", Builder.<JevEntity>of(JevEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(JevEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<BbqEntity>> BBQ = register("bbq", Builder.<BbqEntity>of(BbqEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(BbqEntity::new).fireImmune().sized(0.4F, 0.7F));
@@ -45,7 +44,21 @@ public class AnnoyingVillagersModEntities {
     public static final RegistryObject<EntityType<SteveEntity>> STEVE = register("steve", Builder.<SteveEntity>of(SteveEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(SteveEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<Steve2Entity>> STEVE_2 = register("steve_2", Builder.<Steve2Entity>of(Steve2Entity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(Steve2Entity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<AngrySteveEntity>> ANGRY_STEVE = register("angry_steve", Builder.<AngrySteveEntity>of(AngrySteveEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(AngrySteveEntity::new).fireImmune().sized(0.6F, 1.8F));
+
+    public static final RegistryObject<EntityType<AlexDeadEntity>> ALEX_DEAD = register("alex_dead", Builder.<AlexDeadEntity>of(AlexDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(AlexDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<SteveDeadEntity>> STEVE_DEAD = register("steve_dead", Builder.<SteveDeadEntity>of(SteveDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(SteveDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<ChrisDeadEntity>> CHRIS_DEAD = register("chris_dead", Builder.<ChrisDeadEntity>of(ChrisDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(ChrisDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<InfectedChrisDeadEntity>> INFECTED_CHRIS_DEAD = register("infected_chris_dead", Builder.<InfectedChrisDeadEntity>of(InfectedChrisDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(InfectedChrisDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<JevDeadEntity>> JEV_DEAD = register("jev_dead", Builder.<JevDeadEntity>of(JevDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(JevDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<VillagerScoutDeadEntity>> VILLAGER_SCOUT_DEAD = register("villager_scout_dead", Builder.<VillagerScoutDeadEntity>of(VillagerScoutDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(VillagerScoutDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<RedVillagerGeneralDeadEntity>> RED_VILLAGER_GENERAL_DEAD = register("red_villager_general_dead", Builder.<RedVillagerGeneralDeadEntity>of(RedVillagerGeneralDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(RedVillagerGeneralDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<BlueVillagerGeneralDeadEntity>> BLUE_VILLAGER_GENERAL_DEAD = register("blue_villager_general_dead", Builder.<BlueVillagerGeneralDeadEntity>of(BlueVillagerGeneralDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(BlueVillagerGeneralDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<GreenVillagerGeneralDeadEntity>> GREEN_VILLAGER_GENERAL_DEAD = register("green_villager_general_dead", Builder.<GreenVillagerGeneralDeadEntity>of(GreenVillagerGeneralDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(GreenVillagerGeneralDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<PurpleVillagerGeneralDeadEntity>> PURPLE_VILLAGER_GENERAL_DEAD = register("purple_villager_general_dead", Builder.<PurpleVillagerGeneralDeadEntity>of(PurpleVillagerGeneralDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(PurpleVillagerGeneralDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<BlueDemonDeadEntity>> BLUE_DEMON_DEAD = register("blue_demon_dead", Builder.<BlueDemonDeadEntity>of(BlueDemonDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(BlueDemonDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<HerobrineDeadEntity>> HEROBRINE_DEAD = register("herobrine_dead", Builder.<HerobrineDeadEntity>of(HerobrineDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(HerobrineDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<DarkHerobrineDeadEntity>> DARK_HEROBRINE_DEAD = register("dark_herobrine_dead", Builder.<DarkHerobrineDeadEntity>of(DarkHerobrineDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(DarkHerobrineDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
+
     private static <T extends Entity> RegistryObject<EntityType<T>> register(String s, Builder<T> builder) {
         return AnnoyingVillagersModEntities.REGISTRY.register(s, () -> {
             return builder.build(s);
@@ -68,7 +81,6 @@ public class AnnoyingVillagersModEntities {
             PurpleVillagerGeneralEntity.init();
             RedVillagerGeneralEntity.init();
             GreenVillagerGeneralEntity.init();
-            AlexDeadEntity.init();
             AlexEntity.init();
             JevEntity.init();
             BbqEntity.init();
@@ -77,8 +89,20 @@ public class AnnoyingVillagersModEntities {
             Herobrine3Entity.init();
             Steve2Entity.init();
             SteveEntity.init();
-            SteveDeadEntity.init();
             AngrySteveEntity.init();
+            AlexDeadEntity.init();
+            SteveDeadEntity.init();
+            ChrisDeadEntity.init();
+            InfectedChrisDeadEntity.init();
+            JevDeadEntity.init();
+            VillagerScoutDeadEntity.init();
+            RedVillagerGeneralDeadEntity.init();
+            BlueVillagerGeneralDeadEntity.init();
+            GreenVillagerGeneralDeadEntity.init();
+            PurpleVillagerGeneralDeadEntity.init();
+            BlueDemonDeadEntity.init();
+            HerobrineDeadEntity.init();
+            DarkHerobrineDeadEntity.init();
         });
     }
 
@@ -108,5 +132,16 @@ public class AnnoyingVillagersModEntities {
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.STEVE_DEAD.get(), SteveDeadEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.STEVE.get(), SteveEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.ANGRY_STEVE.get(), AngrySteveEntity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.CHRIS_DEAD.get(), AngrySteveEntity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.INFECTED_CHRIS_DEAD.get(), AngrySteveEntity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.VILLAGER_SCOUT_DEAD.get(), AngrySteveEntity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.JEV_DEAD.get(), AngrySteveEntity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.RED_VILLAGER_GENERAL_DEAD.get(), AngrySteveEntity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.GREEN_VILLAGER_GENERAL_DEAD.get(), AngrySteveEntity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.BLUE_VILLAGER_GENERAL_DEAD.get(), AngrySteveEntity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.PURPLE_VILLAGER_GENERAL_DEAD.get(), AngrySteveEntity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.BLUE_DEMON_DEAD.get(), AngrySteveEntity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.HEROBRINE_DEAD.get(), AngrySteveEntity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.DARK_HEROBRINE_DEAD.get(), AngrySteveEntity.createAttributes().build());
     }
 }

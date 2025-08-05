@@ -9,6 +9,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Arrays;
 import java.util.List;
@@ -85,73 +86,73 @@ public class AnimationSheduler {
                     "I squat with intent.",
                     "Oh I just sit here, don't kill me!",
                     "If you can't beat them, sit near them."
-            ),
-            IdleAnimation.FUN_SIT, Arrays.asList(
-                    "Check out this fun pose!",
-                    "I sit like no one's watching.",
-                    "I'm not normal, I'm fun-sitting.",
-                    "Vibing intensifies.",
-                    "Bet you can't sit this fabulously.",
-                    "Fun mode: activated.",
-                    "Stylish and seated.",
-                    "I'm not just sitting. I'm entertaining.",
-                    "This pose is patented.",
-                    "Join me, let's sit funny together!",
-                    "Why sit boring when you can sit awesome?",
-                    "Strike a pose: chairless edition.",
-                    "This is my emote of power.",
-                    "Look at me! I'm fabulous.",
-                    "Do I look cool yet?",
-                    "This is my signature move.",
-                    "Chaotic neutral sitting.",
-                    "The flowers envy my posture.",
-                    "This is what peak performance looks like.",
-                    "If sitting was an art, I'm Picasso."
-            ),
-            IdleAnimation.SLIGHT, Arrays.asList(
-                    "Just a subtle motion...",
-                    "That was barely an emote, but I meant it.",
-                    "Did you see that? Blink and you miss it.",
-                    "Minimal effort, maximum expression.",
-                    "I call that a slight vibe.",
-                    "Nothing major. Just flexin'.",
-                    "Slight movements, strong emotions.",
-                    "I twitched with style.",
-                    "Little gestures matter too.",
-                    "The art of the subtle flex.",
-                    "Keeping it lowkey.",
-                    "Just making sure you're paying attention.",
-                    "Did I move? Maybe.",
-                    "Smooth like butter.",
-                    "Calm, but expressive.",
-                    "That's my signal for 'hi'.",
-                    "Small movement, big energy.",
-                    "Blink and you'll miss this drip.",
-                    "I emote in Morse code.",
-                    "One frame of pure charisma."
-            ),
-            IdleAnimation.PUSH_UP, Arrays.asList(
-                    "One! Two! Ugh, who needs cardio?",
-                    "I do push-ups to impress the mobs.",
-                    "Getting blocky gains.",
-                    "Training to punch harder.",
-                    "Strength comes from suffering.",
-                    "No gym? No problem.",
-                    "Push-up speedrun!",
-                    "Working on my Minecraft muscles.",
-                    "Bet you can't beat 20 reps!",
-                    "This is my flex routine.",
-                    "Push-ups make me immune to arrows.",
-                    "Core strength? Check.",
-                    "Mobility training in progress.",
-                    "Fitness is survival.",
-                    "Strength. Endurance. Blocks.",
-                    "Sweat mode: enabled.",
-                    "Even Steve does push-ups.",
-                    "Just flexin' on creepers.",
-                    "Training arc begins now.",
-                    "Do I look stronger yet?"
             )
+//            IdleAnimation.FUN_SIT, Arrays.asList(
+//                    "Check out this fun pose!",
+//                    "I sit like no one's watching.",
+//                    "I'm not normal, I'm fun-sitting.",
+//                    "Vibing intensifies.",
+//                    "Bet you can't sit this fabulously.",
+//                    "Fun mode: activated.",
+//                    "Stylish and seated.",
+//                    "I'm not just sitting. I'm entertaining.",
+//                    "This pose is patented.",
+//                    "Join me, let's sit funny together!",
+//                    "Why sit boring when you can sit awesome?",
+//                    "Strike a pose: chairless edition.",
+//                    "This is my emote of power.",
+//                    "Look at me! I'm fabulous.",
+//                    "Do I look cool yet?",
+//                    "This is my signature move.",
+//                    "Chaotic neutral sitting.",
+//                    "The flowers envy my posture.",
+//                    "This is what peak performance looks like.",
+//                    "If sitting was an art, I'm Picasso."
+//            ),
+//            IdleAnimation.SLIGHT, Arrays.asList(
+//                    "Just a subtle motion...",
+//                    "That was barely an emote, but I meant it.",
+//                    "Did you see that? Blink and you miss it.",
+//                    "Minimal effort, maximum expression.",
+//                    "I call that a slight vibe.",
+//                    "Nothing major. Just flexin'.",
+//                    "Slight movements, strong emotions.",
+//                    "I twitched with style.",
+//                    "Little gestures matter too.",
+//                    "The art of the subtle flex.",
+//                    "Keeping it lowkey.",
+//                    "Just making sure you're paying attention.",
+//                    "Did I move? Maybe.",
+//                    "Smooth like butter.",
+//                    "Calm, but expressive.",
+//                    "That's my signal for 'hi'.",
+//                    "Small movement, big energy.",
+//                    "Blink and you'll miss this drip.",
+//                    "I emote in Morse code.",
+//                    "One frame of pure charisma."
+//            ),
+//            IdleAnimation.PUSH_UP, Arrays.asList(
+//                    "One! Two! Ugh, who needs cardio?",
+//                    "I do push-ups to impress the mobs.",
+//                    "Getting blocky gains.",
+//                    "Training to punch harder.",
+//                    "Strength comes from suffering.",
+//                    "No gym? No problem.",
+//                    "Push-up speedrun!",
+//                    "Working on my Minecraft muscles.",
+//                    "Bet you can't beat 20 reps!",
+//                    "This is my flex routine.",
+//                    "Push-ups make me immune to arrows.",
+//                    "Core strength? Check.",
+//                    "Mobility training in progress.",
+//                    "Fitness is survival.",
+//                    "Strength. Endurance. Blocks.",
+//                    "Sweat mode: enabled.",
+//                    "Even Steve does push-ups.",
+//                    "Just flexin' on creepers.",
+//                    "Training arc begins now.",
+//                    "Do I look stronger yet?"
+//            )
     );
 
     public AnimationSheduler(Mob mob) {
@@ -215,12 +216,12 @@ public class AnimationSheduler {
                 mob.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
             }
             String command = switch (idleAnimation) {
-                case PUSH_UP -> "indestructible @s play \"annoyingvillagers:biped/idle/push_up\" 0 1";
+//                case PUSH_UP -> "indestructible @s play \"annoyingvillagers:biped/idle/push_up\" 0 1";
                 case LAY -> "indestructible @s play \"annoyingvillagers:biped/idle/lay\" 0 1";
                 case SLEEP -> "indestructible @s play \"annoyingvillagers:biped/other/death_idle\" 0 1";
                 case SIT -> "indestructible @s play \"annoyingvillagers:biped/idle/sit\" 0 1";
-                case FUN_SIT -> "indestructible @s play \"annoyingvillagers:biped/other/funny_idle\" 0 1";
-                case SLIGHT -> "indestructible @s play \"annoyingvillagers:biped/idle/slight\" 0 1";
+//                case FUN_SIT -> "indestructible @s play \"annoyingvillagers:biped/other/funny_idle\" 0 1";
+//                case SLIGHT -> "indestructible @s play \"annoyingvillagers:biped/idle/slight\" 0 1";
             };
 
             if (!mob.level().isClientSide() && mob.getServer() != null) {
@@ -234,7 +235,7 @@ public class AnimationSheduler {
                 }
             }
 
-            if (reTry && !data.contains("idle_message_broadcasted")) {
+            if (reTry && !data.contains("idle_message_broadcasted") && ForgeRegistries.ENTITY_TYPES.getKey(mob.getType()).toString().equals("player_mobs:player_mob")) {
                 // reTry is false meaning temp call so no message
                 String message = "<" + mob.getDisplayName().getString() + "> " + idleMessages
                         .getOrDefault(idleAnimation, List.of("..."))

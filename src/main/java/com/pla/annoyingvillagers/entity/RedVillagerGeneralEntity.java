@@ -2,14 +2,17 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.util.CommonGoals;
+import com.pla.annoyingvillagers.util.PathfinderMobInventory;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -45,7 +48,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
 @EventBusSubscriber
-public class RedVillagerGeneralEntity extends PathfinderMob {
+public class RedVillagerGeneralEntity extends PathfinderMobInventory {
     public RedVillagerGeneralEntity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.RED_VILLAGER_GENERAL.get(), level);
     }
@@ -99,6 +102,16 @@ public class RedVillagerGeneralEntity extends PathfinderMob {
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
+        if (this.level() instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
+            ServerLevel serverlevel = levelaccessor;
+            RedVillagerGeneralDeadEntity deadEntity = new RedVillagerGeneralDeadEntity((EntityType) AnnoyingVillagersModEntities.RED_VILLAGER_GENERAL_DEAD.get(), serverlevel);
+            deadEntity.moveTo(this.getX(), this.getY(), this.getZ(), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+            if (deadEntity instanceof Mob) {
+                Mob mob = (Mob) deadEntity;
+                mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
+            }
+            levelaccessor.addFreshEntity(deadEntity);
+        }
         RedVillageGeneralOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 

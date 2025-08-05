@@ -32,10 +32,7 @@ public class IdleHandlerProcedure {
     public static void onLivingTick(LivingEvent.LivingTickEvent event) {
         if (!(event.getEntity() instanceof Mob mob)) return;
         if (mob.level().isClientSide()) return;
-        if (event.getEntity() != null && !mob.level().isClientSide() && (ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("minecraft:zombie") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("minecraft:husk") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("minecraft:skeleton") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("annoyingvillagers:villager_scout") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("annoyingvillagers:villager_scout_captain"))) {
-            performIdleAction(mob, IdleAction.BURN_ITEM);
-        }
-        if (event.getEntity() != null && ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("player_mobs:player_mob")) {
+        if (event.getEntity() != null && !mob.level().isClientSide() && (ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("minecraft:zombie") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("minecraft:husk") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("minecraft:skeleton") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("annoyingvillagers:villager_scout") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("annoyingvillagers:villager_scout_captain") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("annoyingvillagers:steve")) || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("annoyingvillagers:steve_2") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("annoyingvillagers:alex") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("annoyingvillagers:jev") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("annoyingvillagers:chris") || event.getEntity() != null && ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("player_mobs:player_mob")) {
             scheduleIdleActionDecision((Mob) event.getEntity());
         }
     }
@@ -45,6 +42,9 @@ public class IdleHandlerProcedure {
     }
 
     private static void scheduleIdleActionDecision(Mob mob) {
+        if (mob.isPassenger()) {
+            return;
+        }
         CompoundTag data = mob.getPersistentData();
         if (!data.contains("av_idle_action")) {
             IdleAction action = getRandomIdleAction();

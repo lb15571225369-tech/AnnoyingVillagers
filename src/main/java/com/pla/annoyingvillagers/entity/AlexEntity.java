@@ -6,6 +6,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.util.CommonGoals;
+import com.pla.annoyingvillagers.util.PathfinderMobInventory;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -35,7 +36,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.UUID;
 
 @EventBusSubscriber
-public class AlexEntity extends PathfinderMob {
+public class AlexEntity extends PathfinderMobInventory {
     private JevEntity jevToProtect;
     private UUID jevUUID;
     private boolean jevDeathMessageSent = false;

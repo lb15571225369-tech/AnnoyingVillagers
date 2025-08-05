@@ -1,11 +1,12 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.entity.AlexDeadEntity;
-import com.pla.annoyingvillagers.entity.SteveDeadEntity;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
+import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.util.InventoryUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -29,43 +30,34 @@ public class Steve2OnDeathProcedure {
     public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity) {
         if (entity != null) {
             if (Math.random() >= 0.38D) {
-                new DelayedTask(20) {
-                    public void run() {
-                        LevelAccessor levelaccessor1 = levelaccessor;
+                LevelAccessor levelaccessor1 = levelaccessor;
 
-                        if (levelaccessor1 instanceof Level) {
-                            Level level = (Level)levelaccessor1;
+                if (levelaccessor1 instanceof Level) {
+                    Level level = (Level)levelaccessor1;
 
-                            if (!level.isClientSide()) {
-                                level.explode((Entity)null, d0, d1 + 1.0D, d2, 3.0F, Level.ExplosionInteraction.NONE);
-                            }
-                        }
-                        new DelayedTask(20) {
-                            public void run() {
-                                Entity entity1 = entity;
-
-                                if (!entity1.level().isClientSide() && entity1.getServer() != null) {
-                                    try {
-                                        entity1.getServer().getCommands().getDispatcher().execute(
-                                                "execute at @s run particle minecraft:totem_of_undying ^ ^1.5 ^ 0 0 0 1 1000",
-                                                entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                    } catch (CommandSyntaxException e) {
-                                    }
-                                }
-
-                                entity1 = entity;
-                                if (!entity1.level().isClientSide() && entity1.getServer() != null) {
-                                    try {
-                                        entity1.getServer().getCommands().getDispatcher().execute(
-                                                "summon annoyingvillagers:angry_steve",
-                                                entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                    } catch (CommandSyntaxException e) {
-                                    }
-                                }
-                            }
-                        };
+                    if (!level.isClientSide()) {
+                        level.explode((Entity)null, d0, d1 + 1.0D, d2, 3.0F, Level.ExplosionInteraction.NONE);
                     }
-                };
+                }
+                Entity entity1 = entity;
+
+                if (!entity1.level().isClientSide() && entity1.getServer() != null) {
+                    try {
+                        entity1.getServer().getCommands().getDispatcher().execute(
+                                "execute at @s run particle minecraft:totem_of_undying ^ ^1.5 ^ 0 0 0 1 1000",
+                                entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                    }
+                }
+
+                if (levelaccessor instanceof ServerLevel) {
+                    ServerLevel serverlevel = (ServerLevel)levelaccessor;
+                    AngrySteveEntity angrySteveEntity = new AngrySteveEntity((EntityType) AnnoyingVillagersModEntities.ANGRY_STEVE.get(), serverlevel);
+
+                    angrySteveEntity.moveTo(d0, d1, d2, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                    InventoryUtils.transferInventory(((Steve2Entity) entity).getInventory(), angrySteveEntity.getInventory());
+                    levelaccessor.addFreshEntity(angrySteveEntity);
+                }
             } else {
                 if (levelaccessor instanceof Level) {
                     Level level = (Level)levelaccessor;
@@ -81,7 +73,7 @@ public class Steve2OnDeathProcedure {
                     levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Steve> Noooooooooooooooooooooooooo!"), false);
                 }
 
-                if (levelaccessor instanceof ServerLevel) {
+                if (levelaccessor instanceof ServerLevel && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
                     ServerLevel serverlevel = (ServerLevel)levelaccessor;
                     SteveDeadEntity steveDeadEntity = new SteveDeadEntity((EntityType) AnnoyingVillagersModEntities.STEVE_DEAD.get(), serverlevel);
 

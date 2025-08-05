@@ -83,6 +83,9 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> JEV_BOOK = AnnoyingVillagersModItems.REGISTRY.register("jev_book", () -> {
         return new JevBookItem();
     });
+    public static final RegistryObject<Item> JEV_PENCIL = AnnoyingVillagersModItems.REGISTRY.register("jev_pencil", () -> {
+        return new JevPencilItem();
+    });
     // ------------------------------
 
     // Gems

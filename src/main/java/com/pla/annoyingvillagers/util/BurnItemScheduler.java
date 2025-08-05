@@ -174,7 +174,7 @@ public class BurnItemScheduler {
                 if (rawName.startsWith("[") && rawName.endsWith("]")) {
                     rawName = rawName.substring(1, rawName.length() - 1).toLowerCase();;
                 }
-                if (!(ForgeRegistries.ENTITY_TYPES.getKey(mob.getType()).toString().equals("minecraft:zombie") || ForgeRegistries.ENTITY_TYPES.getKey(mob.getType()).toString().equals("minecraft:skeleton"))
+                if (ForgeRegistries.ENTITY_TYPES.getKey(mob.getType()).toString().equals("player_mobs:player_mob")
                         && new Random().nextFloat() < 0.05f) {
                     String message = "<" + mob.getDisplayName().getString() + "> " +
                             getRandomBurnMessage(rawName);

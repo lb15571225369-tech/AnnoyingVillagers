@@ -9,6 +9,7 @@ import com.pla.annoyingvillagers.procedures.Steve2OnDeathProcedure;
 import com.pla.annoyingvillagers.procedures.Steve2OnSpawnProcedure;
 import com.pla.annoyingvillagers.procedures.SteveOnTickProcedure;
 import com.pla.annoyingvillagers.util.CommonGoals;
+import com.pla.annoyingvillagers.util.PathfinderMobInventory;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -31,7 +32,7 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class Steve2Entity extends PathfinderMob {
+public class Steve2Entity extends PathfinderMobInventory {
 
     public Steve2Entity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.STEVE_2.get(), level);
@@ -91,8 +92,8 @@ public class Steve2Entity extends PathfinderMob {
     }
 
     public void die(DamageSource damagesource) {
-        super.die(damagesource);
         Steve2OnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        super.die(damagesource);
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {

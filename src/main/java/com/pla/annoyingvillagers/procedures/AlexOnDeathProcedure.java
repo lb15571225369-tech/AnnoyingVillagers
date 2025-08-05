@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.AlexDeadEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.util.DelayedTask;
@@ -30,7 +31,7 @@ public class AlexOnDeathProcedure {
                 }
             }
 
-            if (levelaccessor instanceof ServerLevel) {
+            if (levelaccessor instanceof ServerLevel && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
                 ServerLevel serverlevel = (ServerLevel)levelaccessor;
                 AlexDeadEntity alexdeadentity = new AlexDeadEntity((EntityType) AnnoyingVillagersModEntities.ALEX_DEAD.get(), serverlevel);
 

@@ -2,17 +2,20 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.procedures.ChrisOnDeathProcedure;
 import com.pla.annoyingvillagers.procedures.ChrisOnHurtProcedure;
 import com.pla.annoyingvillagers.procedures.ChrisOnSpawnProcedure;
 import com.pla.annoyingvillagers.procedures.SteveOnTickProcedure;
 import com.pla.annoyingvillagers.util.CommonGoals;
+import com.pla.annoyingvillagers.util.PathfinderMobInventory;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -41,7 +44,7 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 
 @EventBusSubscriber
-public class ChrisEntity extends PathfinderMob {
+public class ChrisEntity extends PathfinderMobInventory {
     public ChrisEntity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.CHRIS.get(), level);
     }
@@ -102,6 +105,16 @@ public class ChrisEntity extends PathfinderMob {
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
+        if (this.level() instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
+            ServerLevel serverlevel = levelaccessor;
+            ChrisDeadEntity deadEntity = new ChrisDeadEntity((EntityType) AnnoyingVillagersModEntities.CHRIS_DEAD.get(), serverlevel);
+            deadEntity.moveTo(this.getX(), this.getY(), this.getZ(), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+            if (deadEntity instanceof Mob) {
+                Mob mob = (Mob) deadEntity;
+                mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
+            }
+            levelaccessor.addFreshEntity(deadEntity);
+        }
         ChrisOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ());
     }
 
