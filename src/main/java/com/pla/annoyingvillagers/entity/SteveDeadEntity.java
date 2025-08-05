@@ -76,9 +76,6 @@ public class SteveDeadEntity extends PathfinderMob {
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
-        if (!ModList.get().isLoaded("physicsmod")) {
-            return null;
-        }
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
 
         DeadEntitySpawnProcedure.execute(serverlevelaccessor, this);

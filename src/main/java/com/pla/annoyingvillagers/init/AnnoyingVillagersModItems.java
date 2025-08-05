@@ -69,7 +69,7 @@ public class AnnoyingVillagersModItems {
 
     // Misc item
     public static final RegistryObject<Item> ENCHANT_BED_ITEM = AnnoyingVillagersModItems.REGISTRY.register("enchant_bed_item", () -> {
-        return new EnchantBedItemItem();
+        return new EnchantBedItem();
     });
     public static final RegistryObject<Item> VILLAGER_HEAD = AnnoyingVillagersModItems.REGISTRY.register("villager_head", () -> {
         return new VillagerHeadItem();

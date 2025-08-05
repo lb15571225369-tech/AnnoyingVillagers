@@ -40,6 +40,34 @@ public class CommonGoals {
         monster.goalSelector.addGoal(6, new FloatGoal(monster));
     }
 
+    public static void registerGoalForBlueDemonNpc(Monster monster) {
+        monster.getNavigation().getNodeEvaluator().setCanOpenDoors(true);
+        monster.targetSelector.addGoal(1, new HurtByTargetGoal(monster, new Class[0]));
+        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, Player.class, true, false));
+        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, PlayerMobEntity.class, true, false));
+        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, SteveEntity.class, true, false));
+        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, Steve2Entity.class, true, false));
+        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, AlexEntity.class, true, false));
+        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, Villager.class, true, false));
+        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, HerobrineEntity.class, true, false));
+        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, Herobrine2Entity.class, true, false));
+        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, Herobrine3Entity.class, true, false));
+        monster.targetSelector.addGoal(3, new NearestAttackableTargetGoal(monster, VillagerScoutEntity.class, true, false));
+        monster.targetSelector.addGoal(3, new NearestAttackableTargetGoal(monster, VillagerScoutCaptainEntity.class, true, false));
+        monster.targetSelector.addGoal(3, new NearestAttackableTargetGoal(monster, RedVillagerGeneralEntity.class, true, false));
+        monster.targetSelector.addGoal(3, new NearestAttackableTargetGoal(monster, BlueVillagerGeneralEntity.class, true, false));
+        monster.targetSelector.addGoal(3, new NearestAttackableTargetGoal(monster, GreenVillagerGeneralEntity.class, true, false));
+        monster.targetSelector.addGoal(3, new NearestAttackableTargetGoal(monster, PurpleVillagerGeneralEntity.class, true, false));
+        monster.goalSelector.addGoal(3, new MeleeAttackGoal(monster, 1.2D, false) {
+            protected double getAttackReachSqr(LivingEntity livingentity) {
+                return (double) (monster.getBbWidth() * monster.getBbWidth() + livingentity.getBbWidth());
+            }
+        });
+        monster.goalSelector.addGoal(4, new RandomStrollGoal(monster, 1.0D));
+        monster.goalSelector.addGoal(5, new RandomLookAroundGoal(monster));
+        monster.goalSelector.addGoal(6, new FloatGoal(monster));
+    }
+
     public static void registerGoalForVillagerKnightNpc(PathfinderMob mob) {
         mob.getNavigation().getNodeEvaluator().setCanOpenDoors(true);
         mob.targetSelector.addGoal(1, (new HurtByTargetGoal(mob, new Class[0])).setAlertOthers(new Class[0]));
@@ -51,9 +79,9 @@ public class CommonGoals {
         mob.targetSelector.addGoal(2, new NearestAttackableTargetGoal(mob, Herobrine3Entity.class, true, false));
         mob.targetSelector.addGoal(3, new NearestAttackableTargetGoal(mob, PlayerMobEntity.class, true, false));
         mob.targetSelector.addGoal(3, new NearestAttackableTargetGoal(mob, Player.class, true, false));
-        mob.targetSelector.addGoal(4, new NearestAttackableTargetGoal(mob, SteveEntity.class, true, false));
-        mob.targetSelector.addGoal(4, new NearestAttackableTargetGoal(mob, Steve2Entity.class, true, false));
-        mob.targetSelector.addGoal(4, new NearestAttackableTargetGoal(mob, AlexEntity.class, true, false));
+        mob.targetSelector.addGoal(3, new NearestAttackableTargetGoal(mob, SteveEntity.class, true, false));
+        mob.targetSelector.addGoal(3, new NearestAttackableTargetGoal(mob, Steve2Entity.class, true, false));
+        mob.targetSelector.addGoal(3, new NearestAttackableTargetGoal(mob, AlexEntity.class, true, false));
         mob.goalSelector.addGoal(5, new MeleeAttackGoal(mob, 1.5D, false) {
             protected double getAttackReachSqr(LivingEntity livingentity) {
                 return (double) (mob.getBbWidth() * mob.getBbWidth() + livingentity.getBbWidth());

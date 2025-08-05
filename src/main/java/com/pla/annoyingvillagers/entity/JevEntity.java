@@ -120,7 +120,7 @@ public class JevEntity extends PathfinderMob {
     @Override
     public void die(DamageSource pDamageSource) {
         super.die(pDamageSource);
-        if (this.level() instanceof ServerLevel levelaccessor && ModList.get().isLoaded("physicsmod")) {
+        if (this.level() instanceof ServerLevel levelaccessor) {
             ServerLevel serverlevel = levelaccessor;
             Villager villager = new Villager(EntityType.VILLAGER, serverlevel);
 

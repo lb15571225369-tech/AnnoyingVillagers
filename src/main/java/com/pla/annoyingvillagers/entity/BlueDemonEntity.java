@@ -84,7 +84,7 @@ public class BlueDemonEntity extends Monster {
                 && bbqEntityToProtect.isAlive()
                 && target != null
                 && target.getLastHurtMob() == bbqEntityToProtect));
-        CommonGoals.registerGoalForHostileNpc(this);
+        CommonGoals.registerGoalForBlueDemonNpc(this);
     }
 
     @Override

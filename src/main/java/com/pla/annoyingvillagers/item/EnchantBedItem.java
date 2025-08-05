@@ -16,9 +16,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import com.pla.annoyingvillagers.procedures.EnchantBedItemWhenHeldEveryTickProcedure;
 import com.pla.annoyingvillagers.procedures.EnchantBedItemOnRightClickBlockProcedure;
 
-public class EnchantBedItemItem extends Item {
+public class EnchantBedItem extends Item {
 
-    public EnchantBedItemItem() {
+    public EnchantBedItem() {
         super((new Properties()).stacksTo(1).fireResistant().rarity(Rarity.COMMON));
     }
 
@@ -29,7 +29,7 @@ public class EnchantBedItemItem extends Item {
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal("Right-click the Enchanted Bed once to save your respawn point. Upon death, you will not drop your items. After each use, you must right-click the bed again to reactivate the effect. Conflicts with the Totem of Undying."));
+        list.add(Component.literal("Right-click the Enchanted Bed once to save your respawn point. Upon death, you will not drop your items. You must right-click it again after each use to reactivate the effect. Conflicts with the Totem of Undying."));
     }
 
     public InteractionResult useOn(UseOnContext useoncontext) {
