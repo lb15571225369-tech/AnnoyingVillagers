@@ -21,7 +21,7 @@
 		"mount": "epicfight:biped/living/mount",
 		"walk": "epicfight:biped/living/walk",
 		"chase": "epicfight:biped/living/run",
-		"death": "epicfight:enderman/convert_rage"
+		"death": "epicfight:biped/living/death"
 	},
 	"humanoid_weapon_motions": [
 		  {

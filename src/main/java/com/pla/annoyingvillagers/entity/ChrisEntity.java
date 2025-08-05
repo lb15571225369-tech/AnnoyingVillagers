@@ -105,6 +105,7 @@ public class ChrisEntity extends PathfinderMobInventory {
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
+        ChrisOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ());
         if (this.level() instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
             ServerLevel serverlevel = levelaccessor;
             ChrisDeadEntity deadEntity = new ChrisDeadEntity((EntityType) AnnoyingVillagersModEntities.CHRIS_DEAD.get(), serverlevel);
@@ -114,8 +115,8 @@ public class ChrisEntity extends PathfinderMobInventory {
                 mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
             }
             levelaccessor.addFreshEntity(deadEntity);
+            deadEntity.hurt(deadEntity.damageSources().generic(), Float.MAX_VALUE);
         }
-        ChrisOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ());
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {

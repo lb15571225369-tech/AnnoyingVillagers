@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.entity;
 import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.util.CommonGoals;
@@ -130,6 +131,20 @@ public class AlexEntity extends PathfinderMobInventory {
     public void die(DamageSource damagesource) {
         super.die(damagesource);
         AlexOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        if (this.level() instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
+            ServerLevel serverlevel = (ServerLevel)levelaccessor;
+            AlexDeadEntity alexdeadentity = new AlexDeadEntity((EntityType) AnnoyingVillagersModEntities.ALEX_DEAD.get(), serverlevel);
+
+            alexdeadentity.moveTo(this.getX(), this.getY(), this.getZ(), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+            if (alexdeadentity instanceof Mob) {
+                Mob mob = (Mob)alexdeadentity;
+
+                mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(alexdeadentity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+            }
+
+            levelaccessor.addFreshEntity(alexdeadentity);
+            alexdeadentity.hurt(alexdeadentity.damageSources().generic(), Float.MAX_VALUE);
+        }
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {

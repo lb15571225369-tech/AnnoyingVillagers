@@ -130,6 +130,7 @@ public class JevEntity extends PathfinderMobInventory {
                 mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(jevDeadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
             }
             levelaccessor.addFreshEntity(jevDeadEntity);
+            jevDeadEntity.hurt(jevDeadEntity.damageSources().generic(), Float.MAX_VALUE);
         }
     }
 

@@ -52,6 +52,12 @@ public class EnchantBedDeathProcedure {
                     }
 
                     if (!flag) {
+                        LivingEntity livingentity2;
+                        if (entity instanceof LivingEntity) {
+                            livingentity2 = (LivingEntity)entity;
+                            livingentity2.setHealth(20.0F);
+                        }
+
                         if (event != null && event.isCancelable()) {
                             event.setCanceled(true);
                         }
@@ -149,13 +155,6 @@ public class EnchantBedDeathProcedure {
                             }
 
                             servergamepacketlistenerimpl.teleport(d0, d1, d2, entity.getYRot(), entity.getXRot());
-                        }
-
-                        LivingEntity livingentity2;
-
-                        if (entity instanceof LivingEntity) {
-                            livingentity2 = (LivingEntity)entity;
-                            livingentity2.setHealth(20.0F);
                         }
 
                         if (entity instanceof LivingEntity) {

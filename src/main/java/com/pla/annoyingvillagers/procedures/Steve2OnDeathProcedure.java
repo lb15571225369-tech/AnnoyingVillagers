@@ -73,19 +73,6 @@ public class Steve2OnDeathProcedure {
                     levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Steve> Noooooooooooooooooooooooooo!"), false);
                 }
 
-                if (levelaccessor instanceof ServerLevel && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-                    ServerLevel serverlevel = (ServerLevel)levelaccessor;
-                    SteveDeadEntity steveDeadEntity = new SteveDeadEntity((EntityType) AnnoyingVillagersModEntities.STEVE_DEAD.get(), serverlevel);
-
-                    steveDeadEntity.moveTo(d0, d1, d2, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                    if (steveDeadEntity instanceof Mob) {
-                        Mob mob = (Mob)steveDeadEntity;
-
-                        mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(steveDeadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                    }
-
-                    levelaccessor.addFreshEntity(steveDeadEntity);
-                }
                 new DelayedTask(20) {
                     public void run() {
                         LevelAccessor levelaccessor1 = levelaccessor;
@@ -585,6 +572,30 @@ public class Steve2OnDeathProcedure {
                                     };
                                 }
                             };
+                        }
+                    }
+                };
+
+                double posX = entity.getX();
+                double posY = entity.getY();
+                double posZ = entity.getZ();
+                LevelAccessor levelAccessor = entity.level();
+                new DelayedTask(28) {
+                    @Override
+                    public void run() {
+                        if (levelAccessor instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
+                            ServerLevel serverlevel = (ServerLevel)levelaccessor;
+                            SteveDeadEntity steveDeadEntity = new SteveDeadEntity((EntityType) AnnoyingVillagersModEntities.STEVE_DEAD.get(), serverlevel);
+
+                            steveDeadEntity.moveTo(posX, posY, posZ, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                            if (steveDeadEntity instanceof Mob) {
+                                Mob mob = (Mob)steveDeadEntity;
+
+                                mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(steveDeadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                            }
+
+                            levelaccessor.addFreshEntity(steveDeadEntity);
+                            steveDeadEntity.hurt(steveDeadEntity.damageSources().generic(), Float.MAX_VALUE);
                         }
                     }
                 };

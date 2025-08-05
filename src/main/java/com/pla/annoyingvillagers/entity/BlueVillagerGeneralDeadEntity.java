@@ -2,9 +2,7 @@ package com.pla.annoyingvillagers.entity;
 
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.procedures.DeadEntitySpawnProcedure;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -78,8 +76,6 @@ public class BlueVillagerGeneralDeadEntity extends PathfinderMob {
             return null;
         }
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
-
-        DeadEntitySpawnProcedure.execute(serverlevelaccessor, this);
         return spawngroupdata1;
     }
 

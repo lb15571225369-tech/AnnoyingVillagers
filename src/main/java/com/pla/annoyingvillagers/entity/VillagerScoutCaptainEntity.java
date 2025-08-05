@@ -113,6 +113,7 @@ public class VillagerScoutCaptainEntity extends PathfinderMobInventory {
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
+        VillagerScoutCaptainOnEntityDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
         if (this.level() instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
             ServerLevel serverlevel = levelaccessor;
             VillagerScoutDeadEntity deadEntity = new VillagerScoutDeadEntity((EntityType) AnnoyingVillagersModEntities.VILLAGER_SCOUT_DEAD.get(), serverlevel);
@@ -122,8 +123,8 @@ public class VillagerScoutCaptainEntity extends PathfinderMobInventory {
                 mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
             }
             levelaccessor.addFreshEntity(deadEntity);
+            deadEntity.hurt(deadEntity.damageSources().generic(), Float.MAX_VALUE);
         }
-        VillagerScoutCaptainOnEntityDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {

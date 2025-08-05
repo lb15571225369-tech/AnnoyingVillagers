@@ -45,7 +45,6 @@ public class SteveOnDeathProcedure {
                     level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("item.totem.use")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                 }
             }
-
             if (levelaccessor instanceof ServerLevel) {
                 ServerLevel serverlevel = (ServerLevel)levelaccessor;
                 Steve2Entity steve2Entity = new Steve2Entity((EntityType) AnnoyingVillagersModEntities.STEVE_2.get(), serverlevel);

@@ -102,6 +102,7 @@ public class RedVillagerGeneralEntity extends PathfinderMobInventory {
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
+        RedVillageGeneralOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
         if (this.level() instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
             ServerLevel serverlevel = levelaccessor;
             RedVillagerGeneralDeadEntity deadEntity = new RedVillagerGeneralDeadEntity((EntityType) AnnoyingVillagersModEntities.RED_VILLAGER_GENERAL_DEAD.get(), serverlevel);
@@ -111,8 +112,8 @@ public class RedVillagerGeneralEntity extends PathfinderMobInventory {
                 mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
             }
             levelaccessor.addFreshEntity(deadEntity);
+            deadEntity.hurt(deadEntity.damageSources().generic(), Float.MAX_VALUE);
         }
-        RedVillageGeneralOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {

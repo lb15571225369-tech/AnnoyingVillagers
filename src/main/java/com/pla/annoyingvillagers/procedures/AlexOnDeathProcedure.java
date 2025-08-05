@@ -30,21 +30,6 @@ public class AlexOnDeathProcedure {
                 } catch (CommandSyntaxException e) {
                 }
             }
-
-            if (levelaccessor instanceof ServerLevel && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-                ServerLevel serverlevel = (ServerLevel)levelaccessor;
-                AlexDeadEntity alexdeadentity = new AlexDeadEntity((EntityType) AnnoyingVillagersModEntities.ALEX_DEAD.get(), serverlevel);
-
-                alexdeadentity.moveTo(d0, d1, d2, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                if (alexdeadentity instanceof Mob) {
-                    Mob mob = (Mob)alexdeadentity;
-
-                    mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(alexdeadentity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                }
-
-                levelaccessor.addFreshEntity(alexdeadentity);
-            }
-
             new DelayedTask(20) {
                 @Override
                 public void run() {

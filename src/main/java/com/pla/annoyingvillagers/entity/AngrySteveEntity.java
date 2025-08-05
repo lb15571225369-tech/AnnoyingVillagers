@@ -2,16 +2,19 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.util.CommonGoals;
+import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.util.PathfinderMobInventory;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -24,6 +27,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
@@ -92,6 +96,29 @@ public class AngrySteveEntity extends PathfinderMobInventory {
     public void die(DamageSource damagesource) {
         super.die(damagesource);
         AngrySteveOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        double posX = this.getX();
+        double posY = this.getY();
+        double posZ = this.getZ();
+        LevelAccessor levelAccessor = this.level();
+        new DelayedTask(28) {
+            @Override
+            public void run() {
+                if (levelAccessor instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
+                    ServerLevel serverlevel = (ServerLevel)levelaccessor;
+                    SteveDeadEntity steveDeadEntity = new SteveDeadEntity((EntityType) AnnoyingVillagersModEntities.STEVE_DEAD.get(), serverlevel);
+
+                    steveDeadEntity.moveTo(posX, posY, posZ, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                    if (steveDeadEntity instanceof Mob) {
+                        Mob mob = (Mob)steveDeadEntity;
+
+                        mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(steveDeadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                    }
+
+                    levelaccessor.addFreshEntity(steveDeadEntity);
+                    steveDeadEntity.hurt(steveDeadEntity.damageSources().generic(), Float.MAX_VALUE);
+                }
+            }
+        };
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {

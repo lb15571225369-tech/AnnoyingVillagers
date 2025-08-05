@@ -41,22 +41,6 @@ public class AngrySteveOnDeathProcedure {
                 }
             }
 
-            if (levelaccessor instanceof ServerLevel && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-                ServerLevel serverlevel = (ServerLevel)levelaccessor;
-                SteveDeadEntity stevedeadentity = new SteveDeadEntity((EntityType) AnnoyingVillagersModEntities.STEVE_DEAD.get(), serverlevel);
-
-                stevedeadentity.moveTo(d0, d1, d2, 0.0F, 0.0F);
-                stevedeadentity.setYBodyRot(0.0F);
-                stevedeadentity.setYHeadRot(0.0F);
-                if (stevedeadentity instanceof Mob) {
-                    Mob mob = (Mob)stevedeadentity;
-
-                    mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(stevedeadentity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                }
-
-                levelaccessor.addFreshEntity(stevedeadentity);
-            }
-
             if (levelaccessor instanceof Level) {
                 Level level = (Level)levelaccessor;
 

@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.Steve2OnHurtProcedure;
@@ -9,12 +10,14 @@ import com.pla.annoyingvillagers.procedures.Steve2OnDeathProcedure;
 import com.pla.annoyingvillagers.procedures.Steve2OnSpawnProcedure;
 import com.pla.annoyingvillagers.procedures.SteveOnTickProcedure;
 import com.pla.annoyingvillagers.util.CommonGoals;
+import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.util.PathfinderMobInventory;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -27,6 +30,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
@@ -92,8 +96,8 @@ public class Steve2Entity extends PathfinderMobInventory {
     }
 
     public void die(DamageSource damagesource) {
-        Steve2OnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
         super.die(damagesource);
+        Steve2OnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {

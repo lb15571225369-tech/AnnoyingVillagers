@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.util.CommonGoals;
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -24,6 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
@@ -115,17 +117,27 @@ public class BlueDemon2Entity extends Monster {
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
-        if (this.level() instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-            ServerLevel serverlevel = levelaccessor;
-            BlueDemonDeadEntity deadEntity = new BlueDemonDeadEntity((EntityType) AnnoyingVillagersModEntities.BLUE_DEMON_DEAD.get(), serverlevel);
-            deadEntity.moveTo(this.getX(), this.getY(), this.getZ(), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-            if (deadEntity instanceof Mob) {
-                Mob mob = (Mob)deadEntity;
-                mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-            }
-            levelaccessor.addFreshEntity(deadEntity);
-        }
         BlueDemon2OnEntityDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        double posX = this.getX();
+        double posY = this.getY();
+        double posZ = this.getZ();
+        LevelAccessor levelAccessor = this.level();
+        new DelayedTask(28) {
+            @Override
+            public void run() {
+                if (levelAccessor instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
+                    ServerLevel serverlevel = levelaccessor;
+                    BlueDemonDeadEntity deadEntity = new BlueDemonDeadEntity((EntityType) AnnoyingVillagersModEntities.BLUE_DEMON_DEAD.get(), serverlevel);
+                    deadEntity.moveTo(posX, posY, posZ, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                    if (deadEntity instanceof Mob) {
+                        Mob mob = (Mob)deadEntity;
+                        mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                    }
+                    levelaccessor.addFreshEntity(deadEntity);
+                    deadEntity.hurt(deadEntity.damageSources().generic(), Float.MAX_VALUE);
+                }
+            }
+        };
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
