@@ -83,6 +83,10 @@ public class AlexOnHurtProcedure {
                             @Override
                             public void run() {
                                 Entity entity2 = entity;
+                                LivingEntity livingentity2 = (LivingEntity)entity;
+                                if (!livingentity2.level().isClientSide()) {
+                                    livingentity2.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 60, 2, false, false));
+                                }
 
                                 entity2.setYRot(0.0F);
                                 entity2.setXRot(90.0F);

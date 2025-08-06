@@ -26,6 +26,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
@@ -62,7 +63,12 @@ public class AlexEntity extends PathfinderMobInventory {
         this.setCustomName(Component.literal("Alex"));
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
-        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.DIAMOND_SWORD));
+        ItemStack sword = new ItemStack(Items.DIAMOND_SWORD);
+        sword.enchant(Enchantments.SHARPNESS, 5);
+        sword.enchant(Enchantments.FIRE_ASPECT, 2);
+        sword.enchant(Enchantments.KNOCKBACK, 2);
+        sword.enchant(Enchantments.UNBREAKING, 5);
+        this.setItemSlot(EquipmentSlot.MAINHAND, sword);
         this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.ENDER_PEARL));
     }
 
@@ -202,7 +208,7 @@ public class AlexEntity extends PathfinderMobInventory {
                         };
 
                         String message = JEV_DEATH_LINES[level().getRandom().nextInt(JEV_DEATH_LINES.length)];
-                        serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Jev> " + message), false);
+                        serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Alex> " + message), false);
                     }
                 }
                 jevToProtect = null;
@@ -221,8 +227,8 @@ public class AlexEntity extends PathfinderMobInventory {
         Builder builder = Mob.createMobAttributes();
 
         builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3D);
-        builder = builder.add(Attributes.MAX_HEALTH, 20.0D);
-        builder = builder.add(Attributes.ARMOR, 1.0D);
+        builder = builder.add(Attributes.MAX_HEALTH, 50.0D);
+        builder = builder.add(Attributes.ARMOR, 20.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 128.0D);
         builder = builder.add(Attributes.KNOCKBACK_RESISTANCE, 5.0D);

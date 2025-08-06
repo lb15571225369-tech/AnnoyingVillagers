@@ -122,7 +122,6 @@ public class CommonGoals {
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal(mob, Herobrine3Entity.class, false, false));
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal(mob, BlueDemonEntity.class, false, false));
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal(mob, BlueDemon2Entity.class, false, false));
-        mob.targetSelector.addGoal(2, new NearestAttackableTargetGoal(mob, Monster.class, false, (target) -> !(target instanceof PlayerMobEntity)));
         mob.goalSelector.addGoal(2, new MeleeAttackGoal(mob, 1.2D, false) {
             protected double getAttackReachSqr(LivingEntity livingentity) {
                 return (double) (mob.getBbWidth() * mob.getBbWidth() + livingentity.getBbWidth());
@@ -134,6 +133,7 @@ public class CommonGoals {
         mob.goalSelector.addGoal(2, new AvoidEntityGoal<>(mob, GreenVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
         mob.goalSelector.addGoal(2, new AvoidEntityGoal<>(mob, RedVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
         mob.goalSelector.addGoal(2, new AvoidEntityGoal<>(mob, PurpleVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
+        mob.targetSelector.addGoal(3, new NearestAttackableTargetGoal(mob, Monster.class, false, (target) -> !(target instanceof PlayerMobEntity)));
         mob.goalSelector.addGoal(3, new MeleeAttackGoal(mob, 1.5D, false) {
             protected double getAttackReachSqr(LivingEntity livingentity) {
                 return (double) (mob.getBbWidth() * mob.getBbWidth() + livingentity.getBbWidth());

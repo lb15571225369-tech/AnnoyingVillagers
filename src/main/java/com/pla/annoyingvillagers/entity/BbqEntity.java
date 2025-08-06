@@ -1,7 +1,6 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -108,7 +107,7 @@ public class BbqEntity extends PathfinderMob implements RangedAttackMob {
 
             @Override
             public boolean canContinueToUse() {
-                return followTarget != null && followTarget.isAlive() && distanceTo(followTarget) > 5.0D;
+                return followTarget != null && followTarget.isAlive() && distanceTo(followTarget) > 10.0D;
             }
         });
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, HerobrineEntity.class, false, false));
@@ -225,7 +224,7 @@ public class BbqEntity extends PathfinderMob implements RangedAttackMob {
             if (followTarget != null && followTarget.isAlive()) {
                 double distanceSq = this.distanceToSqr(followTarget);
 
-                if (distanceSq > 400.0D) {
+                if (distanceSq > 600.0D) {
                     this.teleportTo(
                             followTarget.getX(),
                             followTarget.getY(),

@@ -4,7 +4,9 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.util.PathfinderMobInventory;
+import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -13,6 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
@@ -21,10 +24,15 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.ThrownPotion;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -84,7 +92,7 @@ public class JevEntity extends PathfinderMobInventory {
 
             @Override
             public boolean canContinueToUse() {
-                return followTarget != null && followTarget.isAlive() && distanceTo(followTarget) > 5.0D;
+                return followTarget != null && followTarget.isAlive() && distanceTo(followTarget) > 10.0D;
             }
         });
         this.goalSelector.addGoal(3, new RandomStrollGoal(this, 1.0D));
@@ -170,7 +178,7 @@ public class JevEntity extends PathfinderMobInventory {
             if (followTarget != null && followTarget.isAlive()) {
                 double distanceSq = this.distanceToSqr(followTarget);
 
-                if (distanceSq > 400.0D) {
+                if (distanceSq > 600.0D) {
                     this.teleportTo(
                             followTarget.getX(),
                             followTarget.getY(),

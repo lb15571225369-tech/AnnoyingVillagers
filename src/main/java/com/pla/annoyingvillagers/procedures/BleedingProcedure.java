@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.procedures;
 import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
@@ -39,12 +40,15 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 public class BleedingProcedure {
     public static final ItemStack HOSTILE_HEALING_POTION;
     public static final ItemStack EATING_GOLDEN_APPLE;
+    public static final ItemStack HEALING_POTION;
 
     static {
         HOSTILE_HEALING_POTION = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.HARMING);
         HOSTILE_HEALING_POTION.setCount(1);
         EATING_GOLDEN_APPLE = new ItemStack(Items.GOLDEN_APPLE);
         EATING_GOLDEN_APPLE.setCount(1);
+        HEALING_POTION = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_HEALING);
+        HEALING_POTION.setCount(1);
     }
 
 
@@ -1002,7 +1006,7 @@ public class BleedingProcedure {
                                                                         }
                                                                     }
 
-                                                                    Entity entity3 = entity;
+                                                                    Entity entity3;
                                                                     if (!(dynamicanimation3 instanceof AttackAnimation) && !(dynamicanimation3 instanceof LongHitAnimation) && !(dynamicanimation3 instanceof HitAnimation)) {
                                                                         entity3 = entity;
                                                                         if (!entity3.level().isClientSide() && entity3.getServer() != null) {
@@ -1078,7 +1082,7 @@ public class BleedingProcedure {
                                                                                         }
                                                                                     }
 
-                                                                                    Entity entity5 = entity;
+                                                                                    Entity entity5;
                                                                                     if (!(dynamicanimation3 instanceof AttackAnimation) && !(dynamicanimation3 instanceof LongHitAnimation) && !(dynamicanimation3 instanceof HitAnimation)) {
                                                                                         entity5 = zombie;
                                                                                         if (!entity5.level().isClientSide() && entity5.getServer() != null) {
@@ -1106,7 +1110,7 @@ public class BleedingProcedure {
                                                                                                 }
                                                                                             }
 
-                                                                                            Entity entity6 = zombie;
+                                                                                            Entity entity6;
                                                                                             if (!(dynamicanimation3 instanceof AttackAnimation) && !(dynamicanimation3 instanceof LongHitAnimation) && !(dynamicanimation3 instanceof HitAnimation)) {
                                                                                                 entity6 = zombie;
                                                                                                 if (!entity6.level().isClientSide() && entity6.getServer() != null) {
@@ -1237,6 +1241,337 @@ public class BleedingProcedure {
                                                                                                                                 livingentity7 = (LivingEntity) zombie;
                                                                                                                                 if (!livingentity7.level().isClientSide()) {
                                                                                                                                     livingentity7.addEffect(new MobEffectInstance(MobEffects.HARM, 1, 2));
+                                                                                                                                }
+                                                                                                                            }
+
+                                                                                                                            entity.getPersistentData().putBoolean("hostile_healing", false);
+                                                                                                                        }
+                                                                                                                    };
+                                                                                                                }
+                                                                                                            };
+                                                                                                        }
+                                                                                                    };
+                                                                                                }
+                                                                                            };
+                                                                                        }
+                                                                                    };
+                                                                                }
+                                                                            };
+                                                                        }
+                                                                    };
+                                                                }
+                                                            };
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                };
+                            };
+                        }
+
+                        if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("annoyingvillagers:jev") || ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("annoyingvillagers:alex")) {
+                            if (entity instanceof LivingEntity zombie && zombie.getHealth() <= 30.0F && entity.isAlive()) {
+                                new DelayedTask(50) {
+                                    @Override
+                                    public void run() {
+                                        if (zombie.isAlive()) {
+                                            if (zombie.getHealth() <= 30.0F) {
+                                                LivingEntityPatch<?> livingentitypatch2 = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                                                ItemStack oldItem = zombie.getOffhandItem();
+                                                Entity entity2;
+
+                                                if (livingentitypatch2 != null) {
+                                                    DynamicAnimation dynamicanimation3 = livingentitypatch2.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
+
+                                                    if (!(dynamicanimation3 instanceof AttackAnimation) && !(dynamicanimation3 instanceof LongHitAnimation) && !(dynamicanimation3 instanceof HitAnimation)) {
+                                                        if (!zombie.getPersistentData().getBoolean("hostile_healing")) {
+                                                            zombie.getPersistentData().putBoolean("hostile_healing", true);
+                                                            LivingEntity livingentity2;
+
+                                                            if (entity instanceof LivingEntity) {
+                                                                livingentity2 = (LivingEntity) zombie;
+                                                                ItemStack offhand = livingentity2.getOffhandItem();
+                                                                if (offhand != HEALING_POTION) {
+                                                                    livingentity2.setItemInHand(InteractionHand.OFF_HAND, HEALING_POTION);
+                                                                    if (livingentity2 instanceof Player) {
+                                                                        Player player = (Player)livingentity2;
+
+                                                                        player.getInventory().setChanged();
+                                                                    }
+                                                                }
+                                                            }
+
+                                                            entity2 = zombie;
+                                                            AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: drinking healing postion for Jev");
+                                                            if (!entity2.level().isClientSide() && entity2.getServer() != null) {
+                                                                try {
+                                                                    entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/drink_offhand\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                } catch (CommandSyntaxException e) {
+
+                                                                }
+                                                            }
+
+                                                            if (entity instanceof LivingEntity) {
+                                                                livingentity2 = (LivingEntity) zombie;
+                                                                if (!livingentity2.level().isClientSide()) {
+                                                                    livingentity2.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 60, 0));
+                                                                }
+                                                            }
+
+                                                            new DelayedTask(4) {
+                                                                @Override
+                                                                public void run() {
+                                                                    if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
+                                                                    LevelAccessor levelaccessor1 = levelaccessor;
+
+                                                                    if (levelaccessor1 instanceof Level) {
+                                                                        Level level = (Level) levelaccessor1;
+
+                                                                        if (!level.isClientSide()) {
+                                                                            level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                        } else {
+                                                                            level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                        }
+                                                                    }
+
+                                                                    Entity entity3;
+                                                                    if (!(dynamicanimation3 instanceof AttackAnimation) && !(dynamicanimation3 instanceof LongHitAnimation) && !(dynamicanimation3 instanceof HitAnimation)) {
+                                                                        entity3 = entity;
+                                                                        if (!entity3.level().isClientSide() && entity3.getServer() != null) {
+                                                                            try {
+                                                                                entity3.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/drink_offhand\" 0 1", entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                            } catch (CommandSyntaxException e) {
+
+                                                                            }
+                                                                        }
+                                                                    }
+
+                                                                    new DelayedTask(4) {
+                                                                        public void run() {
+                                                                            if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
+                                                                            LevelAccessor levelaccessor2 = levelaccessor;
+
+                                                                            if (levelaccessor2 instanceof Level) {
+                                                                                Level level1 = (Level) levelaccessor2;
+
+                                                                                if (!level1.isClientSide()) {
+                                                                                    level1.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                } else {
+                                                                                    level1.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                }
+                                                                            }
+
+                                                                            Entity entity4;
+                                                                            LivingEntity livingentity6;
+
+                                                                            if (zombie instanceof LivingEntity) {
+                                                                                livingentity6 = (LivingEntity) zombie;
+                                                                                ItemStack offhand = livingentity6.getOffhandItem();
+                                                                                if (offhand != HEALING_POTION) {
+                                                                                    livingentity6.setItemInHand(InteractionHand.OFF_HAND, HEALING_POTION);
+                                                                                    if (livingentity6 instanceof Player) {
+                                                                                        Player player = (Player)livingentity6;
+
+                                                                                        player.getInventory().setChanged();
+                                                                                    }
+                                                                                }
+                                                                            }
+
+                                                                            if (zombie instanceof LivingEntity) {
+                                                                                livingentity6 = (LivingEntity) zombie;
+                                                                                if (!livingentity6.level().isClientSide()) {
+                                                                                    livingentity6.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 20, 0));
+                                                                                }
+                                                                            }
+
+                                                                            if (!(dynamicanimation3 instanceof AttackAnimation) && !(dynamicanimation3 instanceof LongHitAnimation) && !(dynamicanimation3 instanceof HitAnimation)) {
+                                                                                entity4 = zombie;
+                                                                                if (!entity4.level().isClientSide() && entity4.getServer() != null) {
+                                                                                    try {
+                                                                                        entity4.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/drink_offhand\" 0 1", entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                    } catch (CommandSyntaxException e) {
+
+                                                                                    }
+                                                                                }
+                                                                            }
+
+                                                                            new DelayedTask(4) {
+                                                                                public void run() {
+                                                                                    if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
+                                                                                    LevelAccessor levelaccessor3 = levelaccessor;
+
+                                                                                    if (levelaccessor3 instanceof Level) {
+                                                                                        Level level2 = (Level) levelaccessor3;
+
+                                                                                        if (!level2.isClientSide()) {
+                                                                                            level2.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                        } else {
+                                                                                            level2.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                        }
+                                                                                    }
+
+                                                                                    Entity entity5;
+                                                                                    if (!(dynamicanimation3 instanceof AttackAnimation) && !(dynamicanimation3 instanceof LongHitAnimation) && !(dynamicanimation3 instanceof HitAnimation)) {
+                                                                                        entity5 = zombie;
+                                                                                        if (!entity5.level().isClientSide() && entity5.getServer() != null) {
+                                                                                            try {
+                                                                                                entity5.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/drink_offhand\" 0 1", entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                            } catch (
+                                                                                                    CommandSyntaxException e) {
+
+                                                                                            }
+                                                                                        }
+                                                                                    }
+
+                                                                                    new DelayedTask(4) {
+                                                                                        public void run() {
+                                                                                            if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
+                                                                                            LevelAccessor levelaccessor4 = levelaccessor;
+
+                                                                                            if (levelaccessor4 instanceof Level) {
+                                                                                                Level level3 = (Level) levelaccessor4;
+
+                                                                                                if (!level3.isClientSide()) {
+                                                                                                    level3.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                } else {
+                                                                                                    level3.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                }
+                                                                                            }
+
+                                                                                            Entity entity6;
+                                                                                            if (!(dynamicanimation3 instanceof AttackAnimation) && !(dynamicanimation3 instanceof LongHitAnimation) && !(dynamicanimation3 instanceof HitAnimation)) {
+                                                                                                entity6 = zombie;
+                                                                                                if (!entity6.level().isClientSide() && entity6.getServer() != null) {
+                                                                                                    try {
+                                                                                                        entity6.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/drink_offhand\" 0 1", entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                    } catch (
+                                                                                                            CommandSyntaxException e) {
+
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+
+                                                                                            new DelayedTask(4) {
+                                                                                                public void run() {
+                                                                                                    if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
+                                                                                                    LevelAccessor levelaccessor5 = levelaccessor;
+
+                                                                                                    if (levelaccessor5 instanceof Level) {
+                                                                                                        Level level4 = (Level) levelaccessor5;
+
+                                                                                                        if (!level4.isClientSide()) {
+                                                                                                            level4.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                        } else {
+                                                                                                            level4.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                        }
+                                                                                                    }
+
+                                                                                                    Entity entity7 = zombie;
+                                                                                                    if (!(dynamicanimation3 instanceof AttackAnimation) && !(dynamicanimation3 instanceof LongHitAnimation) && !(dynamicanimation3 instanceof HitAnimation)) {
+                                                                                                        entity7 = zombie;
+                                                                                                        if (!entity7.level().isClientSide() && entity7.getServer() != null) {
+                                                                                                            try {
+                                                                                                                entity7.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/drink_offhand\" 0 1", entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                            } catch (
+                                                                                                                    CommandSyntaxException e) {
+
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+
+                                                                                                    new DelayedTask(4) {
+                                                                                                        public void run() {
+                                                                                                            if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
+                                                                                                            LevelAccessor levelaccessor6 = levelaccessor;
+
+                                                                                                            if (levelaccessor6 instanceof Level) {
+                                                                                                                Level level5 = (Level) levelaccessor6;
+
+                                                                                                                if (!level5.isClientSide()) {
+                                                                                                                    level5.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                                } else {
+                                                                                                                    level5.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                                }
+                                                                                                            }
+
+                                                                                                            Entity entity8 = zombie;
+                                                                                                            if (!entity8.level().isClientSide() && entity8.getServer() != null) {
+                                                                                                                try {
+                                                                                                                    entity8.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/drink_offhand\" 0 1", entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                                } catch (
+                                                                                                                        CommandSyntaxException e) {
+
+                                                                                                                }
+                                                                                                            }
+
+                                                                                                            new DelayedTask(4) {
+                                                                                                                public void run() {
+                                                                                                                    if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
+                                                                                                                    LevelAccessor levelaccessor7 = levelaccessor;
+
+                                                                                                                    if (levelaccessor7 instanceof Level) {
+                                                                                                                        Level level6 = (Level) levelaccessor7;
+
+                                                                                                                        if (!level6.isClientSide()) {
+                                                                                                                            level6.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                                        } else {
+                                                                                                                            level6.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                                        }
+                                                                                                                    }
+
+                                                                                                                    Entity entity9 = zombie;
+                                                                                                                    if (!(dynamicanimation3 instanceof AttackAnimation) && !(dynamicanimation3 instanceof LongHitAnimation) && !(dynamicanimation3 instanceof HitAnimation)) {
+                                                                                                                        entity9 = zombie;
+                                                                                                                        if (!entity9.level().isClientSide() && entity9.getServer() != null) {
+                                                                                                                            try {
+                                                                                                                                entity9.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/drink_offhand\" 0 1", entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                                            } catch (
+                                                                                                                                    CommandSyntaxException e) {
+
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    }
+
+                                                                                                                    new DelayedTask(3) {
+                                                                                                                        public void run() {
+                                                                                                                            if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
+                                                                                                                            if (Math.random() <= 0.4D) {
+                                                                                                                                LevelAccessor levelaccessor8 = levelaccessor;
+
+                                                                                                                                if (levelaccessor8 instanceof Level) {
+                                                                                                                                    Level level7 = (Level) levelaccessor8;
+
+                                                                                                                                    if (!level7.isClientSide()) {
+                                                                                                                                        level7.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F);
+                                                                                                                                    } else {
+                                                                                                                                        level7.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F, false);
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    };
+                                                                                                                    new DelayedTask(20) {
+                                                                                                                        public void run() {
+                                                                                                                            if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
+                                                                                                                            LivingEntity livingentity7;
+
+                                                                                                                            if (zombie instanceof LivingEntity) {
+                                                                                                                                livingentity7 = (LivingEntity) zombie;
+                                                                                                                                livingentity7.setItemInHand(InteractionHand.OFF_HAND, oldItem);
+                                                                                                                                if (livingentity7 instanceof Player) {
+                                                                                                                                    Player player2 = (Player) livingentity7;
+
+                                                                                                                                    player2.getInventory().setChanged();
+                                                                                                                                }
+                                                                                                                            }
+
+                                                                                                                            if (entity instanceof LivingEntity) {
+                                                                                                                                livingentity7 = (LivingEntity) zombie;
+                                                                                                                                if (!livingentity7.level().isClientSide()) {
+                                                                                                                                    livingentity7.addEffect(new MobEffectInstance(MobEffects.HEAL, 1, 2));
                                                                                                                                 }
                                                                                                                             }
 
