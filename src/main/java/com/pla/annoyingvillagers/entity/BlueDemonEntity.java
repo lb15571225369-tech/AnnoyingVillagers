@@ -13,6 +13,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
@@ -74,6 +76,14 @@ public class BlueDemonEntity extends Monster {
         this.setItemSlot(EquipmentSlot.CHEST, new ItemStack((ItemLike) AnnoyingVillagersModItems.BLUE_DEMON_CHESTPLATE.get()));
     }
 
+    @Override
+    public boolean canBeAffected(MobEffectInstance effect) {
+        if (effect.getEffect() == MobEffects.POISON) {
+            return false;
+        }
+        return super.canBeAffected(effect);
+    }
+
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
@@ -103,22 +113,6 @@ public class BlueDemonEntity extends Monster {
                 bbqEntityToProtect = null;
                 bbqUUID = null;
             }
-        }
-    }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        if (bbqUUID != null) {
-            tag.putUUID("BbqUUID", bbqUUID);
-        }
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        if (tag.hasUUID("BbqUUID")) {
-            bbqUUID = tag.getUUID("BbqUUID");
         }
     }
 
@@ -158,6 +152,22 @@ public class BlueDemonEntity extends Monster {
     public void die(DamageSource damagesource) {
         super.die(damagesource);
         BlueDemonOnEntityDeathProcedure.execute(this.level(), this, damagesource.getEntity());
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        if (bbqUUID != null) {
+            tag.putUUID("BbqUUID", bbqUUID);
+        }
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.hasUUID("BbqUUID")) {
+            bbqUUID = tag.getUUID("BbqUUID");
+        }
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {

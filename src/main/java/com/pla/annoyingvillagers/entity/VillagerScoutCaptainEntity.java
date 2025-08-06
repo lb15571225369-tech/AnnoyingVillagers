@@ -20,15 +20,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -122,6 +114,7 @@ public class VillagerScoutCaptainEntity extends PathfinderMobInventory {
                 Mob mob = (Mob) deadEntity;
                 mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
             }
+            this.remove(Entity.RemovalReason.KILLED);
             levelaccessor.addFreshEntity(deadEntity);
             deadEntity.hurt(deadEntity.damageSources().generic(), Float.MAX_VALUE);
         }

@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -12,6 +13,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
@@ -20,10 +23,9 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.entity.projectile.ThrownEgg;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
@@ -33,18 +35,16 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.EnumSet;
 import java.util.UUID;
 
 @EventBusSubscriber
-public class BbqEntity extends PathfinderMob {
+public class BbqEntity extends PathfinderMob implements RangedAttackMob {
     private UUID followTargetUUID;
-    private Monster followTarget;
+    private Entity followTarget;
 
-    public void setFollowTarget(Monster followTarget) {
-        if (followTarget instanceof BlueDemonEntity || followTarget instanceof BlueDemon2Entity) {
-            this.followTarget = followTarget;
-            this.followTargetUUID = followTarget.getUUID();
-        }
+    public void setFollowTarget(Entity followTarget) {
+        this.followTarget = followTarget;
     }
 
     public void setFollowTargetUUID(UUID followTargetUUID) {
@@ -64,6 +64,24 @@ public class BbqEntity extends PathfinderMob {
         this.setCustomNameVisible(true);
     }
 
+    @Override
+    public void performRangedAttack(LivingEntity target, float distanceFactor) {
+        if (!this.level().isClientSide) {
+            ThrownPoisonEggEntity projectile = new ThrownPoisonEggEntity(
+                    AnnoyingVillagersModEntities.THROWN_POISON_EGG.get(), this, this.level()
+            );
+            double dX = target.getX() - this.getX();
+            double dY = target.getEyeY() - projectile.getY();
+            double dZ = target.getZ() - this.getZ();
+
+            projectile.setOwner(this);
+            projectile.setPos(this.getX(), this.getEyeY() - 0.1D, this.getZ());
+            projectile.shoot(dX, dY, dZ, 1.5F, 8.0F); // power and inaccuracy
+
+            this.level().addFreshEntity(projectile);
+        }
+    }
+
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
@@ -71,11 +89,11 @@ public class BbqEntity extends PathfinderMob {
     protected void registerGoals() {
         super.registerGoals();
         this.getNavigation().getNodeEvaluator().setCanOpenDoors(true);
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal(this, HerobrineEntity.class, false, false));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal(this, Herobrine2Entity.class, false, false));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal(this, HerobrineEntity.class, false, false));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal(this, Herobrine3Entity.class, false, false));
-        this.goalSelector.addGoal(2, new Goal() {
+        this.goalSelector.addGoal(1, new Goal() {
+            {
+                this.setFlags(EnumSet.of(Flag.MOVE));
+            }
+
             @Override
             public boolean canUse() {
                 return followTarget != null && followTarget.isAlive();
@@ -90,9 +108,13 @@ public class BbqEntity extends PathfinderMob {
 
             @Override
             public boolean canContinueToUse() {
-                return followTarget != null && followTarget.isAlive() && distanceTo(followTarget) > 2.0D;
+                return followTarget != null && followTarget.isAlive() && distanceTo(followTarget) > 5.0D;
             }
         });
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, HerobrineEntity.class, false, false));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, Herobrine2Entity.class, false, false));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, HerobrineEntity.class, false, false));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, Herobrine3Entity.class, false, false));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, (target) -> followTarget != null
                 && followTarget.isAlive()
                 && target != null
@@ -105,8 +127,9 @@ public class BbqEntity extends PathfinderMob {
         this.targetSelector.addGoal(10, new NearestAttackableTargetGoal(this, VillagerScoutCaptainEntity.class, false, false));
         this.targetSelector.addGoal(11, new NearestAttackableTargetGoal(this, Player.class, false, false));
         this.targetSelector.addGoal(14, new NearestAttackableTargetGoal(this, SteveEntity.class, false, false));
-        this.targetSelector.addGoal(19, new NearestAttackableTargetGoal(this, Monster.class, false, false));
+        this.targetSelector.addGoal(19, new NearestAttackableTargetGoal(this, Monster.class, false, (target) -> !((target instanceof BlueDemonEntity) || (target instanceof BlueDemon2Entity))));
         this.targetSelector.addGoal(20, new NearestAttackableTargetGoal(this, Steve2Entity.class, false, false));
+        this.goalSelector.addGoal(23, new RangedAttackGoal(this, 1.25D, 20, 15.0F));
         this.goalSelector.addGoal(24, new MeleeAttackGoal(this, 1.5D, false) {
             protected double getAttackReachSqr(LivingEntity livingentity) {
                 return (double) (this.mob.getBbWidth() * this.mob.getBbWidth() + livingentity.getBbWidth());
@@ -160,6 +183,30 @@ public class BbqEntity extends PathfinderMob {
     }
 
     @Override
+    public boolean canBeAffected(MobEffectInstance effect) {
+        if (effect.getEffect() == MobEffects.POISON) {
+            return false;
+        }
+        return super.canBeAffected(effect);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        if (followTargetUUID != null) {
+            tag.putUUID("FollowTargetUUID", followTargetUUID);
+        }
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.hasUUID("FollowTargetUUID")) {
+            followTargetUUID = tag.getUUID("FollowTargetUUID");
+        }
+    }
+
+    @Override
     public void tick() {
         super.tick();
         if (!level().isClientSide) {
@@ -175,13 +222,26 @@ public class BbqEntity extends PathfinderMob {
                 followTarget = null;
                 followTargetUUID = null;
             }
+            if (followTarget != null && followTarget.isAlive()) {
+                double distanceSq = this.distanceToSqr(followTarget);
+
+                if (distanceSq > 400.0D) {
+                    this.teleportTo(
+                            followTarget.getX(),
+                            followTarget.getY(),
+                            followTarget.getZ()
+                    );
+                }
+            }
         }
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
         Level level = this.level();
         if (!level.isClientSide()) {
-            Projectile projectile = new ThrownEgg(EntityType.EGG, level);
+            ThrownPoisonEggEntity projectile = new ThrownPoisonEggEntity(
+                    AnnoyingVillagersModEntities.THROWN_POISON_EGG.get(), this, level
+            );
             projectile.setOwner(this);
             projectile.setPos(this.getX(), this.getEyeY() - 0.1D, this.getZ());
             projectile.shoot(this.getLookAngle().x, this.getLookAngle().y, this.getLookAngle().z, 2.0F, 0.0F);
@@ -205,7 +265,7 @@ public class BbqEntity extends PathfinderMob {
         Builder builder = Mob.createMobAttributes();
 
         builder = builder.add(Attributes.MOVEMENT_SPEED, 0.27D);
-        builder = builder.add(Attributes.MAX_HEALTH, 1007.0D);
+        builder = builder.add(Attributes.MAX_HEALTH, 300.0D);
         builder = builder.add(Attributes.ARMOR, 40.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 7.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 128.0D);

@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.init;
 import com.pla.annoyingvillagers.client.renderer.*;
 import com.pla.annoyingvillagers.entity.DarkOBFarEntity;
 import com.pla.annoyingvillagers.entity.EnchantedEnderPearlEntity;
+import com.pla.annoyingvillagers.entity.ThrownPoisonEggEntity;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.api.distmarker.Dist;
@@ -10,6 +11,7 @@ import net.minecraftforge.client.event.EntityRenderersEvent.RegisterRenderers;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import se.gory_moon.player_mobs.client.render.PlayerMobRenderer;
 
 @EventBusSubscriber(bus = Bus.MOD, value = {Dist.CLIENT})
 public class AnnoyingVillagersModEntityRenderers {
@@ -32,6 +34,7 @@ public class AnnoyingVillagersModEntityRenderers {
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.RED_VILLAGER_GENERAL.get(), RedVillagerGeneralRenderer::new);
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.PURPLE_VILLAGER_GENERAL.get(), GreenVillagerGeneralRenderer::new);
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.ENCHANTED_ENDER_PEARL_PROJECTILE.get(), context -> new ThrownItemRenderer<EnchantedEnderPearlEntity>(context));
+        registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.THROWN_POISON_EGG.get(), context -> new ThrownItemRenderer<ThrownPoisonEggEntity>(context));
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.ALEX_DEAD.get(), AlexDeadRenderer::new);
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.ALEX.get(), AlexRenderer::new);
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.JEV.get(), JevRenderer::new);
@@ -54,5 +57,6 @@ public class AnnoyingVillagersModEntityRenderers {
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.BLUE_DEMON_DEAD.get(), BlueDemonDeadRenderer::new);
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.HEROBRINE_DEAD.get(), HerobrineDeadRenderer::new);
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.DARK_HEROBRINE_DEAD.get(), DarkHerobrineDeadRenderer::new);
+        registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.PLAYER_MOB_DEAD.get(), PlayerMobRenderer::new);
     }
 }

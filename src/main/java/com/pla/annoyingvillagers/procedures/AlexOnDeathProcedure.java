@@ -1,17 +1,8 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
-import com.pla.annoyingvillagers.entity.AlexDeadEntity;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.util.DelayedTask;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;

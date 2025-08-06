@@ -15,7 +15,8 @@
     "SkeletonMixin",
     "ZombieMixin",
     "SkillBookScreenMixin",
-    "AimAnimationMixin"
+    "AimAnimationMixin",
+    "LivingEntityMixin"
   ],
   "client": [
   ],

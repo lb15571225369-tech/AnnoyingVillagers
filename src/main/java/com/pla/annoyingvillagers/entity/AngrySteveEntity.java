@@ -100,25 +100,20 @@ public class AngrySteveEntity extends PathfinderMobInventory {
         double posY = this.getY();
         double posZ = this.getZ();
         LevelAccessor levelAccessor = this.level();
-        new DelayedTask(28) {
-            @Override
-            public void run() {
-                if (levelAccessor instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-                    ServerLevel serverlevel = (ServerLevel)levelaccessor;
-                    SteveDeadEntity steveDeadEntity = new SteveDeadEntity((EntityType) AnnoyingVillagersModEntities.STEVE_DEAD.get(), serverlevel);
+        if (levelAccessor instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
+            ServerLevel serverlevel = (ServerLevel)levelaccessor;
+            SteveDeadEntity steveDeadEntity = new SteveDeadEntity((EntityType) AnnoyingVillagersModEntities.STEVE_DEAD.get(), serverlevel);
 
-                    steveDeadEntity.moveTo(posX, posY, posZ, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                    if (steveDeadEntity instanceof Mob) {
-                        Mob mob = (Mob)steveDeadEntity;
+            steveDeadEntity.moveTo(posX, posY, posZ, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+            if (steveDeadEntity instanceof Mob) {
+                Mob mob = (Mob)steveDeadEntity;
 
-                        mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(steveDeadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                    }
-
-                    levelaccessor.addFreshEntity(steveDeadEntity);
-                    steveDeadEntity.hurt(steveDeadEntity.damageSources().generic(), Float.MAX_VALUE);
-                }
+                mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(steveDeadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
             }
-        };
+            this.remove(Entity.RemovalReason.KILLED);
+            levelaccessor.addFreshEntity(steveDeadEntity);
+            steveDeadEntity.hurt(steveDeadEntity.damageSources().generic(), Float.MAX_VALUE);
+        }
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {

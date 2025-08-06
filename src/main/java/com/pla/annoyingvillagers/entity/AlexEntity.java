@@ -141,7 +141,7 @@ public class AlexEntity extends PathfinderMobInventory {
 
                 mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(alexdeadentity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
             }
-
+            this.remove(RemovalReason.KILLED);
             levelaccessor.addFreshEntity(alexdeadentity);
             alexdeadentity.hurt(alexdeadentity.damageSources().generic(), Float.MAX_VALUE);
         }

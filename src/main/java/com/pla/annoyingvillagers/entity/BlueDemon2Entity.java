@@ -15,6 +15,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -115,6 +117,14 @@ public class BlueDemon2Entity extends Monster {
         return super.hurt(damagesource, f);
     }
 
+    @Override
+    public boolean canBeAffected(MobEffectInstance effect) {
+        if (effect.getEffect() == MobEffects.POISON) {
+            return false;
+        }
+        return super.canBeAffected(effect);
+    }
+
     public void die(DamageSource damagesource) {
         super.die(damagesource);
         BlueDemon2OnEntityDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
@@ -122,22 +132,18 @@ public class BlueDemon2Entity extends Monster {
         double posY = this.getY();
         double posZ = this.getZ();
         LevelAccessor levelAccessor = this.level();
-        new DelayedTask(28) {
-            @Override
-            public void run() {
-                if (levelAccessor instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-                    ServerLevel serverlevel = levelaccessor;
-                    BlueDemonDeadEntity deadEntity = new BlueDemonDeadEntity((EntityType) AnnoyingVillagersModEntities.BLUE_DEMON_DEAD.get(), serverlevel);
-                    deadEntity.moveTo(posX, posY, posZ, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                    if (deadEntity instanceof Mob) {
-                        Mob mob = (Mob)deadEntity;
-                        mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                    }
-                    levelaccessor.addFreshEntity(deadEntity);
-                    deadEntity.hurt(deadEntity.damageSources().generic(), Float.MAX_VALUE);
-                }
+        if (levelAccessor instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
+            ServerLevel serverlevel = levelaccessor;
+            BlueDemonDeadEntity deadEntity = new BlueDemonDeadEntity((EntityType) AnnoyingVillagersModEntities.BLUE_DEMON_DEAD.get(), serverlevel);
+            deadEntity.moveTo(posX, posY, posZ, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+            if (deadEntity instanceof Mob) {
+                Mob mob = (Mob)deadEntity;
+                mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
             }
-        };
+            this.remove(RemovalReason.KILLED);
+            levelaccessor.addFreshEntity(deadEntity);
+            deadEntity.hurt(deadEntity.damageSources().generic(), Float.MAX_VALUE);
+        }
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
@@ -155,6 +161,22 @@ public class BlueDemon2Entity extends Monster {
     public void baseTick() {
         super.baseTick();
         BlueDemon2OnEntityUpdateProcedure.execute(this.level(), (int) this.getX(), (int) this.getY(), (int) this.getZ(), this);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        if (bbqUUID != null) {
+            tag.putUUID("BbqUUID", bbqUUID);
+        }
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.hasUUID("BbqUUID")) {
+            bbqUUID = tag.getUUID("BbqUUID");
+        }
     }
 
     @Override

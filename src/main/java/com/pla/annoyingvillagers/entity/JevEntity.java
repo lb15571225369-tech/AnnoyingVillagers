@@ -68,6 +68,7 @@ public class JevEntity extends PathfinderMobInventory {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(1, new LookAtPlayerGoal(this, AlexEntity.class, 12.0F));
+        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Monster.class, 5.0F, 1.2D, 1.8D));
         this.goalSelector.addGoal(2, new Goal() {
             @Override
             public boolean canUse() {
@@ -83,10 +84,9 @@ public class JevEntity extends PathfinderMobInventory {
 
             @Override
             public boolean canContinueToUse() {
-                return followTarget != null && followTarget.isAlive() && distanceTo(followTarget) > 2.0D;
+                return followTarget != null && followTarget.isAlive() && distanceTo(followTarget) > 5.0D;
             }
         });
-        this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Monster.class, 4.0F, 1.2D, 1.8D));
         this.goalSelector.addGoal(3, new RandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(5, new FloatGoal(this));
@@ -129,6 +129,7 @@ public class JevEntity extends PathfinderMobInventory {
                 Mob mob = (Mob)jevDeadEntity;
                 mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(jevDeadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
             }
+            this.remove(RemovalReason.KILLED);
             levelaccessor.addFreshEntity(jevDeadEntity);
             jevDeadEntity.hurt(jevDeadEntity.damageSources().generic(), Float.MAX_VALUE);
         }
@@ -165,6 +166,17 @@ public class JevEntity extends PathfinderMobInventory {
                 }
                 followTarget = null;
                 followTargetUUID = null;
+            }
+            if (followTarget != null && followTarget.isAlive()) {
+                double distanceSq = this.distanceToSqr(followTarget);
+
+                if (distanceSq > 400.0D) {
+                    this.teleportTo(
+                            followTarget.getX(),
+                            followTarget.getY(),
+                            followTarget.getZ()
+                    );
+                }
             }
         }
     }
@@ -227,7 +239,7 @@ public class JevEntity extends PathfinderMobInventory {
         Builder builder = Mob.createMobAttributes();
 
         builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3D);
-        builder = builder.add(Attributes.MAX_HEALTH, 20.0D);
+        builder = builder.add(Attributes.MAX_HEALTH, 50.0D);
         builder = builder.add(Attributes.ARMOR, 1.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 128.0D);

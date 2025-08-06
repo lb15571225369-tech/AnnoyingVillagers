@@ -35,6 +35,7 @@ public class AnnoyingVillagersModEntities {
     public static final RegistryObject<EntityType<RedVillagerGeneralEntity>> RED_VILLAGER_GENERAL = register("red_villager_general", Builder.<RedVillagerGeneralEntity>of(RedVillagerGeneralEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(RedVillagerGeneralEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<GreenVillagerGeneralEntity>> PURPLE_VILLAGER_GENERAL = register("purple_villager_general", Builder.<GreenVillagerGeneralEntity>of(GreenVillagerGeneralEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(GreenVillagerGeneralEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<EnchantedEnderPearlEntity>> ENCHANTED_ENDER_PEARL_PROJECTILE = register("projectile_enchanted_ender_pearl", Builder.<EnchantedEnderPearlEntity>of(EnchantedEnderPearlEntity::new, MobCategory.MISC).setCustomClientFactory(EnchantedEnderPearlEntity::new).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).sized(0.5F, 0.5F));
+    public static final RegistryObject<EntityType<ThrownPoisonEggEntity>> THROWN_POISON_EGG = register("thrown_poison_egg", Builder.<ThrownPoisonEggEntity>of(ThrownPoisonEggEntity::new, MobCategory.MISC).setCustomClientFactory(ThrownPoisonEggEntity::new).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).sized(0.5F, 0.5F));
     public static final RegistryObject<EntityType<AlexEntity>> ALEX = register("alex", Builder.<AlexEntity>of(AlexEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(AlexEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<JevEntity>> JEV = register("jev", Builder.<JevEntity>of(JevEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(JevEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<BbqEntity>> BBQ = register("bbq", Builder.<BbqEntity>of(BbqEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(BbqEntity::new).fireImmune().sized(0.4F, 0.7F));
@@ -58,6 +59,7 @@ public class AnnoyingVillagersModEntities {
     public static final RegistryObject<EntityType<BlueDemonDeadEntity>> BLUE_DEMON_DEAD = register("blue_demon_dead", Builder.<BlueDemonDeadEntity>of(BlueDemonDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(BlueDemonDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<HerobrineDeadEntity>> HEROBRINE_DEAD = register("herobrine_dead", Builder.<HerobrineDeadEntity>of(HerobrineDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(HerobrineDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<DarkHerobrineDeadEntity>> DARK_HEROBRINE_DEAD = register("dark_herobrine_dead", Builder.<DarkHerobrineDeadEntity>of(DarkHerobrineDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(DarkHerobrineDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<PlayerMobDeadEntity>> PLAYER_MOB_DEAD = register("player_mob_dead", Builder.<PlayerMobDeadEntity>of(PlayerMobDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(PlayerMobDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
 
     private static <T extends Entity> RegistryObject<EntityType<T>> register(String s, Builder<T> builder) {
         return AnnoyingVillagersModEntities.REGISTRY.register(s, () -> {
@@ -103,6 +105,7 @@ public class AnnoyingVillagersModEntities {
             BlueDemonDeadEntity.init();
             HerobrineDeadEntity.init();
             DarkHerobrineDeadEntity.init();
+            PlayerMobDeadEntity.init();
         });
     }
 
@@ -143,5 +146,6 @@ public class AnnoyingVillagersModEntities {
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.BLUE_DEMON_DEAD.get(), AngrySteveEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.HEROBRINE_DEAD.get(), AngrySteveEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.DARK_HEROBRINE_DEAD.get(), AngrySteveEntity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.PLAYER_MOB_DEAD.get(), PlayerMobDeadEntity.createAttributes().build());
     }
 }

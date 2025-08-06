@@ -63,6 +63,5 @@ public class EnchantedEnderPearlItem extends Item {
             enchantedEnderPearl.pickup = Pickup.DISALLOWED;
             serverplayer.getCooldowns().addCooldown(itemstack.getItem(), 20);
         }
-
     }
 }

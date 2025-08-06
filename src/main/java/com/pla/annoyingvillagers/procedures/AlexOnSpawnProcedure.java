@@ -51,22 +51,17 @@ public class AlexOnSpawnProcedure {
             }
 
             itemstack.enchant(Enchantments.SWEEPING_EDGE, 4);
+
             if (levelaccessor instanceof ServerLevel) {
                 ServerLevel serverlevel = (ServerLevel) levelaccessor;
+
                 JevEntity jevEntity = new JevEntity((EntityType) AnnoyingVillagersModEntities.JEV.get(), serverlevel);
-                levelaccessor.addFreshEntity(jevEntity);
-
                 jevEntity.moveTo(d0 + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), d1 + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), d2 + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                if (jevEntity instanceof Mob) {
-                    Mob mob = (Mob) jevEntity;
-                    if (entity instanceof AlexEntity alex) {
-                        jevEntity.setFollowTarget(alex);
-                        jevEntity.setFollowTargetUUID(alex.getUUID());
-                    }
-                    mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(jevEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
-                }
-
+                jevEntity.setFollowTarget((AlexEntity) entity);
+                jevEntity.setFollowTargetUUID(entity.getUUID());
+                jevEntity.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(jevEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
                 levelaccessor.addFreshEntity(jevEntity);
+
                 ((AlexEntity) entity).setJevUUID(jevEntity.getUUID());
                 ((AlexEntity) entity).setProtectingJev(jevEntity);
             }

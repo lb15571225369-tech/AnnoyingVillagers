@@ -121,6 +121,7 @@ public class BlueVillagerGeneralEntity extends PathfinderMobInventory {
                 Mob mob = (Mob) deadEntity;
                 mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
             }
+            this.remove(RemovalReason.KILLED);
             levelaccessor.addFreshEntity(deadEntity);
             deadEntity.hurt(deadEntity.damageSources().generic(), Float.MAX_VALUE);
         }
