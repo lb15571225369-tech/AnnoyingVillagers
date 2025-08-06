@@ -17,7 +17,7 @@ public class AnnoyingVillagersConfig {
                         "Don't set it too high, the game will become a Death Match game",
                         "Minimum: 0",
                         "Maximum: 1")
-                .defineInRange("playerNpcSpawnRate", 0.2, 0, 1);
+                .defineInRange("playerNpcSpawnRate", 0.4, 0, 1);
         HEROBRINE_POSSESS_RATE = BUILDER.comment(
                         "Chance for Herobrine possess another player npc to be Herobrine on killed",
                         "Set to 0 if you want to disable the possessing feature",

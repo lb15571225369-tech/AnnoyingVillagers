@@ -35,7 +35,7 @@ public class LivingEntityMixin {
                     entity.setInvisible(true);
                     entity.remove(Entity.RemovalReason.KILLED);
                     levelaccessor.addFreshEntity(corpse);
-                    new DelayedTask(2) {
+                    new DelayedTask(3) {
                         @Override
                         public void run() {
                             corpse.hurt(corpse.damageSources().generic(), Float.MAX_VALUE);
