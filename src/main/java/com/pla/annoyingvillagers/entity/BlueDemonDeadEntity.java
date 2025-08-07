@@ -34,8 +34,6 @@ public class BlueDemonDeadEntity extends PathfinderMob {
         this.setMaxUpStep(0.6F);
         this.xpReward = 0;
         this.setNoAi(false);
-        this.setCustomName(Component.literal("BlueDemon"));
-        this.setCustomNameVisible(true);
         this.setPersistenceRequired();
     }
 

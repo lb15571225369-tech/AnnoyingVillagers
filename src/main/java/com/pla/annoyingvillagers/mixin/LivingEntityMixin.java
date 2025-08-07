@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.mixin;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.PlayerMobDeadEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
@@ -38,7 +39,12 @@ public class LivingEntityMixin {
                     new DelayedTask(3) {
                         @Override
                         public void run() {
-                            corpse.hurt(corpse.damageSources().generic(), Float.MAX_VALUE);
+                            try {
+                                corpse.getServer().getCommands().getDispatcher().execute(
+                                        "kill @s",
+                                        corpse.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                            }
                         }
                     };
                 }

@@ -592,7 +592,12 @@ public class Steve2OnDeathProcedure {
                     }
                     entity.remove(Entity.RemovalReason.KILLED);
                     levelaccessor.addFreshEntity(steveDeadEntity);
-                    steveDeadEntity.hurt(steveDeadEntity.damageSources().generic(), Float.MAX_VALUE);
+                    try {
+                        steveDeadEntity.getServer().getCommands().getDispatcher().execute(
+                                "kill @s",
+                                steveDeadEntity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                    }
                 }
             }
 

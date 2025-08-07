@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.util.CheckGameMode;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
@@ -98,7 +99,7 @@ public class BoomlitProcedure {
                     if (livingentitypatch != null) {
                         DynamicAnimation dynamicanimation = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation)null).getAnimation();
 
-                        if (dynamicanimation != AVAnimations.HARD_GREAT_SWORD_GUARD_SKILL) {
+                        if (dynamicanimation != AVAnimations.HARD_GREAT_SWORD_GUARD_SKILL && AnnoyingVillagersConfig.EXPLOSION_BREAK_ARMOR.get()) {
                             entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * (double)Math.max(-1, -3), 1.0D, entity.getLookAngle().z * (double)Math.max(-1, -3)));
                             Enchantment enchantment = Enchantments.BLAST_PROTECTION;
                             LivingEntity livingentity;

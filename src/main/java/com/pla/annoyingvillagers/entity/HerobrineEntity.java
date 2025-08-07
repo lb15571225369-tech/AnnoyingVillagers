@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.util.DelayedTask;
@@ -134,7 +135,12 @@ public class HerobrineEntity extends Monster {
             }
             this.remove(RemovalReason.KILLED);
             levelaccessor.addFreshEntity(deadEntity);
-            deadEntity.hurt(deadEntity.damageSources().generic(), Float.MAX_VALUE);
+            try {
+                deadEntity.getServer().getCommands().getDispatcher().execute(
+                        "kill @s",
+                        deadEntity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+            } catch (CommandSyntaxException e) {
+            }
         }
     }
 

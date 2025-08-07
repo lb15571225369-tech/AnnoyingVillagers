@@ -23,6 +23,7 @@ public class AlexOnSpawnProcedure {
 
     public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) {
         if (entity != null) {
+            entity.getPersistentData().putBoolean("av_npc", true);
             LivingEntity livingentity;
             ItemStack itemstack;
 

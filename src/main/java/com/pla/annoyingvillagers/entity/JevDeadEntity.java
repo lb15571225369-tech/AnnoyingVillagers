@@ -34,8 +34,6 @@ public class JevDeadEntity extends PathfinderMob {
         this.setMaxUpStep(0.6F);
         this.xpReward = 0;
         this.setNoAi(false);
-        this.setCustomName(Component.literal("Steve"));
-        this.setCustomNameVisible(true);
         this.setPersistenceRequired();
     }
 

@@ -7,6 +7,7 @@ public class ChrisOnSpawnProcedure {
 
     public static void execute(Entity entity) {
         if (entity != null) {
+            entity.getPersistentData().putBoolean("av_npc", true);
             if (!entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute(

@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.procedures.ChrisOnDeathProcedure;
@@ -35,6 +36,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
@@ -57,7 +59,10 @@ public class ChrisEntity extends PathfinderMobInventory {
         this.setCustomName(Component.literal("Chris"));
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
-        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.DIAMOND_SWORD));
+        ItemStack sword = new ItemStack(Items.DIAMOND_SWORD);
+        sword.enchant(Enchantments.KNOCKBACK, 5);
+        sword.enchant(Enchantments.UNBREAKING, 5);
+        this.setItemSlot(EquipmentSlot.MAINHAND, sword);
         this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.ENDER_PEARL));
         this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.DIAMOND_HELMET));
         this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.DIAMOND_CHESTPLATE));
@@ -116,7 +121,12 @@ public class ChrisEntity extends PathfinderMobInventory {
             }
             this.remove(RemovalReason.KILLED);
             levelaccessor.addFreshEntity(deadEntity);
-            deadEntity.hurt(deadEntity.damageSources().generic(), Float.MAX_VALUE);
+            try {
+                deadEntity.getServer().getCommands().getDispatcher().execute(
+                        "kill @s",
+                        deadEntity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+            } catch (CommandSyntaxException e) {
+            }
         }
     }
 
@@ -154,8 +164,8 @@ public class ChrisEntity extends PathfinderMobInventory {
         Builder builder = Mob.createMobAttributes();
 
         builder = builder.add(Attributes.MOVEMENT_SPEED, 0.26D);
-        builder = builder.add(Attributes.MAX_HEALTH, 20.0D);
-        builder = builder.add(Attributes.ARMOR, 0.0D);
+        builder = builder.add(Attributes.MAX_HEALTH, 50.0D);
+        builder = builder.add(Attributes.ARMOR, 20.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 128.0D);
         return builder;

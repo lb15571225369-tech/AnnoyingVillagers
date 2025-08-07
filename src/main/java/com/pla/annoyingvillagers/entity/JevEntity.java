@@ -139,7 +139,12 @@ public class JevEntity extends PathfinderMobInventory {
             }
             this.remove(RemovalReason.KILLED);
             levelaccessor.addFreshEntity(jevDeadEntity);
-            jevDeadEntity.hurt(jevDeadEntity.damageSources().generic(), Float.MAX_VALUE);
+            try {
+                jevDeadEntity.getServer().getCommands().getDispatcher().execute(
+                        "kill @s",
+                        jevDeadEntity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+            } catch (CommandSyntaxException e) {
+            }
         }
     }
 

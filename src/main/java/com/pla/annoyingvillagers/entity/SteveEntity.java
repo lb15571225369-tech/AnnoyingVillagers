@@ -126,8 +126,8 @@ public class SteveEntity extends PathfinderMobInventory {
         Builder builder = Mob.createMobAttributes();
 
         builder = builder.add(Attributes.MOVEMENT_SPEED, 0.26D);
-        builder = builder.add(Attributes.MAX_HEALTH, 20.0D);
-        builder = builder.add(Attributes.ARMOR, 0.0D);
+        builder = builder.add(Attributes.MAX_HEALTH, 50.0D);
+        builder = builder.add(Attributes.ARMOR, 20.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 256.0D);
         return builder;

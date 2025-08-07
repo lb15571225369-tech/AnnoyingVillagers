@@ -38,8 +38,6 @@ public class AlexDeadEntity extends Monster {
         this.setMaxUpStep(0.6F);
         this.xpReward = 0;
         this.setNoAi(false);
-        this.setCustomName(Component.literal("Alex"));
-        this.setCustomNameVisible(true);
         this.setPersistenceRequired();
     }
 

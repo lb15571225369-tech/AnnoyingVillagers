@@ -149,7 +149,12 @@ public class AlexEntity extends PathfinderMobInventory {
             }
             this.remove(RemovalReason.KILLED);
             levelaccessor.addFreshEntity(alexdeadentity);
-            alexdeadentity.hurt(alexdeadentity.damageSources().generic(), Float.MAX_VALUE);
+            try {
+                alexdeadentity.getServer().getCommands().getDispatcher().execute(
+                        "kill @s",
+                        alexdeadentity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+            } catch (CommandSyntaxException e) {
+            }
         }
     }
 

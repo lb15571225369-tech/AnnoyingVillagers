@@ -107,110 +107,144 @@ public class BleedingProcedure {
 
                     if (!(entity instanceof Player)) {
                         if (!entity.getPersistentData().getBoolean("av_npc")) {
-                            float f;
+                            if (entity instanceof LivingEntity livingEntity) {
+                                if (entity.isPassenger()) {
+                                    entity.stopRiding();
+                                }
+                                ItemStack oldItem = livingEntity.getOffhandItem();
+                                new DelayedTask(50) {
+                                    @Override
+                                    public void run() {
+                                        if (livingEntity.getHealth() <= (2.0f / 3.0f) * livingEntity.getMaxHealth() && entity.isAlive()) {
+                                            if (livingEntity.getHealth() <= (2.0f / 3.0f) * livingEntity.getMaxHealth()) {
+                                                Entity entity2;
 
-                            if (entity instanceof LivingEntity) {
-                                livingentity2 = (LivingEntity)entity;
-                                f = livingentity2.getMaxHealth();
-                            } else {
-                                f = -1.0F;
-                            }
+                                                if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
+                                                    if (!entity.getPersistentData().getBoolean("eating")) {
+                                                        entity.getPersistentData().putBoolean("eating", true);
+                                                        LivingEntity livingentity5;
 
-                            if (f == 20.0F) {
-                                if (entity.fireImmune()) {
-                                    if (entity instanceof LivingEntity) {
-                                        LivingEntity livingentity3 = (LivingEntity)entity;
+                                                        if (entity instanceof LivingEntity) {
+                                                            livingentity5 = (LivingEntity)entity;
+                                                            ItemStack offhand = livingentity5.getOffhandItem();
+                                                            if (offhand != EATING_GOLDEN_APPLE) {
+                                                                livingentity5.setItemInHand(InteractionHand.OFF_HAND, EATING_GOLDEN_APPLE);
+                                                                if (livingentity5 instanceof Player) {
+                                                                    Player player = (Player)livingentity5;
 
-                                        f = livingentity3.getHealth();
-                                    } else {
-                                        f = -1.0F;
-                                    }
+                                                                    player.getInventory().setChanged();
+                                                                }
+                                                            }
+                                                        }
 
-                                    if (f <= 10.0F && entity.isAlive()) {
-                                        new DelayedTask(50) {
-                                            @Override
-                                            public void run() {
-                                                if (entity.isAlive()) {
-                                                    float f1;
+                                                        entity2 = entity;
+                                                        if (!entity2.level().isClientSide() && entity2.getServer() != null) {
+                                                            try {
+                                                                entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/eat_offhand\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                            } catch (CommandSyntaxException e) {
 
-                                                    if (entity instanceof LivingEntity) {
-                                                        LivingEntity livingentity4 = (LivingEntity)entity;
+                                                            }
+                                                        }
 
-                                                        f1 = livingentity4.getHealth();
-                                                    } else {
-                                                        f1 = -1.0F;
-                                                    }
+                                                        if (entity instanceof LivingEntity) {
+                                                            livingentity5 = (LivingEntity)entity;
+                                                            if (!livingentity5.level().isClientSide()) {
+                                                                livingentity5.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 60, 0));
+                                                            }
+                                                        }
 
-                                                    if (f1 <= 10.0F) {
-                                                        Entity entity2;
+                                                        new DelayedTask(4) {
+                                                            @Override
+                                                            public void run() {
+                                                                if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
+                                                                LevelAccessor levelaccessor1 = levelaccessor;
 
-                                                        if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
-                                                            if (!entity.getPersistentData().getBoolean("eating")) {
-                                                                entity.getPersistentData().putBoolean("eating", true);
-                                                                LivingEntity livingentity5;
+                                                                if (levelaccessor1 instanceof Level) {
+                                                                    Level level = (Level)levelaccessor1;
 
-                                                                if (entity instanceof LivingEntity) {
-                                                                    livingentity5 = (LivingEntity)entity;
-                                                                    ItemStack offhand = livingentity5.getOffhandItem();
-                                                                    if (offhand != EATING_GOLDEN_APPLE) {
-                                                                        livingentity5.setItemInHand(InteractionHand.OFF_HAND, EATING_GOLDEN_APPLE);
-                                                                        if (livingentity5 instanceof Player) {
-                                                                            Player player = (Player)livingentity5;
-
-                                                                            player.getInventory().setChanged();
-                                                                        }
+                                                                    if (!level.isClientSide()) {
+                                                                        level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                    } else {
+                                                                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                     }
                                                                 }
 
-                                                                entity2 = entity;
-                                                                if (!entity2.level().isClientSide() && entity2.getServer() != null) {
+                                                                Entity entity3 = entity;
+
+                                                                if (!entity3.level().isClientSide() && entity3.getServer() != null) {
                                                                     try {
-                                                                        entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/eat_offhand\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                        entity3.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                     } catch (CommandSyntaxException e) {
-                                                                        
+
                                                                     }
                                                                 }
 
-                                                                if (entity instanceof LivingEntity) {
-                                                                    livingentity5 = (LivingEntity)entity;
-                                                                    if (!livingentity5.level().isClientSide()) {
-                                                                        livingentity5.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 60, 0));
+                                                                if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
+                                                                    entity3 = entity;
+                                                                    if (!entity3.level().isClientSide() && entity3.getServer() != null) {
+                                                                        try {
+                                                                            entity3.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/eat_offhand\" 0 1", entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                        } catch (CommandSyntaxException e) {
+
+                                                                        }
                                                                     }
                                                                 }
 
                                                                 new DelayedTask(4) {
-                                                                    @Override
                                                                     public void run() {
                                                                         if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
-                                                                        LevelAccessor levelaccessor1 = levelaccessor;
+                                                                        LevelAccessor levelaccessor2 = levelaccessor;
 
-                                                                        if (levelaccessor1 instanceof Level) {
-                                                                            Level level = (Level)levelaccessor1;
+                                                                        if (levelaccessor2 instanceof Level) {
+                                                                            Level level1 = (Level)levelaccessor2;
 
-                                                                            if (!level.isClientSide()) {
-                                                                                level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                            if (!level1.isClientSide()) {
+                                                                                level1.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                             } else {
-                                                                                level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                             }
                                                                         }
 
-                                                                        Entity entity3 = entity;
+                                                                        Entity entity4 = entity;
 
-                                                                        if (!entity3.level().isClientSide() && entity3.getServer() != null) {
+                                                                        if (!entity4.level().isClientSide() && entity4.getServer() != null) {
                                                                             try {
-                                                                                entity3.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                entity4.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                             } catch (CommandSyntaxException e) {
-                                                                                
+
+                                                                            }
+                                                                        }
+
+                                                                        LivingEntity livingentity6;
+
+                                                                        if (entity instanceof LivingEntity) {
+                                                                            livingentity6 = (LivingEntity)entity;
+                                                                            ItemStack offhand = livingentity6.getOffhandItem();
+                                                                            if (offhand != EATING_GOLDEN_APPLE) {
+                                                                                livingentity6.setItemInHand(InteractionHand.OFF_HAND, EATING_GOLDEN_APPLE);
+                                                                                if (livingentity6 instanceof Player) {
+                                                                                    Player player = (Player)livingentity6;
+
+                                                                                    player.getInventory().setChanged();
+                                                                                }
+                                                                            }
+                                                                        }
+
+                                                                        if (entity instanceof LivingEntity) {
+                                                                            livingentity6 = (LivingEntity)entity;
+                                                                            if (!livingentity6.level().isClientSide()) {
+                                                                                livingentity6.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 20, 0));
                                                                             }
                                                                         }
 
                                                                         if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
-                                                                            entity3 = entity;
-                                                                            if (!entity3.level().isClientSide() && entity3.getServer() != null) {
+                                                                            entity4 = entity;
+                                                                            if (!entity4.level().isClientSide() && entity4.getServer() != null) {
                                                                                 try {
-                                                                                    entity3.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/eat_offhand\" 0 1", entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                                                } catch (CommandSyntaxException e) {
-                                                                                    
+                                                                                    entity4.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/eat_offhand\" 0 1", entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                } catch (
+                                                                                        CommandSyntaxException e) {
+
                                                                                 }
                                                                             }
                                                                         }
@@ -218,58 +252,37 @@ public class BleedingProcedure {
                                                                         new DelayedTask(4) {
                                                                             public void run() {
                                                                                 if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
-                                                                                LevelAccessor levelaccessor2 = levelaccessor;
+                                                                                LevelAccessor levelaccessor3 = levelaccessor;
 
-                                                                                if (levelaccessor2 instanceof Level) {
-                                                                                    Level level1 = (Level)levelaccessor2;
+                                                                                if (levelaccessor3 instanceof Level) {
+                                                                                    Level level2 = (Level)levelaccessor3;
 
-                                                                                    if (!level1.isClientSide()) {
-                                                                                        level1.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                    if (!level2.isClientSide()) {
+                                                                                        level2.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                     } else {
-                                                                                        level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                        level2.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                     }
                                                                                 }
 
-                                                                                Entity entity4 = entity;
+                                                                                Entity entity5 = entity;
 
-                                                                                if (!entity4.level().isClientSide() && entity4.getServer() != null) {
+                                                                                if (!entity5.level().isClientSide() && entity5.getServer() != null) {
                                                                                     try {
-                                                                                        entity4.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                                                    } catch (CommandSyntaxException e) {
-                                                                                        
-                                                                                    }
-                                                                                }
+                                                                                        entity5.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                    } catch (
+                                                                                            CommandSyntaxException e) {
 
-                                                                                LivingEntity livingentity6;
-
-                                                                                if (entity instanceof LivingEntity) {
-                                                                                    livingentity6 = (LivingEntity)entity;
-                                                                                    ItemStack offhand = livingentity6.getOffhandItem();
-                                                                                    if (offhand != EATING_GOLDEN_APPLE) {
-                                                                                        livingentity6.setItemInHand(InteractionHand.OFF_HAND, EATING_GOLDEN_APPLE);
-                                                                                        if (livingentity6 instanceof Player) {
-                                                                                            Player player = (Player)livingentity6;
-
-                                                                                            player.getInventory().setChanged();
-                                                                                        }
-                                                                                    }
-                                                                                }
-
-                                                                                if (entity instanceof LivingEntity) {
-                                                                                    livingentity6 = (LivingEntity)entity;
-                                                                                    if (!livingentity6.level().isClientSide()) {
-                                                                                        livingentity6.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 20, 0));
                                                                                     }
                                                                                 }
 
                                                                                 if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
-                                                                                    entity4 = entity;
-                                                                                    if (!entity4.level().isClientSide() && entity4.getServer() != null) {
+                                                                                    entity5 = entity;
+                                                                                    if (!entity5.level().isClientSide() && entity5.getServer() != null) {
                                                                                         try {
-                                                                                            entity4.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/eat_offhand\" 0 1", entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                            entity5.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/eat_offhand\" 0 1", entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                         } catch (
                                                                                                 CommandSyntaxException e) {
-                                                                                            
+
                                                                                         }
                                                                                     }
                                                                                 }
@@ -277,37 +290,37 @@ public class BleedingProcedure {
                                                                                 new DelayedTask(4) {
                                                                                     public void run() {
                                                                                         if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
-                                                                                        LevelAccessor levelaccessor3 = levelaccessor;
+                                                                                        LevelAccessor levelaccessor4 = levelaccessor;
 
-                                                                                        if (levelaccessor3 instanceof Level) {
-                                                                                            Level level2 = (Level)levelaccessor3;
+                                                                                        if (levelaccessor4 instanceof Level) {
+                                                                                            Level level3 = (Level)levelaccessor4;
 
-                                                                                            if (!level2.isClientSide()) {
-                                                                                                level2.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                            if (!level3.isClientSide()) {
+                                                                                                level3.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                             } else {
-                                                                                                level2.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                level3.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                             }
                                                                                         }
 
-                                                                                        Entity entity5 = entity;
+                                                                                        Entity entity6 = entity;
 
-                                                                                        if (!entity5.level().isClientSide() && entity5.getServer() != null) {
+                                                                                        if (!entity6.level().isClientSide() && entity6.getServer() != null) {
                                                                                             try {
-                                                                                                entity5.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                entity6.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                             } catch (
                                                                                                     CommandSyntaxException e) {
-                                                                                                
+
                                                                                             }
                                                                                         }
 
                                                                                         if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
-                                                                                            entity5 = entity;
-                                                                                            if (!entity5.level().isClientSide() && entity5.getServer() != null) {
+                                                                                            entity6 = entity;
+                                                                                            if (!entity6.level().isClientSide() && entity6.getServer() != null) {
                                                                                                 try {
-                                                                                                    entity5.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/eat_offhand\" 0 1", entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                    entity6.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/eat_offhand\" 0 1", entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                 } catch (
                                                                                                         CommandSyntaxException e) {
-                                                                                                    
+
                                                                                                 }
                                                                                             }
                                                                                         }
@@ -315,37 +328,37 @@ public class BleedingProcedure {
                                                                                         new DelayedTask(4) {
                                                                                             public void run() {
                                                                                                 if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
-                                                                                                LevelAccessor levelaccessor4 = levelaccessor;
+                                                                                                LevelAccessor levelaccessor5 = levelaccessor;
 
-                                                                                                if (levelaccessor4 instanceof Level) {
-                                                                                                    Level level3 = (Level)levelaccessor4;
+                                                                                                if (levelaccessor5 instanceof Level) {
+                                                                                                    Level level4 = (Level)levelaccessor5;
 
-                                                                                                    if (!level3.isClientSide()) {
-                                                                                                        level3.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                    if (!level4.isClientSide()) {
+                                                                                                        level4.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                                     } else {
-                                                                                                        level3.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                        level4.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                                     }
                                                                                                 }
 
-                                                                                                Entity entity6 = entity;
+                                                                                                Entity entity7 = entity;
 
-                                                                                                if (!entity6.level().isClientSide() && entity6.getServer() != null) {
+                                                                                                if (!entity7.level().isClientSide() && entity7.getServer() != null) {
                                                                                                     try {
-                                                                                                        entity6.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                        entity7.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                     } catch (
                                                                                                             CommandSyntaxException e) {
-                                                                                                        
+
                                                                                                     }
                                                                                                 }
 
                                                                                                 if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
-                                                                                                    entity6 = entity;
-                                                                                                    if (!entity6.level().isClientSide() && entity6.getServer() != null) {
+                                                                                                    entity7 = entity;
+                                                                                                    if (!entity7.level().isClientSide() && entity7.getServer() != null) {
                                                                                                         try {
-                                                                                                            entity6.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/eat_offhand\" 0 1", entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                            entity7.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/eat_offhand\" 0 1", entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                         } catch (
                                                                                                                 CommandSyntaxException e) {
-                                                                                                            
+
                                                                                                         }
                                                                                                     }
                                                                                                 }
@@ -353,167 +366,134 @@ public class BleedingProcedure {
                                                                                                 new DelayedTask(4) {
                                                                                                     public void run() {
                                                                                                         if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
-                                                                                                        LevelAccessor levelaccessor5 = levelaccessor;
+                                                                                                        LevelAccessor levelaccessor6 = levelaccessor;
 
-                                                                                                        if (levelaccessor5 instanceof Level) {
-                                                                                                            Level level4 = (Level)levelaccessor5;
+                                                                                                        if (levelaccessor6 instanceof Level) {
+                                                                                                            Level level5 = (Level)levelaccessor6;
 
-                                                                                                            if (!level4.isClientSide()) {
-                                                                                                                level4.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                            if (!level5.isClientSide()) {
+                                                                                                                level5.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                                             } else {
-                                                                                                                level4.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                                level5.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                                             }
                                                                                                         }
 
-                                                                                                        Entity entity7 = entity;
+                                                                                                        Entity entity8 = entity;
 
-                                                                                                        if (!entity7.level().isClientSide() && entity7.getServer() != null) {
+                                                                                                        if (!entity8.level().isClientSide() && entity8.getServer() != null) {
                                                                                                             try {
-                                                                                                                entity7.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                                entity8.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                             } catch (
                                                                                                                     CommandSyntaxException e) {
-                                                                                                                
+
                                                                                                             }
                                                                                                         }
+                                                                                                        entity8 = entity;
+                                                                                                        if (!entity8.level().isClientSide() && entity8.getServer() != null) {
+                                                                                                            try {
+                                                                                                                entity8.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/eat_offhand\" 0 1", entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                            } catch (
+                                                                                                                    CommandSyntaxException e) {
 
-                                                                                                        if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
-                                                                                                            entity7 = entity;
-                                                                                                            if (!entity7.level().isClientSide() && entity7.getServer() != null) {
-                                                                                                                try {
-                                                                                                                    entity7.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/eat_offhand\" 0 1", entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                                                                                } catch (
-                                                                                                                        CommandSyntaxException e) {
-                                                                                                                    
-                                                                                                                }
                                                                                                             }
                                                                                                         }
 
                                                                                                         new DelayedTask(4) {
                                                                                                             public void run() {
                                                                                                                 if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
-                                                                                                                LevelAccessor levelaccessor6 = levelaccessor;
+                                                                                                                LevelAccessor levelaccessor7 = levelaccessor;
 
-                                                                                                                if (levelaccessor6 instanceof Level) {
-                                                                                                                    Level level5 = (Level)levelaccessor6;
+                                                                                                                if (levelaccessor7 instanceof Level) {
+                                                                                                                    Level level6 = (Level)levelaccessor7;
 
-                                                                                                                    if (!level5.isClientSide()) {
-                                                                                                                        level5.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                                    if (!level6.isClientSide()) {
+                                                                                                                        level6.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                                                     } else {
-                                                                                                                        level5.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                                        level6.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                                                     }
                                                                                                                 }
 
-                                                                                                                Entity entity8 = entity;
+                                                                                                                Entity entity9 = entity;
 
-                                                                                                                if (!entity8.level().isClientSide() && entity8.getServer() != null) {
+                                                                                                                if (!entity9.level().isClientSide() && entity9.getServer() != null) {
                                                                                                                     try {
-                                                                                                                        entity8.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                                        entity9.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                                     } catch (
                                                                                                                             CommandSyntaxException e) {
-                                                                                                                        
-                                                                                                                    }
-                                                                                                                }
-                                                                                                                entity8 = entity;
-                                                                                                                if (!entity8.level().isClientSide() && entity8.getServer() != null) {
-                                                                                                                    try {
-                                                                                                                        entity8.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/eat_offhand\" 0 1", entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                                                                                    } catch (
-                                                                                                                            CommandSyntaxException e) {
-                                                                                                                        
+
                                                                                                                     }
                                                                                                                 }
 
-                                                                                                                new DelayedTask(4) {
+                                                                                                                if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
+                                                                                                                    entity9 = entity;
+                                                                                                                    if (!entity9.level().isClientSide() && entity9.getServer() != null) {
+                                                                                                                        try {
+                                                                                                                            entity9.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/eat_offhand\" 0 1", entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                                                        } catch (
+                                                                                                                                CommandSyntaxException e) {
+
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }
+
+                                                                                                                new DelayedTask(3) {
                                                                                                                     public void run() {
                                                                                                                         if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
-                                                                                                                        LevelAccessor levelaccessor7 = levelaccessor;
+                                                                                                                        if (Math.random() <= 0.4D) {
+                                                                                                                            LevelAccessor levelaccessor8 = levelaccessor;
 
-                                                                                                                        if (levelaccessor7 instanceof Level) {
-                                                                                                                            Level level6 = (Level)levelaccessor7;
+                                                                                                                            if (levelaccessor8 instanceof Level) {
+                                                                                                                                Level level7 = (Level)levelaccessor8;
 
-                                                                                                                            if (!level6.isClientSide()) {
-                                                                                                                                level6.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                                                                                                                if (!level7.isClientSide()) {
+                                                                                                                                    level7.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F);
+                                                                                                                                } else {
+                                                                                                                                    level7.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F, false);
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                };
+                                                                                                                new DelayedTask(20) {
+                                                                                                                    public void run() {
+                                                                                                                        if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
+                                                                                                                        LivingEntity livingentity7;
+
+                                                                                                                        if (entity instanceof LivingEntity) {
+                                                                                                                            livingentity7 = (LivingEntity)entity;
+                                                                                                                            ItemStack offhand = livingentity7.getOffhandItem();
+                                                                                                                            if (oldItem != null) {
+                                                                                                                                livingentity7.setItemInHand(InteractionHand.OFF_HAND, oldItem);
+                                                                                                                                if (livingentity7 instanceof Player) {
+                                                                                                                                    Player player = (Player)livingentity7;
+
+                                                                                                                                    player.getInventory().setChanged();
+                                                                                                                                }
                                                                                                                             } else {
-                                                                                                                                level6.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
-                                                                                                                            }
-                                                                                                                        }
+                                                                                                                                livingentity7.setItemInHand(InteractionHand.OFF_HAND, EATING_GOLDEN_APPLE);
+                                                                                                                                if (livingentity7 instanceof Player) {
+                                                                                                                                    Player player = (Player)livingentity7;
 
-                                                                                                                        Entity entity9 = entity;
-
-                                                                                                                        if (!entity9.level().isClientSide() && entity9.getServer() != null) {
-                                                                                                                            try {
-                                                                                                                                entity9.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                                                                                            } catch (
-                                                                                                                                    CommandSyntaxException e) {
-                                                                                                                                
-                                                                                                                            }
-                                                                                                                        }
-
-                                                                                                                        if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
-                                                                                                                            entity9 = entity;
-                                                                                                                            if (!entity9.level().isClientSide() && entity9.getServer() != null) {
-                                                                                                                                try {
-                                                                                                                                    entity9.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/eat_offhand\" 0 1", entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                                                                                                } catch (
-                                                                                                                                        CommandSyntaxException e) {
-                                                                                                                                    
+                                                                                                                                    player.getInventory().setChanged();
                                                                                                                                 }
                                                                                                                             }
                                                                                                                         }
 
-                                                                                                                        new DelayedTask(3) {
-                                                                                                                            public void run() {
-                                                                                                                                if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
-                                                                                                                                if (Math.random() <= 0.4D) {
-                                                                                                                                    LevelAccessor levelaccessor8 = levelaccessor;
-
-                                                                                                                                    if (levelaccessor8 instanceof Level) {
-                                                                                                                                        Level level7 = (Level)levelaccessor8;
-
-                                                                                                                                        if (!level7.isClientSide()) {
-                                                                                                                                            level7.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F);
-                                                                                                                                        } else {
-                                                                                                                                            level7.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.player.burp")), SoundSource.NEUTRAL, 1.5F, 1.0F, false);
-                                                                                                                                        }
-                                                                                                                                    }
-                                                                                                                                }
+                                                                                                                        if (entity instanceof LivingEntity) {
+                                                                                                                            livingentity7 = (LivingEntity)entity;
+                                                                                                                            if (!livingentity7.level().isClientSide()) {
+                                                                                                                                livingentity7.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 500, 2));
                                                                                                                             }
-                                                                                                                        };
-                                                                                                                        new DelayedTask(20) {
-                                                                                                                            public void run() {
-                                                                                                                                if (entity == null || !entity.isAlive() || entity.isRemoved() || ((LivingEntity) entity).isDeadOrDying()) return;
-                                                                                                                                LivingEntity livingentity7;
+                                                                                                                        }
 
-                                                                                                                                if (entity instanceof LivingEntity) {
-                                                                                                                                    livingentity7 = (LivingEntity)entity;
-                                                                                                                                    ItemStack offhand = livingentity7.getOffhandItem();
-                                                                                                                                    if (offhand != EATING_GOLDEN_APPLE) {
-                                                                                                                                        livingentity7.setItemInHand(InteractionHand.OFF_HAND, EATING_GOLDEN_APPLE);
-                                                                                                                                        if (livingentity7 instanceof Player) {
-                                                                                                                                            Player player = (Player)livingentity7;
-
-                                                                                                                                            player.getInventory().setChanged();
-                                                                                                                                        }
-                                                                                                                                    }
-                                                                                                                                }
-
-                                                                                                                                if (entity instanceof LivingEntity) {
-                                                                                                                                    livingentity7 = (LivingEntity)entity;
-                                                                                                                                    if (!livingentity7.level().isClientSide()) {
-                                                                                                                                        livingentity7.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 500, 2));
-                                                                                                                                    }
-                                                                                                                                }
-
-                                                                                                                                if (entity instanceof LivingEntity) {
-                                                                                                                                    livingentity7 = (LivingEntity)entity;
-                                                                                                                                    if (!livingentity7.level().isClientSide()) {
-                                                                                                                                        livingentity7.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 400, 0));
-                                                                                                                                    }
-                                                                                                                                }
-
-                                                                                                                                entity.getPersistentData().putBoolean("eating", false);
+                                                                                                                        if (entity instanceof LivingEntity) {
+                                                                                                                            livingentity7 = (LivingEntity)entity;
+                                                                                                                            if (!livingentity7.level().isClientSide()) {
+                                                                                                                                livingentity7.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 400, 0));
                                                                                                                             }
-                                                                                                                        };
+                                                                                                                        }
+
+                                                                                                                        entity.getPersistentData().putBoolean("eating", false);
                                                                                                                     }
                                                                                                                 };
                                                                                                             }
@@ -529,18 +509,13 @@ public class BleedingProcedure {
                                                                     }
                                                                 };
                                                             }
-                                                        }
+                                                        };
                                                     }
                                                 }
-
                                             }
-                                        };
+                                        }
                                     }
-                                }
-
-                                if (entity.isPassenger()) {
-                                    entity.stopRiding();
-                                }
+                                };
                             }
                         }
 
@@ -1272,7 +1247,7 @@ public class BleedingProcedure {
                             };
                         }
 
-                        if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("annoyingvillagers:jev") || ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("annoyingvillagers:alex")) {
+                        if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("annoyingvillagers:jev")) {
                             if (entity instanceof LivingEntity zombie && zombie.getHealth() <= 30.0F && entity.isAlive()) {
                                 new DelayedTask(50) {
                                     @Override

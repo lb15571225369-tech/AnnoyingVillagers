@@ -365,6 +365,18 @@ public class SteveOnHurtProcedure {
                 }
 
                 if (Math.random() <= 0.09D) {
+                    new DelayedTask(20) {
+                        @Override
+                        public void run() {
+                            if (entity instanceof LivingEntity) {
+                                LivingEntity livingentity2 = (LivingEntity)entity;
+
+                                if (!livingentity2.level().isClientSide()) {
+                                    livingentity2.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 60, 2, false, false));
+                                }
+                            }
+                        }
+                    };
                     if (Math.random() <= 0.03D && levelaccessor instanceof Level) {
                         level = (Level)levelaccessor;
                         if (!level.isClientSide()) {
@@ -440,6 +452,18 @@ public class SteveOnHurtProcedure {
                     } else {
                         level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "stevechuanqi")), SoundSource.NEUTRAL, 0.4F, 1.0F, false);
                     }
+                    new DelayedTask(20) {
+                        @Override
+                        public void run() {
+                            if (entity instanceof LivingEntity) {
+                                LivingEntity livingentity2 = (LivingEntity)entity;
+
+                                if (!livingentity2.level().isClientSide()) {
+                                    livingentity2.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 60, 2, false, false));
+                                }
+                            }
+                        }
+                    };
                 }
 
                 if (Math.random() <= 0.09D) {

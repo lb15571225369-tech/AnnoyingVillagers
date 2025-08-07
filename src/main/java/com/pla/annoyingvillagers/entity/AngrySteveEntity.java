@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
@@ -112,7 +113,12 @@ public class AngrySteveEntity extends PathfinderMobInventory {
             }
             this.remove(Entity.RemovalReason.KILLED);
             levelaccessor.addFreshEntity(steveDeadEntity);
-            steveDeadEntity.hurt(steveDeadEntity.damageSources().generic(), Float.MAX_VALUE);
+            try {
+                steveDeadEntity.getServer().getCommands().getDispatcher().execute(
+                        "kill @s",
+                        steveDeadEntity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+            } catch (CommandSyntaxException e) {
+            }
         }
     }
 
@@ -139,8 +145,8 @@ public class AngrySteveEntity extends PathfinderMobInventory {
         Builder builder = Mob.createMobAttributes();
 
         builder = builder.add(Attributes.MOVEMENT_SPEED, 0.26D);
-        builder = builder.add(Attributes.MAX_HEALTH, 80.0D);
-        builder = builder.add(Attributes.ARMOR, 0.0D);
+        builder = builder.add(Attributes.MAX_HEALTH, 120.0D);
+        builder = builder.add(Attributes.ARMOR, 30.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 256.0D);
         return builder;
