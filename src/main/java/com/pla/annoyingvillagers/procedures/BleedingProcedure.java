@@ -106,7 +106,7 @@ public class BleedingProcedure {
                     }
 
                     if (!(entity instanceof Player)) {
-                        if (!entity.getPersistentData().getBoolean("av_npc")) {
+                        if (entity.getPersistentData().getBoolean("av_npc")) {
                             if (entity instanceof LivingEntity livingEntity) {
                                 if (entity.isPassenger()) {
                                     entity.stopRiding();
@@ -1411,7 +1411,7 @@ public class BleedingProcedure {
                                                                                                 if (!level3.isClientSide()) {
                                                                                                     level3.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                                                                                 } else {
-                                                                                                    level3.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                                                                                    level3.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.drink")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                                                                                 }
                                                                                             }
 

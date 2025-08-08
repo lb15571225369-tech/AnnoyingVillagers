@@ -171,7 +171,7 @@ public class AlexEntity extends PathfinderMobInventory {
             jevEntity.moveTo(this.getX() + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), this.getY() + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), this.getZ() + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
             jevEntity.setFollowTarget(this);
             jevEntity.setFollowTargetUUID(this.getUUID());
-
+            jevEntity.finalizeSpawn(levelaccessor, levelaccessor.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
             levelaccessor.addFreshEntity(jevEntity);
 
             this.setJevUUID(jevEntity.getUUID());
