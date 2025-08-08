@@ -40,12 +40,16 @@ public class BlueDemonOnEntityInitialSpawnProcedure {
                             entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 } catch (CommandSyntaxException e) {
                 }
+            }
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute(
                             "team modify blue_demon friendlyFire false",
                             entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 } catch (CommandSyntaxException e) {
                 }
+            }
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute(
                             "team join blue_demon @s",

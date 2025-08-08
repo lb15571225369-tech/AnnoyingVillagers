@@ -95,6 +95,7 @@ public class JevEntity extends PathfinderMobInventory {
 
     @Override
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
+        SpawnGroupData spawngroupdata1 = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
         if (!this.level().isClientSide() && this.getServer() != null) {
             try {
                 this.getServer().getCommands().getDispatcher().execute(
@@ -102,12 +103,16 @@ public class JevEntity extends PathfinderMobInventory {
                         this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
             } catch (CommandSyntaxException e) {
             }
+        }
+        if (!this.level().isClientSide() && this.getServer() != null) {
             try {
                 this.getServer().getCommands().getDispatcher().execute(
                         "team modify alex friendlyFire false",
                         this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
             } catch (CommandSyntaxException e) {
             }
+        }
+        if (!this.level().isClientSide() && this.getServer() != null) {
             try {
                 this.getServer().getCommands().getDispatcher().execute(
                         "team join alex @s",
@@ -115,7 +120,7 @@ public class JevEntity extends PathfinderMobInventory {
             } catch (CommandSyntaxException e) {
             }
         }
-        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+        return spawngroupdata1;
     }
 
     @Override
