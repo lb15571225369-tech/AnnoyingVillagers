@@ -1,11 +1,14 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.util.EquipmentDataLoader;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 
@@ -111,7 +114,13 @@ public class AlexOnDeathProcedure {
                     if (levelaccessor1 instanceof Level) {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
-                            itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack(Items.DIAMOND_SWORD));
+                            ItemStack sword = new ItemStack(Items.DIAMOND_SWORD);
+                            sword.enchant(Enchantments.SHARPNESS, 5);
+                            sword.enchant(Enchantments.FIRE_ASPECT, 2);
+                            sword.enchant(Enchantments.KNOCKBACK, 2);
+                            sword.enchant(Enchantments.UNBREAKING, 5);
+                            sword.setDamageValue(EquipmentDataLoader.getRandomDamage(sword));
+                            itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, sword);
                             itementity.setPickUpDelay(10);
                             level.addFreshEntity(itementity);
                         }

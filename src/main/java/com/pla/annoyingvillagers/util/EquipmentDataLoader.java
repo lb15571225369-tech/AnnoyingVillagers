@@ -80,6 +80,14 @@ public class EquipmentDataLoader extends SimpleJsonResourceReloadListener {
         return false;
     }
 
+    public static int getRandomDamage(ItemStack itemStack) {
+        int maxDamage = itemStack.getMaxDamage();
+        int min = maxDamage / 3;
+        int max = maxDamage * 3 / 4;
+        int damage = RANDOM.nextInt(max - min + 1) + min;
+        return damage;
+    }
+
     public static List<String> getEquipCommands(float equipChanceArmor, Entity entity) {
         List<String> cmds = new ArrayList<>();
         String oneHandWeaponInMainHand = null;
@@ -109,10 +117,7 @@ public class EquipmentDataLoader extends SimpleJsonResourceReloadListener {
             if (item == null) continue;
             int damage = 0;
             if (item.canBeDepleted()) {
-                int maxDamage = new ItemStack(item).getMaxDamage();
-                int min = maxDamage / 3;
-                int max = maxDamage * 3 / 4;
-                damage = RANDOM.nextInt(max - min + 1) + min;
+                damage = getRandomDamage(new ItemStack(item));
             }
             cmds.add(String.format("item replace entity @s %s with %s{Damage:%d}", mapSlot(slot), itemId, damage));
 

@@ -6,6 +6,7 @@ import com.pla.annoyingvillagers.entity.SteveDeadEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.util.EquipmentDataLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -59,7 +60,9 @@ public class AngrySteveOnDeathProcedure {
                     if (levelaccessor1 instanceof Level) {
                         level1 = (Level)levelaccessor1;
                         if (!level1.isClientSide()) {
-                            itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, new ItemStack(Items.DIAMOND_SWORD));
+                            ItemStack itemStack = new ItemStack(Items.DIAMOND_SWORD);
+                            itemStack.setDamageValue(EquipmentDataLoader.getRandomDamage(itemStack));
+                            itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, itemStack);
                             itementity.setPickUpDelay(10);
                             level1.addFreshEntity(itementity);
                         }
@@ -369,7 +372,9 @@ public class AngrySteveOnDeathProcedure {
                     if (levelaccessor1 instanceof Level) {
                         level1 = (Level)levelaccessor1;
                         if (!level1.isClientSide()) {
-                            itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, new ItemStack((ItemLike)AnnoyingVillagersModItems.ENCHANTED_WOODEN_DOOR.get()));
+                            ItemStack itemStack = new ItemStack((ItemLike)AnnoyingVillagersModItems.ENCHANTED_WOODEN_DOOR.get());
+                            itemStack.setDamageValue(EquipmentDataLoader.getRandomDamage(itemStack));
+                            itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, itemStack);
                             itementity.setPickUpDelay(10);
                             level1.addFreshEntity(itementity);
                         }
@@ -523,7 +528,9 @@ public class AngrySteveOnDeathProcedure {
                     if (levelaccessor1 instanceof Level) {
                         level1 = (Level)levelaccessor1;
                         if (!level1.isClientSide()) {
-                            itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, new ItemStack((ItemLike)AnnoyingVillagersModItems.DIAMOND_GREAT_SWORD.get()));
+                            ItemStack itemStack = new ItemStack((ItemLike)AnnoyingVillagersModItems.DIAMOND_GREAT_SWORD.get());
+                            itemStack.setDamageValue(EquipmentDataLoader.getRandomDamage(itemStack));
+                            itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, itemStack);
                             itementity.setPickUpDelay(10);
                             level1.addFreshEntity(itementity);
                         }
@@ -533,7 +540,9 @@ public class AngrySteveOnDeathProcedure {
                     if (levelaccessor1 instanceof Level) {
                         level1 = (Level)levelaccessor1;
                         if (!level1.isClientSide()) {
-                            itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, new ItemStack((ItemLike)AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get()));
+                            ItemStack itemStack = new ItemStack((ItemLike)AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get());
+                            itemStack.setDamageValue(EquipmentDataLoader.getRandomDamage(itemStack));
+                            itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, itemStack);
                             itementity.setPickUpDelay(10);
                             level1.addFreshEntity(itementity);
                         }
@@ -543,7 +552,9 @@ public class AngrySteveOnDeathProcedure {
                     if (levelaccessor1 instanceof Level) {
                         level1 = (Level)levelaccessor1;
                         if (!level1.isClientSide()) {
-                            itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, new ItemStack(Items.DIAMOND_CHESTPLATE));
+                            ItemStack itemStack = new ItemStack(Items.DIAMOND_CHESTPLATE);
+                            itemStack.setDamageValue(EquipmentDataLoader.getRandomDamage(itemStack));
+                            itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, itemStack);
                             itementity.setPickUpDelay(10);
                             level1.addFreshEntity(itementity);
                         }
@@ -553,7 +564,9 @@ public class AngrySteveOnDeathProcedure {
                     if (levelaccessor1 instanceof Level) {
                         level1 = (Level)levelaccessor1;
                         if (!level1.isClientSide()) {
-                            itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, new ItemStack(Items.DIAMOND_CHESTPLATE));
+                            ItemStack itemStack = new ItemStack(Items.DIAMOND_CHESTPLATE);
+                            itemStack.setDamageValue(EquipmentDataLoader.getRandomDamage(itemStack));
+                            itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, itemStack);
                             itementity.setPickUpDelay(10);
                             level1.addFreshEntity(itementity);
                         }
@@ -633,7 +646,9 @@ public class AngrySteveOnDeathProcedure {
                     if (levelaccessor1 instanceof Level) {
                         level1 = (Level)levelaccessor1;
                         if (!level1.isClientSide()) {
-                            itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, new ItemStack(Items.IRON_CHESTPLATE));
+                            ItemStack itemStack = new ItemStack(Items.IRON_CHESTPLATE);
+                            itemStack.setDamageValue(EquipmentDataLoader.getRandomDamage(itemStack));
+                            itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, itemStack);
                             itementity.setPickUpDelay(10);
                             level1.addFreshEntity(itementity);
                         }
@@ -673,7 +688,9 @@ public class AngrySteveOnDeathProcedure {
                     if (levelaccessor1 instanceof Level) {
                         level1 = (Level)levelaccessor1;
                         if (!level1.isClientSide()) {
-                            itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, new ItemStack(Items.DIAMOND_PICKAXE));
+                            ItemStack itemStack = new ItemStack(Items.DIAMOND_PICKAXE);
+                            itemStack.setDamageValue(EquipmentDataLoader.getRandomDamage(itemStack));
+                            itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, itemStack);
                             itementity.setPickUpDelay(10);
                             level1.addFreshEntity(itementity);
                         }
@@ -683,7 +700,9 @@ public class AngrySteveOnDeathProcedure {
                     if (levelaccessor1 instanceof Level) {
                         level1 = (Level)levelaccessor1;
                         if (!level1.isClientSide()) {
-                            itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, new ItemStack(Items.DIAMOND_PICKAXE));
+                            ItemStack itemStack = new ItemStack(Items.DIAMOND_PICKAXE);
+                            itemStack.setDamageValue(EquipmentDataLoader.getRandomDamage(itemStack));
+                            itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, itemStack);
                             itementity.setPickUpDelay(10);
                             level1.addFreshEntity(itementity);
                         }
@@ -693,7 +712,9 @@ public class AngrySteveOnDeathProcedure {
                     if (levelaccessor1 instanceof Level) {
                         level1 = (Level)levelaccessor1;
                         if (!level1.isClientSide()) {
-                            itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, new ItemStack(Items.IRON_SWORD));
+                            ItemStack itemStack = new ItemStack(Items.IRON_SWORD);
+                            itemStack.setDamageValue(EquipmentDataLoader.getRandomDamage(itemStack));
+                            itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, itemStack);
                             itementity.setPickUpDelay(10);
                             level1.addFreshEntity(itementity);
                         }
@@ -703,7 +724,9 @@ public class AngrySteveOnDeathProcedure {
                     if (levelaccessor1 instanceof Level) {
                         level1 = (Level)levelaccessor1;
                         if (!level1.isClientSide()) {
-                            itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, new ItemStack(Items.IRON_SWORD));
+                            ItemStack itemStack = new ItemStack(Items.IRON_SWORD);
+                            itemStack.setDamageValue(EquipmentDataLoader.getRandomDamage(itemStack));
+                            itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, itemStack);
                             itementity.setPickUpDelay(10);
                             level1.addFreshEntity(itementity);
                         }

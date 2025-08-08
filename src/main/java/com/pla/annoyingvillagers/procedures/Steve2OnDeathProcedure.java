@@ -6,6 +6,7 @@ import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.util.EquipmentDataLoader;
 import com.pla.annoyingvillagers.util.InventoryUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -19,6 +20,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -82,7 +84,9 @@ public class Steve2OnDeathProcedure {
                         if (levelaccessor1 instanceof Level) {
                             level1 = (Level)levelaccessor1;
                             if (!level1.isClientSide()) {
-                                itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, new ItemStack((ItemLike) AnnoyingVillagersModItems.COMPRESSED_DIAMOND_HELMET.get()));
+                                ItemStack itemStack = new ItemStack((ItemLike) AnnoyingVillagersModItems.COMPRESSED_DIAMOND_HELMET.get());
+                                itemStack.setDamageValue(EquipmentDataLoader.getRandomDamage(itemStack));
+                                itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, itemStack);
                                 itementity.setPickUpDelay(10);
                                 level1.addFreshEntity(itementity);
                             }
@@ -92,7 +96,9 @@ public class Steve2OnDeathProcedure {
                         if (levelaccessor1 instanceof Level) {
                             level1 = (Level)levelaccessor1;
                             if (!level1.isClientSide()) {
-                                itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, new ItemStack((ItemLike)AnnoyingVillagersModItems.COMPRESSED_DIAMOND_CHESTPLATE.get()));
+                                ItemStack itemStack = new ItemStack((ItemLike) AnnoyingVillagersModItems.COMPRESSED_DIAMOND_CHESTPLATE.get());
+                                itemStack.setDamageValue(EquipmentDataLoader.getRandomDamage(itemStack));
+                                itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, itemStack);
                                 itementity.setPickUpDelay(10);
                                 level1.addFreshEntity(itementity);
                             }
@@ -102,27 +108,9 @@ public class Steve2OnDeathProcedure {
                         if (levelaccessor1 instanceof Level) {
                             level1 = (Level)levelaccessor1;
                             if (!level1.isClientSide()) {
-                                itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, new ItemStack(Items.DIAMOND_CHESTPLATE));
-                                itementity.setPickUpDelay(10);
-                                level1.addFreshEntity(itementity);
-                            }
-                        }
-
-                        levelaccessor1 = levelaccessor;
-                        if (levelaccessor1 instanceof Level) {
-                            level1 = (Level)levelaccessor1;
-                            if (!level1.isClientSide()) {
-                                itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, new ItemStack(Items.GOLDEN_APPLE));
-                                itementity.setPickUpDelay(10);
-                                level1.addFreshEntity(itementity);
-                            }
-                        }
-
-                        levelaccessor1 = levelaccessor;
-                        if (levelaccessor1 instanceof Level) {
-                            level1 = (Level)levelaccessor1;
-                            if (!level1.isClientSide()) {
-                                itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, new ItemStack(Items.GOLDEN_APPLE));
+                                ItemStack itemStack = new ItemStack(Items.DIAMOND_CHESTPLATE);
+                                itemStack.setDamageValue(EquipmentDataLoader.getRandomDamage(itemStack));
+                                itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, itemStack);
                                 itementity.setPickUpDelay(10);
                                 level1.addFreshEntity(itementity);
                             }
@@ -182,7 +170,7 @@ public class Steve2OnDeathProcedure {
                         if (levelaccessor1 instanceof Level) {
                             level1 = (Level)levelaccessor1;
                             if (!level1.isClientSide()) {
-                                itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, new ItemStack((ItemLike)AnnoyingVillagersModItems.DIAMOND_GREAT_SWORD.get()));
+                                itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, new ItemStack(Items.GOLDEN_APPLE));
                                 itementity.setPickUpDelay(10);
                                 level1.addFreshEntity(itementity);
                             }
@@ -192,7 +180,31 @@ public class Steve2OnDeathProcedure {
                         if (levelaccessor1 instanceof Level) {
                             level1 = (Level)levelaccessor1;
                             if (!level1.isClientSide()) {
-                                itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, new ItemStack((ItemLike)AnnoyingVillagersModItems.ENCHANTED_WOODEN_DOOR.get()));
+                                itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, new ItemStack(Items.GOLDEN_APPLE));
+                                itementity.setPickUpDelay(10);
+                                level1.addFreshEntity(itementity);
+                            }
+                        }
+
+                        levelaccessor1 = levelaccessor;
+                        if (levelaccessor1 instanceof Level) {
+                            level1 = (Level)levelaccessor1;
+                            if (!level1.isClientSide()) {
+                                ItemStack itemStack = new ItemStack((ItemLike)AnnoyingVillagersModItems.DIAMOND_GREAT_SWORD.get());
+                                itemStack.setDamageValue(EquipmentDataLoader.getRandomDamage(itemStack));
+                                itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, itemStack);
+                                itementity.setPickUpDelay(10);
+                                level1.addFreshEntity(itementity);
+                            }
+                        }
+
+                        levelaccessor1 = levelaccessor;
+                        if (levelaccessor1 instanceof Level) {
+                            level1 = (Level)levelaccessor1;
+                            if (!level1.isClientSide()) {
+                                ItemStack itemStack = new ItemStack((ItemLike)AnnoyingVillagersModItems.ENCHANTED_WOODEN_DOOR.get());
+                                itemStack.setDamageValue(EquipmentDataLoader.getRandomDamage(itemStack));
+                                itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, itemStack);
                                 itementity.setPickUpDelay(10);
                                 level1.addFreshEntity(itementity);
                             }
@@ -322,7 +334,9 @@ public class Steve2OnDeathProcedure {
                         if (levelaccessor1 instanceof Level) {
                             level1 = (Level)levelaccessor1;
                             if (!level1.isClientSide()) {
-                                itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, new ItemStack((ItemLike)AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get()));
+                                ItemStack itemStack = new ItemStack((ItemLike)AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get());
+                                itemStack.setDamageValue(EquipmentDataLoader.getRandomDamage(itemStack));
+                                itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, itemStack);
                                 itementity.setPickUpDelay(10);
                                 level1.addFreshEntity(itementity);
                             }

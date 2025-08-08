@@ -1,10 +1,13 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModEnchantments;
 import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.util.EquipmentDataLoader;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
@@ -24,7 +27,9 @@ public class ChrisOnDeathProcedure {
                 if (levelaccessor1 instanceof Level) {
                     level = (Level)levelaccessor1;
                     if (!level.isClientSide()) {
-                        itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack(Items.DIAMOND_HELMET));
+                        ItemStack item = new ItemStack(Items.DIAMOND_HELMET);
+                        item.setDamageValue(EquipmentDataLoader.getRandomDamage(item));
+                        itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, item);
                         itementity.setPickUpDelay(10);
                         level.addFreshEntity(itementity);
                     }
@@ -34,7 +39,9 @@ public class ChrisOnDeathProcedure {
                 if (levelaccessor1 instanceof Level) {
                     level = (Level)levelaccessor1;
                     if (!level.isClientSide()) {
-                        itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack(Items.DIAMOND_CHESTPLATE));
+                        ItemStack item = new ItemStack(Items.DIAMOND_CHESTPLATE);
+                        item.setDamageValue(EquipmentDataLoader.getRandomDamage(item));
+                        itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, item);
                         itementity.setPickUpDelay(10);
                         level.addFreshEntity(itementity);
                     }
@@ -44,7 +51,9 @@ public class ChrisOnDeathProcedure {
                 if (levelaccessor1 instanceof Level) {
                     level = (Level)levelaccessor1;
                     if (!level.isClientSide()) {
-                        itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack(Items.DIAMOND_BOOTS));
+                        ItemStack item = new ItemStack(Items.DIAMOND_BOOTS);
+                        item.setDamageValue(EquipmentDataLoader.getRandomDamage(item));
+                        itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, item);
                         itementity.setPickUpDelay(10);
                         level.addFreshEntity(itementity);
                     }
@@ -64,6 +73,9 @@ public class ChrisOnDeathProcedure {
                 if (levelaccessor1 instanceof Level) {
                     level = (Level)levelaccessor1;
                     if (!level.isClientSide()) {
+                        ItemStack item = new ItemStack(Items.BOW);
+                        item.enchant(Enchantments.PUNCH_ARROWS, 5);
+                        item.setDamageValue(EquipmentDataLoader.getRandomDamage(item));
                         itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack(Items.BOW));
                         itementity.setPickUpDelay(10);
                         level.addFreshEntity(itementity);
@@ -544,6 +556,11 @@ public class ChrisOnDeathProcedure {
                 if (levelaccessor1 instanceof Level) {
                     level = (Level)levelaccessor1;
                     if (!level.isClientSide()) {
+                        ItemStack sword = new ItemStack(Items.DIAMOND_SWORD);
+                        sword.enchant(Enchantments.KNOCKBACK, 5);
+                        sword.enchant(Enchantments.UNBREAKING, 5);
+                        sword.enchant(AnnoyingVillagersModEnchantments.BREAK_ARMOR.get(), 5);
+                        sword.setDamageValue(EquipmentDataLoader.getRandomDamage(sword));
                         itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack(Items.DIAMOND_SWORD));
                         itementity.setPickUpDelay(10);
                         level.addFreshEntity(itementity);
@@ -554,7 +571,11 @@ public class ChrisOnDeathProcedure {
                 if (levelaccessor1 instanceof Level) {
                     level = (Level)levelaccessor1;
                     if (!level.isClientSide()) {
-                        itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack(Items.IRON_SWORD));
+                        ItemStack sword = new ItemStack(Items.IRON_SWORD);
+                        sword.enchant(Enchantments.KNOCKBACK, 2);
+                        sword.enchant(Enchantments.UNBREAKING, 3);
+                        sword.setDamageValue(EquipmentDataLoader.getRandomDamage(sword));
+                        itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, sword);
                         itementity.setPickUpDelay(10);
                         level.addFreshEntity(itementity);
                     }
@@ -564,7 +585,10 @@ public class ChrisOnDeathProcedure {
                 if (levelaccessor1 instanceof Level) {
                     level = (Level)levelaccessor1;
                     if (!level.isClientSide()) {
-                        itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack(Items.IRON_PICKAXE));
+                        ItemStack sword = new ItemStack(Items.IRON_PICKAXE);
+                        sword.enchant(Enchantments.UNBREAKING, 3);
+                        sword.setDamageValue(EquipmentDataLoader.getRandomDamage(sword));
+                        itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, sword);
                         itementity.setPickUpDelay(10);
                         level.addFreshEntity(itementity);
                     }
@@ -574,7 +598,10 @@ public class ChrisOnDeathProcedure {
                 if (levelaccessor1 instanceof Level) {
                     level = (Level)levelaccessor1;
                     if (!level.isClientSide()) {
-                        itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack(Items.IRON_AXE));
+                        ItemStack sword = new ItemStack(Items.IRON_AXE);
+                        sword.enchant(Enchantments.UNBREAKING, 3);
+                        sword.setDamageValue(EquipmentDataLoader.getRandomDamage(sword));
+                        itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, sword);
                         itementity.setPickUpDelay(10);
                         level.addFreshEntity(itementity);
                     }
