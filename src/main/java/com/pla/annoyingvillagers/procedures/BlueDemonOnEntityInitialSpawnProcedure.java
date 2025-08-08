@@ -14,11 +14,12 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 public class BlueDemonOnEntityInitialSpawnProcedure {
 
-    public static void execute(ServerLevelAccessor levelaccessor, Entity entity) {
+    public static void execute(LevelAccessor levelaccessor, Entity entity) {
         if (entity != null) {
             ItemStack itemstack;
 
@@ -31,20 +32,6 @@ public class BlueDemonOnEntityInitialSpawnProcedure {
             }
 
             itemstack.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 10);
-
-            if (levelaccessor instanceof ServerLevel) {
-                ServerLevel serverlevel = (ServerLevel) levelaccessor;
-
-                BbqEntity bbqEntity = new BbqEntity((EntityType) AnnoyingVillagersModEntities.BBQ.get(), serverlevel);
-                bbqEntity.moveTo(entity.getX() + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), entity.getY() + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), entity.getZ() + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                bbqEntity.setFollowTarget(entity);
-                bbqEntity.setFollowTargetUUID(entity.getUUID());
-                bbqEntity.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(bbqEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
-                levelaccessor.addFreshEntity(bbqEntity);
-
-                ((BlueDemonEntity) entity).setProtectingBbq(bbqEntity);
-                ((BlueDemonEntity) entity).setBbqUUID(bbqEntity.getUUID());
-            }
 
             if (!entity.level().isClientSide() && entity.getServer() != null) {
                 try {

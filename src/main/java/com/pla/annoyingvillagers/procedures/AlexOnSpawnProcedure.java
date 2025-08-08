@@ -5,7 +5,6 @@ import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.AlexEntity;
 import com.pla.annoyingvillagers.entity.JevEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -13,10 +12,6 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.LevelAccessor;
 
 public class AlexOnSpawnProcedure {
@@ -25,46 +20,6 @@ public class AlexOnSpawnProcedure {
         if (entity != null) {
             entity.getPersistentData().putBoolean("av_npc", true);
             LivingEntity livingentity;
-            ItemStack itemstack;
-
-            if (entity instanceof LivingEntity) {
-                livingentity = (LivingEntity) entity;
-                itemstack = livingentity.getMainHandItem();
-            } else {
-                itemstack = ItemStack.EMPTY;
-            }
-
-            itemstack.enchant(Enchantments.SMITE, 4);
-            if (entity instanceof LivingEntity) {
-                livingentity = (LivingEntity) entity;
-                itemstack = livingentity.getMainHandItem();
-            } else {
-                itemstack = ItemStack.EMPTY;
-            }
-
-            itemstack.enchant(Enchantments.SHARPNESS, 9);
-            if (entity instanceof LivingEntity) {
-                livingentity = (LivingEntity) entity;
-                itemstack = livingentity.getMainHandItem();
-            } else {
-                itemstack = ItemStack.EMPTY;
-            }
-
-            itemstack.enchant(Enchantments.SWEEPING_EDGE, 4);
-
-            if (levelaccessor instanceof ServerLevel) {
-                ServerLevel serverlevel = (ServerLevel) levelaccessor;
-
-                JevEntity jevEntity = new JevEntity((EntityType) AnnoyingVillagersModEntities.JEV.get(), serverlevel);
-                jevEntity.moveTo(d0 + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), d1 + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), d2 + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                jevEntity.setFollowTarget((AlexEntity) entity);
-                jevEntity.setFollowTargetUUID(entity.getUUID());
-                jevEntity.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(jevEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
-                levelaccessor.addFreshEntity(jevEntity);
-
-                ((AlexEntity) entity).setJevUUID(jevEntity.getUUID());
-                ((AlexEntity) entity).setProtectingJev(jevEntity);
-            }
 
             if (!entity.level().isClientSide() && entity.getServer() != null) {
                 try {

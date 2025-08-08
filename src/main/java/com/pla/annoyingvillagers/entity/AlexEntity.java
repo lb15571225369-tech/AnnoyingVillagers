@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.entity;
 import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.procedures.*;
@@ -15,6 +16,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -42,6 +44,7 @@ public class AlexEntity extends PathfinderMobInventory {
     private JevEntity jevToProtect;
     private UUID jevUUID;
     private boolean jevDeathMessageSent = false;
+    private boolean spawnJev = false;
 
     public void setProtectingJev(JevEntity jev) {
         this.jevToProtect = jev;
@@ -92,6 +95,7 @@ public class AlexEntity extends PathfinderMobInventory {
             tag.putUUID("JevUUID", jevUUID);
         }
         tag.putBoolean("JevDeathMessageSent", jevDeathMessageSent);
+        tag.putBoolean("SpawnJev", spawnJev);
     }
 
     @Override
@@ -101,6 +105,7 @@ public class AlexEntity extends PathfinderMobInventory {
             jevUUID = tag.getUUID("JevUUID");
         }
         jevDeathMessageSent = tag.getBoolean("JevDeathMessageSent");
+        spawnJev = tag.getBoolean("SpawnJev");
     }
 
 
@@ -158,10 +163,25 @@ public class AlexEntity extends PathfinderMobInventory {
         }
     }
 
+    private void spawnJev() {
+        if (this.level() instanceof ServerLevel levelaccessor) {
+            ServerLevel serverlevel = (ServerLevel) levelaccessor;
+
+            JevEntity jevEntity = new JevEntity((EntityType) AnnoyingVillagersModEntities.JEV.get(), serverlevel);
+            jevEntity.moveTo(this.getX() + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), this.getY() + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), this.getZ() + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+            jevEntity.setFollowTarget(this);
+            jevEntity.setFollowTargetUUID(this.getUUID());
+
+            levelaccessor.addFreshEntity(jevEntity);
+
+            this.setJevUUID(jevEntity.getUUID());
+            this.setProtectingJev(jevEntity);
+        }
+    }
+
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
-
-        AlexOnSpawnProcedure.execute(serverlevelaccessor, this.getX(), this.getY(), this.getZ(), this);
+        AlexOnSpawnProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
         return spawngroupdata1;
     }
 
@@ -188,6 +208,10 @@ public class AlexEntity extends PathfinderMobInventory {
     public void tick() {
         super.tick();
         if (!level().isClientSide) {
+            if (!spawnJev) {
+                this.spawnJev = true;
+                spawnJev();
+            }
             if (jevToProtect == null && jevUUID != null) {
                 Entity entity = ((ServerLevel) level()).getEntity(jevUUID);
                 if (entity instanceof JevEntity jev) {

@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModEnchantments;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.procedures.ChrisOnDeathProcedure;
 import com.pla.annoyingvillagers.procedures.ChrisOnHurtProcedure;
@@ -62,6 +63,7 @@ public class ChrisEntity extends PathfinderMobInventory {
         ItemStack sword = new ItemStack(Items.DIAMOND_SWORD);
         sword.enchant(Enchantments.KNOCKBACK, 5);
         sword.enchant(Enchantments.UNBREAKING, 5);
+        sword.enchant(AnnoyingVillagersModEnchantments.BREAK_ARMOR.get(), 5);
         this.setItemSlot(EquipmentSlot.MAINHAND, sword);
         this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.ENDER_PEARL));
         this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.DIAMOND_HELMET));

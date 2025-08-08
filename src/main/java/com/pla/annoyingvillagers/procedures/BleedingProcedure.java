@@ -1280,7 +1280,6 @@ public class BleedingProcedure {
                                                             }
 
                                                             entity2 = zombie;
-                                                            AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: drinking healing postion for Jev");
                                                             if (!entity2.level().isClientSide() && entity2.getServer() != null) {
                                                                 try {
                                                                     entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/drink_offhand\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));

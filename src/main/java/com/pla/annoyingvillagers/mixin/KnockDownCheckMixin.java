@@ -11,16 +11,21 @@ import yesman.epicfight.api.utils.AttackResult.ResultType;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.damagesource.EpicFightDamageSource;
 
+import java.util.Optional;
+
 @Mixin(value = {EntityState.class}, remap = false)
 public abstract class KnockDownCheckMixin {
     @Inject(method = {"attackResult"}, at = {@At("HEAD")}, cancellable = true)
     public void Inject(DamageSource damagesource, CallbackInfoReturnable<ResultType> callbackinforeturnable) {
-        if (damagesource instanceof EpicFightDamageSource) {
-            EpicFightDamageSource epicfightdamagesource = (EpicFightDamageSource) damagesource;
-
+        if (damagesource instanceof EpicFightDamageSource epicfightdamagesource) {
             epicfightdamagesource.getHurtItem().getCapability(EpicFightCapabilities.CAPABILITY_ITEM).ifPresent((capabilityitem) -> {
-                if ((Boolean) ((EntityState) (Object) this).getState(EntityState.KNOCKDOWN)) {
+                Object state = ((EntityState)(Object)this).getState(EntityState.KNOCKDOWN);
+
+                if (state instanceof Boolean bool && bool) {
                     callbackinforeturnable.setReturnValue(ResultType.SUCCESS);
+                } else if (state instanceof Optional<?> optional) {
+                    optional.filter(val -> val instanceof Boolean && (Boolean) val)
+                            .ifPresent(val -> callbackinforeturnable.setReturnValue(ResultType.SUCCESS));
                 }
             });
         }

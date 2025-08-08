@@ -3,9 +3,9 @@ package com.pla.annoyingvillagers.entity;
 import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.util.CommonGoals;
-import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -13,6 +13,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -46,6 +47,7 @@ import java.util.UUID;
 public class BlueDemon2Entity extends Monster {
     private BbqEntity bbqEntityToProtect;
     private UUID bbqUUID;
+    private boolean spawnBbq = false;
 
     public void setProtectingBbq(BbqEntity bbqEntity) {
         this.bbqEntityToProtect = bbqEntity;
@@ -155,7 +157,7 @@ public class BlueDemon2Entity extends Monster {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
 
-        BlueDemon2OnEntityInitialSpawnProcedure.execute(serverlevelaccessor, this);
+        BlueDemon2OnEntityInitialSpawnProcedure.execute(this.level(), this);
         return spawngroupdata1;
     }
 
@@ -175,6 +177,7 @@ public class BlueDemon2Entity extends Monster {
         if (bbqUUID != null) {
             tag.putUUID("BbqUUID", bbqUUID);
         }
+        tag.putBoolean("SpawnBbq", spawnBbq);
     }
 
     @Override
@@ -183,12 +186,33 @@ public class BlueDemon2Entity extends Monster {
         if (tag.hasUUID("BbqUUID")) {
             bbqUUID = tag.getUUID("BbqUUID");
         }
+        spawnBbq = tag.getBoolean("SpawnBbq");
+    }
+
+    private void spawnBbq() {
+        if (this.level() instanceof ServerLevel levelaccessor) {
+            ServerLevel serverlevel = (ServerLevel) levelaccessor;
+
+            BbqEntity bbqEntity = new BbqEntity((EntityType) AnnoyingVillagersModEntities.BBQ.get(), serverlevel);
+            bbqEntity.moveTo(this.getX() + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), this.getY() + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), this.getZ() + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+            bbqEntity.setFollowTarget(this);
+            bbqEntity.setFollowTargetUUID(this.getUUID());
+            levelaccessor.addFreshEntity(bbqEntity);
+
+            this.setProtectingBbq(bbqEntity);
+            this.setBbqUUID(bbqEntity.getUUID());
+        }
     }
 
     @Override
     public void tick() {
         super.tick();
         if (!level().isClientSide) {
+            if (!spawnBbq) {
+                this.spawnBbq = true;
+                spawnBbq();
+            }
+
             if (bbqEntityToProtect == null && bbqUUID != null) {
                 Entity entity = ((ServerLevel) level()).getEntity(bbqUUID);
                 if (entity instanceof BbqEntity bbqEntity) {
