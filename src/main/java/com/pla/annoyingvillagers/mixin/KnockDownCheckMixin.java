@@ -20,12 +20,8 @@ public abstract class KnockDownCheckMixin {
         if (damagesource instanceof EpicFightDamageSource epicfightdamagesource) {
             epicfightdamagesource.getHurtItem().getCapability(EpicFightCapabilities.CAPABILITY_ITEM).ifPresent((capabilityitem) -> {
                 Object state = ((EntityState)(Object)this).getState(EntityState.KNOCKDOWN);
-
-                if (state instanceof Boolean bool && bool) {
+                if (Boolean.TRUE.equals(state)) {
                     callbackinforeturnable.setReturnValue(ResultType.SUCCESS);
-                } else if (state instanceof Optional<?> optional) {
-                    optional.filter(val -> val instanceof Boolean && (Boolean) val)
-                            .ifPresent(val -> callbackinforeturnable.setReturnValue(ResultType.SUCCESS));
                 }
             });
         }
