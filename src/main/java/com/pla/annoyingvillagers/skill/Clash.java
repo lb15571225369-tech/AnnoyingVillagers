@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.skill;
 import java.util.List;
 import java.util.UUID;
 
+import M6FGR.dualaxes.gameassets.DualAxesAnimations;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.core.Direction;
@@ -75,7 +76,7 @@ public class Clash extends PassiveSkill {
                 List<AnimationProvider<?>> list = capabilityitem.getAutoAttckMotion(pre.getPlayerPatch());
                 LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 
-                if (flag && list.contains(dynamicanimation) || dynamicanimation == AVAnimations.GIANT_WHIRLWIND_2 || dynamicanimation == AVAnimations.DUAL_SWORD_DANCING_EDGE || dynamicanimation == AVAnimations.SpinningDeath) {
+                if (flag && list.contains(dynamicanimation) || dynamicanimation == AVAnimations.GIANT_WHIRLWIND_2 || dynamicanimation == AVAnimations.DUAL_SWORD_DANCING_EDGE || dynamicanimation == DualAxesAnimations.AXE_SPINNING_DEATH) {
                     pre.setCanceled(true);
                     pre.setResult(ResultType.BLOCKED);
                     playerpatch.playSound((SoundEvent) EpicFightSounds.CLASH.get(), -0.05F, 0.1F);

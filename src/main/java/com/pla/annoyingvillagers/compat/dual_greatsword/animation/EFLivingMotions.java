@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.compat.efdg.animation;
+package com.pla.annoyingvillagers.compat.dual_greatsword.animation;
 
 import yesman.epicfight.api.animation.LivingMotion;
 

@@ -587,20 +587,6 @@
                 {
 					"weight": 10.5,
 					"canBeInterrupted": false,
-					"looping": false,
-					"behaviors": [
-                        {
-							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 40.5}
-							],
-							"animation": "wom:biped/combat/torment_dash",
-							"play_speed": 1.1
-						}
-					]
-				},
-                {
-					"weight": 10.5,
-					"canBeInterrupted": false,
 					"looping": true,
 					"behaviors": [
                         {

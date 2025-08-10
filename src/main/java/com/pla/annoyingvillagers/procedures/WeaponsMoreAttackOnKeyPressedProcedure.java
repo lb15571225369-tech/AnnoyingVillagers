@@ -56,10 +56,10 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                         if (!entity.level().isClientSide() && entity.getServer() != null) {
                             try {
                                 entity.getServer().getCommands().getDispatcher().execute(
-                                        "indestructible @s play \"annoyingvillagers:biped/combat/spinning_death\" 0 1",
+                                        "indestructible @s play \"dualaxes:biped/skill/spinning_death\" 0 1",
                                         entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                             } catch (CommandSyntaxException e) {
-                                
+
                             }
                         }
                     } else {
@@ -71,7 +71,7 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                                             "indestructible @s play \"annoyingvillagers:biped/combat/greatsword_dual_airslash\" 0 1",
                                             entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                 } catch (CommandSyntaxException e) {
-                                    
+
                                 }
                             }
 
@@ -89,7 +89,7 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                                             "indestructible @s play \"annoyingvillagers:biped/combat/greatsword_dual_auto_2\" 0 1",
                                             entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                 } catch (CommandSyntaxException e) {
-                                    
+
                                 }
                             }
 
@@ -107,7 +107,7 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                                             "indestructible @s play \"wom:biped/skill/torment_berserk_auto_1\" 0 1",
                                             entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                 } catch (CommandSyntaxException e) {
-                                    
+
                                 }
                             }
                             new DelayedTask(8) {
@@ -125,7 +125,7 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                                             "indestructible @s play \"wom:biped/skill/torment_berserk_auto2\" 0 1",
                                             entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                 } catch (CommandSyntaxException e) {
-                                    
+
                                 }
                             }
                         } else if (entity.getPersistentData().getDouble("axe_a") == 5.0D) {
@@ -136,7 +136,7 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                                             "indestructible @s play \"annoyingvillagers:biped/combat/greatsword_dual_auto_3\" 0 1",
                                             entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                 } catch (CommandSyntaxException e) {
-                                    
+
                                 }
                             }
 
@@ -155,7 +155,7 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                                             "indestructible @s play \"epicfight:illager/swing_axe3\" 0 1",
                                             entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                 } catch (CommandSyntaxException e) {
-                                    
+
                                 }
                             }
 

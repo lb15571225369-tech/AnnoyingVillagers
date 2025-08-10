@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.compat.efdg.skill;
+package com.pla.annoyingvillagers.compat.dual_greatsword.skill;
 
 import java.util.UUID;
 

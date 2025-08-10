@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.compat.efdg.world.loot;
+package com.pla.annoyingvillagers.compat.dual_greatsword.world.loot;
 
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

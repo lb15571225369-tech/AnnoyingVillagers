@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.compat.efdg.animation;
+package com.pla.annoyingvillagers.compat.dual_greatsword.animation;
 
 import java.util.*;
 import javax.annotation.Nullable;
@@ -52,7 +52,7 @@ import yesman.epicfight.world.entity.eventlistener.DealtDamageEvent;
 import yesman.epicfight.world.entity.eventlistener.PlayerEventListener.EventType;
 import yesman.epicfight.world.gamerule.EpicFightGamerules;
 
-public class BasicMultipleAttackAnimation extends AttackAnimation {
+public class SpecialAttackAnimation extends AttackAnimation {
     void init() {
         if (!this.properties.containsKey(AttackAnimationProperty.BASIS_ATTACK_SPEED)) {
             float f = Float.parseFloat(String.format(Locale.US, "%.2f", 1.0F / this.getTotalTime()));
@@ -88,24 +88,24 @@ public class BasicMultipleAttackAnimation extends AttackAnimation {
         }
     }
 
-    public BasicMultipleAttackAnimation(float f, float f1, float f2, float f3, @Nullable Collider collider, Joint joint, String s, Armature armature) {
+    public SpecialAttackAnimation(float f, float f1, float f2, float f3, @Nullable Collider collider, Joint joint, String s, Armature armature) {
         this(f, f1, f1, f2, f3, collider, joint, s, armature);
     }
 
-    public BasicMultipleAttackAnimation(float f, float f1, float f2, float f3, float f4, @Nullable Collider collider, Joint joint, String s, Armature armature) {
+    public SpecialAttackAnimation(float f, float f1, float f2, float f3, float f4, @Nullable Collider collider, Joint joint, String s, Armature armature) {
         this(f, s, armature, new Phase(0.0F, f1, f2, f3, f4, Float.MAX_VALUE, joint, collider));
     }
 
-    public BasicMultipleAttackAnimation(float f, float f1, float f2, float f3, InteractionHand interactionhand, @Nullable Collider collider, Joint joint, String s, Armature armature) {
+    public SpecialAttackAnimation(float f, float f1, float f2, float f3, InteractionHand interactionhand, @Nullable Collider collider, Joint joint, String s, Armature armature) {
         this(f, s, armature, new Phase(0.0F, f1, f1, f2, f3, Float.MAX_VALUE, interactionhand, joint, collider));
     }
 
-    public BasicMultipleAttackAnimation(float f, String s, Armature armature, boolean flag, Phase... aphase) {
+    public SpecialAttackAnimation(float f, String s, Armature armature, boolean flag, Phase... aphase) {
         super(f, s, armature, aphase);
         init();
     }
 
-    public BasicMultipleAttackAnimation(float f, String s, Armature armature, Phase... aphase) {
+    public SpecialAttackAnimation(float f, String s, Armature armature, Phase... aphase) {
         super(f, s, armature, aphase);
         init();
         this.newTimePair(0.0F, Float.MAX_VALUE);
@@ -158,11 +158,6 @@ public class BasicMultipleAttackAnimation extends AttackAnimation {
 
                 if (livingentity1 != null && livingentity1.isAlive() && !livingentitypatch.getCurrenltyAttackedEntities().contains(livingentity1) && !livingentitypatch.isTeammate(entity) && (entity instanceof LivingEntity || entity instanceof PartEntity) && livingentity.hasLineOfSight(entity)) {
                     HurtableEntityPatch<?> hurtableentitypatch = (HurtableEntityPatch) EpicFightCapabilities.getEntityPatch(entity, HurtableEntityPatch.class);
-
-                    if (hurtableentitypatch == null) {
-                        break;
-                    }
-
                     EpicFightDamageSource epicfightdamagesource = this.getEpicFightDamageSource(livingentitypatch, entity, phase);
                     float f4 = 1.0F;
 
@@ -269,7 +264,7 @@ public class BasicMultipleAttackAnimation extends AttackAnimation {
 
                         entity.level().playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), this.getHitSound(livingentitypatch, phase), entity.getSoundSource(), 1.0F, 1.0F);
                         this.spawnHitParticle((ServerLevel) entity.level(), livingentitypatch, entity, phase);
-                        if (hurtableentitypatch != null && phase.getProperty(AttackPhaseProperty.STUN_TYPE).isPresent() && !((LivingEntity) hurtableentitypatch.getOriginal()).hasEffect((MobEffect) EpicFightMobEffects.STUN_IMMUNITY.get())) {
+                        if (hurtableentitypatch != null && phase.getProperty(AttackPhaseProperty.STUN_TYPE).isPresent()) {
                             float f5;
 
                             if (phase.getProperty(AttackPhaseProperty.STUN_TYPE).get() == StunType.NONE && !(livingentity1 instanceof Player)) {
@@ -326,7 +321,7 @@ public class BasicMultipleAttackAnimation extends AttackAnimation {
                                     }
 
                                     if (livingentity1 instanceof Player) {
-                                        livingentity1.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 5, (int) (d2 * 4.0D * 6.0D), true, false, false));
+                                        livingentity1.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 5, (int) (d2 * 4.0D * 5.0D), true, false, false));
                                     }
                                 }
                             }
@@ -376,7 +371,7 @@ public class BasicMultipleAttackAnimation extends AttackAnimation {
     }
 
     public boolean isBasicAttackAnimation() {
-        return true;
+        return false;
     }
 
     public float applyAntiStunLock(Entity entity, float f, EpicFightDamageSource epicfightdamagesource, Phase phase, String s, String s1) {
@@ -393,12 +388,12 @@ public class BasicMultipleAttackAnimation extends AttackAnimation {
                     f = Float.valueOf(s.split(":")[1]) * 0.98F;
                     flag = true;
                 } else {
-                    f = Float.valueOf(s.split(":")[1]) * 0.9F;
+                    f = Float.valueOf(s.split(":")[1]) * 0.95F;
                     flag = false;
                 }
             }
 
-            for (i = 3; i < s.split(":").length && i < 7; ++i) {
+            for (i = 3; i < s.split(":").length && i < 5; ++i) {
                 if (s.split(":")[i].equals(s3)) {
                     f *= 0.6F;
                 }
@@ -416,7 +411,7 @@ public class BasicMultipleAttackAnimation extends AttackAnimation {
                 }
             }
 
-            for (i = 3; i < s.split(":").length && i < 5; ++i) {
+            for (i = 3; i < s.split(":").length && i < 7; ++i) {
                 if (s.split(":")[i].equals(s3)) {
                     f *= 0.6F;
                 }
