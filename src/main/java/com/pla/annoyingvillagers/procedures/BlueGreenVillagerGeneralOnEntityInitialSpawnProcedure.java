@@ -353,21 +353,19 @@ public class BlueGreenVillagerGeneralOnEntityInitialSpawnProcedure {
                             entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 } catch (CommandSyntaxException e) {
                 }
+            }
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute(
                             "team modify villagers friendlyFire false",
                             entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 } catch (CommandSyntaxException e) {
                 }
+            }
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute(
                             "team join villagers @s",
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException e) {
-                }
-                try {
-                    entity.getServer().getCommands().getDispatcher().execute(
-                            "team join villagers @e[type=minecraft:iron_golem]",
                             entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 } catch (CommandSyntaxException e) {
                 }

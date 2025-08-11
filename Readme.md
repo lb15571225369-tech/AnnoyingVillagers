@@ -367,3 +367,7 @@
 - LLBSJ - emerald_sword
 - LLVBAOSHISHUANGKANFU - emerald_double_bit_axe
 - VILLAGERHEAD_3 - jev_glasses
+
+# 1.3
+public static StaticAnimation EXECUTED_SKILL (annoyingvillagers:biped/combat/executed_skill) -> EXECUTE_WEAPON 
+public static StaticAnimation EXECUTED_WEAPON_HIT (annoyingvillagers:biped/combat/executed_weapon_hit) -> EXECUTED_WEAPON

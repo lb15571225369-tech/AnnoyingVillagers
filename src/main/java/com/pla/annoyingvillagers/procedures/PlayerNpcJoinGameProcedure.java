@@ -233,7 +233,7 @@ public class PlayerNpcJoinGameProcedure {
                 ));
             }
 
-            if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("guardvillagers:guard") && !entity.level().isClientSide() && entity.getServer() != null) {
+            if ((ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("guardvillagers:guard") || ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:iron_golem")) && !entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute(
                             "team join villagers @s",
