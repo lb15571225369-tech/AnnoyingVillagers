@@ -27,7 +27,7 @@
 	},
 	"humanoid_weapon_motions": [
 		  {
-			"weapon_categories": ["axe", "hoe", "pickaxe", "shovel", "sword"],
+			"weapon_categories": ["axe", "hoe", "pickaxe", "shovel", "sword", "s_sword"],
 			"style":"common",
 			"livingmotions": {
 				"chase": "epicfight:biped/living/hold_longsword",
@@ -35,7 +35,7 @@
 			}
 		  },
               { 
-                  "weapon_categories": ["longsword"],
+                  "weapon_categories": ["longsword", "s_longsword"],
                   "style":"common", 
                   "livingmotions": {
                         "chase": "epicfight:biped/living/hold_longsword",
@@ -45,7 +45,7 @@
 	],
 	"custom_guard_motion": [
             { 
-                "weapon_categories": ["longsword","tachi","sword"],
+                "weapon_categories": ["longsword", "tachi", "sword"," s_longsword", "s_tachi", "s_sword"],
                 "style":"common",
                 "guard": "indestructible:guard/guard_longsword",
 		  		"stamina_cost_multiply": 1,

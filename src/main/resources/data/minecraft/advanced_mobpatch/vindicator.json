@@ -25,7 +25,7 @@
 	},
 	"humanoid_weapon_motions": [
 		  {
-			"weapon_categories": ["axe", "hoe", "pickaxe", "shovel", "sword"],
+			"weapon_categories": ["axe", "hoe", "pickaxe", "shovel", "sword", "s_sword"],
 			"style":"common",
 			"livingmotions": {
 				"chase": "epicfight:biped/living/run",
@@ -33,7 +33,7 @@
 			}
 		  },
               { 
-                  "weapon_categories": ["longsword"],
+                  "weapon_categories": ["longsword", "s_longsword"],
                   "style":"common", 
                   "livingmotions": {
                         "chase": "epicfight:biped/living/hold_longsword",
@@ -43,42 +43,42 @@
 	],
 	"custom_guard_motion": [
             { 
-                  "weapon_categories": ["longsword", "tachi"],
+                  "weapon_categories": ["longsword", "tachi", "s_longsword", "s_tachi"],
                   "style":"common", 
                   "guard": "indestructible:guard/guard_longsword",
 				  "counter": "epicfight:biped/combat/tachi_auto2",
 				  "speed": 2
             },
 			{ 
-                  "weapon_categories": ["axe", "hoe", "pickaxe", "shovel", "sword", "katana"],
+                  "weapon_categories": ["axe", "hoe", "pickaxe", "shovel", "sword", "katana", "s_sword", "uchigatana"],
                   "style":"common", 
                   "guard": "indestructible:guard/guard_sword",
 				  "counter": "epicfight:biped/combat/sword_auto2",
 				  "speed": 3
             },
 			{ 
-                  "weapon_categories": ["sword"],
+                  "weapon_categories": ["sword", "s_sword"],
                   "style":"two_hand", 
                   "guard": "indestructible:guard/guard_dualsword",
 				  "counter": "epicfight:biped/combat/sword_dual_auto1",
 				  "speed": 3
             },
 			{ 
-                  "weapon_categories": ["katana"],
+                  "weapon_categories": ["katana", "s_katana"],
                   "style":"common", 
                   "guard": "indestructible:guard/guard_katana",
 				  "counter": "indestructible:guard/counter",
 				  "speed": 1
             },
 			{ 
-                  "weapon_categories": ["greatsword", "torment"],
+                  "weapon_categories": ["greatsword", "torment", "s_greatsword"],
                   "style":"common", 
                   "guard": "indestructible:guard/guard_greatsword",
 				  "counter": "epicfight:biped/combat/greatsword_auto2",
 				  "speed": 2
             },
 			{ 
-                  "weapon_categories": ["spear"],
+                  "weapon_categories": ["spear", "s_spear"],
                   "style":"common", 
                   "guard": "indestructible:guard/guard_spear",
 				  "counter": "epicfight:biped/combat/spear_twohand_auto2",
@@ -94,7 +94,7 @@
 	},
 	"combat_behavior": [
             {
-			"weapon_categories": ["sword", "axe"],
+			"weapon_categories": ["sword", "axe", "s_sword"],
 			"style": "common",
 			"behavior_series": [
 				{
@@ -340,7 +340,7 @@
 			]
 		},
 	{
-			"weapon_categories": ["sword"],
+			"weapon_categories": ["sword", "s_sword"],
 			"style": "two_hand",
 			"behavior_series": [
 				{
@@ -592,7 +592,7 @@
 			]
 		},
 	{
-			"weapon_categories": ["longsword", "tachi"],
+			"weapon_categories": ["longsword", "tachi", "s_longsword", "s_tachi"],
 			"style": "common",
 			"behavior_series": [
 				{

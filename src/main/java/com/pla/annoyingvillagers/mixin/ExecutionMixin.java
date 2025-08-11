@@ -40,7 +40,6 @@ public class ExecutionMixin {
 
     @Inject(method = {"handleExecution"}, at = {@At("HEAD")}, cancellable = true)
     private static void ignoreExecution(ServerPlayer player, LivingEntityPatch<?> targetPatch, PlayerPatch<?> playerPatch, CallbackInfo ci) {
-        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: handleExecution CALLED");
         Vec3 viewVec = ((LivingEntity)targetPatch.getOriginal()).getViewVector(1.0F);
         playerPatch.setGrapplingTarget((LivingEntity)targetPatch.getOriginal());
         SPLockOn msg = new SPLockOn();

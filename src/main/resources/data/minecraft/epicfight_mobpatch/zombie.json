@@ -28,7 +28,7 @@
     },
     "combat_behavior": [
         {
-            "weapon_categories": ["spear"],
+            "weapon_categories": ["spear", "s_spear"],
             "style": "two_hand",
             "behavior_series": [
 {
@@ -109,7 +109,7 @@
             ]
         },
         {
-            "weapon_categories": ["spear"],
+            "weapon_categories": ["spear", "s_spear"],
             "style": "one_hand",
             "behavior_series": [
 {
@@ -187,7 +187,7 @@
             ]
         },
         {
-            "weapon_categories": ["tachi"],
+            "weapon_categories": ["tachi", "s_tachi"],
             "style": "common",
             "behavior_series": [
 {
@@ -532,7 +532,7 @@
             ]
         },
         {
-            "weapon_categories": ["sword"],
+            "weapon_categories": ["sword", "s_sword"],
             "style": "one_hand",
             "behavior_series": [
 {
@@ -603,7 +603,7 @@
             ]
         },
 {
-            "weapon_categories": ["sword"],
+            "weapon_categories": ["sword", "s_sword"],
             "style": "two_hand",
             "behavior_series": [
 {
@@ -687,7 +687,7 @@
                 ]
             },
 {
-            "weapon_categories": ["greatsword"],
+            "weapon_categories": ["greatsword", "s_greatsword"],
             "style": "common",
             "behavior_series": [
 {
@@ -761,7 +761,7 @@
               ]
           },
 {
-            "weapon_categories": ["longsword"],
+            "weapon_categories": ["longsword", "s_longsword"],
             "style": "two_hand",
             "behavior_series": [
 {
@@ -918,7 +918,7 @@
            ]
         },
 {
-            "weapon_categories": ["longsword"],
+            "weapon_categories": ["longsword", "s_longsword"],
             "style": "one_hand",
             "behavior_series": [
 {
@@ -1037,7 +1037,7 @@
            ]
         },
 {
-            "weapon_categories": ["dagger"],
+            "weapon_categories": ["dagger", "s_dagger"],
             "style": "one_hand",
             "behavior_series": [
 {
@@ -1180,7 +1180,7 @@
            ]
       },
 {
-            "weapon_categories": ["dagger"],
+            "weapon_categories": ["dagger", "s_dagger"],
             "style": "two_hand",
             "behavior_series": [
 {

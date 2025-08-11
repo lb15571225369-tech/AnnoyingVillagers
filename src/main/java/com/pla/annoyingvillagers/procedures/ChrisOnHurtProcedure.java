@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModEnchantments;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.util.DelayedTask;
@@ -12,10 +13,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ThrownEnderpearl;
@@ -41,93 +39,32 @@ public class ChrisOnHurtProcedure {
                 if (Math.random() <= 0.05D) {
                     if (entity instanceof LivingEntity) {
                         livingentity = (LivingEntity)entity;
-                        itemstack = new ItemStack(Items.DIAMOND_SWORD);
-                        itemstack.setCount(1);
-                        livingentity.setItemInHand(InteractionHand.MAIN_HAND, itemstack);
+                        ItemStack sword = new ItemStack(Items.DIAMOND_SWORD);
+                        sword.enchant(Enchantments.KNOCKBACK, 5);
+                        sword.enchant(Enchantments.UNBREAKING, 5);
+                        sword.enchant(AnnoyingVillagersModEnchantments.BREAK_ARMOR.get(), 5);
+                        livingentity.setItemInHand(InteractionHand.MAIN_HAND, sword);
                         if (livingentity instanceof Player) {
                             player = (Player)livingentity;
                             player.getInventory().setChanged();
                         }
                     }
-
-                    if (entity instanceof LivingEntity) {
-                        livingentity = (LivingEntity)entity;
-                        itemstack1 = livingentity.getMainHandItem();
-                    } else {
-                        itemstack1 = ItemStack.EMPTY;
-                    }
-
-                    itemstack1.enchant(Enchantments.SMITE, 4);
-                    if (entity instanceof LivingEntity) {
-                        livingentity = (LivingEntity)entity;
-                        itemstack1 = livingentity.getMainHandItem();
-                    } else {
-                        itemstack1 = ItemStack.EMPTY;
-                    }
-
-                    itemstack1.enchant(Enchantments.SHARPNESS, 6);
-                    if (entity instanceof LivingEntity) {
-                        livingentity = (LivingEntity)entity;
-                        itemstack1 = livingentity.getMainHandItem();
-                    } else {
-                        itemstack1 = ItemStack.EMPTY;
-                    }
-
-                    itemstack1.enchant(Enchantments.SWEEPING_EDGE, 4);
-                    if (entity instanceof LivingEntity) {
-                        livingentity = (LivingEntity)entity;
-                        itemstack1 = livingentity.getMainHandItem();
-                    } else {
-                        itemstack1 = ItemStack.EMPTY;
-                    }
-
-                    itemstack1.enchant(Enchantments.SHARPNESS, 4);
                 }
 
                 if (Math.random() <= 0.05D) {
                     if (entity instanceof LivingEntity) {
                         livingentity = (LivingEntity)entity;
-                        itemstack = new ItemStack((ItemLike) AnnoyingVillagersModItems.ENCHANTED_WOODEN_DOOR.get());
-                        itemstack.setCount(1);
-                        livingentity.setItemInHand(InteractionHand.MAIN_HAND, itemstack);
+                        ItemStack sword = new ItemStack((ItemLike) AnnoyingVillagersModItems.ENCHANTED_WOODEN_DOOR.get());
+                        sword.enchant(Enchantments.SMITE, 4);
+                        sword.enchant(Enchantments.SHARPNESS, 4);
+                        sword.enchant(Enchantments.SWEEPING_EDGE, 4);
+                        livingentity.setItemInHand(InteractionHand.MAIN_HAND, sword);
+                        livingentity.setItemInHand(InteractionHand.MAIN_HAND, sword);
                         if (livingentity instanceof Player) {
                             player = (Player)livingentity;
                             player.getInventory().setChanged();
                         }
                     }
-
-                    if (entity instanceof LivingEntity) {
-                        livingentity = (LivingEntity)entity;
-                        itemstack1 = livingentity.getMainHandItem();
-                    } else {
-                        itemstack1 = ItemStack.EMPTY;
-                    }
-
-                    itemstack1.enchant(Enchantments.SMITE, 4);
-                    if (entity instanceof LivingEntity) {
-                        livingentity = (LivingEntity)entity;
-                        itemstack1 = livingentity.getMainHandItem();
-                    } else {
-                        itemstack1 = ItemStack.EMPTY;
-                    }
-
-                    itemstack1.enchant(Enchantments.SHARPNESS, 4);
-                    if (entity instanceof LivingEntity) {
-                        livingentity = (LivingEntity)entity;
-                        itemstack1 = livingentity.getMainHandItem();
-                    } else {
-                        itemstack1 = ItemStack.EMPTY;
-                    }
-
-                    itemstack1.enchant(Enchantments.SWEEPING_EDGE, 4);
-                    if (entity instanceof LivingEntity) {
-                        livingentity = (LivingEntity)entity;
-                        itemstack1 = livingentity.getMainHandItem();
-                    } else {
-                        itemstack1 = ItemStack.EMPTY;
-                    }
-
-                    itemstack1.enchant(Enchantments.SHARPNESS, 4);
                 }
 
                 if (Math.random() <= 0.095D) {
@@ -221,35 +158,17 @@ public class ChrisOnHurtProcedure {
 
                                     if (entity instanceof LivingEntity) {
                                         livingentity3 = (LivingEntity)entity;
-                                        ItemStack itemstack4 = new ItemStack(Items.DIAMOND_SWORD);
-
-                                        itemstack4.setCount(1);
-                                        livingentity3.setItemInHand(InteractionHand.MAIN_HAND, itemstack4);
+                                        ItemStack sword = new ItemStack(Items.DIAMOND_SWORD);
+                                        sword.enchant(Enchantments.KNOCKBACK, 5);
+                                        sword.enchant(Enchantments.UNBREAKING, 5);
+                                        sword.enchant(AnnoyingVillagersModEnchantments.BREAK_ARMOR.get(), 5);
+                                        livingentity3.setItemInHand(InteractionHand.MAIN_HAND, sword);
                                         if (livingentity3 instanceof Player) {
                                             Player player2 = (Player)livingentity3;
 
                                             player2.getInventory().setChanged();
                                         }
                                     }
-
-                                    ItemStack itemstack5;
-
-                                    if (entity instanceof LivingEntity) {
-                                        livingentity3 = (LivingEntity)entity;
-                                        itemstack5 = livingentity3.getMainHandItem();
-                                    } else {
-                                        itemstack5 = ItemStack.EMPTY;
-                                    }
-
-                                    itemstack5.enchant(Enchantments.SHARPNESS, 5);
-                                    if (entity instanceof LivingEntity) {
-                                        livingentity3 = (LivingEntity)entity;
-                                        itemstack5 = livingentity3.getMainHandItem();
-                                    } else {
-                                        itemstack5 = ItemStack.EMPTY;
-                                    }
-
-                                    itemstack5.enchant(Enchantments.MENDING, 5);
                                 }
                             };
                         }

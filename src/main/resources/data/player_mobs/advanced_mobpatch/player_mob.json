@@ -42,7 +42,7 @@
 	],
 	"custom_guard_motion": [
             { 
-                  "weapon_categories": ["longsword", "tachi"],
+                  "weapon_categories": ["longsword", "tachi", "s_longsword", "s_tachi"],
                   "style":"common", 
                   "guard": "indestructible:guard/guard_longsword",
 				  "counter": "epicfight:biped/combat/tachi_auto2",
@@ -56,7 +56,7 @@
 				  "speed": 3
             },
 			{ 
-                  "weapon_categories": ["sword"],
+                  "weapon_categories": ["sword", "s_sword"],
                   "style":"two_hand", 
                   "guard": "indestructible:guard/guard_dualsword",
 				  "counter": "epicfight:biped/combat/sword_dual_auto1",
@@ -70,14 +70,14 @@
 				  "speed": 1
             },
 			{ 
-                  "weapon_categories": ["greatsword", "torment"],
+                  "weapon_categories": ["greatsword", "torment", "s_greatsword"],
                   "style":"common", 
                   "guard": "indestructible:guard/guard_greatsword",
 				  "counter": "epicfight:biped/combat/greatsword_auto2",
 				  "speed": 2
             },
 			{ 
-                  "weapon_categories": ["spear"],
+                  "weapon_categories": ["spear", "s_spear"],
                   "style":"common", 
                   "guard": "indestructible:guard/guard_spear",
 				  "counter": "epicfight:biped/combat/spear_twohand_auto2",
@@ -92,8 +92,8 @@
 		"fall": "epicfight:biped/living/landing"
 	},
 	"combat_behavior": [
-            {
-			"weapon_categories": ["sword", "axe", "dagger"],
+		{
+			"weapon_categories": ["sword", "axe", "dagger", "s_sword", "s_dagger"],
 			"style": "common",
 			"behavior_series": [
 				{
@@ -1288,7 +1288,7 @@
 			]
 		},
 	{
-			"weapon_categories": ["greatsword"],
+			"weapon_categories": ["greatsword", "s_greatsword"],
 			"style": "common",
 			"behavior_series": [
 				{
@@ -1766,7 +1766,7 @@
 			]
 		},
 	{
-			"weapon_categories": ["spear"],
+			"weapon_categories": ["spear", "s_spear"],
 			"style": "common",
 			"behavior_series": [
 				{
@@ -2056,7 +2056,7 @@
 			]
 		},
 	{
-			"weapon_categories": ["sword"],
+			"weapon_categories": ["sword", "s_sword"],
 			"style": "two_hand",
 			"behavior_series": [
 				{
@@ -2383,7 +2383,7 @@
 			]
 		},
 	{
-			"weapon_categories": ["longsword", "tachi"],
+			"weapon_categories": ["longsword", "tachi", "s_longsword", "s_tachi", "great_tachi"],
 			"style": "common",
 			"behavior_series": [
 				{

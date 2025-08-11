@@ -100,13 +100,12 @@ public class EquipmentDataLoader extends SimpleJsonResourceReloadListener {
             if (!alwaysEquip && RANDOM.nextFloat() > equipChanceArmor) continue;
 
             String itemId;
-            if (slot.equals("MAINHAND") || slot.equals("OFFHAND")) {
-                itemId = "epicfight:glove";
-//                if (new Random().nextFloat() < 0.25f) {
-//                    itemId = oneHandWeaponInMainHand;
-//                } else {
-//                    continue;
-//                }
+            if (slot.equals("OFFHAND") && oneHandWeaponInMainHand != null) {
+                if (new Random().nextFloat() < 0.25f) {
+                    itemId = oneHandWeaponInMainHand;
+                } else {
+                    continue;
+                }
             } else {
                 itemId = pool.get(RANDOM.nextInt(pool.size()));
             }
