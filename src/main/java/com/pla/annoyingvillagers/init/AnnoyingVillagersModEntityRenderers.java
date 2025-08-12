@@ -64,5 +64,6 @@ public class AnnoyingVillagersModEntityRenderers {
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.PLAYER_MOB_DEAD.get(), PlayerMobRenderer::new);
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.INFECTED_THEMOSTMOISTBURRIT0.get(), InfectedTheMostMoistBurrit0Renderer::new);
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.INFECTED_THEMOSTMOISTBURRIT0_DEAD.get(), InfectedTheMostMoistBurrit0DeadRenderer::new);
+        registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.DARK_HEROBRINE.get(), DarkHerobrineRenderer::new);
     }
 }
