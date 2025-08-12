@@ -526,5 +526,13 @@
         "stream": false
       }
     ]
+  },
+  "himsaydzlsddds": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:himspeak",
+        "stream": false
+      }
+    ]
   }
 }

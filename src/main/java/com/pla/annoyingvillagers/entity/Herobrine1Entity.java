@@ -47,13 +47,13 @@ import com.pla.annoyingvillagers.procedures.HerobrineOnInitialSpawnProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineNaturalSpawnProcedure;
 
 @EventBusSubscriber
-public class HerobrineEntity extends Monster {
+public class Herobrine1Entity extends Monster {
     private boolean wasOnGroundLastTick = false;
-    public HerobrineEntity(SpawnEntity spawnentity, Level level) {
+    public Herobrine1Entity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.HEROBRINE_1.get(), level);
     }
 
-    public HerobrineEntity(EntityType<HerobrineEntity> entitytype, Level level) {
+    public Herobrine1Entity(EntityType<Herobrine1Entity> entitytype, Level level) {
         super(entitytype, level);
         this.setMaxUpStep(0.7F);
         this.xpReward = 300;

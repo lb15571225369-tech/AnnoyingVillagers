@@ -22,6 +22,7 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_2_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_3_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_7_SPAWN_EGG.get());
+                        pOutput.accept(AnnoyingVillagersModItems.ARMORED_HEROBRINE_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.BLUE_DEMON_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.VILLAGER_SCOUT_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.VILLAGER_SPAWN_EGG.get());
@@ -90,7 +91,13 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get());
                         pOutput.accept(AnnoyingVillagersModItems.RUBY.get());
                         pOutput.accept(AnnoyingVillagersModItems.PURPLE_GEM.get());
+                        pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_OBSIDIAN_DIAMOND_HELMET.get());
+                        pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_OBSIDIAN_DIAMOND_CHESTPLATE.get());
                         pOutput.accept(AnnoyingVillagersModItems.BLUE_DEMON_CHESTPLATE.get());
+                        pOutput.accept(AnnoyingVillagersModItems.BROKEN_DIAMOND_HELMET.get());
+                        pOutput.accept(AnnoyingVillagersModItems.BROKEN_DIAMOND_CHESTPLATE.get());
+                        pOutput.accept(AnnoyingVillagersModItems.BROKEN_DIAMOND_LEGGINGS.get());
+                        pOutput.accept(AnnoyingVillagersModItems.BROKEN_DIAMOND_BOOTS.get());
                         pOutput.accept(AnnoyingVillagersModItems.COMPRESSED_DIAMOND_HELMET.get());
                         pOutput.accept(AnnoyingVillagersModItems.COMPRESSED_DIAMOND_CHESTPLATE.get());
                         pOutput.accept(AnnoyingVillagersModItems.COMPRESSED_DIAMOND_LEGGINGS.get());

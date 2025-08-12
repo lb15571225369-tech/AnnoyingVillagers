@@ -1,6 +1,9 @@
 package com.pla.annoyingvillagers.client.renderer;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.entity.ArmoredHerobrineEntity;
+import com.pla.annoyingvillagers.entity.Herobrine1Entity;
+import com.pla.annoyingvillagers.procedures.HerobrineLowProcedure;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
@@ -8,12 +11,10 @@ import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
-import com.pla.annoyingvillagers.entity.HerobrineEntity;
-import com.pla.annoyingvillagers.procedures.HerobrineLowProcedure;
 
-public class HerobrineRenderer extends HumanoidMobRenderer<HerobrineEntity, HumanoidModel<HerobrineEntity>> {
+public class ArmoredHerobrineRenderer extends HumanoidMobRenderer<ArmoredHerobrineEntity, HumanoidModel<ArmoredHerobrineEntity>> {
 
-    public HerobrineRenderer(Context context) {
+    public ArmoredHerobrineRenderer(Context context) {
         super(context, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER)), 0.5F);
         this.addLayer(new HumanoidArmorLayer(
                 this,
@@ -22,16 +23,11 @@ public class HerobrineRenderer extends HumanoidMobRenderer<HerobrineEntity, Huma
                 context.getModelManager()));
     }
 
-    public ResourceLocation getTextureLocation(HerobrineEntity herobrineentity) {
-        return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/herobrine.png");
+    public ResourceLocation getTextureLocation(ArmoredHerobrineEntity herobrineentity) {
+        return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/herobrine_2.png");
     }
 
-    protected boolean isShaking(HerobrineEntity herobrineentity) {
-        Level level = herobrineentity.level();
-        double d0 = herobrineentity.getX();
-        double d1 = herobrineentity.getY();
-        double d2 = herobrineentity.getZ();
-
+    protected boolean isShaking(ArmoredHerobrineEntity herobrineentity) {
         return HerobrineLowProcedure.execute(herobrineentity);
     }
 }

@@ -58,7 +58,7 @@ public class Herobrine3OnTouchProcedure {
                         if (entity1 == livingentity) {
                             Level level;
 
-                            if (Math.random() <= 0.09D) {
+                            if (Math.random() <= 0.2D) {
                                 if (levelaccessor instanceof Level) {
                                     level = (Level)levelaccessor;
                                     if (!level.isClientSide()) {
@@ -94,7 +94,7 @@ public class Herobrine3OnTouchProcedure {
                                 };
                             }
 
-                            if (Math.random() <= 0.01D) {
+                            if (Math.random() <= 0.2D) {
                                 if (levelaccessor instanceof Level) {
                                     level = (Level)levelaccessor;
                                     if (!level.isClientSide()) {

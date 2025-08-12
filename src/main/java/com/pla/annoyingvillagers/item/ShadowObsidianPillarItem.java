@@ -9,7 +9,7 @@ public class ShadowObsidianPillarItem extends SwordItem {
     public ShadowObsidianPillarItem() {
         super(new Tier() {
             public int getUses() {
-                return 0;
+                return 1000;
             }
 
             public float getSpeed() {
@@ -25,7 +25,7 @@ public class ShadowObsidianPillarItem extends SwordItem {
             }
 
             public int getEnchantmentValue() {
-                return 0;
+                return 10;
             }
 
             public Ingredient getRepairIngredient() {

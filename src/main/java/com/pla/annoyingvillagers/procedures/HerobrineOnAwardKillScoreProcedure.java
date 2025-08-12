@@ -1,6 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
-import com.pla.annoyingvillagers.entity.HerobrineEntity;
+import com.pla.annoyingvillagers.entity.Herobrine1Entity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.server.level.ServerLevel;
@@ -19,7 +19,7 @@ public class HerobrineOnAwardKillScoreProcedure {
                 public void run() {
                     if (!(world instanceof ServerLevel serverLevel)) return;
 
-                    HerobrineEntity herobrine = new HerobrineEntity(AnnoyingVillagersModEntities.HEROBRINE_1.get(), serverLevel);
+                    Herobrine1Entity herobrine = new Herobrine1Entity(AnnoyingVillagersModEntities.HEROBRINE_1.get(), serverLevel);
 
                     herobrine.moveTo(x, y, z, world.getRandom().nextFloat() * 360.0F, 0.0F);
 

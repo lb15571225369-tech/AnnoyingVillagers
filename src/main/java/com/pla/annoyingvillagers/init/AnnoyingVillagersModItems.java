@@ -31,6 +31,9 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> HEROBRINE_7_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("herobrine_7_spawn_egg", () -> {
         return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.HEROBRINE_7, -1, -1, (new Properties()));
     });
+    public static final RegistryObject<Item> ARMORED_HEROBRINE_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("armored_herobrine_spawn_egg", () -> {
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.ARMORED_HEROBRINE, -16777216, -1, (new Properties()));
+    });
     public static final RegistryObject<Item> VILLAGER_SCOUT_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("villager_scout_spawn_egg", () -> {
         return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.VILLAGER_SCOUT, -205, -26317, (new Properties()));
     });
@@ -393,6 +396,25 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> UNLIGHT_DIAMOND_BOOTS = AnnoyingVillagersModItems.REGISTRY.register("unlight_diamond_boots", () -> {
         return new UnlightDiamondArmorItem.Boots();
     });
+    public static final RegistryObject<Item> HEROBRINE_OBSIDIAN_DIAMOND_HELMET = AnnoyingVillagersModItems.REGISTRY.register("herobrine_obsidian_diamond_helmet", () -> {
+        return new HerobrineObsidianDiamondArmorHelmetItem.Helmet();
+    });
+    public static final RegistryObject<Item> HEROBRINE_OBSIDIAN_DIAMOND_CHESTPLATE = AnnoyingVillagersModItems.REGISTRY.register("herobrine_obsidian_diamond_chestplate", () -> {
+        return new HerobrineObsidianDiamondArmorChestplateItem.Chestplate();
+    });
+    public static final RegistryObject<Item> BROKEN_DIAMOND_HELMET = AnnoyingVillagersModItems.REGISTRY.register("broken_diamond_helmet", () -> {
+        return new BrokenDiamondArmorItem.Helmet();
+    });
+    public static final RegistryObject<Item> BROKEN_DIAMOND_CHESTPLATE = AnnoyingVillagersModItems.REGISTRY.register("broken_diamond_chestplate", () -> {
+        return new BrokenDiamondArmorItem.Chestplate();
+    });
+    public static final RegistryObject<Item> BROKEN_DIAMOND_LEGGINGS = AnnoyingVillagersModItems.REGISTRY.register("broken_diamond_leggings", () -> {
+        return new BrokenDiamondArmorItem.Leggings();
+    });
+    public static final RegistryObject<Item> BROKEN_DIAMOND_BOOTS = AnnoyingVillagersModItems.REGISTRY.register("broken_diamond_boots", () -> {
+        return new BrokenDiamondArmorItem.Boots();
+    });
+
     private static RegistryObject<Item> block(RegistryObject<Block> registryobject, CreativeModeTab creativemodetab) {
         return AnnoyingVillagersModItems.REGISTRY.register(registryobject.getId().getPath(), () -> {
             return new BlockItem((Block) registryobject.get(), (new Properties()));

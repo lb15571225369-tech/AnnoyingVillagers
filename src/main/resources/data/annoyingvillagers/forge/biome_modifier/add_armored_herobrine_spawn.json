@@ -2,7 +2,7 @@
   "type": "annoyingvillagers:entities",
   "biomes": "#minecraft:is_overworld",
   "entity": {
-    "type": "annoyingvillagers:herobrine",
+    "type": "annoyingvillagers:armored_herobrine",
     "weight": 1,
     "minCount": 1,
     "maxCount": 1

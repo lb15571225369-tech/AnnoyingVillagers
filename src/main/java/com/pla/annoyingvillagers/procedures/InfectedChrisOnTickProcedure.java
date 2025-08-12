@@ -21,46 +21,6 @@ public class InfectedChrisOnTickProcedure {
                     livingentity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.HEROBRINE.get(), 5, 0, false, false));
                 }
             }
-
-            Player player;
-            LivingEntity livingentity1;
-
-            if (entity instanceof Player) {
-                player = (Player) entity;
-                player.getInventory().armor.set(0, new ItemStack(Blocks.AIR));
-                player.getInventory().setChanged();
-            } else if (entity instanceof LivingEntity) {
-                livingentity1 = (LivingEntity) entity;
-                livingentity1.setItemSlot(EquipmentSlot.FEET, new ItemStack(Blocks.AIR));
-            }
-
-            if (entity instanceof Player) {
-                player = (Player) entity;
-                player.getInventory().armor.set(1, new ItemStack(Blocks.AIR));
-                player.getInventory().setChanged();
-            } else if (entity instanceof LivingEntity) {
-                livingentity1 = (LivingEntity) entity;
-                livingentity1.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Blocks.AIR));
-            }
-
-            if (entity instanceof Player) {
-                player = (Player) entity;
-                player.getInventory().armor.set(2, new ItemStack(Blocks.AIR));
-                player.getInventory().setChanged();
-            } else if (entity instanceof LivingEntity) {
-                livingentity1 = (LivingEntity) entity;
-                livingentity1.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Blocks.AIR));
-            }
-
-            if (entity instanceof Player) {
-                player = (Player) entity;
-                player.getInventory().armor.set(3, new ItemStack(Blocks.AIR));
-                player.getInventory().setChanged();
-            } else if (entity instanceof LivingEntity) {
-                livingentity1 = (LivingEntity) entity;
-                livingentity1.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Blocks.AIR));
-            }
-
         }
     }
 }

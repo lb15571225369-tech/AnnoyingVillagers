@@ -110,9 +110,9 @@ public class BbqEntity extends PathfinderMob implements RangedAttackMob {
                 return followTarget != null && followTarget.isAlive() && distanceTo(followTarget) > 10.0D;
             }
         });
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, HerobrineEntity.class, false, false));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, Herobrine1Entity.class, false, false));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, Herobrine2Entity.class, false, false));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, HerobrineEntity.class, false, false));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, Herobrine1Entity.class, false, false));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, Herobrine3Entity.class, false, false));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, (target) -> followTarget != null
                 && followTarget.isAlive()

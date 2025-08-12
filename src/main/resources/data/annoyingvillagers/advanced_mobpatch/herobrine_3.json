@@ -8,7 +8,7 @@
 		"impact": 0.0,
 		"armor_negation": 0.0,
 		"max_strikes": 5,
-		"chasing_speed": 1.5,
+		"chasing_speed": 1.9,
         "scale": 1.0,
 		"counter_chance": 0.6,
 		"counter_cost": 20.0,
@@ -19,7 +19,7 @@
 	"default_livingmotions": {
 		"idle": "epicfight:biped/living/idle",
 		"walk": "epicfight:biped/living/walk",
-		"chase": "epicfight:biped/living/run",
+		"chase": "wom:biped/living/moonless_run",
 		"death": "epicfight:biped/living/death"
 	},
 	"humanoid_weapon_motions": [
@@ -56,7 +56,7 @@
 				  "speed": 3
             },
 			{ 
-                  "weapon_categories": ["sword"],
+                  "weapon_categories": ["sword", "fist"],
                   "style":"two_hand", 
                   "guard": "indestructible:guard/guard_dualsword",
 				  "counter": "epicfight:biped/combat/sword_dual_auto1",
@@ -103,7 +103,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.5, "max": 2.5}
+								{"predicate":"within_distance", "min": 0.5, "max": 2.5}
 							],
 							"guard": 1
 						}
@@ -116,38 +116,38 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 3.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 3.0}
 							],
 							"animation": "epicfight:biped/combat/sword_airslash",
 							"convert_time": 0.15,
-							"play_speed": 1.14
+							"play_speed": 2.14
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 3.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 3.0}
 							],
 							"animation": "epicfight:biped/combat/sword_auto1",
 							"convert_time": 0.15,
-							"play_speed": 1.12
+							"play_speed": 2.12
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 3.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 3.0}
 							],
 							"animation": "epicfight:biped/combat/sword_auto2",
-							"play_speed": 1.2
+							"play_speed": 2.2
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 3.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 3.5}
 							],
 							"animation": "epicfight:biped/combat/sword_auto3",
 							"convert_time": 0.15,
-							"play_speed": 1.9
+							"play_speed": 2.9
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 3.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 3.5}
 							],
 							"animation": "epicfight:biped/combat/sword_auto4",
 							"convert_time": 0.15,
@@ -155,54 +155,54 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
 							],
 							"animation": "epicfight:biped/combat/sword_auto1",
 							"convert_time": 0.15,
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 3.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 3.0}
 							],
 							"animation": "epicfight:biped/combat/longsword_dash",
 							"convert_time": 0.15,
-							"play_speed": 1.2
+							"play_speed": 2.2
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
 							],
 							"animation": "epicfight:biped/combat/sword_airslash",
 							"convert_time": 0.15,
-							"play_speed": 1.5
+							"play_speed": 2.5
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 3.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 3.0}
 							],
 							"animation": "epicfight:biped/combat/longsword_auto1",
 							"convert_time": 0.15,
-							"play_speed": 1.1
+							"play_speed": 2.1
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 3.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 3.0}
 							],
 							"animation": "epicfight:biped/combat/longsword_auto2",
 							"convert_time": 0.15,
-							"play_speed": 1.2
+							"play_speed": 2.2
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 3.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 3.0}
 							],
 							"animation": "epicfight:biped/combat/longsword_auto3",
-							"play_speed": 1.9
+							"play_speed": 2.9
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 3.0, "max": 12.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"within_distance", "min": 3.0, "max": 12.0}, {"predicate":"indestructible:guard_break", "invert": true},
 								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"guard": 1,
@@ -217,7 +217,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 1.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.5}
 							],
 							"animation": "epicfight:biped/skill/step_left"
 						}
@@ -230,10 +230,10 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.5}
 							],
 							"animation": "epicfight:biped/combat/longsword_dash",
-							"play_speed": 1.3
+							"play_speed": 2.3
 						}
 					]
 				},
@@ -244,10 +244,10 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 3.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 3.5}
 							],
 							"animation": "epicfight:biped/skill/sweeping_edge",
-							"play_speed": 1.3
+							"play_speed": 2.3
 						}
 					]
 				},
@@ -258,7 +258,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.5, "max": 3.5}
+								{"predicate":"within_distance", "min": 0.5, "max": 3.5}
 							],
 							"guard": 1
 						}
@@ -271,7 +271,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 1.8}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.8}
 							],
 							"animation": "epicfight:biped/skill/step_backward"
 						}
@@ -284,7 +284,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 1.8}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.8}
 							],
 							"animation": "epicfight:biped/skill/step_forward"
 						}
@@ -297,7 +297,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 1.8}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.8}
 							],
 							"animation": "epicfight:biped/skill/roll_backward"
 						}
@@ -310,7 +310,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 2.8}
+								{"predicate":"within_distance", "min": 0.0, "max": 2.8}
 							],
 							"animation": "epicfight:biped/skill/roll_forward"
 						}
@@ -324,7 +324,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 1.0, "max": 7.0}
+								{"predicate":"within_distance", "min": 1.0, "max": 7.0}
 							],
 							"animation": "epicfight:biped/skill/step_right"
 						}
@@ -343,7 +343,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.5, "max": 2.0}
+								{"predicate":"within_distance", "min": 0.5, "max": 2.0}
 							],
 							"guard": 1,
 							"convert_time": 0.15
@@ -357,366 +357,366 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 15.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 15.0}
 							],
 							"animation": "wom:biped/combat/torment_airslam",
-							"play_speed": 1.9
+							"play_speed": 3.9
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 5.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 5.0}
 							],
 							"animation": "wom:biped/combat/torment_auto_1",	
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "annoyingvillagers:biped/combat/greatsword_dual_auto_1",
 							"play_speed": 1.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 5.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 5.0}
 							],
 							"animation": "wom:biped/combat/torment_auto_2",
-							"play_speed": 1.5
+							"play_speed": 2.5
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "annoyingvillagers:biped/combat/greatsword_dual_auto_2",
 							"play_speed": 1.9
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "wom:biped/combat/torment_auto_3",
-							"play_speed": 1.4
+							"play_speed": 2.4
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "annoyingvillagers:biped/combat/greatsword_dual_auto_3",
-							"play_speed": 1.3
+							"play_speed": 2.3
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "wom:biped/combat/torment_auto_4",
-							"play_speed": 1.6
+							"play_speed": 2.6
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "wom:biped/combat/torment_dash",
-							"play_speed": 1.6
+							"play_speed": 2.6
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "wom:biped/combat/torment_airslam",
 							"convert_time": 0.15,
-							"play_speed": 1.9
+							"play_speed": 2.9
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "wom:biped/combat/ruine_auto_1",
-							"play_speed": 1.6
+							"play_speed": 2.6
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "wom:biped/combat/ruine_auto_2",
-							"play_speed": 1.6
+							"play_speed": 2.6
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "wom:biped/combat/ruine_chatiment",
-							"play_speed": 1.6
+							"play_speed": 2.6
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "wom:biped/combat/agony_auto_3",
-							"play_speed": 1.6
+							"play_speed": 2.6
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "wom:biped/combat/agony_airslash",
-							"play_speed": 1.2
+							"play_speed": 2.2
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "annoyingvillagers:biped/combat/greatsword_dual_auto_1",
 							"play_speed": 1.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "annoyingvillagers:biped/combat/greatsword_dual_auto_2",
 							"play_speed": 1.9
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "annoyingvillagers:biped/combat/greatsword_dual_auto_3",
-							"play_speed": 1.0
+							"play_speed": 2.0
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "annoyingvillagers:biped/combat/greatsword_dual_airslash",
-							"play_speed": 1.78
+							"play_speed": 2.78
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "annoyingvillagers:biped/combat/greatsword_dual_auto_3",
-							"play_speed": 1.2
+							"play_speed": 2.2
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "wom:biped/combat/agony_airslash",
 							"play_speed": 1.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "wom:biped/combat/torment_charged_attack_1",
 							"convert_time": 0.15,
-							"play_speed": 1.4
+							"play_speed": 2.4
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "wom:biped/combat/torment_charged_attack_2",
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 8.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 8.0}
 							],
 							"animation": "wom:biped/skill/torment_berserk_airslam",
 							"convert_time": 0.15,
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "wom:biped/skill/torment_berserk_dash",
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 2.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 2.0, "max": 6.0}
 							],
 							"animation": "wom:biped/skill/torment_berserk_auto_1",
 							"convert_time": 0.15,
-							"play_speed": 1.9
+							"play_speed": 2.9
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 7.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 7.0}
 							],
 							"animation": "wom:biped/skill/torment_berserk_auto_2",
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 7.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 7.0}
 							],
 							"animation": "wom:biped/skill/torment_berserk_dash",
 							"convert_time": 0.15,
-							"play_speed": 1.5
+							"play_speed": 2.5
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 7.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 7.0}
 							],
 							"animation": "wom:biped/skill/torment_berserk_airslam",
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 7.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 7.0}
 							],
 							"animation": "wom:biped/skill/torment_berserk_airslam",
 							"convert_time": 0.15,
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 1.0, "max": 8.0}
+								{"predicate":"within_distance", "min": 1.0, "max": 8.0}
 							],
 							"animation": "epicfight:biped/skill/steel_whirlwind",
-							"play_speed": 1.2
+							"play_speed": 4.2
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "wom:biped/combat/torment_charged_attack_3",
 							"play_speed": 6.9
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0, "max": 6.0}
 							],
 							"animation": "wom:biped/skill/torment_berserk_airslam",
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0, "max": 5.5}
+								{"predicate":"within_distance", "min": 0, "max": 5.5}
 							],
 							"animation": "wom:biped/skill/torment_berserk_dash",
-							"play_speed": 1.2
+							"play_speed": 3.2
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0, "max": 6.5}
+								{"predicate":"within_distance", "min": 0, "max": 6.5}
 							],
 							"animation": "wom:biped/skill/torment_berserk_airslam",
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0, "max": 5.5}
+								{"predicate":"within_distance", "min": 0, "max": 5.5}
 							],
 							"animation": "wom:biped/skill/torment_berserk_dash",
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0, "max": 5.5}
+								{"predicate":"within_distance", "min": 0, "max": 5.5}
 							],
 							"animation": "wom:biped/skill/torment_berserk_dash",
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0, "max": 5.5}
+								{"predicate":"within_distance", "min": 0, "max": 5.5}
 							],
 							"animation": "wom:biped/skill/torment_berserk_airslam",
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0, "max": 5}
+								{"predicate":"within_distance", "min": 0, "max": 5}
 							],
 							"animation": "wom:biped/combat/torment_airslam",
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0, "max": 5.5}
+								{"predicate":"within_distance", "min": 0, "max": 5.5}
 							],
 							"animation": "wom:biped/combat/torment_auto_1",
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 5.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 5.0}
 							],
 							"animation": "wom:biped/combat/torment_auto_2",	
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 5.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 5.0}
 							],
 							"animation": "wom:biped/combat/torment_auto_3",	
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 5.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 5.0}
 							],
 							"animation": "wom:biped/combat/torment_auto_4",	
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0, "max": 5.5}
+								{"predicate":"within_distance", "min": 0, "max": 5.5}
 							],
 							"animation": "wom:biped/combat/torment_dash",
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0, "max": 5.5}
+								{"predicate":"within_distance", "min": 0, "max": 5.5}
 							],
 							"animation": "wom:biped/combat/torment_charged_attack_3",
 							"play_speed": 6.9
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "annoyingvillagers:biped/combat/greatsword_dual_auto_1",
 							"play_speed": 1.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "annoyingvillagers:biped/combat/greatsword_dual_auto_2",
 							"play_speed": 1.9
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "annoyingvillagers:biped/combat/greatsword_dual_auto_3",
-							"play_speed": 1.0
+							"play_speed": 2.0
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "annoyingvillagers:biped/combat/greatsword_dual_airslash",
-							"play_speed": 1.78
+							"play_speed": 2.78
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "annoyingvillagers:biped/combat/greatsword_dual_auto_3",
-							"play_speed": 1.7
+							"play_speed": 2.7
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 40.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 40.0}
 							],
 							"guard": 1,
-							"play_speed": 1.8
+							"play_speed": 4.8
 						}
                         ]                 
 				},
@@ -727,10 +727,10 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 5.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 5.5}
 							],
 							"animation": "wom:biped/combat/agony_airslash",
-							"play_speed": 1.0
+							"play_speed": 2.0
 						}
 					]
 				},
@@ -741,49 +741,49 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 5.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 5.5}
 							],
 							"animation": "epicfight:biped/combat/greatsword_dash",
-							"play_speed": 1.5
+							"play_speed": 2.5
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "epicfight:biped/combat/greatsword_auto1",
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "epicfight:biped/combat/greatsword_auto2",
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "epicfight:biped/combat/greatsword_auto1",
-							"play_speed": 1.8
+							"play_speed": 3.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "epicfight:biped/combat/greatsword_auto2",
-							"play_speed": 1.8
+							"play_speed": 3.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "epicfight:biped/combat/greatsword_auto1",
-							"play_speed": 1.8
+							"play_speed": 3.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 15.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 15.0}
 							],
 							"animation": "epicfight:biped/skill/steel_whirlwind",
 							"play_speed": 6.8
@@ -797,10 +797,10 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 5.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 5.5}
 							],
 							"animation": "epicfight:biped/skill/the_guillotine",
-							"play_speed": 1.8
+							"play_speed": 4.8
 						}
 					]
 				},
@@ -811,10 +811,10 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.5}
 							],
 							"animation": "wom:biped/combat/enderblaster_onehand_dash",
-							"play_speed": 1.8
+							"play_speed": 3.8
 						}
 					]
 				},
@@ -825,17 +825,17 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0, "max": 6.5}
+								{"predicate":"within_distance", "min": 0, "max": 6.5}
 							],
 							"animation": "wom:biped/combat/moonless_auto_2",
-							"play_speed": 1.95
+							"play_speed": 2.95
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 40.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 40.5}
 							],
 							"animation": "wom:biped/combat/torment_dash",
-							"play_speed": 1.7
+							"play_speed": 2.7
 						}
 					]
 				},
@@ -846,80 +846,80 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 5.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 5.5}
 							],
 							"animation": "epicfight:biped/skill/the_guillotine",
-							"play_speed": 1.7
+							"play_speed": 5.7
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0, "max": 6.5}
+								{"predicate":"within_distance", "min": 0, "max": 6.5}
 							],
 							"animation": "wom:biped/skill/torment_berserk_dash",
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0, "max": 10.5}
+								{"predicate":"within_distance", "min": 0, "max": 10.5}
 							],
 							"animation": "wom:biped/skill/torment_berserk_dash",
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0, "max": 10.5}
+								{"predicate":"within_distance", "min": 0, "max": 10.5}
 							],
 							"animation": "wom:biped/skill/torment_berserk_dash",
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0, "max": 10.5}
+								{"predicate":"within_distance", "min": 0, "max": 10.5}
 							],
 							"animation": "wom:biped/skill/torment_berserk_dash",
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0, "max": 12.5}
+								{"predicate":"within_distance", "min": 0, "max": 12.5}
 							],
 							"animation": "wom:biped/skill/torment_berserk_dash",
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0, "max": 11.5}
+								{"predicate":"within_distance", "min": 0, "max": 11.5}
 							],
 							"animation": "wom:biped/skill/torment_berserk_dash",
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0, "max": 11.5}
+								{"predicate":"within_distance", "min": 0, "max": 11.5}
 							],
 							"animation": "wom:biped/skill/torment_berserk_dash",
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0, "max": 12.5}
+								{"predicate":"within_distance", "min": 0, "max": 12.5}
 							],
 							"animation": "wom:biped/skill/torment_berserk_dash",
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0, "max": 12.5}
+								{"predicate":"within_distance", "min": 0, "max": 12.5}
 							],
 							"animation": "wom:biped/skill/torment_berserk_dash",
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0, "max": 13.5}
+								{"predicate":"within_distance", "min": 0, "max": 13.5}
 							],
 							"animation": "wom:biped/skill/torment_berserk_dash",
-							"play_speed": 1.8
+							"play_speed": 2.8
 						}
 					]
 				},
@@ -930,7 +930,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 3.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 3.5}
 							],
 							"guard": 1
 						}
@@ -943,7 +943,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 3.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 3.0}
 							],
 							"animation": "epicfight:biped/skill/step_backward"
 						}
@@ -956,7 +956,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 1.8}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.8}
 							],
 							"animation": "epicfight:biped/skill/step_forward"
 						}
@@ -970,7 +970,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 1.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.5}
 							],
 							"animation": "epicfight:biped/skill/step_left"
 						}
@@ -984,7 +984,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 1.0, "max": 7.0}
+								{"predicate":"within_distance", "min": 1.0, "max": 7.0}
 							],
 							"animation": "epicfight:biped/skill/step_right"
 						}
@@ -1003,7 +1003,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.5, "max": 2.5}
+								{"predicate":"within_distance", "min": 0.5, "max": 2.5}
 							],
 							"guard": 1
 						}
@@ -1016,38 +1016,38 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 3.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 3.0}
 							],
 							"animation": "epicfight:biped/combat/greatsword_airslash",
 							"convert_time": 0.15,
-							"play_speed": 1.14
+							"play_speed": 2.14
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
 							],
 							"animation": "epicfight:biped/combat/greatsword_dash",
 							"convert_time": 0.15,
-							"play_speed": 1.5
+							"play_speed": 2.5
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
 							],
 							"animation": "epicfight:biped/combat/greatsword_auto1",
-							"play_speed": 1.2
+							"play_speed": 2.2
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.5}
 							],
 							"animation": "epicfight:biped/combat/greatsword_auto2",
 							"convert_time": 0.15,
-							"play_speed": 1.9
+							"play_speed": 2.9
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 3.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 3.5}
 							],
 							"animation": "epicfight:biped/combat/greatsword_auto1",
 							"convert_time": 0.15,
@@ -1055,71 +1055,71 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
 							],
 							"animation": "epicfight:biped/combat/greatsword_auto1",
 							"convert_time": 0.15,
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.5}
 							],
 							"animation": "wom:biped/combat/torment_charged_attack_2",
 							"convert_time": 0.15,
-							"play_speed": 1.2
+							"play_speed": 2.2
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.5}
 							],
 							"animation": "wom:biped/combat/ruine_chatiment",
 							"convert_time": 0.15,
-							"play_speed": 1.2
+							"play_speed": 2.2
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.5}
 							],
 							"animation": "wom:biped/combat/ruine_auto_1",
 							"convert_time": 0.15,
-							"play_speed": 1.2
+							"play_speed": 2.2
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.5}
 							],
 							"animation": "wom:biped/combat/ruine_auto_2",
 							"convert_time": 0.15,
-							"play_speed": 1.2
+							"play_speed": 2.2
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
 							],
 							"animation": "epicfight:biped/combat/greatsword_dash",
 							"convert_time": 0.15,
-							"play_speed": 1.5
+							"play_speed": 2.5
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.5}
 							],
 							"animation": "wom:biped/combat/ruine_chatiment",
 							"convert_time": 0.15,
-							"play_speed": 1.2
+							"play_speed": 2.2
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 7.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 7.0}
 							],
 							"animation": "epicfight:biped/skill/steel_whirlwind",
 							"convert_time": 0.15,
-							"play_speed": 1.5
+							"play_speed": 2.5
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 3.0, "max": 12.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"within_distance", "min": 3.0, "max": 12.0}, {"predicate":"indestructible:guard_break", "invert": true},
 								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"guard": 1,
@@ -1134,7 +1134,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 1.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.5}
 							],
 							"animation": "epicfight:biped/skill/step_left"
 						}
@@ -1147,10 +1147,10 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.5}
 							],
 							"animation": "epicfight:biped/combat/greatsword_dash",
-							"play_speed": 1.3
+							"play_speed": 2.3
 						}
 					]
 				},
@@ -1161,10 +1161,10 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.5}
 							],
 							"animation": "epicfight:biped/skill/steel_whirlwind",
-							"play_speed": 1.5
+							"play_speed": 2.5
 						}
 					]
 				},
@@ -1175,7 +1175,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.5, "max": 3.5}
+								{"predicate":"within_distance", "min": 0.5, "max": 3.5}
 							],
 							"guard": 1
 						}
@@ -1188,7 +1188,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 1.8}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.8}
 							],
 							"animation": "epicfight:biped/skill/step_backward"
 						}
@@ -1201,7 +1201,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 1.8}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.8}
 							],
 							"animation": "epicfight:biped/skill/step_forward"
 						}
@@ -1214,7 +1214,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 1.8}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.8}
 							],
 							"animation": "epicfight:biped/skill/roll_backward"
 						}
@@ -1227,7 +1227,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 2.8}
+								{"predicate":"within_distance", "min": 0.0, "max": 2.8}
 							],
 							"animation": "epicfight:biped/skill/roll_forward"
 						}
@@ -1241,7 +1241,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 1.0, "max": 7.0}
+								{"predicate":"within_distance", "min": 1.0, "max": 7.0}
 							],
 							"animation": "epicfight:biped/skill/step_right"
 						}
@@ -1260,80 +1260,102 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 3.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "epicfight:biped/combat/fist_airslash",
-							"play_speed": 1.1
+							"play_speed": 2.1,
+							"command_list": [
+								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.3, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.4, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.5, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"playsound annoyingvillagers:himattack2 voice @p", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagers:block 1 1 true", "execute_at_target":false}]
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 3.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 5.0}
 							],
 							"animation": "epicfight:biped/combat/fist_auto1",
-							"play_speed": 1.12
+							"play_speed": 2.12,
+							"command_list": [
+								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagers:block 1 1 true", "execute_at_target":false}]
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 3.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
 							],
 							"animation": "epicfight:biped/combat/fist_auto2",
-							"play_speed": 1.12
+							"play_speed": 2.12,
+							"command_list": [
+								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagers:block 1 1 true", "execute_at_target":false}]
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 3.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
 							],
 							"animation": "epicfight:biped/combat/fist_auto3",
-							"play_speed": 1.2
+							"play_speed": 1.2,
+							"command_list": [
+								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagers:block 1 1 true", "execute_at_target":false}]
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 3.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
 							],
 							"animation": "epicfight:biped/combat/fist_auto1",
-							"play_speed": 1.12
+							"play_speed": 2.12,
+							"command_list": [
+								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.3, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagers:block 1 1 true", "execute_at_target":false}]
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 3.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.5}
 							],
 							"animation": "epicfight:biped/combat/fist_auto3",
-							"play_speed": 1.9
+							"play_speed": 1.5,
+							"command_list": [
+								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.3, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagers:block 1 1 true", "execute_at_target":false}]
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 3.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 7.5}
 							],
 							"animation": "epicfight:enderman/tp_kick2",
-							"play_speed": 1.9
+							"play_speed": 2.2,
+							"command_list": [
+								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.3, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.4, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.5, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"playsound annoyingvillagers:himattack voice @p", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagers:block 1 1 true", "execute_at_target":false}]
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 3.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 5.0}
 							],
 							"animation": "epicfight:biped/combat/fist_auto1",
-							"play_speed": 1.12
+							"play_speed": 3.12,
+							"command_list": [
+								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.3, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.4, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagers:block 1 1 true", "execute_at_target":false}]
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 3.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 3.5}
 							],
 							"animation": "epicfight:enderman/knee",
-							"play_speed": 1.9
+							"play_speed": 2.2,
+							"command_list": [
+								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagers:block 1 1 true", "execute_at_target":false}]
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 3.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 7.5}
 							],
 							"animation": "epicfight:enderman/kick_twice",
-							"play_speed": 1.9
+							"play_speed": 3.9,
+							"command_list": [
+								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.3, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.4, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.5, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagers:block 1 1 true", "execute_at_target":false}]
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 3.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 10.5}
 							],
 							"animation": "epicfight:biped/combat/fist_airslash",
-							"play_speed": 1.9
+							"play_speed": 1.5,
+							"command_list": [
+								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.3, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.4, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.5, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.7, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^8 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^9 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.9, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^10 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.95, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^11 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"playsound annoyingvillagers:soul_legend voice @p", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagers:block 1 1 true", "execute_at_target":false}]
 						}
                         ]                 
 				},
@@ -1344,7 +1366,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 1.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.5}
 							],
 							"animation": "epicfight:biped/skill/step_left"
 						}
@@ -1353,40 +1375,136 @@
                 {
 					"weight": 10.5,
 					"canBeInterrupted": true,
+					"cooldown": 150,
 					"looping": false,
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 2.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 10.5}
 							],
-							"animation": "epicfight:biped/combat/fist_airslash"
+							"animation": "epicfight:biped/combat/fist_airslash",
+							"command_list": [
+								{"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.3, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.4, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.5, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.7, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^8 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^9 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.9, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^10 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.95, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^11 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagers:block 1 1 true", "execute_at_target":false}]
+						}
+					]
+				},
+                {
+					"weight": 5.5,
+					"canBeInterrupted": true,
+					"cooldown": 350,
+					"looping": false,
+					"behaviors": [
+                        {
+							"conditions": [
+								{"predicate":"within_distance", "min": 0.0, "max": 10.5}
+							],
+							"animation": "epicfight:biped/combat/fist_auto2",
+							"command_list": [
+								{"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.25, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.3, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.35, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.4, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.45, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.5, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^8 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.55, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^9 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^10 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.65, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^11 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.75, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^12 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^13 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.85, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^14 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.9, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^15 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"playsound annoyingvillagers:soul_legend voice @p", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagers:block 1 1 true", "execute_at_target":false}]
 						}
 					]
 				},
                 {
 					"weight": 10.5,
 					"canBeInterrupted": true,
+					"cooldown": 250,
 					"looping": false,
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 2.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 50.5}
 							],
-							"animation": "epicfight:biped/combat/fist_airslash"
+							"animation": "epicfight:zombie/attack3",
+							"play_speed": 1.9,
+							"command_list": [
+								{"time":0.6, "command":"execute as @s at @s anchored eyes run fill ^-2 ^-1 ^3 ^2 ^2 ^3 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"playsound annoyingvillagers:himsayenough voice @p", "execute_at_target":false}]
 						}
 					]
 				},
                 {
-
+					"weight": 10.5,
+					"canBeInterrupted": true,
+					"cooldown": 250,
+					"looping": false,
+					"behaviors": [
+                        {
+							"conditions": [
+								{"predicate":"within_distance", "min": 0.0, "max": 50.5}
+							],
+							"animation": "epicfight:biped/skill/eviscerate_first",
+							"play_speed": 1.9,
+							"command_list": [
+								{"time":0.2, "command":"execute as @s at @s anchored eyes run tp @s @r[tag=aim]", "execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run tp @e[tag=aim] @s", "execute_at_target":false}]
+						},
+						{
+							"conditions": [
+								{"predicate":"within_distance", "min": 0.0, "max": 10.5}
+							],
+							"animation": "epicfight:biped/skill/eviscerate_second",
+							"play_speed": 2.4
+						}
+					]
+				},
+                {
+					"weight": 20.5,
+					"canBeInterrupted": true,
+					"cooldown": 200,
+					"looping": false,
+					"behaviors": [
+                        {
+							"conditions": [
+								{"predicate":"within_distance", "min": 0.0, "max": 9.0}
+							],
+							"animation": "wom:biped/skill/antitheus_ascended_deathfall",
+							"play_speed": 1.0,
+							"command_list": [
+								{"time":0.1, "command":"execute as @s at @s anchored eyes run tp @s @r[tag=aim]", "execute_at_target":false}, {"time":0.1, "command":"execute as @s at @s anchored eyes run tp @e[tag=aim] @s", "execute_at_target":false},{"time":0.7, "command":"execute as @s at @s anchored eyes run fill ~ ~-1 ~3 ~ ~1 ~3 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run fill ~ ~-1 ~5 ~ ~1 ~5 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run fill ~ ~-1 ~7 ~ ~1 ~7 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.7, "command":"execute as @s at @s anchored eyes run fill ~ ~-1 ~-3 ~ ~1 ~-3 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run fill ~ ~-1 ~-5 ~ ~1 ~-5 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run fill ~ ~-1 ~-7 ~ ~1 ~-7 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.7, "command":"execute as @s at @s anchored eyes run fill ~3 ~-1 ~ ~3 ~1 ~ annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run fill ~5 ~-1 ~ ~5 ~1 ~ annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run fill ~7 ~-1 ~ ~7 ~1 ~ annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.7, "command":"execute as @s at @s anchored eyes run fill ~-3 ~-1 ~ ~-3 ~1 ~ annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run fill ~-5 ~-1 ~ ~-5 ~1 ~ annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run fill ~-7 ~-1 ~ ~-7 ~1 ~ annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.75, "command":"execute as @s at @s anchored eyes run fill ~ ~2 ~3 ~ ~2 ~3 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.85, "command":"execute as @s at @s anchored eyes run fill ~ ~2 ~5 ~ ~2 ~5 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.85, "command":"execute as @s at @s anchored eyes run fill ~ ~2 ~7 ~ ~2 ~7 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.75, "command":"execute as @s at @s anchored eyes run fill ~ ~2 ~-3 ~ ~2 ~-3 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.85, "command":"execute as @s at @s anchored eyes run fill ~ ~2 ~-5 ~ ~2 ~-5 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.85, "command":"execute as @s at @s anchored eyes run fill ~ ~2 ~-7 ~ ~2 ~-7 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.75, "command":"execute as @s at @s anchored eyes run fill ~3 ~2 ~ ~3 ~2 ~ annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.85, "command":"execute as @s at @s anchored eyes run fill ~5 ~2 ~ ~5 ~2 ~ annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.85, "command":"execute as @s at @s anchored eyes run fill ~7 ~2 ~ ~7 ~2 ~ annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.75, "command":"execute as @s at @s anchored eyes run fill ~-3 ~2 ~ ~-3 ~2 ~ annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.85, "command":"execute as @s at @s anchored eyes run fill ~-5 ~2 ~ ~-5 ~2 ~ annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.85, "command":"execute as @s at @s anchored eyes run fill ~-7 ~2 ~ ~-7 ~2 ~ annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.7, "command":"playsound annoyingvillagers:himsayenough voice @p", "execute_at_target":false}, {"time":0.7, "command":"particle epicfight:ground_slam ~ ~ ~ 0 0 0 2 90", "execute_at_target":false}]
+						}
+					]
+				},
+                {
 					"weight": 50.5,
 					"canBeInterrupted": false,
 					"looping": false,
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 1.8}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.8}
 							],
 							"animation": "epicfight:biped/skill/step_backward"
+						}
+					]
+				},
+                {
+					"weight": 50.5,
+					"canBeInterrupted": false,
+					"cooldown": 300,
+					"looping": false,
+					"behaviors": [
+                        {
+							"conditions": [
+								{"predicate":"within_distance", "min": 11.0, "max": 200.0}
+							],
+							"animation": "wom:biped/skill/enderstep_forward",
+							"command_list": [
+								{"time":0.1, "command":"execute as @s at @s anchored eyes run tp @s @r[tag=aim]", "execute_at_target":false}, {"time":0.1, "command":"execute as @s at @s anchored eyes run tp @e[tag=aim] @s", "execute_at_target":false}]
+						}
+					]
+				},
+                {
+					"weight": 50.5,
+					"canBeInterrupted": false,
+					"cooldown": 300,
+					"looping": false,
+					"behaviors": [
+                        {
+							"conditions": [
+								{"predicate":"within_distance", "min": 7.0, "max": 15.8}
+							],
+							"animation": "epicfight:biped/living/landing",
+							"play_speed": 0.2,
+							"command_list": [
+								{"time":0.1, "command":"execute as @s at @s anchored eyes run fill ^ ^-1 ^1 ^ ^-1 ^1 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run fill ^ ^ ^1 ^ ^ ^1 annoyingvillagers:obsidian keep", "execute_at_target":false},{"time":0.3, "command":"execute as @s at @s anchored eyes run fill ^ ^1 ^1 ^ ^1 ^1 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.4, "command":"execute as @s at @s anchored eyes run fill ^ ^2 ^1 ^ ^2 ^1 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.5, "command":"execute as @s at @s anchored eyes run fill ^ ^3 ^1 ^ ^3 ^1 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run fill ^ ^4 ^1 ^ ^4 ^1 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.7, "command":"execute as @s at @s anchored eyes run fill ^ ^5 ^1 ^ ^5 ^1 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run fill ^ ^6 ^1 ^ ^6 ^1 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.9, "command":"execute as @s at @s anchored eyes run fill ^ ^7 ^1 ^ ^7 ^1 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":1.0, "command":"execute as @s at @s anchored eyes run fill ^ ^8 ^1 ^ ^8 ^1 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run fill ^ ^9 ^1 ^ ^9 ^1 annoyingvillagers:obsidian keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run fill ^ ^10 ^1 ^ ^10 ^1 annoyingvillagers:obsidian keep", "execute_at_target":false}]
 						}
 					]
 				},
@@ -1397,7 +1515,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 1.8}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.8}
 							],
 							"animation": "epicfight:biped/skill/step_forward"
 						}
@@ -1410,7 +1528,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 1.8}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.8}
 							],
 							"animation": "epicfight:biped/skill/roll_backward"
 						}
@@ -1423,7 +1541,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 2.8}
+								{"predicate":"within_distance", "min": 0.0, "max": 2.8}
 							],
 							"animation": "epicfight:biped/skill/roll_forward"
 						}
@@ -1437,7 +1555,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 1.0, "max": 7.0}
+								{"predicate":"within_distance", "min": 1.0, "max": 7.0}
 							],
 							"animation": "epicfight:biped/skill/step_right"
 						}
@@ -1456,7 +1574,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.5, "max": 2.5}
+								{"predicate":"within_distance", "min": 0.5, "max": 2.5}
 							],
 							"guard": 1
 						}
@@ -1469,38 +1587,38 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
 							],
 							"animation": "epicfight:biped/combat/spear_twohand_airslash",
 							"convert_time": 0.15,
-							"play_speed": 1.4
+							"play_speed": 2.4
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
 							],
 							"animation": "epicfight:biped/combat/spear_twohand_auto1",
 							"convert_time": 0.15,
-							"play_speed": 1.12
+							"play_speed": 2.12
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
 							],
 							"animation": "epicfight:biped/combat/spear_twohand_auto2",
-							"play_speed": 1.2
+							"play_speed": 2.2
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.5}
 							],
 							"animation": "epicfight:biped/combat/spear_dash",
 							"convert_time": 0.15,
-							"play_speed": 1.9
+							"play_speed": 2.9
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.5}
 							],
 							"animation": "wom:biped/combat/agony_auto_1",
 							"convert_time": 0.15,
@@ -1508,96 +1626,96 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
 							],
 							"animation": "wom:biped/combat/agony_auto_2",
 							"convert_time": 0.15,
-							"play_speed": 1.8
+							"play_speed": 2.8
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
 							],
 							"animation": "wom:biped/combat/agony_auto_3",
 							"convert_time": 0.15,
-							"play_speed": 1.2
+							"play_speed": 2.2
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
 							],
 							"animation": "wom:biped/combat/agony_auto_4",
 							"convert_time": 0.15,
-							"play_speed": 1.5
+							"play_speed": 2.5
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 5.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 5.0}
 							],
 							"animation": "epicfight:biped/combat/spear_twohand_auto1",
 							"convert_time": 0.15,
-							"play_speed": 1.1
+							"play_speed": 2.1
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
 							],
 							"animation": "epicfight:biped/combat/spear_twohand_auto2",
 							"convert_time": 0.15,
-							"play_speed": 1.2
+							"play_speed": 2.2
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
 							],
 							"animation": "wom:biped/combat/agony_auto_2",
-							"play_speed": 1.9
+							"play_speed": 2.9
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
 							],
 							"animation": "wom:biped/combat/staff_auto_1",
-							"play_speed": 1.9
+							"play_speed": 2.9
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
 							],
 							"animation": "wom:biped/combat/staff_auto_2",
-							"play_speed": 1.9
+							"play_speed": 2.9
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
 							],
 							"animation": "wom:biped/combat/staff_auto_3",
-							"play_speed": 1.9
+							"play_speed": 2.9
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
 							],
 							"animation": "wom:biped/skill/staff_charybdisandscylla",
-							"play_speed": 1.9
+							"play_speed": 2.9
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
 							],
 							"animation": "wom:biped/combat/staff_auto_1",
-							"play_speed": 1.9
+							"play_speed": 2.9
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
 							],
 							"animation": "wom:biped/combat/agony_auto_2",
-							"play_speed": 1.9
+							"play_speed": 2.9
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 3.0, "max": 12.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"within_distance", "min": 3.0, "max": 12.0}, {"predicate":"indestructible:guard_break", "invert": true},
 								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"guard": 1,
@@ -1612,7 +1730,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 1.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.5}
 							],
 							"animation": "epicfight:biped/skill/step_left"
 						}
@@ -1625,10 +1743,10 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 4.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.5}
 							],
 							"animation": "epicfight:biped/combat/longsword_dash",
-							"play_speed": 1.5
+							"play_speed": 2.5
 						}
 					]
 				},
@@ -1639,7 +1757,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.5, "max": 3.5}
+								{"predicate":"within_distance", "min": 0.5, "max": 3.5}
 							],
 							"guard": 1
 						}
@@ -1652,7 +1770,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 1.8}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.8}
 							],
 							"animation": "epicfight:biped/skill/step_backward"
 						}
@@ -1665,7 +1783,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 1.8}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.8}
 							],
 							"animation": "epicfight:biped/skill/step_forward"
 						}
@@ -1678,7 +1796,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 1.8}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.8}
 							],
 							"animation": "epicfight:biped/skill/roll_backward"
 						}
@@ -1691,7 +1809,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 2.8}
+								{"predicate":"within_distance", "min": 0.0, "max": 2.8}
 							],
 							"animation": "epicfight:biped/skill/roll_forward"
 						}
@@ -1705,7 +1823,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 1.0, "max": 7.0}
+								{"predicate":"within_distance", "min": 1.0, "max": 7.0}
 							],
 							"animation": "epicfight:biped/skill/step_right"
 						}
@@ -1724,7 +1842,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.5, "max": 2.0}
+								{"predicate":"within_distance", "min": 0.5, "max": 2.0}
 							],
 							"guard": 1
 						}
@@ -1737,93 +1855,93 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "epicfight:biped/combat/sword_dual_auto1",
 							"convert_time": 0.15,
-							"play_speed": 1.1
+							"play_speed": 2.1
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "epicfight:biped/combat/sword_dual_auto2",
 							"convert_time": 0.15,
-							"play_speed": 1.2
+							"play_speed": 2.2
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 5.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 5.0}
 							],
 							"animation": "epicfight:biped/combat/sword_dual_auto3",
-							"play_speed": 1.2
+							"play_speed": 2.2
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "epicfight:biped/combat/sword_auto2",
 							"convert_time": 0.15,
-							"play_speed": 1.2
+							"play_speed": 2.2
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "epicfight:biped/combat/sword_auto4",
 							"convert_time": 0.15,
-							"play_speed": 1.2
+							"play_speed": 2.2
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "epicfight:biped/combat/sword_dual_airslash",
 							"convert_time": 0.15,
-							"play_speed": 1.21
+							"play_speed": 2.21
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 2.0, "max": 5.0}
+								{"predicate":"within_distance", "min": 2.0, "max": 5.0}
 							],
 							"animation": "epicfight:biped/combat/sword_dual_dash",
 							"convert_time": 0.15,
-							"play_speed": 1.2
+							"play_speed": 2.2
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 2.0, "max": 5.0}
+								{"predicate":"within_distance", "min": 2.0, "max": 5.0}
 							],
 							"animation": "epicfight:biped/combat/sword_dual_auto1",
 							"convert_time": 0.15,
-							"play_speed": 1.1
+							"play_speed": 2.1
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 5.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 5.0}
 							],
 							"animation": "epicfight:biped/combat/longsword_auto1",
 							"convert_time": 0.15,
-							"play_speed": 1.2
+							"play_speed": 2.2
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 5.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 5.0}
 							],
 							"animation": "epicfight:biped/combat/sword_dual_auto2",
 							"convert_time": 0.15,
-							"play_speed": 1.2
+							"play_speed": 2.2
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 5.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 5.0}
 							],
 							"animation": "epicfight:biped/combat/sword_auto2",
-							"play_speed": 1.5
+							"play_speed": 2.5
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 12.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 12.0}
 							],
 							"guard": 1
 						}
@@ -1836,7 +1954,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 1.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.5}
 							],
 							"animation": "epicfight:biped/skill/step_left"
 						}
@@ -1849,10 +1967,10 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 5.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 5.5}
 							],
 							"animation": "epicfight:biped/skill/dancing_edge",
-							"play_speed": 1.3
+							"play_speed": 2.3
 						}
 					]
 				},
@@ -1863,7 +1981,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 2.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 2.5}
 							],
 							"guard": 1
 						}
@@ -1876,7 +1994,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 1.8}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.8}
 							],
 							"animation": "epicfight:biped/skill/step_backward"
 						}
@@ -1889,7 +2007,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 1.8}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.8}
 							],
 							"animation": "epicfight:biped/skill/step_forward"
 						}
@@ -1902,7 +2020,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 1.8}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.8}
 							],
 							"animation": "epicfight:biped/skill/roll_backward"
 						}
@@ -1915,7 +2033,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 2.8}
+								{"predicate":"within_distance", "min": 0.0, "max": 2.8}
 							],
 							"animation": "epicfight:biped/skill/roll_forward"
 						}
@@ -1929,7 +2047,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 1.0, "max": 7.0}
+								{"predicate":"within_distance", "min": 1.0, "max": 7.0}
 							],
 							"animation": "epicfight:biped/skill/step_right"
 						}
@@ -1943,7 +2061,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 1.5, "max": 3.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
+								{"predicate":"within_distance", "min": 1.5, "max": 3.5},{"predicate":"indestructible:attack_level", "min":1,"max":8}
 							],
 							"animation": "epicfight:biped/skill/step_right"
 						}
@@ -1963,7 +2081,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 3.0, "max": 8.0},{"predicate":"indestructible:attack_level", "min":1,"max":2}
+								{"predicate":"within_distance", "min": 3.0, "max": 8.0},{"predicate":"indestructible:attack_level", "min":1,"max":2}
 							],
 							"guard": 1
 						}
@@ -1977,7 +2095,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 2.0, "max": 12.0}, {"predicate":"indestructible:guard_break", "invert": true},
+								{"predicate":"within_distance", "min": 2.0, "max": 12.0}, {"predicate":"indestructible:guard_break", "invert": true},
 								{"predicate":"indestructible:knock_down", "invert": true}, {"predicate":"indestructible:stamina", "stamina": 0.3, "comparator": "greater_ratio"}
 							],
 							"guard": 40
@@ -1991,7 +2109,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 5.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 5.0}
 							],
 							"animation": "epicfight:wither_skeleton/sword_attack1",
 							"play_speed": 1.1
@@ -2005,7 +2123,7 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, 
+								
 								{"predicate":"within_distance", "min": 3.0, "max": 8.0}, 
 								{"predicate":"within_angle", "min": -30.0, "max": 30.0}
 							],
@@ -2021,7 +2139,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, 
+								
 								{"predicate":"within_distance", "min": 5.0, "max": 8.0}, 
 								{"predicate":"within_angle", "min": -30.0, "max": 30.0}
 							],
@@ -2040,7 +2158,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 1.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.5}
 							],
 							"animation": "epicfight:biped/skill/step_left"
 						}
@@ -2054,7 +2172,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 0.0, "max": 1.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 1.5}
 							],
 							"animation": "epicfight:biped/skill/step_right"
 						}
@@ -2068,13 +2186,13 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 1.5, "max": 3.5},{"predicate":"indestructible:attack_level", "min":1,"max":2}
+								{"predicate":"within_distance", "min": 1.5, "max": 3.5},{"predicate":"indestructible:attack_level", "min":1,"max":2}
 							],
 							"animation": "epicfight:biped/skill/step_left"
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"random_chance", "chance": 0.55}
+								{"predicate":"random_chance", "chance": 0.55}
 							],
 							"animation": "epicfight:biped/combat/greatsword_dash",
 							"play_speed": 1.1
@@ -2089,13 +2207,13 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"within_distance", "min": 1.5, "max": 3.5},{"predicate":"indestructible:attack_level", "min":1,"max":2}
+								{"predicate":"within_distance", "min": 1.5, "max": 3.5},{"predicate":"indestructible:attack_level", "min":1,"max":2}
 							],
 							"animation": "epicfight:biped/skill/step_right"
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, {"predicate":"random_chance", "chance": 0.55}
+								{"predicate":"random_chance", "chance": 0.55}
 							],
 							"animation": "epicfight:biped/combat/greatsword_dash",
 							"play_speed": 1.1

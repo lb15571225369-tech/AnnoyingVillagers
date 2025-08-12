@@ -43,16 +43,6 @@ public class PlayerNpcJoinGameProcedure {
 
     private static void execute(@Nullable Event event, LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) {
         if (entity != null) {
-            if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("annoying_villagersbychentu:bei_gan_ran_jian_bing_guo_zi") && !entity.level().isClientSide() && entity.getServer() != null) {
-                try {
-                    entity.getServer().getCommands().getDispatcher().execute(
-                            "kill @s",
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException e) {
-                    
-                }
-            }
-
             LivingEntity livingentity;
 
             if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("player_mobs:player_mob")) {

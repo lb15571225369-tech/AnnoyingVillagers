@@ -373,3 +373,13 @@ YinshenEntity -> StealthAttack
 ANYINGHEIYAOSHICHANGZHU -> SHADOW_OBSIDIAN_BURST
 ANYINGHEIYAOSHIZHUSHIFANG -> SHADOW_OBSIDIAN_STRAIGHT
 HEI_YAO_SHI_ZHU -> SHADOW_OBSIDIAN_PILLAR
+HB_GAO_JI_FEN_SHEN -> ARMORED_HEROBRINE
+HbGaoJiFenShenEntity -> ArmoredHerobrineEntity
+hb_gao_ji_fen_shen -> armored_herobrine
+HB_HEI_YAO_SHI_ZUAN_SHI_TOU_KUI_HELMET -> HEROBRINE_OBSIDIAN_DIAMOND_HELMET
+hb_hei_yao_shi_zuan_shi_tou_kui_helmet -> herobrine_obsidian_diamond_helmet
+HB_HEI_YAO_SHI_ZUAN_SHI_XIONG_JIA_CHESTPLATE ->HEROBRINE_OBSIDIAN_DIAMOND_CHESTPLATE
+hb_hei_yao_shi_zuan_shi_xiong_jia_chestplate -> herobrine_obsidian_diamond_chestplate
+BeiGanRanJianBingGuoZiEntity -> InfectedTheMostMoistBurrit0Entity
+BEI_GAN_RAN_JIAN_BING_GUO_ZI -> INFECTED_THEMOSTMOISTBURRIT0
+bei_gan_ran_jian_bing_guo_zi -> infected_the_most_moist_burrit0
