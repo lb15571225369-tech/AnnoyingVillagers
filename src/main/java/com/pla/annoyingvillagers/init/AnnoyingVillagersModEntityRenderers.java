@@ -4,6 +4,7 @@ import com.pla.annoyingvillagers.client.renderer.*;
 import com.pla.annoyingvillagers.entity.DarkOBFarEntity;
 import com.pla.annoyingvillagers.entity.EnchantedEnderPearlEntity;
 import com.pla.annoyingvillagers.entity.ThrownPoisonEggEntity;
+import com.pla.annoyingvillagers.entity.StealthAttackEntity;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.api.distmarker.Dist;
@@ -35,6 +36,7 @@ public class AnnoyingVillagersModEntityRenderers {
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.PURPLE_VILLAGER_GENERAL.get(), GreenVillagerGeneralRenderer::new);
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.ENCHANTED_ENDER_PEARL_PROJECTILE.get(), context -> new ThrownItemRenderer<EnchantedEnderPearlEntity>(context));
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.THROWN_POISON_EGG.get(), context -> new ThrownItemRenderer<ThrownPoisonEggEntity>(context));
+        registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.STEALTH_ATTACK_PROJECTILE.get(), context -> new ThrownItemRenderer<StealthAttackEntity>(context));
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.ALEX_DEAD.get(), AlexDeadRenderer::new);
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.ALEX.get(), AlexRenderer::new);
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.JEV.get(), JevRenderer::new);
@@ -42,6 +44,7 @@ public class AnnoyingVillagersModEntityRenderers {
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.CHRIS.get(), ChrisRenderer::new);
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.INJECTED_CHRIS.get(), InfectedChrisRenderer::new);
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.HEROBRINE_3.get(), Herobrine3Renderer::new);
+        registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.HEROBRINE_7.get(), Herobrine7Renderer::new);
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.STEVE_2.get(), Steve2Renderer::new);
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.STEVE_DEAD.get(), SteveDeadRenderer::new);
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.STEVE.get(), SteveRenderer::new);

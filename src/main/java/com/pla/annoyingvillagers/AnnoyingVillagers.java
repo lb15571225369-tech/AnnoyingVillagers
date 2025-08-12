@@ -11,7 +11,6 @@ import com.pla.annoyingvillagers.network.TextboxSetMessage;
 import com.pla.annoyingvillagers.procedures.NpcGearLoadProcedure;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.RandomSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -42,8 +41,7 @@ public class AnnoyingVillagers {
     public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(new ResourceLocation(AnnoyingVillagers.MODID, "main"), () -> {
         return "1";
     }, "1"::equals, "1"::equals);
-    private static int messageID = 0;
-    public static final RandomSource randomSource = RandomSource.create();
+    private static int messageID = 0;;
 
     public AnnoyingVillagers() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();

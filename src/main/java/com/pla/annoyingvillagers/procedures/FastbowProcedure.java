@@ -1,9 +1,7 @@
 package com.pla.annoyingvillagers.procedures;
 
-import java.util.Random;
 import javax.annotation.Nullable;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -14,11 +12,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.AbstractArrow.Pickup;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -159,7 +155,7 @@ public class FastbowProcedure {
                             itemstack6 = ItemStack.EMPTY;
                         }
 
-                        if (itemstack5.hurt(1 + EnchantmentHelper.getItemEnchantmentLevel(enchantment3, itemstack6), AnnoyingVillagers.randomSource, (ServerPlayer)null)) {
+                        if (itemstack5.hurt(1 + EnchantmentHelper.getItemEnchantmentLevel(enchantment3, itemstack6), RandomSource.create(), (ServerPlayer)null)) {
                             itemstack5.shrink(1);
                             itemstack5.setDamageValue(0);
                         }

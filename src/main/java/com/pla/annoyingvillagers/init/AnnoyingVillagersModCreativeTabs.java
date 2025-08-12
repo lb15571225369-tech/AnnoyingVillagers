@@ -21,6 +21,7 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_2_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_3_SPAWN_EGG.get());
+                        pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_7_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.BLUE_DEMON_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.VILLAGER_SCOUT_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.VILLAGER_SPAWN_EGG.get());
@@ -44,6 +45,7 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.CRAFTING_TABLE.get());
                         pOutput.accept(AnnoyingVillagersModItems.ENCHANTED_WOODEN_DOOR.get());
                         pOutput.accept(AnnoyingVillagersModItems.WOODEN_DOOR.get());
+                        pOutput.accept(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get());
                         pOutput.accept(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get());
                         pOutput.accept(AnnoyingVillagersModItems.OBSIDIAN_WEAPON.get());
                         pOutput.accept(AnnoyingVillagersModItems.BEDROCK_WEAPON.get());

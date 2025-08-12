@@ -57,7 +57,7 @@ public class DarkObBlockOnEntityInsideProcedure {
             }
 
             entity.hurt(entity.level().damageSources().magic(), 4.0F);
-            entity.setDeltaMovement(new Vec3(Mth.nextDouble(AnnoyingVillagers.randomSource, -1.0D, -6.0D) * entity.getLookAngle().x, 0.0D, Mth.nextDouble(AnnoyingVillagers.randomSource, -1.0D, -6.0D) * entity.getLookAngle().z));
+            entity.setDeltaMovement(new Vec3(Mth.nextDouble(RandomSource.create(), -1.0D, -6.0D) * entity.getLookAngle().x, 0.0D, Mth.nextDouble(RandomSource.create(), -1.0D, -6.0D) * entity.getLookAngle().z));
             LivingEntity livingentity1;
             ItemStack itemstack;
 
@@ -70,7 +70,7 @@ public class DarkObBlockOnEntityInsideProcedure {
 
             ItemStack itemstack1 = itemstack;
 
-            if (itemstack1.hurt((int) Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 5.0D), AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
+            if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 5.0D), RandomSource.create(), (ServerPlayer) null)) {
                 itemstack1.shrink(1);
                 itemstack1.setDamageValue(0);
             }
@@ -83,7 +83,7 @@ public class DarkObBlockOnEntityInsideProcedure {
             }
 
             itemstack1 = itemstack;
-            if (itemstack1.hurt((int) Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 5.0D), AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
+            if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 5.0D), RandomSource.create(), (ServerPlayer) null)) {
                 itemstack1.shrink(1);
                 itemstack1.setDamageValue(0);
             }
@@ -96,7 +96,7 @@ public class DarkObBlockOnEntityInsideProcedure {
             }
 
             itemstack1 = itemstack;
-            if (itemstack1.hurt((int) Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 5.0D), AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
+            if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 5.0D), RandomSource.create(), (ServerPlayer) null)) {
                 itemstack1.shrink(1);
                 itemstack1.setDamageValue(0);
             }
@@ -109,7 +109,7 @@ public class DarkObBlockOnEntityInsideProcedure {
             }
 
             itemstack1 = itemstack;
-            if (itemstack1.hurt((int) Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 5.0D), AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
+            if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 5.0D), RandomSource.create(), (ServerPlayer) null)) {
                 itemstack1.shrink(1);
                 itemstack1.setDamageValue(0);
             }
@@ -122,7 +122,7 @@ public class DarkObBlockOnEntityInsideProcedure {
             }
 
             itemstack1 = itemstack;
-            if (itemstack1.hurt((int) Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 5.0D), AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
+            if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 5.0D), RandomSource.create(), (ServerPlayer) null)) {
                 itemstack1.shrink(1);
                 itemstack1.setDamageValue(0);
             }
@@ -135,7 +135,7 @@ public class DarkObBlockOnEntityInsideProcedure {
             }
 
             itemstack1 = itemstack;
-            if (itemstack1.hurt((int) Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 5.0D), AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
+            if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 5.0D), RandomSource.create(), (ServerPlayer) null)) {
                 itemstack1.shrink(1);
                 itemstack1.setDamageValue(0);
             }

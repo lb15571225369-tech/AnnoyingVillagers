@@ -161,7 +161,7 @@ public class VillagerScoutSmartSkillProcedure {
                                 }
 
                                 if (Math.random() <= 0.05D) {
-                                    new DelayedTask(Mth.nextInt(AnnoyingVillagers.randomSource, 1, 10)) {
+                                    new DelayedTask(Mth.nextInt(RandomSource.create(), 1, 10)) {
                                         public void run() {
                                             Entity entity2 = entity;
 
@@ -259,7 +259,7 @@ public class VillagerScoutSmartSkillProcedure {
                                     }
 
                                     if (Math.random() <= 0.05D) {
-                                        new DelayedTask(Mth.nextInt(AnnoyingVillagers.randomSource, 1, 10)) {
+                                        new DelayedTask(Mth.nextInt(RandomSource.create(), 1, 10)) {
                                             public void run() {
                                                 Entity entity2 = entity;
 

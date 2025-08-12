@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.procedures;
 
-import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -98,7 +97,7 @@ public class ProjectiveProcedure {
                         itemstack3 = ItemStack.EMPTY;
                     }
 
-                    if (itemstack2.hurt((int)(d3 / (double)EnchantmentHelper.getItemEnchantmentLevel(enchantment1, itemstack3)), AnnoyingVillagers.randomSource, (ServerPlayer)null)) {
+                    if (itemstack2.hurt((int)(d3 / (double)EnchantmentHelper.getItemEnchantmentLevel(enchantment1, itemstack3)), RandomSource.create(), (ServerPlayer)null)) {
                         itemstack2.shrink(1);
                         itemstack2.setDamageValue(0);
                     }
@@ -164,7 +163,7 @@ public class ProjectiveProcedure {
                         }
 
                         itemstack2 = itemstack1;
-                        if (itemstack2.hurt((int)d3, AnnoyingVillagers.randomSource, (ServerPlayer)null)) {
+                        if (itemstack2.hurt((int)d3, RandomSource.create(), (ServerPlayer)null)) {
                             itemstack2.shrink(1);
                             itemstack2.setDamageValue(0);
                         }
@@ -206,7 +205,7 @@ public class ProjectiveProcedure {
                             }
 
                             itemstack2 = itemstack1;
-                            if (itemstack2.hurt((int)d3, AnnoyingVillagers.randomSource, (ServerPlayer)null)) {
+                            if (itemstack2.hurt((int)d3, RandomSource.create(), (ServerPlayer)null)) {
                                 itemstack2.shrink(1);
                                 itemstack2.setDamageValue(0);
                             }
@@ -247,7 +246,7 @@ public class ProjectiveProcedure {
                                 }
 
                                 itemstack2 = itemstack1;
-                                if (itemstack2.hurt((int)d3, AnnoyingVillagers.randomSource, (ServerPlayer)null)) {
+                                if (itemstack2.hurt((int)d3, RandomSource.create(), (ServerPlayer)null)) {
                                     itemstack2.shrink(1);
                                     itemstack2.setDamageValue(0);
                                 }

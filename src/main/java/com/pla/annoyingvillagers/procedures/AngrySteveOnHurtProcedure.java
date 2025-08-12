@@ -28,7 +28,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
-
+import net.minecraft.util.RandomSource;
 public class AngrySteveOnHurtProcedure {
 
     public static void execute(LevelAccessor levelaccessor, final Entity entity, final Entity entity1) {
@@ -38,7 +38,7 @@ public class AngrySteveOnHurtProcedure {
             if (entity.isAlive()) {
                 if (Math.random() <= 0.08D) {
                     entity.setYRot(0.0F);
-                    entity.setXRot((float)Mth.nextDouble(AnnoyingVillagers.randomSource, -90.0D, -180.0D));
+                    entity.setXRot((float)Mth.nextDouble(RandomSource.create(), -90.0D, -180.0D));
                     entity.setYBodyRot(entity.getYRot());
                     entity.setYHeadRot(entity.getYRot());
                     entity.yRotO = entity.getYRot();

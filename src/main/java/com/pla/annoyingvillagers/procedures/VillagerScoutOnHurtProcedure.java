@@ -1,13 +1,8 @@
 package com.pla.annoyingvillagers.procedures;
 
-import java.util.Random;
-
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.util.DelayedTask;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -53,7 +48,7 @@ public class VillagerScoutOnHurtProcedure {
 
                     if (Math.random() <= 0.09D) {
                         entity.setYRot(0.0F);
-                        entity.setXRot((float)Mth.nextDouble(AnnoyingVillagers.randomSource, 90.0D, 180.0D));
+                        entity.setXRot((float)Mth.nextDouble(RandomSource.create(), 90.0D, 180.0D));
                         entity.setYBodyRot(entity.getYRot());
                         entity.setYHeadRot(entity.getYRot());
                         entity.yRotO = entity.getYRot();

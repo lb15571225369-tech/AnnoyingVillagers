@@ -46,7 +46,7 @@ import yesman.epicfight.api.animation.types.HitAnimation;
 import yesman.epicfight.api.animation.types.LongHitAnimation;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
-
+import net.minecraft.util.RandomSource;
 public class SteveOnTickProcedure {
 
     public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity) {
@@ -311,7 +311,7 @@ public class SteveOnTickProcedure {
                                 vec31 = new Vec3(d3, d4, livingentity7.getZ());
                                 entity.lookAt(anchor, vec31);
                                 if (Math.random() <= 0.3D) {
-                                    new DelayedTask(Mth.nextInt(AnnoyingVillagers.randomSource, 1, 10)) {
+                                    new DelayedTask(Mth.nextInt(RandomSource.create(), 1, 10)) {
                                         public void run() {
                                             Entity entity2 = entity;
                                             Level level = entity2.level();
@@ -409,7 +409,7 @@ public class SteveOnTickProcedure {
                                         vec31 = new Vec3(d3, d4, livingentity7.getZ());
                                         entity.lookAt(anchor, vec31);
                                         if (Math.random() <= 0.3D) {
-                                            new DelayedTask(Mth.nextInt(AnnoyingVillagers.randomSource, 1, 10)) {
+                                            new DelayedTask(Mth.nextInt(RandomSource.create(), 1, 10)) {
                                                 public void run() {
                                                     Entity entity2 = entity;
                                                     Level level = entity2.level();

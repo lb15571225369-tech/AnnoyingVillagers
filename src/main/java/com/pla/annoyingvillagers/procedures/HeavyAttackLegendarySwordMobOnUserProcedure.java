@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.registries.ForgeRegistries;
-
+import net.minecraft.util.RandomSource;
 public class HeavyAttackLegendarySwordMobOnUserProcedure {
 
     public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity) {
@@ -214,7 +214,7 @@ public class HeavyAttackLegendarySwordMobOnUserProcedure {
 
                             ItemStack itemstack4 = itemstack3;
 
-                            if (itemstack4.hurt(100, AnnoyingVillagers.randomSource, (ServerPlayer)null)) {
+                            if (itemstack4.hurt(100, RandomSource.create(), (ServerPlayer)null)) {
                                 itemstack4.shrink(1);
                                 itemstack4.setDamageValue(0);
                             }

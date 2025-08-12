@@ -96,16 +96,6 @@ public class HerobrineOnEntityTickUpdateProcedure {
                 entity.stopRiding();
             }
 
-            if (!entity.level().isClientSide() && entity.getServer() != null) {
-                try {
-                    entity.getServer().getCommands().getDispatcher().execute(
-                            "fill ~-1 ~ ~ ~ ~ ~ minecraft:air replace",
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException e) {
-                    
-                }
-            }
-
             LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch)EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 
             if (livingentitypatch != null) {

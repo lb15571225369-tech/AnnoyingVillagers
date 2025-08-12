@@ -1,12 +1,8 @@
 package com.pla.annoyingvillagers.procedures;
 
-import java.util.Random;
-
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -49,7 +45,7 @@ public class DarkObSsOnEntityInsideProcedure {
 
             ItemStack itemstack1 = itemstack;
 
-            if (itemstack1.hurt(1, AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
+            if (itemstack1.hurt(1, RandomSource.create(), (ServerPlayer) null)) {
                 itemstack1.shrink(1);
                 itemstack1.setDamageValue(0);
             }
@@ -70,7 +66,7 @@ public class DarkObSsOnEntityInsideProcedure {
             }
 
             itemstack1 = itemstack;
-            if (itemstack1.hurt(1, AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
+            if (itemstack1.hurt(1, RandomSource.create(), (ServerPlayer) null)) {
                 itemstack1.shrink(1);
                 itemstack1.setDamageValue(0);
             }

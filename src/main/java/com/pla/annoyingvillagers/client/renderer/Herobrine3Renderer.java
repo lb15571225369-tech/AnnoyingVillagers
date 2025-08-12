@@ -1,6 +1,8 @@
 package com.pla.annoyingvillagers.client.renderer;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.Herobrine3Entity;
+import com.pla.annoyingvillagers.procedures.HerobrineLowProcedure;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
@@ -19,7 +21,11 @@ public class Herobrine3Renderer extends HumanoidMobRenderer<Herobrine3Entity, Hu
                 context.getModelManager()));
     }
 
-    public ResourceLocation getTextureLocation(Herobrine3Entity herobrine3entity) {
-        return new ResourceLocation("annoyingvillagers", "textures/entities/herobrine_3.png");
+    public ResourceLocation getTextureLocation(Herobrine3Entity herobrineentity) {
+        return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/herobrine.png");
+    }
+
+    protected boolean isShaking(Herobrine3Entity herobrineentity) {
+        return HerobrineLowProcedure.execute(herobrineentity);
     }
 }

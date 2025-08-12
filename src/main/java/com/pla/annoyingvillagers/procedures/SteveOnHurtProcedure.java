@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.procedures;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.util.DelayedTask;
@@ -29,7 +28,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.ForgeRegistries;
-
+import net.minecraft.util.RandomSource;
 public class SteveOnHurtProcedure {
 
     public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity) {
@@ -390,7 +389,7 @@ public class SteveOnHurtProcedure {
                             Entity entity1 = entity;
 
                             entity1.setYRot(0.0F);
-                            entity1.setXRot((float)Mth.nextDouble(AnnoyingVillagers.randomSource, -90.0D, -180.0D));
+                            entity1.setXRot((float)Mth.nextDouble(RandomSource.create(), -90.0D, -180.0D));
                             entity1.setYBodyRot(entity1.getYRot());
                             entity1.setYHeadRot(entity1.getYRot());
                             entity1.yRotO = entity1.getYRot();

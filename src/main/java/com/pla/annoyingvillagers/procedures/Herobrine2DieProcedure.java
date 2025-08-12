@@ -7,6 +7,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -31,6 +32,10 @@ import java.util.*;
 public class Herobrine2DieProcedure {
     public static void execute(LevelAccessor world, double x, double y, double z, Entity sourceEntity, Entity targetEntity) {
         if (sourceEntity == null || targetEntity == null) return;
+
+        if (!world.isClientSide() && world.getServer() != null) {
+            world.getServer().getPlayerList().broadcastSystemMessage(Component.literal("The clone has been destroyed, data has been transmitted to the terminal."), false);
+        }
 
         if (!sourceEntity.level().isClientSide() && sourceEntity.getServer() != null) {
             try {

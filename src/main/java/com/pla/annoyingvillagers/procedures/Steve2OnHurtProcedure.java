@@ -31,7 +31,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
-
+import net.minecraft.util.RandomSource;
 public class Steve2OnHurtProcedure {
 
     public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity, final Entity entity1) {
@@ -367,7 +367,7 @@ public class Steve2OnHurtProcedure {
                                 Entity entity2 = entity;
 
                                 entity2.setYRot(0.0F);
-                                entity2.setXRot((float)Mth.nextDouble(AnnoyingVillagers.randomSource, -90.0D, -180.0D));
+                                entity2.setXRot((float)Mth.nextDouble(RandomSource.create(), -90.0D, -180.0D));
                                 entity2.setYBodyRot(entity2.getYRot());
                                 entity2.setYHeadRot(entity2.getYRot());
                                 entity2.yRotO = entity2.getYRot();

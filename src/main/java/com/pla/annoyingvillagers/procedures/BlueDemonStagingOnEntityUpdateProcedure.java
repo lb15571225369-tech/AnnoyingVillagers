@@ -40,9 +40,9 @@ public class BlueDemonStagingOnEntityUpdateProcedure {
                 if (levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "electify")), SoundSource.BLOCKS, (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.0D, 0.15D), (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.7D, 1.05D));
+                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "electify")), SoundSource.BLOCKS, (float) Mth.nextDouble(RandomSource.create(), 0.0D, 0.15D), (float) Mth.nextDouble(RandomSource.create(), 0.7D, 1.05D));
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "electify")), SoundSource.BLOCKS, (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.0D, 0.15D), (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.7D, 1.05D), false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "electify")), SoundSource.BLOCKS, (float) Mth.nextDouble(RandomSource.create(), 0.0D, 0.15D), (float) Mth.nextDouble(RandomSource.create(), 0.7D, 1.05D), false);
                     }
                 }
             }
@@ -70,9 +70,9 @@ public class BlueDemonStagingOnEntityUpdateProcedure {
                 if (levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "electify")), SoundSource.BLOCKS, (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.0D, 0.1D), (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.7D, 1.05D));
+                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "electify")), SoundSource.BLOCKS, (float) Mth.nextDouble(RandomSource.create(), 0.0D, 0.1D), (float) Mth.nextDouble(RandomSource.create(), 0.7D, 1.05D));
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "electify")), SoundSource.BLOCKS, (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.0D, 0.1D), (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.7D, 1.05D), false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "electify")), SoundSource.BLOCKS, (float) Mth.nextDouble(RandomSource.create(), 0.0D, 0.1D), (float) Mth.nextDouble(RandomSource.create(), 0.7D, 1.05D), false);
                     }
                 }
             }
@@ -89,9 +89,9 @@ public class BlueDemonStagingOnEntityUpdateProcedure {
                 if (Math.random() <= 0.8D && levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "electify")), SoundSource.BLOCKS, (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.0D, 0.15D), (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.7D, 1.05D));
+                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "electify")), SoundSource.BLOCKS, (float) Mth.nextDouble(RandomSource.create(), 0.0D, 0.15D), (float) Mth.nextDouble(RandomSource.create(), 0.7D, 1.05D));
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "electify")), SoundSource.BLOCKS, (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.0D, 0.15D), (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.7D, 1.05D), false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "electify")), SoundSource.BLOCKS, (float) Mth.nextDouble(RandomSource.create(), 0.0D, 0.15D), (float) Mth.nextDouble(RandomSource.create(), 0.7D, 1.05D), false);
                     }
                 }
             }

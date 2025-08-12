@@ -2,7 +2,6 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -43,7 +42,7 @@ import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityKillOtherEntityProc
 import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityInitialSpawnProcedure;
 
 import java.util.UUID;
-
+import net.minecraft.util.RandomSource;
 @EventBusSubscriber
 public class BlueDemonEntity extends Monster {
     private BbqEntity bbqEntityToProtect;
@@ -185,7 +184,7 @@ public class BlueDemonEntity extends Monster {
             ServerLevel serverlevel = (ServerLevel) levelaccessor;
 
             BbqEntity bbqEntity = new BbqEntity((EntityType) AnnoyingVillagersModEntities.BBQ.get(), serverlevel);
-            bbqEntity.moveTo(this.getX() + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), this.getY() + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), this.getZ() + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+            bbqEntity.moveTo(this.getX() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), this.getY() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), this.getZ() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
             bbqEntity.setFollowTarget(this);
             bbqEntity.setFollowTargetUUID(this.getUUID());
 

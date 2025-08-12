@@ -3,7 +3,6 @@ package com.pla.annoyingvillagers.entity;
 import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import net.minecraft.nbt.CompoundTag;
@@ -14,6 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -194,7 +194,7 @@ public class BlueDemon2Entity extends Monster {
             ServerLevel serverlevel = (ServerLevel) levelaccessor;
 
             BbqEntity bbqEntity = new BbqEntity((EntityType) AnnoyingVillagersModEntities.BBQ.get(), serverlevel);
-            bbqEntity.moveTo(this.getX() + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), this.getY() + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), this.getZ() + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+            bbqEntity.moveTo(this.getX() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), this.getY() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), this.getZ() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
             bbqEntity.setFollowTarget(this);
             bbqEntity.setFollowTargetUUID(this.getUUID());
             bbqEntity.finalizeSpawn(levelaccessor, levelaccessor.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);

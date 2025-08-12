@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.util.CommonGoals;
-import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;

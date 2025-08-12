@@ -9,6 +9,7 @@ import com.pla.annoyingvillagers.procedures.EnchantedEnderPearlWhenItemUsedProce
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -55,7 +56,7 @@ public class EnchantedEnderPearlItem extends Item {
     public void releaseUsing(ItemStack itemstack, Level level, LivingEntity livingentity, int i) {
         if (!level.isClientSide() && livingentity instanceof ServerPlayer) {
             ServerPlayer serverplayer = (ServerPlayer) livingentity;
-            EnchantedEnderPearlEntity enchantedEnderPearl = EnchantedEnderPearlEntity.shoot(level, serverplayer, AnnoyingVillagers.randomSource, 1.3F, 0.0D, 0);
+            EnchantedEnderPearlEntity enchantedEnderPearl = EnchantedEnderPearlEntity.shoot(level, serverplayer, RandomSource.create(), 1.3F, 0.0D, 0);
 
             itemstack.hurtAndBreak(1, serverplayer, (serverplayer1) -> {
                 serverplayer1.broadcastBreakEvent(serverplayer.getUsedItemHand());

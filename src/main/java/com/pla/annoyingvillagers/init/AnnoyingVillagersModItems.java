@@ -28,6 +28,9 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> HEROBRINE_3_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("herobrine_3_spawn_egg", () -> {
         return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.HEROBRINE_3, -10066330, -13421773, (new Properties()));
     });
+    public static final RegistryObject<Item> HEROBRINE_7_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("herobrine_7_spawn_egg", () -> {
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.HEROBRINE_7, -1, -1, (new Properties()));
+    });
     public static final RegistryObject<Item> VILLAGER_SCOUT_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("villager_scout_spawn_egg", () -> {
         return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.VILLAGER_SCOUT, -205, -26317, (new Properties()));
     });
@@ -88,6 +91,18 @@ public class AnnoyingVillagersModItems {
     });
     public static final RegistryObject<Item> POISON_EGG_ITEM = AnnoyingVillagersModItems.REGISTRY.register("poison_egg", () -> {
         return new PoisonEggItem();
+    });
+    public static final RegistryObject<Item> STEALTH_ATTACK_ITEM = AnnoyingVillagersModItems.REGISTRY.register("stealth_attack_item", () -> {
+        return new StealthAttackItem();
+    });
+    public static final RegistryObject<Item> SHADOW_OBSIDIAN_BURST = AnnoyingVillagersModItems.REGISTRY.register("shadow_obsidian_burst", () -> {
+        return new ShadowObsidianBurstItem();
+    });
+    public static final RegistryObject<Item> SHADOW_OBSIDIAN_STRAIGHT = AnnoyingVillagersModItems.REGISTRY.register("shadow_obsidian_straight", () -> {
+        return new ShadowObsidianStraighttem();
+    });
+    public static final RegistryObject<Item> SHADOW_OBSIDIAN_PILLAR = AnnoyingVillagersModItems.REGISTRY.register("shadow_obsidian_pillar", () -> {
+        return new ShadowObsidianPillarItem();
     });
     // ------------------------------
 

@@ -1,9 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
-import java.util.Random;
-
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -12,7 +9,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -47,9 +43,9 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                 if (levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "obsidian_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.5D, 1.0D));
+                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "obsidian_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 1.0D));
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "obsidian_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.5D, 1.0D), false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "obsidian_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 1.0D), false);
                     }
                 }
 
@@ -65,7 +61,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
 
                 ItemStack itemstack1 = itemstack;
 
-                if (itemstack1.hurt((int) Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
+                if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -78,7 +74,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt((int) Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
+                if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -91,7 +87,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt((int) Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
+                if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -104,7 +100,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt((int) Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
+                if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -117,7 +113,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt((int) Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
+                if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -130,7 +126,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt((int) Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
+                if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -155,7 +151,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                     }
 
                     itemstack1 = itemstack;
-                    if (itemstack1.hurt(300, AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
+                    if (itemstack1.hurt(300, RandomSource.create(), (ServerPlayer) null)) {
                         itemstack1.shrink(1);
                         itemstack1.setDamageValue(0);
                     }
@@ -168,7 +164,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                     }
 
                     itemstack1 = itemstack;
-                    if (itemstack1.hurt(300, AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
+                    if (itemstack1.hurt(300, RandomSource.create(), (ServerPlayer) null)) {
                         itemstack1.shrink(1);
                         itemstack1.setDamageValue(0);
                     }
@@ -196,9 +192,9 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                         if (levelaccessor instanceof Level) {
                             level = (Level) levelaccessor;
                             if (!level.isClientSide()) {
-                                level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "heavy_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.5D, 1.2D));
+                                level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "heavy_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 1.2D));
                             } else {
-                                level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "heavy_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(AnnoyingVillagers.randomSource, 0.5D, 1.2D), false);
+                                level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "heavy_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 1.2D), false);
                             }
                         }
 
@@ -210,7 +206,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                         }
 
                         itemstack1 = itemstack;
-                        if (itemstack1.hurt(1000, AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
+                        if (itemstack1.hurt(1000, RandomSource.create(), (ServerPlayer) null)) {
                             itemstack1.shrink(1);
                             itemstack1.setDamageValue(0);
                         }
@@ -223,7 +219,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                         }
 
                         itemstack1 = itemstack;
-                        if (itemstack1.hurt(1000, AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
+                        if (itemstack1.hurt(1000, RandomSource.create(), (ServerPlayer) null)) {
                             itemstack1.shrink(1);
                             itemstack1.setDamageValue(0);
                         }
@@ -236,7 +232,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                         }
 
                         itemstack1 = itemstack;
-                        if (itemstack1.hurt((int) Mth.nextDouble(AnnoyingVillagers.randomSource, 200.0D, 1002.0D), AnnoyingVillagers.randomSource, (ServerPlayer) null)) {
+                        if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 200.0D, 1002.0D), RandomSource.create(), (ServerPlayer) null)) {
                             itemstack1.shrink(1);
                             itemstack1.setDamageValue(0);
                         }

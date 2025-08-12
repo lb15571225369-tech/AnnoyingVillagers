@@ -1,0 +1,7 @@
+{
+  "parent": "annoyingvillagers:custom/shadow_obsidian_straight",
+  "textures": {
+    "0": "annoyingvillagers:block/dark_obsidian",
+    "particle": "annoyingvillagers:item/dark_obsidian"
+  }
+}

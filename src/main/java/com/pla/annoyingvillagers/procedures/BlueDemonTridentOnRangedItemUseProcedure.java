@@ -22,7 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-
+import net.minecraft.util.RandomSource;
 public class BlueDemonTridentOnRangedItemUseProcedure {
 
     public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) {
@@ -100,7 +100,7 @@ public class BlueDemonTridentOnRangedItemUseProcedure {
                     if (levelaccessor instanceof ServerLevel) {
                         serverlevel = (ServerLevel) levelaccessor;
                         lightningbolt = (LightningBolt) EntityType.LIGHTNING_BOLT.create(serverlevel);
-                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0 + (int) Mth.nextInt(AnnoyingVillagers.randomSource, 30, 50), (int) d1, (int) d2)));
+                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0 + (int) Mth.nextInt(RandomSource.create(), 30, 50), (int) d1, (int) d2)));
                         lightningbolt.setVisualOnly(false);
                         serverlevel.addFreshEntity(lightningbolt);
                     }
@@ -108,7 +108,7 @@ public class BlueDemonTridentOnRangedItemUseProcedure {
                     if (levelaccessor instanceof ServerLevel) {
                         serverlevel = (ServerLevel) levelaccessor;
                         lightningbolt = (LightningBolt) EntityType.LIGHTNING_BOLT.create(serverlevel);
-                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0 - (int) Mth.nextInt(AnnoyingVillagers.randomSource, 30, 50), (int) d1, (int) d2)));
+                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0 - (int) Mth.nextInt(RandomSource.create(), 30, 50), (int) d1, (int) d2)));
                         lightningbolt.setVisualOnly(false);
                         serverlevel.addFreshEntity(lightningbolt);
                     }
@@ -116,7 +116,7 @@ public class BlueDemonTridentOnRangedItemUseProcedure {
                     if (levelaccessor instanceof ServerLevel) {
                         serverlevel = (ServerLevel) levelaccessor;
                         lightningbolt = (LightningBolt) EntityType.LIGHTNING_BOLT.create(serverlevel);
-                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0 + (int) Mth.nextInt(AnnoyingVillagers.randomSource, 15, 20), (int) d1, (int) d2)));
+                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0 + (int) Mth.nextInt(RandomSource.create(), 15, 20), (int) d1, (int) d2)));
                         lightningbolt.setVisualOnly(false);
                         serverlevel.addFreshEntity(lightningbolt);
                     }
@@ -124,7 +124,7 @@ public class BlueDemonTridentOnRangedItemUseProcedure {
                     if (levelaccessor instanceof ServerLevel) {
                         serverlevel = (ServerLevel) levelaccessor;
                         lightningbolt = (LightningBolt) EntityType.LIGHTNING_BOLT.create(serverlevel);
-                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0 - (int) Mth.nextInt(AnnoyingVillagers.randomSource, 15, 20), (int) d1, (int) d2)));
+                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0 - (int) Mth.nextInt(RandomSource.create(), 15, 20), (int) d1, (int) d2)));
                         lightningbolt.setVisualOnly(false);
                         serverlevel.addFreshEntity(lightningbolt);
                     }
@@ -132,7 +132,7 @@ public class BlueDemonTridentOnRangedItemUseProcedure {
                     if (levelaccessor instanceof ServerLevel) {
                         serverlevel = (ServerLevel) levelaccessor;
                         lightningbolt = (LightningBolt) EntityType.LIGHTNING_BOLT.create(serverlevel);
-                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0, (int) d1, (int) d2 + (int) Mth.nextInt(AnnoyingVillagers.randomSource, 30, 50))));
+                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0, (int) d1, (int) d2 + (int) Mth.nextInt(RandomSource.create(), 30, 50))));
                         lightningbolt.setVisualOnly(false);
                         serverlevel.addFreshEntity(lightningbolt);
                     }
@@ -140,7 +140,7 @@ public class BlueDemonTridentOnRangedItemUseProcedure {
                     if (levelaccessor instanceof ServerLevel) {
                         serverlevel = (ServerLevel) levelaccessor;
                         lightningbolt = (LightningBolt) EntityType.LIGHTNING_BOLT.create(serverlevel);
-                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0, (int) d1, (int) d2 + (int) Mth.nextInt(AnnoyingVillagers.randomSource, 15, 20))));
+                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0, (int) d1, (int) d2 + (int) Mth.nextInt(RandomSource.create(), 15, 20))));
                         lightningbolt.setVisualOnly(false);
                         serverlevel.addFreshEntity(lightningbolt);
                     }
@@ -148,7 +148,7 @@ public class BlueDemonTridentOnRangedItemUseProcedure {
                     if (levelaccessor instanceof ServerLevel) {
                         serverlevel = (ServerLevel) levelaccessor;
                         lightningbolt = (LightningBolt) EntityType.LIGHTNING_BOLT.create(serverlevel);
-                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0, (int) d1, (int) d2 - (int) Mth.nextInt(AnnoyingVillagers.randomSource, 30, 50))));
+                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0, (int) d1, (int) d2 - (int) Mth.nextInt(RandomSource.create(), 30, 50))));
                         lightningbolt.setVisualOnly(false);
                         serverlevel.addFreshEntity(lightningbolt);
                     }
@@ -156,7 +156,7 @@ public class BlueDemonTridentOnRangedItemUseProcedure {
                     if (levelaccessor instanceof ServerLevel) {
                         serverlevel = (ServerLevel) levelaccessor;
                         lightningbolt = (LightningBolt) EntityType.LIGHTNING_BOLT.create(serverlevel);
-                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0, (int) d1, (int) d2 - (int) Mth.nextInt(AnnoyingVillagers.randomSource, 15, 20))));
+                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0, (int) d1, (int) d2 - (int) Mth.nextInt(RandomSource.create(), 15, 20))));
                         lightningbolt.setVisualOnly(false);
                         serverlevel.addFreshEntity(lightningbolt);
                     }
@@ -164,7 +164,7 @@ public class BlueDemonTridentOnRangedItemUseProcedure {
                     if (levelaccessor instanceof ServerLevel) {
                         serverlevel = (ServerLevel) levelaccessor;
                         lightningbolt = (LightningBolt) EntityType.LIGHTNING_BOLT.create(serverlevel);
-                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0 + (int) Mth.nextInt(AnnoyingVillagers.randomSource, 30, 50), (int) d1, (int) d2 + (int) Mth.nextInt(AnnoyingVillagers.randomSource, 30, 50))));
+                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0 + (int) Mth.nextInt(RandomSource.create(), 30, 50), (int) d1, (int) d2 + (int) Mth.nextInt(RandomSource.create(), 30, 50))));
                         lightningbolt.setVisualOnly(false);
                         serverlevel.addFreshEntity(lightningbolt);
                     }
@@ -172,7 +172,7 @@ public class BlueDemonTridentOnRangedItemUseProcedure {
                     if (levelaccessor instanceof ServerLevel) {
                         serverlevel = (ServerLevel) levelaccessor;
                         lightningbolt = (LightningBolt) EntityType.LIGHTNING_BOLT.create(serverlevel);
-                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0 + (int) Mth.nextInt(AnnoyingVillagers.randomSource, 20, 30), (int) d1, (int) d2 + (int) Mth.nextInt(AnnoyingVillagers.randomSource, 20, 30))));
+                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0 + (int) Mth.nextInt(RandomSource.create(), 20, 30), (int) d1, (int) d2 + (int) Mth.nextInt(RandomSource.create(), 20, 30))));
                         lightningbolt.setVisualOnly(false);
                         serverlevel.addFreshEntity(lightningbolt);
                     }
@@ -180,7 +180,7 @@ public class BlueDemonTridentOnRangedItemUseProcedure {
                     if (levelaccessor instanceof ServerLevel) {
                         serverlevel = (ServerLevel) levelaccessor;
                         lightningbolt = (LightningBolt) EntityType.LIGHTNING_BOLT.create(serverlevel);
-                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0 - (int) Mth.nextInt(AnnoyingVillagers.randomSource, 30, 50), (int) d1, (int) d2 - (int) Mth.nextInt(AnnoyingVillagers.randomSource, 30, 50))));
+                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0 - (int) Mth.nextInt(RandomSource.create(), 30, 50), (int) d1, (int) d2 - (int) Mth.nextInt(RandomSource.create(), 30, 50))));
                         lightningbolt.setVisualOnly(false);
                         serverlevel.addFreshEntity(lightningbolt);
                     }
@@ -188,7 +188,7 @@ public class BlueDemonTridentOnRangedItemUseProcedure {
                     if (levelaccessor instanceof ServerLevel) {
                         serverlevel = (ServerLevel) levelaccessor;
                         lightningbolt = (LightningBolt) EntityType.LIGHTNING_BOLT.create(serverlevel);
-                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0 - (int) Mth.nextInt(AnnoyingVillagers.randomSource, 20, 30), (int) d1, (int) d2 - (int) Mth.nextInt(AnnoyingVillagers.randomSource, 20, 30))));
+                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0 - (int) Mth.nextInt(RandomSource.create(), 20, 30), (int) d1, (int) d2 - (int) Mth.nextInt(RandomSource.create(), 20, 30))));
                         lightningbolt.setVisualOnly(false);
                         serverlevel.addFreshEntity(lightningbolt);
                     }
@@ -196,7 +196,7 @@ public class BlueDemonTridentOnRangedItemUseProcedure {
                     if (levelaccessor instanceof ServerLevel) {
                         serverlevel = (ServerLevel) levelaccessor;
                         lightningbolt = (LightningBolt) EntityType.LIGHTNING_BOLT.create(serverlevel);
-                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0 + (int) Mth.nextInt(AnnoyingVillagers.randomSource, 30, 50), (int) d1, (int) d2 - (int) Mth.nextInt(AnnoyingVillagers.randomSource, 30, 50))));
+                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0 + (int) Mth.nextInt(RandomSource.create(), 30, 50), (int) d1, (int) d2 - (int) Mth.nextInt(RandomSource.create(), 30, 50))));
                         lightningbolt.setVisualOnly(false);
                         serverlevel.addFreshEntity(lightningbolt);
                     }
@@ -204,7 +204,7 @@ public class BlueDemonTridentOnRangedItemUseProcedure {
                     if (levelaccessor instanceof ServerLevel) {
                         serverlevel = (ServerLevel) levelaccessor;
                         lightningbolt = (LightningBolt) EntityType.LIGHTNING_BOLT.create(serverlevel);
-                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0 + (int) Mth.nextInt(AnnoyingVillagers.randomSource, 20, 30), (int) d1, (int) d2 - (int) Mth.nextInt(AnnoyingVillagers.randomSource, 20, 30))));
+                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0 + (int) Mth.nextInt(RandomSource.create(), 20, 30), (int) d1, (int) d2 - (int) Mth.nextInt(RandomSource.create(), 20, 30))));
                         lightningbolt.setVisualOnly(false);
                         serverlevel.addFreshEntity(lightningbolt);
                     }
@@ -212,7 +212,7 @@ public class BlueDemonTridentOnRangedItemUseProcedure {
                     if (levelaccessor instanceof ServerLevel) {
                         serverlevel = (ServerLevel) levelaccessor;
                         lightningbolt = (LightningBolt) EntityType.LIGHTNING_BOLT.create(serverlevel);
-                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0 - (int) Mth.nextInt(AnnoyingVillagers.randomSource, 30, 50), (int) d1, (int) d2 + (int) Mth.nextInt(AnnoyingVillagers.randomSource, 30, 50))));
+                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0 - (int) Mth.nextInt(RandomSource.create(), 30, 50), (int) d1, (int) d2 + (int) Mth.nextInt(RandomSource.create(), 30, 50))));
                         lightningbolt.setVisualOnly(false);
                         serverlevel.addFreshEntity(lightningbolt);
                     }
@@ -220,7 +220,7 @@ public class BlueDemonTridentOnRangedItemUseProcedure {
                     if (levelaccessor instanceof ServerLevel) {
                         serverlevel = (ServerLevel) levelaccessor;
                         lightningbolt = (LightningBolt) EntityType.LIGHTNING_BOLT.create(serverlevel);
-                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0 - (int) Mth.nextInt(AnnoyingVillagers.randomSource, 20, 30), (int) d1, (int) d2 + (int) Mth.nextInt(AnnoyingVillagers.randomSource, 20, 30))));
+                        lightningbolt.moveTo(Vec3.atBottomCenterOf(new BlockPos((int) d0 - (int) Mth.nextInt(RandomSource.create(), 20, 30), (int) d1, (int) d2 + (int) Mth.nextInt(RandomSource.create(), 20, 30))));
                         lightningbolt.setVisualOnly(false);
                         serverlevel.addFreshEntity(lightningbolt);
                     }

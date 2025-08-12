@@ -27,7 +27,7 @@ public class HerobrineTransfromProcedure {
             if (entity instanceof LivingEntity) {
                 livingentity = (LivingEntity)entity;
                 if (!livingentity.level().isClientSide()) {
-                    livingentity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 6, false, false));
+                    livingentity.addEffect(new MobEffectInstance(MobEffects.HARM, 100, 6, false, false));
                 }
             }
 

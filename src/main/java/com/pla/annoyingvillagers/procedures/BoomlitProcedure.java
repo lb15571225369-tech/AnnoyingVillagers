@@ -125,7 +125,7 @@ public class BoomlitProcedure {
                                 }
 
                                 itemstack2 = itemstack1;
-                                if (itemstack2.hurt(300, AnnoyingVillagers.randomSource, (ServerPlayer)null)) {
+                                if (itemstack2.hurt(300, RandomSource.create(), (ServerPlayer)null)) {
                                     itemstack2.shrink(1);
                                     itemstack2.setDamageValue(0);
                                 }
@@ -148,7 +148,7 @@ public class BoomlitProcedure {
                                 }
 
                                 itemstack2 = itemstack1;
-                                if (itemstack2.hurt(300, AnnoyingVillagers.randomSource, (ServerPlayer)null)) {
+                                if (itemstack2.hurt(300, RandomSource.create(), (ServerPlayer)null)) {
                                     itemstack2.shrink(1);
                                     itemstack2.setDamageValue(0);
                                 }
@@ -171,7 +171,7 @@ public class BoomlitProcedure {
                                 }
 
                                 itemstack2 = itemstack1;
-                                if (itemstack2.hurt(300, AnnoyingVillagers.randomSource, (ServerPlayer)null)) {
+                                if (itemstack2.hurt(300, RandomSource.create(), (ServerPlayer)null)) {
                                     itemstack2.shrink(1);
                                     itemstack2.setDamageValue(0);
                                 }
@@ -194,7 +194,7 @@ public class BoomlitProcedure {
                                 }
 
                                 itemstack2 = itemstack1;
-                                if (itemstack2.hurt(300, AnnoyingVillagers.randomSource, (ServerPlayer)null)) {
+                                if (itemstack2.hurt(300, RandomSource.create(), (ServerPlayer)null)) {
                                     itemstack2.shrink(1);
                                     itemstack2.setDamageValue(0);
                                 }

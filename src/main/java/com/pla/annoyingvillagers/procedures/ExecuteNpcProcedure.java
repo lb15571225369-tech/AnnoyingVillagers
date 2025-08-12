@@ -37,7 +37,7 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
 import yesman.epicfight.world.effect.EpicFightMobEffects;
-
+import net.minecraft.util.RandomSource;
 @EventBusSubscriber
 public class ExecuteNpcProcedure {
 
@@ -187,10 +187,10 @@ public class ExecuteNpcProcedure {
                                                                     if (victim.isAlive() && attacker.isAlive()) {
                                                                         prepareForNpcExecution(((LivingEntity) livingentitypatch.getOriginal()).getViewVector(3.0F), humanoidmobpatch, livingentitypatch, victim, attacker, 1.5F, 1.5F);
                                                                         if (!victim.level().isClientSide()) {
-                                                                            if (AnnoyingVillagers.randomSource.nextFloat() < 0.35F) {
+                                                                            if (RandomSource.create().nextFloat() < 0.35F) {
                                                                                 humanoidmobpatch.playAnimationSynchronized(AVAnimations.WRESTLING_BACK, 0.0F);
                                                                                 livingentitypatch.playAnimationSynchronized(AVAnimations.WRESTLING_HIT_BACK, 0.0F);
-                                                                            } else if (AnnoyingVillagers.randomSource.nextFloat() < 0.7F) {
+                                                                            } else if (RandomSource.create().nextFloat() < 0.7F) {
                                                                                 humanoidmobpatch.playAnimationSynchronized(AVAnimations.WRESTLING, 0.0F);
                                                                                 livingentitypatch.playAnimationSynchronized(AVAnimations.WRESTLING_HIT, 0.0F);
                                                                             } else {

@@ -369,5 +369,7 @@
 - VILLAGERHEAD_3 - jev_glasses
 
 # 1.3
-public static StaticAnimation EXECUTED_SKILL (annoyingvillagers:biped/combat/executed_skill) -> EXECUTE_WEAPON 
-public static StaticAnimation EXECUTED_WEAPON_HIT (annoyingvillagers:biped/combat/executed_weapon_hit) -> EXECUTED_WEAPON
+YinshenEntity -> StealthAttack
+ANYINGHEIYAOSHICHANGZHU -> SHADOW_OBSIDIAN_BURST
+ANYINGHEIYAOSHIZHUSHIFANG -> SHADOW_OBSIDIAN_STRAIGHT
+HEI_YAO_SHI_ZHU -> SHADOW_OBSIDIAN_PILLAR

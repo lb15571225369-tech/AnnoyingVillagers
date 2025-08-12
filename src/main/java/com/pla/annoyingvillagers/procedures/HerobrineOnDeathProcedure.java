@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.procedures;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -20,6 +21,10 @@ public class HerobrineOnDeathProcedure {
 
     public static void execute(LevelAccessor world, double x, double y, double z, Entity source) {
         if (source == null) return;
+
+        if (!world.isClientSide() && world.getServer() != null) {
+            world.getServer().getPlayerList().broadcastSystemMessage(Component.literal("The clone has been destroyed, data has been transmitted to the terminal."), false);
+        }
 
         if (!source.level().isClientSide() && source.getServer() != null) {
             try {

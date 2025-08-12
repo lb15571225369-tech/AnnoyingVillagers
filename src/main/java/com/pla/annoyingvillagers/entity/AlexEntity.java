@@ -17,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -168,7 +169,7 @@ public class AlexEntity extends PathfinderMobInventory {
             ServerLevel serverlevel = (ServerLevel) levelaccessor;
 
             JevEntity jevEntity = new JevEntity((EntityType) AnnoyingVillagersModEntities.JEV.get(), serverlevel);
-            jevEntity.moveTo(this.getX() + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), this.getY() + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), this.getZ() + Mth.nextDouble(AnnoyingVillagers.randomSource, 1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+            jevEntity.moveTo(this.getX() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), this.getY() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), this.getZ() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
             jevEntity.setFollowTarget(this);
             jevEntity.setFollowTargetUUID(this.getUUID());
             jevEntity.finalizeSpawn(levelaccessor, levelaccessor.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
