@@ -19,7 +19,7 @@ public class HerobrineOnAwardKillScoreProcedure {
                 public void run() {
                     if (!(world instanceof ServerLevel serverLevel)) return;
 
-                    HerobrineEntity herobrine = new HerobrineEntity(AnnoyingVillagersModEntities.HEROBRINE.get(), serverLevel);
+                    HerobrineEntity herobrine = new HerobrineEntity(AnnoyingVillagersModEntities.HEROBRINE_1.get(), serverLevel);
 
                     herobrine.moveTo(x, y, z, world.getRandom().nextFloat() * 360.0F, 0.0F);
 

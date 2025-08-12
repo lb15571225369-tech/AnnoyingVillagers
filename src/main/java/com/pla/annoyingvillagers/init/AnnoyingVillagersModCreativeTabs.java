@@ -18,7 +18,7 @@ public class AnnoyingVillagersModCreativeTabs {
             () -> CreativeModeTab.builder().icon(() -> new ItemStack(AnnoyingVillagersModItems.LEGENDARY_SWORD.get()))
                     .title(Component.translatable("creativetab.annoyingvillagers_tab"))
                     .displayItems((pParameters, pOutput) -> {
-                        pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_SPAWN_EGG.get());
+                        pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_1_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_2_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_3_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_7_SPAWN_EGG.get());

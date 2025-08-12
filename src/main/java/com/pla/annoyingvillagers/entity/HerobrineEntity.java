@@ -50,7 +50,7 @@ import com.pla.annoyingvillagers.procedures.HerobrineNaturalSpawnProcedure;
 public class HerobrineEntity extends Monster {
     private boolean wasOnGroundLastTick = false;
     public HerobrineEntity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.HEROBRINE.get(), level);
+        this((EntityType) AnnoyingVillagersModEntities.HEROBRINE_1.get(), level);
     }
 
     public HerobrineEntity(EntityType<HerobrineEntity> entitytype, Level level) {
@@ -163,7 +163,7 @@ public class HerobrineEntity extends Monster {
     }
 
     public static void init() {
-        SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.HEROBRINE.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
+        SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.HEROBRINE_1.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
             int i = blockpos.getX();
             int j = blockpos.getY();
             int k = blockpos.getZ();
