@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.entity.*;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -17,12 +18,8 @@ public class DarkObSsOnEntityInsideProcedure {
 
     public static void execute(LevelAccessor levelaccessor, Entity entity) {
         if (entity != null) {
-            if (entity instanceof LivingEntity) {
-                LivingEntity livingentity = (LivingEntity) entity;
-
-                if (livingentity.getMobType() == MobType.UNDEAD) {
-                    return;
-                }
+            if (entity instanceof Herobrine1Entity || entity instanceof Herobrine2Entity || entity instanceof Herobrine3Entity || entity instanceof Herobrine7Entity || entity instanceof ArmoredHerobrineEntity || entity instanceof DarkHerobrineEntity) {
+                return;
             }
 
             if (!entity.level().isClientSide() && entity.getServer() != null) {

@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -25,82 +26,133 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
 
     public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) {
         if (entity != null) {
-            boolean flag = false;
+            if (entity instanceof Herobrine1Entity || entity instanceof Herobrine2Entity || entity instanceof Herobrine3Entity || entity instanceof Herobrine7Entity || entity instanceof ArmoredHerobrineEntity || entity instanceof DarkHerobrineEntity) {
+                return;
+            }
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
+                try {
+                    entity.getServer().getCommands().getDispatcher().execute(
+                            "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
+                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
 
-            if (!flag) {
-                if (!entity.level().isClientSide() && entity.getServer() != null) {
-                    try {
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                    } catch (CommandSyntaxException e) {
-                        
+                }
+            }
+
+            Level level;
+
+            if (levelaccessor instanceof Level) {
+                level = (Level) levelaccessor;
+                if (!level.isClientSide()) {
+                    level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "obsidian_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 1.0D));
+                } else {
+                    level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "obsidian_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 1.0D), false);
+                }
+            }
+
+            LivingEntity livingentity1;
+            ItemStack itemstack;
+
+            if (entity instanceof LivingEntity) {
+                livingentity1 = (LivingEntity) entity;
+                itemstack = livingentity1.getMainHandItem();
+            } else {
+                itemstack = ItemStack.EMPTY;
+            }
+
+            ItemStack itemstack1 = itemstack;
+
+            if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
+                itemstack1.shrink(1);
+                itemstack1.setDamageValue(0);
+            }
+
+            if (entity instanceof LivingEntity) {
+                livingentity1 = (LivingEntity) entity;
+                itemstack = livingentity1.getOffhandItem();
+            } else {
+                itemstack = ItemStack.EMPTY;
+            }
+
+            itemstack1 = itemstack;
+            if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
+                itemstack1.shrink(1);
+                itemstack1.setDamageValue(0);
+            }
+
+            if (entity instanceof LivingEntity) {
+                livingentity1 = (LivingEntity) entity;
+                itemstack = livingentity1.getItemBySlot(EquipmentSlot.FEET);
+            } else {
+                itemstack = ItemStack.EMPTY;
+            }
+
+            itemstack1 = itemstack;
+            if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
+                itemstack1.shrink(1);
+                itemstack1.setDamageValue(0);
+            }
+
+            if (entity instanceof LivingEntity) {
+                livingentity1 = (LivingEntity) entity;
+                itemstack = livingentity1.getItemBySlot(EquipmentSlot.LEGS);
+            } else {
+                itemstack = ItemStack.EMPTY;
+            }
+
+            itemstack1 = itemstack;
+            if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
+                itemstack1.shrink(1);
+                itemstack1.setDamageValue(0);
+            }
+
+            if (entity instanceof LivingEntity) {
+                livingentity1 = (LivingEntity) entity;
+                itemstack = livingentity1.getItemBySlot(EquipmentSlot.CHEST);
+            } else {
+                itemstack = ItemStack.EMPTY;
+            }
+
+            itemstack1 = itemstack;
+            if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
+                itemstack1.shrink(1);
+                itemstack1.setDamageValue(0);
+            }
+
+            if (entity instanceof LivingEntity) {
+                livingentity1 = (LivingEntity) entity;
+                itemstack = livingentity1.getItemBySlot(EquipmentSlot.HEAD);
+            } else {
+                itemstack = ItemStack.EMPTY;
+            }
+
+            itemstack1 = itemstack;
+            if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
+                itemstack1.shrink(1);
+                itemstack1.setDamageValue(0);
+            }
+
+            entity.hurt(entity.level().damageSources().generic(), 11.5F);
+            entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * -2.0D, 0.4D, entity.getLookAngle().z * -2.0D));
+            if (Math.random() == 0.5D) {
+                if (entity instanceof LivingEntity) {
+                    LivingEntity livingentity2 = (LivingEntity) entity;
+
+                    if (!livingentity2.level().isClientSide()) {
+                        livingentity2.addEffect(new MobEffectInstance(MobEffects.POISON, 300, 2, false, true));
                     }
                 }
 
-                Level level;
-
-                if (levelaccessor instanceof Level) {
-                    level = (Level) levelaccessor;
-                    if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "obsidian_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 1.0D));
-                    } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "obsidian_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 1.0D), false);
-                    }
-                }
-
-                LivingEntity livingentity1;
-                ItemStack itemstack;
-
+                entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * -4.0D, 0.5D, entity.getLookAngle().z * -4.0D));
                 if (entity instanceof LivingEntity) {
                     livingentity1 = (LivingEntity) entity;
-                    itemstack = livingentity1.getMainHandItem();
-                } else {
-                    itemstack = ItemStack.EMPTY;
-                }
-
-                ItemStack itemstack1 = itemstack;
-
-                if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
-                    itemstack1.shrink(1);
-                    itemstack1.setDamageValue(0);
-                }
-
-                if (entity instanceof LivingEntity) {
-                    livingentity1 = (LivingEntity) entity;
-                    itemstack = livingentity1.getOffhandItem();
+                    itemstack = livingentity1.getItemBySlot(EquipmentSlot.HEAD);
                 } else {
                     itemstack = ItemStack.EMPTY;
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
-                    itemstack1.shrink(1);
-                    itemstack1.setDamageValue(0);
-                }
-
-                if (entity instanceof LivingEntity) {
-                    livingentity1 = (LivingEntity) entity;
-                    itemstack = livingentity1.getItemBySlot(EquipmentSlot.FEET);
-                } else {
-                    itemstack = ItemStack.EMPTY;
-                }
-
-                itemstack1 = itemstack;
-                if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
-                    itemstack1.shrink(1);
-                    itemstack1.setDamageValue(0);
-                }
-
-                if (entity instanceof LivingEntity) {
-                    livingentity1 = (LivingEntity) entity;
-                    itemstack = livingentity1.getItemBySlot(EquipmentSlot.LEGS);
-                } else {
-                    itemstack = ItemStack.EMPTY;
-                }
-
-                itemstack1 = itemstack;
-                if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
+                if (itemstack1.hurt(300, RandomSource.create(), (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -113,36 +165,40 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
+                if (itemstack1.hurt(300, RandomSource.create(), (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
 
-                if (entity instanceof LivingEntity) {
-                    livingentity1 = (LivingEntity) entity;
-                    itemstack = livingentity1.getItemBySlot(EquipmentSlot.HEAD);
-                } else {
-                    itemstack = ItemStack.EMPTY;
-                }
+                entity.hurt(entity.level().damageSources().generic(), 15.5F);
+                new DelayedTask(1) {
+                    @Override
+                    public void run() {
+                        Entity entity1 = entity;
 
-                itemstack1 = itemstack;
-                if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
-                    itemstack1.shrink(1);
-                    itemstack1.setDamageValue(0);
-                }
+                        if (!entity1.level().isClientSide() && entity1.getServer() != null) {
+                            try {
+                                entity1.getServer().getCommands().getDispatcher().execute(
+                                        "indestructible @s play \"epicfight:biped/combat/hit_long\" 0 10",
+                                        entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
 
-                entity.hurt(entity.level().damageSources().generic(), 11.5F);
-                entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * -2.0D, 0.4D, entity.getLookAngle().z * -2.0D));
-                if (Math.random() == 0.5D) {
-                    if (entity instanceof LivingEntity) {
-                        LivingEntity livingentity2 = (LivingEntity) entity;
+                            }
+                        }
+                    }
+                };
 
-                        if (!livingentity2.level().isClientSide()) {
-                            livingentity2.addEffect(new MobEffectInstance(MobEffects.POISON, 300, 2, false, true));
+                if (Math.random() == 0.09D) {
+                    entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * -6.0D, 0.4D, entity.getLookAngle().z * -6.0D));
+                    if (levelaccessor instanceof Level) {
+                        level = (Level) levelaccessor;
+                        if (!level.isClientSide()) {
+                            level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "heavy_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 1.2D));
+                        } else {
+                            level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "heavy_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 1.2D), false);
                         }
                     }
 
-                    entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * -4.0D, 0.5D, entity.getLookAngle().z * -4.0D));
                     if (entity instanceof LivingEntity) {
                         livingentity1 = (LivingEntity) entity;
                         itemstack = livingentity1.getItemBySlot(EquipmentSlot.HEAD);
@@ -151,7 +207,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                     }
 
                     itemstack1 = itemstack;
-                    if (itemstack1.hurt(300, RandomSource.create(), (ServerPlayer) null)) {
+                    if (itemstack1.hurt(1000, RandomSource.create(), (ServerPlayer) null)) {
                         itemstack1.shrink(1);
                         itemstack1.setDamageValue(0);
                     }
@@ -164,12 +220,25 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                     }
 
                     itemstack1 = itemstack;
-                    if (itemstack1.hurt(300, RandomSource.create(), (ServerPlayer) null)) {
+                    if (itemstack1.hurt(1000, RandomSource.create(), (ServerPlayer) null)) {
                         itemstack1.shrink(1);
                         itemstack1.setDamageValue(0);
                     }
 
-                    entity.hurt(entity.level().damageSources().generic(), 15.5F);
+                    if (entity instanceof LivingEntity) {
+                        livingentity1 = (LivingEntity) entity;
+                        itemstack = livingentity1.getMainHandItem();
+                    } else {
+                        itemstack = ItemStack.EMPTY;
+                    }
+
+                    itemstack1 = itemstack;
+                    if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 200.0D, 1002.0D), RandomSource.create(), (ServerPlayer) null)) {
+                        itemstack1.shrink(1);
+                        itemstack1.setDamageValue(0);
+                    }
+
+                    entity.hurt(entity.level().damageSources().generic(), 17.5F);
                     new DelayedTask(1) {
                         @Override
                         public void run() {
@@ -178,86 +247,16 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                             if (!entity1.level().isClientSide() && entity1.getServer() != null) {
                                 try {
                                     entity1.getServer().getCommands().getDispatcher().execute(
-                                            "indestructible @s play \"epicfight:biped/combat/hit_long\" 0 10",
+                                            "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10",
                                             entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                 } catch (CommandSyntaxException e) {
-                                    
+
                                 }
                             }
                         }
                     };
-
-                    if (Math.random() == 0.09D) {
-                        entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * -6.0D, 0.4D, entity.getLookAngle().z * -6.0D));
-                        if (levelaccessor instanceof Level) {
-                            level = (Level) levelaccessor;
-                            if (!level.isClientSide()) {
-                                level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "heavy_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 1.2D));
-                            } else {
-                                level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "heavy_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 1.2D), false);
-                            }
-                        }
-
-                        if (entity instanceof LivingEntity) {
-                            livingentity1 = (LivingEntity) entity;
-                            itemstack = livingentity1.getItemBySlot(EquipmentSlot.HEAD);
-                        } else {
-                            itemstack = ItemStack.EMPTY;
-                        }
-
-                        itemstack1 = itemstack;
-                        if (itemstack1.hurt(1000, RandomSource.create(), (ServerPlayer) null)) {
-                            itemstack1.shrink(1);
-                            itemstack1.setDamageValue(0);
-                        }
-
-                        if (entity instanceof LivingEntity) {
-                            livingentity1 = (LivingEntity) entity;
-                            itemstack = livingentity1.getItemBySlot(EquipmentSlot.CHEST);
-                        } else {
-                            itemstack = ItemStack.EMPTY;
-                        }
-
-                        itemstack1 = itemstack;
-                        if (itemstack1.hurt(1000, RandomSource.create(), (ServerPlayer) null)) {
-                            itemstack1.shrink(1);
-                            itemstack1.setDamageValue(0);
-                        }
-
-                        if (entity instanceof LivingEntity) {
-                            livingentity1 = (LivingEntity) entity;
-                            itemstack = livingentity1.getMainHandItem();
-                        } else {
-                            itemstack = ItemStack.EMPTY;
-                        }
-
-                        itemstack1 = itemstack;
-                        if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 200.0D, 1002.0D), RandomSource.create(), (ServerPlayer) null)) {
-                            itemstack1.shrink(1);
-                            itemstack1.setDamageValue(0);
-                        }
-
-                        entity.hurt(entity.level().damageSources().generic(), 17.5F);
-                        new DelayedTask(1) {
-                            @Override
-                            public void run() {
-                                Entity entity1 = entity;
-
-                                if (!entity1.level().isClientSide() && entity1.getServer() != null) {
-                                    try {
-                                        entity1.getServer().getCommands().getDispatcher().execute(
-                                                "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10",
-                                                entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                    } catch (CommandSyntaxException e) {
-                                        
-                                    }
-                                }
-                            }
-                        };
-                    }
                 }
             }
-
         }
     }
 }

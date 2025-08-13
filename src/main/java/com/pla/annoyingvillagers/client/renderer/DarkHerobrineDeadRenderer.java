@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.client.renderer;
 
-import com.pla.annoyingvillagers.entity.AlexDeadEntity;
 import com.pla.annoyingvillagers.entity.DarkHerobrineDeadEntity;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;

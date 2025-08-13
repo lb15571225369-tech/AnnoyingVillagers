@@ -57,11 +57,4 @@ public class ObsidianWeaponItem extends SwordItem {
         ObsidianWeaponsOnUseProcedure.execute(useoncontext.getLevel(), (double) useoncontext.getClickedPos().getX(), (double) useoncontext.getClickedPos().getY(), (double) useoncontext.getClickedPos().getZ(), useoncontext.getPlayer(), useoncontext.getItemInHand());
         return InteractionResult.SUCCESS;
     }
-
-    public boolean onEntitySwing(ItemStack itemstack, LivingEntity livingentity) {
-        boolean flag = super.onEntitySwing(itemstack, livingentity);
-
-        ObsidianWeaponsWhenSwingingProcedure.execute(livingentity.level(), livingentity.getX(), livingentity.getY(), livingentity.getZ(), livingentity);
-        return flag;
-    }
 }
