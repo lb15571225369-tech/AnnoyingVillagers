@@ -24,8 +24,6 @@ public class AnnoyingVillagersModEntities {
     public static final RegistryObject<EntityType<BlueDemon2Entity>> BLUE_DEMON_2 = register("blue_demon_2", Builder.<BlueDemon2Entity>of(BlueDemon2Entity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(126).setUpdateInterval(3).setCustomClientFactory(BlueDemon2Entity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<BlueDemonEndStagingEntity>> BLUE_DEMON_END_STAGING = register("blue_demon_end_staging", Builder.<BlueDemonEndStagingEntity>of(BlueDemonEndStagingEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(126).setUpdateInterval(3).setCustomClientFactory(BlueDemonEndStagingEntity::new).fireImmune().sized(0.0F, 1.8F));
 
-
-
     public static final RegistryObject<EntityType<VillagerScoutCaptainEntity>> VILLAGER_SCOUT_CAPTAIN = register("villager_scout_captain", Builder.<VillagerScoutCaptainEntity>of(VillagerScoutCaptainEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(VillagerScoutCaptainEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<VillagerScoutEntity>> VILLAGER_SCOUT = register("villager_scout", Builder.<VillagerScoutEntity>of(VillagerScoutEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(VillagerScoutEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<BlueVillagerGeneralEntity>> BLUE_VILLAGER_GENERAL = register("blue_villager_general", Builder.<BlueVillagerGeneralEntity>of(BlueVillagerGeneralEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(BlueVillagerGeneralEntity::new).fireImmune().sized(0.6F, 1.8F));
@@ -56,6 +54,8 @@ public class AnnoyingVillagersModEntities {
     public static final RegistryObject<EntityType<Herobrine7Entity>> HEROBRINE_7 = register("herobrine_7", Builder.<Herobrine7Entity>of(Herobrine7Entity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(Herobrine7Entity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<ArmoredHerobrineEntity>> ARMORED_HEROBRINE = register("armored_herobrine", Builder.<ArmoredHerobrineEntity>of(ArmoredHerobrineEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(ArmoredHerobrineEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<DarkHerobrineEntity>> DARK_HEROBRINE = register("dark_herobrine", Builder.<DarkHerobrineEntity>of(DarkHerobrineEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(DarkHerobrineEntity::new).fireImmune().sized(0.6F, 1.8F));
+
+    public static final RegistryObject<EntityType<SummonPortalEntity>> SUMMON_PORTAL = register("summon_portal", Builder.<SummonPortalEntity>of(SummonPortalEntity::new, MobCategory.MISC).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(SummonPortalEntity::new).fireImmune().sized(3.0F, 0.01F));
 
     public static final RegistryObject<EntityType<AlexDeadEntity>> ALEX_DEAD = register("alex_dead", Builder.<AlexDeadEntity>of(AlexDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(AlexDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<SteveDeadEntity>> STEVE_DEAD = register("steve_dead", Builder.<SteveDeadEntity>of(SteveDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(SteveDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
@@ -123,6 +123,7 @@ public class AnnoyingVillagersModEntities {
             InfectedTheMostMoistBurrit0Entity.init();
             InfectedTheMostMoistBurrit0DeadEntity.init();
             DarkHerobrineEntity.init();
+            SummonPortalEntity.init();
         });
     }
 
@@ -169,5 +170,6 @@ public class AnnoyingVillagersModEntities {
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.INFECTED_THEMOSTMOISTBURRIT0.get(), InfectedTheMostMoistBurrit0Entity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.INFECTED_THEMOSTMOISTBURRIT0_DEAD.get(), InfectedTheMostMoistBurrit0DeadEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.DARK_HEROBRINE.get(), DarkHerobrineEntity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.SUMMON_PORTAL.get(), SummonPortalEntity.createAttributes().build());
     }
 }
