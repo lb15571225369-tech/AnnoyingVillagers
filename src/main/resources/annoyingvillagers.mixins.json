@@ -18,7 +18,8 @@
     "AimAnimationMixin",
     "LivingEntityMixin",
     "DualAxeMixin",
-    "ExecutionMixin"
+    "ExecutionMixin",
+    "EnderDragonMixin"
   ],
   "client": [
   ],

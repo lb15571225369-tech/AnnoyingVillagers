@@ -4,9 +4,9 @@ import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
 
-public class EnderGlaiveItem extends SwordItem {
+public class EnderSlayerScythe extends SwordItem {
 
-    public EnderGlaiveItem() {
+    public EnderSlayerScythe() {
         super(new Tier() {
             public int getUses() {
                 return 1561;
@@ -31,6 +31,6 @@ public class EnderGlaiveItem extends SwordItem {
             public Ingredient getRepairIngredient() {
                 return Ingredient.of();
             }
-        }, 3, -2.5F, (new Properties().fireResistant()));
+        }, 3, -2.3F, (new Properties()).fireResistant());
     }
 }

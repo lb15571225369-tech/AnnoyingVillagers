@@ -53,7 +53,7 @@ public class GlaiveHerobrineEntity extends Monster {
     public GlaiveHerobrineEntity(EntityType<GlaiveHerobrineEntity> entitytype, Level level) {
         super(entitytype, level);
         this.setMaxUpStep(2.9F);
-        this.xpReward = 0;
+        this.xpReward = 300;
         this.setNoAi(false);
         this.setCustomName(Component.literal("§5Glaive Herobrine§r"));
         this.setCustomNameVisible(true);
@@ -113,6 +113,8 @@ public class GlaiveHerobrineEntity extends Monster {
         if (damagesource.is(DamageTypes.WITHER)) return false;
         if (damagesource.is(DamageTypes.DROWN)) return false;
         if (damagesource.is(DamageTypes.WITHER_SKULL)) return false;
+        if (damagesource.is(DamageTypes.DRAGON_BREATH)) return false;
+        if (damagesource.is(DamageTypes.INDIRECT_MAGIC)) return false;
         return super.hurt(damagesource, f);
     }
 
@@ -139,7 +141,7 @@ public class GlaiveHerobrineEntity extends Monster {
 
     public static void init() {
         SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.GLAIVE_HEROBRINE.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
-            return serverlevelaccessor.getRawBrightness(blockpos, 0) > 8;
+            return serverlevelaccessor.getRawBrightness(blockpos, 0) <= 8;
         });
     }
 

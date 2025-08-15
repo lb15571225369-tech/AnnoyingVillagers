@@ -389,4 +389,7 @@ GaojiherobrineEntity -> GlaiveHerobrineEntity
 SHE_REN_CHANG_QIANG -> ENDER_GLAIVE
 SheRenChangQiangItem -> EnderGlaiveItem
 she_ren_chang_qiang -> ender_glaive
-
+LianyingfenshengEntity -> ReaperHerobrineEntity
+LIANYINGFENSHENG -> REAPER_HEROBRINE
+lianyingfensheng -> reaper_herobrine
+lianfu -> ender_slayer_scythe
