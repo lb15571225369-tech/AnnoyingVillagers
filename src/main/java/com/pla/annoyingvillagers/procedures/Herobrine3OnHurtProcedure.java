@@ -27,7 +27,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class Herobrine3OnHurtProcedure {
 
     public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity, final Entity entity1) {
-        HerobrineOnHurtProcedure.execute(entity);
+        Herobrine1OnHurtProcedure.execute(entity);
         if (entity != null && entity1 != null) {
             if (!entity.getPersistentData().getBoolean("kick_x")) {
                 LivingEntity livingentity;

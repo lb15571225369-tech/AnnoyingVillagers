@@ -19,7 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class HerobrineOnEntityTickUpdateProcedure {
+public class Herobrine1OnEntityTickUpdateProcedure {
 
     public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) {
         if (entity != null) {
@@ -45,13 +45,6 @@ public class HerobrineOnEntityTickUpdateProcedure {
 
                 if (entity1 == livingentity) {
                     if (!entity1.level().isClientSide() && entity1.getServer() != null) {
-                        try {
-                            entity1.getServer().getCommands().getDispatcher().execute(
-                                    "tag @s add aim",
-                                    entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                        } catch (CommandSyntaxException e) {
-                            
-                        }
                     }
                 } else {
                     LivingEntity livingentity1;
@@ -77,16 +70,6 @@ public class HerobrineOnEntityTickUpdateProcedure {
                         if (livingentity1 instanceof Player) {
                             player = (Player)livingentity1;
                             player.getInventory().setChanged();
-                        }
-                    }
-
-                    if (!entity1.level().isClientSide() && entity1.getServer() != null) {
-                        try {
-                            entity1.getServer().getCommands().getDispatcher().execute(
-                                    "tag @s remove aim",
-                                    entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                        } catch (CommandSyntaxException e) {
-                            
                         }
                     }
                 }

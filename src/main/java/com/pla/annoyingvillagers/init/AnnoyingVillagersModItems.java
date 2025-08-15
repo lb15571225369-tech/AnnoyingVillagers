@@ -34,8 +34,11 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> ARMORED_HEROBRINE_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("armored_herobrine_spawn_egg", () -> {
         return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.ARMORED_HEROBRINE, -16777216, -1, (new Properties()));
     });
-    public static final RegistryObject<Item> DARK_HEROBRINE_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("dark_herobrine_spawn_egg", () -> {
-        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.DARK_HEROBRINE, -1, -1, (new Properties()));
+    public static final RegistryObject<Item> DARK_HEROBRINE_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("shadow_herobrine_spawn_egg", () -> {
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.SHADOW_HEROBRINE, -1, -1, (new Properties()));
+    });
+    public static final RegistryObject<Item> GLAIVE_HEROBRINE_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("glaive_herobrine_spawn_egg", () -> {
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.GLAIVE_HEROBRINE, -1, -1, (new Properties()));
     });
     public static final RegistryObject<Item> VILLAGER_SCOUT_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("villager_scout_spawn_egg", () -> {
         return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.VILLAGER_SCOUT, -205, -26317, (new Properties()));
@@ -109,6 +112,9 @@ public class AnnoyingVillagersModItems {
     });
     public static final RegistryObject<Item> SHADOW_OBSIDIAN_PILLAR = AnnoyingVillagersModItems.REGISTRY.register("shadow_obsidian_pillar", () -> {
         return new ShadowObsidianPillarItem();
+    });
+    public static final RegistryObject<Item> ENDER_GLAIVE = AnnoyingVillagersModItems.REGISTRY.register("ender_glaive", () -> {
+        return new EnderGlaiveItem();
     });
     // ------------------------------
 

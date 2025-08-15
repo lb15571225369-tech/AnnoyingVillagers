@@ -51,7 +51,7 @@ public class ArmoredHerobrineEntity extends Monster {
         this.setMaxUpStep(4.0F);
         this.xpReward = 60;
         this.setNoAi(false);
-        this.setCustomName(Component.literal("Diamond Armor §5Herobrine§r"));
+        this.setCustomName(Component.literal("§Armored Herobrine§r"));
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get()));
@@ -126,7 +126,7 @@ public class ArmoredHerobrineEntity extends Monster {
 
     public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
         super.awardKillScore(entity, i, damagesource);
-        HerobrineTransfromProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), entity);
+        HerobrineTransfromProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), entity, this);
     }
 
     public void baseTick() {
@@ -140,7 +140,7 @@ public class ArmoredHerobrineEntity extends Monster {
 
     public static void init() {
         SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.ARMORED_HEROBRINE.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
-            return serverlevelaccessor.getRawBrightness(blockpos, 0) > 8;
+            return serverlevelaccessor.getRawBrightness(blockpos, 0) <= 8;
         });
     }
 

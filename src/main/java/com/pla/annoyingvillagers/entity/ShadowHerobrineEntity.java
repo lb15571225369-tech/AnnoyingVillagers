@@ -42,17 +42,17 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 
 @EventBusSubscriber
-public class DarkHerobrineEntity extends Monster {
-    public DarkHerobrineEntity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.DARK_HEROBRINE.get(), level);
+public class ShadowHerobrineEntity extends Monster {
+    public ShadowHerobrineEntity(SpawnEntity spawnentity, Level level) {
+        this((EntityType) AnnoyingVillagersModEntities.SHADOW_HEROBRINE.get(), level);
     }
 
-    public DarkHerobrineEntity(EntityType<DarkHerobrineEntity> entitytype, Level level) {
+    public ShadowHerobrineEntity(EntityType<ShadowHerobrineEntity> entitytype, Level level) {
         super(entitytype, level);
         this.setMaxUpStep(2.8F);
         this.xpReward = 60;
         this.setNoAi(false);
-        this.setCustomName(Component.literal("§5Dark Herobrine§r"));
+        this.setCustomName(Component.literal("§5Shadow Herobrine§r"));
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get()));
@@ -102,7 +102,7 @@ public class DarkHerobrineEntity extends Monster {
         DarkHerobrineOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
         if (this.level() instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
             ServerLevel serverlevel = (ServerLevel)levelaccessor;
-            DarkHerobrineDeadEntity deadEntity = new DarkHerobrineDeadEntity((EntityType) AnnoyingVillagersModEntities.DARK_HEROBRINE_DEAD.get(), serverlevel);
+            ShadowHerobrineDeadEntity deadEntity = new ShadowHerobrineDeadEntity((EntityType) AnnoyingVillagersModEntities.SHADOW_HEROBRINE_DEAD.get(), serverlevel);
 
             deadEntity.moveTo(this.getX(), this.getY(), this.getZ(), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
             if (deadEntity instanceof Mob) {
@@ -130,7 +130,7 @@ public class DarkHerobrineEntity extends Monster {
 
     public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
         super.awardKillScore(entity, i, damagesource);
-        HerobrineTransfromProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), entity);
+        HerobrineTransfromProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), entity, this);
     }
 
     public void baseTick() {
@@ -143,8 +143,8 @@ public class DarkHerobrineEntity extends Monster {
     }
 
     public static void init() {
-        SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.DARK_HEROBRINE.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
-            return serverlevelaccessor.getRawBrightness(blockpos, 0) > 8;
+        SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.SHADOW_HEROBRINE.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
+            return serverlevelaccessor.getRawBrightness(blockpos, 0) <= 8;
         });
     }
 

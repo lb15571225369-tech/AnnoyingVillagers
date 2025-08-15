@@ -1,6 +1,6 @@
 package com.pla.annoyingvillagers.client.renderer;
 
-import com.pla.annoyingvillagers.entity.DarkHerobrineDeadEntity;
+import com.pla.annoyingvillagers.entity.ShadowHerobrineDeadEntity;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.resources.ResourceLocation;
 
-public class DarkHerobrineDeadRenderer extends HumanoidMobRenderer<DarkHerobrineDeadEntity, HumanoidModel<DarkHerobrineDeadEntity>> {
+public class DarkHerobrineDeadRenderer extends HumanoidMobRenderer<ShadowHerobrineDeadEntity, HumanoidModel<ShadowHerobrineDeadEntity>> {
 
     public DarkHerobrineDeadRenderer(Context context) {
         super(context, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER)), 0.5F);
@@ -19,7 +19,7 @@ public class DarkHerobrineDeadRenderer extends HumanoidMobRenderer<DarkHerobrine
                 context.getModelManager()));
     }
 
-    public ResourceLocation getTextureLocation(DarkHerobrineDeadEntity darkHerobrineDeadEntity) {
+    public ResourceLocation getTextureLocation(ShadowHerobrineDeadEntity darkHerobrineDeadEntity) {
         return new ResourceLocation("annoyingvillagers", "textures/entities/herobrine_2.png");
     }
 }

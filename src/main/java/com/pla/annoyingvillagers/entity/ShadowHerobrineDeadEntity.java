@@ -3,7 +3,6 @@ package com.pla.annoyingvillagers.entity;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -23,13 +22,13 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 
-public class DarkHerobrineDeadEntity extends PathfinderMob {
+public class ShadowHerobrineDeadEntity extends PathfinderMob {
 
-    public DarkHerobrineDeadEntity(PlayMessages.SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.DARK_HEROBRINE_DEAD.get(), level);
+    public ShadowHerobrineDeadEntity(PlayMessages.SpawnEntity spawnentity, Level level) {
+        this((EntityType) AnnoyingVillagersModEntities.SHADOW_HEROBRINE_DEAD.get(), level);
     }
 
-    public DarkHerobrineDeadEntity(EntityType<DarkHerobrineDeadEntity> entitytype, Level level) {
+    public ShadowHerobrineDeadEntity(EntityType<ShadowHerobrineDeadEntity> entitytype, Level level) {
         super(entitytype, level);
         this.setMaxUpStep(0.6F);
         this.xpReward = 0;

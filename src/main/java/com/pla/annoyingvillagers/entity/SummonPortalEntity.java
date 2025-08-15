@@ -4,6 +4,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.util.GroundRiseSpawner;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -42,7 +43,7 @@ public class SummonPortalEntity extends Entity {
         if (!this.level().isClientSide) {
             if (!hasSpawnedMob) {
                 hasSpawnedMob = true;
-                DarkHerobrineEntity darkHerobrineEntity = new DarkHerobrineEntity((EntityType) AnnoyingVillagersModEntities.DARK_HEROBRINE.get(), this.level());
+                ShadowHerobrineEntity darkHerobrineEntity = new ShadowHerobrineEntity((EntityType) AnnoyingVillagersModEntities.SHADOW_HEROBRINE.get(), this.level());
                 GroundRiseSpawner.spawnRising((ServerLevel) this.level(), darkHerobrineEntity, this.getX(), this.getZ(), 0.03);
             }
 
@@ -69,8 +70,28 @@ public class SummonPortalEntity extends Entity {
 
     public static void init() {
         SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.SUMMON_PORTAL.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
-            return serverlevelaccessor.getRawBrightness(blockpos, 0) > 8;
+            return true;
         });
+    }
+
+    @Override
+    public boolean hurt(DamageSource pSource, float pAmount) {
+        return false;
+    }
+
+    @Override
+    public boolean isPushable() {
+        return false;
+    }
+
+    @Override
+    public boolean canBeCollidedWith() {
+        return false;
+    }
+
+    @Override
+    public boolean isAttackable() {
+        return false;
     }
 
     public static AttributeSupplier.Builder createAttributes() {

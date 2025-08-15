@@ -2,11 +2,9 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
+import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -29,7 +27,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
@@ -38,13 +35,6 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.procedures.HerobrineOnEntityTickUpdateProcedure;
-import com.pla.annoyingvillagers.procedures.HerobrineOnHurtProcedure;
-import com.pla.annoyingvillagers.procedures.HerobrineOnDeathProcedure;
-import com.pla.annoyingvillagers.procedures.HerobrineWhenEntityFallsProcedure;
-import com.pla.annoyingvillagers.procedures.HerobrineOnAwardKillScoreProcedure;
-import com.pla.annoyingvillagers.procedures.HerobrineOnInitialSpawnProcedure;
-import com.pla.annoyingvillagers.procedures.HerobrineNaturalSpawnProcedure;
 
 @EventBusSubscriber
 public class Herobrine1Entity extends Monster {
@@ -58,8 +48,6 @@ public class Herobrine1Entity extends Monster {
         this.setMaxUpStep(0.7F);
         this.xpReward = 300;
         this.setNoAi(false);
-        this.setCustomName(Component.literal("§5Herobrine§r"));
-        this.setCustomNameVisible(true);
         this.setPersistenceRequired();
     }
 
@@ -99,16 +87,14 @@ public class Herobrine1Entity extends Monster {
 
     public void thunderHit(ServerLevel serverlevel, LightningBolt lightningbolt) {
         super.thunderHit(serverlevel, lightningbolt);
-//        HerobrineWhenStruckByLightningProcedure.execute(this.level, this.getX(), this.getY(), this.getZ(), this);
     }
 
     public boolean causeFallDamage(float f, float f1, DamageSource damagesource) {
-        HerobrineWhenEntityFallsProcedure.execute();
         return super.causeFallDamage(f, f1, damagesource);
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        HerobrineOnHurtProcedure.execute(this);
+        Herobrine1OnHurtProcedure.execute(this);
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;
         if (damagesource.is(DamageTypes.WITHER)) return false;
@@ -119,56 +105,30 @@ public class Herobrine1Entity extends Monster {
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
-        HerobrineOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
-        double posX = this.getX();
-        double posY = this.getY();
-        double posZ = this.getZ();
-        LevelAccessor levelAccessor = this.level();
-        if (levelAccessor instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-            ServerLevel serverlevel = levelaccessor;
-            HerobrineDeadEntity deadEntity = new HerobrineDeadEntity((EntityType) AnnoyingVillagersModEntities.HEROBRINE_DEAD.get(), serverlevel);
-            deadEntity.moveTo(posX, posY, posZ, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-            if (deadEntity instanceof Mob) {
-                Mob mob = (Mob) deadEntity;
-                mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
-            }
-            this.remove(RemovalReason.KILLED);
-            levelaccessor.addFreshEntity(deadEntity);
-            try {
-                deadEntity.getServer().getCommands().getDispatcher().execute(
-                        "kill @s",
-                        deadEntity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
-            }
-        }
+        Herobrine1OnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
 
-        HerobrineOnInitialSpawnProcedure.execute(serverlevelaccessor, this);
+        Herobrine1OnInitialSpawnProcedure.execute(serverlevelaccessor, this);
         return spawngroupdata1;
     }
 
     public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
         super.awardKillScore(entity, i, damagesource);
-        if (random.nextFloat() < AnnoyingVillagersConfig.HEROBRINE_POSSESS_RATE.get().floatValue()) {
-            HerobrineOnAwardKillScoreProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), entity);
-        }
+        HerobrineTransfromProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), entity, this);
     }
 
     public void baseTick() {
         super.baseTick();
-        HerobrineOnEntityTickUpdateProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        Herobrine1OnEntityTickUpdateProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
     public static void init() {
         SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.HEROBRINE_1.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
-            int i = blockpos.getX();
-            int j = blockpos.getY();
-            int k = blockpos.getZ();
-
-            return HerobrineNaturalSpawnProcedure.execute(serverlevelaccessor, (double) i, (double) j, (double) k);
+            return serverlevelaccessor.getRawBrightness(blockpos, 0) <= 8;
         });
     }
 

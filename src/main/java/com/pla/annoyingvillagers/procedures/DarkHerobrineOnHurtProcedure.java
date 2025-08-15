@@ -28,7 +28,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class DarkHerobrineOnHurtProcedure {
 
     public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity) {
-        HerobrineOnHurtProcedure.execute(entity);
+        Herobrine1OnHurtProcedure.execute(entity);
         if (entity != null) {
             if (!entity.getPersistentData().getBoolean("kick_x")) {
                 Level level;

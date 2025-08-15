@@ -383,3 +383,10 @@ hb_hei_yao_shi_zuan_shi_xiong_jia_chestplate -> herobrine_obsidian_diamond_chest
 BeiGanRanJianBingGuoZiEntity -> InfectedTheMostMoistBurrit0Entity
 BEI_GAN_RAN_JIAN_BING_GUO_ZI -> INFECTED_THEMOSTMOISTBURRIT0
 bei_gan_ran_jian_bing_guo_zi -> infected_the_most_moist_burrit0
+GAOJIHEROBRINE -> GLAIVE_HEROBRINE
+gaojiherobrine -> glaive_herobrine
+GaojiherobrineEntity -> GlaiveHerobrineEntity
+SHE_REN_CHANG_QIANG -> ENDER_GLAIVE
+SheRenChangQiangItem -> EnderGlaiveItem
+she_ren_chang_qiang -> ender_glaive
+

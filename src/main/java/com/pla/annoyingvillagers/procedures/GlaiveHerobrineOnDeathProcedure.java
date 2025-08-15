@@ -12,12 +12,12 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 
-public class DarkHerobrineOnDeathProcedure {
+public class GlaiveHerobrineOnDeathProcedure {
 
     public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, Entity entity) {
         if (entity != null) {
             if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("§5Shadow Herobrine§r has been destroyed."), false);
+                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("The clone has been destroyed, data has been transmitted to the terminal."), false);
             }
             new DelayedTask(20) {
                 public void run() {
@@ -48,7 +48,7 @@ public class DarkHerobrineOnDeathProcedure {
                     if (levelaccessor1 instanceof Level) {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
-                            itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack((ItemLike)AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()));
+                            itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack((ItemLike)AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()));
                             itementity.setPickUpDelay(10);
                             level.addFreshEntity(itementity);
                         }
@@ -58,7 +58,7 @@ public class DarkHerobrineOnDeathProcedure {
                     if (levelaccessor1 instanceof Level) {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
-                            itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack((ItemLike)AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()));
+                            itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack((ItemLike)AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()));
                             itementity.setPickUpDelay(10);
                             level.addFreshEntity(itementity);
                         }
@@ -138,7 +138,7 @@ public class DarkHerobrineOnDeathProcedure {
                     if (levelaccessor1 instanceof Level) {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
-                            itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack((ItemLike) AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get()));
+                            itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack((ItemLike) AnnoyingVillagersModItems.ENDER_GLAIVE.get()));
                             itementity.setPickUpDelay(10);
                             level.addFreshEntity(itementity);
                         }

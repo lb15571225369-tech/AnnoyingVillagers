@@ -51,8 +51,6 @@ public class Herobrine3Entity extends Monster {
         this.setMaxUpStep(3.0F);
         this.xpReward = 50;
         this.setNoAi(false);
-        this.setCustomName(Component.literal("§5Herobrine§r"));
-        this.setCustomNameVisible(true);
         this.setPersistenceRequired();
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.OBSIDIAN_WEAPON.get()));
         this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Blocks.AIR));
@@ -115,7 +113,7 @@ public class Herobrine3Entity extends Monster {
 
     public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
         super.awardKillScore(entity, i, damagesource);
-        HerobrineTransfromProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), entity);
+        HerobrineTransfromProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), entity, this);
     }
 
     public void baseTick() {
@@ -130,9 +128,8 @@ public class Herobrine3Entity extends Monster {
 
     public static void init() {
         SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.HEROBRINE_3.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
-            return serverlevelaccessor.getRawBrightness(blockpos, 0) > 8;
+            return serverlevelaccessor.getRawBrightness(blockpos, 0) <= 8;
         });
-        DungeonHooks.addDungeonMob((EntityType) AnnoyingVillagersModEntities.HEROBRINE_3.get(), 180);
     }
 
     public static Builder createAttributes() {

@@ -1,33 +1,16 @@
 package com.pla.annoyingvillagers.procedures;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.entity.DarkOBFarEntity;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.util.DelayedTask;
-import net.minecraft.client.Minecraft;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.registries.ForgeRegistries;
-
-import java.util.*;
 
 public class Herobrine2DieProcedure {
     public static void execute(LevelAccessor world, double x, double y, double z, Entity sourceEntity, Entity targetEntity) {
@@ -35,43 +18,6 @@ public class Herobrine2DieProcedure {
 
         if (!world.isClientSide() && world.getServer() != null) {
             world.getServer().getPlayerList().broadcastSystemMessage(Component.literal("The clone has been destroyed, data has been transmitted to the terminal."), false);
-        }
-
-        if (!sourceEntity.level().isClientSide() && sourceEntity.getServer() != null) {
-            try {
-                sourceEntity.getServer().getCommands().getDispatcher().execute(
-                        "tag @a remove aim",
-                        sourceEntity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-                );
-            } catch (CommandSyntaxException e) {
-                
-            }
-        }
-
-        if (sourceEntity.isVehicle() && sourceEntity.getType() == EntityType.PLAYER) {
-            for (Entity passenger : new ArrayList<>(sourceEntity.getPassengers())) {
-                if (isSpectatorGamemode(passenger)) {
-                    try {
-                        passenger.getServer().getCommands().getDispatcher().execute(
-                                "tag @s remove sp",
-                                passenger.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-                        );
-                    } catch (CommandSyntaxException e) {
-                        
-                    }
-
-                    transferArmor(sourceEntity, passenger);
-
-                    passenger.stopRiding();
-                    if (passenger instanceof ServerPlayer sp) {
-                        sp.setGameMode(GameType.SURVIVAL);
-                    }
-                }
-            }
-        }
-
-        for (int i = 0; i < 8; i++) {
-            spawnProjectile(world, sourceEntity, 5.0F, i >= 6 ? randomFloat(0.1F, 2.0F) : 1.0F);
         }
         
         new DelayedTask(20) {
@@ -88,36 +34,6 @@ public class Herobrine2DieProcedure {
                 living.addEffect(new MobEffectInstance(MobEffects.WITHER, 9999, 3, false, false));
             }
         }
-    }
-
-    private static void transferArmor(Entity from, Entity to) {
-        if (!(from instanceof LivingEntity fromLiving)) return;
-
-        for (EquipmentSlot slot : EquipmentSlot.values()) {
-            if (slot.getType() != EquipmentSlot.Type.ARMOR) continue;
-            ItemStack armor = fromLiving.getItemBySlot(slot);
-            if (to instanceof Player player) {
-                player.getInventory().armor.set(3 - slot.getIndex(), armor); // 0 = boots, 1 = legs, 2 = chest, 3 = head
-                player.getInventory().setChanged();
-            } else if (to instanceof LivingEntity living) {
-                living.setItemSlot(slot, armor);
-            }
-        }
-    }
-
-    private static void spawnProjectile(LevelAccessor world, Entity owner, float damage, float speed) {
-        if (!(world instanceof Level level) || level.isClientSide()) return;
-
-        DarkOBFarEntity projectile = new DarkOBFarEntity(AnnoyingVillagersModEntities.DARK_OB_FAR.get(), level);
-        projectile.setOwner(owner);
-        projectile.setBaseDamage(damage);
-        projectile.setKnockback(0);
-        projectile.setSilent(true);
-
-        projectile.setPos(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
-        projectile.shoot(owner.getLookAngle().x, owner.getLookAngle().y, owner.getLookAngle().z, speed, 1.0F);
-
-        level.addFreshEntity(projectile);
     }
 
     private static void dropLoot(LevelAccessor world, double x, double y, double z) {
@@ -137,19 +53,5 @@ public class Herobrine2DieProcedure {
             entity.setPickUpDelay(10);
             level.addFreshEntity(entity);
         }
-    }
-
-    private static boolean isSpectatorGamemode(Entity entity) {
-        if (entity instanceof ServerPlayer sp) {
-            return sp.gameMode.getGameModeForPlayer() == GameType.SPECTATOR;
-        } else if (entity instanceof Player player && entity.level().isClientSide()) {
-            var info = Minecraft.getInstance().getConnection().getPlayerInfo(player.getGameProfile().getId());
-            return info != null && info.getGameMode() == GameType.SPECTATOR;
-        }
-        return false;
-    }
-
-    private static float randomFloat(float min, float max) {
-        return (float) (Math.random() * (max - min) + min);
     }
 }

@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.entity;
 import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.util.CommonGoals;
@@ -17,28 +18,13 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
@@ -47,7 +33,7 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import se.gory_moon.player_mobs.entity.PlayerMobEntity;
+import se.gory_moon.player_mobs.utils.NameManager;
 
 @EventBusSubscriber
 public class Herobrine2Entity extends Monster {
@@ -60,8 +46,6 @@ public class Herobrine2Entity extends Monster {
         this.setMaxUpStep(0.7F);
         this.xpReward = 300;
         this.setNoAi(false);
-        this.setCustomName(Component.literal("§5Dark Herobrine§r"));
-        this.setCustomNameVisible(true);
         this.setPersistenceRequired();
     }
 
@@ -100,12 +84,11 @@ public class Herobrine2Entity extends Monster {
     }
 
     public boolean causeFallDamage(float f, float f1, DamageSource damagesource) {
-        HerobrineWhenEntityFallsProcedure.execute();
         return super.causeFallDamage(f, f1, damagesource);
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        HerobrineOnHurtProcedure.execute(this);
+        Herobrine1OnHurtProcedure.execute(this);
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;
         if (damagesource.is(DamageTypes.WITHER)) return false;
@@ -116,54 +99,48 @@ public class Herobrine2Entity extends Monster {
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
-        Herobrine2DieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
-        if (this.level() instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-            ServerLevel serverlevel = (ServerLevel)levelaccessor;
-            DarkHerobrineDeadEntity deadEntity = new DarkHerobrineDeadEntity((EntityType) AnnoyingVillagersModEntities.DARK_HEROBRINE_DEAD.get(), serverlevel);
-
-            deadEntity.moveTo(this.getX(), this.getY(), this.getZ(), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-            if (deadEntity instanceof Mob) {
-                Mob mob = (Mob)deadEntity;
-
-                mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+        if (this.level() instanceof ServerLevel serverLevel) {
+            InfectedPlayerMobEntity corpse = new InfectedPlayerMobEntity(AnnoyingVillagersModEntities.INFECTED_PLAYER_MOB.get(), serverLevel);
+            corpse.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
+            String killedName = this.getPersistentData().getString("killed_name");
+            corpse.getPersistentData().putString("possessed_by", "herobrine_2");
+            if (killedName.isEmpty()) {
+                killedName = String.valueOf(NameManager.INSTANCE.getRandomName());
             }
+            corpse.setUsername(killedName);
+            corpse.setCustomName(Component.literal(killedName));
+            corpse.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()),
+                    MobSpawnType.MOB_SUMMONED, null, null);
+            this.setInvisible(true);
             this.remove(RemovalReason.KILLED);
-            levelaccessor.addFreshEntity(deadEntity);
-            try {
-                deadEntity.getServer().getCommands().getDispatcher().execute(
-                        "kill @s",
-                        deadEntity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
-            }
+            corpse.setItemSlot(EquipmentSlot.HEAD, this.getItemBySlot(EquipmentSlot.HEAD).copy());
+            corpse.setItemSlot(EquipmentSlot.CHEST, this.getItemBySlot(EquipmentSlot.CHEST).copy());
+            corpse.setItemSlot(EquipmentSlot.LEGS, this.getItemBySlot(EquipmentSlot.LEGS).copy());
+            corpse.setItemSlot(EquipmentSlot.FEET, this.getItemBySlot(EquipmentSlot.FEET).copy());
+            serverLevel.addFreshEntity(corpse);
         }
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
 
-        HerobrineOnInitialSpawnProcedure.execute(serverlevelaccessor, this);
+        Herobrine1OnInitialSpawnProcedure.execute(serverlevelaccessor, this);
         return spawngroupdata1;
     }
 
     public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
         super.awardKillScore(entity, i, damagesource);
-        if (random.nextFloat() < AnnoyingVillagersConfig.HEROBRINE_POSSESS_RATE.get().floatValue()) {
-            Herobrine2OnAwardKillScoreProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), entity);
-        }
+        HerobrineTransfromProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), entity, this);
     }
 
     public void baseTick() {
         super.baseTick();
-        HerobrineOnEntityTickUpdateProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        Herobrine1OnEntityTickUpdateProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
     public static void init() {
         SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.HEROBRINE_2.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
-            int i = blockpos.getX();
-            int j = blockpos.getY();
-            int k = blockpos.getZ();
-
-            return HerobrineNaturalSpawnProcedure.execute(serverlevelaccessor, (double) i, (double) j, (double) k);
+            return serverlevelaccessor.getRawBrightness(blockpos, 0) <= 8;
         });
     }
 

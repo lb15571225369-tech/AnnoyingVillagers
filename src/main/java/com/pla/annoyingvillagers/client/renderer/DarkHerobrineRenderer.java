@@ -1,7 +1,7 @@
 package com.pla.annoyingvillagers.client.renderer;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.entity.DarkHerobrineEntity;
+import com.pla.annoyingvillagers.entity.ShadowHerobrineEntity;
 import com.pla.annoyingvillagers.procedures.HerobrineLowProcedure;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.resources.ResourceLocation;
 
-public class DarkHerobrineRenderer extends HumanoidMobRenderer<DarkHerobrineEntity, HumanoidModel<DarkHerobrineEntity>> {
+public class DarkHerobrineRenderer extends HumanoidMobRenderer<ShadowHerobrineEntity, HumanoidModel<ShadowHerobrineEntity>> {
 
     public DarkHerobrineRenderer(Context context) {
         super(context, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER)), 0.5F);
@@ -21,11 +21,11 @@ public class DarkHerobrineRenderer extends HumanoidMobRenderer<DarkHerobrineEnti
                 context.getModelManager()));
     }
 
-    public ResourceLocation getTextureLocation(DarkHerobrineEntity darkHerobrineEntity) {
+    public ResourceLocation getTextureLocation(ShadowHerobrineEntity darkHerobrineEntity) {
         return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/herobrine_2.png");
     }
 
-    protected boolean isShaking(DarkHerobrineEntity darkHerobrineEntity) {
+    protected boolean isShaking(ShadowHerobrineEntity darkHerobrineEntity) {
         return HerobrineLowProcedure.execute(darkHerobrineEntity);
     }
 }

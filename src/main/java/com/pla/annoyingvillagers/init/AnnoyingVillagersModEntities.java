@@ -40,6 +40,7 @@ public class AnnoyingVillagersModEntities {
     public static final RegistryObject<EntityType<Steve2Entity>> STEVE_2 = register("steve_2", Builder.<Steve2Entity>of(Steve2Entity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(Steve2Entity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<AngrySteveEntity>> ANGRY_STEVE = register("angry_steve", Builder.<AngrySteveEntity>of(AngrySteveEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(AngrySteveEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<InfectedTheMostMoistBurrit0Entity>> INFECTED_THEMOSTMOISTBURRIT0 = register("infected_the_moi_moist_burrit0", Builder.<InfectedTheMostMoistBurrit0Entity>of(InfectedTheMostMoistBurrit0Entity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(InfectedTheMostMoistBurrit0Entity::new).sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<InfectedPlayerMobEntity>> INFECTED_PLAYER_MOB = register("infected_player_mob", Builder.<InfectedPlayerMobEntity>of(InfectedPlayerMobEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(InfectedPlayerMobEntity::new).sized(0.6F, 1.8F));
 
     public static final RegistryObject<EntityType<StealthAttackEntity>> STEALTH_ATTACK_PROJECTILE = register("projectile_yinshen", Builder.<StealthAttackEntity>of(StealthAttackEntity::new, MobCategory.MISC).setCustomClientFactory(StealthAttackEntity::new).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).sized(0.5F, 0.5F));
     public static final RegistryObject<EntityType<EnchantedEnderPearlEntity>> ENCHANTED_ENDER_PEARL_PROJECTILE = register("projectile_enchanted_ender_pearl", Builder.<EnchantedEnderPearlEntity>of(EnchantedEnderPearlEntity::new, MobCategory.MISC).setCustomClientFactory(EnchantedEnderPearlEntity::new).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).sized(0.5F, 0.5F));
@@ -53,7 +54,8 @@ public class AnnoyingVillagersModEntities {
     public static final RegistryObject<EntityType<Herobrine3Entity>> HEROBRINE_3 = register("herobrine_3", Builder.<Herobrine3Entity>of(Herobrine3Entity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(Herobrine3Entity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<Herobrine7Entity>> HEROBRINE_7 = register("herobrine_7", Builder.<Herobrine7Entity>of(Herobrine7Entity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(Herobrine7Entity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<ArmoredHerobrineEntity>> ARMORED_HEROBRINE = register("armored_herobrine", Builder.<ArmoredHerobrineEntity>of(ArmoredHerobrineEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(ArmoredHerobrineEntity::new).fireImmune().sized(0.6F, 1.8F));
-    public static final RegistryObject<EntityType<DarkHerobrineEntity>> DARK_HEROBRINE = register("dark_herobrine", Builder.<DarkHerobrineEntity>of(DarkHerobrineEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(DarkHerobrineEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<ShadowHerobrineEntity>> SHADOW_HEROBRINE = register("shadow_herobrine", Builder.<ShadowHerobrineEntity>of(ShadowHerobrineEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(ShadowHerobrineEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<GlaiveHerobrineEntity>> GLAIVE_HEROBRINE = register("glaive_herobrine", Builder.<GlaiveHerobrineEntity>of(GlaiveHerobrineEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(GlaiveHerobrineEntity::new).fireImmune().sized(0.6F, 1.8F));
 
     public static final RegistryObject<EntityType<SummonPortalEntity>> SUMMON_PORTAL = register("summon_portal", Builder.<SummonPortalEntity>of(SummonPortalEntity::new, MobCategory.MISC).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(SummonPortalEntity::new).fireImmune().sized(3.0F, 0.01F));
 
@@ -69,7 +71,7 @@ public class AnnoyingVillagersModEntities {
     public static final RegistryObject<EntityType<PurpleVillagerGeneralDeadEntity>> PURPLE_VILLAGER_GENERAL_DEAD = register("purple_villager_general_dead", Builder.<PurpleVillagerGeneralDeadEntity>of(PurpleVillagerGeneralDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(PurpleVillagerGeneralDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<BlueDemonDeadEntity>> BLUE_DEMON_DEAD = register("blue_demon_dead", Builder.<BlueDemonDeadEntity>of(BlueDemonDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(BlueDemonDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<HerobrineDeadEntity>> HEROBRINE_DEAD = register("herobrine_dead", Builder.<HerobrineDeadEntity>of(HerobrineDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(HerobrineDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
-    public static final RegistryObject<EntityType<DarkHerobrineDeadEntity>> DARK_HEROBRINE_DEAD = register("dark_herobrine_dead", Builder.<DarkHerobrineDeadEntity>of(DarkHerobrineDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(DarkHerobrineDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<ShadowHerobrineDeadEntity>> SHADOW_HEROBRINE_DEAD = register("shadow_herobrine_dead", Builder.<ShadowHerobrineDeadEntity>of(ShadowHerobrineDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(ShadowHerobrineDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<PlayerMobDeadEntity>> PLAYER_MOB_DEAD = register("player_mob_dead", Builder.<PlayerMobDeadEntity>of(PlayerMobDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(PlayerMobDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<InfectedTheMostMoistBurrit0DeadEntity>> INFECTED_THEMOSTMOISTBURRIT0_DEAD = register("infected_the_moi_moist_burrit0_dead", Builder.<InfectedTheMostMoistBurrit0DeadEntity>of(InfectedTheMostMoistBurrit0DeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(InfectedTheMostMoistBurrit0DeadEntity::new).fireImmune().sized(0.6F, 1.8F));
 
@@ -116,14 +118,16 @@ public class AnnoyingVillagersModEntities {
             PurpleVillagerGeneralDeadEntity.init();
             BlueDemonDeadEntity.init();
             HerobrineDeadEntity.init();
-            DarkHerobrineDeadEntity.init();
+            ShadowHerobrineDeadEntity.init();
             PlayerMobDeadEntity.init();
             Herobrine7Entity.init();
             ArmoredHerobrineEntity.init();
             InfectedTheMostMoistBurrit0Entity.init();
             InfectedTheMostMoistBurrit0DeadEntity.init();
-            DarkHerobrineEntity.init();
+            ShadowHerobrineEntity.init();
             SummonPortalEntity.init();
+            GlaiveHerobrineEntity.init();
+            InfectedPlayerMobEntity.init();
         });
     }
 
@@ -165,11 +169,13 @@ public class AnnoyingVillagersModEntities {
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.PURPLE_VILLAGER_GENERAL_DEAD.get(), AngrySteveEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.BLUE_DEMON_DEAD.get(), AngrySteveEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.HEROBRINE_DEAD.get(), AngrySteveEntity.createAttributes().build());
-        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.DARK_HEROBRINE_DEAD.get(), AngrySteveEntity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.SHADOW_HEROBRINE_DEAD.get(), AngrySteveEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.PLAYER_MOB_DEAD.get(), PlayerMobDeadEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.INFECTED_THEMOSTMOISTBURRIT0.get(), InfectedTheMostMoistBurrit0Entity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.INFECTED_THEMOSTMOISTBURRIT0_DEAD.get(), InfectedTheMostMoistBurrit0DeadEntity.createAttributes().build());
-        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.DARK_HEROBRINE.get(), DarkHerobrineEntity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.SHADOW_HEROBRINE.get(), ShadowHerobrineEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.SUMMON_PORTAL.get(), SummonPortalEntity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.GLAIVE_HEROBRINE.get(), GlaiveHerobrineEntity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.INFECTED_PLAYER_MOB.get(), InfectedPlayerMobEntity.createAttributes().build());
     }
 }
