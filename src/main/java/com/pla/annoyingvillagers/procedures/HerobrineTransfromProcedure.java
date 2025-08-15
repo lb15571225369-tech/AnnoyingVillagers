@@ -5,9 +5,11 @@ import com.pla.annoyingvillagers.entity.Herobrine1Entity;
 import com.pla.annoyingvillagers.entity.Herobrine2Entity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.registries.ForgeRegistries;
+import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
 import java.util.Random;
 
@@ -42,12 +44,10 @@ public class HerobrineTransfromProcedure {
                 possessed.setItemSlot(EquipmentSlot.LEGS, victim.getItemBySlot(EquipmentSlot.LEGS).copy());
                 possessed.setItemSlot(EquipmentSlot.FEET, victim.getItemBySlot(EquipmentSlot.FEET).copy());
             }
-            if (possessed instanceof Mob) {
-                Mob mob = (Mob) possessed;
-                mob.finalizeSpawn(serverLevel, world.getCurrentDifficultyAt(possessed.blockPosition()),
-                        MobSpawnType.MOB_SUMMONED, null, null);
-            }
-            entity.discard();
+            Mob mob = (Mob) possessed;
+            mob.finalizeSpawn(serverLevel, world.getCurrentDifficultyAt(possessed.blockPosition()),
+                    MobSpawnType.MOB_SUMMONED, null, null);
+            entity.getPersistentData().putBoolean("die_by_possess", true);
             serverLevel.addFreshEntity(possessed);
         }
     }

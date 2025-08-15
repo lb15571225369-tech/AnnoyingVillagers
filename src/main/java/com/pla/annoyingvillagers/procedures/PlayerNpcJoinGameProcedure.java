@@ -13,8 +13,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
@@ -25,7 +23,6 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.registries.ForgeRegistries;
-import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
 import java.util.List;
 
@@ -70,12 +67,6 @@ public class PlayerNpcJoinGameProcedure {
                 }
 
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
-                    try {
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                "team modify villagers friendlyFire false",
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                    } catch (CommandSyntaxException e) {
-                    }
                     try {
                         entity.getServer().getCommands().getDispatcher().execute(
                                 "data merge entity @s {CanPickUpLoot: 1b}",
@@ -214,14 +205,6 @@ public class PlayerNpcJoinGameProcedure {
                 } catch (CommandSyntaxException e) {
                     
                 }
-            }
-
-            if ((entity instanceof Monster monster) && !entity.level().isClientSide() && entity.getServer() != null) {
-                monster.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(
-                        monster,
-                        PlayerMobEntity.class,
-                        true
-                ));
             }
 
             if ((ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("guardvillagers:guard") || ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:iron_golem")) && !entity.level().isClientSide() && entity.getServer() != null) {

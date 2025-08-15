@@ -27,7 +27,10 @@ public class LivingEntityMixin {
             ResourceLocation entityTypeId = ForgeRegistries.ENTITY_TYPES.getKey(entity.getType());
 
             if (entityTypeId != null && entityTypeId.equals(new ResourceLocation("player_mobs", "player_mob"))) {
-                if (entity.level() instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
+                if (entity.getPersistentData().getBoolean("die_by_possess")) {
+                    entity.setInvisible(true);
+                    entity.remove(Entity.RemovalReason.KILLED);
+                } else if (entity.level() instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
                     PlayerMobDeadEntity corpse =  new PlayerMobDeadEntity(AnnoyingVillagersModEntities.PLAYER_MOB_DEAD.get(), levelaccessor);
                     corpse.moveTo(entity.getX(), entity.getY(), entity.getZ(), entity.getYRot(), entity.getXRot());
                     corpse.setUsername(entity.getUsername());

@@ -30,7 +30,6 @@ public class WoopieTheSwordItemOnUseProcedure {
 
                     if (entity instanceof LivingEntity) {
                         LivingEntity livingentity = (LivingEntity)entity;
-
                         itemstack1 = livingentity.getMainHandItem();
                     } else {
                         itemstack1 = ItemStack.EMPTY;
@@ -110,6 +109,7 @@ public class WoopieTheSwordItemOnUseProcedure {
                         }
 
                         if (itemstack1.getItem() == AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get()) {
+                            itemstack.getOrCreateTag().putDouble("woopie_dash", itemstack.getOrCreateTag().getDouble("woopie_dash") - 1.0D);
                             if (entity instanceof LivingEntity) {
                                 LivingEntity livingentity2 = (LivingEntity)entity;
 

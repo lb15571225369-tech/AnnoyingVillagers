@@ -18,7 +18,7 @@ public class CommonGoals {
         monster.getNavigation().getNodeEvaluator().setCanOpenDoors(true);
         monster.targetSelector.addGoal(1, new HurtByTargetGoal(monster, new Class[0]));
         monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, Player.class, true, false));
-        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, PlayerMobEntity.class, true, false));
+        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, PlayerMobEntity.class, true, (target) -> !(target instanceof InfectedPlayerMobEntity)));
         monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, SteveEntity.class, true, false));
         monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, Steve2Entity.class, true, false));
         monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, ChrisEntity.class, true, false));
