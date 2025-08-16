@@ -7,7 +7,7 @@ import com.mojang.math.Axis;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.client.model.ModelDemoniacVoltageReaverFragment;
 import com.pla.annoyingvillagers.client.model.Tidal_Tentacle_Claws_Model;
-import com.pla.annoyingvillagers.entity.Tidal_Tentacle_Entity;
+import com.pla.annoyingvillagers.entity.SnakeBladeEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
@@ -28,28 +28,28 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
-public class Tidal_Tentacle_Renderer extends EntityRenderer<Tidal_Tentacle_Entity> {
+public class SnakeBladeRenderer extends EntityRenderer<SnakeBladeEntity> {
     private static final ResourceLocation CLAW_TEXTURE =new ResourceLocation(AnnoyingVillagers.MODID,"textures/entities/tidal_tentacle_claws.png");
-    private static final ResourceLocation TENTACLE_TEXTURE =new ResourceLocation(AnnoyingVillagers.MODID,"textures/entities/fragment_chain.png");
+    private static final ResourceLocation FRAGMENT_CHAIN_TEXTURE =new ResourceLocation(AnnoyingVillagers.MODID,"textures/entities/fragment_chain.png");
     private static final Tidal_Tentacle_Claws_Model CLAW_MODEL = new Tidal_Tentacle_Claws_Model();
     private static ModelDemoniacVoltageReaverFragment tongueModel;
     public static final int MAX_NECK_SEGMENTS = 128;
 
 
-    public Tidal_Tentacle_Renderer(EntityRendererProvider.Context renderManagerIn) {
+    public SnakeBladeRenderer(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn);
         ModelPart root = renderManagerIn.bakeLayer(ModelDemoniacVoltageReaverFragment.LAYER_LOCATION);
         this.tongueModel = new ModelDemoniacVoltageReaverFragment<>(root);
     }
 
     @Override
-    public boolean shouldRender(Tidal_Tentacle_Entity entity, Frustum frustum, double x, double y, double z) {
+    public boolean shouldRender(SnakeBladeEntity entity, Frustum frustum, double x, double y, double z) {
         Entity next = entity.getFromEntity();
         return next != null && frustum.isVisible(entity.getBoundingBox().minmax(next.getBoundingBox())) || super.shouldRender(entity, frustum, x, y, z);
     }
 
     @Override
-    public void render(Tidal_Tentacle_Entity entity, float yaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int light) {
+    public void render(SnakeBladeEntity entity, float yaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int light) {
         super.render(entity, yaw, partialTicks, poseStack, buffer, light);
         poseStack.pushPose();
         Entity fromEntity = entity.getFromEntity();
@@ -58,13 +58,13 @@ public class Tidal_Tentacle_Renderer extends EntityRenderer<Tidal_Tentacle_Entit
         float z = (float)Mth.lerp(partialTicks, entity.zo, entity.getZ());
 
         if (fromEntity != null) {
-            float progress = (entity.prevProgress + (entity.getProgress() - entity.prevProgress) * partialTicks) / Tidal_Tentacle_Entity.MAX_EXTEND_TIME;
+            float progress = (entity.prevProgress + (entity.getProgress() - entity.prevProgress) * partialTicks) / SnakeBladeEntity.MAX_EXTEND_TIME;
             Vec3 distVec = getPositionOfPriorMob(entity, fromEntity, partialTicks).subtract(x, y, z);
             Vec3 to = distVec.scale(1F - progress);
             Vec3 from = distVec;
             int segmentCount = 0;
             Vec3 currentNeckButt = from;
-            VertexConsumer neckConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(TENTACLE_TEXTURE));
+            VertexConsumer neckConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(FRAGMENT_CHAIN_TEXTURE));
             double remainingDistance = to.distanceTo(from);
             while (segmentCount < MAX_NECK_SEGMENTS && remainingDistance > 0) {
                 remainingDistance = Math.min(from.distanceTo(to), 0.5F);
@@ -108,7 +108,7 @@ public class Tidal_Tentacle_Renderer extends EntityRenderer<Tidal_Tentacle_Entit
         poseStack.popPose();
     }
 
-    private Vec3 getPositionOfPriorMob(Tidal_Tentacle_Entity segment, Entity mob, float partialTicks){
+    private Vec3 getPositionOfPriorMob(SnakeBladeEntity segment, Entity mob, float partialTicks){
         double d4 = Mth.lerp(partialTicks, mob.xo, mob.getX());
         double d5 = Mth.lerp(partialTicks, mob.yo, mob.getY());
         double d6 = Mth.lerp(partialTicks, mob.zo, mob.getZ());
@@ -174,7 +174,7 @@ public class Tidal_Tentacle_Renderer extends EntityRenderer<Tidal_Tentacle_Entit
     }
 
     @Override
-    public ResourceLocation getTextureLocation(Tidal_Tentacle_Entity entity) {
+    public ResourceLocation getTextureLocation(SnakeBladeEntity entity) {
         return CLAW_TEXTURE;
     }
 

@@ -7,10 +7,9 @@ import java.util.UUID;
 
 import com.google.common.collect.Multimap;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.util.TidalTentacleUtil;
+import com.pla.annoyingvillagers.util.SnakeBladeHit;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -18,10 +17,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -30,7 +25,6 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -39,28 +33,28 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
 
-public class Tidal_Tentacle_Entity extends Entity {
+public class SnakeBladeEntity extends Entity {
 
-    private static final EntityDataAccessor<Optional<UUID>> CREATOR_ID = SynchedEntityData.defineId(Tidal_Tentacle_Entity.class, EntityDataSerializers.OPTIONAL_UUID);
-    private static final EntityDataAccessor<Integer> FROM_ID = SynchedEntityData.defineId(Tidal_Tentacle_Entity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> TARGET_COUNT = SynchedEntityData.defineId(Tidal_Tentacle_Entity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> CURRENT_TARGET_ID = SynchedEntityData.defineId(Tidal_Tentacle_Entity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Float> PROGRESS = SynchedEntityData.defineId(Tidal_Tentacle_Entity.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(Tidal_Tentacle_Entity.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Boolean> RETRACTING = SynchedEntityData.defineId(Tidal_Tentacle_Entity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> HAS_CLAW = SynchedEntityData.defineId(Tidal_Tentacle_Entity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Optional<UUID>> CREATOR_ID = SynchedEntityData.defineId(SnakeBladeEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Integer> FROM_ID = SynchedEntityData.defineId(SnakeBladeEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> TARGET_COUNT = SynchedEntityData.defineId(SnakeBladeEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> CURRENT_TARGET_ID = SynchedEntityData.defineId(SnakeBladeEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> PROGRESS = SynchedEntityData.defineId(SnakeBladeEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(SnakeBladeEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Boolean> RETRACTING = SynchedEntityData.defineId(SnakeBladeEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> HAS_CLAW = SynchedEntityData.defineId(SnakeBladeEntity.class, EntityDataSerializers.BOOLEAN);
 
     private List<Entity> previouslyTouched = new ArrayList<>();
     private boolean hasChained = false;
     public float prevProgress = 0;
     public static final float MAX_EXTEND_TIME = 5F;
 
-    public Tidal_Tentacle_Entity(EntityType<?> type, Level level) {
+    public SnakeBladeEntity(EntityType<?> type, Level level) {
         super(type, level);
     }
 
-    public Tidal_Tentacle_Entity(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        this(AnnoyingVillagersModEntities.TIDAL_TENTACLE.get(), world);
+    public SnakeBladeEntity(PlayMessages.SpawnEntity spawnEntity, Level world) {
+        this(AnnoyingVillagersModEntities.SNAKE_BLADE.get(), world);
     }
 
     @Override
@@ -100,8 +94,8 @@ public class Tidal_Tentacle_Entity extends Entity {
         }
         if(this.isRetracting() && progress == 0F){
             Entity from = this.getFromEntity();
-            if(from instanceof Tidal_Tentacle_Entity){
-                Tidal_Tentacle_Entity tendonSegment = (Tidal_Tentacle_Entity) from;
+            if(from instanceof SnakeBladeEntity){
+                SnakeBladeEntity tendonSegment = (SnakeBladeEntity) from;
                 tendonSegment.setRetracting(true);
                 updateLastTendon(tendonSegment);
             } else {
@@ -212,19 +206,19 @@ public class Tidal_Tentacle_Entity extends Entity {
         }
     }
 
-    private void updateLastTendon(Tidal_Tentacle_Entity lastTendon){
+    private void updateLastTendon(SnakeBladeEntity lastTendon){
         Entity creator = getCreatorEntity();
         if(creator == null){
             creator = level().getPlayerByUUID(this.getCreatorEntityUUID());
         }
         if(creator instanceof LivingEntity){
-            TidalTentacleUtil.setLastTentacle((LivingEntity)creator, lastTendon);
+            SnakeBladeHit.setLastFragment((LivingEntity)creator, lastTendon);
         }
     }
 
     private void createChain(Entity closestValid) {
         this.entityData.set(HAS_CLAW, false);
-        Tidal_Tentacle_Entity child = AnnoyingVillagersModEntities.TIDAL_TENTACLE.get().create(this.level());
+        SnakeBladeEntity child = AnnoyingVillagersModEntities.SNAKE_BLADE.get().create(this.level());
         child.previouslyTouched = new ArrayList<>(previouslyTouched);
         child.previouslyTouched.add(closestValid);
         child.setCreatorEntityUUID(this.getCreatorEntityUUID());
