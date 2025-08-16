@@ -41,12 +41,12 @@ public class SnakeBladeHit {
                     }
                 }
             }
-            return launchTendonsAt(playerIn, closestValid);
+            return launchTendonsAt(playerIn, closestValid, stack);
         }
         return false;
     }
 
-    public static boolean launchTendonsAt(LivingEntity playerIn, Entity closestValid) {
+    public static boolean launchTendonsAt(LivingEntity playerIn, Entity closestValid, ItemStack stack) {
         Level worldIn = playerIn.level();
         TidalTentacleCapability.ITentacleCapability tentacleCapability = AnnoyingVillagersModCapabilities.getCapability(playerIn, AnnoyingVillagersModCapabilities.TENTACLE_CAPABILITY);
         if (tentacleCapability != null) {

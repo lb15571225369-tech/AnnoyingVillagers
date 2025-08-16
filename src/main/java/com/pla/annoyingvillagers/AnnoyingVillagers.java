@@ -9,6 +9,7 @@ import com.pla.annoyingvillagers.gameasset.AVSkillDataKeys;
 import com.pla.annoyingvillagers.init.*;
 import com.pla.annoyingvillagers.network.TextboxSetMessage;
 import com.pla.annoyingvillagers.procedures.NpcGearLoadProcedure;
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -91,6 +92,18 @@ public class AnnoyingVillagers {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
+            event.enqueueWork(() -> {
+                ItemProperties.register(
+                        AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER_AWAKENED.get(),
+                        new ResourceLocation("snake_animation"),
+                        (stack, level, entity, seed) -> {
+                            if (stack.hasTag() && stack.getTag().getBoolean("SnakeAnimation")) {
+                                return 1.0F;
+                            }
+                            return 0.0F;
+                        }
+                );
+            });
         }
     }
 }

@@ -10,9 +10,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
 public class TidalTentacleUtil {
-
-
-
     public static void setLastTentacle(LivingEntity entity, Tidal_Tentacle_Entity tendon) {
         TidalTentacleCapability.ITentacleCapability TentacleCapability = AnnoyingVillagersModCapabilities.getCapability(entity, AnnoyingVillagersModCapabilities.TENTACLE_CAPABILITY);
         if (TentacleCapability != null) {

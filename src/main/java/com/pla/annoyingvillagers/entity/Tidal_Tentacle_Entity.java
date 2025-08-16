@@ -7,7 +7,9 @@ import java.util.UUID;
 
 import com.google.common.collect.Multimap;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.util.TidalTentacleUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -17,6 +19,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -27,6 +30,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -100,8 +104,14 @@ public class Tidal_Tentacle_Entity extends Entity {
                 Tidal_Tentacle_Entity tendonSegment = (Tidal_Tentacle_Entity) from;
                 tendonSegment.setRetracting(true);
                 updateLastTendon(tendonSegment);
-            }else{
+            } else {
                 updateLastTendon(null);
+                if (creator instanceof LivingEntity livingEntity) {
+                    ItemStack held = livingEntity.getMainHandItem();
+                    if (held.is(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER_AWAKENED.get())) {
+                        held.removeTagKey("SnakeAnimation");
+                    }
+                }
             }
 
             this.remove(RemovalReason.DISCARDED);

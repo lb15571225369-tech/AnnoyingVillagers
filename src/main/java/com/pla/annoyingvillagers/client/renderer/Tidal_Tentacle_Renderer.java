@@ -121,7 +121,7 @@ public class Tidal_Tentacle_Renderer extends EntityRenderer<Tidal_Tentacle_Entit
             int i = player.getMainArm() == HumanoidArm.RIGHT ? 1 : -1;
 
             ItemStack itemstack = player.getMainHandItem();
-            if (!itemstack.is(AnnoyingVillagersModItems.TIDAL_CLAWS.get())) {
+            if (!itemstack.is(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER_AWAKENED.get())) {
                 i = -i;
             }
             double d0 = (double) Mth.sin(f2);

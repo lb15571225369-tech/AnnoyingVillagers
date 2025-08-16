@@ -122,9 +122,6 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> DEMONIAC_VOLTAGE_REAVER_HILT = AnnoyingVillagersModItems.REGISTRY.register("demoniac_voltage_reaver_hilt", () -> {
         return new DemoniacVoltageReaverHiltItem();
     });
-    public static final RegistryObject<Item> TIDAL_CLAWS = AnnoyingVillagersModItems.REGISTRY.register("tidal_claws", () -> {
-        return new Tidal_Claws();
-    });
     // ------------------------------
 
     // Gems

@@ -90,7 +90,9 @@ public class DemoniacVoltageReaverSwitchToFirstFormProcedure {
                 }
             } else {
                 if (entity instanceof LivingEntity livingEntity) {
-                    SnakeBladeHit.process(itemStack, livingEntity);
+                    if (SnakeBladeHit.process(itemStack, livingEntity)) {
+                        itemStack.getOrCreateTag().putBoolean("SnakeAnimation", true);
+                    };
                 }
             }
         }

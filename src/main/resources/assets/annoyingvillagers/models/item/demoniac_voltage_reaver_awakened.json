@@ -6,5 +6,11 @@
     "4": "annoyingvillagers:block/sr1",
     "5": "annoyingvillagers:block/ptail",
     "particle": "annoyingvillager:item/srb"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": { "snake_animation": 1.0 },
+      "model": "annoyingvillagers:item/demoniac_voltage_reaver_snake"
+    }
+  ]
 }
