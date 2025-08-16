@@ -11,6 +11,7 @@ import com.pla.annoyingvillagers.network.TextboxSetMessage;
 import com.pla.annoyingvillagers.procedures.NpcGearLoadProcedure;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -55,6 +56,8 @@ public class AnnoyingVillagers {
         AnnoyingVillagersModEnchantments.REGISTRY.register(modEventBus);
         AnnoyingVillagersModMobEffects.REGISTRY.register(modEventBus);
         AnnoyingVillagersModParticleTypes.REGISTRY.register(modEventBus);
+        MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, AnnoyingVillagersModCapabilities::attachEntityCapability);
+        modEventBus.addListener(AnnoyingVillagersModCapabilities::registerCapabilities);
         AVSkillDataKeys.DATA_KEYS.register(modEventBus);
         AnnoyingVillagersModCreativeTabs.register(modEventBus);
         AnnoyingVillagersModBiomeModifiers.register(modEventBus);

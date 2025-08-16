@@ -78,8 +78,9 @@ dependencies {
     implementation fg.deobf("curse.maven:epic-fight-dual-axes-1174112:6421589")
     implementation fg.deobf("curse.maven:epicfight-resurrection-1151542:6637264")
     implementation fg.deobf("curse.maven:player-mobs-430513:5780869")
-    implementation fg.deobf("curse.maven:physics-mod-442735:5306442")
-//    implementation fg.deobf("curse.maven:jei-238222:6600311")
+    implementation fg.deobf("curse.maven:lionfish-api-1001614:5922047")
+//    implementation fg.deobf("curse.maven:physics-mod-442735:5306442")
+    implementation fg.deobf("curse.maven:jei-238222:6600311")
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 

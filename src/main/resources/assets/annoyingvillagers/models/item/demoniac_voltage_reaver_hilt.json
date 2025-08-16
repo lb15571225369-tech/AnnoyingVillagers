@@ -1,0 +1,7 @@
+{
+  "parent": "annoyingvillagers:custom/demoniac_voltage_reaver_hilt",
+  "textures": {
+    "0": "annoyingvillagers:block/srb",
+    "particle": "annoyingvillagers:item/srb"
+  }
+}

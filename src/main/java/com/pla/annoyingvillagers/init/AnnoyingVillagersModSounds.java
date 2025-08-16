@@ -68,6 +68,11 @@ public class AnnoyingVillagersModSounds {
     public static final RegistryObject<SoundEvent> L_G_W_U = register("l_g_w_u");
     public static final RegistryObject<SoundEvent> THROW = register("throw");
     public static final RegistryObject<SoundEvent> HEROBRINE_SPEAK = register("himsaydzlsddds");
+    public static final RegistryObject<SoundEvent> ENDER_SHOT = register("ender_shot");
+    public static final RegistryObject<SoundEvent> BLOOM = register("bloom");
+    public static final RegistryObject<SoundEvent> D_BREATH = register("dragon_breath");
+    public static final RegistryObject<SoundEvent> BIG_BLOOM = register("big_boom");
+    public static final RegistryObject<SoundEvent> D_BREATH_FINALE = register("end_sr");
 
     private static RegistryObject<SoundEvent> register(String name) {
         return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(AnnoyingVillagers.MODID, name)));

@@ -67,5 +67,6 @@ public class AnnoyingVillagersModEntityRenderers {
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.SUMMON_PORTAL.get(), SummonPortalRenderer::new);
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.GLAIVE_HEROBRINE.get(), GlaiveHerobrineRenderer::new);
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.REAPER_HEROBRINE.get(), ReaperHerobrineRenderer::new);
+        registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.TIDAL_TENTACLE.get(), Tidal_Tentacle_Renderer::new);
     }
 }

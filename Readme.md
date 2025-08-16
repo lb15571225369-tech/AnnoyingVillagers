@@ -393,3 +393,15 @@ LianyingfenshengEntity -> ReaperHerobrineEntity
 LIANYINGFENSHENG -> REAPER_HEROBRINE
 lianyingfensheng -> reaper_herobrine
 lianfu -> ender_slayer_scythe
+SHE_REN -> DEMONIAC_VOLTAGE_REAVER
+she_ren -> demoniac_voltage_reaver
+SheRenItem -> DemoniacVoltageReaverItem
+paoxiao -> dragon_breath
+SIFANGSHEREN -> DEMONIAC_VOLTAGE_REAVER_AWAKENED
+sifangsheren -> demoniac_voltage_reaver_awakened
+sherenjian -> demoniac_voltage_reaver_blade
+SHERENJIAN -> DEMONIAC_VOLTAGE_REAVER_BLADE
+sherensuipian -> demoniac_voltage_reaver_fragment
+SHERENSUIPIAN -> DEMONIAC_VOLTAGE_REAVER_FRAGMENT
+sherenjianbing -> demoniac_voltage_reaver_hilt
+SHERENJIANBING -> DEMONIAC_VOLTAGE_REAVER_HILT

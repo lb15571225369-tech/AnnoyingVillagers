@@ -1,0 +1,60 @@
+package com.pla.annoyingvillagers.util;
+
+import java.util.UUID;
+
+import com.pla.annoyingvillagers.capabilities.TidalTentacleCapability;
+import com.pla.annoyingvillagers.entity.Tidal_Tentacle_Entity;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModCapabilities;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
+
+public class TidalTentacleUtil {
+
+
+
+    public static void setLastTentacle(LivingEntity entity, Tidal_Tentacle_Entity tendon) {
+        TidalTentacleCapability.ITentacleCapability TentacleCapability = AnnoyingVillagersModCapabilities.getCapability(entity, AnnoyingVillagersModCapabilities.TENTACLE_CAPABILITY);
+        if (TentacleCapability != null) {
+            TentacleCapability.setHasTentacle(tendon != null);
+        }
+    }
+
+    public static void retractFarTentacles(Level level, LivingEntity livingEntity) {
+        Tidal_Tentacle_Entity last = getLastTendon(livingEntity);
+        if (last != null) {
+            last.remove(Entity.RemovalReason.DISCARDED);
+            setLastTentacle(livingEntity, null);
+        }
+    }
+
+    public static boolean canLaunchTentacles(Level level, LivingEntity livingEntity) {
+        Tidal_Tentacle_Entity last = getLastTendon(livingEntity);
+        if (last != null) {
+            return last.isRemoved();
+        }
+        return true;
+    }
+
+
+    public static Tidal_Tentacle_Entity getLastTendon(LivingEntity livingEntity) {
+        TidalTentacleCapability.ITentacleCapability TentacleCapability = AnnoyingVillagersModCapabilities.getCapability(livingEntity, AnnoyingVillagersModCapabilities.TENTACLE_CAPABILITY);
+        if (TentacleCapability != null) {
+            UUID uuid = TentacleCapability.getLastTentacleUUID();
+            int id = TentacleCapability.getLastTentacleID();
+            if (!livingEntity.level().isClientSide) {
+                if (uuid != null) {
+                    Entity e = livingEntity.level().getEntity(id);
+                    return e instanceof Tidal_Tentacle_Entity ? (Tidal_Tentacle_Entity) e : null;
+                }
+            } else {
+                if (id != -1) {
+                    Entity e = livingEntity.level().getEntity(id);
+                    return e instanceof Tidal_Tentacle_Entity ? (Tidal_Tentacle_Entity) e : null;
+                }
+            }
+            return null;
+        }
+        return null;
+    }
+}

@@ -534,5 +534,45 @@
         "stream": false
       }
     ]
+  },
+  "ender_shot": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:laser_blast",
+        "stream": false
+      }
+    ]
+  },
+  "bloom": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:neutralize_mobs",
+        "stream": false
+      }
+    ]
+  },
+  "dragon_breath": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:dragon_breath",
+        "stream": false
+      }
+    ]
+  },
+  "big_boom": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:neutralize_bosses",
+        "stream": false
+      }
+    ]
+  },
+  "end_sr": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:dragon_breath_finale",
+        "stream": false
+      }
+    ]
   }
 }

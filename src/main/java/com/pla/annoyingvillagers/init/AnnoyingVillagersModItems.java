@@ -113,14 +113,17 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> SHADOW_OBSIDIAN_STRAIGHT = AnnoyingVillagersModItems.REGISTRY.register("shadow_obsidian_straight", () -> {
         return new ShadowObsidianStraighttem();
     });
-    public static final RegistryObject<Item> SHADOW_OBSIDIAN_PILLAR = AnnoyingVillagersModItems.REGISTRY.register("shadow_obsidian_pillar", () -> {
-        return new ShadowObsidianPillarItem();
+    public static final RegistryObject<Item> DEMONIAC_VOLTAGE_REAVER_BLADE = AnnoyingVillagersModItems.REGISTRY.register("demoniac_voltage_reaver_blade", () -> {
+        return new DemoniacVoltageReaverBladeItem();
     });
-    public static final RegistryObject<Item> ENDER_GLAIVE = AnnoyingVillagersModItems.REGISTRY.register("ender_glaive", () -> {
-        return new EnderGlaiveItem();
+    public static final RegistryObject<Item> DEMONIAC_VOLTAGE_REAVER_FRAGMENT = AnnoyingVillagersModItems.REGISTRY.register("demoniac_voltage_reaver_fragment", () -> {
+        return new DemoniacVoltageReaverFragmentItem();
     });
-    public static final RegistryObject<Item> ENDER_SLAYER_SCYTHE = AnnoyingVillagersModItems.REGISTRY.register("ender_slayer_scythe", () -> {
-        return new EnderSlayerScythe();
+    public static final RegistryObject<Item> DEMONIAC_VOLTAGE_REAVER_HILT = AnnoyingVillagersModItems.REGISTRY.register("demoniac_voltage_reaver_hilt", () -> {
+        return new DemoniacVoltageReaverHiltItem();
+    });
+    public static final RegistryObject<Item> TIDAL_CLAWS = AnnoyingVillagersModItems.REGISTRY.register("tidal_claws", () -> {
+        return new Tidal_Claws();
     });
     // ------------------------------
 
@@ -268,6 +271,21 @@ public class AnnoyingVillagersModItems {
     });
     public static final RegistryObject<Item> PURPLE_GEM_LONG_SWORD = AnnoyingVillagersModItems.REGISTRY.register("purple_gem_long_sword", () -> {
         return new PurpleGemLongSwordItem();
+    });
+    public static final RegistryObject<Item> SHADOW_OBSIDIAN_PILLAR = AnnoyingVillagersModItems.REGISTRY.register("shadow_obsidian_pillar", () -> {
+        return new ShadowObsidianPillarItem();
+    });
+    public static final RegistryObject<Item> ENDER_GLAIVE = AnnoyingVillagersModItems.REGISTRY.register("ender_glaive", () -> {
+        return new EnderGlaiveItem();
+    });
+    public static final RegistryObject<Item> ENDER_SLAYER_SCYTHE = AnnoyingVillagersModItems.REGISTRY.register("ender_slayer_scythe", () -> {
+        return new EnderSlayerScythe();
+    });
+    public static final RegistryObject<Item> DEMONIAC_VOLTAGE_REAVER = AnnoyingVillagersModItems.REGISTRY.register("demoniac_voltage_reaver", () -> {
+        return new DemoniacVoltageReaverItem();
+    });
+    public static final RegistryObject<Item> DEMONIAC_VOLTAGE_REAVER_AWAKENED = AnnoyingVillagersModItems.REGISTRY.register("demoniac_voltage_reaver_awakened", () -> {
+        return new DemoniacVoltageReaverAwakenedItem();
     });
     // ------------------------------
 

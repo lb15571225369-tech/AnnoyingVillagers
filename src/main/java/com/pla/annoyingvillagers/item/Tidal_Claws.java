@@ -1,0 +1,149 @@
+package com.pla.annoyingvillagers.item;
+
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
+
+import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.entity.Tidal_Tentacle_Entity;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModCapabilities;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.capabilities.TidalTentacleCapability;
+import com.pla.annoyingvillagers.util.TidalTentacleUtil;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+
+public class Tidal_Claws extends Item {
+    private final Multimap<Attribute, AttributeModifier> ClawsAttributes;
+
+
+    public Tidal_Claws() {
+        super(new Properties());
+        ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 7.0D, AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -2.4F, AttributeModifier.Operation.ADDITION));
+        this.ClawsAttributes = builder.build();
+    }
+
+
+    public UseAnim getUseAnimation(ItemStack p_77661_1_) {
+        return UseAnim.BOW;
+    }
+
+    public int getUseDuration(ItemStack p_77626_1_) {
+        return 72000;
+    }
+
+
+    public boolean hurtEnemy(ItemStack stack, LivingEntity entity, LivingEntity player) {
+        launchTendonsAt(stack, player, entity);
+        return super.hurtEnemy(stack, entity, player);
+    }
+
+    private boolean isCharged(Player player, ItemStack stack){
+        return player.getAttackStrengthScale(0.5F) > 0.9F;
+    }
+
+    public boolean onLeftClick(ItemStack stack, LivingEntity playerIn) {
+        if(stack.is(AnnoyingVillagersModItems.TIDAL_CLAWS.get()) && (!(playerIn instanceof Player) || isCharged((Player)playerIn, stack))){
+            Level worldIn = playerIn.level();
+            Entity closestValid = null;
+            Vec3 playerEyes = playerIn.getEyePosition(1.0F);
+            HitResult hitresult = worldIn.clip(new ClipContext(playerEyes, playerEyes.add(playerIn.getLookAngle().scale(16.0D)), ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, playerIn));
+            if (hitresult instanceof EntityHitResult) {
+                Entity entity = ((EntityHitResult) hitresult).getEntity();
+                if (!entity.equals(playerIn) && !playerIn.isAlliedTo(entity) && !entity.isAlliedTo(playerIn) && entity instanceof Mob && playerIn.hasLineOfSight(entity)) {
+                    closestValid = entity;
+                }
+            } else {
+                for (Entity entity : worldIn.getEntitiesOfClass(LivingEntity.class, playerIn.getBoundingBox().inflate(16.0D))) {
+                    if (!entity.equals(playerIn) && !playerIn.isAlliedTo(entity) && !entity.isAlliedTo(playerIn) && entity instanceof Mob && playerIn.hasLineOfSight(entity)) {
+                        if (closestValid == null || playerIn.distanceTo(entity) < playerIn.distanceTo(closestValid)) {
+                            closestValid = entity;
+                        }
+                    }
+                }
+            }
+            return launchTendonsAt(stack, playerIn, closestValid);
+        }
+        return false;
+    }
+
+    public boolean launchTendonsAt(ItemStack stack, LivingEntity playerIn, Entity closestValid) {
+        Level worldIn = playerIn.level();
+        TidalTentacleCapability.ITentacleCapability tentacleCapability = AnnoyingVillagersModCapabilities.getCapability(playerIn, AnnoyingVillagersModCapabilities.TENTACLE_CAPABILITY);
+        if (tentacleCapability != null) {
+            if (TidalTentacleUtil.canLaunchTentacles(worldIn, playerIn)) {
+                TidalTentacleUtil.retractFarTentacles(worldIn, playerIn);
+                if (!worldIn.isClientSide) {
+                    if (closestValid != null) {
+                        Tidal_Tentacle_Entity segment = AnnoyingVillagersModEntities.TIDAL_TENTACLE.get().create(worldIn);
+                        segment.copyPosition(playerIn);
+                        worldIn.addFreshEntity(segment);
+                        segment.setCreatorEntityUUID(playerIn.getUUID());
+                        segment.setFromEntityID(playerIn.getId());
+                        segment.setToEntityID(closestValid.getId());
+                        segment.copyPosition(playerIn);
+                        segment.setProgress(0.0F);
+                        TidalTentacleUtil.setLastTentacle(playerIn, segment);
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player user, InteractionHand hand) {
+        boolean result = onLeftClick(user.getItemInHand(hand), user);
+        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: result is {}", result);
+        return super.use(level, user, hand);
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return true;
+    }
+
+    @Override
+    public int getEnchantmentValue() {
+        return 16;
+    }
+
+    public boolean canAttackBlock(BlockState state, Level worldIn, BlockPos pos, Player player) {
+        return !player.isCreative();
+    }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        return super.canApplyAtEnchantingTable(stack, enchantment) || enchantment.category != EnchantmentCategory.BREAKABLE && enchantment.category == EnchantmentCategory.WEAPON && enchantment != Enchantments.SWEEPING_EDGE;
+    }
+
+    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
+        return equipmentSlot == EquipmentSlot.MAINHAND ? this.ClawsAttributes : super.getDefaultAttributeModifiers(equipmentSlot);
+    }
+}

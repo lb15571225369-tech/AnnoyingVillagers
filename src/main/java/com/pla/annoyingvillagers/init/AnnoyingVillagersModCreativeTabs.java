@@ -44,6 +44,9 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.JEV_GLASSES.get());
                         pOutput.accept(AnnoyingVillagersModItems.JEV_BOOK.get());
                         pOutput.accept(AnnoyingVillagersModItems.JEV_PENCIL.get());
+                        pOutput.accept(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER_HILT.get());
+                        pOutput.accept(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER_FRAGMENT.get());
+                        pOutput.accept(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER_BLADE.get());
                         pOutput.accept(AnnoyingVillagersModItems.POISON_EGG_ITEM.get());
                         pOutput.accept(AnnoyingVillagersModItems.ENCHANTED_ENDER_PEARL.get());
                         pOutput.accept(AnnoyingVillagersModItems.CRAFTING_TABLE.get());
@@ -55,6 +58,7 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.BEDROCK_WEAPON.get());
                         pOutput.accept(AnnoyingVillagersModItems.ENDER_GLAIVE.get());
                         pOutput.accept(AnnoyingVillagersModItems.ENDER_SLAYER_SCYTHE.get());
+                        pOutput.accept(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER.get());
                         pOutput.accept(AnnoyingVillagersModItems.LEGENDARY_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.HARD_GREAT_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_SPEAR.get());
