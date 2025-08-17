@@ -3,5 +3,15 @@
   "textures": {
     "0": "annoyingvillagers:block/demoniac_voltage_reaver",
     "particle": "annoyingvillagers:item/demoniac_voltage_reaver"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": { "second_form": 1.0 },
+      "model": "annoyingvillagers:item/demoniac_voltage_reaver_awakened"
+    },
+    {
+      "predicate": { "snake_animation": 1.0 },
+      "model": "annoyingvillagers:item/demoniac_voltage_reaver_snake"
+    }
+  ]
 }

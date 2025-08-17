@@ -95,14 +95,14 @@ public class SnakeBladeEntity extends Entity {
         if(this.isRetracting() && progress == 0F){
             Entity from = this.getFromEntity();
             if(from instanceof SnakeBladeEntity){
-                SnakeBladeEntity tendonSegment = (SnakeBladeEntity) from;
-                tendonSegment.setRetracting(true);
-                updateLastTendon(tendonSegment);
+                SnakeBladeEntity snakeBladeFragment = (SnakeBladeEntity) from;
+                snakeBladeFragment.setRetracting(true);
+                updateLastFragment(snakeBladeFragment);
             } else {
-                updateLastTendon(null);
+                updateLastFragment(null);
                 if (creator instanceof LivingEntity livingEntity) {
                     ItemStack held = livingEntity.getMainHandItem();
-                    if (held.is(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER_AWAKENED.get())) {
+                    if (held.is(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER.get())) {
                         held.removeTagKey("SnakeAnimation");
                     }
                 }
@@ -206,7 +206,7 @@ public class SnakeBladeEntity extends Entity {
         }
     }
 
-    private void updateLastTendon(SnakeBladeEntity lastTendon){
+    private void updateLastFragment(SnakeBladeEntity lastTendon){
         Entity creator = getCreatorEntity();
         if(creator == null){
             creator = level().getPlayerByUUID(this.getCreatorEntityUUID());
@@ -226,7 +226,7 @@ public class SnakeBladeEntity extends Entity {
         child.setToEntityID(closestValid.getId());
         child.setPos(closestValid.getX(), closestValid.getY(0.4F), closestValid.getZ());
         child.setTargetsHit(this.getTargetsHit() + 1);
-        updateLastTendon(child);
+        updateLastFragment(child);
         this.level().addFreshEntity(child);
     }
 

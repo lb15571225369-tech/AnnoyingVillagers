@@ -94,7 +94,17 @@ public class AnnoyingVillagers {
         public static void onClientSetup(FMLClientSetupEvent event) {
             event.enqueueWork(() -> {
                 ItemProperties.register(
-                        AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER_AWAKENED.get(),
+                        AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER.get(),
+                        new ResourceLocation("second_form"),
+                        (stack, level, entity, seed) -> {
+                            if (stack.hasTag() && stack.getTag().getBoolean("SecondForm")) {
+                                return 1.0F;
+                            }
+                            return 0.0F;
+                        }
+                );
+                ItemProperties.register(
+                        AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER.get(),
                         new ResourceLocation("snake_animation"),
                         (stack, level, entity, seed) -> {
                             if (stack.hasTag() && stack.getTag().getBoolean("SnakeAnimation")) {

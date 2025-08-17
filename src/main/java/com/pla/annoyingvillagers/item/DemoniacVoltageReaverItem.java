@@ -2,10 +2,14 @@ package com.pla.annoyingvillagers.item;
 
 import java.util.List;
 
-import com.pla.annoyingvillagers.procedures.DemoniacVoltageReaverSwitchToSecondFormProcedure;
+import com.pla.annoyingvillagers.procedures.DemoniacVoltageReaverOnUseProcedure;
+import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
+import com.pla.annoyingvillagers.util.SnakeBladeHit;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
@@ -47,12 +51,28 @@ public class DemoniacVoltageReaverItem extends SwordItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {
         InteractionResultHolder<ItemStack> interactionresultholder = super.use(level, player, interactionhand);
 
-        DemoniacVoltageReaverSwitchToSecondFormProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player);
+        DemoniacVoltageReaverOnUseProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, player.getMainHandItem());
         return interactionresultholder;
+    }
+
+    @Override
+    public boolean hurtEnemy(ItemStack itemstack, LivingEntity pTarget, LivingEntity pAttacker) {
+        if (SnakeBladeHit.process(itemstack, pAttacker)) {
+//            itemstack.getOrCreateTag().putBoolean("SnakeAnimation", true);
+        }
+        return super.hurtEnemy(itemstack, pTarget, pAttacker);
     }
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal("§5One of Herobrine's legendary weapons, base form§r"));
+        list.add(Component.literal("§5One of Herobrine's legendary weapons, has two form§r"));
+    }
+
+    public void inventoryTick(ItemStack itemstack, Level level, Entity entity, int i, boolean flag) {
+        super.inventoryTick(itemstack, level, entity, i, flag);
+        if (flag && itemstack.getTag().getBoolean("SecondForm")) {
+            HerobrineWeaponEffectProcedure.execute(level, entity.getX(), entity.getY(), entity.getZ(), entity);
+        }
+
     }
 }

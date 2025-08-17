@@ -16,6 +16,7 @@ public class AnnoyingVillagersModModels {
         registerlayerdefinitions.registerLayerDefinition(ModelVillagerGeneralArmor.LAYER_LOCATION, ModelVillagerGeneralArmor::createBodyLayer);
         registerlayerdefinitions.registerLayerDefinition(ModelHerobrineObsidianDiamondHelmet.LAYER_LOCATION, ModelHerobrineObsidianDiamondHelmet::createBodyLayer);
         registerlayerdefinitions.registerLayerDefinition(ModelHerobrineObsidianDiamondChestplate.LAYER_LOCATION, ModelHerobrineObsidianDiamondChestplate::createBodyLayer);
-        registerlayerdefinitions.registerLayerDefinition(ModelDemoniacVoltageReaverFragment.LAYER_LOCATION, ModelDemoniacVoltageReaverFragment::createBodyLayer);
+        registerlayerdefinitions.registerLayerDefinition(ModelSnakeBladeFragment.LAYER_LOCATION, ModelSnakeBladeFragment::createBodyLayer);
+        registerlayerdefinitions.registerLayerDefinition(ModelSnakeBlade.LAYER_LOCATION, ModelSnakeBlade::createBodyLayer);
     }
 }

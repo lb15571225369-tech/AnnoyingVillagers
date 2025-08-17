@@ -2,8 +2,11 @@ package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -48,6 +51,13 @@ public class AddStarterSkillProcedure {
                         );
                     } catch (CommandSyntaxException e) {
                     }
+                }
+            }
+
+            if (entity instanceof LivingEntity livingEntity) {
+                ItemStack stack = livingEntity.getMainHandItem();
+                if (stack.equals(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER)){
+                    stack.removeTagKey("SnakeAnimation");
                 }
             }
 

@@ -281,9 +281,6 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> DEMONIAC_VOLTAGE_REAVER = AnnoyingVillagersModItems.REGISTRY.register("demoniac_voltage_reaver", () -> {
         return new DemoniacVoltageReaverItem();
     });
-    public static final RegistryObject<Item> DEMONIAC_VOLTAGE_REAVER_AWAKENED = AnnoyingVillagersModItems.REGISTRY.register("demoniac_voltage_reaver_awakened", () -> {
-        return new DemoniacVoltageReaverAwakenedItem();
-    });
     // ------------------------------
 
 

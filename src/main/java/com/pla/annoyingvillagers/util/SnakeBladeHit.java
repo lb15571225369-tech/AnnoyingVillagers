@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.util;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.capabilities.SnakeBladeCapability;
 import com.pla.annoyingvillagers.entity.SnakeBladeEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModCapabilities;
@@ -15,12 +16,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import yesman.epicfight.api.animation.Animator;
+import org.joml.Quaternionf;
 import yesman.epicfight.api.animation.Joint;
-import yesman.epicfight.api.animation.Pose;
-import yesman.epicfight.api.model.Armature;
+import yesman.epicfight.api.animation.JointTransform;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import net.minecraft.client.player.LocalPlayer;
+import yesman.epicfight.api.utils.math.OpenMatrix4f;
+import yesman.epicfight.api.utils.math.Vec3f;
+
 
 import java.util.UUID;
 
@@ -30,7 +34,7 @@ public class SnakeBladeHit {
     }
 
     public static boolean process(ItemStack stack, LivingEntity playerIn) {
-        if(stack.is(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER_AWAKENED.get()) && (!(playerIn instanceof Player) || isCharged((Player)playerIn))){
+        if(stack.is(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER.get()) && (!(playerIn instanceof Player) || isCharged((Player)playerIn))) {
             Level worldIn = playerIn.level();
             Entity closestValid = null;
             Vec3 playerEyes = playerIn.getEyePosition(1.0F);
@@ -121,6 +125,23 @@ public class SnakeBladeHit {
                 }
             }
             return null;
+        }
+        return null;
+    }
+
+    public static Vec3 getJointWithTranslation(Entity ent, Vec3f translation, Joint joint) {
+        LivingEntityPatch entitypatch = EpicFightCapabilities.getEntityPatch(ent, LivingEntityPatch.class);
+        if (entitypatch != null) {
+            float interpolation = 0.0F;
+            OpenMatrix4f transformMatrix;
+            transformMatrix = entitypatch.getArmature().getBindedTransformFor(entitypatch.getAnimator().getPose(interpolation), joint);
+            transformMatrix.translate(translation);
+            OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians((double) (((LivingEntity) entitypatch.getOriginal()).yBodyRotO + 180.0F))), new Vec3f(0.0F, 1.0F, 0.0F)), transformMatrix, transformMatrix);
+            return new Vec3(
+                    (double) transformMatrix.m30 + (entitypatch.getOriginal()).getX(),
+                    (double) transformMatrix.m31 + ((entitypatch.getOriginal()).getY() + (ent.getBbHeight() / 1.8) - 1),
+                    (double) transformMatrix.m32 + (entitypatch.getOriginal()).getZ()
+            );
         }
         return null;
     }

@@ -5,10 +5,11 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import com.mojang.math.Axis;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.client.model.ModelDemoniacVoltageReaverFragment;
-import com.pla.annoyingvillagers.client.model.Tidal_Tentacle_Claws_Model;
+import com.pla.annoyingvillagers.client.model.ModelSnakeBlade;
+import com.pla.annoyingvillagers.client.model.ModelSnakeBladeFragment;
 import com.pla.annoyingvillagers.entity.SnakeBladeEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.util.SnakeBladeHit;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -20,6 +21,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -27,19 +29,25 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+import yesman.epicfight.api.utils.math.Vec3f;
+import yesman.epicfight.gameasset.Armatures;
 
 public class SnakeBladeRenderer extends EntityRenderer<SnakeBladeEntity> {
-    private static final ResourceLocation CLAW_TEXTURE =new ResourceLocation(AnnoyingVillagers.MODID,"textures/entities/tidal_tentacle_claws.png");
+    private static final ResourceLocation SNAKE_BLADE_TEXTURE =new ResourceLocation(AnnoyingVillagers.MODID,"textures/entities/snake_blade.png");
     private static final ResourceLocation FRAGMENT_CHAIN_TEXTURE =new ResourceLocation(AnnoyingVillagers.MODID,"textures/entities/fragment_chain.png");
-    private static final Tidal_Tentacle_Claws_Model CLAW_MODEL = new Tidal_Tentacle_Claws_Model();
-    private static ModelDemoniacVoltageReaverFragment tongueModel;
+    private static ModelSnakeBlade snakeBladeModel;
+    private static ModelSnakeBladeFragment tongueModel;
     public static final int MAX_NECK_SEGMENTS = 128;
+    private static final float FRAG_LEN     = 0.6F;
+    private static final float HEAD_CLEAR   = 0.35F;
 
 
     public SnakeBladeRenderer(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn);
-        ModelPart root = renderManagerIn.bakeLayer(ModelDemoniacVoltageReaverFragment.LAYER_LOCATION);
-        this.tongueModel = new ModelDemoniacVoltageReaverFragment<>(root);
+        ModelPart fragRoot = renderManagerIn.bakeLayer(ModelSnakeBladeFragment.LAYER_LOCATION);
+        this.tongueModel = new ModelSnakeBladeFragment<>(fragRoot);
+        ModelPart bladeRoot = renderManagerIn.bakeLayer(ModelSnakeBlade.LAYER_LOCATION);
+        this.snakeBladeModel = new ModelSnakeBlade<>(bladeRoot);
     }
 
     @Override
@@ -49,8 +57,8 @@ public class SnakeBladeRenderer extends EntityRenderer<SnakeBladeEntity> {
     }
 
     @Override
-    public void render(SnakeBladeEntity entity, float yaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int light) {
-        super.render(entity, yaw, partialTicks, poseStack, buffer, light);
+    public void render(SnakeBladeEntity entity, float pEntityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int light) {
+        super.render(entity, pEntityYaw, partialTicks, poseStack, buffer, light);
         poseStack.pushPose();
         Entity fromEntity = entity.getFromEntity();
         float x = (float)Mth.lerp(partialTicks, entity.xo, entity.getX());
@@ -59,32 +67,54 @@ public class SnakeBladeRenderer extends EntityRenderer<SnakeBladeEntity> {
 
         if (fromEntity != null) {
             float progress = (entity.prevProgress + (entity.getProgress() - entity.prevProgress) * partialTicks) / SnakeBladeEntity.MAX_EXTEND_TIME;
-            Vec3 distVec = getPositionOfPriorMob(entity, fromEntity, partialTicks).subtract(x, y, z);
+            Vec3 distVec;
+
+            Vec3 swordPos = SnakeBladeHit.getJointWithTranslation(
+                    fromEntity,
+                    new Vec3f(0F, 0F, 0F),
+                    Armatures.BIPED.toolR
+            );
+
+            if (swordPos != null) {
+                distVec = swordPos.subtract(x, y + 1.2F, z);
+                Minecraft.getInstance().particleEngine.createParticle(ParticleTypes.ENCHANT, swordPos.x, swordPos.y, swordPos.z, entity.getDeltaMovement().x, entity.getDeltaMovement().y, entity.getDeltaMovement().z);
+            } else {
+                distVec = getPositionOfPriorMob(entity, fromEntity, partialTicks).subtract(x, y, z);
+            }
+
             Vec3 to = distVec.scale(1F - progress);
             Vec3 from = distVec;
             int segmentCount = 0;
             Vec3 currentNeckButt = from;
             VertexConsumer neckConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(FRAGMENT_CHAIN_TEXTURE));
-            double remainingDistance = to.distanceTo(from);
-            while (segmentCount < MAX_NECK_SEGMENTS && remainingDistance > 0) {
-                remainingDistance = Math.min(from.distanceTo(to), 0.5F);
-                Vec3 linearVec = to.subtract(currentNeckButt);
-                Vec3 powVec = new Vec3(modifyVecAngle(linearVec.x), modifyVecAngle(linearVec.y), modifyVecAngle(linearVec.z));
-                Vec3 smoothedVec = powVec;
-                Vec3 next = smoothedVec.normalize().scale(remainingDistance).add(currentNeckButt);
-                int neckLight = getLightColor(entity, to.add(currentNeckButt).add(x, y, z));
+            double distanceLeft = from.distanceTo(to);
+            double buildUpTo = Math.max(0.0, distanceLeft - HEAD_CLEAR);
+            while (segmentCount < MAX_NECK_SEGMENTS && buildUpTo > 1.0e-3) {
+                double step = Math.min(buildUpTo, FRAG_LEN);
+
+                Vec3 dir = to.subtract(currentNeckButt);
+                Vec3 next = dir.normalize().scale(step).add(currentNeckButt);
+
+                int neckLight = getLightColor(entity, next.add(x, y, z));
                 renderNeckCube(currentNeckButt, next, poseStack, neckConsumer, neckLight, OverlayTexture.NO_OVERLAY, 0);
+
                 currentNeckButt = next;
+                buildUpTo      -= step;
                 segmentCount++;
             }
-            VertexConsumer clawConsumer  = buffer.getBuffer(RenderType.entityCutoutNoCull(CLAW_TEXTURE));
-            if(entity.hasClaw() || entity.isRetracting()){
+            VertexConsumer clawConsumer  = buffer.getBuffer(RenderType.entityCutoutNoCull(SNAKE_BLADE_TEXTURE));
+            if (entity.hasClaw() || entity.isRetracting()) {
                 poseStack.pushPose();
                 poseStack.translate(to.x, to.y, to.z);
-                float rotY = (float) (Mth.atan2(to.x, to.z) * (double) (180F / (float) Math.PI));
-                float rotX = (float) (-(Mth.atan2(to.y, to.horizontalDistance()) * (double) (180F / (float) Math.PI)));
-                CLAW_MODEL.setAttributes(rotX, rotY);
-                CLAW_MODEL.renderToBuffer(poseStack, clawConsumer, getLightColor(entity, to.add(x, y, z)), OverlayTexture.NO_OVERLAY, 1, 1F, 1, 1F);
+
+                Vec3 headDir = to.subtract(currentNeckButt);
+                float rotY = (float)(Mth.atan2(headDir.x, headDir.z) * 180F / Math.PI);
+                float rotX = (float)(-Mth.atan2(headDir.y, headDir.horizontalDistance()) * 180F / Math.PI);
+                poseStack.mulPose(Axis.YP.rotationDegrees(rotY));
+                poseStack.mulPose(Axis.XP.rotationDegrees(rotX));
+
+                snakeBladeModel.renderToBuffer(poseStack, clawConsumer,
+                        getLightColor(entity, to.add(x, y, z)), OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
                 poseStack.popPose();
             }
         }
@@ -92,19 +122,17 @@ public class SnakeBladeRenderer extends EntityRenderer<SnakeBladeEntity> {
     }
 
     public static void renderNeckCube(Vec3 from, Vec3 to, PoseStack poseStack, VertexConsumer buffer, int packedLightIn, int overlayCoords, float additionalYaw) {
-        Vec3 sub = from.subtract(to);
-        double d = sub.horizontalDistance();
-        float rotY = (float) (Mth.atan2(sub.x, sub.z) * (double) (180F / (float) Math.PI));
-        float rotX = (float) (-(Mth.atan2(sub.y, d) * (double) (180F / (float) Math.PI))) - 90.0F;
+        Vec3 dir = to.subtract(from);
+
+        float yaw   = (float)(Mth.atan2(dir.x, dir.z) * (180F / Math.PI));
+        float pitch = (float)(-Mth.atan2(dir.y, dir.horizontalDistance()) * (180F / Math.PI));
+
         poseStack.pushPose();
         poseStack.translate(from.x, from.y, from.z);
+        poseStack.mulPose(Axis.YP.rotationDegrees(yaw + additionalYaw));
+        poseStack.mulPose(Axis.XP.rotationDegrees(pitch));
 
-        poseStack.mulPose(Axis.YP.rotationDegrees(rotY));
-        poseStack.mulPose(Axis.XP.rotationDegrees(rotX));
-
-        poseStack.mulPose(Axis.YP.rotationDegrees(180));
-        poseStack.mulPose(Axis.XP.rotationDegrees(210));
-        tongueModel.renderToBuffer(poseStack, buffer, packedLightIn, overlayCoords, 1, 1F, 1, 1);
+        tongueModel.renderToBuffer(poseStack, buffer, packedLightIn, overlayCoords, 1, 1, 1, 1);
         poseStack.popPose();
     }
 
@@ -121,7 +149,7 @@ public class SnakeBladeRenderer extends EntityRenderer<SnakeBladeEntity> {
             int i = player.getMainArm() == HumanoidArm.RIGHT ? 1 : -1;
 
             ItemStack itemstack = player.getMainHandItem();
-            if (!itemstack.is(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER_AWAKENED.get())) {
+            if (!itemstack.is(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER.get())) {
                 i = -i;
             }
             double d0 = (double) Mth.sin(f2);
@@ -175,7 +203,7 @@ public class SnakeBladeRenderer extends EntityRenderer<SnakeBladeEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(SnakeBladeEntity entity) {
-        return CLAW_TEXTURE;
+        return SNAKE_BLADE_TEXTURE;
     }
 
 }
