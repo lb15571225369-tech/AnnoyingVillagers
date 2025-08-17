@@ -18,10 +18,10 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -29,8 +29,6 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import yesman.epicfight.api.utils.math.Vec3f;
-import yesman.epicfight.gameasset.Armatures;
 
 public class SnakeBladeRenderer extends EntityRenderer<SnakeBladeEntity> {
     private static final ResourceLocation SNAKE_BLADE_TEXTURE =new ResourceLocation(AnnoyingVillagers.MODID,"textures/entities/snake_blade.png");
@@ -82,7 +80,17 @@ public class SnakeBladeRenderer extends EntityRenderer<SnakeBladeEntity> {
             Vec3 from = distVec;
             int segmentCount = 0;
             Vec3 currentNeckButt = from;
-            VertexConsumer neckConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(FRAGMENT_CHAIN_TEXTURE));
+            VertexConsumer neckConsumer;
+            if (entity.isEnchanted()) {
+                neckConsumer = ItemRenderer.getFoilBuffer(
+                        buffer,
+                        RenderType.entityCutoutNoCull(FRAGMENT_CHAIN_TEXTURE),
+                        true,
+                        true
+                );
+            } else {
+                neckConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(FRAGMENT_CHAIN_TEXTURE));
+            }
             double distanceLeft = from.distanceTo(to);
             double buildUpTo = Math.max(0.0, distanceLeft - HEAD_CLEAR);
             while (segmentCount < MAX_NECK_SEGMENTS && buildUpTo > 1.0e-3) {
@@ -98,7 +106,17 @@ public class SnakeBladeRenderer extends EntityRenderer<SnakeBladeEntity> {
                 buildUpTo      -= step;
                 segmentCount++;
             }
-            VertexConsumer clawConsumer  = buffer.getBuffer(RenderType.entityCutoutNoCull(SNAKE_BLADE_TEXTURE));
+            VertexConsumer clawConsumer;
+            if (entity.isEnchanted()) {
+                clawConsumer = ItemRenderer.getFoilBuffer(
+                        buffer,
+                        RenderType.entityCutoutNoCull(SNAKE_BLADE_TEXTURE),
+                        true,
+                        true
+                );
+            } else {
+                clawConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(SNAKE_BLADE_TEXTURE));
+            }
             if (entity.hasClaw() || entity.isRetracting()) {
                 poseStack.pushPose();
                 poseStack.translate(to.x, to.y, to.z);

@@ -96,7 +96,7 @@ public class DemoniacVoltageReaverOnUseProcedure {
             else {
                 if (entity instanceof LivingEntity livingEntity) {
                     if (itemStack.getTag().getBoolean("SecondForm")) {
-                        if (itemStack.getTag().getInt("HitCount") == 10) {
+                        if (itemStack.getTag().getInt("HitCount") == 5) {
                             if (SnakeBladeHit.process(itemStack, livingEntity)) {
                                 itemStack.getOrCreateTag().putBoolean("SnakeAnimation", true);
                                 itemStack.removeTagKey("HitCount");

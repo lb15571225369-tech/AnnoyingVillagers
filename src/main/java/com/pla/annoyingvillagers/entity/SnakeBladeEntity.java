@@ -12,7 +12,6 @@ import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
-import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.util.SnakeBladeHit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -55,11 +54,13 @@ public class SnakeBladeEntity extends Entity {
     private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(SnakeBladeEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> RETRACTING = SynchedEntityData.defineId(SnakeBladeEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> HAS_CLAW = SynchedEntityData.defineId(SnakeBladeEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> ENCHANTED = SynchedEntityData.defineId(SnakeBladeEntity.class, EntityDataSerializers.BOOLEAN);
 
     private List<Entity> previouslyTouched = new ArrayList<>();
     private boolean hasChained = false;
     public float prevProgress = 0;
     public static final float MAX_EXTEND_TIME = 5F;
+    private boolean retractionHandled = false;
 
     public SnakeBladeEntity(EntityType<?> type, Level level) {
         super(type, level);
@@ -84,6 +85,15 @@ public class SnakeBladeEntity extends Entity {
         this.entityData.define(DAMAGE, 3F);
         this.entityData.define(RETRACTING, false);
         this.entityData.define(HAS_CLAW, true);
+        this.entityData.define(ENCHANTED, false);
+    }
+
+    public void setEnchanted(boolean enchanted) {
+        this.entityData.set(ENCHANTED, enchanted);
+    }
+
+    public boolean isEnchanted() {
+        return this.entityData.get(ENCHANTED);
     }
 
     private float getBaseDamage() {
@@ -109,7 +119,8 @@ public class SnakeBladeEntity extends Entity {
         if(this.isRetracting() && progress > 0F){
             this.setProgress(progress - 1);
         }
-        if(this.isRetracting() && progress == 0F){
+        if(this.isRetracting() && progress == 0F && !retractionHandled){
+            retractionHandled = true;
             Entity from = this.getFromEntity();
             if(from instanceof SnakeBladeEntity){
                 SnakeBladeEntity snakeBladeFragment = (SnakeBladeEntity) from;
@@ -126,14 +137,17 @@ public class SnakeBladeEntity extends Entity {
             }
 
             this.remove(RemovalReason.DISCARDED);
+            AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: SnakeBladeEntity tick  progress == 0F is done!");
         }
         if (creator instanceof LivingEntity) {
+            AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: SnakeBladeEntity tick  creator instanceof LivingEntity called!");
             if (current != null) {
                 Vec3 target = new Vec3(current.getX(), current.getY(0.4F), current.getZ());
                 Vec3 lerp = target.subtract(this.position());
                 this.setDeltaMovement(lerp.scale(0.5F));
                 if(!this.level().isClientSide){
                     if(progress >= MAX_EXTEND_TIME){
+                        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: SnakeBladeEntity tick progress >= MAX_EXTEND_TIME called!");
                         if (this.tickCount % 2 == 0) {
                             Entity entity = getCreatorEntity();
                             if(entity instanceof LivingEntity) {
@@ -160,39 +174,28 @@ public class SnakeBladeEntity extends Entity {
                                     } else {
                                         this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "obsidian_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 1.0D), false);
                                     }
-                                    new DelayedTask(1) {
-                                        @Override
-                                        public void run() {
-                                            if (!current.level().isClientSide() && current.getServer() != null) {
-                                                try {
-                                                    current.getServer().getCommands().getDispatcher().execute(
-                                                            "indestructible @s play \"epicfight:biped/combat/hit_long\" 0 10",
-                                                            current.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                } catch (CommandSyntaxException e) {
+                                    if (!current.level().isClientSide() && current.getServer() != null) {
+                                        try {
+                                            current.getServer().getCommands().getDispatcher().execute(
+                                                    "indestructible @s play \"epicfight:biped/combat/hit_long\" 0 10",
+                                                    current.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                        } catch (CommandSyntaxException e) {
 
-                                                }
-                                            }
                                         }
-                                    };
-                                    if (Math.random() <= 0.3D) {
-                                        new DelayedTask(1) {
-                                            @Override
-                                            public void run() {
-                                                if (!current.level().isClientSide() && current.getServer() != null) {
-                                                    try {
-                                                        current.getServer().getCommands().getDispatcher().execute(
-                                                                "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10",
-                                                                current.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                    } catch (CommandSyntaxException e) {
+                                    }
+                                    if (!current.level().isClientSide() && current.getServer() != null) {
+                                        try {
+                                            current.getServer().getCommands().getDispatcher().execute(
+                                                    "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10",
+                                                    current.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                        } catch (CommandSyntaxException e) {
 
-                                                    }
-                                                }
-                                            }
-                                        };
+                                        }
                                     }
                                 }
                             }
                         }
+                        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: SnakeBladeEntity tick progress >= MAX_EXTEND_TIME done!");
                     }
                 }
             }
@@ -200,9 +203,12 @@ public class SnakeBladeEntity extends Entity {
         Vec3 vector3d = this.getDeltaMovement();
         if(!this.level().isClientSide){
             if(!hasChained){
+                AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: SnakeBladeEntity tick !hasChained is called!");
                 if(this.getTargetsHit() > 5){
                     this.setRetracting(true);
+                    AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: SnakeBladeEntity tick this.getTargetsHit() > 5 is called!");
                 }else if(creator instanceof LivingEntity && this.getProgress() >= MAX_EXTEND_TIME) {
+                    AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: SnakeBladeEntity tick }else if(creator instanceof LivingEntity && this.getProgress() >= MAX_EXTEND_TIME) { is called!");
                     Entity closestValid = null;
                     for (Entity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(12.0D))) {
                         if (!entity.equals(creator) && !previouslyTouched.contains(entity) && isValidTarget((LivingEntity) creator, entity) && this.hasLineOfSight(entity)) {
@@ -217,6 +223,7 @@ public class SnakeBladeEntity extends Entity {
                     }else{
                         this.setRetracting(true);
                     }
+                    AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: SnakeBladeEntity tick this.getTargetsHit() > 5 is done!");
                 }
             }
         }
@@ -355,13 +362,13 @@ public class SnakeBladeEntity extends Entity {
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag p_20052_) {
-
+    protected void readAdditionalSaveData(CompoundTag tag) {
+        tag.putBoolean("RetractionHandled", retractionHandled);
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag p_20139_) {
-
+    protected void addAdditionalSaveData(CompoundTag tag) {
+        retractionHandled = tag.getBoolean("RetractionHandled");
     }
 
     public boolean isCreator(Entity mob) {

@@ -16,13 +16,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Quaternionf;
 import yesman.epicfight.api.animation.Joint;
-import yesman.epicfight.api.animation.JointTransform;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
-import net.minecraft.client.player.LocalPlayer;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.api.utils.math.Vec3f;
 
@@ -61,14 +58,16 @@ public class SnakeBladeHit {
 
     public static boolean launchSnakeBladeAt(LivingEntity playerIn, Entity closestValid, ItemStack stack) {
         Level worldIn = playerIn.level();
-        SnakeBladeCapability.ISnakeBladeCapability tentacleCapability = AnnoyingVillagersModCapabilities.getCapability(playerIn, AnnoyingVillagersModCapabilities.SNAKE_BLADE_CAPABILITY);
-        if (tentacleCapability != null) {
+        SnakeBladeCapability.ISnakeBladeCapability snakeBladeCapability = AnnoyingVillagersModCapabilities.getCapability(playerIn, AnnoyingVillagersModCapabilities.SNAKE_BLADE_CAPABILITY);
+        if (snakeBladeCapability != null) {
             if (canLaunchTentacles(worldIn, playerIn)) {
                 retractFarFragments(worldIn, playerIn);
                 if (!worldIn.isClientSide) {
                     if (closestValid != null) {
                         SnakeBladeEntity segment = AnnoyingVillagersModEntities.SNAKE_BLADE.get().create(worldIn);
-
+                        if (segment != null && !stack.getAllEnchantments().isEmpty()) {
+                            segment.setEnchanted(true);
+                        }
                         segment.copyPosition(playerIn);
                         worldIn.addFreshEntity(segment);
                         segment.setCreatorEntityUUID(playerIn.getUUID());
@@ -110,39 +109,28 @@ public class SnakeBladeHit {
 
 
     public static SnakeBladeEntity getLastFragment(LivingEntity livingEntity) {
-        SnakeBladeCapability.ISnakeBladeCapability TentacleCapability = AnnoyingVillagersModCapabilities.getCapability(livingEntity, AnnoyingVillagersModCapabilities.SNAKE_BLADE_CAPABILITY);
-        if (TentacleCapability != null) {
-            UUID uuid = TentacleCapability.getLastSnakeBladeUUID();
-            int id = TentacleCapability.getLastSnakeBladeID();
+        SnakeBladeCapability.ISnakeBladeCapability snakeBladeCapability = AnnoyingVillagersModCapabilities.getCapability(livingEntity, AnnoyingVillagersModCapabilities.SNAKE_BLADE_CAPABILITY);
+        if (snakeBladeCapability != null) {
+            UUID uuid = snakeBladeCapability.getLastSnakeBladeUUID();
+            int id = snakeBladeCapability.getLastSnakeBladeID();
             if (!livingEntity.level().isClientSide) {
                 if (uuid != null) {
-                    Entity e = livingEntity.level().getEntity(id);
-                    return e instanceof SnakeBladeEntity ? (SnakeBladeEntity) e : null;
+                    Entity entity = livingEntity.level().getEntity(id);
+                    if (entity == null || !entity.isAlive() || !(entity instanceof SnakeBladeEntity)) {
+                        return null;
+                    }
+                    return (SnakeBladeEntity) entity;
                 }
             } else {
                 if (id != -1) {
-                    Entity e = livingEntity.level().getEntity(id);
-                    return e instanceof SnakeBladeEntity ? (SnakeBladeEntity) e : null;
+                    Entity entity = livingEntity.level().getEntity(id);
+                    if (entity == null || !entity.isAlive() || !(entity instanceof SnakeBladeEntity)) {
+                        return null;
+                    }
+                    return (SnakeBladeEntity) entity;
                 }
             }
             return null;
-        }
-        return null;
-    }
-
-    public static Vec3 getJointWithTranslation(Entity ent, Vec3f translation, Joint joint) {
-        LivingEntityPatch entitypatch = EpicFightCapabilities.getEntityPatch(ent, LivingEntityPatch.class);
-        if (entitypatch != null) {
-            float interpolation = 0.0F;
-            OpenMatrix4f transformMatrix;
-            transformMatrix = entitypatch.getArmature().getBindedTransformFor(entitypatch.getAnimator().getPose(interpolation), joint);
-            transformMatrix.translate(translation);
-            OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians((double) (((LivingEntity) entitypatch.getOriginal()).yBodyRotO + 180.0F))), new Vec3f(0.0F, 1.0F, 0.0F)), transformMatrix, transformMatrix);
-            return new Vec3(
-                    (double) transformMatrix.m30 + (entitypatch.getOriginal()).getX(),
-                    (double) transformMatrix.m31 + ((entitypatch.getOriginal()).getY() + (ent.getBbHeight() / 1.8) - 1),
-                    (double) transformMatrix.m32 + (entitypatch.getOriginal()).getZ()
-            );
         }
         return null;
     }
