@@ -14,10 +14,8 @@ import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 public class ZombieMixin {
     @Inject(method = "registerGoals", at = @At("HEAD"))
     private void monsterTargetNpc(CallbackInfo ci) {
-        if ((Object) this instanceof Monster monster) {
-            CommonGoals.attackAllVillagerArmyGoal(monster);
-            monster.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(monster, PlayerMobEntity.class, true));
-            CommonGoals.attackAllNpcGoals(monster);
+        if ((Object) this instanceof Zombie monster) {
+            CommonGoals.registerGoalForHostileNpc(monster);
         }
     }
 }

@@ -1,7 +1,7 @@
 {
 	"model": "epicfight:entity/biped",
 	"armature": "epicfight:entity/biped",
-	"renderer": "player", 
+	"renderer": "player",
 	"isHumanoid": true,
 	"faction": "undead",
 	"attributes": {
@@ -31,9 +31,9 @@
                 "walk": "epicfight:biped/living/walk"
 			}
 		  },
-              { 
+              {
                   "weapon_categories": ["longsword"],
-                  "style":"common", 
+                  "style":"common",
                   "livingmotions": {
                         "chase": "epicfight:biped/living/hold_longsword",
                         "walk": "epicfight:biped/living/hold_longsword"
@@ -41,49 +41,49 @@
               }
 	],
 	"custom_guard_motion": [
-            { 
+            {
                   "weapon_categories": ["longsword", "tachi", "s_longsword", "s_tachi"],
-                  "style":"common", 
+                  "style":"common",
                   "guard": "indestructible:guard/guard_longsword",
 				  "counter": "epicfight:biped/combat/tachi_auto2",
 				  "speed": 2
             },
-			{ 
+			{
                   "weapon_categories": ["axe", "hoe", "pickaxe", "shovel", "sword", "katana"],
-                  "style":"common", 
+                  "style":"common",
                   "guard": "indestructible:guard/guard_sword",
 				  "counter": "epicfight:biped/combat/sword_auto2",
 				  "speed": 3
             },
-			{ 
+			{
                   "weapon_categories": ["sword", "s_sword"],
-                  "style":"two_hand", 
+                  "style":"two_hand",
                   "guard": "indestructible:guard/guard_dualsword",
 				  "counter": "epicfight:biped/combat/sword_dual_auto1",
 				  "speed": 3
             },
-			{ 
+			{
                   "weapon_categories": ["katana"],
-                  "style":"common", 
+                  "style":"common",
                   "guard": "indestructible:guard/guard_katana",
 				  "counter": "annoyingvillagers:biped/guard/counter",
 				  "speed": 1
             },
-			{ 
+			{
                   "weapon_categories": ["greatsword", "torment", "s_greatsword"],
-                  "style":"common", 
+                  "style":"common",
                   "guard": "indestructible:guard/guard_greatsword",
 				  "counter": "epicfight:biped/combat/greatsword_auto2",
 				  "speed": 2
             },
-			{ 
+			{
                   "weapon_categories": ["spear", "s_spear"],
-                  "style":"common", 
+                  "style":"common",
                   "guard": "indestructible:guard/guard_spear",
 				  "counter": "epicfight:biped/combat/spear_twohand_auto2",
 				  "speed": 2
             }
-			
+
 	],
 	"stun_animations": {
 		"short": "epicfight:biped/combat/hit_short",
@@ -111,7 +111,7 @@
 							"counter_chance": 0.5,
 							"counter_speed": 1
 						}
-                    ]                 
+                    ]
 				},
 				{
 					"weight": 40.5,
@@ -199,7 +199,7 @@
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 5.0}
 							],
-							"guard": 10							
+							"guard": 10
 						},
 						{
 							"conditions": [
@@ -212,7 +212,7 @@
 							"counter_chance": 0.3,
 							"counter_speed": 1
 						}
-                        ]                 
+                        ]
 				},
 				{
 					"weight": 30.5,
@@ -400,10 +400,10 @@
 							],
 							"animation": "wom:biped/combat/torment_charged_attack_2",
 							"command_list": [
-							{"time":0.5, "command":"indestructible @s play \"wom:biped/combat/torment_charged_attack_2d_weapon_hit\" 0 1", "execute_at_target":true}, 
+							{"time":0.5, "command":"indestructible @s play \"wom:biped/combat/torment_charged_attack_2d_weapon_hit\" 0 1", "execute_at_target":true},
 							{"command":"effect give @s epicfight:stun_immunity 2 3", "execute_at_target":false}
-								
-							], 	
+
+							],
 							"play_speed": 0.8
 						}
 					]
@@ -426,7 +426,7 @@
 							],
 							"guard": 6
 						}
-                        		]                 
+                        		]
 				},
 				{
 					"weight": 60.0,
@@ -444,7 +444,7 @@
 							"counter_chance": 0.5,
 							"counter_speed": 2
 						}
-                        		]                 
+                        		]
 				},
 				{
                     			"weight": 90.0,
@@ -515,7 +515,7 @@
                             					],
                             					"animation": "epicfight:biped/skill/step_backward"
 							}
-           		    				]                 
+           		    				]
 						},
 				{
                     			"weight": 100.0,
@@ -547,7 +547,7 @@
 							"play_speed": 1.75,
 							"convert_time": 0.1
                         				}
-           		    				]                 
+           		    				]
 						},
 				{
                     			"weight": 100.0,
@@ -579,7 +579,7 @@
 								"play_speed": 1.85,
 								"convert_time": 0.3
 							}
-           		    				]                 
+           		    				]
 						},
 				{
                     			"weight": 80.0,
@@ -623,7 +623,7 @@
 							"guard": 1,
 							"convert_time": 0.15
 						}
-                    ]                 
+                    ]
 				},
 				{
                 					"weight": 100.5,
@@ -657,7 +657,7 @@
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 5.0}
 							],
-							"animation": "wom:biped/combat/torment_auto_1",	
+							"animation": "wom:biped/combat/torment_auto_1",
 							"play_speed": 2.8
 						},
 						{
@@ -936,21 +936,21 @@
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 5.0}
 							],
-							"animation": "wom:biped/combat/torment_auto_2",	
+							"animation": "wom:biped/combat/torment_auto_2",
 							"play_speed": 2.8
 						},
 						{
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 5.0}
 							],
-							"animation": "wom:biped/combat/torment_auto_3",	
+							"animation": "wom:biped/combat/torment_auto_3",
 							"play_speed": 2.8
 						},
 						{
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 5.0}
 							],
-							"animation": "wom:biped/combat/torment_auto_4",	
+							"animation": "wom:biped/combat/torment_auto_4",
 							"play_speed": 2.8
 						},
 						{
@@ -1009,7 +1009,7 @@
 							"guard": 1,
 							"play_speed": 4.8
 						}
-                        ]                 
+                        ]
 				},
 				{
 					"weight": 10.5,
@@ -1298,7 +1298,7 @@
 							],
 							"guard": 1
 						}
-                    ]                 
+                    ]
 				},
 				{
 					"weight": 40.5,
@@ -1409,7 +1409,7 @@
 							"guard": 1,
 							"play_speed": 1.8
 						}
-                        ]                 
+                        ]
 				},
 				{
                 					"weight": 100.5,
@@ -1675,7 +1675,7 @@
 							"convert_time": 0.15,
 							"play_speed": 3.9
 						}
-                        ]                 
+                        ]
 				},
 				{
 					"weight": 20.5,
@@ -1773,7 +1773,7 @@
 							],
 							"guard": 1
 						}
-                    ]                 
+                    ]
 				},
 				{
                 					"weight": 100.5,
@@ -1803,7 +1803,7 @@
 							],
 							"animation": "epicfight:biped/combat/spear_twohand_airslash",
 							"play_speed": 1.4
-							
+
 						},
 						{
 							"conditions": [
@@ -1931,7 +1931,7 @@
 							"guard": 1,
 							"play_speed": 1.8
 						}
-                        ]                 
+                        ]
 				},
 				{
 					"weight": 100.5,
@@ -2221,7 +2221,7 @@
 							],
 							"guard": 1
 						}
-                        ]                 
+                        ]
 				},
 				{
 					"weight": 5.5,
@@ -2386,7 +2386,7 @@
 							],
 							"guard": 1
 						}
-                    ]                 
+                    ]
 				},
 				{
 					"weight": 50,
@@ -2404,7 +2404,7 @@
 							"counter_chance": 0.5,
 							"counter_speed": 3
 						}
-                    ]                 
+                    ]
 				},
 				{
 					"weight": 50,
@@ -2513,7 +2513,7 @@
 								{"predicate":"within_distance", "min": 0.0, "max": 3.0}
 							],
 							"animation": "falchionmoveset:biped/falchion/falchion_backward",
-							"play_speed": 1.4			
+							"play_speed": 1.4
 						},
 						{
 							"conditions": [
@@ -2568,7 +2568,7 @@
 								{"predicate":"within_distance", "min": 0.0, "max": 3.0}
 							],
 							"animation": "falchionmoveset:biped/falchion/falchion_side",
-							"play_speed": 1.4			
+							"play_speed": 1.4
 						},
 						{
 							"conditions": [
@@ -2610,7 +2610,7 @@
 								{"predicate":"within_distance", "min": 0.0, "max": 3.0}
 							],
 							"animation": "falchionmoveset:biped/falchion/falchion_backward",
-							"play_speed": 1.4			
+							"play_speed": 1.4
 						},
 						{
 							"conditions": [
@@ -2641,8 +2641,8 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, 
-								{"predicate":"within_distance", "min": 2.0, "max": 4.0}, 
+								{"predicate":"within_eye_height"},
+								{"predicate":"within_distance", "min": 2.0, "max": 4.0},
 								{"predicate":"within_angle", "min": -30.0, "max": 3.0}
 							],
 							"animation": "epicfight:biped/combat/longsword_dash",
@@ -2654,7 +2654,7 @@
 							"animation": "falchionmoveset:biped/falchion/falchion_backward",
 							"play_speed": 1.4
 						}
-                        ]                 
+                        ]
 				},
 				{
 					"weight": 0.5,
@@ -2663,8 +2663,8 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_eye_height"}, 
-								{"predicate":"within_distance", "min": 5.0, "max": 8.0}, 
+								{"predicate":"within_eye_height"},
+								{"predicate":"within_distance", "min": 5.0, "max": 8.0},
 								{"predicate":"within_angle", "min": -30.0, "max": 30.0}
 							],
 							"animation": "epicfight:biped/combat/longsword_dash",
@@ -2678,7 +2678,7 @@
 							],
 							"guard": 10
 						}
-                    ]                 
+                    ]
 				},
 				{
 					"weight": 0.3,
@@ -2715,7 +2715,7 @@
 								{"predicate":"within_distance", "min": 0.0, "max": 5.0}
 							],
 							"guard": 10
-							
+
 						}
 					]
 				},

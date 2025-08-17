@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.mixin;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import net.minecraft.nbt.CompoundTag;
@@ -22,9 +23,45 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
 import java.util.List;
+import java.util.Random;
 
 @Mixin(value = {PlayerMobEntity.class}, remap = false)
 public class PlayerMobMixinRemapFalse {
+    private void hostileHunterPlayerMob(PlayerMobEntity self) {
+        self.goalSelector.addGoal(2, new MeleeAttackGoal(self, 1.2D, false));
+        self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, Player.class, true));
+        self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, PlayerMobEntity.class, true));
+        CommonGoals.attackAllMonstersGoals(self);
+        CommonGoals.attackAllNpcGoals(self);
+    }
+    private void villagerHunterPlayerMob(PlayerMobEntity self) {
+        CommonGoals.runAwayFromHerobrineGoals(self);
+        self.goalSelector.addGoal(2, new AvoidEntityGoal<>(self, PlayerMobEntity.class, 12.0F, 1.2D, 1.8D));
+        self.goalSelector.addGoal(2, new AvoidEntityGoal<>(self, Player.class, 12.0F, 1.2D, 1.8D));
+        self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Villager.class, true));
+        self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, JevEntity.class, true));
+        self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, IronGolem.class, true));
+        CommonGoals.attackAllVillagerArmyGoal(self);
+        self.goalSelector.addGoal(3, new MeleeAttackGoal(self, 1.2D, false));
+    }
+    private void monsterHunterPlayerMob(PlayerMobEntity self) {
+        CommonGoals.attackAllMonstersGoals(self);
+        CommonGoals.runAwayFromVillagerArmyGoals(self);
+    }
+    private void playerHunterPlayerMob(PlayerMobEntity self) {
+        CommonGoals.runAwayFromHerobrineGoals(self);
+        CommonGoals.runAwayFromVillagerArmyGoals(self);
+        self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Player.class, true));
+        self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, PlayerMobEntity.class, true));
+        CommonGoals.attackAllNpcGoals(self);
+    }
+    private void animalHunterPlayerMob(PlayerMobEntity self) {
+        CommonGoals.runAwayFromHerobrineGoals(self);
+        CommonGoals.runAwayFromVillagerArmyGoals(self);
+        self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Animal.class, true));
+        self.goalSelector.addGoal(2, new AvoidEntityGoal<>(self, PlayerMobEntity.class, 12.0F, 1.2D, 1.8D));
+        self.goalSelector.addGoal(2, new AvoidEntityGoal<>(self, Player.class, 12.0F, 1.2D, 1.8D));
+    }
     @Inject(method = "addBehaviourGoals", at = @At("HEAD"), cancellable = true)
     private void injectTargetingAI(CallbackInfo ci) {
         PlayerMobEntity self = (PlayerMobEntity) (Object) this;
@@ -52,33 +89,38 @@ public class PlayerMobMixinRemapFalse {
 
         switch (role) {
             case "hostile_hunter" -> {
-                self.goalSelector.addGoal(2, new MeleeAttackGoal(self, 1.2D, false));
-                self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, Player.class, true));
-                CommonGoals.attackAllMonstersGoals(self);
-                CommonGoals.attackAllNpcGoals(self);
+                hostileHunterPlayerMob(self);
             }
             case "village_hunter" -> {
-                CommonGoals.runAwayFromHerobrineGoals(self);
-                self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Villager.class, true));
-                self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, JevEntity.class, true));
-                self.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(self, IronGolem.class, true));
-                CommonGoals.attackAllVillagerArmyGoal(self);
-                self.goalSelector.addGoal(3, new MeleeAttackGoal(self, 1.2D, false));
+                villagerHunterPlayerMob(self);
             }
             case "monster_hunter" -> {
-                CommonGoals.attackAllMonstersGoals(self);
-                CommonGoals.runAwayFromVillagerArmyGoals(self);
+                monsterHunterPlayerMob(self);
             }
             case "player_hunter" -> {
-                CommonGoals.runAwayFromHerobrineGoals(self);
-                CommonGoals.runAwayFromVillagerArmyGoals(self);
-                self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Player.class, true));
-                CommonGoals.attackAllNpcGoals(self);
+                playerHunterPlayerMob(self);
             }
             case "animal_hunter" -> {
-                CommonGoals.runAwayFromHerobrineGoals(self);
-                CommonGoals.runAwayFromVillagerArmyGoals(self);
-                self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Animal.class, true));
+                animalHunterPlayerMob(self);
+            }
+            default -> {
+                Random random = new Random();
+                if (random.nextFloat() < 0.2) {
+                    data.putString("behavior", "hostile_hunter");
+                    hostileHunterPlayerMob(self);
+                } else if (random.nextFloat() < 0.4) {
+                    data.putString("behavior", "village_hunter");
+                    villagerHunterPlayerMob(self);
+                } else if (random.nextFloat() < 0.6) {
+                    data.putString("behavior", "monster_hunter");
+                    monsterHunterPlayerMob(self);
+                } else if (random.nextFloat() < 0.8) {
+                    data.putString("behavior", "player_hunter");
+                    playerHunterPlayerMob(self);
+                } else {
+                    data.putString("behavior", "animal_hunter");
+                    animalHunterPlayerMob(self);
+                }
             }
         }
 
