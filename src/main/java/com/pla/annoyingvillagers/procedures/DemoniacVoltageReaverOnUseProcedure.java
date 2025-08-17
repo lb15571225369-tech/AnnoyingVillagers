@@ -92,32 +92,19 @@ public class DemoniacVoltageReaverOnUseProcedure {
                         cooldowns.addCooldown(itemStack.getItem(), 100);
                     }
                 }
-
-
-
-//                if (entity instanceof LivingEntity) {
-//                    LivingEntity livingentity = (LivingEntity) entity;
-//                    ItemStack itemstack = new ItemStack((ItemLike) AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER_AWAKENED.get());
-//
-//                    itemstack.setCount(1);
-//                    livingentity.setItemInHand(InteractionHand.MAIN_HAND, itemstack);
-//                    if (livingentity instanceof Player) {
-//                        Player player = (Player) livingentity;
-//
-//                        player.getInventory().setChanged();
-//                    }
-//                }
             }
             else {
                 if (entity instanceof LivingEntity livingEntity) {
-//                    if (itemStack.getTag().getBoolean("SecondForm")) {
-//                        if (SnakeBladeHit.process(itemStack, livingEntity)) {
-//                            itemStack.getOrCreateTag().putBoolean("SnakeAnimation", true);
-//                        };
-//                    }
-                    if (SnakeBladeHit.process(itemStack, livingEntity)) {
-//                        itemStack.getOrCreateTag().putBoolean("SnakeAnimation", true);
-                    };
+                    if (itemStack.getTag().getBoolean("SecondForm")) {
+                        if (itemStack.getTag().getInt("HitCount") == 10) {
+                            if (SnakeBladeHit.process(itemStack, livingEntity)) {
+                                itemStack.getOrCreateTag().putBoolean("SnakeAnimation", true);
+                                itemStack.removeTagKey("HitCount");
+                            }
+                        } else {
+                            itemStack.getTag().putInt("HitCount", (itemStack.getTag().contains("HitCount") ? itemStack.getTag().getInt("HitCount") : 0) + 1);
+                        }
+                    }
                 }
             }
 

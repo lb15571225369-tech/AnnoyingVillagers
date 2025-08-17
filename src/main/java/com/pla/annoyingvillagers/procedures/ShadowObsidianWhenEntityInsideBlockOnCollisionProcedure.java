@@ -188,7 +188,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                     }
                 };
 
-                if (Math.random() == 0.09D) {
+                if (Math.random() <= 0.3D) {
                     entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * -6.0D, 0.4D, entity.getLookAngle().z * -6.0D));
                     if (levelaccessor instanceof Level) {
                         level = (Level) levelaccessor;

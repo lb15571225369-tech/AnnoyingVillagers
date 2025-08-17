@@ -69,15 +69,11 @@ public class SnakeBladeRenderer extends EntityRenderer<SnakeBladeEntity> {
             float progress = (entity.prevProgress + (entity.getProgress() - entity.prevProgress) * partialTicks) / SnakeBladeEntity.MAX_EXTEND_TIME;
             Vec3 distVec;
 
-            Vec3 swordPos = SnakeBladeHit.getJointWithTranslation(
-                    fromEntity,
-                    new Vec3f(0F, 0F, 0F),
-                    Armatures.BIPED.toolR
-            );
+            float tipOffset = 0.8F;
+            Vec3 swordPos = SnakeBladeHit.getToolTipPos(fromEntity, partialTicks, tipOffset);
 
             if (swordPos != null) {
                 distVec = swordPos.subtract(x, y + 1.2F, z);
-                Minecraft.getInstance().particleEngine.createParticle(ParticleTypes.ENCHANT, swordPos.x, swordPos.y, swordPos.z, entity.getDeltaMovement().x, entity.getDeltaMovement().y, entity.getDeltaMovement().z);
             } else {
                 distVec = getPositionOfPriorMob(entity, fromEntity, partialTicks).subtract(x, y, z);
             }
@@ -174,11 +170,6 @@ public class SnakeBladeRenderer extends EntityRenderer<SnakeBladeEntity> {
         }
 
         return new Vec3(d4, d5 + f3, d6);
-    }
-
-    private double modifyVecAngle(double dimension) {
-        float abs = (float) Math.abs(dimension);
-        return Math.signum(dimension) * Mth.clamp(Math.pow(abs, 0.1), 0.05 * abs, abs);
     }
 
     private int getLightColor(Entity head, Vec3 vec3) {

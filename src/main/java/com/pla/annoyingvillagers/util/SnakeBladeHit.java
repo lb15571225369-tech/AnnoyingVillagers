@@ -19,6 +19,7 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 import yesman.epicfight.api.animation.Joint;
 import yesman.epicfight.api.animation.JointTransform;
+import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import net.minecraft.client.player.LocalPlayer;
@@ -144,5 +145,26 @@ public class SnakeBladeHit {
             );
         }
         return null;
+    }
+
+    public static Vec3 getToolTipPos(Entity ent, float partialTicks, float handToTip) {
+        LivingEntityPatch patch = EpicFightCapabilities.getEntityPatch(ent, LivingEntityPatch.class);
+        if (patch == null) return null;
+
+        OpenMatrix4f joint = patch.getArmature()
+                .getBindedTransformFor(patch.getAnimator().getPose(partialTicks), Armatures.BIPED.toolR);
+
+        OpenMatrix4f localOffset = new OpenMatrix4f().translate(new Vec3f(0.0F, 0.0F, -handToTip));
+        OpenMatrix4f.mul(joint, localOffset, joint);  // joint = joint * localOffset  (RIGHT-multiply!)
+
+        float yawRad = (float) -Math.toRadians(((LivingEntity) ent).yBodyRotO + 180.0F);
+        OpenMatrix4f worldYaw = new OpenMatrix4f().rotate(yawRad, new Vec3f(0.0F, 1.0F, 0.0F));
+        OpenMatrix4f.mul(worldYaw, joint, joint);
+
+        return new Vec3(
+                joint.m30 + ent.getX(),
+                joint.m31 + (ent.getY() + (ent.getBbHeight() / 1.8F) - 1.0F),
+                joint.m32 + ent.getZ()
+        );
     }
 }
