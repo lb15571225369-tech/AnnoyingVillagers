@@ -117,7 +117,7 @@ public class AnnoyingVillagers {
                         AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER.get(),
                         new ResourceLocation("snake_animation_ready"),
                         (stack, level, entity, seed) -> {
-                            if (stack.hasTag() && stack.getTag().getInt("HitCount") == 10) {
+                            if (stack.hasTag() && stack.getTag().getInt("HitCount") == 5) {
                                 return 1.0F;
                             }
                             return 0.0F;

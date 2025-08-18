@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.util;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.capabilities.SnakeBladeCapability;
 import com.pla.annoyingvillagers.entity.SnakeBladeEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModCapabilities;
@@ -16,7 +15,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import yesman.epicfight.api.animation.Joint;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
@@ -27,24 +25,20 @@ import yesman.epicfight.api.utils.math.Vec3f;
 import java.util.UUID;
 
 public class SnakeBladeHit {
-    private static boolean isCharged(Player player){
-        return player.getAttackStrengthScale(0.5F) > 0.9F;
-    }
-
     public static boolean process(ItemStack stack, LivingEntity playerIn) {
-        if(stack.is(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER.get()) && (!(playerIn instanceof Player) || isCharged((Player)playerIn))) {
+        if(stack.is(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER.get())) {
             Level worldIn = playerIn.level();
             Entity closestValid = null;
             Vec3 playerEyes = playerIn.getEyePosition(1.0F);
             HitResult hitresult = worldIn.clip(new ClipContext(playerEyes, playerEyes.add(playerIn.getLookAngle().scale(16.0D)), ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, playerIn));
             if (hitresult instanceof EntityHitResult) {
                 Entity entity = ((EntityHitResult) hitresult).getEntity();
-                if (!entity.equals(playerIn) && !playerIn.isAlliedTo(entity) && !entity.isAlliedTo(playerIn) && entity instanceof Mob && playerIn.hasLineOfSight(entity)) {
+                if (!entity.equals(playerIn) && !playerIn.isAlliedTo(entity) && !entity.isAlliedTo(playerIn) && (entity instanceof Mob || entity instanceof Player) && playerIn.hasLineOfSight(entity)) {
                     closestValid = entity;
                 }
             } else {
                 for (Entity entity : worldIn.getEntitiesOfClass(LivingEntity.class, playerIn.getBoundingBox().inflate(16.0D))) {
-                    if (!entity.equals(playerIn) && !playerIn.isAlliedTo(entity) && !entity.isAlliedTo(playerIn) && entity instanceof Mob && playerIn.hasLineOfSight(entity)) {
+                    if (!entity.equals(playerIn) && !playerIn.isAlliedTo(entity) && !entity.isAlliedTo(playerIn) && (entity instanceof Mob || entity instanceof Player) && playerIn.hasLineOfSight(entity)) {
                         if (closestValid == null || playerIn.distanceTo(entity) < playerIn.distanceTo(closestValid)) {
                             closestValid = entity;
                         }
@@ -65,7 +59,7 @@ public class SnakeBladeHit {
                 if (!worldIn.isClientSide) {
                     if (closestValid != null) {
                         SnakeBladeEntity segment = AnnoyingVillagersModEntities.SNAKE_BLADE.get().create(worldIn);
-                        if (segment != null && !stack.getAllEnchantments().isEmpty()) {
+                        if (segment != null && stack.hasFoil()) {
                             segment.setEnchanted(true);
                         }
                         segment.copyPosition(playerIn);

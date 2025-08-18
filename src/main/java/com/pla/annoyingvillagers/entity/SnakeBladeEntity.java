@@ -8,7 +8,6 @@ import java.util.UUID;
 import com.google.common.collect.Multimap;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
@@ -34,7 +33,6 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -53,7 +51,7 @@ public class SnakeBladeEntity extends Entity {
     private static final EntityDataAccessor<Float> PROGRESS = SynchedEntityData.defineId(SnakeBladeEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(SnakeBladeEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> RETRACTING = SynchedEntityData.defineId(SnakeBladeEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> HAS_CLAW = SynchedEntityData.defineId(SnakeBladeEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> HAS_BLADE = SynchedEntityData.defineId(SnakeBladeEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> ENCHANTED = SynchedEntityData.defineId(SnakeBladeEntity.class, EntityDataSerializers.BOOLEAN);
 
     private List<Entity> previouslyTouched = new ArrayList<>();
@@ -84,7 +82,7 @@ public class SnakeBladeEntity extends Entity {
         this.entityData.define(PROGRESS, 0F);
         this.entityData.define(DAMAGE, 3F);
         this.entityData.define(RETRACTING, false);
-        this.entityData.define(HAS_CLAW, true);
+        this.entityData.define(HAS_BLADE, true);
         this.entityData.define(ENCHANTED, false);
     }
 
@@ -137,17 +135,14 @@ public class SnakeBladeEntity extends Entity {
             }
 
             this.remove(RemovalReason.DISCARDED);
-            AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: SnakeBladeEntity tick  progress == 0F is done!");
         }
         if (creator instanceof LivingEntity) {
-            AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: SnakeBladeEntity tick  creator instanceof LivingEntity called!");
             if (current != null) {
                 Vec3 target = new Vec3(current.getX(), current.getY(0.4F), current.getZ());
                 Vec3 lerp = target.subtract(this.position());
                 this.setDeltaMovement(lerp.scale(0.5F));
                 if(!this.level().isClientSide){
                     if(progress >= MAX_EXTEND_TIME){
-                        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: SnakeBladeEntity tick progress >= MAX_EXTEND_TIME called!");
                         if (this.tickCount % 2 == 0) {
                             Entity entity = getCreatorEntity();
                             if(entity instanceof LivingEntity) {
@@ -170,7 +165,7 @@ public class SnakeBladeEntity extends Entity {
                                     }
 
                                     if (!this.level().isClientSide()) {
-                                        this.level().playSound((Player) null, new BlockPos((int) this.getX(), (int) this.getY(), (int) this.getZ()), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "obsidian_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 1.0D));
+                                        this.level().playSound(null, new BlockPos((int) this.getX(), (int) this.getY(), (int) this.getZ()), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "obsidian_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 1.0D));
                                     } else {
                                         this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "obsidian_hit")), SoundSource.BLOCKS, 1.0F, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 1.0D), false);
                                     }
@@ -195,7 +190,6 @@ public class SnakeBladeEntity extends Entity {
                                 }
                             }
                         }
-                        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: SnakeBladeEntity tick progress >= MAX_EXTEND_TIME done!");
                     }
                 }
             }
@@ -203,12 +197,9 @@ public class SnakeBladeEntity extends Entity {
         Vec3 vector3d = this.getDeltaMovement();
         if(!this.level().isClientSide){
             if(!hasChained){
-                AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: SnakeBladeEntity tick !hasChained is called!");
                 if(this.getTargetsHit() > 5){
                     this.setRetracting(true);
-                    AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: SnakeBladeEntity tick this.getTargetsHit() > 5 is called!");
                 }else if(creator instanceof LivingEntity && this.getProgress() >= MAX_EXTEND_TIME) {
-                    AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: SnakeBladeEntity tick }else if(creator instanceof LivingEntity && this.getProgress() >= MAX_EXTEND_TIME) { is called!");
                     Entity closestValid = null;
                     for (Entity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(12.0D))) {
                         if (!entity.equals(creator) && !previouslyTouched.contains(entity) && isValidTarget((LivingEntity) creator, entity) && this.hasLineOfSight(entity)) {
@@ -223,7 +214,6 @@ public class SnakeBladeEntity extends Entity {
                     }else{
                         this.setRetracting(true);
                     }
-                    AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: SnakeBladeEntity tick this.getTargetsHit() > 5 is done!");
                 }
             }
         }
@@ -279,8 +269,11 @@ public class SnakeBladeEntity extends Entity {
     }
 
     private void createChain(Entity closestValid) {
-        this.entityData.set(HAS_CLAW, false);
+        this.entityData.set(HAS_BLADE, false);
         SnakeBladeEntity child = AnnoyingVillagersModEntities.SNAKE_BLADE.get().create(this.level());
+        if (this.isEnchanted()) {
+            child.setEnchanted(true);
+        }
         child.previouslyTouched = new ArrayList<>(previouslyTouched);
         child.previouslyTouched.add(closestValid);
         child.setCreatorEntityUUID(this.getCreatorEntityUUID());
@@ -357,8 +350,8 @@ public class SnakeBladeEntity extends Entity {
     }
 
 
-    public boolean hasClaw() {
-        return this.entityData.get(HAS_CLAW);
+    public boolean hasBlade() {
+        return this.entityData.get(HAS_BLADE);
     }
 
     @Override

@@ -405,3 +405,6 @@ sherensuipian -> demoniac_voltage_reaver_fragment
 SHERENSUIPIAN -> DEMONIAC_VOLTAGE_REAVER_FRAGMENT
 sherenjianbing -> demoniac_voltage_reaver_hilt
 SHERENJIANBING -> DEMONIAC_VOLTAGE_REAVER_HILT
+SherenherobrineEntity -> SwordsManHerobrineEntity
+SHERENHEROBRINE -> SWORDSMAN_HEROBRINE
+sherenherobrine -> swordsman_herobrine

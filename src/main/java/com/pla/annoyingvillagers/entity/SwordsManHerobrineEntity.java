@@ -2,25 +2,30 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.procedures.*;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
+import com.pla.annoyingvillagers.procedures.Herobrine7OnEntityInitialSpawnProcedure;
+import com.pla.annoyingvillagers.procedures.HerobrineTransfromProcedure;
+import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
 import com.pla.annoyingvillagers.util.CommonGoals;
+import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.util.SnakeBladeHit;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
@@ -30,9 +35,7 @@ import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
@@ -42,20 +45,36 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 
 @EventBusSubscriber
-public class ShadowHerobrineEntity extends Monster {
-    public ShadowHerobrineEntity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.SHADOW_HEROBRINE.get(), level);
+public class SwordsManHerobrineEntity extends Monster {
+
+    public SwordsManHerobrineEntity(SpawnEntity spawnentity, Level level) {
+        this((EntityType) AnnoyingVillagersModEntities.SWORDSMAN_HEROBRINE.get(), level);
     }
 
-    public ShadowHerobrineEntity(EntityType<ShadowHerobrineEntity> entitytype, Level level) {
+    public SwordsManHerobrineEntity(EntityType<SwordsManHerobrineEntity> entitytype, Level level) {
         super(entitytype, level);
-        this.setMaxUpStep(2.8F);
-        this.xpReward = 60;
+        this.setMaxUpStep(2.0F);
+        this.xpReward = 80;
         this.setNoAi(false);
-        this.setCustomName(Component.literal("§5Shadow Herobrine§r"));
+        this.setCustomName(Component.literal("§5Swordsman Herobrine§r"));
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
-        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get()));
+        ItemStack sword = new ItemStack(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER.get());
+        sword.getTag().putBoolean("SecondForm", true);
+        this.setItemSlot(EquipmentSlot.MAINHAND, sword);
+    }
+
+    @Override
+    public boolean doHurtTarget(Entity pEntity) {
+        if (this.getPersistentData().getInt("HitCount") == 3) {
+            if (SnakeBladeHit.process(this.getMainHandItem(), this)) {
+                this.getMainHandItem().getOrCreateTag().putBoolean("SnakeAnimation", true);
+                this.getPersistentData().remove("HitCount");
+            }
+        } else {
+            this.getPersistentData().putInt("HitCount", (this.getPersistentData().contains("HitCount") ? this.getPersistentData().getInt("HitCount") : 0) + 1);
+        }
+        return super.doHurtTarget(pEntity);
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -88,7 +107,23 @@ public class ShadowHerobrineEntity extends Monster {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        DarkHerobrineOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        if (!this.getPersistentData().getBoolean("kick_x")) {
+            this.setSprinting(true);
+            SwordsManHerobrineEntity entity = this;
+            new DelayedTask(10) {
+                @Override
+                public void run() {
+                    entity.setSprinting(false);
+                }
+            };
+            if (Math.random() <= 0.5D && this instanceof LivingEntity) {
+                LivingEntity livingentity = (LivingEntity)this;
+
+                if (!livingentity.level().isClientSide()) {
+                    livingentity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 1, 1, false, false));
+                }
+            }
+        }
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;
         if (damagesource.is(DamageTypes.WITHER)) return false;
@@ -101,26 +136,7 @@ public class ShadowHerobrineEntity extends Monster {
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
-        DarkHerobrineOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
-        if (this.level() instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-            ServerLevel serverlevel = (ServerLevel)levelaccessor;
-            ShadowHerobrineDeadEntity deadEntity = new ShadowHerobrineDeadEntity((EntityType) AnnoyingVillagersModEntities.SHADOW_HEROBRINE_DEAD.get(), serverlevel);
-
-            deadEntity.moveTo(this.getX(), this.getY(), this.getZ(), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-            if (deadEntity instanceof Mob) {
-                Mob mob = (Mob)deadEntity;
-
-                mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-            }
-            this.remove(RemovalReason.KILLED);
-            levelaccessor.addFreshEntity(deadEntity);
-            try {
-                deadEntity.getServer().getCommands().getDispatcher().execute(
-                        "kill @s",
-                        deadEntity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
-            }
-        }
+//        SherenherobrineDangShiTiSiWangShiProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
@@ -132,20 +148,24 @@ public class ShadowHerobrineEntity extends Monster {
 
     public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
         super.awardKillScore(entity, i, damagesource);
+        if (this.getPersistentData().getInt("HitCount") == 3) {
+            if (SnakeBladeHit.process(this.getMainHandItem(), this)) {
+                this.getMainHandItem().getOrCreateTag().putBoolean("SnakeAnimation", true);
+                this.getPersistentData().remove("HitCount");
+            }
+        } else {
+            this.getPersistentData().putInt("HitCount", (this.getPersistentData().contains("HitCount") ? this.getPersistentData().getInt("HitCount") : 0) + 1);
+        }
         HerobrineTransfromProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), entity, this);
     }
 
     public void baseTick() {
         super.baseTick();
-    }
-
-    public void playerTouch(Player player) {
-        super.playerTouch(player);
-        DarkHerobrineOnPlayerTouchProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        HerobrineWeaponEffectProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
     public static void init() {
-        SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.SHADOW_HEROBRINE.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
+        SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.SWORDSMAN_HEROBRINE.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
             return serverlevelaccessor.getRawBrightness(blockpos, 0) <= 8;
         });
     }
@@ -154,7 +174,7 @@ public class ShadowHerobrineEntity extends Monster {
         Builder builder = Mob.createMobAttributes();
 
         builder = builder.add(Attributes.MOVEMENT_SPEED, 0.35D);
-        builder = builder.add(Attributes.MAX_HEALTH, 120.0D);
+        builder = builder.add(Attributes.MAX_HEALTH, 250.0D);
         builder = builder.add(Attributes.ARMOR, 25.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 4.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 128.0D);

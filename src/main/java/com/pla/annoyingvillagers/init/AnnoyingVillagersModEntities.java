@@ -57,6 +57,7 @@ public class AnnoyingVillagersModEntities {
     public static final RegistryObject<EntityType<ShadowHerobrineEntity>> SHADOW_HEROBRINE = register("shadow_herobrine", Builder.<ShadowHerobrineEntity>of(ShadowHerobrineEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(ShadowHerobrineEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<GlaiveHerobrineEntity>> GLAIVE_HEROBRINE = register("glaive_herobrine", Builder.<GlaiveHerobrineEntity>of(GlaiveHerobrineEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(GlaiveHerobrineEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<ReaperHerobrineEntity>> REAPER_HEROBRINE = register("reaper_herobrine", Builder.<ReaperHerobrineEntity>of(ReaperHerobrineEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(ReaperHerobrineEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<SwordsManHerobrineEntity>> SWORDSMAN_HEROBRINE = register("swordsman_herobrine", Builder.<SwordsManHerobrineEntity>of(SwordsManHerobrineEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(SwordsManHerobrineEntity::new).fireImmune().sized(0.6F, 1.8F));
 
     public static final RegistryObject<EntityType<SnakeBladeEntity>> SNAKE_BLADE = register("tidal_tentacle", Builder.<SnakeBladeEntity>of(SnakeBladeEntity::new, MobCategory.MISC).sized(0.1F, 0.1F));
     public static final RegistryObject<EntityType<SummonPortalEntity>> SUMMON_PORTAL = register("summon_portal", Builder.<SummonPortalEntity>of(SummonPortalEntity::new, MobCategory.MISC).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(SummonPortalEntity::new).fireImmune().sized(3.0F, 0.01F));
@@ -131,6 +132,7 @@ public class AnnoyingVillagersModEntities {
             GlaiveHerobrineEntity.init();
             InfectedPlayerMobEntity.init();
             ReaperHerobrineEntity.init();
+            SwordsManHerobrineEntity.init();
         });
     }
 
@@ -181,5 +183,6 @@ public class AnnoyingVillagersModEntities {
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.GLAIVE_HEROBRINE.get(), GlaiveHerobrineEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.INFECTED_PLAYER_MOB.get(), InfectedPlayerMobEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.REAPER_HEROBRINE.get(), ReaperHerobrineEntity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.SWORDSMAN_HEROBRINE.get(), SwordsManHerobrineEntity.createAttributes().build());
     }
 }

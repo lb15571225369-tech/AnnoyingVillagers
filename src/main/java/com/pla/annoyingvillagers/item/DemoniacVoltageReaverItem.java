@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.item;
 
 import java.util.List;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.procedures.DemoniacVoltageReaverOnUseProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
 import com.pla.annoyingvillagers.util.SnakeBladeHit;
@@ -81,6 +82,5 @@ public class DemoniacVoltageReaverItem extends SwordItem {
         if (flag && itemstack.getTag().getBoolean("SecondForm")) {
             HerobrineWeaponEffectProcedure.execute(level, entity.getX(), entity.getY(), entity.getZ(), entity);
         }
-
     }
 }

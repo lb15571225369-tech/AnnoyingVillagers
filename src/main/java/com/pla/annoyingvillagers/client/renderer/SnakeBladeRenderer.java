@@ -67,7 +67,7 @@ public class SnakeBladeRenderer extends EntityRenderer<SnakeBladeEntity> {
             float progress = (entity.prevProgress + (entity.getProgress() - entity.prevProgress) * partialTicks) / SnakeBladeEntity.MAX_EXTEND_TIME;
             Vec3 distVec;
 
-            float tipOffset = 0.8F;
+            float tipOffset = 1.8F;
             Vec3 swordPos = SnakeBladeHit.getToolTipPos(fromEntity, partialTicks, tipOffset);
 
             if (swordPos != null) {
@@ -80,16 +80,16 @@ public class SnakeBladeRenderer extends EntityRenderer<SnakeBladeEntity> {
             Vec3 from = distVec;
             int segmentCount = 0;
             Vec3 currentNeckButt = from;
-            VertexConsumer neckConsumer;
+            VertexConsumer snakebladeFragmentConsumer;
             if (entity.isEnchanted()) {
-                neckConsumer = ItemRenderer.getFoilBuffer(
+                snakebladeFragmentConsumer = ItemRenderer.getFoilBuffer(
                         buffer,
                         RenderType.entityCutoutNoCull(FRAGMENT_CHAIN_TEXTURE),
                         true,
                         true
                 );
             } else {
-                neckConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(FRAGMENT_CHAIN_TEXTURE));
+                snakebladeFragmentConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(FRAGMENT_CHAIN_TEXTURE));
             }
             double distanceLeft = from.distanceTo(to);
             double buildUpTo = Math.max(0.0, distanceLeft - HEAD_CLEAR);
@@ -100,24 +100,24 @@ public class SnakeBladeRenderer extends EntityRenderer<SnakeBladeEntity> {
                 Vec3 next = dir.normalize().scale(step).add(currentNeckButt);
 
                 int neckLight = getLightColor(entity, next.add(x, y, z));
-                renderNeckCube(currentNeckButt, next, poseStack, neckConsumer, neckLight, OverlayTexture.NO_OVERLAY, 0);
+                renderNeckCube(currentNeckButt, next, poseStack, snakebladeFragmentConsumer, neckLight, OverlayTexture.NO_OVERLAY, 0);
 
                 currentNeckButt = next;
                 buildUpTo      -= step;
                 segmentCount++;
             }
-            VertexConsumer clawConsumer;
+            VertexConsumer snakeBladeComsumer;
             if (entity.isEnchanted()) {
-                clawConsumer = ItemRenderer.getFoilBuffer(
+                snakeBladeComsumer = ItemRenderer.getFoilBuffer(
                         buffer,
                         RenderType.entityCutoutNoCull(SNAKE_BLADE_TEXTURE),
                         true,
                         true
                 );
             } else {
-                clawConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(SNAKE_BLADE_TEXTURE));
+                snakeBladeComsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(SNAKE_BLADE_TEXTURE));
             }
-            if (entity.hasClaw() || entity.isRetracting()) {
+            if (entity.hasBlade() || entity.isRetracting()) {
                 poseStack.pushPose();
                 poseStack.translate(to.x, to.y, to.z);
 
@@ -127,7 +127,7 @@ public class SnakeBladeRenderer extends EntityRenderer<SnakeBladeEntity> {
                 poseStack.mulPose(Axis.YP.rotationDegrees(rotY));
                 poseStack.mulPose(Axis.XP.rotationDegrees(rotX));
 
-                snakeBladeModel.renderToBuffer(poseStack, clawConsumer,
+                snakeBladeModel.renderToBuffer(poseStack, snakeBladeComsumer,
                         getLightColor(entity, to.add(x, y, z)), OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
                 poseStack.popPose();
             }

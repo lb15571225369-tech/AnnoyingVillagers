@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.mixin;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.capabilities.AVCategories;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
@@ -25,6 +24,11 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.animation.types.LongHitAnimation;
+import yesman.epicfight.api.animation.types.StaticAnimation;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.network.server.SPPlayAnimation;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
@@ -33,6 +37,32 @@ import yesman.epicfight.world.effect.EpicFightMobEffects;
 
 @Mixin(value = {Execute.class}, remap = false)
 public class ExecutionMixin {
+    @Inject(method = {"isAnimationValid"}, at = {@At("HEAD")}, cancellable = true)
+    private static boolean addKnockDownToExecution(LivingEntityPatch<?> targetPatch, PlayerPatch<?> playerPatch, CallbackInfoReturnable<Boolean> cir) {
+        DynamicAnimation var4 = targetPatch.getAnimator().getPlayerFor((DynamicAnimation)null).getAnimation();
+        DynamicAnimation dynamicanimation = targetPatch.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
+        boolean flag = dynamicanimation instanceof StaticAnimation && (StaticAnimation) dynamicanimation == Animations.BIPED_KNEEL;
+        boolean flag1 = dynamicanimation instanceof LongHitAnimation;
+
+        if (flag1) {
+            LongHitAnimation longhitanimation = (LongHitAnimation) dynamicanimation;
+            StaticAnimation[] astaticanimation = new StaticAnimation[]{Animations.WITHER_NEUTRALIZED, Animations.VEX_NEUTRALIZED, Animations.SPIDER_NEUTRALIZED, Animations.DRAGON_NEUTRALIZED, Animations.ENDERMAN_NEUTRALIZED, Animations.BIPED_COMMON_NEUTRALIZED, Animations.GREATSWORD_GUARD_BREAK};
+            StaticAnimation[] astaticanimation1 = astaticanimation;
+            int i = astaticanimation.length;
+
+            for (int j = 0; j < i; ++j) {
+                StaticAnimation staticanimation = astaticanimation1[j];
+
+                if (staticanimation == longhitanimation) {
+                    flag1 = true;
+                    break;
+                }
+            }
+        }
+
+        return flag || flag1;
+    }
+
     @Inject(method = {"onRightClickEntity"}, at = {@At("HEAD")}, cancellable = true)
     private static void unregisterEvent(PlayerInteractEvent.RightClickItem event, CallbackInfo ci) {
         ci.cancel();

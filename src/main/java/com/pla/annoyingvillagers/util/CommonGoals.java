@@ -17,21 +17,21 @@ public class CommonGoals {
     public static void registerGoalForHostileNpc(Monster monster) {
         monster.getNavigation().getNodeEvaluator().setCanOpenDoors(true);
         monster.targetSelector.addGoal(1, new HurtByTargetGoal(monster, new Class[0]));
-        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, Player.class, true, false));
-        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, PlayerMobEntity.class, true));
-        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, SteveEntity.class, true, false));
-        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, Steve2Entity.class, true, false));
-        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, ChrisEntity.class, true, false));
-        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, AlexEntity.class, true, false));
-        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, JevEntity.class, true, false));
-        monster.targetSelector.addGoal(3, new NearestAttackableTargetGoal(monster, Villager.class, true, false));
-        monster.targetSelector.addGoal(3, new NearestAttackableTargetGoal(monster, IronGolem.class, true, false));
-        monster.targetSelector.addGoal(3, new NearestAttackableTargetGoal(monster, VillagerScoutEntity.class, true, false));
-        monster.targetSelector.addGoal(3, new NearestAttackableTargetGoal(monster, VillagerScoutCaptainEntity.class, true, false));
-        monster.targetSelector.addGoal(3, new NearestAttackableTargetGoal(monster, RedVillagerGeneralEntity.class, true, false));
-        monster.targetSelector.addGoal(3, new NearestAttackableTargetGoal(monster, BlueVillagerGeneralEntity.class, true, false));
-        monster.targetSelector.addGoal(3, new NearestAttackableTargetGoal(monster, GreenVillagerGeneralEntity.class, true, false));
-        monster.targetSelector.addGoal(3, new NearestAttackableTargetGoal(monster, PurpleVillagerGeneralEntity.class, true, false));
+        monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal(monster, Player.class, true, false));
+        monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal(monster, PlayerMobEntity.class, true));
+        monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal(monster, SteveEntity.class, true, false));
+        monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal(monster, Steve2Entity.class, true, false));
+        monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal(monster, ChrisEntity.class, true, false));
+        monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal(monster, AlexEntity.class, true, false));
+        monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal(monster, JevEntity.class, true, false));
+        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, Villager.class, true, false));
+        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, IronGolem.class, true, false));
+        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, VillagerScoutEntity.class, true, false));
+        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, VillagerScoutCaptainEntity.class, true, false));
+        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, RedVillagerGeneralEntity.class, true, false));
+        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, BlueVillagerGeneralEntity.class, true, false));
+        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, GreenVillagerGeneralEntity.class, true, false));
+        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal(monster, PurpleVillagerGeneralEntity.class, true, false));
         monster.goalSelector.addGoal(3, new MeleeAttackGoal(monster, 1.2D, false) {
             protected double getAttackReachSqr(LivingEntity livingentity) {
                 return (double) (monster.getBbWidth() * monster.getBbWidth() + livingentity.getBbWidth());
