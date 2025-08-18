@@ -87,6 +87,16 @@ public class Herobrine7OnEntityInitialSpawnProcedure {
             if (!entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute(
+                            "team modify herobrine friendlyFire false",
+                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+
+                }
+            }
+
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
+                try {
+                    entity.getServer().getCommands().getDispatcher().execute(
                             "team join herobrine @s",
                             entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 } catch (CommandSyntaxException e) {

@@ -4,21 +4,27 @@ import javax.annotation.Nullable;
 
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.procedures.*;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
+import com.pla.annoyingvillagers.procedures.Herobrine7OnEntityInitialSpawnProcedure;
+import com.pla.annoyingvillagers.procedures.HerobrineTransfromProcedure;
+import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
 import com.pla.annoyingvillagers.util.CommonGoals;
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
@@ -28,7 +34,6 @@ import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
@@ -40,24 +45,20 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 
 @EventBusSubscriber
-public class ArmoredHerobrineEntity extends Monster {
-
-    public ArmoredHerobrineEntity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.ARMORED_HEROBRINE.get(), level);
+public class SledgehammerHerobrineEntity extends Monster {
+    public SledgehammerHerobrineEntity(SpawnEntity spawnentity, Level level) {
+        this((EntityType) AnnoyingVillagersModEntities.SLEDGEHAMMER_HEROBRINE.get(), level);
     }
 
-    public ArmoredHerobrineEntity(EntityType<ArmoredHerobrineEntity> entitytype, Level level) {
+    public SledgehammerHerobrineEntity(EntityType<SledgehammerHerobrineEntity> entitytype, Level level) {
         super(entitytype, level);
-        this.setMaxUpStep(4.0F);
-        this.xpReward = 60;
+        this.setMaxUpStep(2.5F);
+        this.xpReward = 80;
         this.setNoAi(false);
-        this.setCustomName(Component.literal("§5Armored Herobrine§r"));
+        this.setCustomName(Component.literal("§5Sledgehammer Herobrine§r"));
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
-        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get()));
-        this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get()));
-        this.setItemSlot(EquipmentSlot.HEAD, new ItemStack((ItemLike) AnnoyingVillagersModItems.HEROBRINE_OBSIDIAN_DIAMOND_HELMET.get()));
-        this.setItemSlot(EquipmentSlot.CHEST, new ItemStack((ItemLike) AnnoyingVillagersModItems.HEROBRINE_OBSIDIAN_DIAMOND_CHESTPLATE.get()));
+        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.OBSIDIAN_SLEDGEHAMMER.get()));
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -90,7 +91,23 @@ public class ArmoredHerobrineEntity extends Monster {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        ArmoredHerobrineOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        if (!this.getPersistentData().getBoolean("kick_x")) {
+            this.setSprinting(true);
+            SledgehammerHerobrineEntity entity = this;
+            new DelayedTask(10) {
+                @Override
+                public void run() {
+                    entity.setSprinting(false);
+                }
+            };
+            if (Math.random() <= 0.5D && this instanceof LivingEntity) {
+                LivingEntity livingentity = (LivingEntity)this;
+
+                if (!livingentity.level().isClientSide()) {
+                    livingentity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 1, 1, false, false));
+                }
+            }
+        }
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;
         if (damagesource.is(DamageTypes.WITHER)) return false;
@@ -103,26 +120,12 @@ public class ArmoredHerobrineEntity extends Monster {
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
-        if (this.level() instanceof ServerLevel serverlevel) {
-            InfectedTheMostMoistBurrit0Entity infectedTheMostMoistBurrit0Entity = new InfectedTheMostMoistBurrit0Entity((EntityType) AnnoyingVillagersModEntities.INFECTED_THEMOSTMOISTBURRIT0.get(), serverlevel);
-
-            infectedTheMostMoistBurrit0Entity.moveTo(this.getX(), this.getY(), this.getZ(), serverlevel.getRandom().nextFloat() * 360.0F, 0.0F);
-            infectedTheMostMoistBurrit0Entity.finalizeSpawn(serverlevel, serverlevel.getCurrentDifficultyAt(infectedTheMostMoistBurrit0Entity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
-            serverlevel.addFreshEntity(infectedTheMostMoistBurrit0Entity);
-        }
-
-        if (!this.level().isClientSide() && this.level().getServer() != null) {
-            this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("The clone has been destroyed, data has been transmitted to the terminal."), false);
-        }
-        if (!this.level().isClientSide()) {
-            this.discard();
-        }
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
 
-        ArmoredHerobrineOnSpawnProcedure.execute(serverlevelaccessor, this.getX(), this.getY(), this.getZ(), this);
+        Herobrine7OnEntityInitialSpawnProcedure.execute(serverlevelaccessor, this.getX(), this.getY(), this.getZ(), this);
         return spawngroupdata1;
     }
 
@@ -133,27 +136,23 @@ public class ArmoredHerobrineEntity extends Monster {
 
     public void baseTick() {
         super.baseTick();
-    }
-
-    public void playerTouch(Player player) {
-        super.playerTouch(player);
-        ArmoredHerobrineOnPlayerTouchProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        HerobrineWeaponEffectProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
     public static void init() {
-        SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.ARMORED_HEROBRINE.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
-            return serverlevelaccessor.getRawBrightness(blockpos, 0) <= 8;
+        SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.SLEDGEHAMMER_HEROBRINE.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
+            return  serverlevelaccessor.getRawBrightness(blockpos, 0) <= 8;
         });
     }
 
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();
 
-        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3D);
-        builder = builder.add(Attributes.MAX_HEALTH, 100.0D);
-        builder = builder.add(Attributes.ARMOR, 10.0D);
+        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.35D);
+        builder = builder.add(Attributes.MAX_HEALTH, 250.0D);
+        builder = builder.add(Attributes.ARMOR, 25.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 4.0D);
-        builder = builder.add(Attributes.FOLLOW_RANGE, 256.0D);
+        builder = builder.add(Attributes.FOLLOW_RANGE, 128.0D);
         return builder;
     }
 }

@@ -27,6 +27,8 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.GLAIVE_HEROBRINE_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.REAPER_HEROBRINE_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.SWORDSMAN_HEROBRINE_SPAWN_EGG.get());
+                        pOutput.accept(AnnoyingVillagersModItems.SLEDGEHAMMER_HEROBRINE_SPAWN_EGG.get());
+                        pOutput.accept(AnnoyingVillagersModItems.AEGIS_HEROBRINE_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.BLUE_DEMON_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.VILLAGER_SCOUT_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.VILLAGER_SPAWN_EGG.get());
@@ -60,6 +62,7 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.ENDER_GLAIVE.get());
                         pOutput.accept(AnnoyingVillagersModItems.ENDER_SLAYER_SCYTHE.get());
                         pOutput.accept(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER.get());
+                        pOutput.accept(AnnoyingVillagersModItems.OBSIDIAN_SLEDGEHAMMER.get());
                         pOutput.accept(AnnoyingVillagersModItems.LEGENDARY_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.HARD_GREAT_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_SPEAR.get());

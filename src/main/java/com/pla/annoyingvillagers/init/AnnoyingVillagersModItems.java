@@ -46,6 +46,12 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> SWORDSMAN_HEROBRINE_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("swordsman_herobrine_spawn_egg", () -> {
         return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.SWORDSMAN_HEROBRINE, -1, -1, (new Properties()));
     });
+    public static final RegistryObject<Item> AEGIS_HEROBRINE_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("aegis_herobrine_spawn_egg", () -> {
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.AEGIS_HEROBRINE, -13434727, -1, (new Properties()));
+    });
+    public static final RegistryObject<Item> SLEDGEHAMMER_HEROBRINE_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("sledgehammer_herobrine_spawn_egg", () -> {
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.SLEDGEHAMMER_HEROBRINE, -1, -1, (new Properties()));
+    });
     public static final RegistryObject<Item> VILLAGER_SCOUT_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("villager_scout_spawn_egg", () -> {
         return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.VILLAGER_SCOUT, -205, -26317, (new Properties()));
     });
@@ -283,6 +289,9 @@ public class AnnoyingVillagersModItems {
     });
     public static final RegistryObject<Item> DEMONIAC_VOLTAGE_REAVER = AnnoyingVillagersModItems.REGISTRY.register("demoniac_voltage_reaver", () -> {
         return new DemoniacVoltageReaverItem();
+    });
+    public static final RegistryObject<Item> OBSIDIAN_SLEDGEHAMMER = AnnoyingVillagersModItems.REGISTRY.register("obsidian_sledgehammer", () -> {
+        return new ObsidianSledgehammerItem();
     });
     // ------------------------------
 

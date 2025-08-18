@@ -79,7 +79,7 @@
 			{ 
                   "weapon_categories": ["spear"],
                   "style":"common", 
-                  "guard": "indestructible:guard/guard_spear",
+                  "guard": "wom:biped/skill/agony_guard",
 				  "counter": "epicfight:biped/combat/spear_twohand_auto2",
 				  "speed": 2
             }

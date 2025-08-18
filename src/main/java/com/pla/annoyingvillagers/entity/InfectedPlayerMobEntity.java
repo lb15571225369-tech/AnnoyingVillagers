@@ -113,6 +113,35 @@ public class InfectedPlayerMobEntity extends PlayerMobEntity {
         if (!livingentity.level().isClientSide()) {
             livingentity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.HEROBRINE.get(), 8000, 3));
         }
+        if (!this.level().isClientSide() && this.getServer() != null) {
+            try {
+                this.getServer().getCommands().getDispatcher().execute(
+                        "team add herobrine",
+                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+            } catch (CommandSyntaxException e) {
+
+            }
+        }
+
+        if (!this.level().isClientSide() && this.getServer() != null) {
+            try {
+                this.getServer().getCommands().getDispatcher().execute(
+                        "team modify herobrine friendlyFire false",
+                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+            } catch (CommandSyntaxException e) {
+
+            }
+        }
+
+        if (!this.level().isClientSide() && this.getServer() != null) {
+            try {
+                this.getServer().getCommands().getDispatcher().execute(
+                        "team join herobrine @s",
+                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+            } catch (CommandSyntaxException e) {
+
+            }
+        }
         return spawngroupdata;
     }
 

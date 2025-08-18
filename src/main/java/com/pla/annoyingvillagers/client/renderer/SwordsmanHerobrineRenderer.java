@@ -10,9 +10,9 @@ import net.minecraft.client.renderer.entity.layers.EyesLayer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.resources.ResourceLocation;
 
-public class SwordsManHerobrineRenderer extends HumanoidMobRenderer<SwordsManHerobrineEntity, HumanoidModel<SwordsManHerobrineEntity>> {
+public class SwordsmanHerobrineRenderer extends HumanoidMobRenderer<SwordsManHerobrineEntity, HumanoidModel<SwordsManHerobrineEntity>> {
 
-    public SwordsManHerobrineRenderer(Context context) {
+    public SwordsmanHerobrineRenderer(Context context) {
         super(context, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER)), 0.5F);
         this.addLayer(new HumanoidArmorLayer(
                 this,

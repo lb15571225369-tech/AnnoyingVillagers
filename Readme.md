@@ -369,6 +369,7 @@
 - VILLAGERHEAD_3 - jev_glasses
 
 # 1.3
+fix angry steve by torment_dash
 YinshenEntity -> StealthAttack
 ANYINGHEIYAOSHICHANGZHU -> SHADOW_OBSIDIAN_BURST
 ANYINGHEIYAOSHIZHUSHIFANG -> SHADOW_OBSIDIAN_STRAIGHT
@@ -408,3 +409,9 @@ SHERENJIANBING -> DEMONIAC_VOLTAGE_REAVER_HILT
 SherenherobrineEntity -> SwordsManHerobrineEntity
 SHERENHEROBRINE -> SWORDSMAN_HEROBRINE
 sherenherobrine -> swordsman_herobrine
+YingChuiHerobrineEntity -> SledgehammerHerobrineEntity
+YING_CHUI_HEROBRINE -> SLEDGEHAMMER_HEROBRINE
+ying_chui_herobrine -> sledgehammer_herobrine
+HHEICHUI -> OBSIDIAN_SLEDGEHAMMER
+hheichui -> obsidian_sledgehammer
+HheichuiItem -> ObsidianSledgehammerItem
