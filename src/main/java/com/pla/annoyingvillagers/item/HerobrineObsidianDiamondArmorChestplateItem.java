@@ -10,6 +10,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,6 +24,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+
+import static com.pla.annoyingvillagers.util.ArmorUtil.dropArmorSlot;
 
 public abstract class HerobrineObsidianDiamondArmorChestplateItem extends ArmorItem {
 
@@ -53,7 +56,7 @@ public abstract class HerobrineObsidianDiamondArmorChestplateItem extends ArmorI
             }
 
             public SoundEvent getEquipSound() {
-                return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(""));
+                return SoundEvents.ARMOR_EQUIP_GENERIC;
             }
 
             public Ingredient getRepairIngredient() {
@@ -101,23 +104,8 @@ public abstract class HerobrineObsidianDiamondArmorChestplateItem extends ArmorI
         @Override
         public void onArmorTick(ItemStack itemstack, Level level, Player player) {
             if (player != null) {
-                LivingEntity livingentity;
-
-                if (player instanceof Player) {
-                    player.getInventory().armor.set(0, new ItemStack(Blocks.AIR));
-                    player.getInventory().setChanged();
-                } else if (player instanceof LivingEntity) {
-                    livingentity = (LivingEntity) player;
-                    livingentity.setItemSlot(EquipmentSlot.FEET, new ItemStack(Blocks.AIR));
-                }
-
-                if (player instanceof Player) {
-                    player.getInventory().armor.set(1, new ItemStack(Blocks.AIR));
-                    player.getInventory().setChanged();
-                } else if (player instanceof LivingEntity) {
-                    livingentity = (LivingEntity) player;
-                    livingentity.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Blocks.AIR));
-                }
+                dropArmorSlot(player, EquipmentSlot.FEET, "Herobrine Obsidian Diamond Chestplate");
+                dropArmorSlot(player, EquipmentSlot.LEGS, "Herobrine Obsidian Diamond Chestplate");
             }
         }
     }

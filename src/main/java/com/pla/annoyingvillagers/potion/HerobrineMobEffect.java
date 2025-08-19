@@ -38,4 +38,5 @@ public class HerobrineMobEffect extends MobEffect {
     public boolean isDurationEffectTick(int i, int j) {
         return true;
     }
+
 }

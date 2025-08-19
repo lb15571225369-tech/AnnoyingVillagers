@@ -1,20 +1,16 @@
 package com.pla.annoyingvillagers.item;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.StealthAttackEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
-import com.pla.annoyingvillagers.util.SnakeBladeHit;
-import net.corruptdog.cdm.gameasset.CorruptAnimations;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -25,9 +21,6 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
-import yesman.epicfight.world.capabilities.EpicFightCapabilities;
-import yesman.epicfight.world.capabilities.entitypatch.HumanoidMobPatch;
-import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 public class EnderAegisItem extends SwordItem {
 
@@ -42,7 +35,7 @@ public class EnderAegisItem extends SwordItem {
             }
 
             public float getAttackDamageBonus() {
-                return 14.0F;
+                return 8.0F;
             }
 
             public int getLevel() {
@@ -103,9 +96,10 @@ public class EnderAegisItem extends SwordItem {
     public boolean hurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         if (pStack.getTag().getBoolean("SecondForm")) {
             if (!pTarget.level().isClientSide()) {
-                pTarget.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 10, 2));
-                pTarget.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 10, 2));
-                pTarget.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.HEROBRINE.get(), 10, 2));
+                pTarget.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 40, 2));
+                pTarget.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 2));
+                pTarget.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 40, 2));
+                pTarget.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.HEROBRINE.get(), 40, 2));
             }
         }
         return super.hurtEnemy(pStack, pTarget, pAttacker);
@@ -116,32 +110,33 @@ public class EnderAegisItem extends SwordItem {
         if (flag) {
             if (itemstack.getTag().getBoolean("SecondForm")) {
                 HerobrineWeaponEffectProcedure.execute(level, entity.getX(), entity.getY(), entity.getZ(), entity);
-            } else if (itemstack.getTag().getInt("ParryCount") >= 5) {
-                if (entity instanceof Player player) {
-                    ItemCooldowns cooldowns = player.getCooldowns();
-                    cooldowns.addCooldown(itemstack.getItem(), 200);
-                    itemstack.getTag().remove("ParryCount");
-                }
             }
+        }
+        if (!itemstack.getTag().getBoolean("SecondForm") && itemstack.getTag().getInt("ParryCount") >= 5) {
             if (entity instanceof Player player) {
-                float percent = player.getCooldowns().getCooldownPercent(itemstack.getItem(), 0);
-                if (percent > 0.0F) {
-                    if (!itemstack.getTag().getBoolean("SecondForm")) {
-                        itemstack.getTag().putBoolean("SecondForm", true);
-                        if (entity instanceof LivingEntity livingEntity) {
-                            if (!livingEntity.level().isClientSide()) {
-                                livingEntity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 2));
-                                livingEntity.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 200, 2));
-                                livingEntity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 2));
-                            }
+                ItemCooldowns cooldowns = player.getCooldowns();
+                cooldowns.addCooldown(itemstack.getItem(), 200);
+                itemstack.getTag().remove("ParryCount");
+            }
+        }
+        if (entity instanceof Player player) {
+            float percent = player.getCooldowns().getCooldownPercent(itemstack.getItem(), 0);
+            if (percent > 0.0F) {
+                if (!itemstack.getTag().getBoolean("SecondForm")) {
+                    itemstack.getTag().putBoolean("SecondForm", true);
+                    if (entity instanceof LivingEntity livingEntity) {
+                        if (!livingEntity.level().isClientSide()) {
+                            livingEntity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 2));
+                            livingEntity.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 200, 2));
+                            livingEntity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 2));
                         }
+                    }
 
-                        shieldShoot(level, player);
-                    }
-                } else {
-                    if (itemstack.getTag().getBoolean("SecondForm")) {
-                        itemstack.getTag().remove("SecondForm");
-                    }
+                    shieldShoot(level, player);
+                }
+            } else {
+                if (itemstack.getTag().getBoolean("SecondForm")) {
+                    itemstack.getTag().remove("SecondForm");
                 }
             }
         }

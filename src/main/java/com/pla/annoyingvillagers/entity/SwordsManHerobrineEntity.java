@@ -64,13 +64,15 @@ public class SwordsManHerobrineEntity extends Monster {
 
     @Override
     public boolean doHurtTarget(Entity pEntity) {
-        if (this.getPersistentData().getInt("HitCount") >= 3) {
-            if (SnakeBladeHit.process(this.getMainHandItem(), this)) {
-                this.getMainHandItem().getOrCreateTag().putBoolean("SnakeAnimation", true);
-                this.getPersistentData().remove("HitCount");
+        if (!pEntity.level().isClientSide()) {
+            if (this.getPersistentData().getInt("HitCount") >= 3) {
+                if (SnakeBladeHit.process(this.getMainHandItem(), this)) {
+                    this.getMainHandItem().getOrCreateTag().putBoolean("SnakeAnimation", true);
+                    this.getPersistentData().remove("HitCount");
+                }
+            } else {
+                this.getPersistentData().putInt("HitCount", (this.getPersistentData().contains("HitCount") ? this.getPersistentData().getInt("HitCount") : 0) + 1);
             }
-        } else {
-            this.getPersistentData().putInt("HitCount", (this.getPersistentData().contains("HitCount") ? this.getPersistentData().getInt("HitCount") : 0) + 1);
         }
         return super.doHurtTarget(pEntity);
     }
@@ -114,13 +116,6 @@ public class SwordsManHerobrineEntity extends Monster {
                     entity.setSprinting(false);
                 }
             };
-//            if (Math.random() <= 0.5D && this instanceof LivingEntity) {
-//                LivingEntity livingentity = (LivingEntity)this;
-//
-//                if (!livingentity.level().isClientSide()) {
-//                    livingentity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 1, 1, false, false));
-//                }
-//            }
 
             LivingEntity livingentity = (LivingEntity)this;
 

@@ -55,7 +55,7 @@ public class SnakeBladeEntity extends Entity {
     private boolean hasChained = false;
     public float prevProgress = 0;
     public static final float MAX_EXTEND_TIME = 5F;
-    private boolean retractionHandled = false;
+//    private boolean retractionHandled = false;
 
     public SnakeBladeEntity(EntityType<?> type, Level level) {
         super(type, level);
@@ -114,8 +114,9 @@ public class SnakeBladeEntity extends Entity {
         if(this.isRetracting() && progress > 0F){
             this.setProgress(progress - 1);
         }
-        if(this.isRetracting() && progress == 0F && !retractionHandled){
-            retractionHandled = true;
+//        if(this.isRetracting() && progress == 0F && !retractionHandled){
+//            retractionHandled = true;
+        if(this.isRetracting() && progress == 0F) {
             Entity from = this.getFromEntity();
             if(from instanceof SnakeBladeEntity){
                 SnakeBladeEntity snakeBladeFragment = (SnakeBladeEntity) from;
@@ -355,12 +356,12 @@ public class SnakeBladeEntity extends Entity {
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
-        tag.putBoolean("RetractionHandled", retractionHandled);
+//        tag.putBoolean("RetractionHandled", retractionHandled);
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
-        retractionHandled = tag.getBoolean("RetractionHandled");
+//        retractionHandled = tag.getBoolean("RetractionHandled");
     }
 
     public boolean isCreator(Entity mob) {

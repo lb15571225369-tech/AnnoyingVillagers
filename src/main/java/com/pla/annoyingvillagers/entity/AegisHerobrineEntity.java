@@ -3,11 +3,13 @@ package com.pla.annoyingvillagers.entity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
+import com.pla.annoyingvillagers.item.EnderAegisItem;
 import com.pla.annoyingvillagers.procedures.Herobrine7OnEntityInitialSpawnProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineTransfromProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.util.SnakeBladeHit;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -20,11 +22,14 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
@@ -36,6 +41,7 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 public class AegisHerobrineEntity extends Monster {
     public AegisHerobrineEntity(SpawnEntity spawnentity, Level level) {
@@ -80,6 +86,67 @@ public class AegisHerobrineEntity extends Monster {
 
     public SoundEvent getDeathSound() {
         return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
+    }
+
+    public int getCooldownTicks() {
+        return this.getPersistentData().getInt("ShieldCooldown");
+    }
+
+    public void setCooldownTicks(int ticks) {
+        this.getPersistentData().putInt("ShieldCooldown", ticks);
+    }
+
+    @Override
+    public boolean doHurtTarget(Entity pEntity) {
+        ItemStack itemStack = this.getMainHandItem();
+        if (itemStack.getTag().getBoolean("SecondForm") && pEntity instanceof LivingEntity livingEntity) {
+            if (!pEntity.level().isClientSide()) {
+                livingEntity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 40, 2));
+                livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 2));
+                livingEntity.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 40, 2));
+                livingEntity.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.HEROBRINE.get(), 40, 2));
+            }
+        }
+        return super.doHurtTarget(pEntity);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (!this.level().isClientSide()) {
+            ItemStack itemStack = this.getMainHandItem();
+            if (itemStack.getTag().getBoolean("SecondForm")) {
+                HerobrineWeaponEffectProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+
+                int cooldown = getCooldownTicks();
+                if (cooldown > 0) {
+                    setCooldownTicks(cooldown - 1);
+                } else {
+                    itemStack.getTag().remove("SecondForm");
+                }
+            } else if (!itemStack.getTag().getBoolean("SecondForm") && this.getPersistentData().getInt("ParryCount") >= 3) {
+                itemStack.getTag().putBoolean("SecondForm", true);
+                setCooldownTicks(200);
+                if (!this.level().isClientSide()) {
+                    this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 2));
+                    this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 2));
+                }
+                if (itemStack.getItem() instanceof EnderAegisItem enderAegisItem) {
+                    enderAegisItem.shieldShoot(this.level(), this);
+                }
+                this.getPersistentData().remove("ParryCount");
+            }
+        }
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag pCompound) {
+        super.readAdditionalSaveData(pCompound);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag pCompound) {
+        super.addAdditionalSaveData(pCompound);
     }
 
     public boolean hurt(DamageSource damagesource, float f) {

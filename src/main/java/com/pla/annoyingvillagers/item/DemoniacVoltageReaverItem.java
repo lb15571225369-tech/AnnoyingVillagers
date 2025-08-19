@@ -82,5 +82,8 @@ public class DemoniacVoltageReaverItem extends SwordItem {
         if (flag && itemstack.getTag().getBoolean("SecondForm")) {
             HerobrineWeaponEffectProcedure.execute(level, entity.getX(), entity.getY(), entity.getZ(), entity);
         }
+        if (!flag && itemstack.getTag().getBoolean("SecondForm") && itemstack.getTag().getBoolean("SnakeAnimation")) {
+            itemstack.getTag().remove("SnakeAnimation");
+        }
     }
 }

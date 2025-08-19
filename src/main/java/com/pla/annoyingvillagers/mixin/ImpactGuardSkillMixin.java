@@ -27,8 +27,12 @@ public abstract class ImpactGuardSkillMixin {
         if (!isSpecialSource) {
             Player player = playerpatch.getOriginal();
             ItemStack itemStack = player.getMainHandItem();
-            if (itemStack.getItem() instanceof EnderAegisItem enderAegisItem) {
-                itemStack.getTag().putInt("ParryCount", (itemStack.getTag().contains("ParryCount") ? itemStack.getTag().getInt("ParryCount") : 0) + 1);
+            if (itemStack.getItem() instanceof EnderAegisItem && !player.level().isClientSide()) {
+                if (itemStack.getTag().getBoolean("SecondForm")) {
+                    ((EnderAegisItem) itemStack.getItem()).shieldShoot(player.level(), player);
+                } else {
+                    itemStack.getTag().putInt("ParryCount", (itemStack.getTag().contains("ParryCount") ? itemStack.getTag().getInt("ParryCount") : 0) + 1);
+                }
             }
         }
     }

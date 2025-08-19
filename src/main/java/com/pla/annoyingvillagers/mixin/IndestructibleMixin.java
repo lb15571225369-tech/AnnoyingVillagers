@@ -4,9 +4,13 @@ import com.nameless.indestructible.world.capability.Utils.CapabilityState;
 import com.nameless.indestructible.world.capability.Utils.IAdvancedCapability;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.AegisHerobrineEntity;
+import com.pla.annoyingvillagers.item.EnderAegisItem;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -58,9 +62,17 @@ public abstract class IndestructibleMixin {
                         }
 
                         if (guardSuccess) {
-                            AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: IndestructibleMixin guardSuccess for: {}", victim.getName());
-                        } else {
-                            AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: IndestructibleMixin guardFailed for: {}", victim.getName());
+//                            AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: IndestructibleMixin guardSuccess for: {}", victim.getName());
+                            if (victim instanceof LivingEntity livingEntity && !livingEntity.level().isClientSide()) {
+                                ItemStack itemStack = livingEntity.getMainHandItem();
+                                if (itemStack.getItem() instanceof EnderAegisItem) {
+                                    if (itemStack.getTag().getBoolean("SecondForm")) {
+                                        ((EnderAegisItem) itemStack.getItem()).shieldShoot(livingEntity.level(), livingEntity);
+                                    } else {
+                                        livingEntity.getPersistentData().putInt("ParryCount", (livingEntity.getPersistentData().contains("ParryCount") ? livingEntity.getPersistentData().getInt("ParryCount") : 0) + 1);
+                                    }
+                                }
+                            }
                         }
                     }
                 }

@@ -15,11 +15,6 @@ public class HerobrineMobEffectOnRemoveAttributeModifiersProcedure {
                 livingentity.hurt(entity.level().damageSources().magic(), 1.0F);
             }
 
-            if (entity instanceof ServerPlayer) {
-                ServerPlayer serverplayer = (ServerPlayer) entity;
-                serverplayer.setGameMode(GameType.SURVIVAL);
-            }
-
             entity.hurt(entity.level().damageSources().inWall(), 1.0F);
         }
     }

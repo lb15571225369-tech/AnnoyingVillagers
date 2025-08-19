@@ -17,7 +17,7 @@ public abstract class GuardSkillMixin {
     private void playerOnGuard(PlayerPatch<?> playerpatch, HurtEvent.Pre event, boolean advanced, CallbackInfo ci) {
         Player player = playerpatch.getOriginal();
         ItemStack itemStack = player.getMainHandItem();
-        if (itemStack.getItem() instanceof EnderAegisItem) {
+        if (itemStack.getItem() instanceof EnderAegisItem && !player.level().isClientSide()) {
             if (itemStack.getTag().getBoolean("SecondForm")) {
                 ((EnderAegisItem) itemStack.getItem()).shieldShoot(player.level(), player);
             } else {

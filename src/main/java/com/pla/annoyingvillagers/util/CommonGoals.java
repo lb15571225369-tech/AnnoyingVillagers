@@ -22,6 +22,7 @@ public class CommonGoals {
         monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal(monster, PlayerMobEntity.class, true));
         monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal(monster, SteveEntity.class, true, false));
         monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal(monster, Steve2Entity.class, true, false));
+        monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal(monster, AngrySteveEntity.class, true, false));
         monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal(monster, ChrisEntity.class, true, false));
         monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal(monster, AlexEntity.class, true, false));
         monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal(monster, JevEntity.class, true, false));

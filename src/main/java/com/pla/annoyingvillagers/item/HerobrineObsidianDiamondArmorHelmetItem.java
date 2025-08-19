@@ -10,6 +10,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,18 +25,12 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
+import static com.pla.annoyingvillagers.util.ArmorUtil.dropArmorSlot;
+
 public abstract class HerobrineObsidianDiamondArmorHelmetItem extends ArmorItem {
 
     public HerobrineObsidianDiamondArmorHelmetItem(ArmorItem.Type type, Properties properties) {
         super(new ArmorMaterial() {
-            public int getDurabilityForSlot(EquipmentSlot equipmentslot1) {
-                return (new int[]{13, 15, 16, 11})[equipmentslot1.getIndex()] * 25;
-            }
-
-            public int getDefenseForSlot(EquipmentSlot equipmentslot1) {
-                return (new int[]{0, 0, 0, 16})[equipmentslot1.getIndex()];
-            }
-
             public int getDurabilityForType(Type pType) {
                 return switch (pType) {
                     case BOOTS      -> 13 * 25;
@@ -60,7 +55,7 @@ public abstract class HerobrineObsidianDiamondArmorHelmetItem extends ArmorItem 
             }
 
             public SoundEvent getEquipSound() {
-                return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(""));
+                return SoundEvents.ARMOR_EQUIP_GENERIC;
             }
 
             public Ingredient getRepairIngredient() {
@@ -108,23 +103,8 @@ public abstract class HerobrineObsidianDiamondArmorHelmetItem extends ArmorItem 
         @Override
         public void onArmorTick(ItemStack itemstack, Level level, Player player) {
             if (player != null) {
-                LivingEntity livingentity;
-
-                if (player instanceof Player) {
-                    player.getInventory().armor.set(0, new ItemStack(Blocks.AIR));
-                    player.getInventory().setChanged();
-                } else if (player instanceof LivingEntity) {
-                    livingentity = (LivingEntity) player;
-                    livingentity.setItemSlot(EquipmentSlot.FEET, new ItemStack(Blocks.AIR));
-                }
-
-                if (player instanceof Player) {
-                    player.getInventory().armor.set(1, new ItemStack(Blocks.AIR));
-                    player.getInventory().setChanged();
-                } else if (player instanceof LivingEntity) {
-                    livingentity = (LivingEntity) player;
-                    livingentity.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Blocks.AIR));
-                }
+                dropArmorSlot(player, EquipmentSlot.FEET, "Herobrine Obsidian Diamond Helmet");
+                dropArmorSlot(player, EquipmentSlot.LEGS, "Herobrine Obsidian Diamond Helmet");
             }
         }
     }
