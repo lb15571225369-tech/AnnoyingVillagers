@@ -39,12 +39,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 
-@EventBusSubscriber
+
 public class SwordsManHerobrineEntity extends Monster {
 
     public SwordsManHerobrineEntity(SpawnEntity spawnentity, Level level) {
@@ -60,13 +59,12 @@ public class SwordsManHerobrineEntity extends Monster {
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
         ItemStack sword = new ItemStack(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER.get());
-        sword.getTag().putBoolean("SecondForm", true);
         this.setItemSlot(EquipmentSlot.MAINHAND, sword);
     }
 
     @Override
     public boolean doHurtTarget(Entity pEntity) {
-        if (this.getPersistentData().getInt("HitCount") == 3) {
+        if (this.getPersistentData().getInt("HitCount") >= 3) {
             if (SnakeBladeHit.process(this.getMainHandItem(), this)) {
                 this.getMainHandItem().getOrCreateTag().putBoolean("SnakeAnimation", true);
                 this.getPersistentData().remove("HitCount");
@@ -116,12 +114,18 @@ public class SwordsManHerobrineEntity extends Monster {
                     entity.setSprinting(false);
                 }
             };
-            if (Math.random() <= 0.5D && this instanceof LivingEntity) {
-                LivingEntity livingentity = (LivingEntity)this;
+//            if (Math.random() <= 0.5D && this instanceof LivingEntity) {
+//                LivingEntity livingentity = (LivingEntity)this;
+//
+//                if (!livingentity.level().isClientSide()) {
+//                    livingentity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 1, 1, false, false));
+//                }
+//            }
 
-                if (!livingentity.level().isClientSide()) {
-                    livingentity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 1, 1, false, false));
-                }
+            LivingEntity livingentity = (LivingEntity)this;
+
+            if (!livingentity.level().isClientSide()) {
+                livingentity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 1, 1, false, false));
             }
         }
         if (damagesource.is(DamageTypes.FALL)) return false;
@@ -132,6 +136,19 @@ public class SwordsManHerobrineEntity extends Monster {
         if (damagesource.is(DamageTypes.DRAGON_BREATH)) return false;
         if (damagesource.is(DamageTypes.INDIRECT_MAGIC)) return false;
         return super.hurt(damagesource, f);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (!this.level().isClientSide()) {
+            if (this.getTarget() != null && !this.getMainHandItem().getTag().getBoolean("SecondForm")) {
+                this.getMainHandItem().getTag().putBoolean("SecondForm", true);
+            }
+            if (this.getTarget() == null && this.getMainHandItem().getTag().getBoolean("SecondForm") && !this.getMainHandItem().getTag().getBoolean("SnakeAnimation")) {
+                this.getMainHandItem().getTag().putBoolean("SecondForm", false);
+            }
+        }
     }
 
     public void die(DamageSource damagesource) {
@@ -161,7 +178,9 @@ public class SwordsManHerobrineEntity extends Monster {
 
     public void baseTick() {
         super.baseTick();
-        HerobrineWeaponEffectProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        if (this.getTarget() != null && this.getMainHandItem().getTag().getBoolean("SecondForm")) {
+            HerobrineWeaponEffectProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        }
     }
 
     public static void init() {

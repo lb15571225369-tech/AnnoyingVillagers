@@ -43,7 +43,7 @@ import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityInitialSpawnProcedu
 
 import java.util.UUID;
 import net.minecraft.util.RandomSource;
-@EventBusSubscriber
+
 public class BlueDemonEntity extends Monster {
     private BbqEntity bbqEntityToProtect;
     private UUID bbqUUID;
@@ -145,7 +145,6 @@ public class BlueDemonEntity extends Monster {
 
     public boolean hurt(DamageSource damagesource, float f) {
         BlueDemonOnEntityDamageProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
-        if (damagesource.getDirectEntity() instanceof AbstractArrow) return false;
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;
         if (damagesource.is(DamageTypes.DROWN)) return false;

@@ -41,7 +41,7 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 
-@EventBusSubscriber
+
 public class Herobrine7Entity extends Monster {
     public Herobrine7Entity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.HEROBRINE_7.get(), level);

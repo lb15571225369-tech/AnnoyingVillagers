@@ -55,7 +55,7 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
-@EventBusSubscriber
+
 public class BlueVillagerGeneralEntity extends PathfinderMobInventory {
 
     public BlueVillagerGeneralEntity(SpawnEntity spawnentity, Level level) {

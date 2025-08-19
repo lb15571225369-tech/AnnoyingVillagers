@@ -66,7 +66,6 @@ public class BlueDemonDeadEntity extends PathfinderMob {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        if (damagesource.getDirectEntity() instanceof AbstractArrow) return false;
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;
         return super.hurt(damagesource, f);

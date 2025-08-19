@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.entity.Herobrine7Entity;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -59,7 +60,7 @@ public class Herobrine7OnEntityInitialSpawnProcedure {
                         livingentity1.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Blocks.AIR));
                     }
 
-                    if (entity instanceof LivingEntity) {
+                    if (entity instanceof Herobrine7Entity && entity instanceof LivingEntity) {
                         LivingEntity livingentity2 = (LivingEntity)entity;
                         ItemStack itemstack = new ItemStack(Items.ENDER_PEARL);
 

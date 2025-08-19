@@ -48,7 +48,7 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
-@EventBusSubscriber
+
 public class RedVillagerGeneralEntity extends PathfinderMobInventory {
     public RedVillagerGeneralEntity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.RED_VILLAGER_GENERAL.get(), level);

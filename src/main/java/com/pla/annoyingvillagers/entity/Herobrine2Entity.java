@@ -35,7 +35,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import se.gory_moon.player_mobs.utils.NameManager;
 
-@EventBusSubscriber
+
 public class Herobrine2Entity extends Monster {
     public Herobrine2Entity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.HEROBRINE_2.get(), level);

@@ -83,7 +83,6 @@ public class Steve2Entity extends PathfinderMobInventory {
 
     public boolean hurt(DamageSource damagesource, float f) {
         Steve2OnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
-        if (damagesource.getDirectEntity() instanceof AbstractArrow) return false;
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;
         if (damagesource.is(DamageTypes.DROWN)) return false;

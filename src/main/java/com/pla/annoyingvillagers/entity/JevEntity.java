@@ -234,7 +234,6 @@ public class JevEntity extends PathfinderMobInventory {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        if (damagesource.getDirectEntity() instanceof AbstractArrow) return false;
         if (damagesource.is(DamageTypes.THROWN)) return false;
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;

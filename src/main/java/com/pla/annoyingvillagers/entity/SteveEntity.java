@@ -33,7 +33,7 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 
-@EventBusSubscriber
+
 public class SteveEntity extends PathfinderMobInventory {
     public SteveEntity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.STEVE.get(), level);
@@ -82,7 +82,6 @@ public class SteveEntity extends PathfinderMobInventory {
 
     public boolean hurt(DamageSource damagesource, float f) {
         SteveOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
-        if (damagesource.getDirectEntity() instanceof AbstractArrow) return false;
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;
         if (damagesource.is(DamageTypes.DROWN)) return false;

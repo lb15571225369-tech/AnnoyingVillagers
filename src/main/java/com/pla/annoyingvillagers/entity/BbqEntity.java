@@ -37,7 +37,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.EnumSet;
 import java.util.UUID;
 
-@EventBusSubscriber
+
 public class BbqEntity extends PathfinderMob implements RangedAttackMob {
     private UUID followTargetUUID;
     private Entity followTarget;
@@ -251,7 +251,6 @@ public class BbqEntity extends PathfinderMob implements RangedAttackMob {
             projectile.shoot(this.getLookAngle().x, this.getLookAngle().y, this.getLookAngle().z, 2.0F, 0.0F);
             level.addFreshEntity(projectile);
         }
-        if (damagesource.getDirectEntity() instanceof AbstractArrow) return false;
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;
         if (damagesource.is(DamageTypes.DROWN)) return false;
@@ -269,7 +268,7 @@ public class BbqEntity extends PathfinderMob implements RangedAttackMob {
         Builder builder = Mob.createMobAttributes();
 
         builder = builder.add(Attributes.MOVEMENT_SPEED, 0.27D);
-        builder = builder.add(Attributes.MAX_HEALTH, 300.0D);
+        builder = builder.add(Attributes.MAX_HEALTH, 150.0D);
         builder = builder.add(Attributes.ARMOR, 40.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 7.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 128.0D);

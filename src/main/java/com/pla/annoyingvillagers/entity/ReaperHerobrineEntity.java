@@ -54,7 +54,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.Random;
 import java.util.UUID;
 
-@EventBusSubscriber
+
 public class ReaperHerobrineEntity extends Monster {
     private EnderDragon enderDragon;
     private UUID enderDragonUUID;

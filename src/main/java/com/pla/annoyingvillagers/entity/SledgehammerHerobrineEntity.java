@@ -44,7 +44,7 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 
-@EventBusSubscriber
+
 public class SledgehammerHerobrineEntity extends Monster {
     public SledgehammerHerobrineEntity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.SLEDGEHAMMER_HEROBRINE.get(), level);

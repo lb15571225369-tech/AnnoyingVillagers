@@ -11,14 +11,20 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.RangedBowAttackGoal;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.monster.CrossbowAttackMob;
+import net.minecraft.world.entity.monster.RangedAttackMob;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 
 import java.util.List;
 
-public class PathfinderMobInventory extends PathfinderMob {
+public class PathfinderMobInventory extends PathfinderMob implements RangedAttackMob {
     private final SimpleContainer inventory = new SimpleContainer(27);
 
     public SimpleContainer getInventory() {
@@ -53,6 +59,49 @@ public class PathfinderMobInventory extends PathfinderMob {
                 this.spawnAtLocation(stack);
             }
         }
+    }
+
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+        this.goalSelector.addGoal(4, new RangedBowAttackGoal<>(this, 1.0D, 20, 15.0F));
+    }
+
+    @Override
+    public boolean canFireProjectileWeapon(ProjectileWeaponItem item) {
+        return item instanceof BowItem;
+    }
+
+    public boolean canFireProjectileWeapon(Item item) {
+        boolean var10000;
+        if (item instanceof ProjectileWeaponItem weaponItem) {
+            if (this.canFireProjectileWeapon(weaponItem)) {
+                var10000 = true;
+                return var10000;
+            }
+        }
+
+        var10000 = false;
+        return var10000;
+    }
+
+    @Override
+    public void performRangedAttack(LivingEntity pTarget, float pVelocity) {
+        ItemStack weaponStack = this.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this, this::canFireProjectileWeapon));
+        ItemStack itemstack = this.getProjectile(weaponStack);
+        AbstractArrow mobArrow = ProjectileUtil.getMobArrow(this, itemstack, pVelocity);
+        if (this.getMainHandItem().getItem() instanceof BowItem) {
+            mobArrow = ((BowItem)this.getMainHandItem().getItem()).customArrow(mobArrow);
+        }
+
+        double x = pTarget.getX() - this.getX();
+        double y = pTarget.getY(0.3333333333333333) - mobArrow.getY();
+        double z = pTarget.getZ() - this.getZ();
+        double d3 = Math.sqrt(x * x + z * z);
+        mobArrow.setOwner(this);
+        mobArrow.shoot(x, y + d3 * (double)0.2F, z, 1.6F, (float)(14 - this.level().getDifficulty().getId() * 4));
+        this.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+        this.level().addFreshEntity(mobArrow);
     }
 
     @Override

@@ -293,6 +293,9 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> OBSIDIAN_SLEDGEHAMMER = AnnoyingVillagersModItems.REGISTRY.register("obsidian_sledgehammer", () -> {
         return new ObsidianSledgehammerItem();
     });
+    public static final RegistryObject<Item> ENDER_AEGIS = AnnoyingVillagersModItems.REGISTRY.register("ender_aegis", () -> {
+        return new EnderAegisItem();
+    });
     // ------------------------------
 
 

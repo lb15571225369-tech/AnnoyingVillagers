@@ -109,7 +109,6 @@ public class BlueDemon2Entity extends Monster {
 
     public boolean hurt(DamageSource damagesource, float f) {
         BlueDemon2ParryingProcedure.execute(this);
-        if (damagesource.getDirectEntity() instanceof AbstractArrow) return false;
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;
         if (damagesource.is(DamageTypes.DROWN)) return false;

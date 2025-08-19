@@ -43,7 +43,7 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 
-@EventBusSubscriber
+
 public class GreenVillagerGeneralEntity extends PathfinderMobInventory {
 
     public GreenVillagerGeneralEntity(SpawnEntity spawnentity, Level level) {

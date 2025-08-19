@@ -123,6 +123,16 @@ public class AnnoyingVillagers {
                             return 0.0F;
                         }
                 );
+                ItemProperties.register(
+                        AnnoyingVillagersModItems.ENDER_AEGIS.get(),
+                        new ResourceLocation("second_form"),
+                        (stack, level, entity, seed) -> {
+                            if (stack.hasTag() && stack.getTag().getBoolean("SecondForm")) {
+                                return 1.0F;
+                            }
+                            return 0.0F;
+                        }
+                );
             });
         }
     }

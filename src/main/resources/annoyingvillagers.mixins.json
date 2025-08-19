@@ -19,7 +19,10 @@
     "LivingEntityMixin",
     "DualAxeMixin",
     "ExecutionMixin",
-    "EnderDragonMixin"
+    "EnderDragonMixin",
+    "IndestructibleMixin",
+    "GuardSkillMixin",
+    "ItemCooldownsMixin"
   ],
   "client": [
   ],

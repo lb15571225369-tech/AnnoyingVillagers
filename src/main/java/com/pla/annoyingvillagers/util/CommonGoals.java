@@ -11,6 +11,7 @@ import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BowItem;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
 public class CommonGoals {

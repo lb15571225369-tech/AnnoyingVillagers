@@ -15,6 +15,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
@@ -36,7 +37,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 
-@EventBusSubscriber
 public class AegisHerobrineEntity extends Monster {
     public AegisHerobrineEntity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.AEGIS_HEROBRINE.get(), level);
@@ -50,7 +50,7 @@ public class AegisHerobrineEntity extends Monster {
         this.setCustomName(Component.literal("§5Aegis Herobrine§r"));
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
-//        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.HHEICHUI.get()));
+        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.ENDER_AEGIS.get()));
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -92,7 +92,7 @@ public class AegisHerobrineEntity extends Monster {
                     entity.setSprinting(false);
                 }
             };
-            if (Math.random() <= 0.5D && this instanceof LivingEntity) {
+            if (Math.random() <= 1.0D && this instanceof LivingEntity) {
                 LivingEntity livingentity = (LivingEntity)this;
 
                 if (!livingentity.level().isClientSide()) {
@@ -128,7 +128,6 @@ public class AegisHerobrineEntity extends Monster {
 
     public void baseTick() {
         super.baseTick();
-        HerobrineWeaponEffectProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
     public static void init() {

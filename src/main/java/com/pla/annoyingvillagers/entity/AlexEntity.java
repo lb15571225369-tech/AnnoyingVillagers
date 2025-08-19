@@ -39,7 +39,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.UUID;
 
-@EventBusSubscriber
+
 public class AlexEntity extends PathfinderMobInventory {
     private JevEntity jevToProtect;
     private UUID jevUUID;
@@ -131,7 +131,6 @@ public class AlexEntity extends PathfinderMobInventory {
 
     public boolean hurt(DamageSource damagesource, float f) {
         AlexOnHurtProcedure.execute(this.level(), this, damagesource.getEntity());
-        if (damagesource.getDirectEntity() instanceof AbstractArrow) return false;
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;
         if (damagesource.is(DamageTypes.DROWN)) return false;

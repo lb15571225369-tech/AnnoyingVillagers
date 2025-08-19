@@ -6,6 +6,9 @@ import java.util.function.Function;
 
 import com.pla.annoyingvillagers.gameasset.AVCollider;
 import com.pla.annoyingvillagers.gameasset.AVSkill;
+import net.corruptdog.cdm.gameasset.CorruptAnimations;
+import net.corruptdog.cdm.world.CDWeaponCapabilityPresets;
+import net.corruptdog.cdm.world.CorruptWeaponCategories;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
@@ -239,6 +242,33 @@ public class LegendarySwordCapability {
         return yesman_epicfight_world_capabilities_item_weaponcapability_builder;
     };
 
+    public static final Function<Item, Builder> SWORDSHIELD = (item) -> {
+        return WeaponCapability.builder()
+                .category(CorruptWeaponCategories.S_SWORD)
+                .styleProvider((patch) -> Styles.ONE_HAND)
+                .canBePlacedOffhand(false)
+                .collider(ColliderPreset.SWORD)
+                .swingSound(AVSounds.SWORD_WHOOSH.get())
+                .hitSound(EpicFightSounds.BLADE_HIT.get())
+                .newStyleCombo(Styles.ONE_HAND, new StaticAnimation[]{
+                        CorruptAnimations.SWORD_ONEHAND_AUTO1,
+                        DualAxesAnimations.AXE_AUTO_1,
+                        CorruptAnimations.SWORD_ONEHAND_AUTO3,
+                        CorruptAnimations.SWORD_ONEHAND_AUTO4,
+                        DualAxesAnimations.AXE_AUTO_3,
+                        CorruptAnimations.SWORD_ONEHAND_DASH,
+                        Animations.AXE_AIRSLASH
+                })
+                .innateSkill(Styles.ONE_HAND, (stack) -> EpicFightSkills.SWEEPING_EDGE)
+                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, CorruptAnimations.BIPED_HOLD_KATANA)
+                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, CorruptAnimations.RUN_KATANA)
+                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, CorruptAnimations.WALK_KATANA)
+                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.SNEAK, Animations.BIPED_SNEAK)
+                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.JUMP, Animations.BIPED_JUMP)
+                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.BIPED_BLOCK)
+                .weaponCombinationPredicator((patch) -> true);
+    };
+
     public static void register(WeaponCapabilityPresetRegistryEvent weaponcapabilitypresetregistryevent) {
         weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "legendarysword"), LegendarySwordCapability.LEGENDARYSWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "axe"), LegendarySwordCapability.AXE);
@@ -255,5 +285,6 @@ public class LegendarySwordCapability {
         weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "hardgreatsword"), LegendarySwordCapability.HARDGREATSWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "uchigatana"), LegendarySwordCapability.UCHIGATANA);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "greatsword"), LegendarySwordCapability.GREATSWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "sword_shield"), LegendarySwordCapability.SWORDSHIELD);
     }
 }

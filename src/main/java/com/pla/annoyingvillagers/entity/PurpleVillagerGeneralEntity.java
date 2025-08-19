@@ -50,7 +50,7 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
-@EventBusSubscriber
+
 public class PurpleVillagerGeneralEntity extends PathfinderMobInventory {
     public PurpleVillagerGeneralEntity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.GREEN_VILLAGER_GENERAL.get(), level);

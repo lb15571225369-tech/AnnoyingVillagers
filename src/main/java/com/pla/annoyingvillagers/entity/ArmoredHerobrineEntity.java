@@ -39,7 +39,7 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 
-@EventBusSubscriber
+
 public class ArmoredHerobrineEntity extends Monster {
 
     public ArmoredHerobrineEntity(SpawnEntity spawnentity, Level level) {

@@ -42,7 +42,7 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
-@EventBusSubscriber
+
 public class VillagerScoutCaptainEntity extends PathfinderMobInventory {
     public VillagerScoutCaptainEntity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.VILLAGER_SCOUT_CAPTAIN.get(), level);

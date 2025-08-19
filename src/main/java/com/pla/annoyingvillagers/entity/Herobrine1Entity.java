@@ -36,7 +36,7 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 
-@EventBusSubscriber
+
 public class Herobrine1Entity extends Monster {
     private boolean wasOnGroundLastTick = false;
     public Herobrine1Entity(SpawnEntity spawnentity, Level level) {

@@ -1,9 +1,6 @@
 package com.pla.annoyingvillagers.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import com.google.common.collect.Multimap;
 
@@ -178,13 +175,15 @@ public class SnakeBladeEntity extends Entity {
 
                                         }
                                     }
-                                    if (!current.level().isClientSide() && current.getServer() != null) {
-                                        try {
-                                            current.getServer().getCommands().getDispatcher().execute(
-                                                    "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10",
-                                                    current.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                        } catch (CommandSyntaxException e) {
+                                    if (new Random().nextBoolean()) {
+                                        if (!current.level().isClientSide() && current.getServer() != null) {
+                                            try {
+                                                current.getServer().getCommands().getDispatcher().execute(
+                                                        "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10",
+                                                        current.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                            } catch (CommandSyntaxException e) {
 
+                                            }
                                         }
                                     }
                                 }

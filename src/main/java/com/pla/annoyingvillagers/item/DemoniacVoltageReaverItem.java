@@ -59,7 +59,7 @@ public class DemoniacVoltageReaverItem extends SwordItem {
     @Override
     public boolean hurtEnemy(ItemStack itemstack, LivingEntity pTarget, LivingEntity pAttacker) {
         if (itemstack.getTag().getBoolean("SecondForm")) {
-            if (itemstack.getTag().getInt("HitCount") == 5) {
+            if (itemstack.getTag().getInt("HitCount") >= 5) {
                 if (SnakeBladeHit.process(itemstack, pAttacker)) {
                     itemstack.getOrCreateTag().putBoolean("SnakeAnimation", true);
                     itemstack.removeTagKey("HitCount");
