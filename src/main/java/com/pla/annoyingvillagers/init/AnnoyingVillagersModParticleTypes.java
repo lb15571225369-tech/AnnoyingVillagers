@@ -17,6 +17,9 @@ public class AnnoyingVillagersModParticleTypes {
     public static final RegistryObject<ParticleType<?>> RED_SPARK = AnnoyingVillagersModParticleTypes.REGISTRY.register("red_spark", () -> {
         return new SimpleParticleType(true);
     });
+    public static final RegistryObject<ParticleType<?>> DRAGON_SPARK = AnnoyingVillagersModParticleTypes.REGISTRY.register("dragon_spark", () -> {
+        return new SimpleParticleType(false);
+    });
     public static final RegistryObject<ParticleType<?>> ELECTRIC_SPARK = AnnoyingVillagersModParticleTypes.REGISTRY.register("electric_spark", () -> {
         return new SimpleParticleType(false);
     });

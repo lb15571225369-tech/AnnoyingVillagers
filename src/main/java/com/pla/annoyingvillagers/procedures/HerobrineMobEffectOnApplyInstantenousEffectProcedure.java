@@ -19,7 +19,7 @@ public class HerobrineMobEffectOnApplyInstantenousEffectProcedure {
                 player.causeFoodExhaustion(0.1F);
             }
 
-            if (Math.random() <= 0.1D) {
+            if (Math.random() <= 0.05D) {
                 entity.hurt(entity.level().damageSources().generic(), 3.5F);
             }
 
