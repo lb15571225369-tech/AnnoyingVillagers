@@ -36,7 +36,7 @@ public abstract class HerobrineObsidianDiamondArmorHelmetItem extends ArmorItem 
                     case BOOTS      -> 13 * 25;
                     case LEGGINGS   -> 15 * 25;
                     case CHESTPLATE -> 16 * 25;
-                    case HELMET     -> 11 * 25;
+                    case HELMET     -> 500;
                 };
             }
 
@@ -46,7 +46,7 @@ public abstract class HerobrineObsidianDiamondArmorHelmetItem extends ArmorItem 
                     case BOOTS      -> 0;
                     case LEGGINGS   -> 0;
                     case CHESTPLATE -> 0;
-                    case HELMET     -> 500;
+                    case HELMET     -> 16;
                 };
             }
 

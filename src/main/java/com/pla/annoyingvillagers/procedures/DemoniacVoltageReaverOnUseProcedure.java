@@ -96,7 +96,7 @@ public class DemoniacVoltageReaverOnUseProcedure {
             else {
                 if (entity instanceof LivingEntity livingEntity) {
                     if (itemStack.getTag().getBoolean("SecondForm")) {
-                        if (itemStack.getTag().getInt("HitCount") == 5) {
+                        if (itemStack.getTag().getInt("HitCount") >= 5) {
                             if (SnakeBladeHit.process(itemStack, livingEntity)) {
                                 itemStack.getOrCreateTag().putBoolean("SnakeAnimation", true);
                                 itemStack.removeTagKey("HitCount");
@@ -107,8 +107,6 @@ public class DemoniacVoltageReaverOnUseProcedure {
                             } else {
                                 entity.level().playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:second_form_release")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                             }
-                        } else {
-                            itemStack.getTag().putInt("HitCount", (itemStack.getTag().contains("HitCount") ? itemStack.getTag().getInt("HitCount") : 0) + 1);
                         }
                     }
                 }
