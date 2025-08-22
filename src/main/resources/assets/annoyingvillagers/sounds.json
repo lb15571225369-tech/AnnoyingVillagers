@@ -574,5 +574,13 @@
         "stream": false
       }
     ]
+  },
+  "second_form_release": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:second_form_release",
+        "stream": false
+      }
+    ]
   }
 }

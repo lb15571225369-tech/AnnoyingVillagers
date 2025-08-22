@@ -8,7 +8,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.procedures.Herobrine7OnEntityInitialSpawnProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineTransfromProcedure;
-import com.pla.annoyingvillagers.procedures.ReaperHerobrineOnDeathProcedure;
+import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
@@ -19,11 +19,13 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -40,14 +42,14 @@ import net.minecraft.world.entity.boss.EnderDragonPart;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.enderdragon.phases.EnderDragonPhase;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.projectile.DragonFireball;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -61,6 +63,7 @@ public class ReaperHerobrineEntity extends Monster {
     private UUID enderDragonUUID;
     private boolean spawnEnderDragon = false;
     private int breathCooldown = 0;
+    private int nextStack = 3;
 
     public ReaperHerobrineEntity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.REAPER_HEROBRINE.get(), level);
@@ -84,6 +87,14 @@ public class ReaperHerobrineEntity extends Monster {
     protected void registerGoals() {
         super.registerGoals();
         CommonGoals.registerGoalForHostileNpc(this);
+    }
+
+    public int getCooldownTicks() {
+        return this.getPersistentData().getInt("DragonCooldown");
+    }
+
+    public void setCooldownTicks(int ticks) {
+        this.getPersistentData().putInt("DragonCooldown", ticks);
     }
 
     public MobType getMobType() {
@@ -113,6 +124,7 @@ public class ReaperHerobrineEntity extends Monster {
             tag.putUUID("EnderDragonUUID", enderDragonUUID);
         }
         tag.putBoolean("SpawnEnderDragon", spawnEnderDragon);
+        tag.putInt("NextStack", nextStack);
     }
 
     @Override
@@ -122,6 +134,7 @@ public class ReaperHerobrineEntity extends Monster {
             enderDragonUUID = tag.getUUID("EnderDragonUUID");
         }
         spawnEnderDragon = tag.getBoolean("SpawnEnderDragon");
+        nextStack = tag.contains("NextStack") ? tag.getInt("NextStack") : nextStack;
     }
 
     private void spawnEnderDragon() {
@@ -153,8 +166,19 @@ public class ReaperHerobrineEntity extends Monster {
     }
 
     @Override
+    public boolean doHurtTarget(Entity pEntity) {
+        if (!pEntity.level().isClientSide()) {
+            if (!this.getPersistentData().getBoolean("SecondForm")) {
+                this.getPersistentData().putInt("HitCount", (this.getPersistentData().contains("HitCount") ? this.getPersistentData().getInt("HitCount") : 0) + 1);
+            }
+        }
+        return super.doHurtTarget(pEntity);
+    }
+
+    @Override
     public void tick() {
         super.tick();
+        boolean playSound = false;
         if (!level().isClientSide) {
             if (!spawnEnderDragon) {
                 this.spawnEnderDragon = true;
@@ -177,7 +201,7 @@ public class ReaperHerobrineEntity extends Monster {
                 enderDragon.getPhaseManager().setPhase(EnderDragonPhase.HOVERING);
                 enderDragon.setDragonFight(null);
                 LivingEntity target = this.getTarget();
-                if (target != null && target.isAlive()) {
+                if (target != null && target.isAlive() && this.getPersistentData().getBoolean("SecondForm")) {
                     if (breathCooldown <= 0) {
                         shootThunderBreathAtTarget(target);
                         breathCooldown = 60 + this.getRandom().nextInt(20);
@@ -185,6 +209,32 @@ public class ReaperHerobrineEntity extends Monster {
                 }
             }
             if (breathCooldown > 0) breathCooldown--;
+
+            if (this.getPersistentData().getBoolean("SecondForm")) {
+                HerobrineWeaponEffectProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+                int cooldown = getCooldownTicks();
+                if (cooldown > 0) {
+                    setCooldownTicks(cooldown - 1);
+                } else {
+                    this.getPersistentData().remove("SecondForm");
+                }
+            } else if (!this.getPersistentData().getBoolean("SecondForm") && this.getPersistentData().getInt("HitCount") >= nextStack) {
+                this.getPersistentData().putBoolean("SecondForm", true);
+                this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 2));
+                this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200, 2));
+                this.addEffect(new MobEffectInstance(MobEffects.JUMP, 200, 2));
+                setCooldownTicks(200);
+                this.getPersistentData().remove("HitCount");
+                nextStack = new Random().nextInt(3, 6);
+                playSound = true;
+            }
+        }
+        if (playSound) {
+            if (!this.level().isClientSide()) {
+                this.level().playSound((Player) null, new BlockPos((int) this.getX(), (int) this.getY(), (int) this.getZ()), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:second_form_release")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+            } else {
+                this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:second_form_release")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+            }
         }
     }
 
@@ -226,14 +276,14 @@ public class ReaperHerobrineEntity extends Monster {
         if (damagesource.is(DamageTypes.DROWN)) return false;
         if (damagesource.is(DamageTypes.WITHER_SKULL)) return false;
         if (damagesource.is(DamageTypes.DRAGON_BREATH)) return false;
-        if (damagesource.is(DamageTypes.INDIRECT_MAGIC)) return false;
+        if (damagesource.getDirectEntity() instanceof AbstractArrow) return false;
         return super.hurt(damagesource, f);
     }
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
         this.enderDragon.discard();
-        ReaperHerobrineOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+//        ReaperHerobrineOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {

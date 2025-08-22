@@ -10,12 +10,14 @@ import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.util.SnakeBladeHit;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -29,6 +31,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
@@ -44,6 +47,7 @@ import javax.annotation.Nullable;
 import java.util.Random;
 
 public class AegisHerobrineEntity extends Monster {
+    private int nextStack = 3;
     public AegisHerobrineEntity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.AEGIS_HEROBRINE.get(), level);
     }
@@ -113,6 +117,7 @@ public class AegisHerobrineEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
+        boolean playSound = false;
         if (!this.level().isClientSide()) {
             ItemStack itemStack = this.getMainHandItem();
             if (itemStack.getTag().getBoolean("SecondForm")) {
@@ -124,7 +129,7 @@ public class AegisHerobrineEntity extends Monster {
                 } else {
                     itemStack.getTag().remove("SecondForm");
                 }
-            } else if (!itemStack.getTag().getBoolean("SecondForm") && this.getPersistentData().getInt("ParryCount") >= 3) {
+            } else if (!itemStack.getTag().getBoolean("SecondForm") && this.getPersistentData().getInt("ParryCount") >= nextStack) {
                 itemStack.getTag().putBoolean("SecondForm", true);
                 setCooldownTicks(200);
                 if (!this.level().isClientSide()) {
@@ -135,6 +140,15 @@ public class AegisHerobrineEntity extends Monster {
                     enderAegisItem.shieldShoot(this.level(), this);
                 }
                 this.getPersistentData().remove("ParryCount");
+                nextStack = new Random().nextInt(3, 6);
+                playSound = true;
+            }
+        }
+        if (playSound) {
+            if (!this.level().isClientSide()) {
+                this.level().playSound((Player) null, new BlockPos((int) this.getX(), (int) this.getY(), (int) this.getZ()), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:second_form_release")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+            } else {
+                this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:second_form_release")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
             }
         }
     }
@@ -142,11 +156,14 @@ public class AegisHerobrineEntity extends Monster {
     @Override
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
+        pCompound.putInt("NextStack", nextStack);
+
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
+        nextStack = pCompound.contains("NextStack") ? pCompound.getInt("NextStack") : nextStack;
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
@@ -173,7 +190,7 @@ public class AegisHerobrineEntity extends Monster {
         if (damagesource.is(DamageTypes.DROWN)) return false;
         if (damagesource.is(DamageTypes.WITHER_SKULL)) return false;
         if (damagesource.is(DamageTypes.DRAGON_BREATH)) return false;
-        if (damagesource.is(DamageTypes.INDIRECT_MAGIC)) return false;
+        if (damagesource.getDirectEntity() instanceof AbstractArrow) return false;
         return super.hurt(damagesource, f);
     }
 

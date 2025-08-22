@@ -2,11 +2,14 @@ package com.pla.annoyingvillagers.item;
 
 import java.util.List;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.procedures.DemoniacVoltageReaverOnUseProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
 import com.pla.annoyingvillagers.util.SnakeBladeHit;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -18,6 +21,7 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class DemoniacVoltageReaverItem extends SwordItem {
 
@@ -63,6 +67,12 @@ public class DemoniacVoltageReaverItem extends SwordItem {
                 if (SnakeBladeHit.process(itemstack, pAttacker)) {
                     itemstack.getOrCreateTag().putBoolean("SnakeAnimation", true);
                     itemstack.removeTagKey("HitCount");
+                }
+
+                if (!pAttacker.level().isClientSide()) {
+                    pAttacker.level().playSound((Player) null, new BlockPos((int) pAttacker.getX(), (int) pAttacker.getY(), (int) pAttacker.getZ()), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:second_form_release")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                } else {
+                    pAttacker.level().playLocalSound(pAttacker.getX(), pAttacker.getY(), pAttacker.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:second_form_release")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                 }
             } else {
                 itemstack.getTag().putInt("HitCount", (itemstack.getTag().contains("HitCount") ? itemstack.getTag().getInt("HitCount") : 0) + 1);

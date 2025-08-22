@@ -46,12 +46,12 @@ public abstract class HerobrineObsidianDiamondArmorHelmetItem extends ArmorItem 
                     case BOOTS      -> 0;
                     case LEGGINGS   -> 0;
                     case CHESTPLATE -> 0;
-                    case HELMET     -> 16;
+                    case HELMET     -> 500;
                 };
             }
 
             public int getEnchantmentValue() {
-                return 0;
+                return 2;
             }
 
             public SoundEvent getEquipSound() {

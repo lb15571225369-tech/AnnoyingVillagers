@@ -36,7 +36,7 @@ public abstract class HerobrineObsidianDiamondArmorChestplateItem extends ArmorI
                 return switch (pType) {
                     case BOOTS      -> 13 * 25;
                     case LEGGINGS   -> 15 * 25;
-                    case CHESTPLATE -> 16 * 25;
+                    case CHESTPLATE -> 600;
                     case HELMET     -> 11 * 25;
                 };
             }
@@ -52,7 +52,7 @@ public abstract class HerobrineObsidianDiamondArmorChestplateItem extends ArmorI
             }
 
             public int getEnchantmentValue() {
-                return 0;
+                return 2;
             }
 
             public SoundEvent getEquipSound() {

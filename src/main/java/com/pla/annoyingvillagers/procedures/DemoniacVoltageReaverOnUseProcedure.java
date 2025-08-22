@@ -101,6 +101,12 @@ public class DemoniacVoltageReaverOnUseProcedure {
                                 itemStack.getOrCreateTag().putBoolean("SnakeAnimation", true);
                                 itemStack.removeTagKey("HitCount");
                             }
+
+                            if (!entity.level().isClientSide()) {
+                                entity.level().playSound((Player) null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:second_form_release")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                            } else {
+                                entity.level().playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:second_form_release")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                            }
                         } else {
                             itemStack.getTag().putInt("HitCount", (itemStack.getTag().contains("HitCount") ? itemStack.getTag().getInt("HitCount") : 0) + 1);
                         }
