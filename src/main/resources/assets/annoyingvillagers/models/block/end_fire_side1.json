@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_fire_side",
+  "textures": {
+    "fire": "annoyingvillagers:block/end_fire_1"
+  }
+}

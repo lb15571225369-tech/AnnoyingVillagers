@@ -36,6 +36,7 @@ import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.boss.EnderDragonPart;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.enderdragon.phases.EnderDragonPhase;
 import net.minecraft.world.entity.monster.Monster;
@@ -177,13 +178,8 @@ public class ReaperHerobrineEntity extends Monster {
                 enderDragon.setDragonFight(null);
                 LivingEntity target = this.getTarget();
                 if (target != null && target.isAlive()) {
-//                    double distanceSq = this.distanceToSqr(enderDragon);
-//
-//                    if (distanceSq > 5000.0D) {
-//                        enderDragon.moveTo(this.getX(), this.getY() + 20, this.getZ());
-//                    }
                     if (breathCooldown <= 0) {
-                        shootBreathAt(target);
+                        shootThunderBreathAtTarget(target);
                         breathCooldown = 60 + this.getRandom().nextInt(20);
                     }
                 }
@@ -192,14 +188,18 @@ public class ReaperHerobrineEntity extends Monster {
         }
     }
 
-    private void shootBreathAt(LivingEntity target) {
+    private void shootThunderBreathAtTarget(LivingEntity target) {
         if (!(this.level() instanceof ServerLevel serverLevel)) return;
-        Vec3 look = enderDragon.getHeadLookVector(1.0F);
-        Vec3 head = enderDragon.position().add(0, enderDragon.getBbHeight() * 0.30, 0).add(look.scale(6.0));
-        Vec3 to = target.getEyePosition().subtract(head).normalize();
-        DragonFireball dragonFireball = new DragonFireball(serverLevel, enderDragon, to.x, to.y, to.z);
-        dragonFireball.setPos(head.x, head.y, head.z);
-        serverLevel.addFreshEntity(dragonFireball);
+        EnderDragonPart head = enderDragon.head;
+        Vec3 headPos = new Vec3(head.getX(), head.getY(), head.getZ());
+        DragonBeamEntity beam = new DragonBeamEntity(
+                AnnoyingVillagersModEntities.DRAGON_BEAM.get(),
+                serverLevel,
+                enderDragon,
+                target,
+                headPos.x, headPos.y, headPos.z,
+                100, 2);
+        serverLevel.addFreshEntity(beam);
     }
 
     public boolean hurt(DamageSource damagesource, float f) {

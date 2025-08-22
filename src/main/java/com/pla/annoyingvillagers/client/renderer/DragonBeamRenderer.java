@@ -20,7 +20,7 @@ import org.joml.Quaternionf;
 
 @OnlyIn(Dist.CLIENT)
 public class DragonBeamRenderer extends EntityRenderer<DragonBeamEntity> {
-private static final ResourceLocation TEXTURE = new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/dragon_beam.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/dragon_beam.png");
 
     public DragonBeamRenderer(EntityRendererProvider.Context pContext) {
         super(pContext);
@@ -31,31 +31,32 @@ private static final ResourceLocation TEXTURE = new ResourceLocation(AnnoyingVil
     }
 
     public void render(DragonBeamEntity beam, float entityYaw, float delta, PoseStack poseStack, MultiBufferSource multiBufferSource, int light) {
-        if (!beam.isRenderable() || beam.tickCount <= 1) {
-            return;
-        }
-
-        double collidePosX = beam.prevCollidePosX + (beam.collidePosX - beam.prevCollidePosX) * (double) delta;
-        double collidePosY = beam.prevCollidePosY + (beam.collidePosY - beam.prevCollidePosY) * (double) delta;
-        double collidePosZ = beam.prevCollidePosZ + (beam.collidePosZ - beam.prevCollidePosZ) * (double) delta;
-        double posX = beam.xo + (beam.getX() - beam.xo) * (double) delta;
-        double posY = beam.yo + (beam.getY() - beam.yo) * (double) delta;
-        double posZ = beam.zo + (beam.getZ() - beam.zo) * (double) delta;
-        float yaw = beam.prevYaw + (beam.renderYaw - beam.prevYaw) * delta;
-        float pitch = beam.prevPitch + (beam.renderPitch - beam.prevPitch) * delta;
-        float length = (float) Math.sqrt(Math.pow(collidePosX - posX, 2.0) + Math.pow(collidePosY - posY, 2.0) + Math.pow(collidePosZ - posZ, 2.0));
-        int frame = Mth.floor((2.0F + delta) * 2.0F);
-        if (frame < 0) {
-            frame = 6;
-        }
-
-        VertexConsumer ivertexbuilder = multiBufferSource.getBuffer(ISRenderType.getGlowingEffect(this.getTextureLocation(beam)));
-        this.renderStart(frame, poseStack, ivertexbuilder, light);
-        this.renderBeam(frame, length, 57.295776F * yaw, 57.295776F * pitch, poseStack, ivertexbuilder, light);
-        poseStack.pushPose();
-        poseStack.translate(collidePosX - posX, collidePosY - posY, collidePosZ - posZ);
-        this.renderEnd(frame, beam.blockSide, poseStack, ivertexbuilder, light);
-        poseStack.popPose();
+        return;
+//        if (!beam.isRenderable() || beam.tickCount <= 1) {
+//            return;
+//        }
+//
+//        double collidePosX = beam.prevCollidePosX + (beam.collidePosX - beam.prevCollidePosX) * (double) delta;
+//        double collidePosY = beam.prevCollidePosY + (beam.collidePosY - beam.prevCollidePosY) * (double) delta;
+//        double collidePosZ = beam.prevCollidePosZ + (beam.collidePosZ - beam.prevCollidePosZ) * (double) delta;
+//        double posX = beam.xo + (beam.getX() - beam.xo) * (double) delta;
+//        double posY = beam.yo + (beam.getY() - beam.yo) * (double) delta;
+//        double posZ = beam.zo + (beam.getZ() - beam.zo) * (double) delta;
+//        float yaw = beam.prevYaw + (beam.renderYaw - beam.prevYaw) * delta;
+//        float pitch = beam.prevPitch + (beam.renderPitch - beam.prevPitch) * delta;
+//        float length = (float) Math.sqrt(Math.pow(collidePosX - posX, 2.0) + Math.pow(collidePosY - posY, 2.0) + Math.pow(collidePosZ - posZ, 2.0));
+//        int frame = Mth.floor((2.0F + delta) * 2.0F);
+//        if (frame < 0) {
+//            frame = 6;
+//        }
+//
+//        VertexConsumer ivertexbuilder = multiBufferSource.getBuffer(ISRenderType.getGlowingEffect(this.getTextureLocation(beam)));
+//        this.renderStart(frame, poseStack, ivertexbuilder, light);
+//        this.renderBeam(frame, length, 57.295776F * yaw, 57.295776F * pitch, poseStack, ivertexbuilder, light);
+//        poseStack.pushPose();
+//        poseStack.translate(collidePosX - posX, collidePosY - posY, collidePosZ - posZ);
+//        this.renderEnd(frame, beam.blockSide, poseStack, ivertexbuilder, light);
+//        poseStack.popPose();
     }
 
     public ResourceLocation getTextureLocation(DragonBeamEntity dragonBeam) {

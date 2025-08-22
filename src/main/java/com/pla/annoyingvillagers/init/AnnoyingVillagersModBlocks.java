@@ -3,6 +3,12 @@ package com.pla.annoyingvillagers.init;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.block.*;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoulFireBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -36,6 +42,17 @@ public class AnnoyingVillagersModBlocks {
     public static final RegistryObject<Block> OBSIDIAN_BLOCK = AnnoyingVillagersModBlocks.REGISTRY.register("obsidian", () -> {
         return new ObsidianBlock();
     });
+    public static final RegistryObject<EndFireBlock> END_FIRE = AnnoyingVillagersModBlocks.REGISTRY.register(
+            "end_fire",
+            () -> new EndFireBlock(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_PURPLE)
+                            .replaceable().noCollission().instabreak()
+                            .lightLevel(s -> 15)
+                            .sound(SoundType.WOOL)
+                            .pushReaction(PushReaction.DESTROY)
+            )
+    );
 
     @EventBusSubscriber(bus = Bus.MOD, value = {Dist.CLIENT})
     public static class ClientSideHandler {
@@ -47,6 +64,7 @@ public class AnnoyingVillagersModBlocks {
             NoneObBlock.registerRenderLayer();
             DarkObBlock.registerRenderLayer();
             DarkObUpBlock.registerRenderLayer();
+            EndFireBlock.registerRenderLayer();
         }
 
         @SubscribeEvent
