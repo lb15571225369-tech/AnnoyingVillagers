@@ -64,6 +64,7 @@ public class ReaperHerobrineEntity extends Monster {
     private boolean spawnEnderDragon = false;
     private int breathCooldown = 0;
     private int nextStack = 3;
+    private int dragonSummonCooldown = 3600;
 
     public ReaperHerobrineEntity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.REAPER_HEROBRINE.get(), level);
@@ -125,6 +126,7 @@ public class ReaperHerobrineEntity extends Monster {
         }
         tag.putBoolean("SpawnEnderDragon", spawnEnderDragon);
         tag.putInt("NextStack", nextStack);
+        tag.putInt("DragonSummonCooldown", dragonSummonCooldown);
     }
 
     @Override
@@ -135,6 +137,7 @@ public class ReaperHerobrineEntity extends Monster {
         }
         spawnEnderDragon = tag.getBoolean("SpawnEnderDragon");
         nextStack = tag.contains("NextStack") ? tag.getInt("NextStack") : nextStack;
+        dragonSummonCooldown = tag.contains("DragonSummonCooldown") ? tag.getInt("DragonSummonCooldown") : dragonSummonCooldown;
     }
 
     private void spawnEnderDragon() {
@@ -162,6 +165,10 @@ public class ReaperHerobrineEntity extends Monster {
 
             this.enderDragonUUID = dragon.getUUID();
             this.enderDragon = dragon;
+
+            if (this.level().getServer() != null) {
+                this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Herobrine> Summon!!!"), false);
+            }
         }
     }
 
@@ -184,6 +191,13 @@ public class ReaperHerobrineEntity extends Monster {
                 this.spawnEnderDragon = true;
                 spawnEnderDragon();
             }
+            if (enderDragon == null && enderDragonUUID == null) {
+                if (dragonSummonCooldown <=0) {
+                    spawnEnderDragon = false;
+                } else {
+                    dragonSummonCooldown--;
+                }
+            }
             if (enderDragon == null && enderDragonUUID != null) {
                 Entity entity = ((ServerLevel) level()).getEntity(enderDragonUUID);
                 if (entity instanceof EnderDragon dragon) {
@@ -192,9 +206,14 @@ public class ReaperHerobrineEntity extends Monster {
                     enderDragon = null;
                 }
             }
-            if (enderDragon != null && !enderDragon.isAlive()) {
+            if (enderDragon != null && enderDragon.getHealth() <= 50) {
+                enderDragon.discard();
                 enderDragon = null;
                 enderDragonUUID = null;
+                if (this.level().getServer() != null) {
+                    this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Herobrine> Return!!!"), false);
+                }
+                dragonSummonCooldown = 3600;
             }
             if (enderDragon != null && enderDragon.isAlive()) {
                 enderDragon.setFightOrigin(BlockPos.containing(this.getX(), this.getY(), this.getZ()));

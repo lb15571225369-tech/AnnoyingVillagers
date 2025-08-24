@@ -20,13 +20,6 @@ import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
 @Mixin(value = {LivingEntity.class}, remap = true)
 public class LivingEntityMixin {
-    @Inject(method = "die", at = @At("HEAD"), remap = true)
-    private void onReaperDragonDie(DamageSource source, CallbackInfo ci) {
-        if ((Object) this instanceof EnderDragon enderDragon && enderDragon.getTags().contains("av_dragon") && !enderDragon.level().isClientSide()) {
-            ci.cancel();
-        }
-    }
-
     @Inject(method = "die", at = @At("TAIL"), remap = true)
     private void onPlayerMobDie(DamageSource source, CallbackInfo ci) {
         if ((Object) this instanceof PlayerMobEntity entity) {
