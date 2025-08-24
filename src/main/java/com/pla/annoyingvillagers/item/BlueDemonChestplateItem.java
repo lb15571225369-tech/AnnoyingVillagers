@@ -33,7 +33,7 @@ public abstract class BlueDemonChestplateItem extends ArmorItem {
                 return switch (pType) {
                     case BOOTS -> 2;
                     case LEGGINGS -> 5;
-                    case CHESTPLATE -> 30;  // this seems unusual, possibly a mistake?
+                    case CHESTPLATE -> 30;
                     case HELMET -> 2;
                 };
             }

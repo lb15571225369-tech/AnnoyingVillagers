@@ -1,7 +1,7 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.compat.aaa_particles.DragonBeamParticleEmitterInfo;
+import com.pla.annoyingvillagers.compat.aaa_particles.BabyDragonBeamParticleEmitterInfo;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import mod.chloeprime.aaaparticles.api.common.AAALevel;
 import mod.chloeprime.aaaparticles.api.common.ParticleEmitterInfo;
@@ -21,13 +21,11 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.ClipContext.Block;
 import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -36,7 +34,6 @@ import net.minecraft.world.phys.HitResult.Type;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -44,8 +41,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class DragonBeamEntity extends Entity {
-    public EnderDragon caster;
+public class BabyDragonBeamEntity extends Entity {
+    public BabyEnderDragonEntity caster;
     public LivingEntity target;
     public double endPosX;
     public double endPosY;
@@ -74,7 +71,7 @@ public class DragonBeamEntity extends Entity {
     private boolean renderBeam = false;
     private boolean playSound = false;
 
-    public DragonBeamEntity(EntityType<? extends DragonBeamEntity> pEntityType, Level pLevel) {
+    public BabyDragonBeamEntity(EntityType<? extends BabyDragonBeamEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         this.on = true;
         this.blockSide = null;
@@ -85,7 +82,7 @@ public class DragonBeamEntity extends Entity {
 
     }
 
-    public DragonBeamEntity(EntityType<? extends DragonBeamEntity> type, Level world, EnderDragon caster, LivingEntity target, double x, double y, double z, int duration, int pow) {
+    public BabyDragonBeamEntity(EntityType<? extends BabyDragonBeamEntity> type, Level world, BabyEnderDragonEntity caster, LivingEntity target, double x, double y, double z, int duration, int pow) {
         this(type, world);
         this.caster = caster;
         this.target = target;
@@ -192,7 +189,7 @@ public class DragonBeamEntity extends Entity {
     }
 
     private void calculateEndPos() {
-        double radius = 128.0;
+        double radius = 30.0;
         double yaw = this.getYaw();
         double pitch = this.getPitch();
 
@@ -205,7 +202,7 @@ public class DragonBeamEntity extends Entity {
     public DragonBeamHitResult raytraceEntities(Level world, Vec3 from, Vec3 to, boolean stopOnLiquid, boolean ignoreBlockWithoutBoundingBox, boolean returnLastUncollidableBlock) {
         DragonBeamHitResult result = new DragonBeamHitResult();
         result.setBlockHit(world.clip(new ClipContext(from, to, Block.COLLIDER, Fluid.NONE, this)));
-        result.setBlockHit(world.clip(new ClipContext(from, to, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)));
+        result.setBlockHit(world.clip(new ClipContext(from, to, Block.COLLIDER, Fluid.NONE, this)));
         if (result.blockHit != null) {
             Vec3 hitVec = result.blockHit.getLocation();
             BlockPos hitBlock = result.blockHit.getBlockPos();
@@ -217,43 +214,12 @@ public class DragonBeamEntity extends Entity {
 
             if (world.isClientSide) {
                 AAALevel.addParticle(world, false,
-                        new ParticleEmitterInfo(new ResourceLocation(AnnoyingVillagers.MODID, "DragonBeamHit"))
+                        new ParticleEmitterInfo(new ResourceLocation(AnnoyingVillagers.MODID, "BabyDragonBeamHit"))
                                 .clone()
                                 .position(hitBlock.getX(), hitBlock.getY(), hitBlock.getZ()));
             }
 
             if (!world.isClientSide) {
-                boolean shouldBreak = true;
-
-                if (this.target != null && this.target.isAlive()) {
-                    double hitDist2    = from.distanceToSqr(hitVec);
-                    double targetDist2 = from.distanceToSqr(this.target.getEyePosition(1.0F));
-                    shouldBreak = hitDist2 + 1e-6 < targetDist2;
-
-                    BlockPos targetFeet = this.target.blockPosition();
-                    BlockPos targetEyes = BlockPos.containing(this.target.getEyePosition(1.0F));
-                    if (hitBlock.equals(targetFeet) || hitBlock.equals(targetEyes)) {
-                        shouldBreak = false;
-                    }
-                }
-
-                if (shouldBreak) {
-                    var hitState = world.getBlockState(hitBlock);
-                    if (!hitState.isAir()) {
-                        if (ForgeHooks.canEntityDestroy(world, hitBlock, this.caster)) {
-                            world.destroyBlock(hitBlock, true, this.caster);
-                        } else {
-                            world.setBlock(hitBlock, Blocks.AIR.defaultBlockState(),
-                                    net.minecraft.world.level.block.Block.UPDATE_ALL);
-                        }
-
-                        BlockPos above = hitBlock.above();
-                        if (world.getBlockState(above).isAir()) {
-                            world.setBlockAndUpdate(above, AnnoyingVillagersModBlocks.END_FIRE.get().defaultBlockState());
-                        }
-                    }
-                }
-
                 if (world.getBlockState(hitBlock.above()).isAir() && world.getBlockState(hitBlock).isSolidRender(world, hitBlock)) {
                     world.setBlockAndUpdate(hitBlock.above(), AnnoyingVillagersModBlocks.END_FIRE.get().defaultBlockState());
                 }
@@ -265,11 +231,11 @@ public class DragonBeamEntity extends Entity {
             this.blockSide = null;
         }
 
-        List<LivingEntity> entities = world.getEntitiesOfClass(LivingEntity.class, (new AABB(Math.min(this.getX(), this.collidePosX), Math.min(this.getY(), this.collidePosY), Math.min(this.getZ(), this.collidePosZ), Math.max(this.getX(), this.collidePosX), Math.max(this.getY(), this.collidePosY), Math.max(this.getZ(), this.collidePosZ))).inflate(1.0, 1.0, 1.0));
+        List<LivingEntity> entities = world.getEntitiesOfClass(LivingEntity.class, (new AABB(Math.min(this.getX(), this.collidePosX), Math.min(this.getY(), this.collidePosY), Math.min(this.getZ(), this.collidePosZ), Math.max(this.getX(), this.collidePosX), Math.max(this.getY(), this.collidePosY), Math.max(this.getZ(), this.collidePosZ))).inflate(0.5, 0.5, 0.5));
 
         for (LivingEntity entity : entities) {
-            if (entity != this.caster) {
-                float pad = entity.getPickRadius() + 0.5F;
+            if (entity != this.caster && !(entity instanceof Player player && player.getUUID().equals(caster.getFollowTargetUUID()))) {
+                float pad = entity.getPickRadius() + 0.25F;
                 AABB aabb = entity.getBoundingBox().inflate(pad, pad, pad);
                 Optional<Vec3> hit = aabb.clip(from, to);
                 if (aabb.contains(from)) {
@@ -320,7 +286,7 @@ public class DragonBeamEntity extends Entity {
         }
 
         if (this.tickCount == 1 && this.level().isClientSide) {
-            this.caster = (EnderDragon) this.level().getEntity(this.getCasterID());
+            this.caster = (BabyEnderDragonEntity) this.level().getEntity(this.getCasterID());
             this.target = (LivingEntity) this.level().getEntity(this.getTargetID());
         }
 
@@ -406,14 +372,16 @@ public class DragonBeamEntity extends Entity {
 
         if (this.isRenderable() && this.level().isClientSide() && !renderBeam && this.tickCount >= 3) {
             renderBeam = true;
-            Vec3 from = new Vec3(caster.head.getX(), caster.head.getEyeY(), caster.head.getZ());
-            Vec3 to = new Vec3(target.getX(), target.getY(), target.getZ());
+            Vec3 fwd = caster.getLookAngle().normalize();
+            double muzzle = 0.5;
 
-            new DragonBeamParticleEmitterInfo(new ResourceLocation(AnnoyingVillagers.MODID, "DragonBeam"))
-                    .fromTo(from, to, DragonBeamParticleEmitterInfo.ForwardAxis.PLUS_Z, 0f)
-                    .follow(caster.head, target, 120,
-                            DragonBeamParticleEmitterInfo.ForwardAxis.PLUS_Z,
-                            0f)
+            Vec3 from = new Vec3(caster.getX(), caster.getEyeY(), caster.getZ())
+                    .add(fwd.scale(muzzle));
+            Vec3 to = target.getEyePosition(1.0F);
+
+            new BabyDragonBeamParticleEmitterInfo(new ResourceLocation(AnnoyingVillagers.MODID, "BabyDragonBeam"))
+                    .fromTo(from, to, BabyDragonBeamParticleEmitterInfo.ForwardAxis.PLUS_Z, 0f)
+                    .follow(caster, target, 120, BabyDragonBeamParticleEmitterInfo.ForwardAxis.PLUS_Z, 0f)
                     .spawnInWorld(caster.level(), null);
         }
 
@@ -430,6 +398,9 @@ public class DragonBeamEntity extends Entity {
             if (!this.level().isClientSide) {
 
                 for (LivingEntity target : hit) {
+                    if (target instanceof Player player && player.getUUID().equals(caster.getFollowTargetUUID())) {
+                        break;
+                    }
                     target.hurt(damageSources().indirectMagic(this, this.caster), (float) this.power);
                     target.hurtMarked = true;
                     target.setDeltaMovement(0.0, 0.0, 0.0);
@@ -445,11 +416,11 @@ public class DragonBeamEntity extends Entity {
     }
 
     static {
-        YAW = SynchedEntityData.defineId(DragonBeamEntity.class, EntityDataSerializers.FLOAT);
-        PITCH = SynchedEntityData.defineId(DragonBeamEntity.class, EntityDataSerializers.FLOAT);
-        DURATION = SynchedEntityData.defineId(DragonBeamEntity.class, EntityDataSerializers.INT);
-        CASTER = SynchedEntityData.defineId(DragonBeamEntity.class, EntityDataSerializers.INT);
-        TARGET = SynchedEntityData.defineId(DragonBeamEntity.class, EntityDataSerializers.INT);
+        YAW = SynchedEntityData.defineId(BabyDragonBeamEntity.class, EntityDataSerializers.FLOAT);
+        PITCH = SynchedEntityData.defineId(BabyDragonBeamEntity.class, EntityDataSerializers.FLOAT);
+        DURATION = SynchedEntityData.defineId(BabyDragonBeamEntity.class, EntityDataSerializers.INT);
+        CASTER = SynchedEntityData.defineId(BabyDragonBeamEntity.class, EntityDataSerializers.INT);
+        TARGET = SynchedEntityData.defineId(BabyDragonBeamEntity.class, EntityDataSerializers.INT);
     }
 
     public static class DragonBeamHitResult {

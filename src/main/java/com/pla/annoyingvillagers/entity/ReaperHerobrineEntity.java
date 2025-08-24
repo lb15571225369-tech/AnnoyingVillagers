@@ -220,7 +220,7 @@ public class ReaperHerobrineEntity extends Monster {
                 }
             } else if (!this.getPersistentData().getBoolean("SecondForm") && this.getPersistentData().getInt("HitCount") >= nextStack) {
                 this.getPersistentData().putBoolean("SecondForm", true);
-                this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 2));
+                this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 2));
                 this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200, 2));
                 this.addEffect(new MobEffectInstance(MobEffects.JUMP, 200, 2));
                 setCooldownTicks(200);
@@ -282,7 +282,9 @@ public class ReaperHerobrineEntity extends Monster {
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
-        this.enderDragon.discard();
+        if (this.enderDragon != null) {
+            this.enderDragon.discard();
+        }
 //        ReaperHerobrineOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 

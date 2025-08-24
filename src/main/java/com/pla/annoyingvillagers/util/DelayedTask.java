@@ -1,14 +1,15 @@
 package com.pla.annoyingvillagers.util;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.ServerTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 public abstract class DelayedTask {
     private int ticks = 0;
     private final int waitTicks;
+    private boolean done = false;
 
     public DelayedTask(int waitTicks) {
         this.waitTicks = waitTicks;
@@ -17,11 +18,16 @@ public abstract class DelayedTask {
 
     @SubscribeEvent
     public void onTick(ServerTickEvent event) {
-        if (event.phase == TickEvent.Phase.END) {
-            ticks++;
-            if (ticks >= waitTicks) {
-                run();
-                MinecraftForge.EVENT_BUS.unregister(this);
+        if (event.phase != TickEvent.Phase.END || done) return;
+
+        if (++ticks >= waitTicks) {
+            done = true;
+            run();
+
+            var server = ServerLifecycleHooks.getCurrentServer();
+            if (server != null) {
+                server.execute(() -> MinecraftForge.EVENT_BUS.unregister(this));
+            } else {
             }
         }
     }

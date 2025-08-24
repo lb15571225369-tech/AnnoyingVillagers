@@ -7,6 +7,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -24,6 +25,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.List;
 import java.util.Random;
 
 public class EnderAegisItem extends SwordItem {
@@ -114,6 +116,13 @@ public class EnderAegisItem extends SwordItem {
         if (flag) {
             if (itemstack.getTag().getBoolean("SecondForm")) {
                 HerobrineWeaponEffectProcedure.execute(level, entity.getX(), entity.getY(), entity.getZ(), entity);
+                if (entity instanceof LivingEntity livingEntity) {
+                    if (!livingEntity.level().isClientSide()) {
+                        livingEntity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 1, 2));
+                        livingEntity.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 1, 2));
+                        livingEntity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 1, 2));
+                    }
+                }
             }
         }
         if (!itemstack.getTag().getBoolean("SecondForm") && itemstack.getTag().getInt("ParryCount") >= 5) {
@@ -128,13 +137,6 @@ public class EnderAegisItem extends SwordItem {
             if (percent > 0.0F) {
                 if (!itemstack.getTag().getBoolean("SecondForm")) {
                     itemstack.getTag().putBoolean("SecondForm", true);
-                    if (entity instanceof LivingEntity livingEntity) {
-                        if (!livingEntity.level().isClientSide()) {
-                            livingEntity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 2));
-                            livingEntity.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 200, 2));
-                            livingEntity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 2));
-                        }
-                    }
 
                     if (!player.level().isClientSide()) {
                         player.level().playSound((Player) null, new BlockPos((int) player.getX(), (int) player.getY(), (int) player.getZ()), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:second_form_release")), SoundSource.NEUTRAL, 1.0F, 1.0F);
@@ -150,6 +152,26 @@ public class EnderAegisItem extends SwordItem {
                 }
             }
         }
+    }
+
+    String getCurrentComboAttack(ItemStack itemstack) {
+        if (!itemstack.getTag().getBoolean("SecondForm")) {
+            return String.format("%d/5", itemstack.getTag().contains("ParryCount") ? itemstack.getTag().getInt("ParryCount") : 0);
+        } else {
+            return String.format("∞/∞");
+        }
+    }
+
+    public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
+        super.appendHoverText(itemstack, level, list, tooltipflag);
+        list.add(Component.literal("One of Herobrine's legendary weapons.\n" +
+                "§aNormal Form§r: A standard shield with no special powers. After 5 perfect parries, it awakens into its §5Second Form§r.\n" +
+                "§5Second Form§r: Lasts for 10 seconds.\n" +
+                "- Grants §dREGENERATION§r, §eABSORPTION§r, and §9DAMAGE RESISTANCE§r.\n" +
+                "- Each successful parry fires a blast at your attacker, dealing damage.\n" +
+                "- Normal hits inflict §7WEAKNESS§r, §7SLOWNESS§r, §7DARKNESS§r, and the §5HEROBRINE§r effect.\n" +
+                "§7(Current Combo Attack: " + getCurrentComboAttack(itemstack) + ")§r"));
+
     }
 
     @Override
