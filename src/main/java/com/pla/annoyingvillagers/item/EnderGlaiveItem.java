@@ -2,26 +2,36 @@ package com.pla.annoyingvillagers.item;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
+import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.util.SnakeBladeHit;
 import mod.chloeprime.aaaparticles.api.common.AAALevel;
 import mod.chloeprime.aaaparticles.api.common.ParticleEmitterInfo;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tier;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.ForgeRegistries;
 import yesman.epicfight.api.animation.Joint;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+
+import java.util.List;
 
 public class EnderGlaiveItem extends SwordItem {
 
@@ -81,5 +91,74 @@ public class EnderGlaiveItem extends SwordItem {
                 m.m31 + (base.getY() + (entity.getBbHeight() / 1.8) - 1.0) + yOffset,
                 m.m32 + base.getZ()
         );
+    }
+
+    @Override
+    public boolean hurtEnemy(ItemStack itemstack, LivingEntity pTarget, LivingEntity pAttacker) {
+        if (!pAttacker.level().isClientSide()) {
+            itemstack.getTag().putInt("HitCount", (itemstack.getTag().contains("HitCount") ? itemstack.getTag().getInt("HitCount") : 0) + 1);
+        }
+        return super.hurtEnemy(itemstack, pTarget, pAttacker);
+    }
+
+    public void inventoryTick(ItemStack itemstack, Level level, Entity entity, int i, boolean flag) {
+        super.inventoryTick(itemstack, level, entity, i, flag);
+        if (flag) {
+            if (itemstack.getTag().getBoolean("SecondForm")) {
+                HerobrineWeaponEffectProcedure.execute(level, entity.getX(), entity.getY(), entity.getZ(), entity);
+                if (entity instanceof LivingEntity livingEntity) {
+                    if (!livingEntity.level().isClientSide()) {
+                        livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 1, 2));
+                        livingEntity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 1, 2));
+                    }
+                }
+            }
+        }
+        if (!itemstack.getTag().getBoolean("SecondForm") && itemstack.getTag().getInt("HitCount") >= 5) {
+            if (entity instanceof Player player) {
+                ItemCooldowns cooldowns = player.getCooldowns();
+                cooldowns.addCooldown(itemstack.getItem(), 200);
+            }
+        }
+        if (entity instanceof Player player) {
+            float percent = player.getCooldowns().getCooldownPercent(itemstack.getItem(), 0);
+            if (percent > 0.0F) {
+                if (!itemstack.getTag().getBoolean("SecondForm")) {
+                    itemstack.getTag().putBoolean("SecondForm", true);
+
+                    if (!player.level().isClientSide()) {
+                        player.level().playSound((Player) null, new BlockPos((int) player.getX(), (int) player.getY(), (int) player.getZ()), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:second_form_release")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                    } else {
+                        player.level().playLocalSound(player.getX(), player.getY(), player.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:second_form_release")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                    }
+
+                    itemstack.getTag().putInt("HitCount", 3);
+                }
+            } else {
+                if (itemstack.getTag().getBoolean("SecondForm")) {
+                    itemstack.getTag().remove("SecondForm");
+                    itemstack.getTag().putInt("HitCount", 0);
+                }
+            }
+        }
+    }
+
+    String getCurrentComboAttack(ItemStack itemstack) {
+        if (itemstack.getTag().getBoolean("SecondForm")) {
+            return String.format("%d/3", itemstack.getTag().contains("HitCount") ? itemstack.getTag().getInt("HitCount") : 0);
+        } else {
+            return String.format("%d/5", itemstack.getTag().contains("HitCount") ? itemstack.getTag().getInt("HitCount") : 0);
+        }
+    }
+
+    @Override
+    public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
+        super.appendHoverText(itemstack, level, list, tooltipflag);
+        list.add(Component.literal("One of Herobrine's legendary weapons.\n" +
+                "§aNormal Form§r: A standard glaive with no special powers. After 5 successful hits, the weapon transforms into the §5Second Form§r.\n" +
+                "§5Second Form§r: Lasts for 10 seconds.\n" +
+                "- Grants §dMOVEMENT SPEED§r and §9DAMAGE BOOST§r.\n" +
+                "- Press MORE WEAPON ATTACK KEY to trigger an explosion. Recharge after every 3 successful hits while in §5Second Form§r.\n" +
+                "§7(Current Combo Attack: " + getCurrentComboAttack(itemstack) + ")§r"));
     }
 }

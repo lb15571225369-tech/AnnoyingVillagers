@@ -240,7 +240,6 @@ public class ReaperHerobrineEntity extends Monster {
             } else if (!this.getPersistentData().getBoolean("SecondForm") && this.getPersistentData().getInt("HitCount") >= nextStack) {
                 this.getPersistentData().putBoolean("SecondForm", true);
                 this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 2));
-                this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200, 2));
                 this.addEffect(new MobEffectInstance(MobEffects.JUMP, 200, 2));
                 setCooldownTicks(200);
                 this.getPersistentData().remove("HitCount");

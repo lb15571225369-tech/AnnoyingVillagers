@@ -9,13 +9,17 @@ import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.item.EnderGlaiveItem;
 import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
+import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import mod.chloeprime.aaaparticles.api.common.AAALevel;
 import mod.chloeprime.aaaparticles.api.common.ParticleEmitterInfo;
 import net.corruptdog.cdm.world.CorruptWeaponCategories;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -27,6 +31,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.registries.ForgeRegistries;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.LongHitAnimation;
 import yesman.epicfight.api.utils.math.Vec3f;
@@ -584,7 +589,9 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                     return;
                 }
                 ItemStack itemStack = livingEntity.getMainHandItem();
-                if (itemStack.getItem() instanceof EnderGlaiveItem enderGlaiveItem) {
+                if (itemStack.getItem() instanceof EnderGlaiveItem enderGlaiveItem
+                        && itemStack.getTag().getBoolean("SecondForm")
+                        && itemStack.getTag().getInt("HitCount") >= 3) {
                     try {
                         if (!entity.level().isClientSide()) {
                             entity.getServer().getCommands().getDispatcher().execute(
@@ -601,6 +608,11 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                                                 4.3F,
                                                 2.3F
                                         );
+                                        BlockPos mutePos = BlockPos.containing(tipPos);
+                                        AnnoyingVillagers.PACKET_HANDLER.send(
+                                                PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity),
+                                                new ClientboundMuteExplosionAtPos(mutePos, 4)
+                                        );
                                         entity.level().explode(entity, tipPos.x, tipPos.y, tipPos.z,
                                                 2.0F, true, Level.ExplosionInteraction.TNT);
                                         Vec3 glaivePos = enderGlaiveItem.getJointWithTranslation(entity, new Vec3f(0,0,0),
@@ -611,6 +623,8 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                                                 PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity),
                                                 new ClientboundGlaiveExplosionFx(glaivePos, explosionPos)
                                         );
+                                        entity.level().playSound((Player) null, new BlockPos((int) explosionPos.x, (int) explosionPos.y, (int) explosionPos.z), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:ender_shot")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                        itemStack.getTag().putInt("HitCount", itemStack.getTag().contains("HitCount") ? itemStack.getTag().getInt("HitCount") - 3 : 0);
                                     }
                                 }
                             };

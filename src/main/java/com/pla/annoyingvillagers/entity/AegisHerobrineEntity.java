@@ -116,6 +116,7 @@ public class AegisHerobrineEntity extends Monster {
         boolean playSound = false;
         if (!this.level().isClientSide()) {
             ItemStack itemStack = this.getMainHandItem();
+            if (itemStack.getTag() == null) return;
             if (itemStack.getTag().getBoolean("SecondForm")) {
                 HerobrineWeaponEffectProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
 

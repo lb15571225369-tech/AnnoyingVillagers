@@ -98,7 +98,6 @@ public class EnderSlayerScythe extends SwordItem {
             HerobrineWeaponEffectProcedure.execute(level, entity.getX(), entity.getY(), entity.getZ(), entity);
             if (entity instanceof LivingEntity livingEntity) {
                 if (!livingEntity.level().isClientSide()) {
-                    livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 1, 2));
                     livingEntity.addEffect(new MobEffectInstance(MobEffects.JUMP, 1, 2));
                     livingEntity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 1, 2));
                 }
@@ -149,7 +148,7 @@ public class EnderSlayerScythe extends SwordItem {
         list.add(Component.literal("One of Herobrine's legendary weapons.\n" +
                 "§aNormal Form§r: A normal scythe with no special powers. After 15 successful hits, it awakens into its §5Second Form§r.\n" +
                 "§5Second Form§r: Lasts for 30 seconds.\n" +
-                "- Grants §bSpeed§r, §9Jump Boost§r, and §dDamage Boost§r effects.\n" +
+                "- Grants §9JUMP BOOST§r, and §dDAMAGE BOOST§r effects.\n" +
                 "- Summons a baby Ender Dragon that fires a tiny thunder beam every 6 seconds at any target that hurts or is hurt by the player.\n" +
                 "- If no valid target exists, it attacks a random nearby entity.\n" +
                 "§7(Current Combo Attack: " + getCurrentComboAttack(itemstack) + ")§r"));

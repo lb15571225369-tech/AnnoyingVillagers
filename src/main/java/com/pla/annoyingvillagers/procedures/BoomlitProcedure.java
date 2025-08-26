@@ -10,6 +10,8 @@ import javax.annotation.Nullable;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
+import com.pla.annoyingvillagers.entity.GlaiveHerobrineEntity;
+import com.pla.annoyingvillagers.item.EnderGlaiveItem;
 import com.pla.annoyingvillagers.util.CheckGameMode;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
@@ -48,6 +50,10 @@ public class BoomlitProcedure {
 
     @SubscribeEvent
     public static void onExplode(ExplosionEvent.Detonate detonate) {
+        LivingEntity livingEntity = detonate.getExplosion().getIndirectSourceEntity();
+        if (livingEntity != null && livingEntity.isAlive() && livingEntity.getMainHandItem().getItem() instanceof EnderGlaiveItem) {
+            return;
+        }
         execute(detonate, detonate.getLevel(), detonate.getExplosion().getPosition().x, detonate.getExplosion().getPosition().y, detonate.getExplosion().getPosition().z);
     }
 

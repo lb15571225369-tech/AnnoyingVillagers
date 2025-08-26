@@ -10,6 +10,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.item.EnderGlaiveItem;
 import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
+import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
 import com.pla.annoyingvillagers.procedures.GlaiveHerobrineOnDeathProcedure;
 import com.pla.annoyingvillagers.procedures.Herobrine7OnEntityInitialSpawnProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineTransfromProcedure;
@@ -105,10 +106,7 @@ public class GlaiveHerobrineEntity extends Monster {
     @Override
     public boolean doHurtTarget(Entity pEntity) {
         if (!pEntity.level().isClientSide()) {
-            if (this.getPersistentData().getBoolean("SecondForm") && this.getPersistentData().getInt("HitCount") >= 3) {
-            } else {
-                this.getPersistentData().putInt("HitCount", (this.getPersistentData().contains("HitCount") ? this.getPersistentData().getInt("HitCount") : 0) + 1);
-            }
+            this.getPersistentData().putInt("HitCount", (this.getPersistentData().contains("HitCount") ? this.getPersistentData().getInt("HitCount") : 0) + 1);
         }
         return super.doHurtTarget(pEntity);
     }
@@ -196,6 +194,11 @@ public class GlaiveHerobrineEntity extends Monster {
                                         4.3F,
                                         2.3F
                                 );
+                                BlockPos mutePos = BlockPos.containing(tipPos);
+                                AnnoyingVillagers.PACKET_HANDLER.send(
+                                        PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> glaiveHerobrineEntity),
+                                        new ClientboundMuteExplosionAtPos(mutePos, 4)
+                                );
                                 glaiveHerobrineEntity.level().explode(glaiveHerobrineEntity, tipPos.x, tipPos.y, tipPos.z,
                                         2.0F, true, Level.ExplosionInteraction.TNT);
                                 Vec3 glaivePos = enderGlaiveItem.getJointWithTranslation(glaiveHerobrineEntity, new Vec3f(0,0,0),
@@ -206,10 +209,11 @@ public class GlaiveHerobrineEntity extends Monster {
                                         PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> glaiveHerobrineEntity),
                                         new ClientboundGlaiveExplosionFx(glaivePos, explosionPos)
                                 );
+                                glaiveHerobrineEntity.level().playSound((Player) null, new BlockPos((int) explosionPos.x, (int) explosionPos.y, (int) explosionPos.z), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:ender_shot")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                glaiveHerobrineEntity.getPersistentData().putInt("HitCount", glaiveHerobrineEntity.getPersistentData().contains("HitCount") ? glaiveHerobrineEntity.getPersistentData().getInt("HitCount") - 3 : 0);
                             }
                         }
                     };
-                    this.getPersistentData().remove("HitCount");
                 } catch (CommandSyntaxException e) {
 
                 }
@@ -229,7 +233,7 @@ public class GlaiveHerobrineEntity extends Monster {
             } else if (!this.getPersistentData().getBoolean("SecondForm") && this.getPersistentData().getInt("HitCount") >= nextStack) {
                 this.getPersistentData().putBoolean("SecondForm", true);
                 setCooldownTicks(200);
-                this.getPersistentData().remove("HitCount");
+                this.getPersistentData().putInt("HitCount", 3);
                 nextStack = new Random().nextInt(3, 6);
                 playSound = true;
                 this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 2));
