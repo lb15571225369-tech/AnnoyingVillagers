@@ -9,7 +9,6 @@ import com.pla.annoyingvillagers.procedures.HerobrineTransfromProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.util.DelayedTask;
-import com.pla.annoyingvillagers.util.SnakeBladeHit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -19,7 +18,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
@@ -32,13 +30,11 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -134,7 +130,7 @@ public class AegisHerobrineEntity extends Monster {
                 setCooldownTicks(200);
                 if (!this.level().isClientSide()) {
                     this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 2));
-                    this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 2));
+                    this.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 200, 2));
                 }
                 if (itemStack.getItem() instanceof EnderAegisItem enderAegisItem) {
                     enderAegisItem.shieldShoot(this.level(), this);

@@ -215,14 +215,6 @@ public class SwordsManHerobrineEntity extends Monster {
 
     public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
         super.awardKillScore(entity, i, damagesource);
-        if (this.getPersistentData().getInt("HitCount") == 3) {
-            if (SnakeBladeHit.process(this.getMainHandItem(), this)) {
-                this.getMainHandItem().getOrCreateTag().putBoolean("SnakeAnimation", true);
-                this.getPersistentData().remove("HitCount");
-            }
-        } else {
-            this.getPersistentData().putInt("HitCount", (this.getPersistentData().contains("HitCount") ? this.getPersistentData().getInt("HitCount") : 0) + 1);
-        }
         HerobrineTransfromProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), entity, this);
     }
 

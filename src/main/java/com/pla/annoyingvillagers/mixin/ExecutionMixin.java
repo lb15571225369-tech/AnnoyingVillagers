@@ -39,7 +39,6 @@ import yesman.epicfight.world.effect.EpicFightMobEffects;
 public class ExecutionMixin {
     @Inject(method = {"isAnimationValid"}, at = {@At("HEAD")}, cancellable = true)
     private static boolean addKnockDownToExecution(LivingEntityPatch<?> targetPatch, PlayerPatch<?> playerPatch, CallbackInfoReturnable<Boolean> cir) {
-        DynamicAnimation var4 = targetPatch.getAnimator().getPlayerFor((DynamicAnimation)null).getAnimation();
         DynamicAnimation dynamicanimation = targetPatch.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
         boolean flag = dynamicanimation instanceof StaticAnimation && (StaticAnimation) dynamicanimation == Animations.BIPED_KNEEL;
         boolean flag1 = dynamicanimation instanceof LongHitAnimation;

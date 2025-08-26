@@ -74,7 +74,7 @@ public class EnderAegisItem extends SwordItem {
             }
 
             try {
-                entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:spark ^ ^1 ^2 0 0 0 0.1 2000",
+                entity.getServer().getCommands().getDispatcher().execute("execute as @s at @s anchored eyes run particle annoyingvillagers:spark ^ ^1 ^2 0 0 0 0.1 2000",
                         entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
             } catch (CommandSyntaxException e) {
             }

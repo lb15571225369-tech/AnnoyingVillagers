@@ -52,7 +52,7 @@ public abstract class HerobrineObsidianDiamondArmorChestplateItem extends ArmorI
             }
 
             public int getEnchantmentValue() {
-                return 2;
+                return 0;
             }
 
             public SoundEvent getEquipSound() {

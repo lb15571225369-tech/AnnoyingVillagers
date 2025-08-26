@@ -465,6 +465,13 @@
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
+							"animation": "wom:biped/combat/agony_clawstrike",
+							"play_speed": 1.2
+						},
+						{
+							"conditions": [
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
+							],
 							"animation": "annoyingvillagers:biped/combat/greatsword_dual_auto_1",
 							"play_speed": 1.1
 						},

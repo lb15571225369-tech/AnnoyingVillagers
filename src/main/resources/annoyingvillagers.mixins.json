@@ -22,7 +22,8 @@
     "EnderDragonMixin",
     "IndestructibleMixin",
     "GuardSkillMixin",
-    "ItemCooldownsMixin"
+    "ItemCooldownsMixin",
+    "ExplosionMixin"
   ],
   "client": [
   ],

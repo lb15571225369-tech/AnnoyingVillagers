@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVSkillDataKeys;
 import com.pla.annoyingvillagers.init.*;
+import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
 import com.pla.annoyingvillagers.network.TextboxSetMessage;
 import com.pla.annoyingvillagers.procedures.NpcGearLoadProcedure;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -78,6 +79,12 @@ public class AnnoyingVillagers {
         @SubscribeEvent
         public static void init(FMLCommonSetupEvent fmlcommonsetupevent) {
             AnnoyingVillagers.addNetworkMessage(TextboxSetMessage.class, TextboxSetMessage::buffer, TextboxSetMessage::new, TextboxSetMessage::handler);
+            AnnoyingVillagers.addNetworkMessage(
+                    ClientboundGlaiveExplosionFx.class,
+                    ClientboundGlaiveExplosionFx::encode,
+                    ClientboundGlaiveExplosionFx::decode,
+                    ClientboundGlaiveExplosionFx::handle
+            );
         }
     }
 

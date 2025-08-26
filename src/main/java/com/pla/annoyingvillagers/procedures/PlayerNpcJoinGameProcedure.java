@@ -15,6 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -226,6 +227,35 @@ public class PlayerNpcJoinGameProcedure {
 
             if ((ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:zombie") || ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:husk")) && !entity.level().isClientSide() && entity.getServer() != null) {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    if (!entity.level().isClientSide() && entity.getServer() != null) {
+                        try {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "team add herobrine",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException e) {
+
+                        }
+                    }
+
+                    if (!entity.level().isClientSide() && entity.getServer() != null) {
+                        try {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "team modify herobrine friendlyFire false",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException e) {
+
+                        }
+                    }
+
+                    if (!entity.level().isClientSide() && entity.getServer() != null) {
+                        try {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "team join herobrine @s",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException e) {
+
+                        }
+                    }
                     try {
                         entity.getServer().getCommands().getDispatcher().execute(
                                 "data merge entity @s {CanPickUpLoot: 1b}",
@@ -263,6 +293,35 @@ public class PlayerNpcJoinGameProcedure {
 
             if ((ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:skeleton") || ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:stray") || ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:wither_skeleton")) && !entity.level().isClientSide() && entity.getServer() != null) {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    if (!entity.level().isClientSide() && entity.getServer() != null) {
+                        try {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "team add herobrine",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException e) {
+
+                        }
+                    }
+
+                    if (!entity.level().isClientSide() && entity.getServer() != null) {
+                        try {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "team modify herobrine friendlyFire false",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException e) {
+
+                        }
+                    }
+
+                    if (!entity.level().isClientSide() && entity.getServer() != null) {
+                        try {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "team join herobrine @s",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException e) {
+
+                        }
+                    }
                     try {
                         entity.getServer().getCommands().getDispatcher().execute(
                                 "data merge entity @s {CanPickUpLoot: 1b}",
@@ -308,6 +367,8 @@ public class PlayerNpcJoinGameProcedure {
                     }
                     if (entity.level().getRandom().nextFloat() < 0.5f) {
                         entity.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(AnnoyingVillagersModItems.IRON_POLEAXE.get()));
+                    } else if (entity.level().getRandom().nextFloat() < 0.5f) {
+                        entity.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.IRON_AXE));
                     }
                 }
             }

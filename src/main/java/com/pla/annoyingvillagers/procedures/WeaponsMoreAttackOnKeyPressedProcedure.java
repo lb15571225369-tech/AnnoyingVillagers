@@ -1,21 +1,37 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.capabilities.AVCategories;
+import com.pla.annoyingvillagers.compat.aaa_particles.EnderGlaiveExplosionParticleEmitterInfo;
+import com.pla.annoyingvillagers.entity.StealthAttackEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.item.EnderGlaiveItem;
+import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
 import com.pla.annoyingvillagers.util.DelayedTask;
+import mod.chloeprime.aaaparticles.api.common.AAALevel;
+import mod.chloeprime.aaaparticles.api.common.ParticleEmitterInfo;
 import net.corruptdog.cdm.world.CorruptWeaponCategories;
 import net.minecraft.client.Minecraft;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.PacketDistributor;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.LongHitAnimation;
+import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
@@ -564,13 +580,53 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
         if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.SPEAR || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == CorruptWeaponCategories.S_SPEAR) {
             if (entity.getPersistentData().getDouble("sword_a") < 1.0D) {
                 entity.getPersistentData().putDouble("sword_a", 1.5D);
-                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                if (!(entity instanceof LivingEntity livingEntity) || !entity.isAlive()) {
+                    return;
+                }
+                ItemStack itemStack = livingEntity.getMainHandItem();
+                if (itemStack.getItem() instanceof EnderGlaiveItem enderGlaiveItem) {
                     try {
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                "indestructible @s play \"annoyingvillagers:biped/combat/spear_thrust\" 0 1",
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        if (!entity.level().isClientSide()) {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "indestructible @s play \"wom:biped/combat/agony_auto_1\" 0 1",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            new DelayedTask(3) {
+                                @Override
+                                public void run() {
+                                    if (!entity.level().isClientSide()) {
+                                        Vec3 tipPos = enderGlaiveItem.getJointWithTranslation(
+                                                entity,
+                                                new Vec3f(0.0F, 0.0F, 0.0F),
+                                                Armatures.BIPED.toolR,
+                                                4.3F,
+                                                2.3F
+                                        );
+                                        entity.level().explode(entity, tipPos.x, tipPos.y, tipPos.z,
+                                                2.0F, true, Level.ExplosionInteraction.TNT);
+                                        Vec3 glaivePos = enderGlaiveItem.getJointWithTranslation(entity, new Vec3f(0,0,0),
+                                                Armatures.BIPED.toolR, 1.3F, 2.3F);
+                                        Vec3 explosionPos = enderGlaiveItem.getJointWithTranslation(entity, new Vec3f(0,0,0),
+                                                Armatures.BIPED.toolR, 10.3F, 2.3F);
+                                        AnnoyingVillagers.PACKET_HANDLER.send(
+                                                PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity),
+                                                new ClientboundGlaiveExplosionFx(glaivePos, explosionPos)
+                                        );
+                                    }
+                                }
+                            };
+                        }
                     } catch (CommandSyntaxException e) {
-                        
+
+                    }
+                } else {
+                    if (!entity.level().isClientSide() && entity.getServer() != null) {
+                        try {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "indestructible @s play \"annoyingvillagers:biped/combat/spear_thrust\" 0 1",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException e) {
+
+                        }
                     }
                 }
 

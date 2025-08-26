@@ -1586,20 +1586,6 @@
 							"guard": 10
 						}
 					]
-				},
-				{
-					"weight": 99,
-					"canBeInterrupted": false,
-					"looping": false,
-					"behaviors": [
-						{
-							"conditions": [
-								{"predicate":"indestructible:guard_break", "invert": false}, {"predicate":"within_eye_height"}
-							],
-							"animation": "wom:biped/combat/torment_charged_attack_2",
-							"play_speed": 0.8
-						}
-					]
 				}
 			]
 		},
@@ -2775,20 +2761,6 @@
 							],
 							"animation": "falchionmoveset:biped/falchion/falchion_side",
 							"play_speed": 1.4
-						}
-					]
-				},
-                {
-					"weight": 99,
-					"canBeInterrupted": false,
-					"looping": false,
-					"behaviors": [
-						{
-							"conditions": [
-								{"predicate":"indestructible:guard_break", "invert": false}, {"predicate":"within_eye_height"}
-							],
-							"animation": "wom:biped/combat/torment_charged_attack_2",
-							"play_speed": 1
 						}
 					]
 				}
