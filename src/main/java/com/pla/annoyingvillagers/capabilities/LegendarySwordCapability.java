@@ -148,9 +148,28 @@ public class LegendarySwordCapability {
     public static final Function<Item, Builder> HGSD = (item) -> {
         yesman.epicfight.world.capabilities.item.WeaponCapability.Builder yesman_epicfight_world_capabilities_item_weaponcapability_builder = WeaponCapability.builder().category(WeaponCategories.GREATSWORD).styleProvider((livingentitypatch) -> {
             return Styles.TWO_HAND;
-        }).collider(ColliderPreset.GREATSWORD).swingSound((SoundEvent) EpicFightSounds.WHOOSH_BIG.get()).hitSound((SoundEvent) EpicFightSounds.BLADE_HIT.get()).canBePlacedOffhand(false).newStyleCombo(Styles.TWO_HAND, new StaticAnimation[]{WOMAnimations.TORMENT_AUTO_1, WOMAnimations.TORMENT_AUTO_2, WOMAnimations.TORMENT_AUTO_3, WOMAnimations.TORMENT_AUTO_4, WOMAnimations.TORMENT_DASH, WOMAnimations.TORMENT_AIRSLAM}).newStyleCombo(Styles.MOUNT, new StaticAnimation[]{Animations.SWORD_MOUNT_ATTACK}).innateSkill(Styles.TWO_HAND, (itemstack) -> {
+        })
+                .collider(ColliderPreset.GREATSWORD)
+                .swingSound((SoundEvent) EpicFightSounds.WHOOSH_BIG.get())
+                .hitSound((SoundEvent) EpicFightSounds.BLADE_HIT.get())
+                .canBePlacedOffhand(false)
+                .newStyleCombo(Styles.TWO_HAND, new StaticAnimation[]{
+                        WOMAnimations.TORMENT_AUTO_1,
+                        WOMAnimations.TORMENT_AUTO_2,
+                        WOMAnimations.TORMENT_AUTO_3,
+                        WOMAnimations.TORMENT_AUTO_4,
+                        WOMAnimations.TORMENT_DASH,
+                        WOMAnimations.TORMENT_AIRSLAM
+                }).newStyleCombo(Styles.MOUNT, new StaticAnimation[]{Animations.SWORD_MOUNT_ATTACK}).innateSkill(Styles.TWO_HAND, (itemstack) -> {
             return EpicFightSkills.STEEL_WHIRLWIND;
-        }).livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, WOMAnimations.SOLAR_IDLE).livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, WOMAnimations.SOLAR_WALK).livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, WOMAnimations.SOLAR_RUN).livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, WOMAnimations.SOLAR_RUN).livingMotionModifier(Styles.TWO_HAND, LivingMotions.SWIM, Animations.BIPED_HOLD_GREATSWORD).livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.GREATSWORD_GUARD).weaponCombinationPredicator((livingentitypatch) -> {
+        })
+                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, WOMAnimations.SOLAR_IDLE)
+                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, WOMAnimations.SOLAR_WALK)
+                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, WOMAnimations.SOLAR_RUN)
+                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, WOMAnimations.SOLAR_RUN)
+                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.SWIM, Animations.BIPED_HOLD_GREATSWORD)
+                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.GREATSWORD_GUARD)
+                .weaponCombinationPredicator((livingentitypatch) -> {
             return livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE ? true : (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SWORD ? true : (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.DAGGER ? true : false));
         });
 

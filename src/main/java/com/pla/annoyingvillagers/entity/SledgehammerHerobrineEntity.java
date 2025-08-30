@@ -2,25 +2,30 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
+import com.pla.annoyingvillagers.procedures.GroundSlamHitProcedure;
 import com.pla.annoyingvillagers.procedures.Herobrine7OnEntityInitialSpawnProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineTransfromProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.util.DelayedTask;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -34,18 +39,23 @@ import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.Random;
+
 
 public class SledgehammerHerobrineEntity extends Monster {
+    private int nextStack = 3;
+
     public SledgehammerHerobrineEntity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.SLEDGEHAMMER_HEROBRINE.get(), level);
     }
@@ -90,6 +100,27 @@ public class SledgehammerHerobrineEntity extends Monster {
         return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
     }
 
+    public int getCooldownTicks() {
+        return this.getPersistentData().getInt("SwordCooldown");
+    }
+
+    public void setCooldownTicks(int ticks) {
+        this.getPersistentData().putInt("SwordCooldown", ticks);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag pCompound) {
+        super.readAdditionalSaveData(pCompound);
+        pCompound.putInt("NextStack", nextStack);
+
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag pCompound) {
+        super.addAdditionalSaveData(pCompound);
+        nextStack = pCompound.contains("NextStack") ? pCompound.getInt("NextStack") : nextStack;
+    }
+
     public boolean hurt(DamageSource damagesource, float f) {
         if (!this.getPersistentData().getBoolean("kick_x")) {
             this.setSprinting(true);
@@ -114,7 +145,7 @@ public class SledgehammerHerobrineEntity extends Monster {
         if (damagesource.is(DamageTypes.DROWN)) return false;
         if (damagesource.is(DamageTypes.WITHER_SKULL)) return false;
         if (damagesource.is(DamageTypes.DRAGON_BREATH)) return false;
-        if (damagesource.is(DamageTypes.INDIRECT_MAGIC)) return false;
+        if (damagesource.getDirectEntity() instanceof AbstractArrow) return false;
         return super.hurt(damagesource, f);
     }
 
@@ -136,13 +167,61 @@ public class SledgehammerHerobrineEntity extends Monster {
 
     public void baseTick() {
         super.baseTick();
-        HerobrineWeaponEffectProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
     public static void init() {
         SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.SLEDGEHAMMER_HEROBRINE.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
             return  serverlevelaccessor.getRawBrightness(blockpos, 0) <= 8;
         });
+    }
+
+    @Override
+    public boolean doHurtTarget(Entity pEntity) {
+        if (!pEntity.level().isClientSide()) {
+            ItemStack itemStack = this.getMainHandItem();
+            if (itemStack.getTag() != null && !this.getMainHandItem().getTag().getBoolean("SecondForm")) {
+                this.getPersistentData().putInt("HitCount", (this.getPersistentData().contains("HitCount") ? this.getPersistentData().getInt("HitCount") : 0) + 1);
+            }
+        }
+        return super.doHurtTarget(pEntity);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        boolean playSound = false;
+        ItemStack itemStack = this.getMainHandItem();
+
+        if (!this.level().isClientSide()) {
+            if (itemStack.getTag() != null && itemStack.getTag().getBoolean("SecondForm")) {
+                HerobrineWeaponEffectProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+
+                int cooldown = getCooldownTicks();
+                if (cooldown > 0) {
+                    setCooldownTicks(cooldown - 1);
+                } else {
+                    itemStack.getTag().remove("SecondForm");
+                }
+            } else if (itemStack.getTag() != null && !itemStack.getTag().getBoolean("SecondForm") && this.getPersistentData().getInt("HitCount") >= nextStack) {
+                itemStack.getTag().putBoolean("SecondForm", true);
+                setCooldownTicks(200);
+                this.getPersistentData().remove("HitCount");
+                nextStack = new Random().nextInt(3, 6);
+                playSound = true;
+                this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200, 2));
+                this.addEffect(new MobEffectInstance(MobEffects.JUMP, 200, 2));
+            }
+        }
+        if (playSound) {
+            if (!this.level().isClientSide()) {
+                this.level().playSound((Player) null, new BlockPos((int) this.getX(), (int) this.getY(), (int) this.getZ()), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:second_form_release")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+            } else {
+                this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:second_form_release")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+            }
+        }
+        if (!this.level().isClientSide()) {
+            GroundSlamHitProcedure.tickFor(this);
+        }
     }
 
     public static Builder createAttributes() {

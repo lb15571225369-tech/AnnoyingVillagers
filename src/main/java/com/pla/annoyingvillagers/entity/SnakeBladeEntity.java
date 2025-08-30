@@ -8,6 +8,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
+import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.util.SnakeBladeHit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -154,12 +155,6 @@ public class SnakeBladeEntity extends Entity {
                                         } catch (CommandSyntaxException e) {
 
                                         }
-                                        if (current instanceof LivingEntity livingEntity) {
-                                            float strength = 5.0F;
-                                            double dx = this.getX() - current.getX();
-                                            double dz = this.getZ() - current.getZ();
-                                            livingEntity.knockback(strength, dx, dz);
-                                        }
                                     }
 
                                     if (!this.level().isClientSide()) {
@@ -175,6 +170,12 @@ public class SnakeBladeEntity extends Entity {
                                         } catch (CommandSyntaxException e) {
 
                                         }
+                                    }
+                                    if (current instanceof LivingEntity livingEntity) {
+                                        float strength = 3.0F;
+                                        double dx = this.getX() - current.getX();
+                                        double dz = this.getZ() - current.getZ();
+                                        livingEntity.knockback(strength, dx, dz);
                                     }
                                     if (new Random().nextBoolean()) {
                                         if (!current.level().isClientSide() && current.getServer() != null) {

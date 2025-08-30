@@ -8,6 +8,7 @@ import com.pla.annoyingvillagers.entity.StealthAttackEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.item.EnderGlaiveItem;
+import com.pla.annoyingvillagers.item.ObsidianSledgehammerItem;
 import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
 import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
 import com.pla.annoyingvillagers.util.DelayedTask;
@@ -532,13 +533,23 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
             DynamicAnimation dynamicanimation2 = livingentitypatch1.getAnimator().getPlayerFor(null).getAnimation();
 
             if (dynamicanimation2 != Animations.STEEL_WHIRLWIND && dynamicanimation2 != Animations.STEEL_WHIRLWIND_CHARGING) {
+                if (!(entity instanceof LivingEntity livingEntity) || !entity.isAlive()) {
+                    return;
+                }
+                ItemStack itemStack = livingEntity.getMainHandItem();
                 if (entity.getPersistentData().getDouble("sword_a") < 1.0D) {
                     entity.getPersistentData().putDouble("sword_a", 1.5D);
                     if (!entity.level().isClientSide() && entity.getServer() != null) {
                         try {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "indestructible @s play \"annoyingvillagers:biped/combat/giant_whirlwind\" 0 1",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            if (itemStack.getItem() instanceof ObsidianSledgehammerItem) {
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "indestructible @s play \"wom:biped/skill/torment_berserk_dash\" 0 1",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } else {
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "indestructible @s play \"annoyingvillagers:biped/combat/giant_whirlwind\" 0 1",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            }
                         } catch (CommandSyntaxException e) {
                             
                         }
@@ -554,11 +565,16 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                     entity.getPersistentData().putDouble("sword_a", 2.5D);
                     if (!entity.level().isClientSide() && entity.getServer() != null) {
                         try {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "indestructible @s play \"annoyingvillagers:biped/combat/giant_whirlwind_2\" 0 1",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            if (itemStack.getItem() instanceof ObsidianSledgehammerItem) {
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "indestructible @s play \"wom:biped/skill/torment_berserk_dash\" 0 1",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } else {
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "indestructible @s play \"annoyingvillagers:biped/combat/giant_whirlwind_2\" 0 1",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            }
                         } catch (CommandSyntaxException e) {
-                            
                         }
                     }
 

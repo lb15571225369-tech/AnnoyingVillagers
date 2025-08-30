@@ -64,7 +64,7 @@ public class EnderAegisItem extends SwordItem {
                 StealthAttackEntity stealthAttackEntity = new StealthAttackEntity((EntityType) AnnoyingVillagersModEntities.STEALTH_ATTACK_PROJECTILE.get(), level);
                 stealthAttackEntity.setOwner(entity);
                 stealthAttackEntity.setBaseDamage((double) 8.0F);
-                stealthAttackEntity.setKnockback(10);
+                stealthAttackEntity.setKnockback(5);
                 stealthAttackEntity.setSilent(true);
                 stealthAttackEntity.setPierceLevel((byte) 5);
                 stealthAttackEntity.setPos(entity.getX(), entity.getEyeY() - 0.1D, entity.getZ());

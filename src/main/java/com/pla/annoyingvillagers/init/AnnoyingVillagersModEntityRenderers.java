@@ -73,5 +73,6 @@ public class AnnoyingVillagersModEntityRenderers {
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.DRAGON_BEAM.get(), DragonBeamRenderer::new);
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.BABY_ENDER_DRAGON.get(), BabyEnderDragonRenderer::new);
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.BABY_DRAGON_BEAM.get(), BabyDragonBeamRenderer::new);
+        registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.OBSIDIAN_SLEDGEHAMMER_HIT.get(), ObsidianSledgehammerHitRenderer::new);
     }
 }
