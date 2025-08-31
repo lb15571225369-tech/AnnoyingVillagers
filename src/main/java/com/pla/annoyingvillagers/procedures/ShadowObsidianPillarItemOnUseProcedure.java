@@ -23,7 +23,7 @@ public class ShadowObsidianPillarItemOnUseProcedure {
         if (!(levelaccessor instanceof Level level) || entity == null) return;
 
         if (!level.isClientSide && entity instanceof ServerPlayer serverPlayer) {
-            itemstack.hurtAndBreak(100, serverPlayer, p -> p.broadcastBreakEvent(hand));
+            itemstack.hurtAndBreak(50, serverPlayer, p -> p.broadcastBreakEvent(hand));
         }
 
         if (!level.isClientSide()) {

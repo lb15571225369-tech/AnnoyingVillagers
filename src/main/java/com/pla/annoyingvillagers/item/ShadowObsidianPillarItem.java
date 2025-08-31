@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.item;
 
 import com.pla.annoyingvillagers.procedures.ShadowObsidianPillarItemOnUseProcedure;
+import com.pla.annoyingvillagers.procedures.ShadowObsidianPillarSpecialAttackProcedure;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -53,5 +54,9 @@ public class ShadowObsidianPillarItem extends SwordItem {
         super.useOn(useoncontext);
         ShadowObsidianPillarItemOnUseProcedure.execute(useoncontext.getLevel(), (double) useoncontext.getClickedPos().getX(), (double) useoncontext.getClickedPos().getY(), (double) useoncontext.getClickedPos().getZ(), useoncontext.getPlayer(), useoncontext.getItemInHand(), useoncontext.getHand());
         return InteractionResult.SUCCESS;
+    }
+
+    public void specialAttack(LivingEntity entity) {
+        ShadowObsidianPillarSpecialAttackProcedure.execute(entity.level(), entity.getX(), entity.getY(), entity.getZ(), entity, entity.getMainHandItem(), InteractionHand.MAIN_HAND);
     }
 }

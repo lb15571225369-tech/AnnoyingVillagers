@@ -3,17 +3,11 @@ package com.pla.annoyingvillagers.procedures;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.capabilities.AVCategories;
-import com.pla.annoyingvillagers.compat.aaa_particles.EnderGlaiveExplosionParticleEmitterInfo;
-import com.pla.annoyingvillagers.entity.StealthAttackEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.item.EnderGlaiveItem;
-import com.pla.annoyingvillagers.item.ObsidianSledgehammerItem;
+import com.pla.annoyingvillagers.item.*;
 import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
 import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
 import com.pla.annoyingvillagers.util.DelayedTask;
-import mod.chloeprime.aaaparticles.api.common.AAALevel;
-import mod.chloeprime.aaaparticles.api.common.ParticleEmitterInfo;
 import net.corruptdog.cdm.world.CorruptWeaponCategories;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -23,7 +17,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -277,7 +270,8 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                                 entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * 0.25D, 0.0D, entity.getLookAngle().z * 0.25D));
                             }
                         };
-                    } else {
+                    }
+                    else {
                         if (!entity.level().isClientSide() && entity.getServer() != null) {
                             try {
                                 entity.getServer().getCommands().getDispatcher().execute(
@@ -378,6 +372,17 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                             }
                         };
                     }
+                }
+                if (!(entity instanceof LivingEntity livingEntity) || !entity.isAlive()) {
+                    return;
+                }
+                ItemStack itemStack = livingEntity.getMainHandItem();
+                if (itemStack.getItem() instanceof ObsidianWeaponItem obsidianWeaponItem) {
+                    obsidianWeaponItem.specialAttack(livingEntity);
+                } else if (itemStack.getItem() instanceof ShadowObsidianWeaponItem shadowObsidianWeaponItem) {
+                    shadowObsidianWeaponItem.specialAttack(livingEntity);
+                } else if (itemStack.getItem() instanceof ShadowObsidianPillarItem shadowObsidianPillarItem) {
+                    shadowObsidianPillarItem.specialAttack(livingEntity);
                 }
             }
         } else if ((playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.SWORD || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.SWORD) && (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.TACHI || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI) && (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.TACHI || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.SWORD) && (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.SWORD || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI)) {

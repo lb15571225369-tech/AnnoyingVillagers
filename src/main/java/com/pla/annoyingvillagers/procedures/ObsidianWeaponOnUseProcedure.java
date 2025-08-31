@@ -8,23 +8,21 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class ObsidianWeaponsOnUseProcedure {
+public class ObsidianWeaponOnUseProcedure {
 
     public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity, ItemStack itemstack, InteractionHand hand) {
         if (!(levelaccessor instanceof Level level) || entity == null) return;
 
         if (!level.isClientSide && entity instanceof ServerPlayer serverPlayer) {
-            itemstack.hurtAndBreak(100, serverPlayer, p -> p.broadcastBreakEvent(hand));
+            itemstack.hurtAndBreak(50, serverPlayer, p -> p.broadcastBreakEvent(hand));
         }
 
         if (!level.isClientSide()) {
