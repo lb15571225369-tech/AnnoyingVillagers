@@ -1,17 +1,25 @@
 package com.pla.annoyingvillagers.block;
 
+import com.pla.annoyingvillagers.blockentity.DarkObUpBlockEntity;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -23,8 +31,10 @@ import com.pla.annoyingvillagers.procedures.DarkObSsOnEntityInsideProcedure;
 import com.pla.annoyingvillagers.procedures.DarkObSsOnAttackProcedure;
 import com.pla.annoyingvillagers.procedures.DarkObSsOnTickProcedure;
 import com.pla.annoyingvillagers.procedures.DarkObSsOnPlaceProcedure;
+import org.jetbrains.annotations.Nullable;
 
-public class DarkObUpBlock extends Block {
+public class DarkObUpBlock extends Block implements EntityBlock {
+    public static final BooleanProperty FROM_PLAYER = BooleanProperty.create("from_player");
 
     public DarkObUpBlock() {
         super(Properties.of()
@@ -36,6 +46,19 @@ public class DarkObUpBlock extends Block {
                 .emissiveRendering((blockstate, blockgetter, blockpos) -> true)
                 .isRedstoneConductor((blockstate, blockgetter, blockpos) -> false)
                 .dynamicShape());
+        this.registerDefaultState(this.stateDefinition.any().setValue(FROM_PLAYER, Boolean.FALSE));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(FROM_PLAYER);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+        BlockState base = super.getStateForPlacement(ctx);
+        if (base == null) base = this.defaultBlockState();
+        return base.setValue(FROM_PLAYER, ctx.getPlayer() != null);
     }
 
     public boolean propagatesSkylightDown(BlockState blockstate, BlockGetter blockgetter, BlockPos blockpos) {
@@ -78,7 +101,20 @@ public class DarkObUpBlock extends Block {
 
     public void entityInside(BlockState blockstate, Level level, BlockPos blockpos, Entity entity) {
         super.entityInside(blockstate, level, blockpos, entity);
-        DarkObSsOnEntityInsideProcedure.execute(level, entity);
+        DarkObSsOnEntityInsideProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), entity);
+    }
+
+    @Override
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+        super.setPlacedBy(level, pos, state, placer, stack);
+        if (!level.isClientSide) {
+            var blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof DarkObUpBlockEntity dark) {
+                dark.setOwner(placer instanceof Player ? ((Player) placer).getUUID() : null);
+                blockEntity.setChanged();
+                level.sendBlockUpdated(pos, state, state, 3);
+            }
+        }
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -86,5 +122,10 @@ public class DarkObUpBlock extends Block {
         ItemBlockRenderTypes.setRenderLayer((Block) AnnoyingVillagersModBlocks.DARK_OB_UP.get(), (rendertype) -> {
             return rendertype == RenderType.cutout();
         });
+    }
+
+    @Override
+    public @Nullable BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+        return new DarkObUpBlockEntity(pPos, pState);
     }
 }

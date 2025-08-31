@@ -3,7 +3,10 @@ package com.pla.annoyingvillagers.block;
 import java.util.Collections;
 import java.util.List;
 
+import com.pla.annoyingvillagers.blockentity.ObsidianBlockEntity;
+import com.pla.annoyingvillagers.blockentity.ShadowObsidianBlockEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
+import com.pla.annoyingvillagers.procedures.ObsidianWhenEntityInsideBlockOnCollisionProcedure;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
@@ -13,10 +16,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -26,8 +34,10 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.ForgeSoundType;
 import com.pla.annoyingvillagers.procedures.ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure;
 import com.pla.annoyingvillagers.procedures.ObsidianBlockPlaceBlockProcedure;
+import org.jetbrains.annotations.Nullable;
 
-public class ObsidianBlock extends Block {
+public class ObsidianBlock extends Block implements EntityBlock {
+    public static final BooleanProperty FROM_PLAYER = BooleanProperty.create("from_player");
 
     public ObsidianBlock() {
         super(Properties.of()
@@ -44,6 +54,19 @@ public class ObsidianBlock extends Block {
                 .hasPostProcess((blockstate, blockgetter, blockpos) -> true)
                 .emissiveRendering((blockstate, blockgetter, blockpos) -> true)
                 .isRedstoneConductor((blockstate, blockgetter, blockpos) -> false));
+        this.registerDefaultState(this.stateDefinition.any().setValue(FROM_PLAYER, Boolean.FALSE));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(FROM_PLAYER);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+        BlockState base = super.getStateForPlacement(ctx);
+        if (base == null) base = this.defaultBlockState();
+        return base.setValue(FROM_PLAYER, ctx.getPlayer() != null);
     }
 
     public void appendHoverText(ItemStack itemstack, BlockGetter blockgetter, List<Component> list, TooltipFlag tooltipflag) {
@@ -76,7 +99,7 @@ public class ObsidianBlock extends Block {
 
     public void entityInside(BlockState blockstate, Level level, BlockPos blockpos, Entity entity) {
         super.entityInside(blockstate, level, blockpos, entity);
-        ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), entity);
+        ObsidianWhenEntityInsideBlockOnCollisionProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), entity);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -84,5 +107,11 @@ public class ObsidianBlock extends Block {
         ItemBlockRenderTypes.setRenderLayer((Block) AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get(), (rendertype) -> {
             return rendertype == RenderType.cutoutMipped();
         });
+    }
+
+
+    @Override
+    public @Nullable BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+        return new ObsidianBlockEntity(pPos, pState);
     }
 }

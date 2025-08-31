@@ -301,22 +301,6 @@
 					]
 				},
                 {
-                					"weight": 100.5,
-					"canBeInterrupted": false,
-					"looping": true,
-					"behaviors": [
-                        {
-							"conditions": [
-								{"predicate":"indestructible:using_item", "edible": true}, {"predicate":"within_distance", "min": 3.0, "max": 100.8}
-							],
-							"animation": "annoyingvillagers:biped/living/eat_offhand",
-														"play_speed": 1.4,
-							"command_list": [
-								{"command":"execute as @s at @s anchored eyes run playsound minecraft:random.eat player @p", "execute_at_target":false}, {"command":"execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", "execute_at_target":false}, {"command":"execute as @s at @s anchored eyes run effect give @s minecraft:regeneration 10 4", "execute_at_target":false}]
-						}
-					]
-				},
-                {
 					"weight": 5.5,
 					"canBeInterrupted": false,
 					"looping": false,
@@ -624,22 +608,6 @@
 							"convert_time": 0.15
 						}
                     ]
-				},
-				{
-                					"weight": 100.5,
-					"canBeInterrupted": false,
-					"looping": true,
-					"behaviors": [
-                        {
-							"conditions": [
-								{"predicate":"indestructible:using_item", "edible": true}, {"predicate":"within_distance", "min": 3.0, "max": 100.8}
-							],
-							"animation": "annoyingvillagers:biped/living/eat_offhand",
-							"command_list": [
-								{"command":"effect give @s minecraft:regeneration 3 4", "execute_at_target":false}, {"command":"playsound minecraft:random.eat player @p", "execute_at_target":false}, {"command":"execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", "execute_at_target":false}
-							]
-						}
-					]
 				},
                 {
 					"weight": 80.5,
@@ -1411,22 +1379,6 @@
 						}
                         ]
 				},
-				{
-                					"weight": 100.5,
-					"canBeInterrupted": false,
-					"looping": true,
-					"behaviors": [
-                        {
-							"conditions": [
-								{"predicate":"indestructible:using_item", "edible": true}, {"predicate":"within_distance", "min": 3.0, "max": 100.8}
-							],
-							"animation": "annoyingvillagers:biped/living/eat_offhand",
-							"command_list": [
-								{"command":"effect give @s minecraft:regeneration 3 4", "execute_at_target":false}, {"command":"playsound minecraft:random.eat player @p", "execute_at_target":false}, {"command":"execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", "execute_at_target":false}
-							]
-						}
-					]
-				},
                 {
 					"weight": 10.5,
 					"canBeInterrupted": false,
@@ -1760,23 +1712,6 @@
 							"guard": 1
 						}
                     ]
-				},
-				{
-                					"weight": 100.5,
-					"canBeInterrupted": false,
-					"looping": true,
-					"behaviors": [
-                        {
-							"conditions": [
-								{"predicate":"indestructible:using_item", "edible": true}, {"predicate":"within_distance", "min": 3.0, "max": 100.8}
-							],
-							"animation": "annoyingvillagers:biped/living/eat_offhand",
-							"play_speed": 1.4,
-							"command_list": [
-								{"command":"effect give @s minecraft:regeneration 3 4", "execute_at_target":false}, {"command":"playsound minecraft:random.eat player @p", "execute_at_target":false}, {"command":"execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", "execute_at_target":false}
-							]
-						}
-					]
 				},
                 {
 					"weight": 40.5,
@@ -2723,23 +2658,6 @@
 							],
 							"animation": "falchionmoveset:biped/falchion/falchion_backward",
 							"play_speed": 1.4
-						}
-					]
-				},
-                {
-                					"weight": 100.5,
-					"canBeInterrupted": false,
-					"looping": true,
-					"behaviors": [
-                        {
-							"conditions": [
-								{"predicate":"indestructible:using_item", "edible": true}, {"predicate":"within_distance", "min": 3.0, "max": 100.8}
-							],
-							"animation": "annoyingvillagers:biped/living/eat_offhand",
-														"play_speed": 1.4,
-							"command_list": [
-								{"command":"effect give @s minecraft:regeneration 3 4", "execute_at_target":false}, {"command":"playsound minecraft:random.eat player @p", "execute_at_target":false}, {"command":"execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", "execute_at_target":false}
-							]
 						}
 					]
 				},

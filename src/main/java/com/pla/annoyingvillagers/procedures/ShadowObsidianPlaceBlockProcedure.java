@@ -13,7 +13,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class ShadowObsidianPreventBlockProcedure {
+public class ShadowObsidianPlaceBlockProcedure {
 
     public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2) {
         Level level;

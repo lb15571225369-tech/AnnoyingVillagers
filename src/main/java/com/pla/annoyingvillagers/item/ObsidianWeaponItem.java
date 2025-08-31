@@ -46,15 +46,14 @@ public class ObsidianWeaponItem extends SwordItem {
     }
 
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {
-        InteractionResultHolder<ItemStack> interactionresultholder = super.use(level, player, interactionhand);
-
-        ObsidianWeaponsOnUseProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
-        return interactionresultholder;
+        ItemStack stack = player.getItemInHand(interactionhand);
+        ObsidianWeaponsOnUseProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, stack, interactionhand);
+        return InteractionResultHolder.success(stack);
     }
 
     public InteractionResult useOn(UseOnContext useoncontext) {
         super.useOn(useoncontext);
-        ObsidianWeaponsOnUseProcedure.execute(useoncontext.getLevel(), (double) useoncontext.getClickedPos().getX(), (double) useoncontext.getClickedPos().getY(), (double) useoncontext.getClickedPos().getZ(), useoncontext.getPlayer(), useoncontext.getItemInHand());
+        ObsidianWeaponsOnUseProcedure.execute(useoncontext.getLevel(), (double) useoncontext.getClickedPos().getX(), (double) useoncontext.getClickedPos().getY(), (double) useoncontext.getClickedPos().getZ(), useoncontext.getPlayer(), useoncontext.getItemInHand(), useoncontext.getHand());
         return InteractionResult.SUCCESS;
     }
 }

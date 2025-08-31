@@ -8,16 +8,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class ShadowObsidianPillarItemOnUseProcedure {
+public class ShadowObsidianOnUseProcedure {
 
     public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity, ItemStack itemstack, InteractionHand hand) {
         if (!(levelaccessor instanceof Level level) || entity == null) return;
@@ -41,32 +40,47 @@ public class ShadowObsidianPillarItemOnUseProcedure {
             }
         }
 
+        if (!entity.level().isClientSide() && entity.getServer() != null) {
+            try {
+                entity.getServer().getCommands().getDispatcher().execute(
+                        "execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:shadow_obsidian[from_player=true] keep",
+                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                entity.getServer().getCommands().getDispatcher().execute(
+                        "execute as @s at @s anchored eyes run data modify block ^ ^ ^2 Owner set from entity @s UUID",
+                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                );
+            } catch (CommandSyntaxException e) {
+
+            }
+        }
+
         new DelayedTask(1) {
             @Override
             public void run() {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
                     try {
                         entity.getServer().getCommands().getDispatcher().execute(
-                                "execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:dark_ob_up[from_player=true] keep",
+                                "execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:shadow_obsidian[from_player=true] keep",
                                 entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                         entity.getServer().getCommands().getDispatcher().execute(
-                                "execute as @s at @s anchored eyes run data modify block ^ ^ ^2 Owner set from entity @s UUID",
+                                "execute as @s at @s anchored eyes run data modify block ^ ^ ^3 Owner set from entity @s UUID",
                                 entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                         );
                     } catch (CommandSyntaxException e) {
 
                     }
                 }
+
                 new DelayedTask(1) {
                     @Override
                     public void run() {
                         if (!entity.level().isClientSide() && entity.getServer() != null) {
                             try {
                                 entity.getServer().getCommands().getDispatcher().execute(
-                                        "execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:dark_ob_up[from_player=true] keep",
+                                        "execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:shadow_obsidian[from_player=true] keep",
                                         entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                 entity.getServer().getCommands().getDispatcher().execute(
-                                        "execute as @s at @s anchored eyes run data modify block ^ ^ ^3 Owner set from entity @s UUID",
+                                        "execute as @s at @s anchored eyes run data modify block ^ ^ ^4 Owner set from entity @s UUID",
                                         entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                                 );
                             } catch (CommandSyntaxException e) {
@@ -80,10 +94,10 @@ public class ShadowObsidianPillarItemOnUseProcedure {
                                 if (!entity.level().isClientSide() && entity.getServer() != null) {
                                     try {
                                         entity.getServer().getCommands().getDispatcher().execute(
-                                                "execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:dark_ob_up[from_player=true] keep",
+                                                "execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:shadow_obsidian[from_player=true] keep",
                                                 entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                         entity.getServer().getCommands().getDispatcher().execute(
-                                                "execute as @s at @s anchored eyes run data modify block ^ ^ ^4 Owner set from entity @s UUID",
+                                                "execute as @s at @s anchored eyes run data modify block ^ ^ ^5 Owner set from entity @s UUID",
                                                 entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                                         );
                                     } catch (CommandSyntaxException e) {
@@ -97,10 +111,10 @@ public class ShadowObsidianPillarItemOnUseProcedure {
                                         if (!entity.level().isClientSide() && entity.getServer() != null) {
                                             try {
                                                 entity.getServer().getCommands().getDispatcher().execute(
-                                                        "execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:dark_ob_up[from_player=true] keep",
+                                                        "execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:shadow_obsidian[from_player=true] keep",
                                                         entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                 entity.getServer().getCommands().getDispatcher().execute(
-                                                        "execute as @s at @s anchored eyes run data modify block ^ ^ ^5 Owner set from entity @s UUID",
+                                                        "execute as @s at @s anchored eyes run data modify block ^ ^ ^6 Owner set from entity @s UUID",
                                                         entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                                                 );
                                             } catch (CommandSyntaxException e) {
@@ -114,10 +128,10 @@ public class ShadowObsidianPillarItemOnUseProcedure {
                                                 if (!entity.level().isClientSide() && entity.getServer() != null) {
                                                     try {
                                                         entity.getServer().getCommands().getDispatcher().execute(
-                                                                "execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:dark_ob_up[from_player=true] keep",
+                                                                "execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:shadow_obsidian[from_player=true] keep",
                                                                 entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                         entity.getServer().getCommands().getDispatcher().execute(
-                                                                "execute as @s at @s anchored eyes run data modify block ^ ^ ^6 Owner set from entity @s UUID",
+                                                                "execute as @s at @s anchored eyes run data modify block ^ ^ ^7 Owner set from entity @s UUID",
                                                                 entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                                                         );
                                                     } catch (CommandSyntaxException e) {
@@ -131,10 +145,10 @@ public class ShadowObsidianPillarItemOnUseProcedure {
                                                         if (!entity.level().isClientSide() && entity.getServer() != null) {
                                                             try {
                                                                 entity.getServer().getCommands().getDispatcher().execute(
-                                                                        "execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:dark_ob_up[from_player=true] keep",
+                                                                        "execute as @s at @s anchored eyes run setblock ^ ^ ^8 annoyingvillagers:shadow_obsidian[from_player=true] keep",
                                                                         entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                 entity.getServer().getCommands().getDispatcher().execute(
-                                                                        "execute as @s at @s anchored eyes run data modify block ^ ^ ^7 Owner set from entity @s UUID",
+                                                                        "execute as @s at @s anchored eyes run data modify block ^ ^ ^8 Owner set from entity @s UUID",
                                                                         entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                                                                 );
                                                             } catch (CommandSyntaxException e) {
@@ -148,10 +162,10 @@ public class ShadowObsidianPillarItemOnUseProcedure {
                                                                 if (!entity.level().isClientSide() && entity.getServer() != null) {
                                                                     try {
                                                                         entity.getServer().getCommands().getDispatcher().execute(
-                                                                                "execute as @s at @s anchored eyes run setblock ^ ^ ^8 annoyingvillagers:dark_ob_up[from_player=true] keep",
+                                                                                "execute as @s at @s anchored eyes run setblock ^ ^ ^9 annoyingvillagers:shadow_obsidian[from_player=true] keep",
                                                                                 entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                         entity.getServer().getCommands().getDispatcher().execute(
-                                                                                "execute as @s at @s anchored eyes run data modify block ^ ^ ^8 Owner set from entity @s UUID",
+                                                                                "execute as @s at @s anchored eyes run data modify block ^ ^ ^9 Owner set from entity @s UUID",
                                                                                 entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                                                                         );
                                                                     } catch (CommandSyntaxException e) {
@@ -165,35 +179,16 @@ public class ShadowObsidianPillarItemOnUseProcedure {
                                                                         if (!entity.level().isClientSide() && entity.getServer() != null) {
                                                                             try {
                                                                                 entity.getServer().getCommands().getDispatcher().execute(
-                                                                                        "execute as @s at @s anchored eyes run setblock ^ ^ ^9 annoyingvillagers:dark_ob_up[from_player=true] keep",
+                                                                                        "execute as @s at @s anchored eyes run setblock ^ ^ ^10 annoyingvillagers:shadow_obsidian[from_player=true] keep",
                                                                                         entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                 entity.getServer().getCommands().getDispatcher().execute(
-                                                                                        "execute as @s at @s anchored eyes run data modify block ^ ^ ^9 Owner set from entity @s UUID",
+                                                                                        "execute as @s at @s anchored eyes run data modify block ^ ^ ^10 Owner set from entity @s UUID",
                                                                                         entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                                                                                 );
                                                                             } catch (CommandSyntaxException e) {
 
                                                                             }
                                                                         }
-
-                                                                        new DelayedTask(1) {
-                                                                            @Override
-                                                                            public void run() {
-                                                                                if (!entity.level().isClientSide() && entity.getServer() != null) {
-                                                                                    try {
-                                                                                        entity.getServer().getCommands().getDispatcher().execute(
-                                                                                                "execute as @s at @s anchored eyes run setblock ^ ^ ^10 annoyingvillagers:dark_ob_up[from_player=true] keep",
-                                                                                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                                                        entity.getServer().getCommands().getDispatcher().execute(
-                                                                                                "execute as @s at @s anchored eyes run data modify block ^ ^ ^10 Owner set from entity @s UUID",
-                                                                                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-                                                                                        );
-                                                                                    } catch (CommandSyntaxException e) {
-
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        };
                                                                     }
                                                                 };
                                                             }

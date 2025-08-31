@@ -1,8 +1,8 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.block.ShadowObsidianBlock;
-import com.pla.annoyingvillagers.blockentity.ShadowObsidianBlockEntity;
+import com.pla.annoyingvillagers.block.ObsidianBlock;
+import com.pla.annoyingvillagers.blockentity.ObsidianBlockEntity;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.util.ObsidianWeaponUtil;
 import net.minecraft.core.BlockPos;
@@ -25,24 +25,24 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
+public class ObsidianWhenEntityInsideBlockOnCollisionProcedure {
 
     public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) {
         if (entity != null) {
             BlockPos pos = BlockPos.containing(d0, d1, d2);
             BlockState state = levelaccessor.getBlockState(pos);
 
-            if (entity instanceof Player && levelaccessor.getBlockEntity(pos) instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
-                var owner = shadowObsidianBlockEntity.getOwner();
+            if (entity instanceof Player && levelaccessor.getBlockEntity(pos) instanceof ObsidianBlockEntity obsidianBlockEntity) {
+                var owner = obsidianBlockEntity.getOwner();
                 if (owner != null && owner.equals(((Player) entity).getUUID())) {
                     return;
                 }
             }
 
             boolean fromPlayer =
-                    state.getBlock() instanceof ShadowObsidianBlock
-                            && state.hasProperty(ShadowObsidianBlock.FROM_PLAYER)
-                            && state.getValue(ShadowObsidianBlock.FROM_PLAYER);
+                    state.getBlock() instanceof ObsidianBlock
+                            && state.hasProperty(ObsidianBlock.FROM_PLAYER)
+                            && state.getValue(ObsidianBlock.FROM_PLAYER);
 
             if (!fromPlayer && ObsidianWeaponUtil.isHerobrineFaction(entity)) {
                 return;

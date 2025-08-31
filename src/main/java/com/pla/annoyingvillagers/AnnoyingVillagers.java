@@ -52,6 +52,7 @@ public class AnnoyingVillagers {
         modEventBus.addListener(this::commonSetup);
 
         AnnoyingVillagersModBlocks.REGISTRY.register(modEventBus);
+        AnnoyingVillagersModBlockEntities.REGISTRY.register(modEventBus);
         AnnoyingVillagersModItems.REGISTRY.register(modEventBus);
         modEventBus.addListener(LegendarySwordCapability::register);
         modEventBus.addListener(AVAnimations::registerAnimations);

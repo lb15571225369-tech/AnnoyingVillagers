@@ -1,7 +1,12 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.block.DarkObUpBlock;
+import com.pla.annoyingvillagers.block.ObsidianBlock;
+import com.pla.annoyingvillagers.blockentity.DarkObUpBlockEntity;
 import com.pla.annoyingvillagers.entity.*;
+import com.pla.annoyingvillagers.util.ObsidianWeaponUtil;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -9,15 +14,32 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 public class DarkObSsOnEntityInsideProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, Entity entity) {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) {
         if (entity != null) {
-            if (entity instanceof Herobrine1Entity || entity instanceof Herobrine2Entity || entity instanceof Herobrine3Entity || entity instanceof Herobrine7Entity || entity instanceof ArmoredHerobrineEntity || entity instanceof ShadowHerobrineEntity || entity instanceof InfectedPlayerMobEntity || entity instanceof InfectedTheMostMoistBurrit0Entity || entity instanceof InfectedChrisEntity) {
+            BlockPos pos = BlockPos.containing(d0, d1, d2);
+            BlockState state = levelaccessor.getBlockState(pos);
+
+            if (entity instanceof Player && levelaccessor.getBlockEntity(pos) instanceof DarkObUpBlockEntity dark) {
+                var owner = dark.getOwner();
+                if (owner != null && owner.equals(((Player) entity).getUUID())) {
+                    return;
+                }
+            }
+
+            boolean fromPlayer =
+                    state.getBlock() instanceof DarkObUpBlock
+                            && state.hasProperty(DarkObUpBlock.FROM_PLAYER)
+                            && state.getValue(DarkObUpBlock.FROM_PLAYER);
+
+            if (!fromPlayer && ObsidianWeaponUtil.isHerobrineFaction(entity)) {
                 return;
             }
 

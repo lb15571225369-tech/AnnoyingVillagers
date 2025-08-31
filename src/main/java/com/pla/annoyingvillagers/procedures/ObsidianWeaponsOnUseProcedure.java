@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -19,381 +20,193 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class ObsidianWeaponsOnUseProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity, ItemStack itemstack) {
-        if (entity != null) {
-            ItemStack itemstack1;
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity, ItemStack itemstack, InteractionHand hand) {
+        if (!(levelaccessor instanceof Level level) || entity == null) return;
 
-            if (entity instanceof LivingEntity) {
-                LivingEntity livingentity = (LivingEntity)entity;
+        if (!level.isClientSide && entity instanceof ServerPlayer serverPlayer) {
+            itemstack.hurtAndBreak(100, serverPlayer, p -> p.broadcastBreakEvent(hand));
+        }
 
-                itemstack1 = livingentity.getMainHandItem();
+        if (!level.isClientSide()) {
+            level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "obsidian_place")), SoundSource.BLOCKS, 0.3F, 1.0F);
+        } else {
+            level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "obsidian_place")), SoundSource.BLOCKS, 0.3F, 1.0F, false);
+        }
+
+        if (entity instanceof Player player) {
+            player.getCooldowns().addCooldown(itemstack.getItem(), 20);
+            if (player.getOffhandItem().getItem().equals(AnnoyingVillagersModItems.OBSIDIAN_WEAPON.get())) {
+                player.swing(InteractionHand.OFF_HAND, true);
             } else {
-                itemstack1 = ItemStack.EMPTY;
+                player.swing(InteractionHand.MAIN_HAND, true);
             }
+        }
 
-            LivingEntity livingentity1;
-            ItemStack itemstack2;
-            Level level;
-            Player player;
+        if (!entity.level().isClientSide() && entity.getServer() != null) {
+            try {
+                entity.getServer().getCommands().getDispatcher().execute(
+                        "execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:obsidian[from_player=true] keep",
+                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                entity.getServer().getCommands().getDispatcher().execute(
+                        "execute as @s at @s anchored eyes run data modify block ^ ^ ^2 Owner set from entity @s UUID",
+                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                );
+            } catch (CommandSyntaxException e) {
 
-            if (itemstack1.getItem() == AnnoyingVillagersModItems.OBSIDIAN_WEAPON.get()) {
-                if (entity instanceof LivingEntity) {
-                    livingentity1 = (LivingEntity)entity;
-                    itemstack1 = livingentity1.getMainHandItem();
-                } else {
-                    itemstack1 = ItemStack.EMPTY;
-                }
+            }
+        }
 
-                itemstack2 = itemstack1;
-                if (itemstack2.hurt(100, RandomSource.create(), (ServerPlayer)null)) {
-                    itemstack2.shrink(1);
-                    itemstack2.setDamageValue(0);
-                }
-
-                if (levelaccessor instanceof Level) {
-                    level = (Level)levelaccessor;
-                    if (!level.isClientSide()) {
-                        level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "obsidian_place")), SoundSource.NEUTRAL, 1.0F, 1.0F);
-                    } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "obsidian_place")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
-                    }
-                }
-
-                if (entity instanceof Player) {
-                    player = (Player)entity;
-                    player.getCooldowns().addCooldown(itemstack.getItem(), 20);
-                }
-
+        new DelayedTask(1) {
+            @Override
+            public void run() {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
                     try {
                         entity.getServer().getCommands().getDispatcher().execute(
-                                "execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:obsidian keep",
+                                "execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:obsidian[from_player=true] keep",
                                 entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        entity.getServer().getCommands().getDispatcher().execute(
+                                "execute as @s at @s anchored eyes run data modify block ^ ^ ^3 Owner set from entity @s UUID",
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                        );
                     } catch (CommandSyntaxException e) {
-                        
+
                     }
                 }
 
                 new DelayedTask(1) {
                     @Override
                     public void run() {
-                        Entity entity1 = entity;
-
-                        if (!entity1.level().isClientSide() && entity1.getServer() != null) {
+                        if (!entity.level().isClientSide() && entity.getServer() != null) {
                             try {
-                                entity1.getServer().getCommands().getDispatcher().execute(
-                                        "execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:obsidian keep",
-                                        entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:obsidian[from_player=true] keep",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                entity.getServer().getCommands().getDispatcher().execute(
+                                        "execute as @s at @s anchored eyes run data modify block ^ ^ ^4 Owner set from entity @s UUID",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                                );
                             } catch (CommandSyntaxException e) {
-                                
+
                             }
                         }
+
+                        new DelayedTask(1) {
+                            @Override
+                            public void run() {
+                                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                                    try {
+                                        entity.getServer().getCommands().getDispatcher().execute(
+                                                "execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:obsidian[from_player=true] keep",
+                                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                        entity.getServer().getCommands().getDispatcher().execute(
+                                                "execute as @s at @s anchored eyes run data modify block ^ ^ ^5 Owner set from entity @s UUID",
+                                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                                        );
+                                    } catch (CommandSyntaxException e) {
+
+                                    }
+                                }
+
+                                new DelayedTask(1) {
+                                    @Override
+                                    public void run() {
+                                        if (!entity.level().isClientSide() && entity.getServer() != null) {
+                                            try {
+                                                entity.getServer().getCommands().getDispatcher().execute(
+                                                        "execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:obsidian[from_player=true] keep",
+                                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                entity.getServer().getCommands().getDispatcher().execute(
+                                                        "execute as @s at @s anchored eyes run data modify block ^ ^ ^6 Owner set from entity @s UUID",
+                                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                                                );
+                                            } catch (CommandSyntaxException e) {
+
+                                            }
+                                        }
+
+                                        new DelayedTask(1) {
+                                            @Override
+                                            public void run() {
+                                                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                                                    try {
+                                                        entity.getServer().getCommands().getDispatcher().execute(
+                                                                "execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:obsidian[from_player=true] keep",
+                                                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                        entity.getServer().getCommands().getDispatcher().execute(
+                                                                "execute as @s at @s anchored eyes run data modify block ^ ^ ^7 Owner set from entity @s UUID",
+                                                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                                                        );
+                                                    } catch (CommandSyntaxException e) {
+
+                                                    }
+                                                }
+
+                                                new DelayedTask(1) {
+                                                    @Override
+                                                    public void run() {
+                                                        if (!entity.level().isClientSide() && entity.getServer() != null) {
+                                                            try {
+                                                                entity.getServer().getCommands().getDispatcher().execute(
+                                                                        "execute as @s at @s anchored eyes run setblock ^ ^ ^8 annoyingvillagers:obsidian[from_player=true] keep",
+                                                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                entity.getServer().getCommands().getDispatcher().execute(
+                                                                        "execute as @s at @s anchored eyes run data modify block ^ ^ ^8 Owner set from entity @s UUID",
+                                                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                                                                );
+                                                            } catch (CommandSyntaxException e) {
+
+                                                            }
+                                                        }
+
+                                                        new DelayedTask(1) {
+                                                            @Override
+                                                            public void run() {
+                                                                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                                                                    try {
+                                                                        entity.getServer().getCommands().getDispatcher().execute(
+                                                                                "execute as @s at @s anchored eyes run setblock ^ ^ ^9 annoyingvillagers:obsidian[from_player=true] keep",
+                                                                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                        entity.getServer().getCommands().getDispatcher().execute(
+                                                                                "execute as @s at @s anchored eyes run data modify block ^ ^ ^9 Owner set from entity @s UUID",
+                                                                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                                                                        );
+                                                                    } catch (CommandSyntaxException e) {
+
+                                                                    }
+                                                                }
+
+                                                                new DelayedTask(1) {
+                                                                    @Override
+                                                                    public void run() {
+                                                                        if (!entity.level().isClientSide() && entity.getServer() != null) {
+                                                                            try {
+                                                                                entity.getServer().getCommands().getDispatcher().execute(
+                                                                                        "execute as @s at @s anchored eyes run setblock ^ ^ ^10 annoyingvillagers:obsidian[from_player=true] keep",
+                                                                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                                entity.getServer().getCommands().getDispatcher().execute(
+                                                                                        "execute as @s at @s anchored eyes run data modify block ^ ^ ^10 Owner set from entity @s UUID",
+                                                                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                                                                                );
+                                                                            } catch (CommandSyntaxException e) {
+
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                };
+                                                            }
+                                                        };
+                                                    }
+                                                };
+
+                                            }
+                                        };
+                                    }
+                                };
+                            }
+                        };
                     }
                 };
-
-                new DelayedTask(1) {
-                    @Override
-                    public void run() {
-                        Entity entity2 = entity;
-
-                        if (!entity2.level().isClientSide() && entity2.getServer() != null) {
-                            try {
-                                entity2.getServer().getCommands().getDispatcher().execute(
-                                        "execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:obsidian keep",
-                                        entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                            } catch (CommandSyntaxException e) {
-                                
-                            }
-                        }
-                    }
-                };
-
-                new DelayedTask(1) {
-                    @Override
-                    public void run() {
-                        Entity entity3 = entity;
-
-                        if (!entity3.level().isClientSide() && entity3.getServer() != null) {
-                            try {
-                                entity3.getServer().getCommands().getDispatcher().execute(
-                                        "execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:obsidian keep",
-                                        entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                            } catch (CommandSyntaxException e) {
-                                
-                            }
-                        }
-                    }
-                };
-
-                new DelayedTask(1) {
-                    @Override
-                    public void run() {
-                        Entity entity4 = entity;
-
-                        if (!entity4.level().isClientSide() && entity4.getServer() != null) {
-                            try {
-                                entity4.getServer().getCommands().getDispatcher().execute(
-                                        "execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:obsidian keep",
-                                        entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                            } catch (CommandSyntaxException e) {
-                                
-                            }
-                        }
-                    }
-                };
-
-                new DelayedTask(1) {
-                    @Override
-                    public void run() {
-                        Entity entity5 = entity;
-
-                        if (!entity5.level().isClientSide() && entity5.getServer() != null) {
-                            try {
-                                entity5.getServer().getCommands().getDispatcher().execute(
-                                        "execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:obsidian keep",
-                                        entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                            } catch (CommandSyntaxException e) {
-                                
-                            }
-                        }
-                    }
-                };
-
-                new DelayedTask(1) {
-                    @Override
-                    public void run() {
-                        Entity entity6 = entity;
-
-                        if (!entity6.level().isClientSide() && entity6.getServer() != null) {
-                            try {
-                                entity6.getServer().getCommands().getDispatcher().execute(
-                                        "execute as @s at @s anchored eyes run setblock ^ ^ ^8 annoyingvillagers:obsidian keep",
-                                        entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                            } catch (CommandSyntaxException e) {
-                                
-                            }
-                        }
-                    }
-                };
-
-                new DelayedTask(1) {
-                    @Override
-                    public void run() {
-                        Entity entity7 = entity;
-
-                        if (!entity7.level().isClientSide() && entity7.getServer() != null) {
-                            try {
-                                entity7.getServer().getCommands().getDispatcher().execute(
-                                        "execute as @s at @s anchored eyes run setblock ^ ^ ^9 annoyingvillagers:obsidian keep",
-                                        entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                            } catch (CommandSyntaxException e) {
-                                
-                            }
-                        }
-                    }
-                };
-
-                new DelayedTask(1) {
-                    @Override
-                    public void run() {
-                        Entity entity8 = entity;
-
-                        if (!entity8.level().isClientSide() && entity8.getServer() != null) {
-                            try {
-                                entity8.getServer().getCommands().getDispatcher().execute(
-                                        "execute as @s at @s anchored eyes run setblock ^ ^ ^10 annoyingvillagers:obsidian keep",
-                                        entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                            } catch (CommandSyntaxException e) {
-                                
-                            }
-                        }
-                    }
-                };
-            } else {
-                if (entity instanceof LivingEntity) {
-                    LivingEntity livingentity2 = (LivingEntity)entity;
-
-                    itemstack1 = livingentity2.getOffhandItem();
-                } else {
-                    itemstack1 = ItemStack.EMPTY;
-                }
-
-                if (itemstack1.getItem() == AnnoyingVillagersModItems.OBSIDIAN_WEAPON.get()) {
-                    if (entity instanceof LivingEntity) {
-                        livingentity1 = (LivingEntity)entity;
-                        itemstack1 = livingentity1.getOffhandItem();
-                    } else {
-                        itemstack1 = ItemStack.EMPTY;
-                    }
-
-                    itemstack2 = itemstack1;
-                    if (itemstack2.hurt(100, RandomSource.create(), (ServerPlayer)null)) {
-                        itemstack2.shrink(1);
-                        itemstack2.setDamageValue(0);
-                    }
-
-                    if (entity instanceof Player) {
-                        player = (Player)entity;
-                        player.getCooldowns().addCooldown(itemstack.getItem(), 20);
-                    }
-
-                    if (levelaccessor instanceof Level) {
-                        level = (Level)levelaccessor;
-                        if (!level.isClientSide()) {
-                            level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "obsidian_place")), SoundSource.NEUTRAL, 1.0F, 1.0F);
-                        } else {
-                            level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "obsidian_place")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
-                        }
-                    }
-
-                    if (!entity.level().isClientSide() && entity.getServer() != null) {
-                        try {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:obsidian keep",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                        } catch (CommandSyntaxException e) {
-                            
-                        }
-                    }
-
-                    new DelayedTask(1) {
-                        @Override
-                        public void run() {
-                            Entity entity1 = entity;
-
-                            if (!entity1.level().isClientSide() && entity1.getServer() != null) {
-                                try {
-                                    entity1.getServer().getCommands().getDispatcher().execute(
-                                            "execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:obsidian keep",
-                                            entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                } catch (CommandSyntaxException e) {
-                                    
-                                }
-                            }
-                        }
-                    };
-
-                    new DelayedTask(1) {
-                        @Override
-                        public void run() {
-                            Entity entity2 = entity;
-
-                            if (!entity2.level().isClientSide() && entity2.getServer() != null) {
-                                try {
-                                    entity2.getServer().getCommands().getDispatcher().execute(
-                                            "execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:obsidian keep",
-                                            entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                } catch (CommandSyntaxException e) {
-                                    
-                                }
-                            }
-                        }
-                    };
-
-                    new DelayedTask(1) {
-                        @Override
-                        public void run() {
-                            Entity entity3 = entity;
-
-                            if (!entity3.level().isClientSide() && entity3.getServer() != null) {
-                                try {
-                                    entity3.getServer().getCommands().getDispatcher().execute(
-                                            "execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:obsidian keep",
-                                            entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                } catch (CommandSyntaxException e) {
-                                    
-                                }
-                            }
-                        }
-                    };
-
-                    new DelayedTask(1) {
-                        @Override
-                        public void run() {
-                            Entity entity4 = entity;
-
-                            if (!entity4.level().isClientSide() && entity4.getServer() != null) {
-                                try {
-                                    entity4.getServer().getCommands().getDispatcher().execute(
-                                            "execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:obsidian keep",
-                                            entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                } catch (CommandSyntaxException e) {
-                                    
-                                }
-                            }
-                        }
-                    };
-
-                    new DelayedTask(1) {
-                        @Override
-                        public void run() {
-                            Entity entity5 = entity;
-
-                            if (!entity5.level().isClientSide() && entity5.getServer() != null) {
-                                try {
-                                    entity5.getServer().getCommands().getDispatcher().execute(
-                                            "execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:obsidian keep",
-                                            entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                } catch (CommandSyntaxException e) {
-                                    
-                                }
-                            }
-                        }
-                    };
-
-                    new DelayedTask(1) {
-                        @Override
-                        public void run() {
-                            Entity entity6 = entity;
-
-                            if (!entity6.level().isClientSide() && entity6.getServer() != null) {
-                                try {
-                                    entity6.getServer().getCommands().getDispatcher().execute(
-                                            "execute as @s at @s anchored eyes run setblock ^ ^ ^8 annoyingvillagers:obsidian keep",
-                                            entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                } catch (CommandSyntaxException e) {
-                                    
-                                }
-                            }
-                        }
-                    };
-
-                    new DelayedTask(1) {
-                        @Override
-                        public void run() {
-                            Entity entity7 = entity;
-
-                            if (!entity7.level().isClientSide() && entity7.getServer() != null) {
-                                try {
-                                    entity7.getServer().getCommands().getDispatcher().execute(
-                                            "execute as @s at @s anchored eyes run setblock ^ ^ ^9 annoyingvillagers:obsidian keep",
-                                            entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                } catch (CommandSyntaxException e) {
-                                    
-                                }
-                            }
-                        }
-                    };
-
-                    new DelayedTask(1) {
-                        @Override
-                        public void run() {
-                            Entity entity8 = entity;
-
-                            if (!entity8.level().isClientSide() && entity8.getServer() != null) {
-                                try {
-                                    entity8.getServer().getCommands().getDispatcher().execute(
-                                            "execute as @s at @s anchored eyes run setblock ^ ^ ^10 annoyingvillagers:obsidian keep",
-                                            entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                } catch (CommandSyntaxException e) {
-                                    
-                                }
-                            }
-                        }
-                    };
-                }
             }
-
-        }
+        };
     }
 }

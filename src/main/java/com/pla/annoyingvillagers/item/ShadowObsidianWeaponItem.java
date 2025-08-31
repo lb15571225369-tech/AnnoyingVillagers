@@ -3,7 +3,6 @@ package com.pla.annoyingvillagers.item;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
@@ -12,7 +11,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import com.pla.annoyingvillagers.procedures.ShadowObsidianProcedure;
+import com.pla.annoyingvillagers.procedures.ShadowObsidianOnUseProcedure;
 
 public class ShadowObsidianWeaponItem extends SwordItem {
 
@@ -45,15 +44,14 @@ public class ShadowObsidianWeaponItem extends SwordItem {
     }
 
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {
-        InteractionResultHolder<ItemStack> interactionresultholder = super.use(level, player, interactionhand);
-
-        ShadowObsidianProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
-        return interactionresultholder;
+        ItemStack stack = player.getItemInHand(interactionhand);
+        ShadowObsidianOnUseProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, stack, interactionhand);
+        return InteractionResultHolder.success(stack);
     }
 
     public InteractionResult useOn(UseOnContext useoncontext) {
         super.useOn(useoncontext);
-        ShadowObsidianProcedure.execute(useoncontext.getLevel(), (double) useoncontext.getClickedPos().getX(), (double) useoncontext.getClickedPos().getY(), (double) useoncontext.getClickedPos().getZ(), useoncontext.getPlayer(), useoncontext.getItemInHand());
+        ShadowObsidianOnUseProcedure.execute(useoncontext.getLevel(), (double) useoncontext.getClickedPos().getX(), (double) useoncontext.getClickedPos().getY(), (double) useoncontext.getClickedPos().getZ(), useoncontext.getPlayer(), useoncontext.getItemInHand(), useoncontext.getHand());
         return InteractionResult.SUCCESS;
     }
 }
