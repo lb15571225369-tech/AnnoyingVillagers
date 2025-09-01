@@ -10,7 +10,6 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.item.EnderGlaiveItem;
 import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
 import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
-import com.pla.annoyingvillagers.procedures.GlaiveHerobrineOnDeathProcedure;
 import com.pla.annoyingvillagers.procedures.Herobrine7OnEntityInitialSpawnProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineTransfromProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
@@ -22,6 +21,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.DifficultyInstance;
@@ -248,7 +248,16 @@ public class GlaiveHerobrineEntity extends Monster {
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
-        GlaiveHerobrineOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        if (this.level() instanceof ServerLevel levelaccessor) {
+            ServerLevel serverlevel = (ServerLevel)levelaccessor;
+            EliteHerobrineKnockedEntity eliteHerobrineKnockedEntity = new EliteHerobrineKnockedEntity((EntityType) AnnoyingVillagersModEntities.ELITE_HEROBRINE_KNOCKED.get(), serverlevel);
+
+            eliteHerobrineKnockedEntity.moveTo(this.getX(), this.getY(), this.getZ(), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+            eliteHerobrineKnockedEntity.getPersistentData().putString("FromElite", "EnderGlaive");
+            eliteHerobrineKnockedEntity.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(eliteHerobrineKnockedEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+            this.remove(RemovalReason.KILLED);
+            levelaccessor.addFreshEntity(eliteHerobrineKnockedEntity);
+        }
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {

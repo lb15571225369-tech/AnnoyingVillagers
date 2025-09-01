@@ -60,6 +60,7 @@ public class AnnoyingVillagersModEntities {
     public static final RegistryObject<EntityType<SwordsManHerobrineEntity>> SWORDSMAN_HEROBRINE = register("swordsman_herobrine", Builder.<SwordsManHerobrineEntity>of(SwordsManHerobrineEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(SwordsManHerobrineEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<SledgehammerHerobrineEntity>> SLEDGEHAMMER_HEROBRINE = register("sledgehammer_herobrine", Builder.<SledgehammerHerobrineEntity>of(SledgehammerHerobrineEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(SledgehammerHerobrineEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<AegisHerobrineEntity>> AEGIS_HEROBRINE = register("aegis_herobrine", Builder.<AegisHerobrineEntity>of(AegisHerobrineEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(AegisHerobrineEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<EliteHerobrineKnockedEntity>> ELITE_HEROBRINE_KNOCKED = register("elite_herobrine_knocked", Builder.<EliteHerobrineKnockedEntity>of(EliteHerobrineKnockedEntity::new, MobCategory.MISC).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(EliteHerobrineKnockedEntity::new).fireImmune().sized(0.6F, 1.8F));
 
     public static final RegistryObject<EntityType<SnakeBladeEntity>> SNAKE_BLADE = register("snake_blade", Builder.<SnakeBladeEntity>of(SnakeBladeEntity::new, MobCategory.MISC).sized(0.1F, 0.1F));
     public static final RegistryObject<EntityType<SummonPortalEntity>> SUMMON_PORTAL = register("summon_portal", Builder.<SummonPortalEntity>of(SummonPortalEntity::new, MobCategory.MISC).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(SummonPortalEntity::new).fireImmune().sized(3.0F, 0.01F));
@@ -141,6 +142,7 @@ public class AnnoyingVillagersModEntities {
             SwordsManHerobrineEntity.init();
             SledgehammerHerobrineEntity.init();
             AegisHerobrineEntity.init();
+            EliteHerobrineKnockedEntity.init();
         });
     }
 
@@ -195,5 +197,6 @@ public class AnnoyingVillagersModEntities {
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.SLEDGEHAMMER_HEROBRINE.get(), SledgehammerHerobrineEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.AEGIS_HEROBRINE.get(), AegisHerobrineEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.BABY_ENDER_DRAGON.get(), BabyEnderDragonEntity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.ELITE_HEROBRINE_KNOCKED.get(), EliteHerobrineKnockedEntity.createAttributes().build());
     }
 }

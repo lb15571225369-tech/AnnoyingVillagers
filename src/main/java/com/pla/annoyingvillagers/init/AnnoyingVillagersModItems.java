@@ -131,6 +131,15 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> DEMONIAC_VOLTAGE_REAVER_HILT = AnnoyingVillagersModItems.REGISTRY.register("demoniac_voltage_reaver_hilt", () -> {
         return new DemoniacVoltageReaverHiltItem();
     });
+    public static final RegistryObject<Item> ELITE_OBSIDIAN = AnnoyingVillagersModItems.REGISTRY.register("elite_obsidian", () -> {
+        return new EliteObsidianItem();
+    });
+    public static final RegistryObject<Item> ELITE_OBSIDIAN_LONG = AnnoyingVillagersModItems.REGISTRY.register("elite_obsidian_long", () -> {
+        return new EliteObsidianLongItem();
+    });
+    public static final RegistryObject<Item> ELITE_OBSIDIAN_BIG = AnnoyingVillagersModItems.REGISTRY.register("elite_obsidian_big", () -> {
+        return new EliteObsidianBigItem();
+    });
     // ------------------------------
 
     // Gems

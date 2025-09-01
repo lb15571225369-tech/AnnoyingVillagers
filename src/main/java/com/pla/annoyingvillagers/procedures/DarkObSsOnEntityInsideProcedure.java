@@ -8,6 +8,7 @@ import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.util.ObsidianWeaponUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -56,24 +57,38 @@ public class DarkObSsOnEntityInsideProcedure {
 
             if (entity instanceof LivingEntity) {
                 livingentity1 = (LivingEntity) entity;
+                itemstack = livingentity1.getItemBySlot(EquipmentSlot.FEET);
+            } else {
+                itemstack = ItemStack.EMPTY;
+            }
+
+            if (itemstack.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
+                itemstack.shrink(1);
+                itemstack.setDamageValue(0);
+            }
+
+            if (entity instanceof LivingEntity) {
+                livingentity1 = (LivingEntity) entity;
+                itemstack = livingentity1.getItemBySlot(EquipmentSlot.LEGS);
+            } else {
+                itemstack = ItemStack.EMPTY;
+            }
+
+            if (itemstack.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
+                itemstack.shrink(1);
+                itemstack.setDamageValue(0);
+            }
+
+            if (entity instanceof LivingEntity) {
+                livingentity1 = (LivingEntity) entity;
                 itemstack = livingentity1.getItemBySlot(EquipmentSlot.CHEST);
             } else {
                 itemstack = ItemStack.EMPTY;
             }
 
-            ItemStack itemstack1 = itemstack;
-
-            if (itemstack1.hurt(1, RandomSource.create(), (ServerPlayer) null)) {
-                itemstack1.shrink(1);
-                itemstack1.setDamageValue(0);
-            }
-
-            if (!entity.level().isClientSide() && entity.getServer() != null) {
-                try {
-                    entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/combat/hit_short\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException e) {
-                    
-                }
+            if (itemstack.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
+                itemstack.shrink(1);
+                itemstack.setDamageValue(0);
             }
 
             if (entity instanceof LivingEntity) {
@@ -82,11 +97,18 @@ public class DarkObSsOnEntityInsideProcedure {
             } else {
                 itemstack = ItemStack.EMPTY;
             }
+            
+            if (itemstack.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
+                itemstack.shrink(1);
+                itemstack.setDamageValue(0);
+            }
 
-            itemstack1 = itemstack;
-            if (itemstack1.hurt(1, RandomSource.create(), (ServerPlayer) null)) {
-                itemstack1.shrink(1);
-                itemstack1.setDamageValue(0);
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
+                try {
+                    entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/combat/hit_short\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+                    
+                }
             }
 
             if (entity instanceof LivingEntity) {

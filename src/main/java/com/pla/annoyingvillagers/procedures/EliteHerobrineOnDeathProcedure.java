@@ -3,7 +3,6 @@ package com.pla.annoyingvillagers.procedures;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.util.DelayedTask;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
@@ -12,13 +11,10 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 
-public class ReaperHerobrineOnDeathProcedure {
+public class EliteHerobrineOnDeathProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, Entity entity) {
+    public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, Entity entity, String fromElite) {
         if (entity != null) {
-            if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("The clone has been destroyed, data has been transmitted to the terminal."), false);
-            }
             new DelayedTask(20) {
                 public void run() {
                     LevelAccessor levelaccessor1 = levelaccessor;
@@ -138,9 +134,27 @@ public class ReaperHerobrineOnDeathProcedure {
                     if (levelaccessor1 instanceof Level) {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
-                            itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack((ItemLike) AnnoyingVillagersModItems.ENDER_SLAYER_SCYTHE.get()));
-                            itementity.setPickUpDelay(10);
-                            level.addFreshEntity(itementity);
+                            if (fromElite.equals("EnderGlaive")) {
+                                itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack((ItemLike) AnnoyingVillagersModItems.ENDER_GLAIVE.get()));
+                                itementity.setPickUpDelay(10);
+                                level.addFreshEntity(itementity);
+                            } else if (fromElite.equals("ObsidianSledgehammer")) {
+                                itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack((ItemLike) AnnoyingVillagersModItems.OBSIDIAN_SLEDGEHAMMER.get()));
+                                itementity.setPickUpDelay(10);
+                                level.addFreshEntity(itementity);
+                            } else if (fromElite.equals("EnderSlayerScythe")) {
+                                itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack((ItemLike) AnnoyingVillagersModItems.ENDER_SLAYER_SCYTHE.get()));
+                                itementity.setPickUpDelay(10);
+                                level.addFreshEntity(itementity);
+                            } else if (fromElite.equals("EnderAegis")) {
+                                itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack((ItemLike) AnnoyingVillagersModItems.ENDER_AEGIS.get()));
+                                itementity.setPickUpDelay(10);
+                                level.addFreshEntity(itementity);
+                            } else if (fromElite.equals("DemoniacVoltageReaver")) {
+                                itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack((ItemLike) AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER_HILT.get()));
+                                itementity.setPickUpDelay(10);
+                                level.addFreshEntity(itementity);
+                            }
                         }
                     }
                 }
