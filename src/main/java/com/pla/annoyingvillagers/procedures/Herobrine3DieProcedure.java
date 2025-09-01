@@ -21,16 +21,16 @@ public class Herobrine3DieProcedure {
         if (entity != null && entity1 != null) {
             if (levelaccessor instanceof ServerLevel) {
                 ServerLevel serverlevel = (ServerLevel) levelaccessor;
-                InfectedChrisEntity beiganrandekelisientity = new InfectedChrisEntity((EntityType) AnnoyingVillagersModEntities.INJECTED_CHRIS.get(), serverlevel);
+                InfectedChrisEntity infectedChrisEntity = new InfectedChrisEntity((EntityType) AnnoyingVillagersModEntities.INJECTED_CHRIS.get(), serverlevel);
 
-                beiganrandekelisientity.moveTo(d0, d1, d2, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                if (beiganrandekelisientity instanceof Mob) {
-                    Mob mob = (Mob) beiganrandekelisientity;
+                infectedChrisEntity.moveTo(d0, d1, d2, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+                if (infectedChrisEntity instanceof Mob) {
+                    Mob mob = (Mob) infectedChrisEntity;
 
-                    mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(beiganrandekelisientity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
+                    mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(infectedChrisEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
                 }
 
-                levelaccessor.addFreshEntity(beiganrandekelisientity);
+                levelaccessor.addFreshEntity(infectedChrisEntity);
             }
 
             if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {

@@ -4,8 +4,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
-import com.pla.annoyingvillagers.procedures.Herobrine2DieProcedure;
-import com.pla.annoyingvillagers.procedures.InfectedChrisOnTickProcedure;
+import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -81,8 +80,13 @@ public class InfectedPlayerMobEntity extends PlayerMobEntity {
         String possessedBy = this.getPersistentData().getString("possessed_by");
         if (possessedBy.equals("herobrine_2")) {
             Herobrine2DieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
+        } else if (possessedBy.equals("herobrine_1")) {
+            Herobrine1OnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        } else if (possessedBy.equals("herobrine_7")) {
+            Herobrine7OnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        } else if (possessedBy.equals("shadow_herobrine")) {
+            DarkHerobrineOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
         }
-
         if (this.level() instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
             PlayerMobDeadEntity corpse =  new PlayerMobDeadEntity(AnnoyingVillagersModEntities.PLAYER_MOB_DEAD.get(), levelaccessor);
             corpse.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());

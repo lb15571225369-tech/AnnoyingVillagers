@@ -40,6 +40,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
+import se.gory_moon.player_mobs.utils.NameManager;
 
 
 public class ShadowHerobrineEntity extends Monster {
@@ -101,25 +102,21 @@ public class ShadowHerobrineEntity extends Monster {
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
-        DarkHerobrineOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
-        if (this.level() instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-            ServerLevel serverlevel = (ServerLevel)levelaccessor;
-            ShadowHerobrineDeadEntity deadEntity = new ShadowHerobrineDeadEntity((EntityType) AnnoyingVillagersModEntities.SHADOW_HEROBRINE_DEAD.get(), serverlevel);
-
-            deadEntity.moveTo(this.getX(), this.getY(), this.getZ(), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-            if (deadEntity instanceof Mob) {
-                Mob mob = (Mob)deadEntity;
-
-                mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+        if (this.level() instanceof ServerLevel serverLevel) {
+            InfectedPlayerMobEntity corpse = new InfectedPlayerMobEntity(AnnoyingVillagersModEntities.INFECTED_PLAYER_MOB.get(), serverLevel);
+            corpse.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
+            String killedName = this.getPersistentData().getString("killed_name");
+            corpse.getPersistentData().putString("possessed_by", "shadow_herobrine");
+            if (killedName.isEmpty()) {
+                killedName = String.valueOf(NameManager.INSTANCE.getRandomName());
             }
+            corpse.setUsername(killedName);
+            corpse.setCustomName(Component.literal(killedName));
+            corpse.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()),
+                    MobSpawnType.MOB_SUMMONED, null, null);
+            this.setInvisible(true);
             this.remove(RemovalReason.KILLED);
-            levelaccessor.addFreshEntity(deadEntity);
-            try {
-                deadEntity.getServer().getCommands().getDispatcher().execute(
-                        "kill @s",
-                        deadEntity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
-            }
+            serverLevel.addFreshEntity(corpse);
         }
     }
 
