@@ -60,7 +60,7 @@ public class HerobrineEyesUtil {
         eyeTextures.put("direwolf20", DEFAULT_TEXTURE);
         eyeTextures.put("dmodoomsirius", SQUARE_UP_2_TEXTURE);
         eyeTextures.put("malte0811", DEFAULT_TEXTURE);
-        eyeTextures.put("nekosune", new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/herobrine_eyes/single/default_far_down_2.png"));
+        eyeTextures.put("nekosune", new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/herobrine_eyes/single/default_far_down_1.png"));
         eyeTextures.put("neptunepink", SQUARE_UP_1_TEXTURE);
         eyeTextures.put("vadis365", VERTICAL_CLOSE_TEXTURE);
         eyeTextures.put("wyld", DEFAULT_TEXTURE);
