@@ -61,3 +61,9 @@ description='''${mod_description}'''
     versionRange="[4.1, )"
     ordering="AFTER"
     side="BOTH"
+[[dependencies.annoyingvillagers]]
+    modId="aaa_particles"
+    mandatory=true
+    versionRange="[1.4.11, )"
+    ordering="NONE"
+    side="CLIENT"

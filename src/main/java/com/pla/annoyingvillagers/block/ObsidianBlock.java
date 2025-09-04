@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 
 import com.pla.annoyingvillagers.blockentity.ObsidianBlockEntity;
-import com.pla.annoyingvillagers.blockentity.ShadowObsidianBlockEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.procedures.ObsidianWhenEntityInsideBlockOnCollisionProcedure;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -32,7 +31,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.ForgeSoundType;
-import com.pla.annoyingvillagers.procedures.ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure;
 import com.pla.annoyingvillagers.procedures.ObsidianBlockPlaceBlockProcedure;
 import org.jetbrains.annotations.Nullable;
 

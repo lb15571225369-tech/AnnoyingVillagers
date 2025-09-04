@@ -1403,15 +1403,6 @@
       "random/eat3"
     ]
   },
-  "random.explode": {
-    "category": "block",
-    "sounds": [
-      "random/explode1",
-      "random/explode2",
-      "random/explode3",
-      "random/explode4"
-    ]
-  },
   "random.fizz": {
     "category": "block",
     "sounds": [

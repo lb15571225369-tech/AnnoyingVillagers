@@ -19,11 +19,6 @@ public class GlaiveHerobrineRenderer extends HumanoidMobRenderer<GlaiveHerobrine
                 new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)),
                 new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)),
                 context.getModelManager()));
-        this.addLayer(new EyesLayer<GlaiveHerobrineEntity, HumanoidModel<GlaiveHerobrineEntity>>(this) {
-            public RenderType renderType() {
-                return RenderType.eyes(new ResourceLocation("annoyingvillagers:textures/entities/elite_herobrine_eye.png"));
-            }
-        });
     }
 
     public ResourceLocation getTextureLocation(GlaiveHerobrineEntity glaiveHerobrineEntity) {

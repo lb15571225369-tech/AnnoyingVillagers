@@ -20,11 +20,6 @@ public class ReaperHerobrineRenderer extends HumanoidMobRenderer<ReaperHerobrine
                 new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)),
                 new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)),
                 context.getModelManager()));
-        this.addLayer(new EyesLayer<ReaperHerobrineEntity, HumanoidModel<ReaperHerobrineEntity>>(this) {
-            public RenderType renderType() {
-                return RenderType.eyes(new ResourceLocation("annoyingvillagers:textures/entities/elite_herobrine_eye.png"));
-            }
-        });
     }
 
     public ResourceLocation getTextureLocation(ReaperHerobrineEntity reaperHerobrineEntity) {

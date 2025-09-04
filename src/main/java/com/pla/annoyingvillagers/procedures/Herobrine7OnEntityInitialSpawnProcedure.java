@@ -19,61 +19,9 @@ public class Herobrine7OnEntityInitialSpawnProcedure {
 
     public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) {
         if (entity != null) {
-            ServerLevel serverlevel;
-
             if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                 levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("Herobrine has arrived."), false);
             }
-
-            Player player;
-            LivingEntity livingentity;
-
-            if (entity instanceof Player) {
-                player = (Player)entity;
-                player.getInventory().armor.set(0, new ItemStack(Blocks.AIR));
-                player.getInventory().setChanged();
-            } else if (entity instanceof LivingEntity) {
-                livingentity = (LivingEntity)entity;
-                livingentity.setItemSlot(EquipmentSlot.FEET, new ItemStack(Blocks.AIR));
-            }
-
-            if (entity instanceof Player) {
-                player = (Player)entity;
-                player.getInventory().armor.set(1, new ItemStack(Blocks.AIR));
-                player.getInventory().setChanged();
-            } else if (entity instanceof LivingEntity) {
-                livingentity = (LivingEntity)entity;
-                livingentity.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Blocks.AIR));
-            }
-            new DelayedTask(1) {
-                public void run() {
-                    Entity entity1 = entity;
-
-                    if (entity1 instanceof Player) {
-                        Player player1 = (Player)entity1;
-
-                        player1.getInventory().armor.set(3, new ItemStack(Blocks.AIR));
-                        player1.getInventory().setChanged();
-                    } else if (entity1 instanceof LivingEntity) {
-                        LivingEntity livingentity1 = (LivingEntity)entity1;
-
-                        livingentity1.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Blocks.AIR));
-                    }
-
-                    if (entity instanceof Herobrine7Entity && entity instanceof LivingEntity) {
-                        LivingEntity livingentity2 = (LivingEntity)entity;
-                        ItemStack itemstack = new ItemStack(Items.ENDER_PEARL);
-
-                        itemstack.setCount(1);
-                        livingentity2.setItemInHand(InteractionHand.OFF_HAND, itemstack);
-                        if (livingentity2 instanceof Player) {
-                            Player player2 = (Player)livingentity2;
-
-                            player2.getInventory().setChanged();
-                        }
-                    }
-                }
-            };
 
             if (!entity.level().isClientSide() && entity.getServer() != null) {
                 try {

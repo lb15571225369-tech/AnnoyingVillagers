@@ -23,7 +23,9 @@
     "IndestructibleMixin",
     "GuardSkillMixin",
     "ItemCooldownsMixin",
-    "ExplosionMixin"
+    "ExplosionMixin",
+    "RaiderMixin",
+    "MixinPHumanoidRenderer"
   ],
   "client": [
   ],

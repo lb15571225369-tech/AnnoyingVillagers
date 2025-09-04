@@ -25,7 +25,7 @@ public class AnnoyingVillagersConfig {
                         "Don't set it too high, the game will become Herobrine apocalypse",
                         "Minimum: 0",
                         "Maximum: 1")
-                .defineInRange("herobrinePossessRate", 0.2, 0, 1);
+                .defineInRange("herobrinePossessRate", 0.5, 0, 1);
         PHYSIC_MOD_COMPAT = BUILDER.comment(
                         "Spawn dead body for the mob on killed",
                         "Install Physic Mod to see the effect")

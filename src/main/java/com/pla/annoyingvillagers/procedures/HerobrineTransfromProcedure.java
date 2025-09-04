@@ -3,10 +3,12 @@ package com.pla.annoyingvillagers.procedures;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.Herobrine1Entity;
 import com.pla.annoyingvillagers.entity.Herobrine2Entity;
+import com.pla.annoyingvillagers.entity.Herobrine5Entity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.registries.ForgeRegistries;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
@@ -24,14 +26,7 @@ public class HerobrineTransfromProcedure {
 
         if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("player_mobs:player_mob")) {
             if (!(world instanceof ServerLevel serverLevel)) return;
-            Entity possessed;
-            if (herobrineEntity instanceof Herobrine1Entity) {
-                possessed = new Herobrine1Entity(AnnoyingVillagersModEntities.HEROBRINE_1.get(), serverLevel);
-            } else if (herobrineEntity instanceof Herobrine2Entity) {
-                possessed = new Herobrine2Entity(AnnoyingVillagersModEntities.HEROBRINE_2.get(), serverLevel);
-            } else {
-                return;
-            }
+            Entity possessed = new Herobrine5Entity(AnnoyingVillagersModEntities.HEROBRINE_5.get(), serverLevel);
 
             possessed.moveTo(entity.getX(), entity.getY(), entity.getZ(), entity.getYRot(), entity.getXRot());
             if (entity instanceof LivingEntity victim) {
@@ -39,10 +34,14 @@ public class HerobrineTransfromProcedure {
                     possessed.getPersistentData().putString("killed_name", victim.getCustomName().getString());
                 }
 
-                possessed.setItemSlot(EquipmentSlot.HEAD, victim.getItemBySlot(EquipmentSlot.HEAD).copy());
+                if (!victim.getItemBySlot(EquipmentSlot.HEAD).equals(Items.PLAYER_HEAD)) {
+                    possessed.setItemSlot(EquipmentSlot.HEAD, victim.getItemBySlot(EquipmentSlot.HEAD).copy());
+                }
                 possessed.setItemSlot(EquipmentSlot.CHEST, victim.getItemBySlot(EquipmentSlot.CHEST).copy());
                 possessed.setItemSlot(EquipmentSlot.LEGS, victim.getItemBySlot(EquipmentSlot.LEGS).copy());
                 possessed.setItemSlot(EquipmentSlot.FEET, victim.getItemBySlot(EquipmentSlot.FEET).copy());
+                possessed.setItemSlot(EquipmentSlot.MAINHAND, victim.getItemBySlot(EquipmentSlot.MAINHAND).copy());
+                possessed.setItemSlot(EquipmentSlot.OFFHAND, victim.getItemBySlot(EquipmentSlot.OFFHAND).copy());
             }
             Mob mob = (Mob) possessed;
             mob.finalizeSpawn(serverLevel, world.getCurrentDifficultyAt(possessed.blockPosition()),
