@@ -3,6 +3,9 @@ package com.pla.annoyingvillagers.mixin;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.compat.player_mobs.ModCapabilities;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
+import com.pla.annoyingvillagers.entity.Herobrine5Entity;
+import com.pla.annoyingvillagers.entity.InfectedPlayerMobEntity;
+import com.pla.annoyingvillagers.entity.PlayerMobDeadEntity;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -91,24 +94,28 @@ public class PlayerMobMixinRemapTrue {
     @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
     private void addInventorySaveData(CompoundTag compound, CallbackInfo ci) {
         PlayerMobEntity self = (PlayerMobEntity) (Object) this;
-        self.getCapability(ModCapabilities.PLAYER_MOB_INVENTORY).ifPresent(cap -> {
-            compound.put("CustomInventory", cap.getInventory().serializeNBT());
-        });
+        if (!(self instanceof Herobrine5Entity || self instanceof InfectedPlayerMobEntity || self instanceof PlayerMobDeadEntity)) {
+            self.getCapability(ModCapabilities.PLAYER_MOB_INVENTORY).ifPresent(cap -> {
+                compound.put("CustomInventory", cap.getInventory().serializeNBT());
+            });
+        }
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
     private void readInventorySaveData(CompoundTag compound, CallbackInfo ci) {
         PlayerMobEntity self = (PlayerMobEntity) (Object) this;
-        self.getCapability(ModCapabilities.PLAYER_MOB_INVENTORY).ifPresent(cap -> {
-            cap.getInventory().deserializeNBT(compound.getCompound("CustomInventory"));
-        });
+        if (!(self instanceof Herobrine5Entity || self instanceof InfectedPlayerMobEntity || self instanceof PlayerMobDeadEntity)) {
+            self.getCapability(ModCapabilities.PLAYER_MOB_INVENTORY).ifPresent(cap -> {
+                cap.getInventory().deserializeNBT(compound.getCompound("CustomInventory"));
+            });
+            }
     }
 
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void tickingInventory(CallbackInfo ci) {
         PlayerMobEntity self = (PlayerMobEntity) (Object) this;
-        if (!self.level().isClientSide && self.tickCount % 20 == 0) {
+        if (!(self instanceof Herobrine5Entity || self instanceof InfectedPlayerMobEntity || self instanceof PlayerMobDeadEntity) && !self.level().isClientSide && self.tickCount % 20 == 0) {
             if (!self.isAlive() || self.isRemoved() || self.level() == null) return;
             List<ItemEntity> items = self.level().getEntitiesOfClass(ItemEntity.class, self.getBoundingBox().inflate(2));
             for (ItemEntity item : items) {

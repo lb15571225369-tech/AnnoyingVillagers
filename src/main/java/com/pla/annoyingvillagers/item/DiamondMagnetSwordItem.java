@@ -1,6 +1,6 @@
 package com.pla.annoyingvillagers.item;
 
-import com.pla.annoyingvillagers.procedures.DIamondMagnetSwordOnTickProcedure;
+import com.pla.annoyingvillagers.procedures.DiamondMagnetSwordOnTickProcedure;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -43,7 +43,7 @@ public class DiamondMagnetSwordItem extends SwordItem {
     public void inventoryTick(ItemStack itemstack, Level level, Entity entity, int i, boolean flag) {
         super.inventoryTick(itemstack, level, entity, i, flag);
         if (flag) {
-            DIamondMagnetSwordOnTickProcedure.execute(level, entity.getX(), entity.getY(), entity.getZ(), entity);
+            DiamondMagnetSwordOnTickProcedure.execute(level, entity.getX(), entity.getY(), entity.getZ(), entity);
         }
 
         if (entity != null) {

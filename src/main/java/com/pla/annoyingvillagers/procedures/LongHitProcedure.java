@@ -48,7 +48,7 @@ public class LongHitProcedure {
                                         "indestructible @s play \"annoyingvillagers:biped/combat/longest_hit\" 0 10",
                                         entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                             } catch (CommandSyntaxException e) {
-                                
+
                             }
                         }
                     } else if (d0 >= 30.0D && !entity.level().isClientSide() && entity.getServer() != null) {
@@ -57,7 +57,7 @@ public class LongHitProcedure {
                                     "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10",
                                     entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                         } catch (CommandSyntaxException e) {
-                            
+
                         }
                     }
                 }

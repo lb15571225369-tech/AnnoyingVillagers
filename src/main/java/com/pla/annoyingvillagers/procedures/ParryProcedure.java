@@ -101,7 +101,7 @@ public class ParryProcedure {
                                                         "execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100",
                                                         entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                             } catch (CommandSyntaxException e) {
-                                                
+
                                             }
                                         }
 
@@ -112,7 +112,7 @@ public class ParryProcedure {
                                                         "impactful @s shake 15 5 6",
                                                         entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                             } catch (CommandSyntaxException e) {
-                                                
+
                                             }
                                         }
 
@@ -143,7 +143,7 @@ public class ParryProcedure {
                                                             "execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100",
                                                             entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                 } catch (CommandSyntaxException e) {
-                                                    
+
                                                 }
                                             }
 
@@ -156,7 +156,7 @@ public class ParryProcedure {
                                                             "impactful @s shake 15 5 6",
                                                             entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                 } catch (CommandSyntaxException e) {
-                                                    
+
                                                 }
                                             }
                                         }
@@ -181,7 +181,7 @@ public class ParryProcedure {
                                                                 "indestructible @s play \"epicfight:biped/skill/guard_break1\" 0 10",
                                                                 entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                     } catch (CommandSyntaxException e) {
-                                                        
+
                                                     }
                                                 }
                                             }
@@ -230,7 +230,7 @@ public class ParryProcedure {
                                                 "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
                                                 entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                     } catch (CommandSyntaxException e) {
-                                        
+
                                     }
                                 }
                                 if (entity1 instanceof Player && !entity1.level().isClientSide() && entity1.getServer() != null) {
@@ -239,7 +239,7 @@ public class ParryProcedure {
                                                 "impactful @s shake 15 5 6",
                                                 entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                     } catch (CommandSyntaxException e) {
-                                        
+
                                     }
                                 }
                             }
@@ -254,7 +254,7 @@ public class ParryProcedure {
                                             "effect give @s cgm:blinded 1 1 true",
                                             entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                 } catch (CommandSyntaxException e) {
-                                    
+
                                 }
                             }
 
@@ -271,7 +271,7 @@ public class ParryProcedure {
                                                             "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
                                                             entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                 } catch (CommandSyntaxException e) {
-                                                    
+
                                                 }
                                             }
 
@@ -282,7 +282,7 @@ public class ParryProcedure {
                                                             "indestructible @s play \"annoyingvillagers:biped/combat/guard_break_attack\" 0 10",
                                                             entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                 } catch (CommandSyntaxException e) {
-                                                    
+
                                                 }
                                             }
 
@@ -302,7 +302,7 @@ public class ParryProcedure {
                                                         "indestructible @s play \"epicfight:biped/skill/guard_break1\" 0 10",
                                                         entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                             } catch (CommandSyntaxException e) {
-                                                
+
                                             }
                                         }
                                     }
@@ -329,7 +329,7 @@ public class ParryProcedure {
                                             "effect give @s cgm:blinded 1 1 true",
                                             entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                 } catch (CommandSyntaxException e) {
-                                    
+
                                 }
                             }
 
@@ -345,7 +345,7 @@ public class ParryProcedure {
                                                         "indestructible @s play \"epicfight:biped/skill/guard_break1\" 0 10",
                                                         entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                             } catch (CommandSyntaxException e) {
-                                                
+
                                             }
                                         }
                                     }
@@ -364,7 +364,7 @@ public class ParryProcedure {
                                         "particle epicfight:air_burst ~ ~1.5 ~ 0 0 0 8 1",
                                         entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                             } catch (CommandSyntaxException e) {
-                                
+
                             }
                         }
 
@@ -375,7 +375,7 @@ public class ParryProcedure {
                                             "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
                                             entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                 } catch (CommandSyntaxException e) {
-                                    
+
                                 }
                             }
 
@@ -396,7 +396,7 @@ public class ParryProcedure {
                                             "impactful @s shake 15 5 6",
                                             entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                 } catch (CommandSyntaxException e) {
-                                    
+
                                 }
                             }
                         } else if (!entity.level().isClientSide() && entity.getServer() != null) {
@@ -405,7 +405,7 @@ public class ParryProcedure {
                                         "execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100",
                                         entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                             } catch (CommandSyntaxException e) {
-                                
+
                             }
                         }
 
@@ -419,7 +419,7 @@ public class ParryProcedure {
                                             "effect give @s cgm:blinded 1 1 true",
                                             entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                 } catch (CommandSyntaxException e) {
-                                    
+
                                 }
                             }
                         }
@@ -436,7 +436,7 @@ public class ParryProcedure {
                                                     "indestructible @s play \"annoyingvillagers:biped/combat/guard_break_attack\" 0 10",
                                                     entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                         } catch (CommandSyntaxException e) {
-                                            
+
                                         }
                                     }
 
@@ -447,7 +447,7 @@ public class ParryProcedure {
                                                     "indestructible @s play \"annoyingvillagers:biped/combat/guard_break_attack\" 0 10",
                                                     entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                         } catch (CommandSyntaxException e) {
-                                            
+
                                         }
                                     }
                                 }

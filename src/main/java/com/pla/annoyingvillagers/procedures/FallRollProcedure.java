@@ -32,7 +32,7 @@ public class FallRollProcedure {
                     try {
                         entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/skill/roll_forward\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                     } catch (CommandSyntaxException e) {
-                        
+
                     }
                 }
 

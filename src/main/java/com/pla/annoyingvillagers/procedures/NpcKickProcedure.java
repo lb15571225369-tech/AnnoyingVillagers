@@ -83,7 +83,7 @@ public class NpcKickProcedure {
                                                                 "indestructible @s play \"annoyingvillagers:biped/combat/kick_1\" 0 1",
                                                                 entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                     } catch (CommandSyntaxException e) {
-                                                        
+
                                                     }
                                                 }
                                             }
@@ -103,7 +103,7 @@ public class NpcKickProcedure {
                                                                 "indestructible @s play \"annoyingvillagers:biped/combat/kick_2\" 0 1",
                                                                 entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                     } catch (CommandSyntaxException e) {
-                                                        
+
                                                     }
                                                 }
                                             }
@@ -123,7 +123,7 @@ public class NpcKickProcedure {
                                                                 "indestructible @s play \"annoyingvillagers:biped/combat/kick_3\" 0 1",
                                                                 entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                     } catch (CommandSyntaxException e) {
-                                                        
+
                                                     }
                                                 }
                                             }

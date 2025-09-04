@@ -118,7 +118,7 @@ public class GuardBreakProcedure {
 
                         entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                     } catch (CommandSyntaxException e) {
-                        
+
                     }
                 }
 
@@ -180,7 +180,7 @@ public class GuardBreakProcedure {
                                 try {
                                     entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/skill/grasping_spire_second\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                 } catch (CommandSyntaxException e) {
-                                    
+
                                 }
                             }
                         }

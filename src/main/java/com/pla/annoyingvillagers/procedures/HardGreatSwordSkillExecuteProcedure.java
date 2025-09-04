@@ -77,7 +77,7 @@ public class HardGreatSwordSkillExecuteProcedure {
 
                                 entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                             } catch (CommandSyntaxException e) {
-                                
+
                             }
                         }
                     }
@@ -98,7 +98,7 @@ public class HardGreatSwordSkillExecuteProcedure {
 
                                 entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                             } catch (CommandSyntaxException e) {
-                                
+
                             }
                         }
                     }

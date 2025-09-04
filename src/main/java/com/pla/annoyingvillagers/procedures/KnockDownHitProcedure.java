@@ -58,7 +58,7 @@ public class KnockDownHitProcedure {
                                         try {
                                             entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/knockdown_right\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                         } catch (CommandSyntaxException e) {
-                                            
+
                                         }
                                     }
                                 } else if (Math.random() <= 0.4D) {
@@ -66,14 +66,14 @@ public class KnockDownHitProcedure {
                                         try {
                                             entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/knockdown_left\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                         } catch (CommandSyntaxException e) {
-                                            
+
                                         }
                                     }
                                 } else if (!entity.level().isClientSide() && entity.getServer() != null) {
                                     try {
                                         entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/knockdown_forward\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                     } catch (CommandSyntaxException e) {
-                                        
+
                                     }
                                 }
                             }
@@ -89,7 +89,7 @@ public class KnockDownHitProcedure {
                                     try {
                                         entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/knockdown_right\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                     } catch (CommandSyntaxException e) {
-                                        
+
                                     }
                                 }
                             } else if (Math.random() <= 0.4D) {
@@ -97,14 +97,14 @@ public class KnockDownHitProcedure {
                                     try {
                                         entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/knockdown_left\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                     } catch (CommandSyntaxException e) {
-                                        
+
                                     }
                                 }
                             } else if (!entity.level().isClientSide() && entity.getServer() != null) {
                                 try {
                                     entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/knockdown_forward\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                 } catch (CommandSyntaxException e) {
-                                    
+
                                 }
                             }
                         }

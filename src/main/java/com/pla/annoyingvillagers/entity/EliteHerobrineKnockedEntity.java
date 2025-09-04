@@ -32,8 +32,6 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Random;
-
 public class EliteHerobrineKnockedEntity extends PathfinderMob {
     private boolean allowInternalDamage = false;
 

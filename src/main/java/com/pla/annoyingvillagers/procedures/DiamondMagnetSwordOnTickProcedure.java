@@ -12,7 +12,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public class DIamondMagnetSwordOnTickProcedure {
+public class DiamondMagnetSwordOnTickProcedure {
     public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) {
         if (entity != null) {
             Vec3 vec3 = new Vec3(d0, d1, d2);

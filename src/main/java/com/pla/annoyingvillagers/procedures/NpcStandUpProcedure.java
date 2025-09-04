@@ -6,9 +6,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.TickEvent.ServerTickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -55,7 +52,7 @@ public class NpcStandUpProcedure {
                                                     "indestructible @s play \"epicfight:biped/skill/knockdown_wakeup_left\" 0 1",
                                                     entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                         } catch (CommandSyntaxException e) {
-                                            
+
                                         }
                                     }
                                 } else {
@@ -66,7 +63,7 @@ public class NpcStandUpProcedure {
                                                     "indestructible @s play \"epicfight:biped/skill/knockdown_wakeup_right\" 0 1",
                                                     entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                         } catch (CommandSyntaxException e) {
-                                            
+
                                         }
                                     }
                                 }

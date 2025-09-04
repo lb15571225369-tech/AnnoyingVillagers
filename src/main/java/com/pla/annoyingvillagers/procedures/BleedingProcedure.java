@@ -76,11 +76,6 @@ public class BleedingProcedure {
                 }
             }
 
-            if (d3 >= 50.0D && entity instanceof LivingEntity) {
-                livingentity = (LivingEntity)entity;
-                livingentity.setHealth(0.0F);
-            }
-
             if (entity instanceof Mob) {
                 Mob mob = (Mob)entity;
 
@@ -557,7 +552,7 @@ public class BleedingProcedure {
                                                                 try {
                                                                     entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/eat_offhand\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                 } catch (CommandSyntaxException e) {
-                                                                    
+
                                                                 }
                                                             }
 
@@ -582,7 +577,7 @@ public class BleedingProcedure {
                                                                         try {
                                                                             entity3.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                         } catch (CommandSyntaxException e) {
-                                                                            
+
                                                                         }
                                                                     }
 
@@ -592,7 +587,7 @@ public class BleedingProcedure {
                                                                             try {
                                                                                 entity3.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/eat_offhand\" 0 1", entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                             } catch (CommandSyntaxException e) {
-                                                                                
+
                                                                             }
                                                                         }
                                                                     }
@@ -618,7 +613,7 @@ public class BleedingProcedure {
                                                                                 try {
                                                                                     entity4.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                 } catch (CommandSyntaxException e) {
-                                                                                    
+
                                                                                 }
                                                                             }
 
@@ -650,7 +645,7 @@ public class BleedingProcedure {
                                                                                     try {
                                                                                         entity4.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/eat_offhand\" 0 1", entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                     } catch (CommandSyntaxException e) {
-                                                                                        
+
                                                                                     }
                                                                                 }
                                                                             }
@@ -677,7 +672,7 @@ public class BleedingProcedure {
                                                                                             entity5.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                         } catch (
                                                                                                 CommandSyntaxException e) {
-                                                                                            
+
                                                                                         }
                                                                                     }
 
@@ -688,7 +683,7 @@ public class BleedingProcedure {
                                                                                                 entity5.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/eat_offhand\" 0 1", entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                             } catch (
                                                                                                     CommandSyntaxException e) {
-                                                                                                
+
                                                                                             }
                                                                                         }
                                                                                     }
@@ -715,7 +710,7 @@ public class BleedingProcedure {
                                                                                                     entity6.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                 } catch (
                                                                                                         CommandSyntaxException e) {
-                                                                                                    
+
                                                                                                 }
                                                                                             }
 
@@ -726,7 +721,7 @@ public class BleedingProcedure {
                                                                                                         entity6.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/eat_offhand\" 0 1", entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                     } catch (
                                                                                                             CommandSyntaxException e) {
-                                                                                                        
+
                                                                                                     }
                                                                                                 }
                                                                                             }
@@ -753,7 +748,7 @@ public class BleedingProcedure {
                                                                                                             entity7.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                         } catch (
                                                                                                                 CommandSyntaxException e) {
-                                                                                                            
+
                                                                                                         }
                                                                                                     }
 
@@ -764,7 +759,7 @@ public class BleedingProcedure {
                                                                                                                 entity7.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/eat_offhand\" 0 1", entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                             } catch (
                                                                                                                     CommandSyntaxException e) {
-                                                                                                                
+
                                                                                                             }
                                                                                                         }
                                                                                                     }
@@ -791,7 +786,7 @@ public class BleedingProcedure {
                                                                                                                     entity8.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                                 } catch (
                                                                                                                         CommandSyntaxException e) {
-                                                                                                                    
+
                                                                                                                 }
                                                                                                             }
 
@@ -801,7 +796,7 @@ public class BleedingProcedure {
                                                                                                                     entity8.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/eat_offhand\" 0 1", entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                                 } catch (
                                                                                                                         CommandSyntaxException e) {
-                                                                                                                    
+
                                                                                                                 }
                                                                                                             }
 
@@ -827,7 +822,7 @@ public class BleedingProcedure {
                                                                                                                             entity9.getServer().getCommands().getDispatcher().execute("execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10", entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                                         } catch (
                                                                                                                                 CommandSyntaxException e) {
-                                                                                                                            
+
                                                                                                                         }
                                                                                                                     }
 
@@ -838,7 +833,7 @@ public class BleedingProcedure {
                                                                                                                                 entity9.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/eat_offhand\" 0 1", entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                                             } catch (
                                                                                                                                     CommandSyntaxException e) {
-                                                                                                                                
+
                                                                                                                             }
                                                                                                                         }
                                                                                                                     }
@@ -954,7 +949,7 @@ public class BleedingProcedure {
                                                                 try {
                                                                     entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/drink_offhand\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                 } catch (CommandSyntaxException e) {
-                                                                    
+
                                                                 }
                                                             }
 
@@ -988,7 +983,7 @@ public class BleedingProcedure {
                                                                             try {
                                                                                 entity3.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/drink_offhand\" 0 1", entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                             } catch (CommandSyntaxException e) {
-                                                                                
+
                                                                             }
                                                                         }
                                                                     }
@@ -1037,7 +1032,7 @@ public class BleedingProcedure {
                                                                                     try {
                                                                                         entity4.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/drink_offhand\" 0 1", entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                     } catch (CommandSyntaxException e) {
-                                                                                        
+
                                                                                     }
                                                                                 }
                                                                             }
@@ -1065,7 +1060,7 @@ public class BleedingProcedure {
                                                                                                 entity5.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/drink_offhand\" 0 1", entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                             } catch (
                                                                                                     CommandSyntaxException e) {
-                                                                                                
+
                                                                                             }
                                                                                         }
                                                                                     }
@@ -1093,7 +1088,7 @@ public class BleedingProcedure {
                                                                                                         entity6.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/drink_offhand\" 0 1", entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                     } catch (
                                                                                                             CommandSyntaxException e) {
-                                                                                                        
+
                                                                                                     }
                                                                                                 }
                                                                                             }
@@ -1121,7 +1116,7 @@ public class BleedingProcedure {
                                                                                                                 entity7.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/drink_offhand\" 0 1", entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                             } catch (
                                                                                                                     CommandSyntaxException e) {
-                                                                                                                
+
                                                                                                             }
                                                                                                         }
                                                                                                     }
@@ -1147,7 +1142,7 @@ public class BleedingProcedure {
                                                                                                                     entity8.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/drink_offhand\" 0 1", entity8.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                                 } catch (
                                                                                                                         CommandSyntaxException e) {
-                                                                                                                    
+
                                                                                                                 }
                                                                                                             }
 
@@ -1174,7 +1169,7 @@ public class BleedingProcedure {
                                                                                                                                 entity9.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/living/drink_offhand\" 0 1", entity9.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                                                                                                             } catch (
                                                                                                                                     CommandSyntaxException e) {
-                                                                                                                                
+
                                                                                                                             }
                                                                                                                         }
                                                                                                                     }

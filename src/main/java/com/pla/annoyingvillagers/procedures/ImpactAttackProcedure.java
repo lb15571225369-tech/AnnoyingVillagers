@@ -3,7 +3,6 @@ package com.pla.annoyingvillagers.procedures;
 import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
@@ -54,7 +53,7 @@ public class ImpactAttackProcedure {
                                 "effect give @s annoyingvillagers:electify 5 0 true",
                                 entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                     } catch (CommandSyntaxException e) {
-                        
+
                     }
                 }
             }

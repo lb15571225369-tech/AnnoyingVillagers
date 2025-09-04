@@ -118,7 +118,7 @@ public class ProjectiveProcedure {
                                     "execute at @s run particle annoyingvillagers:spark ~ ~ ~ 0 0 0 0.1 10",
                                     entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                         } catch (CommandSyntaxException e) {
-                            
+
                         }
                     }
                 } else {

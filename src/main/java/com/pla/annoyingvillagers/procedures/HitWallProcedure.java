@@ -36,7 +36,7 @@ public class HitWallProcedure {
                                 "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10",
                                 entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                     } catch (CommandSyntaxException e) {
-                        
+
                     }
                 }
 
@@ -47,7 +47,7 @@ public class HitWallProcedure {
                                 "impactful @s shake 20 5 6",
                                 entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                     } catch (CommandSyntaxException e) {
-                        
+
                     }
                 }
             } else if (damagesource.is(DamageTypes.FALL)) {
@@ -57,7 +57,7 @@ public class HitWallProcedure {
                                 "particle minecraft:campfire_signal_smoke ~ ~ ~ 0 0 0 0.02 5",
                                 entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                     } catch (CommandSyntaxException e) {
-                        
+
                     }
                 }
 
@@ -72,7 +72,7 @@ public class HitWallProcedure {
                                     "impactful @s shake 20 5 6",
                                     entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                         } catch (CommandSyntaxException e) {
-                            
+
                         }
                     }
                 }

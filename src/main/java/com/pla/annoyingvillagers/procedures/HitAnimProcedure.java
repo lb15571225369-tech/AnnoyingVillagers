@@ -43,7 +43,7 @@ public class HitAnimProcedure {
                                     "indestructible @s play \"annoyingvillagers:biped/combat/hit_left\" 0 1",
                                     entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                         } catch (CommandSyntaxException e) {
-                            
+
                         }
                     }
                 } else if (dynamicanimation == AVAnimations.HIT_LEFT) {
@@ -53,7 +53,7 @@ public class HitAnimProcedure {
                                     "indestructible @s play \"annoyingvillagers:biped/combat/hit_right\" 0 1",
                                     entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                         } catch (CommandSyntaxException e) {
-                            
+
                         }
                     }
                 } else if (dynamicanimation == AVAnimations.HIT_RIGHT && !entity.level().isClientSide() && entity.getServer() != null) {
@@ -62,7 +62,7 @@ public class HitAnimProcedure {
                                 "indestructible @s play \"annoyingvillagers:biped/combat/hit_right\" 0 1",
                                 entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                     } catch (CommandSyntaxException e) {
-                        
+
                     }
                 }
             }

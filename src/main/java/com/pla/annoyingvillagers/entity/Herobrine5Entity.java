@@ -141,6 +141,11 @@ public class Herobrine5Entity extends PlayerMobEntity {
         Herobrine3OnTickProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
+    @Override
+    public void tick() {
+        super.tick();
+    }
+
     public void playerTouch(Player player) {
         super.playerTouch(player);
         Herobrine3OnTouchProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);

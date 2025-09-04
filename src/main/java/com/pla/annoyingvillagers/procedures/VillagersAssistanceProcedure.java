@@ -57,7 +57,7 @@ public class VillagersAssistanceProcedure {
                                             entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                                     );
                                 } catch (CommandSyntaxException e) {
-                                    
+
                                 }
                             }
 
@@ -95,7 +95,7 @@ public class VillagersAssistanceProcedure {
                                             entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                                     );
                                 } catch (CommandSyntaxException e) {
-                                    
+
                                 }
                             }
                         }
