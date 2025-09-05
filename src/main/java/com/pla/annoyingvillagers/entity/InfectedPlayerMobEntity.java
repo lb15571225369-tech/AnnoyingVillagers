@@ -7,7 +7,6 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -20,7 +19,10 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
@@ -78,9 +80,9 @@ public class InfectedPlayerMobEntity extends PlayerMobEntity {
     public void die(DamageSource damagesource) {
         super.die(damagesource);
         String possessedBy = this.getPersistentData().getString("possessed_by");
-        if (possessedBy.equals("herobrine_2")) {
+        if (possessedBy.equals("herobrine_2") || possessedBy.equals("herobrine_6")) {
             Herobrine2DieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
-        } else if (possessedBy.equals("herobrine_1")) {
+        } else if (possessedBy.equals("herobrine_1") || possessedBy.equals("herobrine_5")) {
             Herobrine1OnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
         } else if (possessedBy.equals("herobrine_7")) {
             Herobrine7OnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
@@ -107,6 +109,47 @@ public class InfectedPlayerMobEntity extends PlayerMobEntity {
                     }
                 }
             };
+        }
+
+        LevelAccessor levelaccessor1 = this.level();
+        ItemEntity itementity;
+        LivingEntity livingentity = (LivingEntity)this;
+        ItemStack itemstack;
+
+        if (levelaccessor1 instanceof Level level) {
+            if (!level.isClientSide()) {
+                itemstack = livingentity.getItemBySlot(EquipmentSlot.FEET);
+                itementity = new ItemEntity(level, this.getX(), this.getY() + 1.0D, this.getZ(), itemstack);
+                itementity.setPickUpDelay(10);
+                level.addFreshEntity(itementity);
+            }
+        }
+
+        if (levelaccessor1 instanceof Level level) {
+            if (!level.isClientSide()) {
+                itemstack = livingentity.getItemBySlot(EquipmentSlot.LEGS);
+                itementity = new ItemEntity(level,  this.getX(), this.getY() + 1.0D, this.getZ(), itemstack);
+                itementity.setPickUpDelay(10);
+                level.addFreshEntity(itementity);
+            }
+        }
+
+        if (levelaccessor1 instanceof Level level) {
+            if (!level.isClientSide()) {
+                itemstack = livingentity.getItemBySlot(EquipmentSlot.CHEST);
+                itementity = new ItemEntity(level,  this.getX(), this.getY() + 1.0D, this.getZ(), itemstack);
+                itementity.setPickUpDelay(10);
+                level.addFreshEntity(itementity);
+            }
+        }
+
+        if (levelaccessor1 instanceof Level level) {
+            if (!level.isClientSide()) {
+                itemstack = livingentity.getItemBySlot(EquipmentSlot.HEAD);
+                itementity = new ItemEntity(level, this.getX(), this.getY() + 1.0D, this.getZ(), itemstack);
+                itementity.setPickUpDelay(10);
+                level.addFreshEntity(itementity);
+            }
         }
     }
 

@@ -209,12 +209,8 @@ public class PlayerNpcDeadProcedure {
                         Level level;
                         ItemEntity itementity;
 
-                        if (Math.random() <= 0.7D) {
+                        if (!entity.getPersistentData().getBoolean("die_by_possess")) {
                             levelaccessor1 = levelaccessor;
-                            ItemEntity itementity1;
-                            double d3;
-                            double d4;
-                            double d5;
                             LivingEntity livingentity = (LivingEntity)entity;
                             ItemStack itemstack;
 

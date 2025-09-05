@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.mixin;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.compat.player_mobs.ModCapabilities;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.Herobrine5Entity;
@@ -12,7 +11,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
@@ -108,7 +106,7 @@ public class PlayerMobMixinRemapTrue {
             self.getCapability(ModCapabilities.PLAYER_MOB_INVENTORY).ifPresent(cap -> {
                 cap.getInventory().deserializeNBT(compound.getCompound("CustomInventory"));
             });
-            }
+        }
     }
 
 

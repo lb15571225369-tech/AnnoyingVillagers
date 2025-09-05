@@ -6,7 +6,6 @@ import com.pla.annoyingvillagers.util.HerobrineEyesUtil;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.layers.EyesLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
@@ -20,15 +19,17 @@ import yesman.epicfight.client.renderer.patched.layer.ModelRenderLayer;
 import yesman.epicfight.client.mesh.HumanoidMesh;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
-public class PlayerMobEyeLayer<E extends LivingEntity, AM extends HumanoidMesh>
+public class PlayerMobEpicFightOverlayLayer<E extends LivingEntity, AM extends HumanoidMesh>
         extends ModelRenderLayer<E, LivingEntityPatch<E>, HumanoidModel<E>, RenderLayer<E, HumanoidModel<E>>, AM> {
 
-    public PlayerMobEyeLayer(MeshProvider<AM> mesh) { super(mesh); }
+    public PlayerMobEpicFightOverlayLayer(MeshProvider<AM> mesh) { super(mesh); }
 
     private ResourceLocation pickTexture(E e) {
         if (EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_5"))) {
             String name = e.hasCustomName() ? e.getCustomName().getString() : e.getName().getString();
             return HerobrineEyesUtil.getHerobrineEyesTexture(name);
+        } else if (EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "infected_player_mob"))) {
+            return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/player_mob_blood.png");
         }
         return null;
     }
@@ -40,7 +41,7 @@ public class PlayerMobEyeLayer<E extends LivingEntity, AM extends HumanoidMesh>
 
         ((AnimatedMesh)this.mesh.get()).draw(
                 poseStack, multiBufferSource, RenderType.eyes(tex),
-                0x00F000F0,
+                i,
                 1f,1f,1f,1f, OverlayTexture.NO_OVERLAY,
                 eLivingEntityPatch.getArmature(), openMatrix4fs
         );

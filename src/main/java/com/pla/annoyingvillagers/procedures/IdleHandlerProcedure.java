@@ -14,6 +14,10 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
+import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.animation.types.LongHitAnimation;
+import yesman.epicfight.api.animation.types.MovementAnimation;
+import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
@@ -119,54 +123,74 @@ public class IdleHandlerProcedure {
                 }
             }
             case PLAY_ANIMATION -> {
-                mob.getNavigation().stop();
-                mob.setDeltaMovement(0, 0, 0);
-                mob.setYRot(mob.getYHeadRot());
-                if (!data.contains("av_idle_animate_backup_main_hand")) {
-                    ItemStack held = mob.getMainHandItem();
-                    if (!held.isEmpty()) {
-                        CompoundTag tag = new CompoundTag();
-                        held.save(tag);
-                        data.putString("av_idle_animate_backup_main_hand", tag.toString());
-                    }
-                    IdleAnimation idleAnimation = IdleAnimation.values()[RANDOM.nextInt(IdleAnimation.values().length)];
-                    new DelayedTask(40) {
-                        @Override
-                        public void run() {
-                            TaskScheduler.schedule(() -> {
-                                if (mob == null || !mob.isAlive() || mob.isRemoved() || ((LivingEntity) mob).isDeadOrDying()) return;
-                                new AnimationSheduler(mob).run(idleAnimation, false, false);
-                                TaskScheduler.schedule(() -> {
-                                    if (mob == null || !mob.isAlive() || mob.isRemoved() || ((LivingEntity) mob).isDeadOrDying()) return;
-                                    new AnimationSheduler(mob).run(idleAnimation, false, false);
-                                    TaskScheduler.schedule(() -> {
-                                        if (mob == null || !mob.isAlive() || mob.isRemoved() || ((LivingEntity) mob).isDeadOrDying()) return;
-                                        new AnimationSheduler(mob).run(idleAnimation, false, false);
-                                        TaskScheduler.schedule(() -> {
-                                            if (mob == null || !mob.isAlive() || mob.isRemoved() || ((LivingEntity) mob).isDeadOrDying()) return;
-                                            new AnimationSheduler(mob).run(idleAnimation, false, false);
-                                            TaskScheduler.schedule(() -> {
-                                                if (mob == null || !mob.isAlive() || mob.isRemoved() || ((LivingEntity) mob).isDeadOrDying()) return;
-                                                new AnimationSheduler(mob).run(idleAnimation, false, false);
-                                                TaskScheduler.schedule(() -> {
-                                                    if (mob == null || !mob.isAlive() || mob.isRemoved() || ((LivingEntity) mob).isDeadOrDying()) return;
-                                                    new AnimationSheduler(mob).run(idleAnimation, false, false);
-                                                    TaskScheduler.schedule(() -> {
-                                                        if (mob == null || !mob.isAlive() || mob.isRemoved() || ((LivingEntity) mob).isDeadOrDying()) return;
-                                                        new AnimationSheduler(mob).run(idleAnimation, false, false);
-                                                        TaskScheduler.schedule(() -> {
-                                                            if (mob == null || !mob.isAlive() || mob.isRemoved() || ((LivingEntity) mob).isDeadOrDying()) return;
-                                                            new AnimationSheduler(mob).run(idleAnimation, false, true);
-                                                        }, 5);
-                                                    }, 5);
-                                                }, 5);
-                                            }, 5);
-                                        }, 5);
-                                    }, 5);
-                                }, 5);
-                            }, 5);
+                final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(mob, LivingEntityPatch.class);
+
+                if (livingentitypatch != null) {
+                    DynamicAnimation dynamicanimation = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
+                    if (dynamicanimation instanceof StaticAnimation) {
+                        if (!data.contains("av_idle_animate_backup_main_hand")) {
+                            ItemStack held = mob.getMainHandItem();
+                            if (!held.isEmpty()) {
+                                CompoundTag tag = new CompoundTag();
+                                held.save(tag);
+                                data.putString("av_idle_animate_backup_main_hand", tag.toString());
+                            }
+                            IdleAnimation idleAnimation = IdleAnimation.values()[RANDOM.nextInt(IdleAnimation.values().length)];
+                            if (!mob.isAlive() || mob.isRemoved() || mob.isDeadOrDying()) return;
+                            mob.getNavigation().stop();
+                            mob.setDeltaMovement(0, 0, 0);
+                            mob.setYRot(mob.getYHeadRot());
+                            new AnimationSheduler(mob).run(idleAnimation, false, true);
                         }
-                    };
+                    }
+//                mob.getNavigation().stop();
+//                mob.setDeltaMovement(0, 0, 0);
+//                mob.setYRot(mob.getYHeadRot());
+//                if (!data.contains("av_idle_animate_backup_main_hand")) {
+//                    ItemStack held = mob.getMainHandItem();
+//                    if (!held.isEmpty()) {
+//                        CompoundTag tag = new CompoundTag();
+//                        held.save(tag);
+//                        data.putString("av_idle_animate_backup_main_hand", tag.toString());
+//                    }
+//                    IdleAnimation idleAnimation = IdleAnimation.values()[RANDOM.nextInt(IdleAnimation.values().length)];
+//                    new DelayedTask(40) {
+//                        @Override
+//                        public void run() {
+//                            TaskScheduler.schedule(() -> {
+//                                if (mob == null || !mob.isAlive() || mob.isRemoved() || ((LivingEntity) mob).isDeadOrDying()) return;
+//                                new AnimationSheduler(mob).run(idleAnimation, false, false);
+//                                TaskScheduler.schedule(() -> {
+//                                    if (mob == null || !mob.isAlive() || mob.isRemoved() || ((LivingEntity) mob).isDeadOrDying()) return;
+//                                    new AnimationSheduler(mob).run(idleAnimation, false, false);
+//                                    TaskScheduler.schedule(() -> {
+//                                        if (mob == null || !mob.isAlive() || mob.isRemoved() || ((LivingEntity) mob).isDeadOrDying()) return;
+//                                        new AnimationSheduler(mob).run(idleAnimation, false, false);
+//                                        TaskScheduler.schedule(() -> {
+//                                            if (mob == null || !mob.isAlive() || mob.isRemoved() || ((LivingEntity) mob).isDeadOrDying()) return;
+//                                            new AnimationSheduler(mob).run(idleAnimation, false, false);
+//                                            TaskScheduler.schedule(() -> {
+//                                                if (mob == null || !mob.isAlive() || mob.isRemoved() || ((LivingEntity) mob).isDeadOrDying()) return;
+//                                                new AnimationSheduler(mob).run(idleAnimation, false, false);
+//                                                TaskScheduler.schedule(() -> {
+//                                                    if (mob == null || !mob.isAlive() || mob.isRemoved() || ((LivingEntity) mob).isDeadOrDying()) return;
+//                                                    new AnimationSheduler(mob).run(idleAnimation, false, false);
+//                                                    TaskScheduler.schedule(() -> {
+//                                                        if (mob == null || !mob.isAlive() || mob.isRemoved() || ((LivingEntity) mob).isDeadOrDying()) return;
+//                                                        new AnimationSheduler(mob).run(idleAnimation, false, false);
+//                                                        TaskScheduler.schedule(() -> {
+//                                                            if (mob == null || !mob.isAlive() || mob.isRemoved() || ((LivingEntity) mob).isDeadOrDying()) return;
+//                                                            new AnimationSheduler(mob).run(idleAnimation, false, true);
+//                                                        }, 5);
+//                                                    }, 5);
+//                                                }, 5);
+//                                            }, 5);
+//                                        }, 5);
+//                                    }, 5);
+//                                }, 5);
+//                            }, 5);
+//                        }
+//                    };
                 }
             }
         }

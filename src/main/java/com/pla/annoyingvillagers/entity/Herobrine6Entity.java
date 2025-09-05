@@ -2,7 +2,7 @@ package com.pla.annoyingvillagers.entity;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.procedures.Herobrine3OnTouchProcedure;
+import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -13,36 +13,39 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PlayMessages;
+import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
-import se.gory_moon.player_mobs.entity.PlayerMobEntity;
+import se.gory_moon.player_mobs.utils.NameManager;
 
 import javax.annotation.Nullable;
 
-public class Herobrine5Entity extends PlayerMobEntity {
-
-    public Herobrine5Entity(EntityType<? extends Herobrine5Entity> type, Level level) {
-        super(type, level);
-        this.setMaxUpStep(3.0F);
-        this.xpReward = 50;
-        this.setNoAi(false);
-        this.setPersistenceRequired();
-        this.setCustomNameVisible(false);
+public class Herobrine6Entity extends Monster {
+    public Herobrine6Entity(SpawnEntity spawnentity, Level level) {
+        this((EntityType) AnnoyingVillagersModEntities.HEROBRINE_6.get(), level);
     }
 
-    public Herobrine5Entity(PlayMessages.SpawnEntity spawnEntity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.HEROBRINE_5.get(), level);
+    public Herobrine6Entity(EntityType<Herobrine6Entity> entitytype, Level level) {
+        super(entitytype, level);
+        this.setMaxUpStep(2.0F);
+        this.xpReward = 50;
+        this.setNoAi(false);
+        this.setCustomNameVisible(false);
+        this.setPersistenceRequired();
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -74,14 +77,28 @@ public class Herobrine5Entity extends PlayerMobEntity {
         return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
     }
 
-    @Override
+    public boolean hurt(DamageSource damagesource, float f) {
+        Herobrine6OnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), damagesource.getEntity());
+        if (damagesource.is(DamageTypes.FALL)) return false;
+        if (damagesource.is(DamageTypes.CACTUS)) return false;
+        if (damagesource.is(DamageTypes.WITHER)) return false;
+        if (damagesource.is(DamageTypes.DROWN)) return false;
+        if (damagesource.is(DamageTypes.WITHER_SKULL)) return false;
+        if (damagesource.is(DamageTypes.DRAGON_BREATH)) return false;
+        if (damagesource.is(DamageTypes.INDIRECT_MAGIC)) return false;
+        return super.hurt(damagesource, f);
+    }
+
     public void die(DamageSource damagesource) {
         super.die(damagesource);
         if (this.level() instanceof ServerLevel serverLevel) {
             InfectedPlayerMobEntity corpse = new InfectedPlayerMobEntity(AnnoyingVillagersModEntities.INFECTED_PLAYER_MOB.get(), serverLevel);
             corpse.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
-            String killedName = this.getCustomName().getString();
-            corpse.getPersistentData().putString("possessed_by", "herobrine_5");
+            String killedName = this.getPersistentData().getString("killed_name");
+            corpse.getPersistentData().putString("possessed_by", "herobrine_6");
+            if (killedName.isEmpty()) {
+                killedName = String.valueOf(NameManager.INSTANCE.getRandomName());
+            }
             corpse.setUsername(killedName);
             corpse.setCustomName(Component.literal(killedName));
             corpse.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()),
@@ -161,27 +178,26 @@ public class Herobrine5Entity extends PlayerMobEntity {
         return spawngroupdata;
     }
 
+    public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
+        super.awardKillScore(entity, i, damagesource);
+    }
+
     public void baseTick() {
         super.baseTick();
     }
 
-    @Override
-    public void tick() {
-        super.tick();
-    }
-
     public void playerTouch(Player player) {
         super.playerTouch(player);
-        Herobrine3OnTouchProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        Herobrine6OnPlayerTouchProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
     public static void init() {
-        SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.HEROBRINE_5.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
+        SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.HEROBRINE_6.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
             return serverlevelaccessor.getRawBrightness(blockpos, 0) <= 8;
         });
     }
 
-    public static AttributeSupplier.Builder createAttributes() {
+    public static Builder createAttributes() {
         AttributeSupplier.Builder builder = Mob.createMobAttributes();
 
         builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3D);

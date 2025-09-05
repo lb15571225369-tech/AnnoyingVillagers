@@ -22,6 +22,7 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_2_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_3_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_5_SPAWN_EGG.get());
+                        pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_6_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_7_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.ARMORED_HEROBRINE_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.DARK_HEROBRINE_SPAWN_EGG.get());

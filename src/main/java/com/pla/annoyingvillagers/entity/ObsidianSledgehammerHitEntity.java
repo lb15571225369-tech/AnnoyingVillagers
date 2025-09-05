@@ -115,20 +115,20 @@
                     if (!isActivate() && this.activateProgress < MAX_PROGRESS) {
                         this.activateProgress = Math.min(MAX_PROGRESS, this.activateProgress + RISE_SPEED);
                     }
-                    if (this.lifeTicks == 33) {
-                        for(int i = 0; i < 80; ++i) {
-                            BlockState block = level().getBlockState(blockPosition().below());
-                            double d0 = this.getX() + (this.random.nextDouble() * 2.0D - 1.0D) * (double) this.getBbWidth() * 0.5D;
-                            double d1 = this.getY() + 0.03D;
-                            double d2 = this.getZ() + (this.random.nextDouble() * 2.0D - 1.0D) * (double) this.getBbWidth() * 0.5D;
-                            double d3 = (this.random.nextGaussian() * 0.07D);
-                            double d4 = (this.random.nextGaussian() * 0.07D);
-                            double d5 = (this.random.nextGaussian() * 0.07D);
-                            if (block.getRenderShape() != RenderShape.INVISIBLE) {
-                                this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), d0, d1, d2, d3, d4, d5);
-                            }
-                        }
-                    }
+//                    if (this.lifeTicks == 33) {
+//                        for(int i = 0; i < 80; ++i) {
+//                            BlockState block = level().getBlockState(blockPosition().below());
+//                            double d0 = this.getX() + (this.random.nextDouble() * 2.0D - 1.0D) * (double) this.getBbWidth() * 0.5D;
+//                            double d1 = this.getY() + 0.03D;
+//                            double d2 = this.getZ() + (this.random.nextDouble() * 2.0D - 1.0D) * (double) this.getBbWidth() * 0.5D;
+//                            double d3 = (this.random.nextGaussian() * 0.07D);
+//                            double d4 = (this.random.nextGaussian() * 0.07D);
+//                            double d5 = (this.random.nextGaussian() * 0.07D);
+//                            if (block.getRenderShape() != RenderShape.INVISIBLE) {
+//                                this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), d0, d1, d2, d3, d4, d5);
+//                            }
+//                        }
+//                    }
 
                     if (this.lifeTicks == 14) {
                         this.setActivate(true);

@@ -53,7 +53,7 @@ public class ObsidianSledgehammerItem extends AxeItem {
         }, 1.0F, -2.6F, (new Properties()).fireResistant());
     }
 
-    private void spawnFangs(double x, double z, double minY, double maxY, float rotation, int delay, Entity entity) {
+    private void spawnObsidianSpike(double x, double z, double minY, double maxY, float rotation, int delay, Entity entity) {
         BlockPos blockpos = new BlockPos((int) x, (int) maxY, (int) z);
         boolean flag = false;
         double d0 = 0.0D;
@@ -88,23 +88,19 @@ public class ObsidianSledgehammerItem extends AxeItem {
             int standingOnY = Mth.floor(entity.getY()) - 3;
             for (int k = 0; k < 6; ++k) {
                 float f2 = (float) k * (float) Math.PI * 2.0F / 6.0F + ((float) Math.PI * 2F / 5F);
-                this.spawnFangs(blockPos.getX() + (double) Mth.cos(f2) * 2.5D, blockPos.getZ() + (double) Mth.sin(f2) * 2.5D, standingOnY, blockPos.getY() + 1, f2, 0, entity);
+                this.spawnObsidianSpike(blockPos.getX() + (double) Mth.cos(f2) * 2.5D, blockPos.getZ() + (double) Mth.sin(f2) * 2.5D, standingOnY, blockPos.getY() + 1, f2, 0, entity);
             }
             for (int k = 0; k < 11; ++k) {
                 float f3 = (float) k * (float) Math.PI * 2.0F / 11.0F + ((float) Math.PI * 2F / 10F);
-                this.spawnFangs(blockPos.getX() + (double) Mth.cos(f3) * 3.5D, blockPos.getZ() + (double) Mth.sin(f3) * 3.5D, standingOnY, blockPos.getY() + 1, f3, 2, entity);
+                this.spawnObsidianSpike(blockPos.getX() + (double) Mth.cos(f3) * 3.5D, blockPos.getZ() + (double) Mth.sin(f3) * 3.5D, standingOnY, blockPos.getY() + 1, f3, 2, entity);
             }
             for (int k = 0; k < 14; ++k) {
                 float f4 = (float) k * (float) Math.PI * 2.0F / 14.0F + ((float) Math.PI * 2F / 20F);
-                this.spawnFangs(blockPos.getX() + (double) Mth.cos(f4) * 4.5D, blockPos.getZ() + (double) Mth.sin(f4) * 4.5D, standingOnY, blockPos.getY() + 1, f4, 4, entity);
+                this.spawnObsidianSpike(blockPos.getX() + (double) Mth.cos(f4) * 4.5D, blockPos.getZ() + (double) Mth.sin(f4) * 4.5D, standingOnY, blockPos.getY() + 1, f4, 4, entity);
             }
             for (int k = 0; k < 19; ++k) {
                 float f5 = (float) k * (float) Math.PI * 2.0F / 19.0F + ((float) Math.PI * 2F / 25F);
-                this.spawnFangs(blockPos.getX() + (double) Mth.cos(f5) * 5.5D, blockPos.getZ() + (double) Mth.sin(f5) * 5.5D, standingOnY, blockPos.getY() + 1, f5, 6, entity);
-            }
-            for (int k = 0; k < 26; ++k) {
-                float f5 = (float) k * (float) Math.PI * 2.0F / 26.0F + ((float) Math.PI * 2F / 35F);
-                this.spawnFangs(blockPos.getX() + (double) Mth.cos(f5) * 6.5D, blockPos.getZ() + (double) Mth.sin(f5) * 6.5D, standingOnY, blockPos.getY() + 1, f5, 8, entity);
+                this.spawnObsidianSpike(blockPos.getX() + (double) Mth.cos(f5) * 5.5D, blockPos.getZ() + (double) Mth.sin(f5) * 5.5D, standingOnY, blockPos.getY() + 1, f5, 6, entity);
             }
         }
     }

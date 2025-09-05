@@ -1,10 +1,10 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
-import com.pla.annoyingvillagers.entity.Herobrine1Entity;
-import com.pla.annoyingvillagers.entity.Herobrine2Entity;
-import com.pla.annoyingvillagers.entity.Herobrine5Entity;
+import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.util.InventoryUtils;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -26,15 +26,22 @@ public class HerobrineTransfromProcedure {
 
         if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("player_mobs:player_mob")) {
             if (!(world instanceof ServerLevel serverLevel)) return;
-            Entity possessed = new Herobrine5Entity(AnnoyingVillagersModEntities.HEROBRINE_5.get(), serverLevel);
-
+            entity.getPersistentData().putBoolean("die_by_possess", true);
+            Entity possessed;
+            if (herobrineEntity instanceof Herobrine1Entity || herobrineEntity instanceof GlaiveHerobrineEntity
+                    || herobrineEntity instanceof AegisHerobrineEntity || herobrineEntity instanceof ReaperHerobrineEntity
+                    || herobrineEntity instanceof SwordsManHerobrineEntity || herobrineEntity instanceof SledgehammerHerobrineEntity) {
+                possessed = new Herobrine5Entity(AnnoyingVillagersModEntities.HEROBRINE_5.get(), serverLevel);
+            } else {
+                possessed = new Herobrine6Entity(AnnoyingVillagersModEntities.HEROBRINE_6.get(), serverLevel);
+            }
             possessed.moveTo(entity.getX(), entity.getY(), entity.getZ(), entity.getYRot(), entity.getXRot());
             if (entity instanceof LivingEntity victim) {
                 if (victim.getCustomName() != null) {
                     possessed.getPersistentData().putString("killed_name", victim.getCustomName().getString());
                 }
 
-                if (!victim.getItemBySlot(EquipmentSlot.HEAD).equals(Items.PLAYER_HEAD)) {
+                if (!victim.getItemBySlot(EquipmentSlot.HEAD).getItem().equals(Items.PLAYER_HEAD)) {
                     possessed.setItemSlot(EquipmentSlot.HEAD, victim.getItemBySlot(EquipmentSlot.HEAD).copy());
                 }
                 possessed.setItemSlot(EquipmentSlot.CHEST, victim.getItemBySlot(EquipmentSlot.CHEST).copy());
@@ -44,9 +51,11 @@ public class HerobrineTransfromProcedure {
                 possessed.setItemSlot(EquipmentSlot.OFFHAND, victim.getItemBySlot(EquipmentSlot.OFFHAND).copy());
             }
             Mob mob = (Mob) possessed;
-            mob.finalizeSpawn(serverLevel, world.getCurrentDifficultyAt(possessed.blockPosition()),
-                    MobSpawnType.MOB_SUMMONED, null, null);
-            entity.getPersistentData().putBoolean("die_by_possess", true);
+            if (mob instanceof Herobrine5Entity herobrine5Entity) {
+                herobrine5Entity.setUsername(((PlayerMobEntity) entity).getUsername());
+                herobrine5Entity.setProfile(((PlayerMobEntity) entity).getProfile());
+            }
+            mob.finalizeSpawn(serverLevel, world.getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
             serverLevel.addFreshEntity(possessed);
         }
     }
