@@ -40,7 +40,7 @@ public class PlayerMobEpicFightOverlayLayer<E extends LivingEntity, AM extends H
         if (tex == null) return;
 
         ((AnimatedMesh)this.mesh.get()).draw(
-                poseStack, multiBufferSource, RenderType.eyes(tex),
+                poseStack, multiBufferSource, RenderType.entityCutoutNoCull(tex),
                 i,
                 1f,1f,1f,1f, OverlayTexture.NO_OVERLAY,
                 eLivingEntityPatch.getArmature(), openMatrix4fs
