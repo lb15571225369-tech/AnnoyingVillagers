@@ -45,6 +45,16 @@ public class Herobrine5Entity extends PlayerMobEntity {
         this((EntityType) AnnoyingVillagersModEntities.HEROBRINE_5.get(), level);
     }
 
+    @Override
+    public boolean hasCustomName() {
+        return false;
+    }
+
+    @Override
+    public Component getDisplayName() {
+        return Component.literal("§5Herobrine Clone§r");
+    }
+
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }

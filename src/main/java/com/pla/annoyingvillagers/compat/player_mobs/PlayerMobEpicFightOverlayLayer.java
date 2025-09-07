@@ -21,6 +21,8 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 public class PlayerMobEpicFightOverlayLayer<E extends LivingEntity, AM extends HumanoidMesh>
         extends ModelRenderLayer<E, LivingEntityPatch<E>, HumanoidModel<E>, RenderLayer<E, HumanoidModel<E>>, AM> {
+    private final ResourceLocation BLOOD_TEXTURE = new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/player_mob_blood.png");
+    private final ResourceLocation DEFAULT_EYE = new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/herobrine_eyes/default/default.png");
 
     public PlayerMobEpicFightOverlayLayer(MeshProvider<AM> mesh) { super(mesh); }
 
@@ -29,7 +31,21 @@ public class PlayerMobEpicFightOverlayLayer<E extends LivingEntity, AM extends H
             String name = e.hasCustomName() ? e.getCustomName().getString() : e.getName().getString();
             return HerobrineEyesUtil.getHerobrineEyesTexture(name);
         } else if (EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "infected_player_mob"))) {
-            return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/player_mob_blood.png");
+            return BLOOD_TEXTURE;
+        }  else if (EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_1")) ||
+                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_2")) ||
+                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_3")) ||
+                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_4")) ||
+                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_6")) ||
+                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_7")) ||
+                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "armored_herobrine")) ||
+                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "shadow_herobrine")) ||
+                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "glaive_herobrine")) ||
+                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "reaper_herobrine")) ||
+                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "swordsman_herobrine")) ||
+                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "sledgehammer_herobrine")) ||
+                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "aegis_herobrine"))) {
+            return DEFAULT_EYE;
         }
         return null;
     }
@@ -38,12 +54,20 @@ public class PlayerMobEpicFightOverlayLayer<E extends LivingEntity, AM extends H
     protected void renderLayer(LivingEntityPatch<E> eLivingEntityPatch, E e, @Nullable RenderLayer<E, HumanoidModel<E>> eHumanoidModelRenderLayer, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, OpenMatrix4f[] openMatrix4fs, float v, float v1, float v2, float v3) {
         ResourceLocation tex = pickTexture(e);
         if (tex == null) return;
-
-        ((AnimatedMesh)this.mesh.get()).draw(
-                poseStack, multiBufferSource, RenderType.entityCutoutNoCull(tex),
-                i,
-                1f,1f,1f,1f, OverlayTexture.NO_OVERLAY,
-                eLivingEntityPatch.getArmature(), openMatrix4fs
-        );
+        if (tex == BLOOD_TEXTURE) {
+            ((AnimatedMesh) this.mesh.get()).draw(
+                    poseStack, multiBufferSource, RenderType.entityCutoutNoCull(tex),
+                    i,
+                    1f, 1f, 1f, 1f, OverlayTexture.NO_OVERLAY,
+                    eLivingEntityPatch.getArmature(), openMatrix4fs
+            );
+        } else {
+            ((AnimatedMesh) this.mesh.get()).draw(
+                    poseStack, multiBufferSource, RenderType.eyes(tex),
+                    i,
+                    1f, 1f, 1f, 1f, OverlayTexture.NO_OVERLAY,
+                    eLivingEntityPatch.getArmature(), openMatrix4fs
+            );
+        }
     }
 }

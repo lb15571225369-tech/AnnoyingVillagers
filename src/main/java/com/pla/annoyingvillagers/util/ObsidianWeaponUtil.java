@@ -9,6 +9,7 @@ public class ObsidianWeaponUtil {
                 || e instanceof Herobrine2Entity
                 || e instanceof Herobrine3Entity
                 || e instanceof Herobrine5Entity
+                || e instanceof Herobrine6Entity
                 || e instanceof Herobrine7Entity
                 || e instanceof ArmoredHerobrineEntity
                 || e instanceof ShadowHerobrineEntity

@@ -4,6 +4,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 
 import com.pla.annoyingvillagers.entity.*;
+import com.pla.annoyingvillagers.util.ObsidianWeaponUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,7 +26,7 @@ public class DarkObBlockOnEntityInsideProcedure {
 
     public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) {
         if (entity != null) {
-            if (entity instanceof Herobrine1Entity || entity instanceof Herobrine2Entity || entity instanceof Herobrine3Entity || entity instanceof Herobrine7Entity || entity instanceof ArmoredHerobrineEntity || entity instanceof ShadowHerobrineEntity || entity instanceof InfectedPlayerMobEntity || entity instanceof InfectedTheMostMoistBurrit0Entity || entity instanceof InfectedChrisEntity) {
+            if (ObsidianWeaponUtil.isHerobrineFaction(entity)) {
                 return;
             }
 
