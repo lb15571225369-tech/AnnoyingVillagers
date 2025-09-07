@@ -25,7 +25,8 @@
     "ItemCooldownsMixin",
     "ExplosionMixin",
     "RaiderMixin",
-    "MixinPHumanoidRenderer"
+    "MixinPHumanoidRenderer",
+    "WitherSkeletonMixin"
   ],
   "client": [
   ],

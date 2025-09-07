@@ -291,7 +291,7 @@ public class PlayerNpcJoinGameProcedure {
                 }
             }
 
-            if ((ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:skeleton") || ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:stray") || ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:wither_skeleton")) && !entity.level().isClientSide() && entity.getServer() != null) {
+            if ((ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:skeleton") || ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:stray")) && !entity.level().isClientSide() && entity.getServer() != null) {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
                     if (!entity.level().isClientSide() && entity.getServer() != null) {
                         try {

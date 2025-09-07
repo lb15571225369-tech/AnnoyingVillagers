@@ -9,7 +9,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
@@ -107,9 +106,6 @@ public final class GroundSlamHitProcedure {
         if (hit == null) return;
 
         BlockPos bp = hit.getBlockPos();
-        BlockState st = who.level().getBlockState(bp);
-//        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] {} ground-slam hit {} at {}",
-//                who.getName().getString(), st.getBlock().getName().getString(), bp);
 
         if (!who.level().isClientSide()) {
             ItemStack itemStack = who.getMainHandItem();

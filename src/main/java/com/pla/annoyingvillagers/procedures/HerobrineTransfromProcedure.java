@@ -28,7 +28,10 @@ public class HerobrineTransfromProcedure {
             if (!(world instanceof ServerLevel serverLevel)) return;
             entity.getPersistentData().putBoolean("die_by_possess", true);
             Entity possessed;
-            if (herobrineEntity instanceof Herobrine1Entity || herobrineEntity instanceof GlaiveHerobrineEntity
+            if (herobrineEntity instanceof Herobrine1Entity || herobrineEntity instanceof NullEntity
+                    || herobrineEntity instanceof NullSwordEntity || herobrineEntity instanceof NullAxeEntity
+                    || herobrineEntity instanceof  NullPickaxeEntity || herobrineEntity instanceof NullShovelEntity
+                    || herobrineEntity instanceof  NullHoeEntity || herobrineEntity instanceof GlaiveHerobrineEntity
                     || herobrineEntity instanceof AegisHerobrineEntity || herobrineEntity instanceof ReaperHerobrineEntity
                     || herobrineEntity instanceof SwordsManHerobrineEntity || herobrineEntity instanceof SledgehammerHerobrineEntity) {
                 possessed = new Herobrine5Entity(AnnoyingVillagersModEntities.HEROBRINE_5.get(), serverLevel);

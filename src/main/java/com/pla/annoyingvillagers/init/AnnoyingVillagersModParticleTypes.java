@@ -49,4 +49,7 @@ public class AnnoyingVillagersModParticleTypes {
     public static final RegistryObject<ParticleType<?>> ENDER = AnnoyingVillagersModParticleTypes.REGISTRY.register("ender", () -> {
         return new SimpleParticleType(true);
     });
+    public static final RegistryObject<ParticleType<?>> NULL = AnnoyingVillagersModParticleTypes.REGISTRY.register("null", () -> {
+        return new SimpleParticleType(true);
+    });
 }

@@ -81,13 +81,15 @@ public class InfectedPlayerMobEntity extends PlayerMobEntity {
         super.die(damagesource);
         String possessedBy = this.getPersistentData().getString("possessed_by");
         if (possessedBy.equals("herobrine_2") || possessedBy.equals("herobrine_6")) {
-            Herobrine2DieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
+            Herobrine2DieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
         } else if (possessedBy.equals("herobrine_1") || possessedBy.equals("herobrine_5")) {
             Herobrine1OnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
         } else if (possessedBy.equals("herobrine_7")) {
             Herobrine7OnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
         } else if (possessedBy.equals("shadow_herobrine")) {
             DarkHerobrineOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        } else if (possessedBy.equals("null")) {
+            NullDieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
         }
         if (this.level() instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
             PlayerMobDeadEntity corpse =  new PlayerMobDeadEntity(AnnoyingVillagersModEntities.PLAYER_MOB_DEAD.get(), levelaccessor);

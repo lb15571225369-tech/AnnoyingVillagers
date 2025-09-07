@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.entity;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.procedures.Herobrine3OnTouchProcedure;
+import com.pla.annoyingvillagers.procedures.Herobrine6OnHurtProcedure;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -13,6 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -43,6 +45,17 @@ public class Herobrine5Entity extends PlayerMobEntity {
 
     public Herobrine5Entity(PlayMessages.SpawnEntity spawnEntity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.HEROBRINE_5.get(), level);
+    }
+
+    public boolean hurt(DamageSource damagesource, float f) {
+        Herobrine6OnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), damagesource.getEntity());
+        if (damagesource.is(DamageTypes.FALL)) return false;
+        if (damagesource.is(DamageTypes.CACTUS)) return false;
+        if (damagesource.is(DamageTypes.WITHER)) return false;
+        if (damagesource.is(DamageTypes.DROWN)) return false;
+        if (damagesource.is(DamageTypes.WITHER_SKULL)) return false;
+        if (damagesource.is(DamageTypes.DRAGON_BREATH)) return false;
+        return super.hurt(damagesource, f);
     }
 
     @Override

@@ -20,6 +20,12 @@ public class ObsidianWeaponUtil {
                 || e instanceof AegisHerobrineEntity
                 || e instanceof SwordsManHerobrineEntity
                 || e instanceof ReaperHerobrineEntity
-                || e instanceof SledgehammerHerobrineEntity;
+                || e instanceof SledgehammerHerobrineEntity
+                || e instanceof NullEntity
+                || e instanceof NullSwordEntity
+                || e instanceof NullAxeEntity
+                || e instanceof NullPickaxeEntity
+                || e instanceof NullShovelEntity
+                || e instanceof NullHoeEntity;
     }
 }

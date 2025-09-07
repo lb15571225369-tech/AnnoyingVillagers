@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.init;
 
 import com.pla.annoyingvillagers.client.particle.*;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.SmokeParticle;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
@@ -23,5 +24,6 @@ public class AnnoyingVillagersModParticles {
         Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.BLUESPARK.get(), BlueSparkParticle::provider);
         Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.GREENSPARK.get(), GreenSparkParticle::provider);
         Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.ENDER.get(), EnderParticle::provider);
+        Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.NULL.get(), SmokeParticle.Provider::new);
     }
 }

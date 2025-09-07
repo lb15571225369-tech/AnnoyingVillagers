@@ -90,7 +90,6 @@ public class Herobrine2Entity extends Monster {
         if (damagesource.is(DamageTypes.DROWN)) return false;
         if (damagesource.is(DamageTypes.WITHER_SKULL)) return false;
         if (damagesource.is(DamageTypes.DRAGON_BREATH)) return false;
-        if (damagesource.is(DamageTypes.INDIRECT_MAGIC)) return false;
         return super.hurt(damagesource, f);
     }
 
