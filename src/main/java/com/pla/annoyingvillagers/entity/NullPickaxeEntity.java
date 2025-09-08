@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import net.minecraft.core.BlockPos;
@@ -68,7 +69,7 @@ public class NullPickaxeEntity extends Monster {
         this.xpReward = 80;
         this.setNoAi(false);
         this.setPersistenceRequired();
-        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.DIAMOND_PICKAXE));
+        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(AnnoyingVillagersModItems.NULL_PICKAXE.get()));
         this.moveControl = new FlyingMoveControl(this, 10, true);
     }
 
@@ -83,8 +84,23 @@ public class NullPickaxeEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (this.getMainHandItem().getItem() != Items.DIAMOND_PICKAXE) {
-            this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.DIAMOND_PICKAXE));
+        if (this.getMainHandItem().getItem() != AnnoyingVillagersModItems.NULL_PICKAXE.get()) {
+            this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(AnnoyingVillagersModItems.NULL_PICKAXE.get()));
+        }
+        if (this.getItemBySlot(EquipmentSlot.OFFHAND).getItem() != Items.AIR) {
+            this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.AIR));
+        }
+        if (this.getItemBySlot(EquipmentSlot.HEAD).getItem() != Items.AIR) {
+            this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.AIR));
+        }
+        if (this.getItemBySlot(EquipmentSlot.CHEST).getItem() != Items.AIR) {
+            this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.AIR));
+        }
+        if (this.getItemBySlot(EquipmentSlot.LEGS).getItem() != Items.AIR) {
+            this.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.AIR));
+        }
+        if (this.getItemBySlot(EquipmentSlot.FEET).getItem() != Items.AIR) {
+            this.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.AIR));
         }
         if (!level().isClientSide) {
             if (nullEntity == null && nullUUID != null) {
@@ -286,7 +302,7 @@ public class NullPickaxeEntity extends Monster {
         Builder builder = Mob.createMobAttributes();
 
         builder = builder.add(Attributes.MOVEMENT_SPEED, 2.0D);
-        builder = builder.add(Attributes.MAX_HEALTH, 40.0D);
+        builder = builder.add(Attributes.MAX_HEALTH, 1000.0D);
         builder = builder.add(Attributes.ARMOR, 40.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 8.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 128.0D);

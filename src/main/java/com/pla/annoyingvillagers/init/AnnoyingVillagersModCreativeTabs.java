@@ -69,6 +69,12 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.ENDER_AEGIS.get());
                         pOutput.accept(AnnoyingVillagersModItems.LEGENDARY_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.HARD_GREAT_SWORD.get());
+                        pOutput.accept(AnnoyingVillagersModItems.NULL_SWORD.get());
+                        pOutput.accept(AnnoyingVillagersModItems.NULL_AXE.get());
+                        pOutput.accept(AnnoyingVillagersModItems.NULL_PICKAXE.get());
+                        pOutput.accept(AnnoyingVillagersModItems.NULL_SHOVEL.get());
+                        pOutput.accept(AnnoyingVillagersModItems.NULL_HOE.get());
+                        pOutput.accept(AnnoyingVillagersModItems.DIAMOND_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_SPEAR.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_LONG_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_GREAT_SWORD.get());

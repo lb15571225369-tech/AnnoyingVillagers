@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.HerobrineTransfromProcedure;
 import com.pla.annoyingvillagers.procedures.NullOnHurtProcedure;
 import com.pla.annoyingvillagers.util.CommonGoals;
@@ -343,7 +344,7 @@ public class NullEntity extends Monster {
             serverLevel.addFreshEntity(corpse);
             if (this.getNullSwordEntity() != null) {
                 if (!this.level().isClientSide()) {
-                    ItemEntity item = new ItemEntity(this.level(), this.getNullSwordEntity().getX(), this.getNullSwordEntity().getY(), this.getNullSwordEntity().getZ(), new ItemStack(Items.DIAMOND_SWORD));
+                    ItemEntity item = new ItemEntity(this.level(), this.getNullSwordEntity().getX(), this.getNullSwordEntity().getY(), this.getNullSwordEntity().getZ(), new ItemStack(AnnoyingVillagersModItems.NULL_SWORD.get()));
                     item.setPickUpDelay(10);
                     serverLevel.addFreshEntity(item);
                 }
@@ -351,7 +352,7 @@ public class NullEntity extends Monster {
             }
             if (this.getNullAxeEntity() != null) {
                 if (!this.level().isClientSide()) {
-                    ItemEntity item = new ItemEntity(this.level(), this.getNullAxeEntity().getX(), this.getNullAxeEntity().getY(), this.getNullAxeEntity().getZ(), new ItemStack(Items.DIAMOND_AXE));
+                    ItemEntity item = new ItemEntity(this.level(), this.getNullAxeEntity().getX(), this.getNullAxeEntity().getY(), this.getNullAxeEntity().getZ(), new ItemStack(AnnoyingVillagersModItems.NULL_AXE.get()));
                     item.setPickUpDelay(10);
                     serverLevel.addFreshEntity(item);
                 }
@@ -359,7 +360,7 @@ public class NullEntity extends Monster {
             }
             if (this.getNullPickaxeEntity() != null) {
                 if (!this.level().isClientSide()) {
-                    ItemEntity item = new ItemEntity(this.level(), this.getNullPickaxeEntity().getX(), this.getNullPickaxeEntity().getY(), this.getNullPickaxeEntity().getZ(), new ItemStack(Items.DIAMOND_PICKAXE));
+                    ItemEntity item = new ItemEntity(this.level(), this.getNullPickaxeEntity().getX(), this.getNullPickaxeEntity().getY(), this.getNullPickaxeEntity().getZ(), new ItemStack(AnnoyingVillagersModItems.NULL_PICKAXE.get()));
                     item.setPickUpDelay(10);
                     serverLevel.addFreshEntity(item);
                 }
@@ -367,7 +368,7 @@ public class NullEntity extends Monster {
             }
             if (this.getNullShovelEntity() != null) {
                 if (!this.level().isClientSide()) {
-                    ItemEntity item = new ItemEntity(this.level(), this.getNullShovelEntity().getX(), this.getNullShovelEntity().getY(), this.getNullShovelEntity().getZ(), new ItemStack(Items.DIAMOND_SHOVEL));
+                    ItemEntity item = new ItemEntity(this.level(), this.getNullShovelEntity().getX(), this.getNullShovelEntity().getY(), this.getNullShovelEntity().getZ(), new ItemStack(AnnoyingVillagersModItems.NULL_SHOVEL.get()));
                     item.setPickUpDelay(10);
                     serverLevel.addFreshEntity(item);
                 }
@@ -375,7 +376,7 @@ public class NullEntity extends Monster {
             }
             if (this.getNullHoeEntity() != null) {
                 if (!this.level().isClientSide()) {
-                    ItemEntity item = new ItemEntity(this.level(), this.getNullHoeEntity().getX(), this.getNullHoeEntity().getY(), this.getNullHoeEntity().getZ(), new ItemStack(Items.DIAMOND_HOE));
+                    ItemEntity item = new ItemEntity(this.level(), this.getNullHoeEntity().getX(), this.getNullHoeEntity().getY(), this.getNullHoeEntity().getZ(), new ItemStack(AnnoyingVillagersModItems.NULL_HOE.get()));
                     item.setPickUpDelay(10);
                     serverLevel.addFreshEntity(item);
                 }

@@ -296,6 +296,21 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> PURPLE_GEM_LONG_SWORD = AnnoyingVillagersModItems.REGISTRY.register("purple_gem_long_sword", () -> {
         return new PurpleGemLongSwordItem();
     });
+    public static final RegistryObject<Item> NULL_SWORD = AnnoyingVillagersModItems.REGISTRY.register("null_sword", () -> {
+        return new NullSwordItem();
+    });
+    public static final RegistryObject<Item> NULL_AXE = AnnoyingVillagersModItems.REGISTRY.register("null_axe", () -> {
+        return new NullAxeItem();
+    });
+    public static final RegistryObject<Item> NULL_PICKAXE = AnnoyingVillagersModItems.REGISTRY.register("null_pickaxe", () -> {
+        return new NullPickaxeItem();
+    });
+    public static final RegistryObject<Item> NULL_SHOVEL = AnnoyingVillagersModItems.REGISTRY.register("null_shovel", () -> {
+        return new NullShovelItem();
+    });
+    public static final RegistryObject<Item> NULL_HOE = AnnoyingVillagersModItems.REGISTRY.register("null_hoe", () -> {
+        return new NullHoeItem();
+    });
     public static final RegistryObject<Item> SHADOW_OBSIDIAN_PILLAR = AnnoyingVillagersModItems.REGISTRY.register("shadow_obsidian_pillar", () -> {
         return new ShadowObsidianPillarItem();
     });

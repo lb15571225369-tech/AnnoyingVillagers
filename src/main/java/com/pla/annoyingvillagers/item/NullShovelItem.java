@@ -1,18 +1,15 @@
 package com.pla.annoyingvillagers.item;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
 
-public class EmeraldSwordItem extends SwordItem {
-    public EmeraldSwordItem() {
+public class NullShovelItem extends ShovelItem {
+
+    public NullShovelItem() {
         super(new Tier() {
             public int getUses() {
-                return 1680;
+                return 100;
             }
 
             public float getSpeed() {
@@ -20,7 +17,7 @@ public class EmeraldSwordItem extends SwordItem {
             }
 
             public float getAttackDamageBonus() {
-                return 5.4F;
+                return 5.0F;
             }
 
             public int getLevel() {
@@ -28,12 +25,12 @@ public class EmeraldSwordItem extends SwordItem {
             }
 
             public int getEnchantmentValue() {
-                return 18;
+                return 2;
             }
 
             public Ingredient getRepairIngredient() {
-                return Ingredient.of(new ItemStack[]{new ItemStack(Items.EMERALD)});
+                return Ingredient.of();
             }
-        }, 3, -1.5F, (new Properties()));
+        }, 3, -3.0F, (new Properties()));
     }
 }
