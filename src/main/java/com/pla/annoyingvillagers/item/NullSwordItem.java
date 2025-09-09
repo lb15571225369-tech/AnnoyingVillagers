@@ -1,8 +1,17 @@
 package com.pla.annoyingvillagers.item;
 
+import com.pla.annoyingvillagers.entity.NullSwordEntity;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.Level;
 
 public class NullSwordItem extends SwordItem {
 
@@ -32,5 +41,45 @@ public class NullSwordItem extends SwordItem {
                 return Ingredient.of();
             }
         }, 3, -3.0F, (new Properties()));
+    }
+
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {
+        ItemStack stack = player.getItemInHand(interactionhand);
+
+        if (!player.isShiftKeyDown()) {
+            return InteractionResultHolder.pass(stack);
+        }
+
+        if (!(level instanceof ServerLevel server)) {
+            return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
+        }
+
+        if (player.getPersistentData().contains("NullSwordUUID")) {
+            return InteractionResultHolder.pass(stack);
+        }
+
+        var look = player.getLookAngle();
+        double sx = player.getX() + look.x * 1.0;
+        double sy = player.getEyeY() - 0.2;
+        double sz = player.getZ() + look.z * 1.0;
+
+        NullSwordEntity sword = AnnoyingVillagersModEntities.NULL_SWORD.get().create(server);
+        if (sword == null) {
+            return InteractionResultHolder.fail(stack);
+        }
+
+        sword.moveTo(sx, sy, sz, player.getYRot(), player.getXRot());
+        sword.setPlayer(player);
+        sword.setPlayerUUID(player.getUUID());
+        sword.setReturnGameTime(server.getGameTime() + 600L);
+        sword.finalizeSpawn(server, server.getCurrentDifficultyAt(sword.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+        server.addFreshEntity(sword);
+        sword.setItemInHand(InteractionHand.MAIN_HAND, stack.copy());
+
+        player.setItemInHand(interactionhand, ItemStack.EMPTY);
+        player.getCooldowns().addCooldown(this, 10);
+        player.getPersistentData().putUUID("NullSwordUUID", sword.getUUID());
+
+        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
     }
 }
