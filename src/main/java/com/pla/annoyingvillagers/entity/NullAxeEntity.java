@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.entity;
 
 import java.util.EnumSet;
+import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 import javax.annotation.Nullable;
@@ -9,7 +10,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
-import com.pla.annoyingvillagers.util.CommonGoals;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -19,7 +19,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
@@ -34,22 +33,26 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
 public class NullAxeEntity extends Monster {
     private UUID nullUUID;
     private NullEntity nullEntity;
+
+    private long returnGameTime = -1L;
+    private UUID playerUUID;
+    private Player player;
 
     public void setNullUUID(UUID nullUUID) {
         this.nullUUID = nullUUID;
@@ -57,6 +60,26 @@ public class NullAxeEntity extends Monster {
 
     public void setNullEntity(NullEntity nullEntity) {
         this.nullEntity = nullEntity;
+    }
+
+    public void setPlayerUUID(UUID playerUUID) {
+        this.playerUUID = playerUUID;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public UUID getPlayerUUID() {
+        return playerUUID;
+    }
+
+    public UUID getNullUUID() {
+        return nullUUID;
+    }
+
+    public void setReturnGameTime(long returnGameTime) {
+        this.returnGameTime = returnGameTime;
     }
 
     public NullAxeEntity(SpawnEntity spawnentity, Level level) {
@@ -73,53 +96,29 @@ public class NullAxeEntity extends Monster {
         this.moveControl = new FlyingMoveControl(this, 10, true);
     }
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
-    protected PathNavigation createNavigation(Level level) {
+    protected @NotNull PathNavigation createNavigation(Level level) {
         return new FlyingPathNavigation(this, level);
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-        if (this.getMainHandItem().getItem() != AnnoyingVillagersModItems.NULL_AXE.get()) {
-            this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(AnnoyingVillagersModItems.NULL_AXE.get()));
-        }
-        if (this.getItemBySlot(EquipmentSlot.OFFHAND).getItem() != Items.AIR) {
-            this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.AIR));
-        }
-        if (this.getItemBySlot(EquipmentSlot.HEAD).getItem() != Items.AIR) {
-            this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.AIR));
-        }
-        if (this.getItemBySlot(EquipmentSlot.CHEST).getItem() != Items.AIR) {
-            this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.AIR));
-        }
-        if (this.getItemBySlot(EquipmentSlot.LEGS).getItem() != Items.AIR) {
-            this.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.AIR));
-        }
-        if (this.getItemBySlot(EquipmentSlot.FEET).getItem() != Items.AIR) {
-            this.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.AIR));
-        }
-        if (!level().isClientSide) {
-            if (nullEntity == null && nullUUID != null) {
-                Entity entity = ((ServerLevel) level()).getEntity(nullUUID);
-                if (entity instanceof NullEntity entityNull) {
-                    this.nullEntity = entityNull;
-                } else {
-                    this.nullEntity = null;
-                }
-            }
-            if (nullEntity != null && !nullEntity.isAlive()) {
-                nullEntity = null;
-                nullUUID = null;
-            }
-        }
     }
 
     protected void registerGoals() {
         super.registerGoals();
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(
+                this,
+                LivingEntity.class,
+                10, true, false,
+                target -> {
+                    if (this.player == null || !this.player.isAlive()) return false;
+                    var lastHurtBy = this.player.getLastHurtByMob();
+                    var lastHurt = this.player.getLastHurtMob();
+                    return (target == lastHurtBy || target == lastHurt)
+                            && target.isAlive()
+                            && !target.isAlliedTo(this.player);
+                }
+        ));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, (target) -> nullEntity != null
                 && nullEntity.isAlive()
                 && target != null
@@ -186,6 +185,10 @@ public class NullAxeEntity extends Monster {
         if (nullUUID != null) {
             tag.putUUID("NullUUID", nullUUID);
         }
+        if (playerUUID != null) {
+            tag.putUUID("OwnerUUID", playerUUID);
+        }
+        tag.putLong("ReturnTime", returnGameTime);
     }
 
     @Override
@@ -194,6 +197,10 @@ public class NullAxeEntity extends Monster {
         if (tag.hasUUID("NullUUID")) {
             nullUUID = tag.getUUID("NullUUID");
         }
+        if (tag.hasUUID("OwnerUUID")) {
+            playerUUID = tag.getUUID("OwnerUUID");
+        }
+        returnGameTime = tag.getLong("ReturnTime");
     }
 
     public MobType getMobType() {
@@ -221,23 +228,16 @@ public class NullAxeEntity extends Monster {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        if (!this.level().isClientSide()) {
+        if (!this.level().isClientSide() && Math.random() <= 0.5D) {
             this.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 60, 1, false, false));
         }
-        if (damagesource.is(DamageTypes.FALL)) return false;
-        if (damagesource.is(DamageTypes.CACTUS)) return false;
-        if (damagesource.is(DamageTypes.WITHER)) return false;
-        if (damagesource.is(DamageTypes.DROWN)) return false;
-        if (damagesource.is(DamageTypes.WITHER_SKULL)) return false;
-        if (damagesource.is(DamageTypes.DRAGON_BREATH)) return false;
-        if (damagesource.getDirectEntity() instanceof AbstractArrow) return false;
-        return super.hurt(damagesource, f);
+        return false;
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
 
-        if (!this.level().isClientSide() && this.getServer() != null) {
+        if (!this.level().isClientSide() && this.getServer() != null && this.player == null) {
             try {
                 this.getServer().getCommands().getDispatcher().execute(
                         "team add herobrine",
@@ -247,7 +247,7 @@ public class NullAxeEntity extends Monster {
             }
         }
 
-        if (!this.level().isClientSide() && this.getServer() != null) {
+        if (!this.level().isClientSide() && this.getServer() != null && this.player == null) {
             try {
                 this.getServer().getCommands().getDispatcher().execute(
                         "team modify herobrine friendlyFire false",
@@ -257,7 +257,7 @@ public class NullAxeEntity extends Monster {
             }
         }
 
-        if (!this.level().isClientSide() && this.getServer() != null) {
+        if (!this.level().isClientSide() && this.getServer() != null && this.player == null) {
             try {
                 this.getServer().getCommands().getDispatcher().execute(
                         "team join herobrine @s",
@@ -277,11 +277,11 @@ public class NullAxeEntity extends Monster {
             }
         }
 
-        this.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Blocks.AIR));
-        this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Blocks.AIR));
-        this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Blocks.AIR));
-        this.setItemSlot(EquipmentSlot.FEET, new ItemStack(Blocks.AIR));
-        this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Blocks.AIR));
+        this.setItemSlot(EquipmentSlot.LEGS, ItemStack.EMPTY);
+        this.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
+        this.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
+        this.setItemSlot(EquipmentSlot.FEET, ItemStack.EMPTY);
+        this.setItemSlot(EquipmentSlot.OFFHAND, ItemStack.EMPTY);
         return spawngroupdata1;
     }
 
@@ -296,13 +296,97 @@ public class NullAxeEntity extends Monster {
         this.setNoGravity(true);
     }
 
+    @Override
+    public boolean doHurtTarget(Entity pEntity) {
+        if (pEntity instanceof Player hurtPlayer && this.playerUUID != null && this.playerUUID.equals(hurtPlayer.getUUID())) {
+            return false;
+        }
+        if (pEntity instanceof NullEntity hurtNull && this.nullUUID != null && this.nullUUID.equals(hurtNull.getUUID())) {
+            return false;
+        }
+        return super.doHurtTarget(pEntity);
+    }
+
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (this.getItemBySlot(EquipmentSlot.MAINHAND).getItem() != AnnoyingVillagersModItems.NULL_AXE.get()) {
+            if (this.nullEntity == null && this.player != null) {
+                this.discard();
+            }
+            this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(AnnoyingVillagersModItems.NULL_AXE.get()));
+        }
+        if (this.getItemBySlot(EquipmentSlot.OFFHAND) != ItemStack.EMPTY) {
+            this.setItemSlot(EquipmentSlot.OFFHAND, ItemStack.EMPTY);
+        }
+        if (this.getItemBySlot(EquipmentSlot.HEAD) != ItemStack.EMPTY) {
+            this.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
+        }
+        if (this.getItemBySlot(EquipmentSlot.CHEST) != ItemStack.EMPTY) {
+            this.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
+        }
+        if (this.getItemBySlot(EquipmentSlot.LEGS) != ItemStack.EMPTY) {
+            this.setItemSlot(EquipmentSlot.LEGS, ItemStack.EMPTY);
+        }
+        if (this.getItemBySlot(EquipmentSlot.FEET) != ItemStack.EMPTY) {
+            this.setItemSlot(EquipmentSlot.FEET, ItemStack.EMPTY);
+        }
+        if (!level().isClientSide) {
+            if (nullEntity == null && nullUUID != null) {
+                Entity entity = ((ServerLevel) level()).getEntity(nullUUID);
+                if (entity instanceof NullEntity entityNull) {
+                    this.nullEntity = entityNull;
+                } else {
+                    this.nullEntity = null;
+                }
+            }
+            if (nullEntity != null && !nullEntity.isAlive()) {
+                nullEntity = null;
+                nullUUID = null;
+            }
+            if (player == null && playerUUID != null) {
+                this.player = ((ServerLevel) level()).getPlayerByUUID(playerUUID);
+            }
+            if (player != null && !player.isAlive()) {
+                this.remove(RemovalReason.DISCARDED);
+            }
+        }
+
+        if (!this.level().isClientSide && this.nullEntity == null && this.player != null) {
+            if (this.returnGameTime > 0 && ((ServerLevel)this.level()).getGameTime() >= this.returnGameTime) {
+                this.remove(RemovalReason.DISCARDED);
+            }
+        }
+    }
+
+    @Override
+    public void remove(RemovalReason pReason) {
+        if (this.level() instanceof ServerLevel serverLevel) {
+            if (this.player != null) {
+                boolean added = this.player.getInventory().add(this.getMainHandItem());
+                if (!added) {
+                    var item = new ItemEntity(serverLevel, player.getX(), player.getY() + 0.5, player.getZ(), this.getMainHandItem());
+                    item.setPickUpDelay(10);
+                    serverLevel.addFreshEntity(item);
+                }
+                this.player.getPersistentData().remove("NullAxeUUID");
+            } else {
+                var item = new ItemEntity(serverLevel, this.getX(), this.getY(), this.getZ(), this.getMainHandItem());
+                item.setPickUpDelay(10);
+                serverLevel.addFreshEntity(item);
+            }
+        }
+        super.remove(pReason);
+    }
+
     public static void init() {}
 
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();
 
         builder = builder.add(Attributes.MOVEMENT_SPEED, 2.0D);
-        builder = builder.add(Attributes.MAX_HEALTH, 1000.0D);
+        builder = builder.add(Attributes.MAX_HEALTH, 10.0D);
         builder = builder.add(Attributes.ARMOR, 40.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 8.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 128.0D);

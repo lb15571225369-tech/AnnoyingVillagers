@@ -38,7 +38,7 @@ public class Herobrine3OnSpawnProcedure {
             }
 
             if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("Herobrine has arrived"), false);
+                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("§5Herobrine§r has arrived"), false);
             }
 
             if (entity instanceof LivingEntity) {

@@ -80,23 +80,6 @@ public class NullOnHurtProcedure {
                             nullEntity.setSprinting(false);
                         }
                     };
-
-                    if (Math.random() <= 0.2D && nullEntity.getNullSwordEntity() != null) {
-                        nullEntity.getNullSwordEntity().moveTo(d0, d1, d2);
-                        nullEntity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 1, 1, false, false));
-                    } else if (Math.random() <= 0.2D && nullEntity.getNullAxeEntity() != null) {
-                        nullEntity.getNullAxeEntity().moveTo(d0, d1, d2);
-                        nullEntity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 1, 1, false, false));
-                    } else if (Math.random() <= 0.2D && nullEntity.getNullPickaxeEntity() != null) {
-                        nullEntity.getNullPickaxeEntity().moveTo(d0, d1, d2);
-                        nullEntity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 1, 1, false, false));
-                    } else if (Math.random() <= 0.2D && nullEntity.getNullShovelEntity() != null) {
-                        nullEntity.getNullShovelEntity().moveTo(d0, d1, d2);
-                        nullEntity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 1, 1, false, false));
-                    } else if (Math.random() <= 0.2D && nullEntity.getNullHoeEntity() != null) {
-                        nullEntity.getNullHoeEntity().moveTo(d0, d1, d2);
-                        nullEntity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 1, 1, false, false));
-                    }
                 }
             }
 

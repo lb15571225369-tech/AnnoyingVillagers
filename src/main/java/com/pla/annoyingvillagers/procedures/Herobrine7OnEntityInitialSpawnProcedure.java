@@ -20,7 +20,7 @@ public class Herobrine7OnEntityInitialSpawnProcedure {
     public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) {
         if (entity != null) {
             if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("Herobrine has arrived."), false);
+                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("§5Herobrine§r has arrived."), false);
             }
 
             if (!entity.level().isClientSide() && entity.getServer() != null) {

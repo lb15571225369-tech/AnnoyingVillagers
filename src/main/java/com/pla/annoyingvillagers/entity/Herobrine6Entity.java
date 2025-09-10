@@ -141,7 +141,7 @@ public class Herobrine6Entity extends Monster {
             if (!killedName.isEmpty()) {
                 serverlevelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal(killedName + " has been possessed by §5Herobrine§r."), false);
             } else {
-                serverlevelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("§5Herobrine§r has spawned a new possessed body."), false);
+                serverlevelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("§5Herobrine§r has possesed a new player."), false);
             }
         }
 

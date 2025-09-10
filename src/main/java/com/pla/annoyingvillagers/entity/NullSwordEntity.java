@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.entity;
 
 import java.util.EnumSet;
+import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 import javax.annotation.Nullable;
@@ -9,6 +10,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
+import com.pla.annoyingvillagers.util.SnakeBladeHit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -18,7 +20,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
@@ -36,12 +37,9 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
@@ -75,6 +73,10 @@ public class NullSwordEntity extends Monster {
 
     public UUID getPlayerUUID() {
         return playerUUID;
+    }
+
+    public UUID getNullUUID() {
+        return nullUUID;
     }
 
     public void setReturnGameTime(long returnGameTime) {
@@ -227,17 +229,10 @@ public class NullSwordEntity extends Monster {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        if (!this.level().isClientSide()) {
+        if (!this.level().isClientSide() && Math.random() <= 0.5D) {
             this.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 60, 1, false, false));
         }
-        if (damagesource.is(DamageTypes.FALL)) return false;
-        if (damagesource.is(DamageTypes.CACTUS)) return false;
-        if (damagesource.is(DamageTypes.WITHER)) return false;
-        if (damagesource.is(DamageTypes.DROWN)) return false;
-        if (damagesource.is(DamageTypes.WITHER_SKULL)) return false;
-        if (damagesource.is(DamageTypes.DRAGON_BREATH)) return false;
-        if (damagesource.getDirectEntity() instanceof AbstractArrow) return false;
-        return super.hurt(damagesource, f);
+        return false;
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
@@ -303,10 +298,21 @@ public class NullSwordEntity extends Monster {
     }
 
     @Override
+    public boolean doHurtTarget(Entity pEntity) {
+        if (pEntity instanceof Player hurtPlayer && this.playerUUID != null && this.playerUUID.equals(hurtPlayer.getUUID())) {
+            return false;
+        }
+        if (pEntity instanceof NullEntity hurtNull && this.nullUUID != null && this.nullUUID.equals(hurtNull.getUUID())) {
+            return false;
+        }
+        return super.doHurtTarget(pEntity);
+    }
+
+    @Override
     public void tick() {
         super.tick();
         if (this.getItemBySlot(EquipmentSlot.MAINHAND).getItem() != AnnoyingVillagersModItems.NULL_SWORD.get()) {
-            if (this.nullEntity == null && this.player == null) {
+            if (this.nullEntity == null && this.player != null) {
                 this.discard();
             }
             this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(AnnoyingVillagersModItems.NULL_SWORD.get()));
@@ -343,45 +349,35 @@ public class NullSwordEntity extends Monster {
                 this.player = ((ServerLevel) level()).getPlayerByUUID(playerUUID);
             }
             if (player != null && !player.isAlive()) {
-                if (this.level() instanceof ServerLevel serverLevel) {
-                    if (this.player != null) {
-                        boolean added = this.player.getInventory().add(this.getMainHandItem());
-                        if (!added) {
-                            var item = new ItemEntity(serverLevel, player.getX(), player.getY() + 0.5, player.getZ(), this.getMainHandItem());
-                            item.setPickUpDelay(10);
-                            serverLevel.addFreshEntity(item);
-                        }
-                    } else {
-                        var item = new ItemEntity(serverLevel, this.getX(), this.getY(), this.getZ(), this.getMainHandItem());
-                        item.setPickUpDelay(10);
-                        serverLevel.addFreshEntity(item);
-                    }
-                    this.player.getPersistentData().remove("NullSwordUUID");
-                    this.discard();
-                }
+                this.remove(RemovalReason.DISCARDED);
             }
         }
 
         if (!this.level().isClientSide && this.nullEntity == null && this.player != null) {
             if (this.returnGameTime > 0 && ((ServerLevel)this.level()).getGameTime() >= this.returnGameTime) {
-                if (this.level() instanceof ServerLevel serverLevel) {
-                    if (this.player != null) {
-                        boolean added = this.player.getInventory().add(this.getMainHandItem());
-                        if (!added) {
-                            var item = new ItemEntity(serverLevel, player.getX(), player.getY() + 0.5, player.getZ(), this.getMainHandItem());
-                            item.setPickUpDelay(10);
-                            serverLevel.addFreshEntity(item);
-                        }
-                    } else {
-                        var item = new ItemEntity(serverLevel, this.getX(), this.getY(), this.getZ(), this.getMainHandItem());
-                        item.setPickUpDelay(10);
-                        serverLevel.addFreshEntity(item);
-                    }
-                    this.player.getPersistentData().remove("NullSwordUUID");
-                    this.discard();
-                }
+                this.remove(RemovalReason.DISCARDED);
             }
         }
+    }
+
+    @Override
+    public void remove(RemovalReason pReason) {
+        if (this.level() instanceof ServerLevel serverLevel) {
+            if (this.player != null) {
+                boolean added = this.player.getInventory().add(this.getMainHandItem());
+                if (!added) {
+                    var item = new ItemEntity(serverLevel, player.getX(), player.getY() + 0.5, player.getZ(), this.getMainHandItem());
+                    item.setPickUpDelay(10);
+                    serverLevel.addFreshEntity(item);
+                }
+                this.player.getPersistentData().remove("NullSwordUUID");
+            } else {
+                var item = new ItemEntity(serverLevel, this.getX(), this.getY(), this.getZ(), this.getMainHandItem());
+                item.setPickUpDelay(10);
+                serverLevel.addFreshEntity(item);
+            }
+        }
+        super.remove(pReason);
     }
 
     public static void init() {}
@@ -390,7 +386,7 @@ public class NullSwordEntity extends Monster {
         Builder builder = Mob.createMobAttributes();
 
         builder = builder.add(Attributes.MOVEMENT_SPEED, 2.0D);
-        builder = builder.add(Attributes.MAX_HEALTH, 1000.0D);
+        builder = builder.add(Attributes.MAX_HEALTH, 10.0D);
         builder = builder.add(Attributes.ARMOR, 40.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 8.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 128.0D);

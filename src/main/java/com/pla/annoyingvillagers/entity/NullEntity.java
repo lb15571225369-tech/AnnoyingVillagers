@@ -33,7 +33,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
@@ -490,7 +489,7 @@ public class NullEntity extends Monster {
         Builder builder = Mob.createMobAttributes();
 
         builder = builder.add(Attributes.MOVEMENT_SPEED, 3.0D);
-        builder = builder.add(Attributes.MAX_HEALTH, 150.0D);
+        builder = builder.add(Attributes.MAX_HEALTH, 250.0D);
         builder = builder.add(Attributes.ARMOR, 40.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 8.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 128.0D);

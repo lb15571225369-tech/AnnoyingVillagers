@@ -21,7 +21,7 @@ public class ArmoredHerobrineOnSpawnProcedure {
             ServerLevel serverlevel;
 
             if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("Herobrine has arrived."), false);
+                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("§5Herobrine§r has arrived."), false);
             }
             new DelayedTask(20) {
                 @Override

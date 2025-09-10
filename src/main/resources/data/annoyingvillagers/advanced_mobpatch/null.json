@@ -122,19 +122,6 @@
 							"animation": "wom:biped/skill/antitheus_shoot"
 						}
 					]
-				},
-				{
-					"weight": 10.5,
-					"canBeInterrupted": false,
-					"looping": true,
-					"behaviors": [
-						{
-							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 5.0}
-							],
-							"animation": "wom:biped/skill/antitheus_ascension"
-						}
-					]
 				}
 			]
 		}
