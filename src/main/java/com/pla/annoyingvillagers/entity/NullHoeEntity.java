@@ -304,7 +304,27 @@ public class NullHoeEntity extends Monster {
         if (pEntity instanceof NullEntity hurtNull && this.nullUUID != null && this.nullUUID.equals(hurtNull.getUUID())) {
             return false;
         }
-        return super.doHurtTarget(pEntity);
+
+        if (this.player != null) {
+            ItemStack stack = this.getMainHandItem();
+            if (!stack.isEmpty()) {
+                stack.hurtAndBreak(1, this, (e) -> {
+                    e.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+                });
+            }
+        }
+
+        LivingEntity attacker;
+        if (player != null) {
+            attacker = player;
+        } else if (nullEntity != null) {
+            attacker = nullEntity;
+        } else {
+            attacker = this;
+        }
+
+        DamageSource source = this.damageSources().mobAttack(attacker);
+        return pEntity.hurt(source, (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
     }
 
 
@@ -386,8 +406,7 @@ public class NullHoeEntity extends Monster {
         Builder builder = Mob.createMobAttributes();
 
         builder = builder.add(Attributes.MOVEMENT_SPEED, 2.0D);
-        builder = builder.add(Attributes.MAX_HEALTH, 10.0D);
-        builder = builder.add(Attributes.ARMOR, 40.0D);
+        builder = builder.add(Attributes.MAX_HEALTH, 100.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 8.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 128.0D);
         builder = builder.add(Attributes.FLYING_SPEED, 2.0D);
