@@ -10,6 +10,7 @@ public class AnnoyingVillagersConfig {
     public static ForgeConfigSpec.ConfigValue<Double> HEROBRINE_POSSESS_RATE;
     public static ForgeConfigSpec.ConfigValue<Boolean> PHYSIC_MOD_COMPAT;
     public static ForgeConfigSpec.ConfigValue<Boolean> EXPLOSION_BREAK_ARMOR;
+    public static ForgeConfigSpec.ConfigValue<Boolean> HEROBRINE_OBSIDIAN_BREAK_ARMOR;
 
     static {
         PLAYER_NPC_SPAWN_RATE = BUILDER.comment(
@@ -33,6 +34,9 @@ public class AnnoyingVillagersConfig {
         EXPLOSION_BREAK_ARMOR = BUILDER.comment(
                         "Break your armor on explosion")
                 .define("explosionBreakArmor", true);
+        HEROBRINE_OBSIDIAN_BREAK_ARMOR = BUILDER.comment(
+                        "Break your armor on Herobrine's obsidian")
+                .define("herobrineObsidianBreakArmor", false);
         SPEC = BUILDER.build();
     }
 }

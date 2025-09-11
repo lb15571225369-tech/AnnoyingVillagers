@@ -3,7 +3,7 @@ package com.pla.annoyingvillagers.procedures;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 
-import com.pla.annoyingvillagers.entity.*;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.util.ObsidianWeaponUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -50,90 +50,93 @@ public class DarkObBlockOnEntityInsideProcedure {
                 }
             }
 
-            entity.hurt(entity.level().damageSources().magic(), 4.0F);
-            entity.setDeltaMovement(new Vec3(Mth.nextDouble(RandomSource.create(), -1.0D, -6.0D) * entity.getLookAngle().x, 0.0D, Mth.nextDouble(RandomSource.create(), -1.0D, -6.0D) * entity.getLookAngle().z));
-            LivingEntity livingentity1;
-            ItemStack itemstack;
+            entity.hurt(entity.level().damageSources().magic(), 1.0F);
+            entity.setDeltaMovement(new Vec3((-6.0 + Math.random() * 5.0) * entity.getLookAngle().x, 0.0D, (-6.0 + Math.random() * 5.0) * entity.getLookAngle().z));
 
-            if (entity instanceof LivingEntity) {
-                livingentity1 = (LivingEntity) entity;
-                itemstack = livingentity1.getItemBySlot(EquipmentSlot.HEAD);
-            } else {
-                itemstack = ItemStack.EMPTY;
+            if (AnnoyingVillagersConfig.HEROBRINE_OBSIDIAN_BREAK_ARMOR.get()) {
+
+                LivingEntity livingentity1;
+                ItemStack itemstack;
+
+                if (entity instanceof LivingEntity) {
+                    livingentity1 = (LivingEntity) entity;
+                    itemstack = livingentity1.getItemBySlot(EquipmentSlot.HEAD);
+                } else {
+                    itemstack = ItemStack.EMPTY;
+                }
+
+                ItemStack itemstack1 = itemstack;
+
+                if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 5.0D), RandomSource.create(), (ServerPlayer) null)) {
+                    itemstack1.shrink(1);
+                    itemstack1.setDamageValue(0);
+                }
+
+                if (entity instanceof LivingEntity) {
+                    livingentity1 = (LivingEntity) entity;
+                    itemstack = livingentity1.getItemBySlot(EquipmentSlot.CHEST);
+                } else {
+                    itemstack = ItemStack.EMPTY;
+                }
+
+                itemstack1 = itemstack;
+                if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 5.0D), RandomSource.create(), (ServerPlayer) null)) {
+                    itemstack1.shrink(1);
+                    itemstack1.setDamageValue(0);
+                }
+
+                if (entity instanceof LivingEntity) {
+                    livingentity1 = (LivingEntity) entity;
+                    itemstack = livingentity1.getItemBySlot(EquipmentSlot.LEGS);
+                } else {
+                    itemstack = ItemStack.EMPTY;
+                }
+
+                itemstack1 = itemstack;
+                if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 5.0D), RandomSource.create(), (ServerPlayer) null)) {
+                    itemstack1.shrink(1);
+                    itemstack1.setDamageValue(0);
+                }
+
+                if (entity instanceof LivingEntity) {
+                    livingentity1 = (LivingEntity) entity;
+                    itemstack = livingentity1.getItemBySlot(EquipmentSlot.FEET);
+                } else {
+                    itemstack = ItemStack.EMPTY;
+                }
+
+                itemstack1 = itemstack;
+                if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 5.0D), RandomSource.create(), (ServerPlayer) null)) {
+                    itemstack1.shrink(1);
+                    itemstack1.setDamageValue(0);
+                }
+
+                if (entity instanceof LivingEntity) {
+                    livingentity1 = (LivingEntity) entity;
+                    itemstack = livingentity1.getMainHandItem();
+                } else {
+                    itemstack = ItemStack.EMPTY;
+                }
+
+                itemstack1 = itemstack;
+                if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 5.0D), RandomSource.create(), (ServerPlayer) null)) {
+                    itemstack1.shrink(1);
+                    itemstack1.setDamageValue(0);
+                }
+
+                if (entity instanceof LivingEntity) {
+                    livingentity1 = (LivingEntity) entity;
+                    itemstack = livingentity1.getOffhandItem();
+                } else {
+                    itemstack = ItemStack.EMPTY;
+                }
+
+                itemstack1 = itemstack;
+                if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 5.0D), RandomSource.create(), (ServerPlayer) null)) {
+                    itemstack1.shrink(1);
+                    itemstack1.setDamageValue(0);
+                }
             }
-
-            ItemStack itemstack1 = itemstack;
-
-            if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 5.0D), RandomSource.create(), (ServerPlayer) null)) {
-                itemstack1.shrink(1);
-                itemstack1.setDamageValue(0);
-            }
-
-            if (entity instanceof LivingEntity) {
-                livingentity1 = (LivingEntity) entity;
-                itemstack = livingentity1.getItemBySlot(EquipmentSlot.CHEST);
-            } else {
-                itemstack = ItemStack.EMPTY;
-            }
-
-            itemstack1 = itemstack;
-            if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 5.0D), RandomSource.create(), (ServerPlayer) null)) {
-                itemstack1.shrink(1);
-                itemstack1.setDamageValue(0);
-            }
-
-            if (entity instanceof LivingEntity) {
-                livingentity1 = (LivingEntity) entity;
-                itemstack = livingentity1.getItemBySlot(EquipmentSlot.LEGS);
-            } else {
-                itemstack = ItemStack.EMPTY;
-            }
-
-            itemstack1 = itemstack;
-            if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 5.0D), RandomSource.create(), (ServerPlayer) null)) {
-                itemstack1.shrink(1);
-                itemstack1.setDamageValue(0);
-            }
-
-            if (entity instanceof LivingEntity) {
-                livingentity1 = (LivingEntity) entity;
-                itemstack = livingentity1.getItemBySlot(EquipmentSlot.FEET);
-            } else {
-                itemstack = ItemStack.EMPTY;
-            }
-
-            itemstack1 = itemstack;
-            if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 5.0D), RandomSource.create(), (ServerPlayer) null)) {
-                itemstack1.shrink(1);
-                itemstack1.setDamageValue(0);
-            }
-
-            if (entity instanceof LivingEntity) {
-                livingentity1 = (LivingEntity) entity;
-                itemstack = livingentity1.getMainHandItem();
-            } else {
-                itemstack = ItemStack.EMPTY;
-            }
-
-            itemstack1 = itemstack;
-            if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 5.0D), RandomSource.create(), (ServerPlayer) null)) {
-                itemstack1.shrink(1);
-                itemstack1.setDamageValue(0);
-            }
-
-            if (entity instanceof LivingEntity) {
-                livingentity1 = (LivingEntity) entity;
-                itemstack = livingentity1.getOffhandItem();
-            } else {
-                itemstack = ItemStack.EMPTY;
-            }
-
-            itemstack1 = itemstack;
-            if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 5.0D), RandomSource.create(), (ServerPlayer) null)) {
-                itemstack1.shrink(1);
-                itemstack1.setDamageValue(0);
-            }
-
         }
     }
 }

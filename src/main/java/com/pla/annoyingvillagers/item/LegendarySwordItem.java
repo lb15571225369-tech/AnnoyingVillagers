@@ -61,24 +61,12 @@ public class LegendarySwordItem extends SwordItem {
         return interactionresultholder;
     }
 
-    public boolean hasContainerItem(ItemStack itemstack) {
-        return true;
-    }
-
-    public ItemStack getContainerItem(ItemStack itemstack) {
-        return new ItemStack(this);
-    }
-
     public boolean isRepairable(ItemStack itemstack) {
         return false;
     }
 
     public void inventoryTick(ItemStack itemstack, Level level, Entity entity, int i, boolean flag) {
         super.inventoryTick(itemstack, level, entity, i, flag);
-//        if (flag) {
-//            LegendarySwordWhenInHandProcedure.execute(entity);
-//        }
-
         LegendarySwordWhenInInventoryProcedure.execute(entity, itemstack);
     }
 

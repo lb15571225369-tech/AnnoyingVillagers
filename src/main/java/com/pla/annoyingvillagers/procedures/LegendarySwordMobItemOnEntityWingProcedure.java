@@ -18,9 +18,9 @@ public class LegendarySwordMobItemOnEntityWingProcedure {
             Level level = (Level) levelaccessor;
 
             if (!level.isClientSide()) {
-                level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "woosh_hard")), SoundSource.BLOCKS, (float) Mth.nextDouble(RandomSource.create(), 0.1D, 1.0D), (float) Mth.nextDouble(RandomSource.create(), 0.5D, 1.0D));
+                level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "woosh_hard")), SoundSource.BLOCKS, (float) Mth.nextDouble(RandomSource.create(), 0.1D, 1.0D), (float) (0.5 + Math.random() * 0.5));
             } else {
-                level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "woosh_hard")), SoundSource.BLOCKS, (float) Mth.nextDouble(RandomSource.create(), 0.1D, 1.0D), (float) Mth.nextDouble(RandomSource.create(), 0.5D, 1.0D), false);
+                level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "woosh_hard")), SoundSource.BLOCKS, (float) Mth.nextDouble(RandomSource.create(), 0.1D, 1.0D), (float) (0.5 + Math.random() * 0.5), false);
             }
         }
 

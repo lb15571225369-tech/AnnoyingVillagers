@@ -30,7 +30,7 @@ public class LegendarySwordUseProcedure {
                     CompoundTag compoundtag;
 
                     if (entity.isSprinting()) {
-                        if (itemstack.getOrCreateTag().getDouble("power") >= 25.0D) {
+                        if (itemstack.getOrCreateTag().getDouble("power") >= 20.0D) {
                             if (entity instanceof Player) {
                                 player = (Player)entity;
                                 player.getCooldowns().addCooldown(itemstack.getItem(), 250);
@@ -46,7 +46,7 @@ public class LegendarySwordUseProcedure {
                                 }
                             }
 
-                            itemstack.getOrCreateTag().putDouble("power", itemstack.getOrCreateTag().getDouble("power") - 25.0D);
+                            itemstack.getOrCreateTag().putDouble("power", itemstack.getOrCreateTag().getDouble("power") - 20.0D);
                             if (!entity.level().isClientSide() && entity.getServer() != null) {
                                 try {
                                     entity.getServer().getCommands().getDispatcher().execute(
