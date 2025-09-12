@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.network;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;

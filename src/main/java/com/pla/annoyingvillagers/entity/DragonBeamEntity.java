@@ -217,7 +217,7 @@ public class DragonBeamEntity extends Entity {
 
             if (world.isClientSide) {
                 AAALevel.addParticle(world, false,
-                        new ParticleEmitterInfo(new ResourceLocation(AnnoyingVillagers.MODID, "DragonBeamHit"))
+                        new ParticleEmitterInfo(new ResourceLocation(AnnoyingVillagers.MODID, "dragon_beam_hit"))
                                 .clone()
                                 .position(hitBlock.getX(), hitBlock.getY(), hitBlock.getZ()));
             }
@@ -232,7 +232,8 @@ public class DragonBeamEntity extends Entity {
 
                     BlockPos targetFeet = this.target.blockPosition();
                     BlockPos targetEyes = BlockPos.containing(this.target.getEyePosition(1.0F));
-                    if (hitBlock.equals(targetFeet) || hitBlock.equals(targetEyes)) {
+
+                    if (hitBlock.getY() >= targetFeet.getY() && hitBlock.getY() <= targetEyes.getY()) {
                         shouldBreak = false;
                     }
                 }
@@ -409,7 +410,7 @@ public class DragonBeamEntity extends Entity {
             Vec3 from = new Vec3(caster.head.getX(), caster.head.getEyeY(), caster.head.getZ());
             Vec3 to = new Vec3(target.getX(), target.getY(), target.getZ());
 
-            new DragonBeamParticleEmitterInfo(new ResourceLocation(AnnoyingVillagers.MODID, "DragonBeam"))
+            new DragonBeamParticleEmitterInfo(new ResourceLocation(AnnoyingVillagers.MODID, "dragon_beam"))
                     .fromTo(from, to, DragonBeamParticleEmitterInfo.ForwardAxis.PLUS_Z, 0f)
                     .follow(caster.head, target, 120,
                             DragonBeamParticleEmitterInfo.ForwardAxis.PLUS_Z,

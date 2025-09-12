@@ -56,7 +56,6 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
         DynamicAnimation dynamicanimation = patch.getAnimator().getPlayerFor(null).getAnimation();
         if (dynamicanimation instanceof LongHitAnimation || entity.getPersistentData().getBoolean("kick_x")) return;
 
-        // Prevent immediate re-use
         entity.getPersistentData().putBoolean("kick_x", true);
         new DelayedTask(4) {
             @Override
@@ -621,32 +620,30 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                             new DelayedTask(3) {
                                 @Override
                                 public void run() {
-                                    if (!entity.level().isClientSide()) {
-                                        Vec3 tipPos = enderGlaiveItem.getJointWithTranslation(
-                                                entity,
-                                                new Vec3f(0.0F, 0.0F, 0.0F),
-                                                Armatures.BIPED.toolR,
-                                                4.3F,
-                                                2.3F
-                                        );
-                                        BlockPos mutePos = BlockPos.containing(tipPos);
-                                        AnnoyingVillagers.PACKET_HANDLER.send(
-                                                PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity),
-                                                new ClientboundMuteExplosionAtPos(mutePos, 4)
-                                        );
-                                        entity.level().explode(entity, tipPos.x, tipPos.y, tipPos.z,
-                                                2.0F, true, Level.ExplosionInteraction.TNT);
-                                        Vec3 glaivePos = enderGlaiveItem.getJointWithTranslation(entity, new Vec3f(0,0,0),
-                                                Armatures.BIPED.toolR, 1.3F, 2.3F);
-                                        Vec3 explosionPos = enderGlaiveItem.getJointWithTranslation(entity, new Vec3f(0,0,0),
-                                                Armatures.BIPED.toolR, 10.3F, 2.3F);
-                                        AnnoyingVillagers.PACKET_HANDLER.send(
-                                                PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity),
-                                                new ClientboundGlaiveExplosionFx(glaivePos, explosionPos)
-                                        );
-                                        entity.level().playSound((Player) null, new BlockPos((int) explosionPos.x, (int) explosionPos.y, (int) explosionPos.z), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:ender_shot")), SoundSource.NEUTRAL, 1.0F, 1.0F);
-                                        itemStack.getTag().putInt("HitCount", itemStack.getTag().contains("HitCount") ? itemStack.getTag().getInt("HitCount") - 3 : 0);
-                                    }
+                                    Vec3 tipPos = enderGlaiveItem.getJointWithTranslation(
+                                            entity,
+                                            new Vec3f(0.0F, 0.0F, 0.0F),
+                                            Armatures.BIPED.toolR,
+                                            4.3F,
+                                            2.3F
+                                    );
+                                    BlockPos mutePos = BlockPos.containing(tipPos);
+                                    AnnoyingVillagers.PACKET_HANDLER.send(
+                                            PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity),
+                                            new ClientboundMuteExplosionAtPos(mutePos, 4)
+                                    );
+                                    entity.level().explode(entity, tipPos.x, tipPos.y, tipPos.z,
+                                            2.0F, true, Level.ExplosionInteraction.TNT);
+                                    Vec3 glaivePos = enderGlaiveItem.getJointWithTranslation(entity, new Vec3f(0,0,0),
+                                            Armatures.BIPED.toolR, 1.3F, 2.3F);
+                                    Vec3 explosionPos = enderGlaiveItem.getJointWithTranslation(entity, new Vec3f(0,0,0),
+                                            Armatures.BIPED.toolR, 10.3F, 2.3F);
+                                    AnnoyingVillagers.PACKET_HANDLER.send(
+                                            PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity),
+                                            new ClientboundGlaiveExplosionFx(glaivePos, explosionPos)
+                                    );
+                                    entity.level().playSound((Player) null, new BlockPos((int) explosionPos.x, (int) explosionPos.y, (int) explosionPos.z), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:ender_shot")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                    itemStack.getTag().putInt("HitCount", itemStack.getTag().contains("HitCount") ? itemStack.getTag().getInt("HitCount") - 3 : 0);
                                 }
                             };
                         }

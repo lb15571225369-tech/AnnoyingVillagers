@@ -214,7 +214,7 @@ public class BabyDragonBeamEntity extends Entity {
 
             if (world.isClientSide) {
                 AAALevel.addParticle(world, false,
-                        new ParticleEmitterInfo(new ResourceLocation(AnnoyingVillagers.MODID, "BabyDragonBeamHit"))
+                        new ParticleEmitterInfo(new ResourceLocation(AnnoyingVillagers.MODID, "baby_dragon_beam_hit"))
                                 .clone()
                                 .position(hitBlock.getX(), hitBlock.getY(), hitBlock.getZ()));
             }
@@ -379,7 +379,7 @@ public class BabyDragonBeamEntity extends Entity {
                     .add(fwd.scale(muzzle));
             Vec3 to = target.getEyePosition(1.0F);
 
-            new BabyDragonBeamParticleEmitterInfo(new ResourceLocation(AnnoyingVillagers.MODID, "BabyDragonBeam"))
+            new BabyDragonBeamParticleEmitterInfo(new ResourceLocation(AnnoyingVillagers.MODID, "baby_dragon_beam"))
                     .fromTo(from, to, BabyDragonBeamParticleEmitterInfo.ForwardAxis.PLUS_Z, 0f)
                     .follow(caster, target, 120, BabyDragonBeamParticleEmitterInfo.ForwardAxis.PLUS_Z, 0f)
                     .spawnInWorld(caster.level(), null);
