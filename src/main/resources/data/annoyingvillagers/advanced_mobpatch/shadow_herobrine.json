@@ -85,7 +85,7 @@
 							"conditions": [
 								{"predicate":"within_distance", "min": 5.5, "max": 8.5}
 							],
-							"animation": "wom:biped/combat/enderblaster_onehand_auto_3",
+							"animation": "annoyingvillagers:biped/combat/fist_dash",
 							"command_list": [
 								{"time":0.1, "command":"item replace entity @s weapon.mainhand with minecraft:air", "execute_at_target":false},
 								{"time":0.1, "command":"item replace entity @s weapon.offhand with minecraft:air", "execute_at_target":false}

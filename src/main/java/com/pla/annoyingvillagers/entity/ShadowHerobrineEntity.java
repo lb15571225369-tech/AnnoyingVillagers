@@ -7,6 +7,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.util.CommonGoals;
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -44,15 +45,16 @@ import java.util.UUID;
 
 public class ShadowHerobrineEntity extends Monster {
     private boolean wasLanding = false;
-    private boolean shootingDarkOb = false;
-    private BlockProjectileEntity darkObUp;
-    private UUID darkObUpUUID;
+    private boolean wasAiming = false;
 
-    private BlockProjectileEntity darkObLeft;
-    private UUID darkObLeftUUID;
+    public BlockProjectileEntity darkObUp;
+    public UUID darkObUpUUID;
 
-    private BlockProjectileEntity darkObRight;
-    private UUID darkObRightUUID;
+    public BlockProjectileEntity darkObLeft;
+    public UUID darkObLeftUUID;
+
+    public BlockProjectileEntity darkObRight;
+    public UUID darkObRightUUID;
 
     public ShadowHerobrineEntity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.SHADOW_HEROBRINE.get(), level);
@@ -203,41 +205,47 @@ public class ShadowHerobrineEntity extends Monster {
         if (this.level() instanceof ServerLevel serverLevel) {
             BlockState block = AnnoyingVillagersModBlocks.DARKOB.get().defaultBlockState();
 
-            BlockProjectileEntity darkObbyUp = new BlockProjectileEntity(
-                    this.level(),
-                    this,
-                    block
-            );
-            darkObbyUp.setNoGravity(true);
-            darkObbyUp.setSpinning(true);
-            darkObbyUp.moveTo(this.getX(), this.getY() + 4, this.getZ(), 0.0F, 0.0F);
-            serverLevel.addFreshEntity(darkObbyUp);
-            this.darkObUpUUID = darkObbyUp.getUUID();
-            this.darkObUp = darkObbyUp;
+            if (this.darkObUp == null) {
+                BlockProjectileEntity darkObbyUp = new BlockProjectileEntity(
+                        this.level(),
+                        this,
+                        block
+                );
+                darkObbyUp.setNoGravity(true);
+                darkObbyUp.setNotReadyForShoot(true);
+                darkObbyUp.moveTo(this.getX(), this.getY() + 4, this.getZ(), 0.0F, 0.0F);
+                serverLevel.addFreshEntity(darkObbyUp);
+                this.darkObUpUUID = darkObbyUp.getUUID();
+                this.darkObUp = darkObbyUp;
+            }
 
-            BlockProjectileEntity darkObbyRight = new BlockProjectileEntity(
-                    this.level(),
-                    this,
-                    block
-            );
-            darkObbyRight.setNoGravity(true);
-            darkObbyRight.setSpinning(true);
-            darkObbyRight.moveTo(this.getX() + 2, this.getY() + 2, this.getZ(), 0.0F, 0.0F);
-            serverLevel.addFreshEntity(darkObbyRight);
-            this.darkObRightUUID = darkObbyRight.getUUID();
-            this.darkObRight = darkObbyRight;
+            if (this.darkObRight == null) {
+                BlockProjectileEntity darkObbyRight = new BlockProjectileEntity(
+                        this.level(),
+                        this,
+                        block
+                );
+                darkObbyRight.setNoGravity(true);
+                darkObbyRight.setNotReadyForShoot(true);
+                darkObbyRight.moveTo(this.getX() + 2, this.getY() + 2, this.getZ(), 0.0F, 0.0F);
+                serverLevel.addFreshEntity(darkObbyRight);
+                this.darkObRightUUID = darkObbyRight.getUUID();
+                this.darkObRight = darkObbyRight;
+            }
 
-            BlockProjectileEntity darkObbyLeft = new BlockProjectileEntity(
-                    this.level(),
-                    this,
-                    block
-            );
-            darkObbyLeft.setNoGravity(true);
-            darkObbyLeft.setSpinning(true);
-            darkObbyLeft.moveTo(this.getX() - 2, this.getY() + 2, this.getZ(), 0.0F, 0.0F);
-            serverLevel.addFreshEntity(darkObbyLeft);
-            this.darkObLeftUUID = darkObbyLeft.getUUID();
-            this.darkObLeft = darkObbyLeft;
+            if (this.darkObLeft == null) {
+                BlockProjectileEntity darkObbyLeft = new BlockProjectileEntity(
+                        this.level(),
+                        this,
+                        block
+                );
+                darkObbyLeft.setNoGravity(true);
+                darkObbyLeft.setNotReadyForShoot(true);
+                darkObbyLeft.moveTo(this.getX() - 2, this.getY() + 2, this.getZ(), 0.0F, 0.0F);
+                serverLevel.addFreshEntity(darkObbyLeft);
+                this.darkObLeftUUID = darkObbyLeft.getUUID();
+                this.darkObLeft = darkObbyLeft;
+            }
         }
     }
 
@@ -303,40 +311,49 @@ public class ShadowHerobrineEntity extends Monster {
 
     private static boolean isAiming(String id) {
         if (id == null) return false;
-        return id.contains("biped/combat/enderblaster_onehand_auto_3") || id.endsWith("/enderblaster_onehand_auto_3") || id.contains("enderblaster_onehand_auto_3");
+        return id.contains("biped/combat/fist_dash") || id.endsWith("/fist_dash") || id.contains("fist_dash");
     }
 
-    private void shootOne(BlockProjectileEntity ob, Vec3 to, double speed) {
+    private void shootOne(BlockProjectileEntity ob, Vec3 to, double speed, String position, ShadowHerobrineEntity shadowHerobrineEntity) {
         if (ob == null || !ob.isAlive()) return;
         Vec3 dir = to.subtract(ob.position());
         if (dir.lengthSqr() < 1.0e-6) dir = this.getLookAngle();
-        ob.setSpinning(false);
         ob.setNoGravity(false);
         Vec3 vel = dir.normalize().scale(speed);
         ob.setDeltaMovement(vel);
+        ob.setNotReadyForShoot(false);
+        if (position.equals("up")) {
+            shadowHerobrineEntity.darkObUpUUID = null;
+            shadowHerobrineEntity.darkObUp = null;
+        } else if (position.equals("left")) {
+            shadowHerobrineEntity.darkObLeftUUID = null;
+            shadowHerobrineEntity.darkObLeft = null;
+        } else if (position.equals("right")) {
+            shadowHerobrineEntity.darkObRightUUID = null;
+            shadowHerobrineEntity.darkObRight = null;
+        }
     }
 
-    public void shootDarkObsAtTarget(double speed) {
-        if (this.level().isClientSide) return;
+    public void shootDarkObsAtTarget(double speed, ShadowHerobrineEntity shadowHerobrineEntity) {
+        if (shadowHerobrineEntity.level().isClientSide) return;
 
         Vec3 to;
-        LivingEntity tgt = this.getTarget();
-        if (tgt != null && tgt.isAlive()) {
-            to = tgt.getEyePosition(1.0F);
+        LivingEntity target = shadowHerobrineEntity.getTarget();
+        if (target != null && target.isAlive()) {
+            to = target.getEyePosition(1.0F);
         } else {
-            to = this.getEyePosition().add(this.getLookAngle().scale(16.0));
+            to = shadowHerobrineEntity.getEyePosition().add(shadowHerobrineEntity.getLookAngle().scale(16.0));
         }
 
-        if (this.darkObUp != null) {
-            shootOne(darkObUp, to, speed);
+        if (shadowHerobrineEntity.darkObUp != null) {
+            shootOne(shadowHerobrineEntity.darkObUp, to, speed, "up", shadowHerobrineEntity);
         }
-        if (this.darkObLeft != null) {
-            shootOne(darkObLeft, to, speed);
+        if (shadowHerobrineEntity.darkObLeft != null) {
+            shootOne(shadowHerobrineEntity.darkObLeft, to, speed, "left", shadowHerobrineEntity);
         }
-        if (this.darkObRight != null) {
-            shootOne(darkObRight, to, speed);
+        if (shadowHerobrineEntity.darkObRight != null) {
+            shootOne(shadowHerobrineEntity.darkObRight, to, speed, "right", shadowHerobrineEntity);
         }
-        shootingDarkOb = true;
     }
 
     @Override
@@ -367,8 +384,6 @@ public class ShadowHerobrineEntity extends Monster {
                 Entity entity = ((ServerLevel) this.level()).getEntity(darkObUpUUID);
                 if (entity instanceof BlockProjectileEntity blockProjectileEntity) {
                     this.darkObUp = blockProjectileEntity;
-                    this.darkObUp.setSpinning(true);
-                    this.darkObUp.setNoGravity(true);
                 } else {
                     this.darkObUpUUID = null;
                 }
@@ -377,8 +392,6 @@ public class ShadowHerobrineEntity extends Monster {
                 Entity entity = ((ServerLevel) this.level()).getEntity(darkObLeftUUID);
                 if (entity instanceof BlockProjectileEntity blockProjectileEntity) {
                     this.darkObLeft = blockProjectileEntity;
-                    this.darkObLeft.setSpinning(true);
-                    this.darkObUp.setNoGravity(true);
                 } else {
                     this.darkObLeftUUID = null;
                 }
@@ -387,30 +400,34 @@ public class ShadowHerobrineEntity extends Monster {
                 Entity entity = ((ServerLevel) this.level()).getEntity(darkObRightUUID);
                 if (entity instanceof BlockProjectileEntity blockProjectileEntity) {
                     this.darkObRight = blockProjectileEntity;
-                    this.darkObRight.setSpinning(true);
-                    this.darkObUp.setNoGravity(true);
                 } else {
                     this.darkObRightUUID = null;
                 }
             }
-            if (this.darkObUp != null && !shootingDarkOb) {
+            if (this.darkObUp != null) {
                 this.darkObUp.moveTo(this.getX(), this.getY() + 4, this.getZ());
             }
-            if (this.darkObRight != null && !shootingDarkOb) {
+            if (this.darkObRight != null) {
                 this.darkObRight.moveTo(this.getX() + 2, this.getY() + 2, this.getZ());
             }
-            if (this.darkObLeft != null && !shootingDarkOb) {
+            if (this.darkObLeft != null) {
                 this.darkObLeft.moveTo(this.getX() - 2, this.getY() + 2, this.getZ());
             }
 
-            boolean isAiming = isAiming(animId);
-            if (isAiming && !shootingDarkOb) {
+            boolean aimingNow = isAiming(animId);
+            if (aimingNow && !wasAiming) {
                 spawnDarkObEntities();
-                shootDarkObsAtTarget(2.0F);
+                ShadowHerobrineEntity shadowHerobrineEntity = this;
+                new DelayedTask(10) {
+                    @Override
+                    public void run() {
+                        if (shadowHerobrineEntity.isAlive()) {
+                            shootDarkObsAtTarget(2.0F, shadowHerobrineEntity);
+                        }
+                    }
+                };
             }
-            if (!isAiming && shootingDarkOb) {
-                shootingDarkOb = false;
-            }
+            wasAiming = aimingNow;
         }
     }
 

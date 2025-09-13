@@ -11,6 +11,9 @@ public abstract class DelayedTask {
     private final int waitTicks;
     private boolean done = false;
 
+    private boolean pendingUnregister = false;
+    private boolean unregistered = false;
+
     public DelayedTask(int waitTicks) {
         this.waitTicks = waitTicks;
         MinecraftForge.EVENT_BUS.register(this);
@@ -18,17 +21,34 @@ public abstract class DelayedTask {
 
     @SubscribeEvent
     public void onTick(ServerTickEvent event) {
-        if (event.phase != TickEvent.Phase.END || done) return;
+        if (event.phase == TickEvent.Phase.START) {
+            if (pendingUnregister && !unregistered) {
+                var server = ServerLifecycleHooks.getCurrentServer();
+                if (server != null) {
+                    server.execute(() -> {
+                        if (!unregistered) {
+                            MinecraftForge.EVENT_BUS.unregister(this);
+                            unregistered = true;
+                        }
+                    });
+                } else {
+                    MinecraftForge.EVENT_BUS.unregister(this);
+                    unregistered = true;
+                }
+                pendingUnregister = false;
+            }
+            return;
+        }
 
+        if (done) return;
         if (++ticks >= waitTicks) {
             done = true;
-            run();
-
-            var server = ServerLifecycleHooks.getCurrentServer();
-            if (server != null) {
-                server.execute(() -> MinecraftForge.EVENT_BUS.unregister(this));
-            } else {
+            try {
+                run();
+            } catch (Throwable t) {
+                t.printStackTrace();
             }
+            pendingUnregister = true;
         }
     }
 

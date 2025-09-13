@@ -34,12 +34,11 @@ public class BlockProjectileEntity extends ThrowableProjectile {
     private static final EntityDataAccessor<Float> ROT_Z =
             SynchedEntityData.defineId(BlockProjectileEntity.class, EntityDataSerializers.FLOAT);
 
-    private static final EntityDataAccessor<Boolean> DATA_SPINNING =
-            SynchedEntityData.defineId(BlockProjectileEntity.class, EntityDataSerializers.BOOLEAN);
+    private boolean notReadyForShoot = false;
 
-    public void setSpinning(boolean spinning) { this.entityData.set(DATA_SPINNING, spinning); }
-
-    public boolean getSpinning(){ return this.entityData.get(DATA_SPINNING); }
+    public void setNotReadyForShoot(boolean notReadyForShoot) {
+        this.notReadyForShoot = notReadyForShoot;
+    }
 
     public BlockProjectileEntity(EntityType<? extends BlockProjectileEntity> type, Level level) {
         super(type, level);
@@ -74,7 +73,6 @@ public class BlockProjectileEntity extends ThrowableProjectile {
         this.entityData.define(ROT_X, 0f);
         this.entityData.define(ROT_Y, 0f);
         this.entityData.define(ROT_Z, 0f);
-        this.entityData.define(DATA_SPINNING, true);
     }
 
     public void setCarriedBlock(BlockState state) {
@@ -84,7 +82,7 @@ public class BlockProjectileEntity extends ThrowableProjectile {
     @Override
     protected void onHitEntity(EntityHitResult result) {
         super.onHitEntity(result);
-        if (this.getSpinning()) return;
+        if (this.notReadyForShoot) return;
         Entity target = result.getEntity();
         if (!ObsidianWeaponUtil.isHerobrineFaction(target)) {
             if (!target.level().isClientSide() && target.getServer() != null) {
@@ -102,7 +100,11 @@ public class BlockProjectileEntity extends ThrowableProjectile {
             } else {
                 target.level().playLocalSound(this.getX(), this.getY(), this.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "obsidian_hit")), SoundSource.BLOCKS, 1.0F, (float) (0.5 + Math.random() * 0.5), false);
             }
-            target.hurt(target.level().damageSources().indirectMagic(target, this.getOwner()), 2.0F);
+            if (this.getOwner() == null) {
+                target.hurt(target.level().damageSources().generic(), 2.0F);
+            } else {
+                target.hurt(target.level().damageSources().indirectMagic(this, this.getOwner()), 2.0F);
+            }
             if (!target.level().isClientSide() && target.getServer() != null) {
                 try {
                     target.getServer().getCommands().getDispatcher().execute(
@@ -124,7 +126,7 @@ public class BlockProjectileEntity extends ThrowableProjectile {
 
     @Override
     protected void onHitBlock(BlockHitResult result) {
-        if (this.getSpinning()) return;
+        if (this.notReadyForShoot) return;
         BlockPos pos = result.getBlockPos();
         BlockState hitState = level().getBlockState(pos);
 
@@ -161,6 +163,7 @@ public class BlockProjectileEntity extends ThrowableProjectile {
         tag.putFloat("RotX", getRotX());
         tag.putFloat("RotY", getRotY());
         tag.putFloat("RotZ", getRotZ());
+        tag.putBoolean("NotReadyForShoot", notReadyForShoot);
     }
 
     @Override
@@ -171,6 +174,7 @@ public class BlockProjectileEntity extends ThrowableProjectile {
         setRotX(tag.contains("RotX") ? tag.getFloat("RotX") : 0f);
         setRotY(tag.contains("RotY") ? tag.getFloat("RotY") : 0f);
         setRotZ(tag.contains("RotZ") ? tag.getFloat("RotZ") : 0f);
+        notReadyForShoot = tag.getBoolean("NotReadyForShoot");
     }
 
     @Override

@@ -26,14 +26,10 @@ public class BlockProjectileRenderer extends EntityRenderer<BlockProjectileEntit
         poseStack.scale(1.0F, 1.0F, 1.0F);
         poseStack.translate(-0.5, -0.5, -0.5);
 
-        if (!entity.getSpinning()) {
-            float age = entity.tickCount + partialTicks;
-            poseStack.mulPose(Axis.XP.rotationDegrees(entity.getRotX() * age));
-            poseStack.mulPose(Axis.YP.rotationDegrees(entity.getRotY() * age));
-            poseStack.mulPose(Axis.ZP.rotationDegrees(entity.getRotZ() * age));
-        } else {
-            poseStack.mulPose(Axis.XP.rotationDegrees(45f));
-        }
+        float age = entity.tickCount + partialTicks;
+        poseStack.mulPose(Axis.XP.rotationDegrees(entity.getRotX() * age));
+        poseStack.mulPose(Axis.YP.rotationDegrees(entity.getRotY() * age));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(entity.getRotZ() * age));
 
         Minecraft.getInstance().getBlockRenderer().renderSingleBlock(block, poseStack, buffer, packedLight,
                 OverlayTexture.NO_OVERLAY);
