@@ -341,46 +341,6 @@ public class NullEntity extends Monster {
             this.setInvisible(true);
             this.remove(RemovalReason.KILLED);
             serverLevel.addFreshEntity(corpse);
-            if (this.getNullSwordEntity() != null) {
-                if (!this.level().isClientSide()) {
-                    ItemEntity item = new ItemEntity(this.level(), this.getNullSwordEntity().getX(), this.getNullSwordEntity().getY(), this.getNullSwordEntity().getZ(), new ItemStack(AnnoyingVillagersModItems.NULL_SWORD.get()));
-                    item.setPickUpDelay(10);
-                    serverLevel.addFreshEntity(item);
-                }
-                this.nullSwordEntity.discard();
-            }
-            if (this.getNullAxeEntity() != null) {
-                if (!this.level().isClientSide()) {
-                    ItemEntity item = new ItemEntity(this.level(), this.getNullAxeEntity().getX(), this.getNullAxeEntity().getY(), this.getNullAxeEntity().getZ(), new ItemStack(AnnoyingVillagersModItems.NULL_AXE.get()));
-                    item.setPickUpDelay(10);
-                    serverLevel.addFreshEntity(item);
-                }
-                this.nullAxeEntity.discard();
-            }
-            if (this.getNullPickaxeEntity() != null) {
-                if (!this.level().isClientSide()) {
-                    ItemEntity item = new ItemEntity(this.level(), this.getNullPickaxeEntity().getX(), this.getNullPickaxeEntity().getY(), this.getNullPickaxeEntity().getZ(), new ItemStack(AnnoyingVillagersModItems.NULL_PICKAXE.get()));
-                    item.setPickUpDelay(10);
-                    serverLevel.addFreshEntity(item);
-                }
-                this.nullPickaxeEntity.discard();
-            }
-            if (this.getNullShovelEntity() != null) {
-                if (!this.level().isClientSide()) {
-                    ItemEntity item = new ItemEntity(this.level(), this.getNullShovelEntity().getX(), this.getNullShovelEntity().getY(), this.getNullShovelEntity().getZ(), new ItemStack(AnnoyingVillagersModItems.NULL_SHOVEL.get()));
-                    item.setPickUpDelay(10);
-                    serverLevel.addFreshEntity(item);
-                }
-                this.nullShovelEntity.discard();
-            }
-            if (this.getNullHoeEntity() != null) {
-                if (!this.level().isClientSide()) {
-                    ItemEntity item = new ItemEntity(this.level(), this.getNullHoeEntity().getX(), this.getNullHoeEntity().getY(), this.getNullHoeEntity().getZ(), new ItemStack(AnnoyingVillagersModItems.NULL_HOE.get()));
-                    item.setPickUpDelay(10);
-                    serverLevel.addFreshEntity(item);
-                }
-                this.nullHoeEntity.discard();
-            }
         }
     }
 
