@@ -61,7 +61,7 @@
 			"style": "common",
 			"behavior_series": [
 				{
-					"weight": 40.5,
+					"weight": 30.5,
 					"canBeInterrupted": false,
 					"looping": true,
 					"behaviors": [
@@ -167,7 +167,7 @@
                         ]
 				},
 				{
-					"weight": 50.5,
+					"weight": 30.5,
 					"canBeInterrupted": false,
 					"looping": false,
 					"behaviors": [
@@ -182,13 +182,13 @@
 					]
 				},
 				{
-					"weight": 40.5,
+					"weight": 30.5,
 					"canBeInterrupted": false,
 					"looping": true,
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
 							],
 							"animation": "epicfight:biped/combat/fist_airslash",
 							"play_speed": 2.1,
@@ -288,7 +288,7 @@
 					]
 				},
 				{
-					"weight": 20.5,
+					"weight": 30.5,
 					"canBeInterrupted": false,
 					"looping": false,
 					"behaviors": [
@@ -301,14 +301,14 @@
 					]
 				},
                 {
-					"weight": 10.5,
+					"weight": 30.5,
 					"canBeInterrupted": true,
 					"cooldown": 150,
 					"looping": false,
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 10.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.5}
 							],
 							"animation": "epicfight:biped/combat/fist_airslash",
 							"command_list": [
@@ -317,14 +317,14 @@
 					]
 				},
                 {
-					"weight": 5.5,
+					"weight": 30.5,
 					"canBeInterrupted": true,
 					"cooldown": 350,
 					"looping": false,
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 10.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.5}
 							],
 							"animation": "epicfight:biped/combat/fist_auto2",
 							"command_list": [
@@ -333,14 +333,14 @@
 					]
 				},
                 {
-					"weight": 10.5,
+					"weight": 30.5,
 					"canBeInterrupted": true,
 					"cooldown": 250,
 					"looping": false,
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 50.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.5}
 							],
 							"animation": "epicfight:zombie/attack3",
 							"play_speed": 1.9,
@@ -350,14 +350,14 @@
 					]
 				},
                 {
-					"weight": 10.5,
+					"weight": 30.5,
 					"canBeInterrupted": true,
 					"cooldown": 250,
 					"looping": false,
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 50.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 60.5}
 							],
 							"animation": "epicfight:biped/skill/eviscerate_first",
 							"play_speed": 1.9,
@@ -374,7 +374,7 @@
 					]
 				},
 				{
-					"weight": 50.5,
+					"weight": 30.5,
 					"canBeInterrupted": false,
 					"looping": false,
 					"behaviors": [
@@ -389,7 +389,7 @@
 					]
 				},
 				{
-					"weight": 10.5,
+					"weight": 30.5,
 					"canBeInterrupted": true,
 					"cooldown": 150,
 					"looping": false,
@@ -405,14 +405,14 @@
 					]
 				},
 				{
-					"weight": 5.5,
+					"weight": 30.5,
 					"canBeInterrupted": true,
 					"cooldown": 350,
 					"looping": false,
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 10.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.5}
 							],
 							"animation": "epicfight:biped/combat/fist_auto2",
 							"command_list": [
@@ -421,14 +421,14 @@
 					]
 				},
 				{
-					"weight": 10.5,
+					"weight": 30.5,
 					"canBeInterrupted": true,
 					"cooldown": 250,
 					"looping": false,
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 50.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.5}
 							],
 							"animation": "epicfight:zombie/attack3",
 							"play_speed": 1.9,
@@ -438,14 +438,14 @@
 					]
 				},
                 {
-					"weight": 20.5,
+					"weight": 30.5,
 					"canBeInterrupted": true,
 					"cooldown": 200,
 					"looping": false,
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 9.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "wom:biped/skill/antitheus_ascended_deathfall",
 							"play_speed": 1.0,
@@ -455,14 +455,14 @@
 					]
 				},
 				{
-					"weight": 20.5,
+					"weight": 30.5,
 					"canBeInterrupted": true,
 					"cooldown": 200,
 					"looping": false,
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 9.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "wom:biped/skill/antitheus_ascended_deathfall",
 							"play_speed": 1.0,
@@ -472,7 +472,7 @@
 					]
 				},
                 {
-					"weight": 50.5,
+					"weight": 30.5,
 					"canBeInterrupted": false,
 					"looping": false,
 					"behaviors": [
@@ -485,28 +485,28 @@
 					]
 				},
                 {
-					"weight": 50.5,
+					"weight": 30.5,
 					"canBeInterrupted": false,
 					"cooldown": 300,
 					"looping": false,
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_distance", "min": 11.0, "max": 200.0}
+								{"predicate":"within_distance", "min": 5.0, "max": 8.0}
 							],
 							"animation": "wom:biped/skill/enderstep_forward"
 						}
 					]
 				},
                 {
-					"weight": 50.5,
+					"weight": 30.5,
 					"canBeInterrupted": false,
 					"cooldown": 100,
 					"looping": false,
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_distance", "min": 7.0, "max": 15.8}
+								{"predicate":"within_distance", "min": 3.0, "max": 6.8}
 							],
 							"animation": "epicfight:biped/living/landing",
 							"play_speed": 0.2,
@@ -516,14 +516,14 @@
 					]
 				},
 				{
-					"weight": 50.5,
+					"weight": 30.5,
 					"canBeInterrupted": false,
 					"cooldown": 300,
 					"looping": false,
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 7.0, "max": 15.8}
+								{"predicate":"within_distance", "min": 3.0, "max": 6.8}
 							],
 							"animation": "epicfight:biped/living/landing",
 							"play_speed": 0.2,
@@ -533,7 +533,7 @@
 					]
 				},
                 {
-					"weight": 40.5,
+					"weight": 30.5,
 					"canBeInterrupted": false,
 					"looping": false,
 					"behaviors": [
@@ -546,7 +546,7 @@
 					]
 				},
                 {
-					"weight": 50.5,
+					"weight": 30.5,
 					"canBeInterrupted": false,
 					"looping": false,
 					"behaviors": [
@@ -559,7 +559,7 @@
 					]
 				},
                 {
-					"weight": 15.5,
+					"weight": 30.5,
 					"canBeInterrupted": false,
 					"looping": false,
 					"behaviors": [
@@ -572,14 +572,14 @@
 					]
 				},
 				{
-					"weight": 50.5,
+					"weight": 30.5,
 					"canBeInterrupted": false,
 					"looping": false,
 					"cooldown": 20,
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 1.0, "max": 7.0}
+								{"predicate":"within_distance", "min": 1.0, "max": 6.0}
 							],
 							"animation": "epicfight:biped/skill/step_right"
 						}

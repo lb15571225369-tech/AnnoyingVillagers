@@ -126,7 +126,7 @@ public class Herobrine5Entity extends PlayerMobEntity {
             if (!level.isClientSide()) {
                 itemstack = livingentity.getMainHandItem();
                 itementity = new ItemEntity(level, this.getX(), this.getY() + 1.0D, this.getZ(), itemstack);
-                itementity.setPickUpDelay(10);
+            itementity.setPickUpDelay(10);
                 level.addFreshEntity(itementity);
             }
         }
@@ -195,7 +195,6 @@ public class Herobrine5Entity extends PlayerMobEntity {
 
     public void playerTouch(Player player) {
         super.playerTouch(player);
-        Herobrine3OnTouchProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
     public static void init() {

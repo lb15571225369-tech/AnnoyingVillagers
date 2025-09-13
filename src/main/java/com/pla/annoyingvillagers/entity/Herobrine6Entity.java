@@ -187,7 +187,6 @@ public class Herobrine6Entity extends Monster {
 
     public void playerTouch(Player player) {
         super.playerTouch(player);
-        Herobrine6OnPlayerTouchProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
     public static void init() {

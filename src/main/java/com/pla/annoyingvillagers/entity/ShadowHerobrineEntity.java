@@ -3,7 +3,9 @@ package com.pla.annoyingvillagers.entity;
 import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.*;
@@ -15,17 +17,11 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -35,7 +31,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
@@ -131,6 +129,22 @@ public class ShadowHerobrineEntity extends Monster {
         HerobrineTransfromProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), entity, this);
     }
 
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        if (this.getPersistentData().contains("Shooting")) {
+            tag.putInt("Shooting", this.getPersistentData().getInt("Shooting"));
+        }
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.contains("Shooting")) {
+            this.getPersistentData().putInt("Shooting", tag.getInt("Shooting"));
+        }
+    }
+
     public void baseTick() {
         super.baseTick();
     }
@@ -144,6 +158,48 @@ public class ShadowHerobrineEntity extends Monster {
         SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.SHADOW_HEROBRINE.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
             return serverlevelaccessor.getRawBrightness(blockpos, 0) <= 8;
         });
+    }
+
+    private static void shootChain(Entity shooter, BlockState block, float velocity, int length) {
+        Level level = shooter.level();
+        if (level.isClientSide) return;
+
+        double eyeY = shooter.getEyeY();
+        Vec3 look = shooter.getLookAngle().normalize();
+        RandomSource rand = level.getRandom();
+
+        for (int i = 0; i < length; i++) {
+            BlockProjectileEntity proj = new BlockProjectileEntity(
+                    level,
+                    shooter instanceof LivingEntity ? (LivingEntity) shooter : null,
+                    block
+            );
+
+            Vec3 forward = look.scale(i * 1.0);
+
+            double sideX = (rand.nextDouble() - 0.5) * 2.0;
+            double sideY = (rand.nextDouble() - 0.5) * 2.0;
+            double sideZ = (rand.nextDouble() - 0.5) * 2.0;
+
+            proj.setPos(
+                    shooter.getX() + forward.x + sideX,
+                    eyeY + forward.y + sideY,
+                    shooter.getZ() + forward.z + sideZ
+            );
+            proj.setDeltaMovement(look.scale(velocity));
+
+            level.addFreshEntity(proj);
+        }
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (!this.level().isClientSide() && this.tickCount % 5 == 0 && this.getPersistentData().getInt("Shooting") >= 5) {
+            BlockState block = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().defaultBlockState();
+            shootChain(this, block, 2.5F, 5);
+            this.getPersistentData().putInt("Shooting", this.getPersistentData().getInt("Shooting") - 1);
+        }
     }
 
     public static Builder createAttributes() {
