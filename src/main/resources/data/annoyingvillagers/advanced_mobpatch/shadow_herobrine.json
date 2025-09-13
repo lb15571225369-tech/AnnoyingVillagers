@@ -76,6 +76,24 @@
 					]
 				},
 				{
+					"weight": 50.5,
+					"canBeInterrupted": false,
+					"looping": false,
+					"cooldown": 350,
+					"behaviors": [
+						{
+							"conditions": [
+								{"predicate":"within_distance", "min": 5.5, "max": 8.5}
+							],
+							"animation": "wom:biped/combat/enderblaster_onehand_auto_3",
+							"command_list": [
+								{"time":0.1, "command":"item replace entity @s weapon.mainhand with minecraft:air", "execute_at_target":false},
+								{"time":0.1, "command":"item replace entity @s weapon.offhand with minecraft:air", "execute_at_target":false}
+							]
+						}
+					]
+				},
+				{
 					"weight": 40.5,
 					"canBeInterrupted": false,
 					"looping": true,
@@ -468,7 +486,8 @@
 							"animation": "epicfight:biped/living/landing",
 							"play_speed": 0.2,
 							"command_list": [
-								{"time":0.1, "command":"item replace entity @s weapon.mainhand with annoyingvillagers:elite_obsidian_long", "execute_at_target":false}
+								{"time":0.1, "command":"item replace entity @s weapon.mainhand with annoyingvillagers:elite_obsidian_long", "execute_at_target":false},
+								{"time":0.1, "command":"item replace entity @s weapon.offhand with minecraft:air", "execute_at_target":false}
 							]
 						}
 					]

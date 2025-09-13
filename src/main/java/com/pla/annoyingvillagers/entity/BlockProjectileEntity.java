@@ -1,9 +1,8 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.util.ObsidianWeaponUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -15,7 +14,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
@@ -24,7 +22,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class BlockProjectileEntity extends ThrowableProjectile {
@@ -36,6 +33,13 @@ public class BlockProjectileEntity extends ThrowableProjectile {
             SynchedEntityData.defineId(BlockProjectileEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> ROT_Z =
             SynchedEntityData.defineId(BlockProjectileEntity.class, EntityDataSerializers.FLOAT);
+
+    private static final EntityDataAccessor<Boolean> DATA_SPINNING =
+            SynchedEntityData.defineId(BlockProjectileEntity.class, EntityDataSerializers.BOOLEAN);
+
+    public void setSpinning(boolean spinning) { this.entityData.set(DATA_SPINNING, spinning); }
+
+    public boolean getSpinning(){ return this.entityData.get(DATA_SPINNING); }
 
     public BlockProjectileEntity(EntityType<? extends BlockProjectileEntity> type, Level level) {
         super(type, level);
@@ -58,7 +62,7 @@ public class BlockProjectileEntity extends ThrowableProjectile {
     private void initRandomRotation() {
         if (!level().isClientSide) {
             var r = this.random;
-            setRotX((r.nextFloat() - 0.5f) * 10f);  // deg per tick
+            setRotX((r.nextFloat() - 0.5f) * 10f);
             setRotY((r.nextFloat() - 0.5f) * 10f);
             setRotZ((r.nextFloat() - 0.5f) * 10f);
         }
@@ -70,6 +74,7 @@ public class BlockProjectileEntity extends ThrowableProjectile {
         this.entityData.define(ROT_X, 0f);
         this.entityData.define(ROT_Y, 0f);
         this.entityData.define(ROT_Z, 0f);
+        this.entityData.define(DATA_SPINNING, true);
     }
 
     public void setCarriedBlock(BlockState state) {
@@ -79,6 +84,7 @@ public class BlockProjectileEntity extends ThrowableProjectile {
     @Override
     protected void onHitEntity(EntityHitResult result) {
         super.onHitEntity(result);
+        if (this.getSpinning()) return;
         Entity target = result.getEntity();
         if (!ObsidianWeaponUtil.isHerobrineFaction(target)) {
             if (!target.level().isClientSide() && target.getServer() != null) {
@@ -118,6 +124,7 @@ public class BlockProjectileEntity extends ThrowableProjectile {
 
     @Override
     protected void onHitBlock(BlockHitResult result) {
+        if (this.getSpinning()) return;
         BlockPos pos = result.getBlockPos();
         BlockState hitState = level().getBlockState(pos);
 
@@ -134,7 +141,11 @@ public class BlockProjectileEntity extends ThrowableProjectile {
             if (level().getBlockState(placePos).isAir() ||
                     !level().getFluidState(placePos).isEmpty() ||
                     level().getBlockState(placePos).canBeReplaced()) {
-                level().setBlockAndUpdate(placePos, getCarriedBlock());
+                if (getCarriedBlock().is(AnnoyingVillagersModBlocks.DARKOB.get())) {
+                    level().setBlockAndUpdate(placePos, AnnoyingVillagersModBlocks.DARK_OB_UP.get().defaultBlockState());
+                } else {
+                    level().setBlockAndUpdate(placePos, getCarriedBlock());
+                }
             }
             this.discard();
         }

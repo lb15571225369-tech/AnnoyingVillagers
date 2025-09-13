@@ -26,6 +26,7 @@ public class ObsidianWeaponUtil {
                 || e instanceof NullAxeEntity
                 || e instanceof NullPickaxeEntity
                 || e instanceof NullShovelEntity
-                || e instanceof NullHoeEntity;
+                || e instanceof NullHoeEntity
+                || e instanceof BlockProjectileEntity;
     }
 }

@@ -2,9 +2,6 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
@@ -34,15 +31,28 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import se.gory_moon.player_mobs.utils.NameManager;
+import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+
+import java.util.UUID;
 
 
 public class ShadowHerobrineEntity extends Monster {
-    private boolean wasKneeling = false;
+    private boolean wasLanding = false;
+    private boolean shootingDarkOb = false;
+    private BlockProjectileEntity darkObUp;
+    private UUID darkObUpUUID;
+
+    private BlockProjectileEntity darkObLeft;
+    private UUID darkObLeftUUID;
+
+    private BlockProjectileEntity darkObRight;
+    private UUID darkObRightUUID;
 
     public ShadowHerobrineEntity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.SHADOW_HEROBRINE.get(), level);
@@ -101,6 +111,15 @@ public class ShadowHerobrineEntity extends Monster {
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
+        if (this.darkObUp != null) {
+            this.darkObUp.discard();
+        }
+        if (this.darkObRight != null) {
+            this.darkObRight.discard();
+        }
+        if (this.darkObLeft != null) {
+            this.darkObLeft.discard();
+        }
         if (this.level() instanceof ServerLevel serverLevel) {
             InfectedPlayerMobEntity corpse = new InfectedPlayerMobEntity(AnnoyingVillagersModEntities.INFECTED_PLAYER_MOB.get(), serverLevel);
             corpse.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
@@ -137,6 +156,15 @@ public class ShadowHerobrineEntity extends Monster {
         if (this.getPersistentData().contains("Shooting")) {
             tag.putInt("Shooting", this.getPersistentData().getInt("Shooting"));
         }
+        if (darkObUpUUID != null) {
+            tag.putUUID("DarkObUpUUID", darkObUpUUID);
+        }
+        if (darkObLeftUUID != null) {
+            tag.putUUID("DarkObLeftUUID", darkObLeftUUID);
+        }
+        if (darkObRightUUID != null) {
+            tag.putUUID("DarkObRightUUID", darkObRightUUID);
+        }
     }
 
     @Override
@@ -144,6 +172,15 @@ public class ShadowHerobrineEntity extends Monster {
         super.readAdditionalSaveData(tag);
         if (tag.contains("Shooting")) {
             this.getPersistentData().putInt("Shooting", tag.getInt("Shooting"));
+        }
+        if (tag.hasUUID("DarkObUpUUID")) {
+            darkObUpUUID = tag.getUUID("DarkObUpUUID");
+        }
+        if (tag.hasUUID("DarkObLeftUUID")) {
+            darkObLeftUUID = tag.getUUID("DarkObLeftUUID");
+        }
+        if (tag.hasUUID("DarkObRightUUID")) {
+            darkObRightUUID = tag.getUUID("DarkObRightUUID");
         }
     }
 
@@ -160,6 +197,48 @@ public class ShadowHerobrineEntity extends Monster {
         SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.SHADOW_HEROBRINE.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
             return serverlevelaccessor.getRawBrightness(blockpos, 0) <= 8;
         });
+    }
+
+    private void spawnDarkObEntities() {
+        if (this.level() instanceof ServerLevel serverLevel) {
+            BlockState block = AnnoyingVillagersModBlocks.DARKOB.get().defaultBlockState();
+
+            BlockProjectileEntity darkObbyUp = new BlockProjectileEntity(
+                    this.level(),
+                    this,
+                    block
+            );
+            darkObbyUp.setNoGravity(true);
+            darkObbyUp.setSpinning(true);
+            darkObbyUp.moveTo(this.getX(), this.getY() + 4, this.getZ(), 0.0F, 0.0F);
+            serverLevel.addFreshEntity(darkObbyUp);
+            this.darkObUpUUID = darkObbyUp.getUUID();
+            this.darkObUp = darkObbyUp;
+
+            BlockProjectileEntity darkObbyRight = new BlockProjectileEntity(
+                    this.level(),
+                    this,
+                    block
+            );
+            darkObbyRight.setNoGravity(true);
+            darkObbyRight.setSpinning(true);
+            darkObbyRight.moveTo(this.getX() + 2, this.getY() + 2, this.getZ(), 0.0F, 0.0F);
+            serverLevel.addFreshEntity(darkObbyRight);
+            this.darkObRightUUID = darkObbyRight.getUUID();
+            this.darkObRight = darkObbyRight;
+
+            BlockProjectileEntity darkObbyLeft = new BlockProjectileEntity(
+                    this.level(),
+                    this,
+                    block
+            );
+            darkObbyLeft.setNoGravity(true);
+            darkObbyLeft.setSpinning(true);
+            darkObbyLeft.moveTo(this.getX() - 2, this.getY() + 2, this.getZ(), 0.0F, 0.0F);
+            serverLevel.addFreshEntity(darkObbyLeft);
+            this.darkObLeftUUID = darkObbyLeft.getUUID();
+            this.darkObLeft = darkObbyLeft;
+        }
     }
 
     private static void shootChain(Entity shooter, BlockState block, float velocity, int length) {
@@ -196,11 +275,11 @@ public class ShadowHerobrineEntity extends Monster {
 
     private static String currentEfAnimIdOrNull(LivingEntity self) {
         try {
-            var patch = yesman.epicfight.world.capabilities.EpicFightCapabilities
-                    .getEntityPatch(self, yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch.class);
+            var patch = EpicFightCapabilities
+                    .getEntityPatch(self, LivingEntityPatch.class);
             if (patch == null) return null;
 
-            var player = patch.getAnimator().getPlayerFor((yesman.epicfight.api.animation.types.DynamicAnimation) null);
+            var player = patch.getAnimator().getPlayerFor((DynamicAnimation) null);
             if (player == null) return null;
 
             var anim = player.getAnimation();
@@ -217,9 +296,47 @@ public class ShadowHerobrineEntity extends Monster {
         }
     }
 
-    private static boolean isKneelAnimId(String id) {
+    private static boolean isLandAnimId(String id) {
         if (id == null) return false;
         return id.contains("biped/living/landing") || id.endsWith("/landing") || id.contains("landing");
+    }
+
+    private static boolean isAiming(String id) {
+        if (id == null) return false;
+        return id.contains("biped/combat/enderblaster_onehand_auto_3") || id.endsWith("/enderblaster_onehand_auto_3") || id.contains("enderblaster_onehand_auto_3");
+    }
+
+    private void shootOne(BlockProjectileEntity ob, Vec3 to, double speed) {
+        if (ob == null || !ob.isAlive()) return;
+        Vec3 dir = to.subtract(ob.position());
+        if (dir.lengthSqr() < 1.0e-6) dir = this.getLookAngle();
+        ob.setSpinning(false);
+        ob.setNoGravity(false);
+        Vec3 vel = dir.normalize().scale(speed);
+        ob.setDeltaMovement(vel);
+    }
+
+    public void shootDarkObsAtTarget(double speed) {
+        if (this.level().isClientSide) return;
+
+        Vec3 to;
+        LivingEntity tgt = this.getTarget();
+        if (tgt != null && tgt.isAlive()) {
+            to = tgt.getEyePosition(1.0F);
+        } else {
+            to = this.getEyePosition().add(this.getLookAngle().scale(16.0));
+        }
+
+        if (this.darkObUp != null) {
+            shootOne(darkObUp, to, speed);
+        }
+        if (this.darkObLeft != null) {
+            shootOne(darkObLeft, to, speed);
+        }
+        if (this.darkObRight != null) {
+            shootOne(darkObRight, to, speed);
+        }
+        shootingDarkOb = true;
     }
 
     @Override
@@ -227,12 +344,12 @@ public class ShadowHerobrineEntity extends Monster {
         super.tick();
         if (!this.level().isClientSide) {
             String animId = currentEfAnimIdOrNull(this);
-            boolean isKneelingNow = isKneelAnimId(animId);
+            boolean isLandingNow = isLandAnimId(animId);
 
-            if (isKneelingNow && !wasKneeling) {
+            if (isLandingNow && !wasLanding) {
                 this.getPersistentData().putInt("Shooting", 15);
             }
-            wasKneeling = isKneelingNow;
+            wasLanding = isLandingNow;
 
             int shooting = this.getPersistentData().getInt("Shooting");
             if (shooting > 0) {
@@ -244,6 +361,55 @@ public class ShadowHerobrineEntity extends Monster {
                 if (this.getMainHandItem().getItem().equals(AnnoyingVillagersModItems.ELITE_OBSIDIAN_LONG.get())) {
                     this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
                 }
+            }
+
+            if (darkObUp == null && darkObUpUUID != null) {
+                Entity entity = ((ServerLevel) this.level()).getEntity(darkObUpUUID);
+                if (entity instanceof BlockProjectileEntity blockProjectileEntity) {
+                    this.darkObUp = blockProjectileEntity;
+                    this.darkObUp.setSpinning(true);
+                    this.darkObUp.setNoGravity(true);
+                } else {
+                    this.darkObUpUUID = null;
+                }
+            }
+            if (darkObLeft == null && darkObLeftUUID != null) {
+                Entity entity = ((ServerLevel) this.level()).getEntity(darkObLeftUUID);
+                if (entity instanceof BlockProjectileEntity blockProjectileEntity) {
+                    this.darkObLeft = blockProjectileEntity;
+                    this.darkObLeft.setSpinning(true);
+                    this.darkObUp.setNoGravity(true);
+                } else {
+                    this.darkObLeftUUID = null;
+                }
+            }
+            if (darkObRight == null && darkObRightUUID != null) {
+                Entity entity = ((ServerLevel) this.level()).getEntity(darkObRightUUID);
+                if (entity instanceof BlockProjectileEntity blockProjectileEntity) {
+                    this.darkObRight = blockProjectileEntity;
+                    this.darkObRight.setSpinning(true);
+                    this.darkObUp.setNoGravity(true);
+                } else {
+                    this.darkObRightUUID = null;
+                }
+            }
+            if (this.darkObUp != null && !shootingDarkOb) {
+                this.darkObUp.moveTo(this.getX(), this.getY() + 4, this.getZ());
+            }
+            if (this.darkObRight != null && !shootingDarkOb) {
+                this.darkObRight.moveTo(this.getX() + 2, this.getY() + 2, this.getZ());
+            }
+            if (this.darkObLeft != null && !shootingDarkOb) {
+                this.darkObLeft.moveTo(this.getX() - 2, this.getY() + 2, this.getZ());
+            }
+
+            boolean isAiming = isAiming(animId);
+            if (isAiming && !shootingDarkOb) {
+                spawnDarkObEntities();
+                shootDarkObsAtTarget(2.0F);
+            }
+            if (!isAiming && shootingDarkOb) {
+                shootingDarkOb = false;
             }
         }
     }
