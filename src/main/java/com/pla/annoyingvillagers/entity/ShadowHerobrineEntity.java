@@ -42,6 +42,8 @@ import se.gory_moon.player_mobs.utils.NameManager;
 
 
 public class ShadowHerobrineEntity extends Monster {
+    private boolean wasKneeling = false;
+
     public ShadowHerobrineEntity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.SHADOW_HEROBRINE.get(), level);
     }
@@ -192,13 +194,57 @@ public class ShadowHerobrineEntity extends Monster {
         }
     }
 
+    private static String currentEfAnimIdOrNull(LivingEntity self) {
+        try {
+            var patch = yesman.epicfight.world.capabilities.EpicFightCapabilities
+                    .getEntityPatch(self, yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch.class);
+            if (patch == null) return null;
+
+            var player = patch.getAnimator().getPlayerFor((yesman.epicfight.api.animation.types.DynamicAnimation) null);
+            if (player == null) return null;
+
+            var anim = player.getAnimation();
+            if (anim == null) return null;
+            try {
+                var m = anim.getClass().getMethod("getLocation");
+                var rl = (net.minecraft.resources.ResourceLocation) m.invoke(anim);
+                return rl != null ? rl.getPath().toLowerCase(java.util.Locale.ROOT) : null;
+            } catch (Exception ignored) {
+                return anim.toString().toLowerCase(java.util.Locale.ROOT);
+            }
+        } catch (Throwable t) {
+            return null;
+        }
+    }
+
+    private static boolean isKneelAnimId(String id) {
+        if (id == null) return false;
+        return id.contains("biped/living/landing") || id.endsWith("/landing") || id.contains("landing");
+    }
+
     @Override
     public void tick() {
         super.tick();
-        if (!this.level().isClientSide() && this.tickCount % 5 == 0 && this.getPersistentData().getInt("Shooting") >= 5) {
-            BlockState block = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().defaultBlockState();
-            shootChain(this, block, 2.5F, 5);
-            this.getPersistentData().putInt("Shooting", this.getPersistentData().getInt("Shooting") - 1);
+        if (!this.level().isClientSide) {
+            String animId = currentEfAnimIdOrNull(this);
+            boolean isKneelingNow = isKneelAnimId(animId);
+
+            if (isKneelingNow && !wasKneeling) {
+                this.getPersistentData().putInt("Shooting", 15);
+            }
+            wasKneeling = isKneelingNow;
+
+            int shooting = this.getPersistentData().getInt("Shooting");
+            if (shooting > 0) {
+                BlockState block = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().defaultBlockState();
+                setDeltaMovement(Vec3.ZERO);
+                shootChain(this, block, 2.5F, 5);
+                this.getPersistentData().putInt("Shooting", shooting - 1);
+            } else {
+                if (this.getMainHandItem().getItem().equals(AnnoyingVillagersModItems.ELITE_OBSIDIAN_LONG.get())) {
+                    this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+                }
+            }
         }
     }
 
