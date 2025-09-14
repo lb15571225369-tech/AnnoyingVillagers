@@ -20,42 +20,46 @@ public class ThrowingPearlKeyPressedProcedure {
 
     public static void execute(LevelAccessor levelaccessor, final Entity entity) {
         if (entity != null) {
-            Level level;
-            Projectile projectile;
+            if (entity instanceof Player player) {
+                boolean used = player.getInventory().items.stream()
+                        .filter(s -> !s.isEmpty() && s.is(AnnoyingVillagersModItems.ENCHANTED_ENDER_PEARL.get()))
+                        .findFirst()
+                        .map(stack -> {
+                            if (!entity.getPersistentData().getBoolean("ender_pearl_used")) {
+                                entity.getPersistentData().putBoolean("ender_pearl_used", true);
 
-            if (entity instanceof Player) {
-                Player player = (Player)entity;
+                                Level level = entity.level();
+                                var projectile = new EnchantedEnderPearlEntity(
+                                        AnnoyingVillagersModEntities.ENCHANTED_ENDER_PEARL_PROJECTILE.get(), level);
+                                projectile.setOwner(entity);
+                                projectile.setBaseDamage(0.0D);
+                                projectile.setKnockback(0);
+                                projectile.setSilent(true);
+                                projectile.setPos(entity.getX(), entity.getEyeY() - 0.1D, entity.getZ());
+                                projectile.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, 1.5F, 0.0F);
+                                level.addFreshEntity(projectile);
 
-                if (player.getInventory().contains(new ItemStack((ItemLike) AnnoyingVillagersModItems.ENCHANTED_ENDER_PEARL.get()))) {
-                    if (!entity.getPersistentData().getBoolean("ender_pearl_used")) {
-                        entity.getPersistentData().putBoolean("ender_pearl_used", true);
-                        level = entity.level();
-                        projectile = new EnchantedEnderPearlEntity((EntityType) AnnoyingVillagersModEntities.ENCHANTED_ENDER_PEARL_PROJECTILE.get(), level);
-                        projectile.setOwner(entity);
-                        ((EnchantedEnderPearlEntity) projectile).setBaseDamage((double)0.0F);
-                        ((EnchantedEnderPearlEntity) projectile).setKnockback(0);
-                        projectile.setSilent(true);
-                        projectile.setPos(entity.getX(), entity.getEyeY() - 0.1D, entity.getZ());
-                        projectile.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, 1.5F, 0.0F);
-
-                        level.addFreshEntity(projectile);
-                        new DelayedTask(20) {
-                            public void run() {
-                                entity.getPersistentData().putBoolean("ender_pearl_used", false);
-                            }
-                        };
-                        for (ItemStack stack : player.getInventory().items) {
-                            if (stack.getItem() == AnnoyingVillagersModItems.ENCHANTED_ENDER_PEARL.get()) {
-                                stack.hurtAndBreak(1, player, (p) -> {
+                                stack.hurtAndBreak(1, player, p -> {
                                 });
-                                break;
-                            }
-                        }
-                    }
 
+                                new DelayedTask(20) {
+                                    @Override
+                                    public void run() {
+                                        entity.getPersistentData().putBoolean("ender_pearl_used", false);
+                                    }
+                                };
+                                return true;
+                            }
+                            return false;
+                        }).orElse(false);
+
+                if (used) {
                     return;
                 }
             }
+
+            Level level;
+            Projectile projectile;
 
             if (entity instanceof Player) {
                 Player player1 = (Player)entity;
