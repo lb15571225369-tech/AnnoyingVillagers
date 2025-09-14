@@ -320,6 +320,8 @@ public class NullEntity extends Monster {
         if (damagesource.is(DamageTypes.DROWN)) return false;
         if (damagesource.is(DamageTypes.WITHER_SKULL)) return false;
         if (damagesource.is(DamageTypes.DRAGON_BREATH)) return false;
+        if (damagesource.is(DamageTypes.ON_FIRE)) return false;
+        if (damagesource.is(DamageTypes.IN_FIRE)) return false;
         if (damagesource.getDirectEntity() instanceof AbstractArrow) return false;
         return super.hurt(damagesource, f);
     }

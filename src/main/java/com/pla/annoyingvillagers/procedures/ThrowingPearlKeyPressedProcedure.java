@@ -37,12 +37,20 @@ public class ThrowingPearlKeyPressedProcedure {
                         projectile.setSilent(true);
                         projectile.setPos(entity.getX(), entity.getEyeY() - 0.1D, entity.getZ());
                         projectile.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, 1.5F, 0.0F);
+
                         level.addFreshEntity(projectile);
                         new DelayedTask(20) {
                             public void run() {
                                 entity.getPersistentData().putBoolean("ender_pearl_used", false);
                             }
                         };
+                        for (ItemStack stack : player.getInventory().items) {
+                            if (stack.getItem() == AnnoyingVillagersModItems.ENCHANTED_ENDER_PEARL.get()) {
+                                stack.hurtAndBreak(1, player, (p) -> {
+                                });
+                                break;
+                            }
+                        }
                     }
 
                     return;

@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.procedures;
 import javax.annotation.Nullable;
 
 import com.pla.annoyingvillagers.capabilities.AVCategories;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.corruptdog.cdm.gameasset.CorruptAnimations;
@@ -48,7 +49,7 @@ public class ExecuteNpcProcedure {
     }
 
     public static void execute(LevelAccessor levelaccessor, Entity victim, Entity attacker) {
-        if (attacker instanceof NullEntity) return;
+        if (attacker instanceof NullEntity || !AnnoyingVillagersConfig.EXECUTION_NPC.get()) return;
         execute((Event) null, levelaccessor, victim, attacker);
     }
 
@@ -111,7 +112,7 @@ public class ExecuteNpcProcedure {
     }
 
     private static void execute(@Nullable Event event, LevelAccessor levelaccessor, final Entity victim, final Entity attacker) {
-        if (attacker instanceof NullEntity) return;
+        if (attacker instanceof NullEntity || !AnnoyingVillagersConfig.EXECUTION_NPC.get()) return;
         if (victim != null && attacker != null) {
             if (!(attacker instanceof Player)) {
                 boolean flag = false;

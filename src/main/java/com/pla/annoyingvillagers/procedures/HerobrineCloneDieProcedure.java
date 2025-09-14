@@ -1,8 +1,7 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.pla.annoyingvillagers.util.DelayedTask;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -10,16 +9,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 
-public class Herobrine1OnDeathProcedure {
+public class HerobrineCloneDieProcedure {
 
     public static void execute(LevelAccessor world, double x, double y, double z, Entity source) {
         if (source == null) return;
-
-        if (!world.isClientSide() && world.getServer() != null) {
-            world.getServer().getPlayerList().broadcastSystemMessage(Component.literal("The clone has been destroyed, data has been transmitted to the terminal."), false);
-        }
-
-        // Drop loot after 1s
         new DelayedTask(20) {
             @Override
             public void run() {

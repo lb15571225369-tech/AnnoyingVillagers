@@ -49,7 +49,7 @@ public class Herobrine3OnSpawnProcedure {
             }
 
             if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Herobrine> Are you talking about ... me ?"), false);
+                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> Are you talking about ... me ?"), false);
             }
 
             if (levelaccessor instanceof Level) {

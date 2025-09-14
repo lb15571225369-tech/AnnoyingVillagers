@@ -66,7 +66,6 @@ public class Herobrine3OnTickProcedure {
 
                 if (entity1 == livingentity) {
                     if (Math.random() <= 0.25D) {
-                        entity.setDeltaMovement(new Vec3(0.0D, 0.0D, 0.0D));
                         if (!entity.level().isClientSide() && entity.getServer() != null) {
                             try {
                                 entity.getServer().getCommands().getDispatcher().execute(
@@ -77,7 +76,7 @@ public class Herobrine3OnTickProcedure {
                         }
                         new DelayedTask(1) {
                             public void run() {
-                                entity.setDeltaMovement(new Vec3(0.0D, 0.0D, 0.0D));
+                                
                                 Entity entity2 = entity;
 
                                 if (!entity2.level().isClientSide() && entity2.getServer() != null) {
@@ -93,7 +92,7 @@ public class Herobrine3OnTickProcedure {
                     }
 
                     if (Math.random() <= 0.06D) {
-                        entity.setDeltaMovement(new Vec3(0.0D, 0.0D, 0.0D));
+                        
                         new DelayedTask(1) {
                             public void run() {
                                 Entity entity2 = entity;
@@ -119,7 +118,7 @@ public class Herobrine3OnTickProcedure {
                                             }
                                         }
 
-                                        entity.setDeltaMovement(new Vec3(0.0D, 0.0D, 0.0D));
+                                        
                                         new DelayedTask(1) {
                                             public void run() {
                                                 Entity entity4 = entity;
@@ -133,7 +132,7 @@ public class Herobrine3OnTickProcedure {
                                                     }
                                                 }
 
-                                                entity.setDeltaMovement(new Vec3(0.0D, 0.0D, 0.0D));
+                                                
                                                 new DelayedTask(1) {
                                                     public void run() {
                                                         Entity entity5 = entity;
@@ -147,7 +146,7 @@ public class Herobrine3OnTickProcedure {
                                                             }
                                                         }
 
-                                                        entity.setDeltaMovement(new Vec3(0.0D, 0.0D, 0.0D));
+                                                        
                                                         new DelayedTask(1) {
                                                             public void run() {
                                                                 Entity entity6 = entity;
@@ -161,7 +160,7 @@ public class Herobrine3OnTickProcedure {
                                                                     }
                                                                 }
 
-                                                                entity.setDeltaMovement(new Vec3(0.0D, 0.0D, 0.0D));
+                                                                
                                                                 new DelayedTask(1) {
                                                                     public void run() {
                                                                         Entity entity7 = entity;
@@ -187,7 +186,7 @@ public class Herobrine3OnTickProcedure {
                                                                                     }
                                                                                 }
 
-                                                                                entity.setDeltaMovement(new Vec3(0.0D, 0.0D, 0.0D));
+                                                                                
                                                                             }
                                                                         };
                                                                     }
@@ -205,7 +204,7 @@ public class Herobrine3OnTickProcedure {
                         new DelayedTask(20) {
                             public void run() {
                                 if (Math.random() <= 0.5D) {
-                                    entity.setDeltaMovement(new Vec3(0.0D, 0.0D, 0.0D));
+                                    
                                     Entity entity2 = entity;
 
                                     if (!entity2.level().isClientSide() && entity2.getServer() != null) {
@@ -259,7 +258,7 @@ public class Herobrine3OnTickProcedure {
                                                 }
                                             }
 
-                                            entity.setDeltaMovement(new Vec3(0.0D, 0.0D, 0.0D));
+                                            
                                             new DelayedTask(1) {
                                                 public void run() {
                                                     Entity entity4 = entity;
@@ -273,7 +272,7 @@ public class Herobrine3OnTickProcedure {
                                                         }
                                                     }
 
-                                                    entity.setDeltaMovement(new Vec3(0.0D, 0.0D, 0.0D));
+                                                    
                                                     new DelayedTask(1) {
                                                         public void run() {
                                                             Entity entity5 = entity;
@@ -287,7 +286,7 @@ public class Herobrine3OnTickProcedure {
                                                                 }
                                                             }
 
-                                                            entity.setDeltaMovement(new Vec3(0.0D, 0.0D, 0.0D));
+                                                            
                                                             new DelayedTask(1) {
                                                                 public void run() {
                                                                     Entity entity6 = entity;
@@ -301,7 +300,7 @@ public class Herobrine3OnTickProcedure {
                                                                         }
                                                                     }
 
-                                                                    entity.setDeltaMovement(new Vec3(0.0D, 0.0D, 0.0D));
+                                                                    
                                                                     new DelayedTask(1) {
                                                                         public void run() {
                                                                             Entity entity7 = entity;
@@ -315,7 +314,7 @@ public class Herobrine3OnTickProcedure {
                                                                                 }
                                                                             }
 
-                                                                            entity.setDeltaMovement(new Vec3(0.0D, 0.0D, 0.0D));
+                                                                            
                                                                             new DelayedTask(1) {
                                                                                 public void run() {
                                                                                     Entity entity8 = entity;
@@ -330,7 +329,7 @@ public class Herobrine3OnTickProcedure {
                                                                                         }
                                                                                     }
 
-                                                                                    entity.setDeltaMovement(new Vec3(0.0D, 0.0D, 0.0D));
+                                                                                    
                                                                                 }
                                                                             };
                                                                         }
@@ -344,7 +343,7 @@ public class Herobrine3OnTickProcedure {
                                         }
                                     };
                                     if (Math.random() <= 0.5D) {
-                                        entity.setDeltaMovement(new Vec3(0.0D, 0.0D, 0.0D));
+                                        
                                         new DelayedTask(1) {
                                             public void run() {
                                                 Entity entity3 = entity;
@@ -358,7 +357,7 @@ public class Herobrine3OnTickProcedure {
                                                     }
                                                 }
 
-                                                entity.setDeltaMovement(new Vec3(0.0D, 0.0D, 0.0D));
+                                                
                                                 new DelayedTask(1) {
                                                     public void run() {
                                                         Entity entity4 = entity;
@@ -371,8 +370,6 @@ public class Herobrine3OnTickProcedure {
                                                             } catch (CommandSyntaxException e) {
                                                             }
                                                         }
-
-                                                        entity.setDeltaMovement(new Vec3(0.0D, 0.0D, 0.0D));
                                                     }
                                                 };
                                             }

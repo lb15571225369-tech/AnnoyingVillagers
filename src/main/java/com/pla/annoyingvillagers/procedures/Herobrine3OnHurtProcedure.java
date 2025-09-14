@@ -641,7 +641,7 @@ public class Herobrine3OnHurtProcedure {
                                 }
 
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Herobrine> You are weak , you are nothing! ! !"), false);
+                                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> You are weak , you are nothing! ! !"), false);
                                 }
 
                                 LevelAccessor levelaccessor1 = levelaccessor;
@@ -707,7 +707,7 @@ public class Herobrine3OnHurtProcedure {
                             @Override
                             public void run() {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Herobrine> Enough!"), false);
+                                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> Enough!"), false);
                                 }
 
                                 LevelAccessor levelaccessor1 = levelaccessor;
@@ -730,7 +730,7 @@ public class Herobrine3OnHurtProcedure {
                             @Override
                             public void run() {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Herobrine> How foolish!"), false);
+                                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> How foolish!"), false);
                                 }
 
                                 LevelAccessor levelaccessor1 = levelaccessor;

@@ -11,14 +11,15 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 
-public class Herobrine2DieProcedure {
-    public static void execute(LevelAccessor world, double x, double y, double z, Entity sourceEntity) {
-        if (sourceEntity == null) return;
+public class Herobrine1DieProcedure {
+
+    public static void execute(LevelAccessor world, double x, double y, double z, Entity source) {
+        if (source == null) return;
 
         if (!world.isClientSide() && world.getServer() != null) {
             world.getServer().getPlayerList().broadcastSystemMessage(Component.literal("The clone has been destroyed, data has been transmitted to the terminal."), false);
         }
-        
+
         new DelayedTask(20) {
             @Override
             public void run() {
@@ -30,19 +31,17 @@ public class Herobrine2DieProcedure {
     private static void dropLoot(LevelAccessor world, double x, double y, double z) {
         if (!(world instanceof Level level) || level.isClientSide()) return;
 
-        Item[] drops = new Item[]{
-                Items.DIAMOND, Items.DIAMOND,
-                Items.MUSIC_DISC_11, Items.IRON_INGOT,
-                Items.WRITABLE_BOOK, Items.EMERALD, Items.EMERALD,
-                Items.ENCHANTED_GOLDEN_APPLE, Items.NETHERITE_INGOT,
-                Items.ENDER_PEARL, Items.ENCHANTED_GOLDEN_APPLE,
-                Items.ENDER_EYE, Items.TNT, Items.TNT, Items.ENCHANTED_BOOK, AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get()
+        Item[] items = new Item[] {
+                Items.DIAMOND, Items.DIAMOND, Items.MUSIC_DISC_11, Items.IRON_INGOT,
+                Items.WRITABLE_BOOK, Items.EMERALD, Items.EMERALD, Items.ENCHANTED_GOLDEN_APPLE,
+                Items.NETHERITE_INGOT, Items.ENDER_PEARL, Items.ENCHANTED_GOLDEN_APPLE,
+                Items.ENDER_EYE, Items.TNT, Items.TNT, Items.ENCHANTED_BOOK, AnnoyingVillagersModItems.OBSIDIAN_WEAPON.get()
         };
 
-        for (Item item : drops) {
-            ItemEntity entity = new ItemEntity(level, x, y, z, new ItemStack(item));
-            entity.setPickUpDelay(10);
-            level.addFreshEntity(entity);
+        for (Item item : items) {
+            ItemEntity drop = new ItemEntity(level, x, y, z, new ItemStack(item));
+            drop.setPickUpDelay(10);
+            level.addFreshEntity(drop);
         }
     }
 }

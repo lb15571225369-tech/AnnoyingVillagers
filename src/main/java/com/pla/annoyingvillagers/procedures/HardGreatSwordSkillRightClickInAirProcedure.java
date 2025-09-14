@@ -28,10 +28,8 @@ public class HardGreatSwordSkillRightClickInAirProcedure {
         double currentPower = tag.getDouble("power");
 
         if (currentPower >= 10.0D) {
-            // Consume energy
             tag.putDouble("power", currentPower - 10.0D);
 
-            // Play animation
             if (!entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute(
@@ -43,12 +41,10 @@ public class HardGreatSwordSkillRightClickInAirProcedure {
                 }
             }
 
-            // Apply potion effect
             if (entity instanceof LivingEntity living && !living.level().isClientSide()) {
                 living.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.EC_PLAYER.get(), 160, 0, false, false));
             }
 
-            // Delayed effects (particles + sound)
             new DelayedTask(4) {
                 @Override
                 public void run() {

@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import net.corruptdog.cdm.skill.identity.Execute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -18,7 +19,7 @@ public class ExecuteProcedure {
             Level level = entityinteract.getEntity().level();
 
             if (player != null && level != null) {
-                if (!level.isClientSide()) {
+                if (!level.isClientSide() && AnnoyingVillagersConfig.EXECUTION_PLAYER.get()) {
                     Execute.execute(player, level);
                 }
             }

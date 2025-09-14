@@ -138,7 +138,7 @@ public class Herobrine7OnDeathProcedure {
                     if (levelaccessor1 instanceof Level) {
                         level = (Level)levelaccessor1;
                         if (!level.isClientSide()) {
-                            itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack((ItemLike) AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get()));
+                            itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack((ItemLike) AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get()));
                             itementity.setPickUpDelay(10);
                             level.addFreshEntity(itementity);
                         }

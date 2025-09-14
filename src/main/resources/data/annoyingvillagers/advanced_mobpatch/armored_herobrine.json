@@ -23,6 +23,14 @@
 		"death": "epicfight:biped/living/death"
 	},
 	"humanoid_weapon_motions": [
+		  {
+			"weapon_categories": ["axe", "hoe", "pickaxe", "shovel", "sword"],
+			"style":"common",
+			"livingmotions": {
+				"chase": "epicfight:biped/living/run",
+                "walk": "epicfight:biped/living/walk"
+			}
+		  },
               { 
                   "weapon_categories": ["fist"],
                   "style":"common", 
@@ -64,7 +72,7 @@
 							"animation": "epicfight:biped/combat/fist_airslash",
 							"play_speed": 2.1,
 							"command_list": [
-								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:dark_ob_up keep", "execute_at_target":false}, {"time":0.1, "command":"item replace entity @s weapon.mainhand with annoyingvillagers:darkobitem","execute_at_target":false}, {"time":0.6, "command":"item replace entity @s weapon.mainhand with minecraft:air ","execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.3, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.4, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.5, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.2, "command":"playsound annoyingvillagers:himattack2 voice @p", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagersbychentu:block 1 1 true", "execute_at_target":false}]
+								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.3, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.4, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.5, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"playsound annoyingvillagers:himattack2 voice @p", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagers:block 1 1 true", "execute_at_target":false}]
 						},
 						{
 							"conditions": [
@@ -73,7 +81,7 @@
 							"animation": "epicfight:biped/combat/fist_auto1",
 							"play_speed": 2.12,
 							"command_list": [
-								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.1, "command":"item replace entity @s weapon.offhand with annoyingvillagers:darkobitem","execute_at_target":false}, {"time":0.6, "command":"item replace entity @s weapon.offhand with minecraft:air ","execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagersbychentu:block 1 1 true", "execute_at_target":false}]
+								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagers:block 1 1 true", "execute_at_target":false}]
 						},
 						{
 							"conditions": [
@@ -82,7 +90,7 @@
 							"animation": "epicfight:biped/combat/fist_auto2",
 							"play_speed": 2.12,
 							"command_list": [
-								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.1, "command":"item replace entity @s weapon.mainhand with annoyingvillagers:darkobitem","execute_at_target":false}, {"time":0.6, "command":"item replace entity @s weapon.mainhand with minecraft:air ","execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagersbychentu:block 1 1 true", "execute_at_target":false}]
+								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagers:block 1 1 true", "execute_at_target":false}]
 						},
 						{
 							"conditions": [
@@ -91,7 +99,7 @@
 							"animation": "epicfight:biped/combat/fist_auto3",
 							"play_speed": 1.2,
 							"command_list": [
-								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.1, "command":"item replace entity @s weapon.offhand with annoyingvillagers:darkobitem","execute_at_target":false}, {"time":0.6, "command":"item replace entity @s weapon.offhand with minecraft:air ","execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagersbychentu:block 1 1 true", "execute_at_target":false}]
+								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagers:block 1 1 true", "execute_at_target":false}]
 						},
 						{
 							"conditions": [
@@ -100,7 +108,7 @@
 							"animation": "epicfight:biped/combat/fist_auto1",
 							"play_speed": 2.12,
 							"command_list": [
-								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.1, "command":"item replace entity @s weapon.offhand with annoyingvillagers:darkobitem","execute_at_target":false}, {"time":0.6, "command":"item replace entity @s weapon.offhand with minecraft:air ","execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.3, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagersbychentu:block 1 1 true", "execute_at_target":false}]
+								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.3, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagers:block 1 1 true", "execute_at_target":false}]
 						},
 						{
 							"conditions": [
@@ -109,7 +117,7 @@
 							"animation": "epicfight:biped/combat/fist_auto3",
 							"play_speed": 1.5,
 							"command_list": [
-								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.1, "command":"item replace entity @s weapon.offhand with annoyingvillagers:darkobitem","execute_at_target":false}, {"time":0.6, "command":"item replace entity @s weapon.offhand with minecraft:air ","execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.3, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagersbychentu:block 1 1 true", "execute_at_target":false}]
+								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.3, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagers:block 1 1 true", "execute_at_target":false}]
 						},
 						{
 							"conditions": [
@@ -118,7 +126,7 @@
 							"animation": "epicfight:enderman/tp_kick2",
 							"play_speed": 2.2,
 							"command_list": [
-								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.3, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.4, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.5, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.2, "command":"playsound annoyingvillagers:himattack voice @p", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagersbychentu:block 1 1 true", "execute_at_target":false}]
+								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.3, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.4, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.5, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"playsound annoyingvillagers:himattack voice @p", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagers:block 1 1 true", "execute_at_target":false}]
 						},
 						{
 							"conditions": [
@@ -127,7 +135,7 @@
 							"animation": "epicfight:biped/combat/fist_auto1",
 							"play_speed": 3.12,
 							"command_list": [
-								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.1, "command":"item replace entity @s weapon.offhand with annoyingvillagers:darkobitem","execute_at_target":false}, {"time":0.6, "command":"item replace entity @s weapon.offhand with minecraft:air ","execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.3, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.4, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagersbychentu:block 1 1 true", "execute_at_target":false}]
+								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.3, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.4, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagers:block 1 1 true", "execute_at_target":false}]
 						},
 						{
 							"conditions": [
@@ -136,7 +144,7 @@
 							"animation": "epicfight:enderman/knee",
 							"play_speed": 2.2,
 							"command_list": [
-								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagersbychentu:block 1 1 true", "execute_at_target":false}]
+								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagers:block 1 1 true", "execute_at_target":false}]
 						},
 						{
 							"conditions": [
@@ -145,7 +153,7 @@
 							"animation": "epicfight:enderman/kick_twice",
 							"play_speed": 3.9,
 							"command_list": [
-								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.3, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.4, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.5, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagersbychentu:block 1 1 true", "execute_at_target":false}]
+								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.3, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.4, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.5, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagers:block 1 1 true", "execute_at_target":false}]
 						},
 						{
 							"conditions": [
@@ -154,7 +162,7 @@
 							"animation": "epicfight:biped/combat/fist_airslash",
 							"play_speed": 1.5,
 							"command_list": [
-								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.1, "command":"item replace entity @s weapon.mainhand with annoyingvillagers:darkobitem","execute_at_target":false}, {"time":0.6, "command":"item replace entity @s weapon.mainhand with minecraft:air ","execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.3, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.4, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.5, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.7, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^8 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^9 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.9, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^10 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.95, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^11 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.2, "command":"playsound annoyingvillagers:soul_legend voice @p", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagersbychentu:block 1 1 true", "execute_at_target":false}]
+								{"time":0.1, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.3, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.4, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.5, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.7, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^8 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^9 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.9, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^10 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.95, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^11 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"playsound annoyingvillagers:soul_legend voice @p", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagers:block 1 1 true", "execute_at_target":false}]
 						}
                         ]                 
 				},
@@ -183,7 +191,7 @@
 							],
 							"animation": "epicfight:biped/combat/fist_airslash",
 							"command_list": [
-								{"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.1, "command":"item replace entity @s weapon.mainhand with annoyingvillagers:darkobitem","execute_at_target":false}, {"time":0.6, "command":"item replace entity @s weapon.mainhand with minecraft:air ","execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.3, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.4, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.5, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.7, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^8 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^9 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.9, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^10 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.95, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^11 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagers:block 1 1 true", "execute_at_target":false}]
+								{"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.3, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.4, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.5, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.7, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^8 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^9 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.9, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^10 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.95, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^11 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagers:block 1 1 true", "execute_at_target":false}]
 						}
 					]
 				},
@@ -199,7 +207,7 @@
 							],
 							"animation": "epicfight:biped/combat/fist_auto2",
 							"command_list": [
-								{"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.1, "command":"item replace entity @s weapon.mainhand with annoyingvillagers:darkobitem","execute_at_target":false}, {"time":0.6, "command":"item replace entity @s weapon.mainhand with minecraft:air ","execute_at_target":false}, {"time":0.25, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.3, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.35, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.4, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.45, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.5, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^8 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.55, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^9 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^10 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.65, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^11 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.75, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^12 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^13 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.85, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^14 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.9, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^15 annoyingvillagers:noneob keep", "execute_at_target":false}, {"time":0.2, "command":"playsound annoyingvillagers:soul_legend voice @p", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagers:block 1 1 true", "execute_at_target":false}]
+								{"time":0.2, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.25, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.3, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.35, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.4, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.45, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^7 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.5, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^8 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.55, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^9 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^10 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.65, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^11 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.75, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^12 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^13 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.85, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^14 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.9, "command":"execute as @s at @s anchored eyes run setblock ^ ^ ^15 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"playsound annoyingvillagers:soul_legend voice @p", "execute_at_target":false}, {"time":0.1, "command":"effect give @s annoyingvillagers:block 1 1 true", "execute_at_target":false}]
 						}
 					]
 				},
@@ -211,12 +219,12 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 7.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.5}
 							],
 							"animation": "epicfight:zombie/attack3",
 							"play_speed": 1.9,
 							"command_list": [
-								{"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^ ^-1 ^2 annoyingvillagers:dark_ob_up keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^-1 ^-1 ^2 annoyingvillagers:dark_ob_up keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^1 ^-1 ^2 annoyingvillagers:dark_ob_up keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^-2 ^-1 ^2 annoyingvillagers:dark_ob_up keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^2 ^-1 ^2 annoyingvillagers:dark_ob_up keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^ ^-1 ^3 annoyingvillagers:dark_ob_up keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^-1 ^-1 ^3 annoyingvillagers:dark_ob_up keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^1 ^-1 ^3 annoyingvillagers:dark_ob_up keep", "execute_at_target":false}, {"time":0.2, "command":"playsound annoyingvillagers:himsayenough voice @p", "execute_at_target":false}]
+								{"time":0.6, "command":"execute as @s at @s anchored eyes run fill ^-2 ^-1 ^3 ^2 ^2 ^3 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"playsound annoyingvillagers:himsayenough voice @p", "execute_at_target":false}]
 						}
 					]
 				},
@@ -228,16 +236,14 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 7.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.5}
 							],
 							"animation": "epicfight:biped/skill/eviscerate_first",
-							"play_speed": 1.9,
-							"command_list": [
-								{"time":0.5, "command":"execute as @s at @s anchored eyes run fill ^ ^-1 ^1 ^ ^-1 ^10 annoyingvillagers:dark_ob_ss keep", "execute_at_target":false}]
+							"play_speed": 1.9
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 7.5}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.5}
 							],
 							"animation": "epicfight:biped/skill/eviscerate_second",
 							"play_speed": 2.4
@@ -252,12 +258,12 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 7.0}
+								{"predicate":"within_distance", "min": 0.0, "max": 6.0}
 							],
 							"animation": "wom:biped/skill/antitheus_ascended_deathfall",
 							"play_speed": 1.0,
 							"command_list": [
-								{"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^ ^-1 ^2 annoyingvillagers:dark_ob_up keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^-1 ^-1 ^2 annoyingvillagers:dark_ob_up keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^1 ^-1 ^2 annoyingvillagers:dark_ob_up keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^-2 ^-1 ^2 annoyingvillagers:dark_ob_up keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^2 ^-1 ^2 annoyingvillagers:dark_ob_up keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^ ^-1 ^3 annoyingvillagers:dark_ob_up keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^-1 ^-1 ^3 annoyingvillagers:dark_ob_up keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run setblock ^1 ^-1 ^3 annoyingvillagers:dark_ob_up keep", "execute_at_target":false}, {"time":0.2, "command":"playsound annoyingvillagers:himsayenough voice @p", "execute_at_target":false}]
+								{"time":0.7, "command":"execute as @s at @s anchored eyes run fill ~ ~-1 ~3 ~ ~1 ~3 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run fill ~ ~-1 ~5 ~ ~1 ~5 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run fill ~ ~-1 ~7 ~ ~1 ~7 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.7, "command":"execute as @s at @s anchored eyes run fill ~ ~-1 ~-3 ~ ~1 ~-3 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run fill ~ ~-1 ~-5 ~ ~1 ~-5 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run fill ~ ~-1 ~-7 ~ ~1 ~-7 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.7, "command":"execute as @s at @s anchored eyes run fill ~3 ~-1 ~ ~3 ~1 ~ annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run fill ~5 ~-1 ~ ~5 ~1 ~ annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run fill ~7 ~-1 ~ ~7 ~1 ~ annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.7, "command":"execute as @s at @s anchored eyes run fill ~-3 ~-1 ~ ~-3 ~1 ~ annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run fill ~-5 ~-1 ~ ~-5 ~1 ~ annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run fill ~-7 ~-1 ~ ~-7 ~1 ~ annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.75, "command":"execute as @s at @s anchored eyes run fill ~ ~2 ~3 ~ ~2 ~3 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.85, "command":"execute as @s at @s anchored eyes run fill ~ ~2 ~5 ~ ~2 ~5 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.85, "command":"execute as @s at @s anchored eyes run fill ~ ~2 ~7 ~ ~2 ~7 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.75, "command":"execute as @s at @s anchored eyes run fill ~ ~2 ~-3 ~ ~2 ~-3 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.85, "command":"execute as @s at @s anchored eyes run fill ~ ~2 ~-5 ~ ~2 ~-5 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.85, "command":"execute as @s at @s anchored eyes run fill ~ ~2 ~-7 ~ ~2 ~-7 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.75, "command":"execute as @s at @s anchored eyes run fill ~3 ~2 ~ ~3 ~2 ~ annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.85, "command":"execute as @s at @s anchored eyes run fill ~5 ~2 ~ ~5 ~2 ~ annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.85, "command":"execute as @s at @s anchored eyes run fill ~7 ~2 ~ ~7 ~2 ~ annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.75, "command":"execute as @s at @s anchored eyes run fill ~-3 ~2 ~ ~-3 ~2 ~ annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.85, "command":"execute as @s at @s anchored eyes run fill ~-5 ~2 ~ ~-5 ~2 ~ annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.85, "command":"execute as @s at @s anchored eyes run fill ~-7 ~2 ~ ~-7 ~2 ~ annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.7, "command":"playsound annoyingvillagers:himsayenough voice @p", "execute_at_target":false}, {"time":0.7, "command":"particle epicfight:ground_slam ~ ~ ~ 0 0 0 2 90", "execute_at_target":false}]
 						}
 					]
 				},
@@ -282,7 +288,7 @@
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_distance", "min": 11.0, "max": 5.0}
+								{"predicate":"within_distance", "min": 3.0, "max": 6.0}
 							],
 							"animation": "wom:biped/skill/enderstep_forward"
 						}
@@ -291,17 +297,17 @@
                 {
 					"weight": 50.5,
 					"canBeInterrupted": false,
-					"cooldown": 100,
+					"cooldown": 300,
 					"looping": false,
 					"behaviors": [
                         {
 							"conditions": [
-								{"predicate":"within_distance", "min": 7.0, "max": 6.8}
+								{"predicate":"within_distance", "min": 3.0, "max": 6.8}
 							],
 							"animation": "epicfight:biped/living/landing",
 							"play_speed": 0.2,
 							"command_list": [
-								{"time":0.1, "command":"execute as @s at @s anchored eyes run fill ^ ^-1 ^1 ^ ^-1 ^1 annoyingvillagers:dark_ob_up keep", "execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run fill ^ ^-1 ^2 ^ ^-1 ^3 annoyingvillagers:dark_ob_up keep", "execute_at_target":false},{"time":0.3, "command":"execute as @s at @s anchored eyes run fill ^ ^-1 ^4 ^ ^-1 ^5 annoyingvillagers:dark_ob_up keep", "execute_at_target":false}, {"time":0.4, "command":"execute as @s at @s anchored eyes run fill ^ ^-1 ^6 ^ ^-1 ^7 annoyingvillagers:dark_ob_up keep", "execute_at_target":false}, {"time":0.5, "command":"execute as @s at @s anchored eyes run fill ^ ^-1 ^8 ^ ^-1 ^9 annoyingvillagers:dark_ob_up keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run fill ^ ^-1 ^10 ^ ^- ^11 annoyingvillagers:dark_ob_up keep", "execute_at_target":false}, {"time":0.7, "command":"execute as @s at @s anchored eyes run fill ^ ^-1 ^12 ^ ^-1 ^13 annoyingvillagers:dark_ob_up keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run fill ^ ^-1 ^14 ^ ^-1 ^15 annoyingvillagers:dark_ob_up keep", "execute_at_target":false}, {"time":0.9, "command":"execute as @s at @s anchored eyes run fill ^ ^-1 ^16 ^ ^-1 ^17 annoyingvillagers:dark_ob_up keep", "execute_at_target":false}, {"time":1.0, "command":"execute as @s at @s anchored eyes run fill ^ ^-1 ^18 ^ ^-1 ^25 annoyingvillagers:dark_ob_up keep", "execute_at_target":false}]
+								{"time":0.1, "command":"execute as @s at @s anchored eyes run fill ^ ^-1 ^1 ^ ^-1 ^1 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.2, "command":"execute as @s at @s anchored eyes run fill ^ ^ ^1 ^ ^ ^1 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false},{"time":0.3, "command":"execute as @s at @s anchored eyes run fill ^ ^1 ^1 ^ ^1 ^1 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.4, "command":"execute as @s at @s anchored eyes run fill ^ ^2 ^1 ^ ^2 ^1 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.5, "command":"execute as @s at @s anchored eyes run fill ^ ^3 ^1 ^ ^3 ^1 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.6, "command":"execute as @s at @s anchored eyes run fill ^ ^4 ^1 ^ ^4 ^1 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.7, "command":"execute as @s at @s anchored eyes run fill ^ ^5 ^1 ^ ^5 ^1 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run fill ^ ^6 ^1 ^ ^6 ^1 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.9, "command":"execute as @s at @s anchored eyes run fill ^ ^7 ^1 ^ ^7 ^1 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":1.0, "command":"execute as @s at @s anchored eyes run fill ^ ^8 ^1 ^ ^8 ^1 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run fill ^ ^9 ^1 ^ ^9 ^1 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}, {"time":0.8, "command":"execute as @s at @s anchored eyes run fill ^ ^10 ^1 ^ ^10 ^1 annoyingvillagers:shadow_obsidian keep", "execute_at_target":false}]
 						}
 					]
 				},

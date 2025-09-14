@@ -122,7 +122,15 @@ public class DarkObSsOnEntityInsideProcedure {
             }
 
             entity.setDeltaMovement(new Vec3(0.0D, 0.0D, 0.0D));
-            entity.hurt(entity.level().damageSources().magic(), 1.0F);
+            if (Math.random() <= 0.2D) {
+                if (entity instanceof LivingEntity livingEntity) {
+                    float strength = 1.0F;
+                    double dx = d0 - entity.getX();
+                    double dz = d2 - entity.getZ();
+                    livingEntity.knockback(strength, dx, dz);
+                }
+            }
+            entity.hurt(entity.level().damageSources().generic(), 1.0F);
         }
     }
 }

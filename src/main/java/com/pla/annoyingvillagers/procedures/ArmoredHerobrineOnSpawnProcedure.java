@@ -39,7 +39,7 @@ public class ArmoredHerobrineOnSpawnProcedure {
                     }
 
                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Herobrine> Anyone who stands in my way must die!"), false);
+                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> Anyone who stands in my way must die!"), false);
                     }
                 }
             };

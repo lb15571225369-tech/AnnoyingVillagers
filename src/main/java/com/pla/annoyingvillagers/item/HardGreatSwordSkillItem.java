@@ -1,14 +1,15 @@
 package com.pla.annoyingvillagers.item;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import com.pla.annoyingvillagers.procedures.HardGreatSwordSkillRightClickInAirProcedure;
 
@@ -47,5 +48,21 @@ public class HardGreatSwordSkillItem extends SwordItem {
 
         HardGreatSwordSkillRightClickInAirProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
         return interactionresultholder;
+    }
+
+    @Override
+    public void inventoryTick(ItemStack itemstack, Level level, Entity entity, int i, boolean flag) {
+        super.inventoryTick(itemstack, level, entity, i, flag);
+        if (entity != null) {
+            if (entity instanceof Player) {
+                Player player = (Player) entity;
+                ItemStack item = new ItemStack((ItemLike) AnnoyingVillagersModItems.HARD_GREAT_SWORD_SKILL.get());
+
+                player.getInventory().clearOrCountMatchingItems((it) -> {
+                    return item.getItem() == it.getItem();
+                }, 1, player.inventoryMenu.getCraftSlots());
+            }
+
+        }
     }
 }

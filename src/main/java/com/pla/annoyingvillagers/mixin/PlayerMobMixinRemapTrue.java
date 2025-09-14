@@ -1,7 +1,7 @@
 package com.pla.annoyingvillagers.mixin;
 
 import com.pla.annoyingvillagers.compat.player_mobs.ModCapabilities;
-import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersEntitiesConfig;
 import com.pla.annoyingvillagers.entity.Herobrine5Entity;
 import com.pla.annoyingvillagers.entity.InfectedPlayerMobEntity;
 import com.pla.annoyingvillagers.entity.PlayerMobDeadEntity;
@@ -50,7 +50,7 @@ public class PlayerMobMixinRemapTrue {
             return;
         }
 
-        float spawnRate = AnnoyingVillagersConfig.PLAYER_NPC_SPAWN_RATE.get().floatValue();
+        float spawnRate = AnnoyingVillagersEntitiesConfig.PLAYER_NPC_SPAWN_RATE.get().floatValue();
         if (world instanceof ServerLevel level && level.isDay()) {
             float roll = world.getRandom().nextFloat();
 

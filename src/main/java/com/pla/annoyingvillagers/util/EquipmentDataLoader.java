@@ -70,7 +70,6 @@ public class EquipmentDataLoader extends SimpleJsonResourceReloadListener {
 
         if (cap instanceof WeaponCapability weaponCap) {
             return weaponCap.getWeaponCategory() == CapabilityItem.WeaponCategories.GREATSWORD ||
-                    weaponCap.getWeaponCategory() == CapabilityItem.WeaponCategories.AXE ||
                     weaponCap.getWeaponCategory() == CapabilityItem.WeaponCategories.TACHI ||
                     weaponCap.getWeaponCategory() == CapabilityItem.WeaponCategories.SWORD ||
                     weaponCap.getWeaponCategory() == CapabilityItem.WeaponCategories.FIST ||
