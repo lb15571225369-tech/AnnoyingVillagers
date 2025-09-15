@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.procedures;
 
-import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
@@ -13,22 +12,16 @@ public class HerobrineCloneDieProcedure {
 
     public static void execute(LevelAccessor world, double x, double y, double z, Entity source) {
         if (source == null) return;
-        new DelayedTask(20) {
-            @Override
-            public void run() {
-                dropLoot(world, x, y, z);
-            }
-        };
+        dropLoot(world, x, y, z);
     }
 
     private static void dropLoot(LevelAccessor world, double x, double y, double z) {
         if (!(world instanceof Level level) || level.isClientSide()) return;
 
         Item[] items = new Item[] {
-                Items.DIAMOND, Items.DIAMOND, Items.MUSIC_DISC_11, Items.IRON_INGOT,
-                Items.WRITABLE_BOOK, Items.EMERALD, Items.EMERALD, Items.ENCHANTED_GOLDEN_APPLE,
-                Items.NETHERITE_INGOT, Items.ENDER_PEARL, Items.ENCHANTED_GOLDEN_APPLE,
-                Items.ENDER_EYE, Items.TNT, Items.TNT
+                Items.DIAMOND, Items.DIAMOND, Items.IRON_INGOT,
+                Items.WRITABLE_BOOK, Items.EMERALD, Items.EMERALD,
+                Items.NETHERITE_INGOT, Items.ENDER_PEARL, Items.GOLDEN_APPLE
         };
 
         for (Item item : items) {

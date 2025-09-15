@@ -5,6 +5,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
@@ -18,161 +19,22 @@ public class Herobrine3OnDeathProcedure {
         if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
             levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("Chris has died."), false);
         }
-        new DelayedTask(20) {
-            public void run() {
-                LevelAccessor levelaccessor1 = levelaccessor;
-                Level level;
-                ItemEntity itementity;
 
-                if (levelaccessor1 instanceof Level) {
-                    level = (Level)levelaccessor1;
-                    if (!level.isClientSide()) {
-                        itementity = new ItemEntity(level, d0, d1, d2, new ItemStack((ItemLike) AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()));
-                        itementity.setPickUpDelay(10);
-                        level.addFreshEntity(itementity);
-                    }
-                }
+        dropLoot(levelaccessor, d0, d1, d2);
+    }
 
-                levelaccessor1 = levelaccessor;
-                if (levelaccessor1 instanceof Level) {
-                    level = (Level)levelaccessor1;
-                    if (!level.isClientSide()) {
-                        itementity = new ItemEntity(level, d0, d1, d2, new ItemStack((ItemLike) AnnoyingVillagersModItems.OBSIDIAN_WEAPON.get()));
-                        itementity.setPickUpDelay(10);
-                        level.addFreshEntity(itementity);
-                    }
-                }
+    private static void dropLoot(LevelAccessor world, double x, double y, double z) {
+        if (!(world instanceof Level level) || level.isClientSide()) return;
 
-                levelaccessor1 = levelaccessor;
-                if (levelaccessor1 instanceof Level) {
-                    level = (Level)levelaccessor1;
-                    if (!level.isClientSide()) {
-                        itementity = new ItemEntity(level, d0, d1, d2, new ItemStack((ItemLike)AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()));
-                        itementity.setPickUpDelay(10);
-                        level.addFreshEntity(itementity);
-                    }
-                }
-
-                levelaccessor1 = levelaccessor;
-                if (levelaccessor1 instanceof Level) {
-                    level = (Level)levelaccessor1;
-                    if (!level.isClientSide()) {
-                        itementity = new ItemEntity(level, d0, d1, d2, new ItemStack((ItemLike)AnnoyingVillagersModItems.BEDROCK_WEAPON.get()));
-                        itementity.setPickUpDelay(10);
-                        level.addFreshEntity(itementity);
-                    }
-                }
-
-                levelaccessor1 = levelaccessor;
-                if (levelaccessor1 instanceof Level) {
-                    level = (Level)levelaccessor1;
-                    if (!level.isClientSide()) {
-                        itementity = new ItemEntity(level, d0, d1, d2, new ItemStack((ItemLike)AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()));
-                        itementity.setPickUpDelay(10);
-                        level.addFreshEntity(itementity);
-                    }
-                }
-
-                levelaccessor1 = levelaccessor;
-                if (levelaccessor1 instanceof Level) {
-                    level = (Level)levelaccessor1;
-                    if (!level.isClientSide()) {
-                        itementity = new ItemEntity(level, d0, d1, d2, new ItemStack(Items.OAK_SIGN));
-                        itementity.setPickUpDelay(10);
-                        level.addFreshEntity(itementity);
-                    }
-                }
-
-                levelaccessor1 = levelaccessor;
-                if (levelaccessor1 instanceof Level) {
-                    level = (Level)levelaccessor1;
-                    if (!level.isClientSide()) {
-                        itementity = new ItemEntity(level, d0, d1, d2, new ItemStack(Items.SPLASH_POTION));
-                        itementity.setPickUpDelay(10);
-                        level.addFreshEntity(itementity);
-                    }
-                }
-
-                levelaccessor1 = levelaccessor;
-                if (levelaccessor1 instanceof Level) {
-                    level = (Level)levelaccessor1;
-                    if (!level.isClientSide()) {
-                        itementity = new ItemEntity(level, d0, d1, d2, new ItemStack(Items.ENDER_EYE));
-                        itementity.setPickUpDelay(10);
-                        level.addFreshEntity(itementity);
-                    }
-                }
-
-                levelaccessor1 = levelaccessor;
-                if (levelaccessor1 instanceof Level) {
-                    level = (Level)levelaccessor1;
-                    if (!level.isClientSide()) {
-                        itementity = new ItemEntity(level, d0, d1, d2, new ItemStack(Items.ENDER_EYE));
-                        itementity.setPickUpDelay(10);
-                        level.addFreshEntity(itementity);
-                    }
-                }
-
-                levelaccessor1 = levelaccessor;
-                if (levelaccessor1 instanceof Level) {
-                    level = (Level)levelaccessor1;
-                    if (!level.isClientSide()) {
-                        itementity = new ItemEntity(level, d0, d1, d2, new ItemStack(Items.ENDER_EYE));
-                        itementity.setPickUpDelay(10);
-                        level.addFreshEntity(itementity);
-                    }
-                }
-
-                levelaccessor1 = levelaccessor;
-                if (levelaccessor1 instanceof Level) {
-                    level = (Level)levelaccessor1;
-                    if (!level.isClientSide()) {
-                        itementity = new ItemEntity(level, d0, d1, d2, new ItemStack((ItemLike)AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()));
-                        itementity.setPickUpDelay(10);
-                        level.addFreshEntity(itementity);
-                    }
-                }
-
-                levelaccessor1 = levelaccessor;
-                if (levelaccessor1 instanceof Level) {
-                    level = (Level)levelaccessor1;
-                    if (!level.isClientSide()) {
-                        itementity = new ItemEntity(level, d0, d1, d2, new ItemStack(Blocks.OBSIDIAN));
-                        itementity.setPickUpDelay(10);
-                        level.addFreshEntity(itementity);
-                    }
-                }
-
-                levelaccessor1 = levelaccessor;
-                if (levelaccessor1 instanceof Level) {
-                    level = (Level)levelaccessor1;
-                    if (!level.isClientSide()) {
-                        itementity = new ItemEntity(level, d0, d1, d2, new ItemStack(Blocks.OBSIDIAN));
-                        itementity.setPickUpDelay(10);
-                        level.addFreshEntity(itementity);
-                    }
-                }
-
-                levelaccessor1 = levelaccessor;
-                if (levelaccessor1 instanceof Level) {
-                    level = (Level)levelaccessor1;
-                    if (!level.isClientSide()) {
-                        itementity = new ItemEntity(level, d0, d1, d2, new ItemStack(Items.ENCHANTED_GOLDEN_APPLE));
-                        itementity.setPickUpDelay(10);
-                        level.addFreshEntity(itementity);
-                    }
-                }
-
-                levelaccessor1 = levelaccessor;
-                if (levelaccessor1 instanceof Level) {
-                    level = (Level)levelaccessor1;
-                    if (!level.isClientSide()) {
-                        itementity = new ItemEntity(level, d0, d1, d2, new ItemStack(Blocks.OBSIDIAN));
-                        itementity.setPickUpDelay(10);
-                        level.addFreshEntity(itementity);
-                    }
-                }
-            }
+        Item[] items = new Item[] {
+                AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get().asItem(), AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get().asItem(),
+                AnnoyingVillagersModItems.BEDROCK_WEAPON.get(), AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get().asItem(), Blocks.OAK_SIGN.asItem(), Blocks.OBSIDIAN.asItem(), Blocks.OBSIDIAN.asItem(), Items.NETHERITE_INGOT, Items.ENDER_PEARL, Items.ENCHANTED_GOLDEN_APPLE, Items.ENDER_EYE, Items.ENDER_EYE, AnnoyingVillagersModItems.ENCHANTED_ENDER_PEARL.get()
         };
+
+        for (Item item : items) {
+            ItemEntity drop = new ItemEntity(level, x, y, z, new ItemStack(item));
+            drop.setPickUpDelay(10);
+            level.addFreshEntity(drop);
+        }
     }
 }

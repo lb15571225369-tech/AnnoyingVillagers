@@ -1,7 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -18,13 +17,8 @@ public class Herobrine2DieProcedure {
         if (!world.isClientSide() && world.getServer() != null) {
             world.getServer().getPlayerList().broadcastSystemMessage(Component.literal("The clone has been destroyed, data has been transmitted to the terminal."), false);
         }
-        
-        new DelayedTask(20) {
-            @Override
-            public void run() {
-                dropLoot(world, x, y, z);
-            }
-        };
+
+        dropLoot(world, x, y, z);
     }
 
     private static void dropLoot(LevelAccessor world, double x, double y, double z) {
@@ -36,7 +30,9 @@ public class Herobrine2DieProcedure {
                 Items.WRITABLE_BOOK, Items.EMERALD, Items.EMERALD,
                 Items.ENCHANTED_GOLDEN_APPLE, Items.NETHERITE_INGOT,
                 Items.ENDER_PEARL, Items.ENCHANTED_GOLDEN_APPLE,
-                Items.ENDER_EYE, Items.TNT, Items.TNT, Items.ENCHANTED_BOOK, AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get()
+                Items.ENDER_EYE, Items.TNT, Items.TNT, Items.ENCHANTED_BOOK,
+                AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get(),
+                AnnoyingVillagersModItems.ENCHANTED_ENDER_PEARL.get()
         };
 
         for (Item item : drops) {
