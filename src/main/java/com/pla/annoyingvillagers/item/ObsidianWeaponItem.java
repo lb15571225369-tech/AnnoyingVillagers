@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.item;
 
 import com.pla.annoyingvillagers.procedures.ObsidianWeaponSpecialAttackProcedure;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -9,11 +10,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import com.pla.annoyingvillagers.procedures.ObsidianWeaponOnUseProcedure;
+
+import java.util.List;
 
 public class ObsidianWeaponItem extends SwordItem {
 
@@ -28,7 +32,7 @@ public class ObsidianWeaponItem extends SwordItem {
             }
 
             public float getAttackDamageBonus() {
-                return 16.0F;
+                return 6.0F;
             }
 
             public int getLevel() {
@@ -43,6 +47,16 @@ public class ObsidianWeaponItem extends SwordItem {
                 return Ingredient.of(new ItemStack[]{new ItemStack(Blocks.OBSIDIAN)});
             }
         }, 3, 0.5F, (new Properties()).fireResistant());
+    }
+
+    @Override
+    public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
+        super.appendHoverText(itemstack, level, list, tooltipflag);
+        list.add(Component.literal(
+                "An Obsidian Block infused with §5Herobrine§r's power.\n" +
+                        "§6Right-click§r to launch a chain of Obsidian.\n" +
+                        "§6Weapon More Attack§r to summon a wall of Obsidian."
+        ));
     }
 
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {

@@ -27,7 +27,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class EnchantedEnderPearlItem extends Item {
 
     public EnchantedEnderPearlItem() {
-        super((new Properties()).stacksTo(16).durability(300));
+        super((new Properties()).stacksTo(1).durability(100));
     }
 
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {

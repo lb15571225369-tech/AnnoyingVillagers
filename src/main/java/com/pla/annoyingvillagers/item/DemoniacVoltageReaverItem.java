@@ -92,7 +92,7 @@ public class DemoniacVoltageReaverItem extends SwordItem {
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal("One of Herobrine's legendary weapons.\n" +
+        list.add(Component.literal("One of §5Herobrine§r's legendary weapons.\n" +
                 "§aNormal Form§r: A basic greatsword with no special abilities.\n" +
                 "§eAwakened Form§r: Shift + right-click to swap forms. After 5 successful hits, the weapon transforms into the §5Second Form§r.\n" +
                 "§5Second Form§r: Unleashes a chain of Snake Blades that track enemies in a wide area, dealing damage, stunning, and knocking them back.\n" +

@@ -329,9 +329,9 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> ENDER_AEGIS = AnnoyingVillagersModItems.REGISTRY.register("ender_aegis", () -> {
         return new EnderAegisItem();
     });
-//    public static final RegistryObject<Item> GOLDEN_ENDER_EYE = AnnoyingVillagersModItems.REGISTRY.register("obsidian_weapon", () -> {
-//        return new GoldenEnderEyeItem();
-//    });
+    public static final RegistryObject<Item> HEROBRINE_ENDER_EYE = AnnoyingVillagersModItems.REGISTRY.register("herobrine_ender_eye", () -> {
+        return new HerobrineEnderEyeItem();
+    });
     // ------------------------------
 
 

@@ -162,7 +162,7 @@ public class ObsidianSledgehammerItem extends AxeItem {
     @Override
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal("One of Herobrine's legendary weapons.\n" +
+        list.add(Component.literal("One of §5Herobrine§r's legendary weapons.\n" +
                 "§aNormal Form§r: A normal hammer with no special powers. After 10 successful hits, it awakens into its §5Second Form§r.\n" +
                 "§5Second Form§r: Lasts for 10 seconds.\n" +
                 "- Grants §9JUMP BOOST§r and §dMOVEMENT SPEED§r effects.\n" +

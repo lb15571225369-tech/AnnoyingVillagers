@@ -34,10 +34,10 @@
 	],
 	"custom_guard_motion": [
 		{
-			  "weapon_categories": ["sword", "fist"],
-			  "style":"two_hand",
-			  "guard": "indestructible:guard/guard_dualsword",
-			  "counter": "epicfight:biped/combat/sword_dual_auto1",
+			  "weapon_categories": ["fist"],
+			  "style":"common",
+			  "guard": "indestructible:guard/guard_sword",
+			  "counter": "epicfight:biped/combat/fist_auto1",
 			  "speed": 3
 		}
 	],
@@ -52,6 +52,21 @@
 			"weapon_categories": ["fist"],
 			"style": "common",
 			"behavior_series": [
+				{
+					"weight": 50.5,
+					"canBeInterrupted": false,
+					"looping": false,
+					"behaviors": [
+						{
+							"conditions": [
+								{"predicate":"within_distance", "min": 0.5, "max": 3.5}
+							],
+							"guard": 1,
+							"command_list": [
+								{"time":0.6, "command":"item replace entity @s weapon.mainhand with minecraft:bedrock", "execute_at_target":false}]
+						}
+					]
+				},
 				{
 					"weight": 40.5,
 					"canBeInterrupted": false,
@@ -343,7 +358,7 @@
 					]
 				},
 				{
-					"weight": 100.5,
+					"weight": 30.5,
 					"canBeInterrupted": false,
 					"looping": false,
 					"cooldown": 20,
@@ -353,6 +368,21 @@
 								{"predicate":"within_distance", "min": 1.0, "max": 7.0}
 							],
 							"animation": "epicfight:biped/skill/step_right"
+						}
+					]
+				},
+				{
+					"weight": 100.5,
+					"canBeInterrupted": false,
+					"looping": false,
+					"behaviors": [
+						{
+							"conditions": [
+								{"predicate":"within_distance", "min": 0.5, "max": 3.5}
+							],
+							"guard": 1,
+							"command_list": [
+								{"time":0.6, "command":"item replace entity @s weapon.mainhand with minecraft:bedrock", "execute_at_target":false}]
 						}
 					]
 				}
