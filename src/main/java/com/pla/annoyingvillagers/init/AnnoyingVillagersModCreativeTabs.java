@@ -58,7 +58,9 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.CRAFTING_TABLE.get());
                         pOutput.accept(AnnoyingVillagersModItems.ENCHANTED_WOODEN_DOOR.get());
                         pOutput.accept(AnnoyingVillagersModItems.WOODEN_DOOR.get());
+                        pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get());
                         pOutput.accept(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get());
+                        pOutput.accept(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get());
                         pOutput.accept(AnnoyingVillagersModItems.OBSIDIAN_WEAPON.get());
                         pOutput.accept(AnnoyingVillagersModItems.BEDROCK_WEAPON.get());

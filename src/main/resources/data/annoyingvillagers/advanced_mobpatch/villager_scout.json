@@ -337,9 +337,9 @@
 			"style": "two_hand",
 			"behavior_series": [
 				{
-					"weight": 500.5,
-					"canBeInterrupted": true,
-					"looping": false,
+					"weight": 50.5,
+					"canBeInterrupted": false,
+					"looping": true,
 					"behaviors": [
 						{
 							"conditions": [

@@ -6,6 +6,7 @@ import java.util.function.Function;
 
 import com.pla.annoyingvillagers.gameasset.AVCollider;
 import com.pla.annoyingvillagers.gameasset.AVSkill;
+import net.corruptdog.cdm.gameasset.CDSkills;
 import net.corruptdog.cdm.gameasset.CorruptAnimations;
 import net.corruptdog.cdm.world.CorruptWeaponCategories;
 import net.minecraft.resources.ResourceLocation;
@@ -18,6 +19,7 @@ import net.minecraft.world.item.Tiers;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSounds;
 import reascer.wom.gameasset.WOMAnimations;
+import reascer.wom.gameasset.WOMWeaponColliders;
 import yesman.epicfight.api.animation.LivingMotions;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.forgeevent.WeaponCapabilityPresetRegistryEvent;
@@ -30,6 +32,7 @@ import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.skill.SkillDataKeys;
 import yesman.epicfight.skill.SkillSlots;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
+import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.Builder;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.Styles;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
@@ -43,7 +46,7 @@ public class LegendarySwordCapability {
         yesman.epicfight.world.capabilities.item.WeaponCapability.Builder yesman_epicfight_world_capabilities_item_weaponcapability_builder = WeaponCapability.builder().category(AVCategories.LEGENDARYSWORD).styleProvider((livingentitypatch) -> {
             return Styles.TWO_HAND;
         }).collider(ColliderPreset.GREATSWORD).swingSound((SoundEvent) EpicFightSounds.WHOOSH_BIG.get()).hitSound((SoundEvent) EpicFightSounds.BLADE_HIT.get()).canBePlacedOffhand(false).newStyleCombo(Styles.TWO_HAND, new StaticAnimation[]{WOMAnimations.TORMENT_AUTO_1, WOMAnimations.TORMENT_AUTO_2, WOMAnimations.SOLAR_AUTO_1, WOMAnimations.SOLAR_AUTO_2, WOMAnimations.SOLAR_AUTO_2, WOMAnimations.SOLAR_AUTO_3, WOMAnimations.SOLAR_AUTO_4, WOMAnimations.TORMENT_AUTO_4, WOMAnimations.TORMENT_CHARGED_ATTACK_2, AVAnimations.GREATSWORD_DUAL_AUTO_3, WOMAnimations.TORMENT_CHARGED_ATTACK_1, WOMAnimations.TORMENT_DASH, WOMAnimations.TORMENT_AIRSLAM}).newStyleCombo(Styles.MOUNT, new StaticAnimation[]{Animations.SWORD_MOUNT_ATTACK}).innateSkill(Styles.TWO_HAND, (itemstack) -> {
-            return EpicFightSkills.STEEL_WHIRLWIND;
+            return CDSkills.WIND_SLASH;
         }).livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, WOMAnimations.SOLAR_IDLE).livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, WOMAnimations.SOLAR_WALK).livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.RUN_DUAL_BIG).livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.RUN_DUAL_BIG).livingMotionModifier(Styles.TWO_HAND, LivingMotions.JUMP, WOMAnimations.SOLAR_IDLE).livingMotionModifier(Styles.TWO_HAND, LivingMotions.SWIM, Animations.BIPED_HOLD_GREATSWORD).livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AVAnimations.LEGENDARY_SWORD_GUARD).weaponCombinationPredicator((livingentitypatch) -> {
             return livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE ? true : (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SWORD ? true : (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.DAGGER ? true : false));
         });
@@ -158,7 +161,7 @@ public class LegendarySwordCapability {
                         WOMAnimations.TORMENT_DASH,
                         WOMAnimations.TORMENT_AIRSLAM
                 }).newStyleCombo(Styles.MOUNT, new StaticAnimation[]{Animations.SWORD_MOUNT_ATTACK}).innateSkill(Styles.TWO_HAND, (itemstack) -> {
-            return EpicFightSkills.STEEL_WHIRLWIND;
+            return CDSkills.WIND_SLASH;
         })
                 .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, WOMAnimations.SOLAR_IDLE)
                 .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, WOMAnimations.SOLAR_WALK)
@@ -213,7 +216,7 @@ public class LegendarySwordCapability {
         yesman.epicfight.world.capabilities.item.WeaponCapability.Builder yesman_epicfight_world_capabilities_item_weaponcapability_builder = WeaponCapability.builder().category(WeaponCategories.GREATSWORD).styleProvider((livingentitypatch) -> {
             return Styles.TWO_HAND;
         }).collider(ColliderPreset.GREATSWORD).swingSound((SoundEvent) EpicFightSounds.WHOOSH_BIG.get()).hitSound((SoundEvent) EpicFightSounds.BLADE_HIT.get()).canBePlacedOffhand(false).newStyleCombo(Styles.TWO_HAND, new StaticAnimation[]{Animations.GREATSWORD_AUTO1, Animations.GREATSWORD_AUTO2, WOMAnimations.SOLAR_AUTO_3, WOMAnimations.TORMENT_AUTO_3, WOMAnimations.TORMENT_AUTO_4, WOMAnimations.SOLAR_AUTO_4, WOMAnimations.TORMENT_DASH, WOMAnimations.TORMENT_AIRSLAM}).newStyleCombo(Styles.MOUNT, new StaticAnimation[]{Animations.SWORD_MOUNT_ATTACK}).innateSkill(Styles.TWO_HAND, (itemstack) -> {
-            return EpicFightSkills.STEEL_WHIRLWIND;
+            return CDSkills.WIND_SLASH;
         }).livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, WOMAnimations.SOLAR_IDLE).livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, WOMAnimations.SOLAR_WALK).livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, WOMAnimations.SOLAR_RUN).livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, WOMAnimations.SOLAR_RUN).livingMotionModifier(Styles.TWO_HAND, LivingMotions.SWIM, Animations.BIPED_HOLD_GREATSWORD).livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.GREATSWORD_GUARD);
 
         return yesman_epicfight_world_capabilities_item_weaponcapability_builder;
@@ -222,7 +225,7 @@ public class LegendarySwordCapability {
         yesman.epicfight.world.capabilities.item.WeaponCapability.Builder yesman_epicfight_world_capabilities_item_weaponcapability_builder = WeaponCapability.builder().category(AVCategories.HARDGREATSWORD).styleProvider((livingentitypatch) -> {
             return Styles.TWO_HAND;
         }).collider(ColliderPreset.TACHI).hitSound((SoundEvent) EpicFightSounds.BLADE_HIT.get()).swingSound((SoundEvent) AVSounds.SWORD_WHOOSH.get()).newStyleCombo(Styles.TWO_HAND, new StaticAnimation[]{Animations.LONGSWORD_AUTO1, Animations.LONGSWORD_AUTO2, Animations.LONGSWORD_AUTO3, AVAnimations.TACHI_DASH, Animations.LONGSWORD_AIR_SLASH}).newStyleCombo(Styles.MOUNT, new StaticAnimation[]{Animations.SWORD_MOUNT_ATTACK}).innateSkill(Styles.TWO_HAND, (itemstack) -> {
-            return EpicFightSkills.STEEL_WHIRLWIND;
+            return CDSkills.WIND_SLASH;
         }).livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_TACHI).livingMotionModifier(Styles.TWO_HAND, LivingMotions.KNEEL, Animations.BIPED_HOLD_TACHI).livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_HOLD_TACHI).livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, Animations.BIPED_HOLD_TACHI).livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, Animations.BIPED_HOLD_TACHI).livingMotionModifier(Styles.TWO_HAND, LivingMotions.SNEAK, Animations.BIPED_HOLD_TACHI).livingMotionModifier(Styles.TWO_HAND, LivingMotions.SWIM, Animations.BIPED_HOLD_TACHI).livingMotionModifier(Styles.TWO_HAND, LivingMotions.FLOAT, Animations.BIPED_HOLD_TACHI).livingMotionModifier(Styles.TWO_HAND, LivingMotions.FALL, Animations.BIPED_HOLD_TACHI).livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AVAnimations.HARD_GREAT_SWORD_GUARD);
 
         return yesman_epicfight_world_capabilities_item_weaponcapability_builder;
@@ -287,6 +290,59 @@ public class LegendarySwordCapability {
                 .weaponCombinationPredicator((patch) -> true);
     };
 
+    public static final Function<Item, CapabilityItem.Builder> ENDER_GLAIVE = (item) -> {
+        CapabilityItem.Builder builder = WeaponCapability.builder().category(WeaponCategories.SPEAR)
+                .styleProvider((playerpatch) -> Styles.TWO_HAND)
+                .collider(WOMWeaponColliders.AGONY)
+                .hitSound((SoundEvent)EpicFightSounds.BLADE_HIT.get())
+                .canBePlacedOffhand(false)
+                .newStyleCombo(Styles.TWO_HAND, new StaticAnimation[]{
+                        WOMAnimations.AGONY_AUTO_1,
+                        WOMAnimations.AGONY_AUTO_2,
+                        WOMAnimations.AGONY_AUTO_3,
+                        WOMAnimations.AGONY_AUTO_4,
+                        WOMAnimations.AGONY_CLAWSTRIKE,
+                        WOMAnimations.AGONY_RIPPING_FANGS
+                }).newStyleCombo(Styles.MOUNT, new StaticAnimation[]{
+                        Animations.SPEAR_MOUNT_ATTACK}
+                ).innateSkill(Styles.TWO_HAND, (itemstack) -> CDSkills.SPEAR_SLASH)
+                .comboCancel((style) -> false)
+                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, WOMAnimations.AGONY_IDLE)
+                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, WOMAnimations.AGONY_WALK)
+                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, WOMAnimations.AGONY_RUN)
+                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, WOMAnimations.AGONY_RUN)
+                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.SWIM, Animations.BIPED_HOLD_SPEAR)
+                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, WOMAnimations.AGONY_GUARD);
+        return builder;
+    };
+
+    public static final Function<Item, Builder> SHADOW_OBSIDIAN_SWORD = (item) -> {
+        return WeaponCapability.builder()
+                .category(CorruptWeaponCategories.S_SWORD)
+                .styleProvider((patch) -> Styles.ONE_HAND)
+                .canBePlacedOffhand(false)
+                .collider(ColliderPreset.SWORD)
+                .swingSound(AVSounds.SWORD_WHOOSH.get())
+                .hitSound(EpicFightSounds.BLADE_HIT.get())
+                .newStyleCombo(Styles.ONE_HAND, new StaticAnimation[]{
+                        CorruptAnimations.SWORD_ONEHAND_AUTO1,
+                        CorruptAnimations.SWORD_ONEHAND_AUTO2,
+                        CorruptAnimations.SWORD_ONEHAND_AUTO3,
+                        CorruptAnimations.SWORD_ONEHAND_AUTO4,
+                        DualAxesAnimations.AXE_AUTO_3,
+                        CorruptAnimations.SWORD_ONEHAND_DASH,
+                        Animations.SWORD_AIR_SLASH
+                })
+                .innateSkill(Styles.ONE_HAND, (stack) -> CDSkills.YAMATOSKILL)
+                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, CorruptAnimations.BIPED_HOLD_KATANA)
+                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, CorruptAnimations.RUN_KATANA)
+                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, CorruptAnimations.WALK_KATANA)
+                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.SNEAK, Animations.BIPED_SNEAK)
+                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.JUMP, Animations.BIPED_JUMP)
+                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
+                .weaponCombinationPredicator((patch) -> true);
+    };
+
     public static void register(WeaponCapabilityPresetRegistryEvent weaponcapabilitypresetregistryevent) {
         weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "legendarysword"), LegendarySwordCapability.LEGENDARYSWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "axe"), LegendarySwordCapability.AXE);
@@ -304,5 +360,7 @@ public class LegendarySwordCapability {
         weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "uchigatana"), LegendarySwordCapability.UCHIGATANA);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "greatsword"), LegendarySwordCapability.GREATSWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "sword_shield"), LegendarySwordCapability.SWORDSHIELD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "ender_glaive"), LegendarySwordCapability.ENDER_GLAIVE);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "shadow_obsidian_sword"), LegendarySwordCapability.SHADOW_OBSIDIAN_SWORD);
     }
 }

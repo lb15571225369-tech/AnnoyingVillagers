@@ -39,9 +39,12 @@ import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
+import java.util.Random;
+
 
 public class ArmoredHerobrineEntity extends Monster {
     private boolean wasAiming = false;
+    private int switchSwordFist = 300;
 
     public ArmoredHerobrineEntity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.ARMORED_HEROBRINE.get(), level);
@@ -55,8 +58,7 @@ public class ArmoredHerobrineEntity extends Monster {
         this.setCustomName(Component.literal("§5Armored Herobrine§r"));
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
-        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get()));
-        this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get()));
+        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
         this.setItemSlot(EquipmentSlot.HEAD, new ItemStack((ItemLike) AnnoyingVillagersModItems.HEROBRINE_OBSIDIAN_DIAMOND_HELMET.get()));
         this.setItemSlot(EquipmentSlot.CHEST, new ItemStack((ItemLike) AnnoyingVillagersModItems.HEROBRINE_OBSIDIAN_DIAMOND_CHESTPLATE.get()));
     }
@@ -190,6 +192,17 @@ public class ArmoredHerobrineEntity extends Monster {
                 };
             }
             wasAiming = aimingNow;
+            if (!this.getMainHandItem().getItem().equals(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()) && this.switchSwordFist == 0) {
+                this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
+                this.switchSwordFist = new Random().nextInt(200, 600);
+            }
+            if (this.getMainHandItem().getItem().equals(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()) && this.switchSwordFist == 0) {
+                this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+                this.switchSwordFist = new Random().nextInt(200, 600);
+            }
+            if (this.switchSwordFist > 0) {
+                this.switchSwordFist = this.switchSwordFist - 1;
+            }
         }
     }
 

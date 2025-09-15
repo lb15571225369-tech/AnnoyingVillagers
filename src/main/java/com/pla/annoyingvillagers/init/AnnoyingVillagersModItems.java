@@ -332,6 +332,9 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> HEROBRINE_ENDER_EYE = AnnoyingVillagersModItems.REGISTRY.register("herobrine_ender_eye", () -> {
         return new HerobrineEnderEyeItem();
     });
+    public static final RegistryObject<Item> SHADOW_OBSIDIAN_SWORD = AnnoyingVillagersModItems.REGISTRY.register("shadow_obsidian_sword", () -> {
+        return new ShadowObsidianSwordItem();
+    });
     // ------------------------------
 
 

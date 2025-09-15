@@ -46,7 +46,7 @@ public class DarkHerobrineOnDeathProcedure {
                 Items.ENCHANTED_BOOK,
                 Items.COAL,
                 AnnoyingVillagersModItems.ENCHANTED_ENDER_PEARL.get(),
-                AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get()
+                AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get()
         };
 
         for (Item item : items) {

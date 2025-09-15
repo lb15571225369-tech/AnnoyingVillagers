@@ -47,8 +47,7 @@ public class ArmoredHerobrineOnDeathProcedure {
                 Blocks.DIAMOND_BLOCK.asItem(),
                 Items.IRON_SWORD,
                 AnnoyingVillagersModItems.ENCHANTED_ENDER_PEARL.get(),
-                AnnoyingVillagersModItems.HEROBRINE_OBSIDIAN_DIAMOND_HELMET.get(),
-                AnnoyingVillagersModItems.HEROBRINE_OBSIDIAN_DIAMOND_CHESTPLATE.get()
+                AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()
         };
 
         for (Item item : items) {

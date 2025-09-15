@@ -47,101 +47,6 @@ public class ArmoredHerobrineOnHurtProcedure {
                             level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:obsidian_place")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                         }
                     }
-
-                    if (!entity.level().isClientSide() && entity.getServer() != null) {
-                        try {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "execute as @s at @s anchored eyes run setblock ^ ^-1 ^1 annoyingvillagers:shadow_obsidian",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                        } catch (CommandSyntaxException e) {
-                        }
-                    }
-                    new DelayedTask(1) {
-                        @Override
-                        public void run() {
-                            Entity entity2 = entity;
-
-                            if (!entity2.level().isClientSide() && entity2.getServer() != null) {
-                                try {
-                                    entity2.getServer().getCommands().getDispatcher().execute(
-                                            "execute as @s at @s anchored eyes run setblock ^ ^ ^1 annoyingvillagers:shadow_obsidian",
-                                            entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                } catch (CommandSyntaxException e) {
-                                }
-                            }
-                            new DelayedTask(1) {
-                                @Override
-                                public void run() {
-                                    Entity entity3 = entity;
-
-                                    if (!entity3.level().isClientSide() && entity3.getServer() != null) {
-                                        try {
-                                            entity3.getServer().getCommands().getDispatcher().execute(
-                                                    "execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:shadow_obsidian",
-                                                    entity3.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                        } catch (CommandSyntaxException e) {
-                                        }
-                                    }
-                                    new DelayedTask(1) {
-                                        public void run() {
-                                            Entity entity4 = entity;
-
-                                            if (!entity4.level().isClientSide() && entity4.getServer() != null) {
-                                                try {
-                                                    entity4.getServer().getCommands().getDispatcher().execute(
-                                                            "execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:shadow_obsidian",
-                                                            entity4.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                } catch (CommandSyntaxException e) {
-                                                }
-                                            }
-                                            new DelayedTask(1) {
-                                                public void run() {
-                                                    Entity entity5 = entity;
-
-                                                    if (!entity5.level().isClientSide() && entity5.getServer() != null) {
-                                                        try {
-                                                            entity5.getServer().getCommands().getDispatcher().execute(
-                                                                    "execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:shadow_obsidian",
-                                                                    entity5.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                        } catch (CommandSyntaxException e) {
-                                                        }
-                                                    }
-                                                    new DelayedTask(1) {
-                                                        public void run() {
-                                                            Entity entity6 = entity;
-
-                                                            if (!entity6.level().isClientSide() && entity6.getServer() != null) {
-                                                                try {
-                                                                    entity6.getServer().getCommands().getDispatcher().execute(
-                                                                            "execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:shadow_obsidian",
-                                                                            entity6.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                                } catch (CommandSyntaxException e) {
-                                                                }
-                                                            }
-                                                            new DelayedTask(1) {
-                                                                public void run() {
-                                                                    Entity entity7 = entity;
-
-                                                                    if (!entity7.level().isClientSide() && entity7.getServer() != null) {
-                                                                        try {
-                                                                            entity7.getServer().getCommands().getDispatcher().execute(
-                                                                                    "execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:shadow_obsidian",
-                                                                                    entity7.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                                        } catch (CommandSyntaxException e) {
-                                                                        }
-                                                                    }
-                                                                }
-                                                            };
-                                                        }
-                                                    };
-                                                }
-                                            };
-                                        }
-                                    };
-                                }
-                            };
-                        }
-                    };
                 }
 
                 if (Math.random() <= 0.42D) {
@@ -273,7 +178,7 @@ public class ArmoredHerobrineOnHurtProcedure {
 
                                     if (entity instanceof LivingEntity) {
                                         livingentity2 = (LivingEntity)entity;
-                                        itemstack2 = new ItemStack((ItemLike)AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get());
+                                        itemstack2 = new ItemStack((ItemLike)AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get());
                                         itemstack2.setCount(1);
                                         livingentity2.setItemInHand(InteractionHand.MAIN_HAND, itemstack2);
                                         if (livingentity2 instanceof Player) {
@@ -612,7 +517,7 @@ public class ArmoredHerobrineOnHurtProcedure {
 
                                                                     if (entity instanceof LivingEntity) {
                                                                         livingentity6 = (LivingEntity)entity;
-                                                                        itemstack6 = new ItemStack((ItemLike)AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get());
+                                                                        itemstack6 = new ItemStack((ItemLike)AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get());
                                                                         itemstack6.setCount(1);
                                                                         livingentity6.setItemInHand(InteractionHand.MAIN_HAND, itemstack6);
                                                                         if (livingentity6 instanceof Player) {

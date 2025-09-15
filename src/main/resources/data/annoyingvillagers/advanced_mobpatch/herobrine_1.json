@@ -34,11 +34,11 @@
 	],
 	"custom_guard_motion": [
 		{
-			  "weapon_categories": ["fist"],
-			  "style":"two_hand",
-			  "guard": "indestructible:guard/guard_dualsword",
-			  "counter": "epicfight:biped/combat/sword_dual_auto1",
-			  "speed": 3
+			"weapon_categories": ["fist"],
+			"style":"common",
+			"guard": "epicfight:biped/skill/guard_sword",
+			"counter": "epicfight:biped/combat/fist_auto1",
+			"speed": 3
 		}
 	],
 	"stun_animations": {
@@ -60,7 +60,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 5.5, "max": 50.5}
+								{"predicate":"within_distance", "min": 4.5, "max": 8.5}
 							],
 							"animation": "annoyingvillagers:biped/combat/fist_dash",
 							"command_list": [

@@ -3,9 +3,7 @@ package com.pla.annoyingvillagers.procedures;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.capabilities.AVCategories;
-import com.pla.annoyingvillagers.entity.EnchantedEnderPearlEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.item.*;
 import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
@@ -411,15 +409,25 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                 }
             }
         } else if ((playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.SWORD || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.SWORD) && (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.TACHI || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI) && (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.TACHI || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.SWORD) && (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.SWORD || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI)) {
+            if (!(entity instanceof LivingEntity livingEntity) || !entity.isAlive()) {
+                return;
+            }
+            ItemStack itemStack = livingEntity.getMainHandItem();
             if (entity.getPersistentData().getDouble("sword_a") > 3.5D) {
                 entity.getPersistentData().putDouble("sword_a", 0.0D);
             } else if (entity.getPersistentData().getDouble("sword_a") == 0.0D) {
                 entity.getPersistentData().putDouble("sword_a", 1.5D);
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
                     try {
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                "indestructible @s play \"annoyingvillagers:biped/combat/sword_heavy_auto1\" 0 1",
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        if (itemStack.getItem() instanceof ShadowObsidianSwordItem) {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "indestructible @s play \"wom:biped/skill/torment_berserk_dash\" 0 1",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } else {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "indestructible @s play \"annoyingvillagers:biped/combat/sword_heavy_auto1\" 0 1",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        }
                     } catch (CommandSyntaxException e) {
                         
                     }
@@ -434,9 +442,15 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                 entity.getPersistentData().putDouble("sword_a", 2.5D);
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
                     try {
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                "indestructible @s play \"annoyingvillagers:biped/combat/sword_heavy_auto2\" 0 1",
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        if (itemStack.getItem() instanceof ShadowObsidianSwordItem) {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "indestructible @s play \"wom:biped/skill/torment_berserk_dash\" 0 1",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } else {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "indestructible @s play \"annoyingvillagers:biped/combat/sword_heavy_auto2\" 0 1",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        }
                     } catch (CommandSyntaxException e) {
                         
                     }
@@ -451,9 +465,15 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                 entity.getPersistentData().putDouble("sword_a", 3.5D);
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
                     try {
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                "indestructible @s play \"annoyingvillagers:biped/combat/sword_heavy_auto3\" 0 1",
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        if (itemStack.getItem() instanceof ShadowObsidianSwordItem) {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "indestructible @s play \"wom:biped/skill/torment_berserk_dash\" 0 1",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } else {
+                            entity.getServer().getCommands().getDispatcher().execute(
+                                    "indestructible @s play \"annoyingvillagers:biped/combat/sword_heavy_auto3\" 0 1",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        }
                     } catch (CommandSyntaxException e) {
                         
                     }

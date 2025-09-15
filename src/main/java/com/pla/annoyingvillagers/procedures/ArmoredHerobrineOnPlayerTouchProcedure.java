@@ -40,31 +40,6 @@ public class ArmoredHerobrineOnPlayerTouchProcedure {
                         level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "ob_place")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                     }
                 }
-
-                if (!entity.level().isClientSide() && entity.getServer() != null) {
-                    try {
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                "execute as @s at @s anchored eyes run setblock ^ ^-1 ^2 annoyingvillagers:shadow_obsidian",
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                    } catch (CommandSyntaxException e) {
-                    }
-                }
-
-                new DelayedTask(1) {
-                    @Override
-                    public void run() {
-                        Entity entity2 = entity;
-
-                        if (!entity2.level().isClientSide() && entity2.getServer() != null) {
-                            try {
-                                entity2.getServer().getCommands().getDispatcher().execute(
-                                        "execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:shadow_obsidian",
-                                        entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                            } catch (CommandSyntaxException e) {
-                            }
-                        }
-                    }
-                };
             }
 
             if (Math.random() <= 0.2D) {
@@ -436,7 +411,7 @@ public class ArmoredHerobrineOnPlayerTouchProcedure {
 
                             if (entity instanceof LivingEntity) {
                                 livingentity1 = (LivingEntity)entity;
-                                itemstack1 = new ItemStack((ItemLike)AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get());
+                                itemstack1 = new ItemStack((ItemLike)AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get());
                                 itemstack1.setCount(1);
                                 livingentity1.setItemInHand(InteractionHand.MAIN_HAND, itemstack1);
                                 if (livingentity1 instanceof Player) {
@@ -720,7 +695,7 @@ public class ArmoredHerobrineOnPlayerTouchProcedure {
 
                                                 if (entity instanceof LivingEntity) {
                                                     livingentity3 = (LivingEntity)entity;
-                                                    itemstack3 = new ItemStack((ItemLike)AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get());
+                                                    itemstack3 = new ItemStack((ItemLike)AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get());
                                                     itemstack3.setCount(1);
                                                     livingentity3.setItemInHand(InteractionHand.MAIN_HAND, itemstack3);
                                                     if (livingentity3 instanceof Player) {
