@@ -113,24 +113,27 @@ public class DarkObSsOnEntityInsideProcedure {
                 }
             }
 
-            if (entity instanceof LivingEntity) {
-                LivingEntity livingentity2 = (LivingEntity) entity;
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
 
-                if (!livingentity2.level().isClientSide()) {
-                    livingentity2.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 8, false, false));
-                }
-            }
+                if (entity instanceof LivingEntity) {
+                    LivingEntity livingentity2 = (LivingEntity) entity;
 
-            entity.setDeltaMovement(new Vec3(0.0D, 0.0D, 0.0D));
-            if (Math.random() <= 0.2D) {
-                if (entity instanceof LivingEntity livingEntity) {
-                    float strength = 1.0F;
-                    double dx = d0 - entity.getX();
-                    double dz = d2 - entity.getZ();
-                    livingEntity.knockback(strength, dx, dz);
+                    if (!livingentity2.level().isClientSide()) {
+                        livingentity2.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 8, false, false));
+                    }
                 }
+
+                entity.setDeltaMovement(new Vec3(0.0D, 0.0D, 0.0D));
+                if (Math.random() <= 0.2D) {
+                    if (entity instanceof LivingEntity livingEntity) {
+                        float strength = 1.0F;
+                        double dx = d0 - entity.getX();
+                        double dz = d2 - entity.getZ();
+                        livingEntity.knockback(strength, dx, dz);
+                    }
+                }
+                entity.hurt(entity.level().damageSources().generic(), 1.0F);
             }
-            entity.hurt(entity.level().damageSources().generic(), 1.0F);
         }
     }
 }

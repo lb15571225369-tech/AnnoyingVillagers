@@ -375,7 +375,7 @@ public class ShadowHerobrineEntity extends Monster {
                 shootChain(this, block, 2.5F, 5);
                 this.getPersistentData().putInt("Shooting", shooting - 1);
             } else {
-                if (this.getMainHandItem().getItem().equals(AnnoyingVillagersModItems.ELITE_OBSIDIAN_LONG.get())) {
+                if (this.getMainHandItem().getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get())) {
                     this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
                 }
             }

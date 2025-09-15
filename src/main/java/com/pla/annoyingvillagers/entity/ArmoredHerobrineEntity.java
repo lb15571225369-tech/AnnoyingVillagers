@@ -2,10 +2,12 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.util.CommonGoals;
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -16,14 +18,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -33,14 +28,20 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
+import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 
 public class ArmoredHerobrineEntity extends Monster {
+    private boolean wasAiming = false;
 
     public ArmoredHerobrineEntity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.ARMORED_HEROBRINE.get(), level);
@@ -115,6 +116,80 @@ public class ArmoredHerobrineEntity extends Monster {
         }
         if (!this.level().isClientSide()) {
             this.discard();
+        }
+    }
+
+
+    private static String currentEfAnimIdOrNull(LivingEntity self) {
+        try {
+            var patch = EpicFightCapabilities
+                    .getEntityPatch(self, LivingEntityPatch.class);
+            if (patch == null) return null;
+
+            var player = patch.getAnimator().getPlayerFor((DynamicAnimation) null);
+            if (player == null) return null;
+
+            var anim = player.getAnimation();
+            if (anim == null) return null;
+            try {
+                var m = anim.getClass().getMethod("getLocation");
+                var rl = (net.minecraft.resources.ResourceLocation) m.invoke(anim);
+                return rl != null ? rl.getPath().toLowerCase(java.util.Locale.ROOT) : null;
+            } catch (Exception ignored) {
+                return anim.toString().toLowerCase(java.util.Locale.ROOT);
+            }
+        } catch (Throwable t) {
+            return null;
+        }
+    }
+
+    private static boolean isAiming(String id) {
+        if (id == null) return false;
+        return id.contains("biped/combat/fist_dash") || id.endsWith("/fist_dash") || id.contains("fist_dash");
+    }
+
+    public void shootDarkObsAtTarget(double speed) {
+        if (this.level().isClientSide) return;
+
+        Vec3 to;
+        LivingEntity target = this.getTarget();
+        if (target != null && target.isAlive()) {
+            to = target.getEyePosition(1.0F);
+        } else {
+            to = this.getEyePosition().add(this.getLookAngle().scale(16.0));
+        }
+
+        BlockState block = AnnoyingVillagersModBlocks.DARKOB.get().defaultBlockState();
+        BlockProjectileEntity throwingObsidian = new BlockProjectileEntity(
+                this.level(),
+                this,
+                block
+        );
+        this.level().addFreshEntity(throwingObsidian);
+        Vec3 dir = to.subtract(throwingObsidian.position());
+        if (dir.lengthSqr() < 1.0e-6) dir = this.getLookAngle();
+        Vec3 vel = dir.normalize().scale(speed);
+        throwingObsidian.setDeltaMovement(vel);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (!this.level().isClientSide) {
+            String animId = currentEfAnimIdOrNull(this);
+            boolean aimingNow = isAiming(animId);
+            if (aimingNow && !wasAiming) {
+                ArmoredHerobrineEntity herobrine = this;
+                new DelayedTask(10) {
+                    @Override
+                    public void run() {
+                        if (herobrine.isAlive()) {
+                            herobrine.shootDarkObsAtTarget(2.0F);
+                        }
+                    }
+                };
+            }
+            wasAiming = aimingNow;
         }
     }
 

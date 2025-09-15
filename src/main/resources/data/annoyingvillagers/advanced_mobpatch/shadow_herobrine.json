@@ -83,7 +83,7 @@
 					"behaviors": [
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 5.5, "max": 8.5}
+								{"predicate":"within_distance", "min": 5.5, "max": 50.5}
 							],
 							"animation": "annoyingvillagers:biped/combat/fist_dash",
 							"command_list": [
@@ -486,7 +486,7 @@
 							"animation": "epicfight:biped/living/landing",
 							"play_speed": 0.2,
 							"command_list": [
-								{"time":0.1, "command":"item replace entity @s weapon.mainhand with annoyingvillagers:elite_obsidian_long", "execute_at_target":false},
+								{"time":0.1, "command":"item replace entity @s weapon.mainhand with annoyingvillagers:herobrine_ender_eye", "execute_at_target":false},
 								{"time":0.1, "command":"item replace entity @s weapon.offhand with minecraft:air", "execute_at_target":false}
 							]
 						}

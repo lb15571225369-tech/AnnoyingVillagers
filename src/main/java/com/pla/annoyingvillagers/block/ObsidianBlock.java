@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.pla.annoyingvillagers.blockentity.ObsidianBlockEntity;
+import com.pla.annoyingvillagers.blockentity.ShadowObsidianBlockEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.procedures.ObsidianWhenEntityInsideBlockOnCollisionProcedure;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -13,6 +14,8 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -98,6 +101,19 @@ public class ObsidianBlock extends Block implements EntityBlock {
     public void entityInside(BlockState blockstate, Level level, BlockPos blockpos, Entity entity) {
         super.entityInside(blockstate, level, blockpos, entity);
         ObsidianWhenEntityInsideBlockOnCollisionProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), entity);
+    }
+
+    @Override
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+        super.setPlacedBy(level, pos, state, placer, stack);
+        if (!level.isClientSide) {
+            var blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
+                obsidianBlockEntity.setOwner(placer instanceof Player ? ((Player) placer).getUUID() : null);
+                blockEntity.setChanged();
+                level.sendBlockUpdated(pos, state, state, 3);
+            }
+        }
     }
 
     @OnlyIn(Dist.CLIENT)

@@ -61,6 +61,24 @@
 			"style": "common",
 			"behavior_series": [
 				{
+					"weight": 50.5,
+					"canBeInterrupted": false,
+					"looping": false,
+					"cooldown": 350,
+					"behaviors": [
+						{
+							"conditions": [
+								{"predicate":"within_distance", "min": 5.5, "max": 50.5}
+							],
+							"animation": "annoyingvillagers:biped/combat/fist_dash",
+							"command_list": [
+								{"time":0.1, "command":"item replace entity @s weapon.mainhand with minecraft:air", "execute_at_target":false},
+								{"time":0.1, "command":"item replace entity @s weapon.offhand with minecraft:air", "execute_at_target":false}
+							]
+						}
+					]
+				},
+				{
 					"weight": 40.5,
 					"canBeInterrupted": false,
 					"looping": true,

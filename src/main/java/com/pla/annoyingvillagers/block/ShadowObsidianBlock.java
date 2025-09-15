@@ -2,8 +2,8 @@ package com.pla.annoyingvillagers.block;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
-import com.pla.annoyingvillagers.blockentity.DarkObUpBlockEntity;
 import com.pla.annoyingvillagers.blockentity.ShadowObsidianBlockEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -108,8 +108,8 @@ public class ShadowObsidianBlock extends Block implements EntityBlock {
         super.setPlacedBy(level, pos, state, placer, stack);
         if (!level.isClientSide) {
             var blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof DarkObUpBlockEntity dark) {
-                dark.setOwner(placer instanceof Player ? ((Player) placer).getUUID() : null);
+            if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
+                shadowObsidianBlockEntity.setOwner(placer instanceof Player ? ((Player) placer).getUUID() : null);
                 blockEntity.setChanged();
                 level.sendBlockUpdated(pos, state, state, 3);
             }

@@ -1,8 +1,11 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.item.HerobrineEnderEyeItem;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.client.Minecraft;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
@@ -19,6 +22,8 @@ import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
+
+import java.util.Optional;
 
 public class KickOnKeyPressedProcedure {
     private static boolean isSpectatorGamemode(Entity entity) {
@@ -72,6 +77,27 @@ public class KickOnKeyPressedProcedure {
                                                 }
                                             }
                                         } else if (!entity.level().isClientSide() && entity.getServer() != null) {
+                                            if (entity instanceof Player player) {
+                                                 boolean isSuccess = player.getInventory().items.stream()
+                                                        .filter(s -> !s.isEmpty() && s.is(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get()))
+                                                        .findFirst()
+                                                        .map(stack -> {
+                                                            if (stack.getItem() instanceof HerobrineEnderEyeItem herobrineEnderEyeItem) {
+                                                                try {
+                                                                    player.getServer().getCommands().getDispatcher().execute(
+                                                                            "indestructible @s play \"epicfight:biped/living/landing\" 0 1",
+                                                                            player.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                } catch (CommandSyntaxException e) {
+                                                                }
+                                                                HerobrineEnderEyeItem.startShadowObsidianMachineGun((ServerLevel) player.level(), player, stack);
+                                                                stack.hurtAndBreak(10, player, p -> {
+                                                                });
+                                                                return true;
+                                                            }
+                                                            return false;
+                                                        }).orElse(false);
+                                                 if (isSuccess) return;
+                                            }
                                             try {
                                                 entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/kick_h\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                             } catch (CommandSyntaxException e) {

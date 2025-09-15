@@ -33,9 +33,10 @@ import com.pla.annoyingvillagers.procedures.DarkObSsOnTickProcedure;
 import com.pla.annoyingvillagers.procedures.DarkObSsOnPlaceProcedure;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.UUID;
+
 public class DarkObUpBlock extends Block implements EntityBlock {
     public static final BooleanProperty FROM_PLAYER = BooleanProperty.create("from_player");
-
     public DarkObUpBlock() {
         super(Properties.of()
                 .sound(SoundType.STONE)
@@ -109,8 +110,8 @@ public class DarkObUpBlock extends Block implements EntityBlock {
         super.setPlacedBy(level, pos, state, placer, stack);
         if (!level.isClientSide) {
             var blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof DarkObUpBlockEntity dark) {
-                dark.setOwner(placer instanceof Player ? ((Player) placer).getUUID() : null);
+            if (blockEntity instanceof DarkObUpBlockEntity darkObUpBlockEntity) {
+                darkObUpBlockEntity.setOwner(placer instanceof Player ? ((Player) placer).getUUID() : null);
                 blockEntity.setChanged();
                 level.sendBlockUpdated(pos, state, state, 3);
             }

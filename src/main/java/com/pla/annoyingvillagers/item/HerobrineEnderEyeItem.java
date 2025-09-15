@@ -1,16 +1,26 @@
 package com.pla.annoyingvillagers.item;
 
+import com.pla.annoyingvillagers.entity.BlockProjectileEntity;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Random;
 
 public class HerobrineEnderEyeItem extends Item {
     public HerobrineEnderEyeItem() {
-        super((new Properties()).stacksTo(1).durability(200));
+        super((new Properties()).stacksTo(1).durability(300));
     }
 
     @Override
@@ -22,9 +32,102 @@ public class HerobrineEnderEyeItem extends Item {
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
         list.add(Component.literal(
-                "An Ender Eye infused with §5Herobrine§r's power.\n" +
-                        "§6Right-click§r to shoot 3 Shadow Obsidian Pillars.\n" +
-                        "§6Shift Right-click§r to activate Shadow Obsidian Machine Gun."
+                "An Ender Eye infused with §5Herobrine§r's power\n" +
+                        "§7(While in your inventory)§r\n" +
+                        "§6More Weapon Attack§r with any wepon to shoot 3 Shadow Obsidian Pillars.\n" +
+                        "§6Shift + Kick§r to activate Shadow Obsidian Machine Gun."
         ));
+    }
+
+    public static void spawnAndShootDarkObPillars(ServerLevel level, LivingEntity shooter, int delayTicks) {
+        BlockState block = Objects.requireNonNull(AnnoyingVillagersModBlocks.DARKOB.get()).defaultBlockState();
+
+        BlockProjectileEntity up   = makeFloating(level, shooter, block, shooter.getX(),     shooter.getY() + 4, shooter.getZ());
+        BlockProjectileEntity left = makeFloating(level, shooter, block, shooter.getX() - 2, shooter.getY() + 2, shooter.getZ());
+        BlockProjectileEntity right= makeFloating(level, shooter, block, shooter.getX() + 2, shooter.getY() + 2, shooter.getZ());
+
+        new DelayedTask(delayTicks) {
+            @Override public void run() {
+                if (!shooter.isAlive()) {
+                    if (up != null && up.isAlive()) up.discard();
+                    if (left != null && left.isAlive()) left.discard();
+                    if (right != null && right.isAlive()) right.discard();
+                    return;
+                }
+
+                Vec3 to = lookTarget(shooter, 16.0);
+                shootOne(up,   to, 2.0F);
+                shootOne(left, to, 2.0F);
+                shootOne(right,to, 2.0F);
+            }
+        };
+    }
+
+    public static void startShadowObsidianMachineGun(ServerLevel level, Player player, ItemStack stack) {
+        final int[] remaining = {20};
+        fireChainTick(level, player, remaining);
+    }
+
+    private static void fireChainTick(ServerLevel level, Player player, int[] remaining) {
+        if (remaining[0] <= 0 || !player.isAlive()) return;
+
+        BlockState block = Objects.requireNonNull(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()).defaultBlockState();
+        player.setDeltaMovement(Vec3.ZERO);
+        shootChain(player, block, 2.5F, 5);
+
+        remaining[0]--;
+        new DelayedTask(1) { @Override public void run() { fireChainTick(level, player, remaining); } };
+    }
+
+    private static BlockProjectileEntity makeFloating(Level level, LivingEntity owner, BlockState block, double x, double y, double z) {
+        BlockProjectileEntity blockProjectileEntity = new BlockProjectileEntity(level, owner, block);
+        blockProjectileEntity.setNoGravity(true);
+        blockProjectileEntity.setNotReadyForShoot(true);
+        blockProjectileEntity.moveTo(x, y, z, 0.0F, 0.0F);
+        if (owner instanceof Player player) blockProjectileEntity.setPlayerUUID(player.getUUID());
+        level.addFreshEntity(blockProjectileEntity);
+        return blockProjectileEntity;
+    }
+
+    private static void shootOne(BlockProjectileEntity blockProjectileEntity, Vec3 to, double speed) {
+        if (blockProjectileEntity == null || !blockProjectileEntity.isAlive()) return;
+        Vec3 dir = to.subtract(blockProjectileEntity.position());
+        if (dir.lengthSqr() < 1.0e-6) dir = blockProjectileEntity.getLookAngle();
+        blockProjectileEntity.setNoGravity(false);
+        blockProjectileEntity.setDeltaMovement(dir.normalize().scale(speed));
+        blockProjectileEntity.setNotReadyForShoot(false);
+    }
+
+    private static Vec3 lookTarget(LivingEntity shooter, double distance) {
+        return shooter.getEyePosition().add(shooter.getLookAngle().normalize().scale(distance));
+    }
+
+    private static void shootChain(LivingEntity shooter, BlockState block, float velocity, int length) {
+        Level level = shooter.level();
+        if (level.isClientSide) return;
+
+        double eyeY = shooter.getEyeY();
+        Vec3 look = shooter.getLookAngle().normalize();
+        Random rand = new Random();
+
+        for (int i = 0; i < length; i++) {
+            BlockProjectileEntity proj = new BlockProjectileEntity(level, shooter, block);
+
+            Vec3 forward = look.scale(i * 1.0);
+
+            double sideX = (rand.nextDouble() - 0.5) * 2.0;
+            double sideY = (rand.nextDouble() - 0.5) * 2.0;
+            double sideZ = (rand.nextDouble() - 0.5) * 2.0;
+
+            proj.setPos(
+                    shooter.getX() + forward.x + sideX,
+                    eyeY + forward.y + sideY,
+                    shooter.getZ() + forward.z + sideZ
+            );
+            if (shooter instanceof Player player) proj.setPlayerUUID(player.getUUID());
+            proj.setDeltaMovement(look.scale(velocity));
+
+            level.addFreshEntity(proj);
+        }
     }
 }

@@ -153,8 +153,10 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                 }
             }
 
-            entity.hurt(entity.level().damageSources().generic(), 1.0F);
-            entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * -2.0D, 0.4D, entity.getLookAngle().z * -2.0D));
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
+                entity.hurt(entity.level().damageSources().generic(), 1.0F);
+                entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * -2.0D, 0.4D, entity.getLookAngle().z * -2.0D));
+            }
             if (Math.random() <= 0.5D) {
                 new DelayedTask(1) {
                     @Override
