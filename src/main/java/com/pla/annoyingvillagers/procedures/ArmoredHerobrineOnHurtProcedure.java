@@ -166,8 +166,6 @@ public class ArmoredHerobrineOnHurtProcedure {
 
                                 if (!level3.isClientSide()) {
                                     level3.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.iron_golem.repair")), SoundSource.BLOCKS, 1.0F, 1.0F);
-                                } else {
-                                    level3.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.iron_golem.repair")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                                 }
                             }
                             new DelayedTask(4) {
@@ -301,9 +299,7 @@ public class ArmoredHerobrineOnHurtProcedure {
                                 Level level3 = (Level)levelaccessor1;
 
                                 if (!level3.isClientSide()) {
-                                    level3.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.iron_golem.repair")), SoundSource.BLOCKS, 1.0F, 1.0F);
-                                } else {
-                                    level3.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.iron_golem.repair")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                                    level3.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.iron_golem.repair")), SoundSource.BLOCKS, 1.0F, 1.0F);
                                 }
                             }
                             new DelayedTask(1) {
@@ -438,8 +434,6 @@ public class ArmoredHerobrineOnHurtProcedure {
 
                                                         if (!level7.isClientSide()) {
                                                             level7.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.iron_golem.repair")), SoundSource.BLOCKS, 1.0F, 1.0F);
-                                                        } else {
-                                                            level7.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.iron_golem.repair")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                                                         }
                                                     }
                                                     new DelayedTask(1) {
@@ -506,8 +500,6 @@ public class ArmoredHerobrineOnHurtProcedure {
 
                                                                         if (!level10.isClientSide()) {
                                                                             level10.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.iron_golem.repair")), SoundSource.BLOCKS, 1.0F, 1.0F);
-                                                                        } else {
-                                                                            level10.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.iron_golem.repair")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                                                                         }
                                                                     }
 
@@ -545,8 +537,6 @@ public class ArmoredHerobrineOnHurtProcedure {
 
                                                                 if (!level9.isClientSide()) {
                                                                     level9.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.iron_golem.repair")), SoundSource.BLOCKS, 1.0F, 1.0F);
-                                                                } else {
-                                                                    level9.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.iron_golem.repair")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                                                                 }
                                                             }
                                                         }

@@ -588,7 +588,7 @@
                     ]                 
 				},
 				{
-					"weight": 200.5,
+					"weight": 20.5,
 					"canBeInterrupted": true,
 					"looping": false,
 					"behaviors": [

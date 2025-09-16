@@ -189,8 +189,6 @@ public class DarkHerobrineOnPlayerTouchProcedure {
 
                                     if (!level4.isClientSide()) {
                                         level4.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.iron_golem.repair")), SoundSource.BLOCKS, 1.0F, 1.0F);
-                                    } else {
-                                        level4.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.iron_golem.repair")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                                     }
                                 }
                                 new DelayedTask(4) {
@@ -245,8 +243,6 @@ public class DarkHerobrineOnPlayerTouchProcedure {
 
                                                     if (!level6.isClientSide()) {
                                                         level6.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.iron_golem.repair")), SoundSource.BLOCKS, 1.0F, 1.0F);
-                                                    } else {
-                                                        level6.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.iron_golem.repair")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                                                     }
                                                 }
 

@@ -20,7 +20,7 @@
 		"idle": "epicfight:biped/living/creative_idle",
 		"walk": "epicfight:biped/living/creative_idle",
 		"chase": "epicfight:biped/living/creative_idle",
-		"death": "epicfight:biped/living/creative_idle"
+		"death": "epicfight:biped/living/death"
 	},
 	"humanoid_weapon_motions": [
 		  {

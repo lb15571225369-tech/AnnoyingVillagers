@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
@@ -60,6 +61,15 @@ public class HerobrineTransfromProcedure {
             }
             mob.finalizeSpawn(serverLevel, world.getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
             serverLevel.addFreshEntity(possessed);
+            if (!possessed.level().isClientSide() && possessed.getServer() != null) {
+                try {
+                    possessed.getServer().getCommands().getDispatcher().execute(
+                            "indestructible @s play \"epicfight:biped/living/landing\" 0 1",
+                            possessed.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+
+                }
+            }
         }
     }
 }

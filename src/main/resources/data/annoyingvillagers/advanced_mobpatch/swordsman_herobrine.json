@@ -663,7 +663,7 @@
 					]
 				},
                 {
-					"weight": 600.5,
+					"weight": 60.5,
 					"canBeInterrupted": true,
 					"looping": true,
 					"behaviors": [
@@ -676,7 +676,7 @@
 					]
 				},
                 {
-					"weight": 600.5,
+					"weight": 60.5,
 					"canBeInterrupted": true,
 					"looping": true,
 					"behaviors": [

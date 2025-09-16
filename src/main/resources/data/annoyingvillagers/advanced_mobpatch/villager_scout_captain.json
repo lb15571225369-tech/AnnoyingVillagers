@@ -217,7 +217,7 @@
                         ]                 
 				},
 				{
-					"weight": 100.5,
+					"weight": 10.5,
 					"canBeInterrupted": false,
 					"looping": false,
 					"behaviors": [
@@ -344,7 +344,7 @@
 			"style": "two_hand",
 			"behavior_series": [
 				{
-					"weight": 500.5,
+					"weight": 50.5,
 					"canBeInterrupted": true,
 					"looping": false,
 					"behaviors": [

@@ -677,7 +677,7 @@
 					]
 				},
                 {
-					"weight": 600.5,
+					"weight": 60.5,
 					"canBeInterrupted": true,
 					"looping": true,
 					"behaviors": [
@@ -690,7 +690,7 @@
 					]
 				},
                 {
-					"weight": 600.5,
+					"weight": 60.5,
 					"canBeInterrupted": true,
 					"looping": true,
 					"behaviors": [
@@ -904,7 +904,7 @@
                         ]                 
 				},
 				{
-					"weight": 100.5,
+					"weight": 10.5,
 					"canBeInterrupted": false,
 					"looping": false,
 					"behaviors": [
@@ -1012,7 +1012,7 @@
 					]
 				},
                 {
-					"weight": 100.5,
+					"weight": 10.5,
 					"canBeInterrupted": false,
 					"looping": false,
 					"cooldown": 20,
@@ -1218,7 +1218,7 @@
 					]
 				},
                 {
-					"weight": 100.5,
+					"weight": 10.5,
 					"canBeInterrupted": false,
 					"looping": false,
 					"cooldown": 20,
@@ -1394,7 +1394,7 @@
                         ]                 
 				},
 				{
-					"weight": 100.5,
+					"weight": 10.5,
 					"canBeInterrupted": false,
 					"looping": false,
 					"behaviors": [
@@ -1486,7 +1486,7 @@
 					]
 				},
                 {
-					"weight": 100.5,
+					"weight": 10.5,
 					"canBeInterrupted": false,
 					"looping": false,
 					"cooldown": 20,
@@ -1524,7 +1524,7 @@
                     ]                 
 				},
 				{
-					"weight": 100.5,
+					"weight": 10.5,
 					"canBeInterrupted": false,
 					"looping": true,
 					"behaviors": [
