@@ -8,6 +8,7 @@ import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVSkillDataKeys;
 import com.pla.annoyingvillagers.init.*;
 import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
+import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
 import com.pla.annoyingvillagers.network.TextboxSetMessage;
 import com.pla.annoyingvillagers.procedures.NpcGearLoadProcedure;
@@ -92,6 +93,12 @@ public class AnnoyingVillagers {
                     ClientboundMuteExplosionAtPos::encode,
                     ClientboundMuteExplosionAtPos::decode,
                     ClientboundMuteExplosionAtPos::handle
+            );
+            AnnoyingVillagers.addNetworkMessage(
+                    ClientboundHerobrinePortalFx.class,
+                    ClientboundHerobrinePortalFx::encode,
+                    ClientboundHerobrinePortalFx::decode,
+                    ClientboundHerobrinePortalFx::handle
             );
         }
     }

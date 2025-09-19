@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.NullEntity;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.nbt.CompoundTag;
@@ -23,7 +24,7 @@ public class NullOnHurtProcedure {
                 LivingEntity target = nullEntity.getTarget();
 
                 if (attacker == target) {
-                    if (Math.random() <= 0.2D && levelaccessor instanceof ServerLevel) {
+                    if (Math.random() <= AnnoyingVillagersConfig.NULL_SUMMON_WITHER_SKELETON_RATE.get() && levelaccessor instanceof ServerLevel) {
                         ServerLevel serverlevel = (ServerLevel)levelaccessor;
                         WitherSkeleton witherskeleton = new WitherSkeleton(EntityType.WITHER_SKELETON, serverlevel);
                         witherskeleton.moveTo(d0 + (double)Mth.nextInt(randomSource, 1, 10), d1 + (double)Mth.nextInt(randomSource, 5, 10), d2 + (double)Mth.nextInt(randomSource, 1, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);

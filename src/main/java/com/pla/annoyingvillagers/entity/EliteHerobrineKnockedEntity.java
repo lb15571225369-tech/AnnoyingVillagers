@@ -1,7 +1,6 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
@@ -32,10 +31,6 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
-import yesman.epicfight.gameasset.Animations;
-import yesman.epicfight.world.capabilities.EpicFightCapabilities;
-import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
-import yesman.epicfight.world.damagesource.StunType;
 
 public class EliteHerobrineKnockedEntity extends PathfinderMob {
     private boolean allowInternalDamage = false;
@@ -186,13 +181,6 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
             allowInternalDamage = true;
             super.hurt(this.level().damageSources().generic(), 3.5F);
             allowInternalDamage = false;
-        }
-        if (!this.level().isClientSide && this.isAlive()) {
-            LivingEntityPatch<?> self = EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
-            if (self != null) {
-                AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: applying stun");
-                self.applyStun(StunType.HOLD, 20);
-            }
         }
     }
 

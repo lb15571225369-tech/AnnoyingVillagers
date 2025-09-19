@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.HerobrineTransfromProcedure;
 import com.pla.annoyingvillagers.procedures.NullOnHurtProcedure;
 import com.pla.annoyingvillagers.util.CommonGoals;
@@ -29,7 +28,6 @@ import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
@@ -329,6 +327,22 @@ public class NullEntity extends Monster {
     public void die(DamageSource damagesource) {
         super.die(damagesource);
         if (this.level() instanceof ServerLevel serverLevel) {
+            if (this.nullSwordEntity != null) {
+                this.nullSwordEntity.remove(RemovalReason.KILLED);
+            }
+            if (this.nullAxeEntity != null) {
+                this.nullAxeEntity.remove(RemovalReason.KILLED);
+            }
+            if (this.nullHoeEntity != null) {
+                this.nullHoeEntity.remove(RemovalReason.KILLED);
+            }
+            if (this.nullShovelEntity != null) {
+                this.nullShovelEntity.remove(RemovalReason.KILLED);
+            }
+            if (this.nullPickaxeEntity != null) {
+                this.nullPickaxeEntity.remove(RemovalReason.KILLED);
+            }
+
             InfectedPlayerMobEntity corpse = new InfectedPlayerMobEntity(AnnoyingVillagersModEntities.INFECTED_PLAYER_MOB.get(), serverLevel);
             corpse.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
             String killedName = this.getPersistentData().getString("killed_name");

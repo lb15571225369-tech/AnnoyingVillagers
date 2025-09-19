@@ -1,7 +1,6 @@
 package com.pla.annoyingvillagers.entity;
 
 import java.util.EnumSet;
-import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 import javax.annotation.Nullable;
@@ -10,7 +9,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
-import com.pla.annoyingvillagers.util.SnakeBladeHit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;

@@ -2,10 +2,15 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
+import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.util.GroundRiseSpawner;
+import mod.chloeprime.aaaparticles.api.common.AAALevel;
+import mod.chloeprime.aaaparticles.api.common.ParticleEmitterInfo;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -28,8 +33,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
@@ -38,9 +43,19 @@ import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
+import static com.pla.annoyingvillagers.procedures.HerobrinePortalProcedure.NBT_RECALL_TIMER;
+import static com.pla.annoyingvillagers.procedures.HerobrinePortalProcedure.SHINK_TIME_START;
+import static com.pla.annoyingvillagers.util.GroundRiseSpawner.NBT_RISING;
+import static com.pla.annoyingvillagers.util.GroundRiseSpawner.NBT_SINKING;
+
 
 public class Herobrine1Entity extends Monster {
     private boolean wasAiming = false;
+    private boolean initPortal = true;
+
+    public void setInitPortal(boolean initPortal) {
+        this.initPortal = initPortal;
+    }
 
     public Herobrine1Entity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.HEROBRINE_1.get(), level);
@@ -52,6 +67,15 @@ public class Herobrine1Entity extends Monster {
         this.xpReward = 300;
         this.setNoAi(false);
         this.setPersistenceRequired();
+    }
+
+    public Herobrine1Entity(EntityType<Herobrine1Entity> entitytype, Level level, boolean initPortal) {
+        super(entitytype, level);
+        this.setMaxUpStep(0.7F);
+        this.xpReward = 300;
+        this.setNoAi(false);
+        this.setPersistenceRequired();
+        this.initPortal = initPortal;
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -97,6 +121,9 @@ public class Herobrine1Entity extends Monster {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
+        if (this.getPersistentData().getBoolean(NBT_RISING) || this.getPersistentData().getBoolean(NBT_SINKING)) {
+            return false;
+        }
         Herobrine1OnHurtProcedure.execute(this);
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;
@@ -187,6 +214,16 @@ public class Herobrine1Entity extends Monster {
     public void tick() {
         super.tick();
         if (!this.level().isClientSide) {
+            if (this.tickCount == 1) {
+                if (this.initPortal) {
+                    AnnoyingVillagers.PACKET_HANDLER.send(
+                            PacketDistributor.TRACKING_ENTITY.with(() -> this),
+                            new ClientboundHerobrinePortalFx(HerobrinePortalProcedure.finalSurfacePos(this))
+                    );
+                }
+                HerobrinePortalProcedure.spawnHerobrine(this);
+            }
+
             String animId = currentEfAnimIdOrNull(this);
             boolean aimingNow = isAiming(animId);
             if (aimingNow && !wasAiming) {
@@ -201,6 +238,28 @@ public class Herobrine1Entity extends Monster {
                 };
             }
             wasAiming = aimingNow;
+
+            var tag = this.getPersistentData();
+            if (!tag.contains(NBT_RECALL_TIMER)) {
+                this.discard();
+                return;
+            }
+
+            int remaining = tag.getInt(NBT_RECALL_TIMER) - 1;
+            tag.putInt(NBT_RECALL_TIMER, remaining);
+
+            if (remaining == SHINK_TIME_START) {
+                AnnoyingVillagers.PACKET_HANDLER.send(
+                        PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this),
+                        new ClientboundHerobrinePortalFx(new Vec3(this.getX(), this.getY(), this.getZ()))
+                );
+                if (this.level() instanceof ServerLevel serverLevel) {
+                    GroundRiseSpawner.sinkIntoGround(serverLevel, this, 0.06);
+                }
+            }
+            if (remaining <= 0) {
+                this.discard();
+            }
         }
     }
 

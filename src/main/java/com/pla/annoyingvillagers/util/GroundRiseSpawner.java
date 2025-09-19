@@ -42,7 +42,6 @@ public class GroundRiseSpawner {
         tag.putInt(NBT_TICKS, 0);
         tag.putInt(NBT_MAX_TICKS, 20 * 5);
 
-        level.addFreshEntity(entity);
         level.playSound(null, entity.blockPosition(), SoundEvents.SOUL_ESCAPE, SoundSource.HOSTILE, 0.6f, 0.8f + level.random.nextFloat() * 0.2f);
 
         return entity;

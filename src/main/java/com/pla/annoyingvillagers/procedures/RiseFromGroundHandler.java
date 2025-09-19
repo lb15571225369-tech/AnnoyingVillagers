@@ -55,14 +55,8 @@ public class RiseFromGroundHandler {
                 level.playSound(null, entity.blockPosition(), SoundEvents.SOUL_ESCAPE, SoundSource.HOSTILE, 0.25f, 1.05f + entity.getRandom().nextFloat() * 0.2f);
             }
 
-            double ny = entity.getY() - speed;
-            if (ny <= targetY || ticks > max) {
-                entity.setPos(entity.getX(), targetY, entity.getZ());
-                finishSink(entity);
-            } else {
-                entity.setPos(entity.getX(), ny, entity.getZ());
-                tag.putInt(GroundRiseSpawner.NBT_SINK_TICKS, ticks + 1);
-            }
+            entity.setPos(entity.getX(), entity.getY() - speed, entity.getZ());
+            tag.putInt(GroundRiseSpawner.NBT_SINK_TICKS, ticks + 1);
         }
     }
 
@@ -70,7 +64,6 @@ public class RiseFromGroundHandler {
         var level = (net.minecraft.server.level.ServerLevel) entity.level();
         var tag = entity.getPersistentData();
 
-        level.sendParticles(ParticleTypes.POOF, entity.getX(), entity.getY() + 0.1, entity.getZ(), 12, 0.4, 0.12, 0.4, 0.02);
         level.playSound(null, entity.blockPosition(), SoundEvents.SAND_BREAK, SoundSource.BLOCKS, 0.7f, 0.9f);
 
         entity.noPhysics = false;
@@ -85,26 +78,5 @@ public class RiseFromGroundHandler {
         tag.remove(GroundRiseSpawner.NBT_SPEED);
         tag.remove(GroundRiseSpawner.NBT_TICKS);
         tag.remove(GroundRiseSpawner.NBT_MAX_TICKS);
-    }
-
-    private static void finishSink(LivingEntity entity) {
-        var level = (net.minecraft.server.level.ServerLevel) entity.level();
-        var tag = entity.getPersistentData();
-
-        level.sendParticles(ParticleTypes.POOF, entity.getX(), entity.getY() + 0.05, entity.getZ(), 12, 0.35, 0.10, 0.35, 0.02);
-        level.playSound(null, entity.blockPosition(), SoundEvents.SAND_FALL, SoundSource.BLOCKS, 0.7f, 0.85f);
-
-        entity.noPhysics = false;
-        entity.setNoGravity(false);
-        entity.setInvulnerable(false);
-        if (entity instanceof Mob mob) mob.setNoAi(false);
-
-        tag.remove(GroundRiseSpawner.NBT_SINKING);
-        tag.remove(GroundRiseSpawner.NBT_SINK_TARGET_Y);
-        tag.remove(GroundRiseSpawner.NBT_SINK_SPEED);
-        tag.remove(GroundRiseSpawner.NBT_SINK_TICKS);
-        tag.remove(GroundRiseSpawner.NBT_SINK_MAX_TICKS);
-
-        entity.discard();
     }
 }

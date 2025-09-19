@@ -137,7 +137,7 @@ public class SnakeBladeHit {
                 .getBindedTransformFor(patch.getAnimator().getPose(partialTicks), Armatures.BIPED.toolR);
 
         OpenMatrix4f localOffset = new OpenMatrix4f().translate(new Vec3f(0.0F, 0.0F, -handToTip));
-        OpenMatrix4f.mul(joint, localOffset, joint);  // joint = joint * localOffset  (RIGHT-multiply!)
+        OpenMatrix4f.mul(joint, localOffset, joint);
 
         float yawRad = (float) -Math.toRadians(((LivingEntity) ent).yBodyRotO + 180.0F);
         OpenMatrix4f worldYaw = new OpenMatrix4f().rotate(yawRad, new Vec3f(0.0F, 1.0F, 0.0F));

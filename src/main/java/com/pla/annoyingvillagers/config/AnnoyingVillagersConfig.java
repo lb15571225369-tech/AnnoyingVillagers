@@ -13,6 +13,9 @@ public class AnnoyingVillagersConfig {
     public static ForgeConfigSpec.ConfigValue<Boolean> HEROBRINE_OBSIDIAN_BREAK_ARMOR;
     public static ForgeConfigSpec.ConfigValue<Boolean> EXECUTION_PLAYER;
     public static ForgeConfigSpec.ConfigValue<Boolean> EXECUTION_NPC;
+    public static ForgeConfigSpec.ConfigValue<Double> NULL_SUMMON_WITHER_SKELETON_RATE;
+    public static ForgeConfigSpec.ConfigValue<Integer> HEROBRINE_RECALL_MIN_TIME;
+    public static ForgeConfigSpec.ConfigValue<Integer> HEROBRINE_RECALL_MAX_TIME;
 
     static {
         PLAYER_NPC_SPAWN_RATE = BUILDER.comment(
@@ -39,6 +42,19 @@ public class AnnoyingVillagersConfig {
         EXECUTION_NPC = BUILDER.comment(
                         "Set to false if you want to disable Execution for NPC")
                 .define("executionNpc", true);
+        NULL_SUMMON_WITHER_SKELETON_RATE = BUILDER.comment(
+                "Set to 0 if you want to prevent NULL from summoning Wither Skeleton",
+                "Once he got hurt, he will use this rate to summon Wither Skeleton")
+                .defineInRange("nullSummonWitherSkeletonRate", 0.2, 0, 1);
+        HEROBRINE_RECALL_MIN_TIME = BUILDER.comment(
+                        "The minimum value (in minutes) for Herobrine's random recall time. This value should be lower than or equal the maximum. " +
+                                "After a random time between min and max, Herobrine will vanish and return to the Herobrine dimension.")
+                .defineInRange("herobrineRecallMinTime", 1, 1, 10080);
+
+        HEROBRINE_RECALL_MAX_TIME = BUILDER.comment(
+                        "The maximum value (in minutes) for Herobrine's random recall time. This value should be greater than or equal to the minimum. " +
+                                "After a random time between min and max, Herobrine will vanish and return to the Herobrine dimension.")
+                .defineInRange("herobrineRecallMaxTime", 1, 1, 10080);
         SPEC = BUILDER.build();
     }
 }
