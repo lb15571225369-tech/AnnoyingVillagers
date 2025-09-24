@@ -23,43 +23,43 @@ description='''${mod_description}'''
     modId="epicfight"
     mandatory=true
     versionRange="[20.9.7]"
-    ordering="AFTER"
+    ordering="NONE"
     side="BOTH"
 [[dependencies.annoyingvillagers]]
     modId="wom"
     mandatory=true
     versionRange="[20.1, )"
-    ordering="AFTER"
+    ordering="NONE"
     side="BOTH"
 [[dependencies.annoyingvillagers]]
     modId="falchionmoveset"
     mandatory=true
     versionRange="[20.8, )"
-    ordering="AFTER"
+    ordering="NONE"
     side="BOTH"
 [[dependencies.annoyingvillagers]]
     modId="indestructible"
     mandatory=true
     versionRange="[20.9, )"
-    ordering="AFTER"
+    ordering="NONE"
     side="BOTH"
 [[dependencies.annoyingvillagers]]
     modId="dualaxes"
     mandatory=true
     versionRange="[20.9.9.2]"
-    ordering="AFTER"
+    ordering="NONE"
     side="BOTH"
 [[dependencies.annoyingvillagers]]
     modId="cdmoveset"
     mandatory=true
     versionRange="[1.28]"
-    ordering="AFTER"
+    ordering="NONE"
     side="BOTH"
 [[dependencies.annoyingvillagers]]
     modId="player_mobs"
     mandatory=true
     versionRange="[4.1, )"
-    ordering="AFTER"
+    ordering="NONE"
     side="BOTH"
 [[dependencies.annoyingvillagers]]
     modId="aaa_particles"

@@ -133,19 +133,19 @@ public class VillagerScoutCaptainEntity extends PathfinderMobInventory {
         return spawngroupdata1;
     }
 
-    public InteractionResult mobInteract(Player player, InteractionHand interactionhand) {
-        player.getItemInHand(interactionhand);
-        InteractionResult interactionresult = InteractionResult.sidedSuccess(this.level().isClientSide());
-
-        super.mobInteract(player, interactionhand);
-        double d0 = this.getX();
-        double d1 = this.getY();
-        double d2 = this.getZ();
-        Level level = this.level();
-
-        VillagerScoutOnInteractProcedure.execute(level, d0, d1, d2, this);
-        return interactionresult;
-    }
+//    public InteractionResult mobInteract(Player player, InteractionHand interactionhand) {
+//        player.getItemInHand(interactionhand);
+//        InteractionResult interactionresult = InteractionResult.sidedSuccess(this.level().isClientSide());
+//
+//        super.mobInteract(player, interactionhand);
+//        double d0 = this.getX();
+//        double d1 = this.getY();
+//        double d2 = this.getZ();
+//        Level level = this.level();
+//
+//        VillagerScoutOnInteractProcedure.execute(level, d0, d1, d2, this);
+//        return interactionresult;
+//    }
 
     public void baseTick() {
         super.baseTick();

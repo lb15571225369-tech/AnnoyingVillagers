@@ -79,7 +79,7 @@
 			{ 
                   "weapon_categories": ["spear"],
                   "style":"common", 
-                  "guard": "wom:biped/skill/agony_guard",
+                  "guard": "annoyingvillagers:biped/skill/glowing_agony_guard",
 				  "counter": "epicfight:biped/combat/spear_twohand_auto2",
 				  "speed": 2
             }

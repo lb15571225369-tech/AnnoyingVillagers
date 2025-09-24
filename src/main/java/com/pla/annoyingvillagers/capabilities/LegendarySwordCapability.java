@@ -92,7 +92,7 @@ public class LegendarySwordCapability {
             return EpicFightSkills.HEARTPIERCER;
         }).innateSkill(Styles.TWO_HAND, (itemstack) -> {
             return EpicFightSkills.GRASPING_SPIRE;
-        }).livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, Animations.BIPED_RUN_SPEAR).livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_UCHIGATANA).livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_WALK_UCHIGATANA).livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, Animations.BIPED_WALK_UCHIGATANA).livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, Animations.BIPED_RUN_SPEAR).livingMotionModifier(Styles.TWO_HAND, LivingMotions.SWIM, Animations.BIPED_HOLD_SPEAR).livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, WOMAnimations.AGONY_GUARD);
+        }).livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, Animations.BIPED_RUN_SPEAR).livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_UCHIGATANA).livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_WALK_UCHIGATANA).livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, Animations.BIPED_WALK_UCHIGATANA).livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, Animations.BIPED_RUN_SPEAR).livingMotionModifier(Styles.TWO_HAND, LivingMotions.SWIM, Animations.BIPED_HOLD_SPEAR).livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AVAnimations.GLOWING_AGONY_GUARD);
 
         return yesman_epicfight_world_capabilities_item_weaponcapability_builder;
     };
@@ -312,7 +312,7 @@ public class LegendarySwordCapability {
                 .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, WOMAnimations.AGONY_RUN)
                 .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, WOMAnimations.AGONY_RUN)
                 .livingMotionModifier(Styles.TWO_HAND, LivingMotions.SWIM, Animations.BIPED_HOLD_SPEAR)
-                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, WOMAnimations.AGONY_GUARD);
+                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AVAnimations.GLOWING_AGONY_GUARD);
         return builder;
     };
 
