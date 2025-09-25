@@ -4,8 +4,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +18,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class DiamondSaberOnUserProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity, ItemStack itemstack) {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity, ItemStack itemstack, InteractionHand interactionHand) {
         if (entity != null) {
             if (entity.isShiftKeyDown()) {
                 if (entity instanceof Player) {
@@ -26,6 +28,9 @@ public class DiamondSaberOnUserProcedure {
                 }
 
                 entity.setDeltaMovement(new Vec3(0.0D, 1.5D, 0.0D));
+                if (levelaccessor instanceof Level level && !level.isClientSide && entity instanceof ServerPlayer serverPlayer) {
+                    itemstack.hurtAndBreak(2, serverPlayer, p -> p.broadcastBreakEvent(interactionHand));
+                }
                 levelaccessor.addParticle(ParticleTypes.EXPLOSION, d0, d1, d2, 0.0D, 1.0D, 0.0D);
                 if (levelaccessor instanceof ServerLevel) {
                     ServerLevel serverlevel = (ServerLevel) levelaccessor;

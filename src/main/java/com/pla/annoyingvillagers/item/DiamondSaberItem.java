@@ -48,7 +48,7 @@ public class DiamondSaberItem extends SwordItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {
         InteractionResultHolder<ItemStack> interactionresultholder = super.use(level, player, interactionhand);
 
-        DiamondSaberOnUserProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject());
+        DiamondSaberOnUserProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, (ItemStack) interactionresultholder.getObject(), interactionhand);
         return interactionresultholder;
     }
 
