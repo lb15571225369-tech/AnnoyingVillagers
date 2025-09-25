@@ -16,9 +16,10 @@ contents of this repository.
 * Use this mod in a modpack.
 * Make videos and showcases about this mod.
 * Write your own code that uses this code as a dependency (such as addons or datapacks).
+* Use any assets from the mod due to it is from community.
 
 ### You CANNOT
-* Use or redistribute ANY assets of this mod, even for personal use.
+* Redistribute the mod.
 
 ### Disclaimer
 <sub> 
