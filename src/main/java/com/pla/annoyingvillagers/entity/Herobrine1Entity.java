@@ -9,8 +9,6 @@ import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.util.GroundRiseSpawner;
-import mod.chloeprime.aaaparticles.api.common.AAALevel;
-import mod.chloeprime.aaaparticles.api.common.ParticleEmitterInfo;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -43,7 +41,6 @@ import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
-import static com.pla.annoyingvillagers.procedures.HerobrinePortalProcedure.NBT_RECALL_TIMER;
 import static com.pla.annoyingvillagers.procedures.HerobrinePortalProcedure.SHINK_TIME_START;
 import static com.pla.annoyingvillagers.util.GroundRiseSpawner.NBT_RISING;
 import static com.pla.annoyingvillagers.util.GroundRiseSpawner.NBT_SINKING;
@@ -51,10 +48,19 @@ import static com.pla.annoyingvillagers.util.GroundRiseSpawner.NBT_SINKING;
 
 public class Herobrine1Entity extends Monster {
     private boolean wasAiming = false;
-    private boolean initPortal = true;
+    private boolean renderPortal = false;
+    private int recallTicks = 0;
 
-    public void setInitPortal(boolean initPortal) {
-        this.initPortal = initPortal;
+    public void setRecallTicks(int recallTicks) {
+        this.recallTicks = recallTicks;
+    }
+
+    public int getRecallTicks() {
+        return recallTicks;
+    }
+
+    public void setRenderPortal(boolean renderPortal) {
+        this.renderPortal = renderPortal;
     }
 
     public Herobrine1Entity(SpawnEntity spawnentity, Level level) {
@@ -69,13 +75,13 @@ public class Herobrine1Entity extends Monster {
         this.setPersistenceRequired();
     }
 
-    public Herobrine1Entity(EntityType<Herobrine1Entity> entitytype, Level level, boolean initPortal) {
+    public Herobrine1Entity(EntityType<Herobrine1Entity> entitytype, Level level, boolean renderPortal) {
         super(entitytype, level);
         this.setMaxUpStep(0.7F);
         this.xpReward = 300;
         this.setNoAi(false);
         this.setPersistenceRequired();
-        this.initPortal = initPortal;
+        this.renderPortal = renderPortal;
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -211,17 +217,31 @@ public class Herobrine1Entity extends Monster {
     }
 
     @Override
+    public void readAdditionalSaveData(CompoundTag pCompound) {
+        super.readAdditionalSaveData(pCompound);
+        recallTicks = pCompound.getInt("RecallTicks");
+        renderPortal = pCompound.getBoolean("RenderPortal");
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag pCompound) {
+        super.addAdditionalSaveData(pCompound);
+        pCompound.putInt("RecallTicks", recallTicks);
+        pCompound.putBoolean("RenderPortal", renderPortal);
+    }
+
+    @Override
     public void tick() {
         super.tick();
         if (!this.level().isClientSide) {
             if (this.tickCount == 1) {
-                if (this.initPortal) {
+                if (this.renderPortal) {
                     AnnoyingVillagers.PACKET_HANDLER.send(
                             PacketDistributor.TRACKING_ENTITY.with(() -> this),
                             new ClientboundHerobrinePortalFx(HerobrinePortalProcedure.finalSurfacePos(this))
                     );
+                    this.renderPortal = false;
                 }
-                HerobrinePortalProcedure.spawnHerobrine(this);
             }
 
             String animId = currentEfAnimIdOrNull(this);
@@ -239,14 +259,8 @@ public class Herobrine1Entity extends Monster {
             }
             wasAiming = aimingNow;
 
-            var tag = this.getPersistentData();
-            if (!tag.contains(NBT_RECALL_TIMER)) {
-                this.discard();
-                return;
-            }
-
-            int remaining = tag.getInt(NBT_RECALL_TIMER) - 1;
-            tag.putInt(NBT_RECALL_TIMER, remaining);
+            this.recallTicks = this.recallTicks - 1;
+            int remaining = this.recallTicks;
 
             if (remaining == SHINK_TIME_START) {
                 AnnoyingVillagers.PACKET_HANDLER.send(
@@ -258,6 +272,7 @@ public class Herobrine1Entity extends Monster {
                 }
             }
             if (remaining <= 0) {
+                this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("§5Herobrine Clone§r was sent back to the §4Herobrine Vessel Realm§r"), false);
                 this.discard();
             }
         }
@@ -265,8 +280,7 @@ public class Herobrine1Entity extends Monster {
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
-
-        Herobrine1OnInitialSpawnProcedure.execute(serverlevelaccessor, this);
+        HerobrineOnInitialSpawnProcedure.execute(serverlevelaccessor, this, recallTicks);
         return spawngroupdata1;
     }
 

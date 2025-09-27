@@ -201,7 +201,7 @@ public class Herobrine2Entity extends Monster {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
 
-        Herobrine1OnInitialSpawnProcedure.execute(serverlevelaccessor, this);
+        HerobrineOnInitialSpawnProcedure.execute(serverlevelaccessor, this, 0);
         return spawngroupdata1;
     }
 

@@ -25,8 +25,8 @@ public class GroundRiseSpawner {
         BlockPos top = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, new BlockPos((int) x, 0, (int) z));
         double groundY = top.getY();
 
-        double startY = groundY - 1.2;
-        entity.moveTo(x + 0.5, startY, z + 0.5, level.random.nextFloat() * 360f, 0);
+        double startY = groundY - 2.0;
+        entity.moveTo(x, startY, z, entity.getYRot(), entity.getXRot());
 
         entity.noPhysics = true;
         entity.setNoGravity(true);

@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
+import com.pla.annoyingvillagers.entity.Herobrine1Entity;
 import com.pla.annoyingvillagers.util.GroundRiseSpawner;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -9,20 +10,18 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.Random;
+
 public class HerobrinePortalProcedure {
     public static final String NBT_RECALL_TIMER = "recall_timer";
     public static final int SHINK_TIME_START = 40;
 
-    public static void spawnHerobrine(LivingEntity livingEntity) {
+    public static void spawnHerobrine(LivingEntity livingEntity, int recallTicks) {
         int min = AnnoyingVillagersConfig.HEROBRINE_RECALL_MIN_TIME.get();
         int max = AnnoyingVillagersConfig.HEROBRINE_RECALL_MAX_TIME.get();
         int randomMin = Math.min(min, max);
         int randomMax = Math.max(min, max);
 
-//        int recallTicks = (randomMin + new Random().nextInt(randomMax - randomMin + 1)) * 60 * 20;
-        int recallTicks = 600;
-
-        livingEntity.getPersistentData().putInt(NBT_RECALL_TIMER, recallTicks);
 
         if (livingEntity.level() instanceof ServerLevel serverLevel) {
             GroundRiseSpawner.spawnRising(serverLevel, livingEntity, livingEntity.getX(), livingEntity.getZ(), 0.03);

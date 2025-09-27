@@ -187,6 +187,14 @@
 						},
 						{
 							"conditions": [
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
+							],
+							"animation": "annoyingvillagers:biped/combat/spear_thrust",
+							"convert_time": 0.15,
+							"play_speed": 1.1
+						},
+						{
+							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 5.0}
 							],
 							"animation": "epicfight:biped/combat/spear_twohand_auto1",
@@ -353,7 +361,7 @@
 						}
 					]
 				},
-                {
+			{
 					"weight": 10.5,
 					"canBeInterrupted": false,
 					"looping": false,
