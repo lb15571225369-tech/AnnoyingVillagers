@@ -8,6 +8,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.util.HerobrineMob;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -41,7 +42,7 @@ import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 
-public class Herobrine3Entity extends Monster {
+public class Herobrine3Entity extends HerobrineMob {
     private boolean wasAiming = false;
     public Herobrine3Entity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.HEROBRINE_3.get(), level);
@@ -53,21 +54,16 @@ public class Herobrine3Entity extends Monster {
         this.xpReward = 50;
         this.setNoAi(false);
         this.setPersistenceRequired();
-        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.OBSIDIAN_WEAPON.get()));
-        this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Blocks.AIR));
-        this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Blocks.AIR));
-        this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Blocks.AIR));
-        this.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Blocks.AIR));
-        this.setItemSlot(EquipmentSlot.FEET, new ItemStack(Blocks.AIR));
+        this.setChatName("§5Herobrine Chris§r");
+    }
+
+    public Herobrine3Entity(EntityType<Herobrine3Entity> entitytype, Level level, boolean renderPortal) {
+        this(entitytype, level);
+        this.setRenderPortal(renderPortal);;
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
-    }
-
-    protected void registerGoals() {
-        super.registerGoals();
-        CommonGoals.registerGoalForHostileNpc(this);
     }
 
     public MobType getMobType() {
@@ -104,13 +100,6 @@ public class Herobrine3Entity extends Monster {
     public void die(DamageSource damagesource) {
         super.die(damagesource);
         Herobrine3DieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
-    }
-
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
-        SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
-
-        Herobrine3OnSpawnProcedure.execute(serverlevelaccessor, this.getX(), this.getY(), this.getZ(), this);
-        return spawngroupdata1;
     }
 
     public void awardKillScore(Entity entity, int i, DamageSource damagesource) {

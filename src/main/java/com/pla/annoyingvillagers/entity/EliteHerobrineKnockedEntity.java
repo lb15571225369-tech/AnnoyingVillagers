@@ -33,8 +33,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 public class EliteHerobrineKnockedEntity extends PathfinderMob {
-    private boolean allowInternalDamage = false;
-
     public EliteHerobrineKnockedEntity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.ELITE_HEROBRINE_KNOCKED.get(), level);
     }
@@ -140,14 +138,6 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
     }
 
     @Override
-    public boolean hurt(DamageSource source, float amount) {
-        if (allowInternalDamage) {
-            return super.hurt(source, amount);
-        }
-        return false;
-    }
-
-    @Override
     public void baseTick() {
         super.baseTick();
     }
@@ -174,23 +164,13 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
     public void knockback(double strength, double x, double z) {
     }
 
-    @Override
-    public void tick() {
-        super.tick();
-        if (!level().isClientSide && this.isAlive() && Math.random() <= 0.05D) {
-            allowInternalDamage = true;
-            super.hurt(this.level().damageSources().generic(), 3.5F);
-            allowInternalDamage = false;
-        }
-    }
-
     public static void init() {}
 
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();
 
         builder = builder.add(Attributes.MOVEMENT_SPEED, 0.06D);
-        builder = builder.add(Attributes.MAX_HEALTH, 10.0D);
+        builder = builder.add(Attributes.MAX_HEALTH, 50.0D);
         builder = builder.add(Attributes.ARMOR, 0.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 1.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 128.0D);

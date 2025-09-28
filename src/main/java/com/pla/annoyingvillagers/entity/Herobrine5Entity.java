@@ -2,8 +2,8 @@ package com.pla.annoyingvillagers.entity;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.procedures.Herobrine3OnTouchProcedure;
 import com.pla.annoyingvillagers.procedures.Herobrine6OnHurtProcedure;
+import com.pla.annoyingvillagers.procedures.HerobrineOnInitialSpawnProcedure;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -143,44 +143,7 @@ public class Herobrine5Entity extends PlayerMobEntity {
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
-        if (!serverlevelaccessor.isClientSide() && serverlevelaccessor.getServer() != null) {
-            String killedName = this.getPersistentData().getString("killed_name");
-            if (!killedName.isEmpty()) {
-                serverlevelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal(killedName + " has been possessed by §5Herobrine§r."), false);
-            } else {
-                serverlevelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("§5Herobrine§r has possesed a new player."), false);
-            }
-        }
-
-        if (!this.level().isClientSide() && this.getServer() != null) {
-            try {
-                this.getServer().getCommands().getDispatcher().execute(
-                        "team add herobrine",
-                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
-
-            }
-        }
-
-        if (!this.level().isClientSide() && this.getServer() != null) {
-            try {
-                this.getServer().getCommands().getDispatcher().execute(
-                        "team modify herobrine friendlyFire false",
-                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
-
-            }
-        }
-
-        if (!this.level().isClientSide() && this.getServer() != null) {
-            try {
-                this.getServer().getCommands().getDispatcher().execute(
-                        "team join herobrine @s",
-                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
-
-            }
-        }
+        HerobrineOnInitialSpawnProcedure.execute(serverlevelaccessor, this, 0);
         return spawngroupdata;
     }
 

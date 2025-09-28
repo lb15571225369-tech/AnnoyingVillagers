@@ -8,6 +8,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.util.HerobrineMob;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -40,7 +41,7 @@ import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 
-public class Herobrine7Entity extends Monster {
+public class Herobrine7Entity extends HerobrineMob {
     private boolean wasAiming = false;
     public Herobrine7Entity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.HEROBRINE_7.get(), level);
@@ -55,15 +56,16 @@ public class Herobrine7Entity extends Monster {
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get()));
+        this.setChatName("§5Herobrine 7§r");
+    }
+
+    public Herobrine7Entity(EntityType<Herobrine7Entity> entitytype, Level level, boolean renderPortal) {
+        this(entitytype, level);
+        this.setRenderPortal(renderPortal);;
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
-    }
-
-    protected void registerGoals() {
-        super.registerGoals();
-        CommonGoals.registerGoalForHostileNpc(this);
     }
 
     public MobType getMobType() {
@@ -188,18 +190,6 @@ public class Herobrine7Entity extends Monster {
             this.remove(RemovalReason.KILLED);
             serverLevel.addFreshEntity(corpse);
         }
-    }
-
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
-        SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
-
-        Herobrine7OnEntityInitialSpawnProcedure.execute(serverlevelaccessor, this.getX(), this.getY(), this.getZ(), this);
-        return spawngroupdata1;
-    }
-
-    public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
-        super.awardKillScore(entity, i, damagesource);
-        HerobrineTransfromProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), entity, this);
     }
 
     public void baseTick() {

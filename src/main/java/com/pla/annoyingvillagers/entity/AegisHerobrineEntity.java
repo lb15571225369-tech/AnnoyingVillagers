@@ -4,11 +4,9 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.item.EnderAegisItem;
-import com.pla.annoyingvillagers.procedures.Herobrine7OnEntityInitialSpawnProcedure;
-import com.pla.annoyingvillagers.procedures.HerobrineTransfromProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
-import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.util.HerobrineMob;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -18,32 +16,26 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import javax.annotation.Nullable;
 import java.util.Random;
 
-public class AegisHerobrineEntity extends Monster {
+public class AegisHerobrineEntity extends HerobrineMob {
     private int nextStack = 3;
     public AegisHerobrineEntity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.AEGIS_HEROBRINE.get(), level);
@@ -58,15 +50,16 @@ public class AegisHerobrineEntity extends Monster {
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.ENDER_AEGIS.get()));
+        this.setChatName("§5Aegis Herobrine§r");
+    }
+
+    public AegisHerobrineEntity(EntityType<AegisHerobrineEntity> entitytype, Level level, boolean renderPortal) {
+        this(entitytype, level);
+        this.setRenderPortal(renderPortal);;
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
-    }
-
-    protected void registerGoals() {
-        super.registerGoals();
-        CommonGoals.registerGoalForHostileNpc(this);
     }
 
     public MobType getMobType() {
@@ -206,27 +199,11 @@ public class AegisHerobrineEntity extends Monster {
         }
     }
 
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
-        SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
-
-        Herobrine7OnEntityInitialSpawnProcedure.execute(serverlevelaccessor, this.getX(), this.getY(), this.getZ(), this);
-        return spawngroupdata1;
-    }
-
-    public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
-        super.awardKillScore(entity, i, damagesource);
-        HerobrineTransfromProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), entity, this);
-    }
-
     public void baseTick() {
         super.baseTick();
     }
 
-    public static void init() {
-        SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.AEGIS_HEROBRINE.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
-            return  serverlevelaccessor.getRawBrightness(blockpos, 0) <= 8;
-        });
-    }
+    public static void init() {}
 
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();

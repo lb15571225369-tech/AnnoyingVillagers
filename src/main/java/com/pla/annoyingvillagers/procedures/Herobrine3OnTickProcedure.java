@@ -17,33 +17,6 @@ public class Herobrine3OnTickProcedure {
 
     public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) {
         if (entity != null) {
-            if (!entity.level().isClientSide() && entity.getServer() != null) {
-                try {
-                    entity.getServer().getCommands().getDispatcher().execute(
-                            "execute as @s at @s anchored eyes run setblock ^ ^ ^ minecraft:air",
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException e) {
-                }
-            }
-
-            if (!entity.level().isClientSide() && entity.getServer() != null) {
-                try {
-                    entity.getServer().getCommands().getDispatcher().execute(
-                            "execute as @s at @s anchored eyes run setblock ^ ^ ^1 minecraft:air",
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException e) {
-                }
-            }
-
-            if (!entity.level().isClientSide() && entity.getServer() != null) {
-                try {
-                    entity.getServer().getCommands().getDispatcher().execute(
-                            "execute as @s at @s anchored eyes run setblock ^ ^-1 ^ minecraft:air",
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException e) {
-                }
-            }
-
             Vec3 vec3 = new Vec3(d0, d1, d2);
             List<Entity> list = (List)levelaccessor.getEntitiesOfClass(Entity.class, (new AABB(vec3, vec3)).inflate(2.0D), (entity1) -> {
                 return true;

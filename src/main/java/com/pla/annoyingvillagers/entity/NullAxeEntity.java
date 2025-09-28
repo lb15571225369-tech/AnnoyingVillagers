@@ -369,20 +369,20 @@ public class NullAxeEntity extends Monster {
                 this.player = ((ServerLevel) level()).getPlayerByUUID(playerUUID);
             }
             if (player != null && !player.isAlive()) {
-                this.remove(RemovalReason.DISCARDED);
+                this.remove(RemovalReason.KILLED);
             }
         }
 
         if (!this.level().isClientSide && this.nullEntity == null && this.player != null) {
             if (this.returnGameTime > 0 && ((ServerLevel)this.level()).getGameTime() >= this.returnGameTime) {
-                this.remove(RemovalReason.DISCARDED);
+                this.remove(RemovalReason.KILLED);
             }
         }
     }
 
     @Override
     public void remove(RemovalReason pReason) {
-        if (this.level() instanceof ServerLevel serverLevel) {
+        if (this.level() instanceof ServerLevel serverLevel && pReason.equals(RemovalReason.KILLED)) {
             if (this.player != null) {
                 boolean added = this.player.getInventory().add(this.getMainHandItem());
                 if (!added) {

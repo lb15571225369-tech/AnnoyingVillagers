@@ -1,13 +1,11 @@
 package com.pla.annoyingvillagers.entity;
 
 import java.util.*;
-import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.procedures.HerobrineTransfromProcedure;
 import com.pla.annoyingvillagers.procedures.NullOnHurtProcedure;
-import com.pla.annoyingvillagers.util.CommonGoals;
+import com.pla.annoyingvillagers.util.HerobrineMob;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -18,7 +16,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
@@ -28,12 +25,9 @@ import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
@@ -41,7 +35,7 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import se.gory_moon.player_mobs.utils.NameManager;
 
-public class NullEntity extends Monster {
+public class NullEntity extends HerobrineMob {
     private NullSwordEntity nullSwordEntity;
     private UUID nullSwordUUID;
 
@@ -90,6 +84,12 @@ public class NullEntity extends Monster {
         this.setNoAi(false);
         this.setPersistenceRequired();
         this.moveControl = new FlyingMoveControl(this, 10, true);
+        this.setChatName("§5Null§r");
+    }
+
+    public NullEntity(EntityType<NullEntity> entitytype, Level level, boolean renderPortal) {
+        this(entitytype, level);
+        this.setRenderPortal(renderPortal);;
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -247,7 +247,6 @@ public class NullEntity extends Monster {
 
     protected void registerGoals() {
         super.registerGoals();
-        CommonGoals.registerGoalForHostileNpc(this);
         this.goalSelector.addGoal(24, new Goal() {
             {
                 this.setFlags(EnumSet.of(Flag.MOVE));
@@ -360,58 +359,6 @@ public class NullEntity extends Monster {
         }
     }
 
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
-        SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
-
-        if (!this.level().isClientSide() && this.level().getServer() != null) {
-            this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("Null has arrived"), false);
-        }
-
-        if (!this.level().isClientSide() && this.getServer() != null) {
-            try {
-                this.getServer().getCommands().getDispatcher().execute(
-                        "team add herobrine",
-                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
-
-            }
-        }
-
-        if (!this.level().isClientSide() && this.getServer() != null) {
-            try {
-                this.getServer().getCommands().getDispatcher().execute(
-                        "team modify herobrine friendlyFire false",
-                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
-
-            }
-        }
-
-        if (!this.level().isClientSide() && this.getServer() != null) {
-            try {
-                this.getServer().getCommands().getDispatcher().execute(
-                        "team join herobrine @s",
-                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
-
-            }
-        }
-
-        this.getPersistentData().putBoolean("a_player", true);
-        this.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Blocks.AIR));
-        this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Blocks.AIR));
-        this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Blocks.AIR));
-        this.setItemSlot(EquipmentSlot.FEET, new ItemStack(Blocks.AIR));
-        this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Blocks.AIR));
-        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Blocks.AIR));
-        return spawngroupdata1;
-    }
-
-    public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
-        super.awardKillScore(entity, i, damagesource);
-        HerobrineTransfromProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), entity, this);
-    }
-
     public void baseTick() {
         super.baseTick();
         if (!this.level().isClientSide() && this.getServer() != null) {
@@ -457,6 +404,28 @@ public class NullEntity extends Monster {
     public void aiStep() {
         super.aiStep();
         this.setNoGravity(true);
+    }
+
+    @Override
+    public void remove(RemovalReason pReason) {
+        if (this.level() instanceof ServerLevel serverLevel && pReason.equals(RemovalReason.DISCARDED)) {
+            if (this.nullSwordEntity != null) {
+                this.nullSwordEntity.remove(RemovalReason.DISCARDED);
+            }
+            if (this.nullAxeEntity != null) {
+                this.nullAxeEntity.remove(RemovalReason.DISCARDED);
+            }
+            if (this.nullHoeEntity != null) {
+                this.nullHoeEntity.remove(RemovalReason.DISCARDED);
+            }
+            if (this.nullShovelEntity != null) {
+                this.nullShovelEntity.remove(RemovalReason.DISCARDED);
+            }
+            if (this.nullPickaxeEntity != null) {
+                this.nullPickaxeEntity.remove(RemovalReason.DISCARDED);
+            }
+        }
+        super.remove(pReason);
     }
 
     public static void init() {}

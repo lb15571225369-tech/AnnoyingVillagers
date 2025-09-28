@@ -1,29 +1,23 @@
 package com.pla.annoyingvillagers.entity;
 
-import javax.annotation.Nullable;
-
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.procedures.*;
-import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.util.DelayedTask;
-import net.minecraft.nbt.CompoundTag;
+import com.pla.annoyingvillagers.util.HerobrineMob;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
@@ -38,7 +32,7 @@ import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 
-public class Herobrine2Entity extends Monster {
+public class Herobrine2Entity extends HerobrineMob {
     private boolean wasAiming = false;
     public Herobrine2Entity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.HEROBRINE_2.get(), level);
@@ -49,16 +43,16 @@ public class Herobrine2Entity extends Monster {
         this.setMaxUpStep(0.7F);
         this.xpReward = 300;
         this.setNoAi(false);
-        this.setPersistenceRequired();
+        this.setChatName("§5Shadow Herobrine Clone§r");
+    }
+
+    public Herobrine2Entity(EntityType<Herobrine2Entity> entitytype, Level level, boolean renderPortal) {
+        this(entitytype, level);
+        this.setRenderPortal(renderPortal);;
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
-    }
-
-    protected void registerGoals() {
-        super.registerGoals();
-        CommonGoals.registerGoalForHostileNpc(this);
     }
 
     public MobType getMobType() {
@@ -196,18 +190,6 @@ public class Herobrine2Entity extends Monster {
             }
             wasAiming = aimingNow;
         }
-    }
-
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
-        SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
-
-        HerobrineOnInitialSpawnProcedure.execute(serverlevelaccessor, this, 0);
-        return spawngroupdata1;
-    }
-
-    public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
-        super.awardKillScore(entity, i, damagesource);
-        HerobrineTransfromProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), entity, this);
     }
 
     public void baseTick() {

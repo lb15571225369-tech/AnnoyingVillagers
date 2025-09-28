@@ -1,16 +1,12 @@
 package com.pla.annoyingvillagers.entity;
 
-import javax.annotation.Nullable;
-
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.procedures.GroundSlamHitProcedure;
-import com.pla.annoyingvillagers.procedures.Herobrine7OnEntityInitialSpawnProcedure;
-import com.pla.annoyingvillagers.procedures.HerobrineTransfromProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
-import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.util.HerobrineMob;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -20,7 +16,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
@@ -34,18 +29,13 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -53,7 +43,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.Random;
 
 
-public class SledgehammerHerobrineEntity extends Monster {
+public class SledgehammerHerobrineEntity extends HerobrineMob {
     private int nextStack = 3;
 
     public SledgehammerHerobrineEntity(SpawnEntity spawnentity, Level level) {
@@ -69,15 +59,16 @@ public class SledgehammerHerobrineEntity extends Monster {
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.OBSIDIAN_SLEDGEHAMMER.get()));
+        this.setChatName("§5Sledgehammer Herobrine§r");
+    }
+
+    public SledgehammerHerobrineEntity(EntityType<SledgehammerHerobrineEntity> entitytype, Level level, boolean renderPortal) {
+        this(entitytype, level);
+        this.setRenderPortal(renderPortal);;
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
-    }
-
-    protected void registerGoals() {
-        super.registerGoals();
-        CommonGoals.registerGoalForHostileNpc(this);
     }
 
     public MobType getMobType() {
@@ -163,27 +154,11 @@ public class SledgehammerHerobrineEntity extends Monster {
         }
     }
 
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
-        SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
-
-        Herobrine7OnEntityInitialSpawnProcedure.execute(serverlevelaccessor, this.getX(), this.getY(), this.getZ(), this);
-        return spawngroupdata1;
-    }
-
-    public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
-        super.awardKillScore(entity, i, damagesource);
-        HerobrineTransfromProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), entity, this);
-    }
-
     public void baseTick() {
         super.baseTick();
     }
 
-    public static void init() {
-        SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.SLEDGEHAMMER_HEROBRINE.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
-            return  serverlevelaccessor.getRawBrightness(blockpos, 0) <= 8;
-        });
-    }
+    public static void init() {}
 
     @Override
     public boolean doHurtTarget(Entity pEntity) {

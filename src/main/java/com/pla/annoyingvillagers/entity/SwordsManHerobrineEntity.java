@@ -1,15 +1,11 @@
 package com.pla.annoyingvillagers.entity;
 
-import javax.annotation.Nullable;
-
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
-import com.pla.annoyingvillagers.procedures.Herobrine7OnEntityInitialSpawnProcedure;
-import com.pla.annoyingvillagers.procedures.HerobrineTransfromProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
-import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.util.HerobrineMob;
 import com.pla.annoyingvillagers.util.SnakeBladeHit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -20,7 +16,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
@@ -37,12 +32,10 @@ import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
@@ -51,7 +44,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.Random;
 
 
-public class SwordsManHerobrineEntity extends Monster {
+public class SwordsManHerobrineEntity extends HerobrineMob {
     private int nextStack = 3;
 
     public SwordsManHerobrineEntity(SpawnEntity spawnentity, Level level) {
@@ -68,6 +61,12 @@ public class SwordsManHerobrineEntity extends Monster {
         this.setPersistenceRequired();
         ItemStack sword = new ItemStack(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER.get());
         this.setItemSlot(EquipmentSlot.MAINHAND, sword);
+        this.setChatName("§5Swordsman Herobrine§r");
+    }
+
+    public SwordsManHerobrineEntity(EntityType<SwordsManHerobrineEntity> entitytype, Level level, boolean renderPortal) {
+        this(entitytype, level);
+        this.setRenderPortal(renderPortal);;
     }
 
     public int getCooldownTicks() {
@@ -108,11 +107,6 @@ public class SwordsManHerobrineEntity extends Monster {
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
-    }
-
-    protected void registerGoals() {
-        super.registerGoals();
-        CommonGoals.registerGoalForHostileNpc(this);
     }
 
     public MobType getMobType() {
@@ -215,18 +209,6 @@ public class SwordsManHerobrineEntity extends Monster {
             this.remove(RemovalReason.KILLED);
             levelaccessor.addFreshEntity(eliteHerobrineKnockedEntity);
         }
-    }
-
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
-        SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
-
-        Herobrine7OnEntityInitialSpawnProcedure.execute(serverlevelaccessor, this.getX(), this.getY(), this.getZ(), this);
-        return spawngroupdata1;
-    }
-
-    public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
-        super.awardKillScore(entity, i, damagesource);
-        HerobrineTransfromProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), entity, this);
     }
 
     public static void init() {
