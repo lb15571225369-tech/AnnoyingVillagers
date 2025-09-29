@@ -1,5 +1,5 @@
 {
-	"type": "epicfight:spear",
+	"type": "epicfight:antitheus_spear",
 	"attributes": {
 		"common": {
 			"armor_negation":10.0,
