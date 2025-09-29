@@ -28,6 +28,9 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> HEROBRINE_3_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("herobrine_3_spawn_egg", () -> {
         return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.HEROBRINE_3, -10066330, -13421773, (new Properties()));
     });
+    public static final RegistryObject<Item> HEROBRINE_4_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("herobrine_4_spawn_egg", () -> {
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.HEROBRINE_4, -3355648, -103, (new Properties()));
+    });
     public static final RegistryObject<Item> HEROBRINE_5_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("herobrine_5_spawn_egg", () -> {
         return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.HEROBRINE_5, -10066330, -13421773, (new Properties()));
     });
