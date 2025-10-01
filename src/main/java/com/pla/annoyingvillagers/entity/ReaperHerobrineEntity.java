@@ -289,11 +289,16 @@ public class ReaperHerobrineEntity extends HerobrineMob {
         return super.hurt(damagesource, f);
     }
 
-    public void die(DamageSource damagesource) {
-        super.die(damagesource);
+    @Override
+    public void remove(RemovalReason pReason) {
         if (this.enderDragon != null) {
             this.enderDragon.discard();
         }
+        super.remove(pReason);
+    }
+
+    public void die(DamageSource damagesource) {
+        super.die(damagesource);
         if (this.level() instanceof ServerLevel levelaccessor) {
             ServerLevel serverlevel = (ServerLevel)levelaccessor;
             EliteHerobrineKnockedEntity eliteHerobrineKnockedEntity = new EliteHerobrineKnockedEntity((EntityType) AnnoyingVillagersModEntities.ELITE_HEROBRINE_KNOCKED.get(), serverlevel);

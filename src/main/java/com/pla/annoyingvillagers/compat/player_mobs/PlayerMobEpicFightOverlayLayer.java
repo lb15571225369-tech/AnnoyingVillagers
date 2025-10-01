@@ -35,7 +35,7 @@ public class PlayerMobEpicFightOverlayLayer<E extends LivingEntity, AM extends H
         }  else if (EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_1")) ||
                 EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_2")) ||
                 EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_3")) ||
-                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_4")) ||
+//                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_4")) ||
                 EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_6")) ||
                 EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_7")) ||
                 EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "null")) ||

@@ -11,15 +11,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.monster.Monster;
@@ -29,6 +25,7 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
+import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
 public class Herobrine4Entity extends Monster {
 
@@ -55,6 +52,27 @@ public class Herobrine4Entity extends Monster {
 
     protected void registerGoals() {
         super.registerGoals();
+        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, VillagerScoutEntity.class, 12.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, VillagerScoutCaptainEntity.class, 12.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, BlueVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, GreenVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, RedVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, PurpleVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
+
+        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, PlayerMobEntity.class, 12.0F, 1.2D, 1.8D, target ->
+                target instanceof PlayerMobEntity
+                        && !(target instanceof PlayerMobDeadEntity)
+                        && !(target instanceof InfectedPlayerMobEntity)
+                        && !(target instanceof Herobrine5Entity)));
+        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, SteveEntity.class, 12.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Steve2Entity.class, 12.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, AngrySteveEntity.class, 12.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, AlexEntity.class, 12.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, JevEntity.class, 12.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, ChrisEntity.class, 12.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, BlueDemonEntity.class, 12.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, BlueDemon2Entity.class, 12.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, BbqEntity.class, 12.0F, 1.2D, 1.8D));
     }
 
     public MobType getMobType() {
@@ -68,9 +86,6 @@ public class Herobrine4Entity extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (!this.level().isClientSide() && !this.isShiftKeyDown()) {
-            this.setShiftKeyDown(true);
-        }
     }
 
     public SoundEvent getHurtSound(DamageSource damagesource) {

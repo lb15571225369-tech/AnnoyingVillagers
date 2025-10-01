@@ -13,16 +13,9 @@ import net.minecraft.world.phys.Vec3;
 import java.util.Random;
 
 public class HerobrinePortalProcedure {
-    public static final String NBT_RECALL_TIMER = "recall_timer";
     public static final int SHINK_TIME_START = 40;
 
     public static void spawnHerobrine(LivingEntity livingEntity, int recallTicks) {
-        int min = AnnoyingVillagersConfig.HEROBRINE_RECALL_MIN_TIME.get();
-        int max = AnnoyingVillagersConfig.HEROBRINE_RECALL_MAX_TIME.get();
-        int randomMin = Math.min(min, max);
-        int randomMax = Math.max(min, max);
-
-
         if (livingEntity.level() instanceof ServerLevel serverLevel) {
             GroundRiseSpawner.spawnRising(serverLevel, livingEntity, livingEntity.getX(), livingEntity.getZ(), 0.03);
         }

@@ -1,7 +1,7 @@
 {
 	"model": "epicfight:entity/biped",
 	"armature": "epicfight:entity/biped",
-	"renderer": "player", 
+	"renderer": "player",
 	"isHumanoid": true,
 	"faction": "undead",
 	"attributes": {
@@ -9,7 +9,7 @@
 		"armor_negation": 0.0,
 		"max_strikes": 5,
 		"chasing_speed": 1.5,
-        "scale": 1.0,
+		"scale": 1.0,
 		"counter_chance": 0.6,
 		"counter_cost": 2.0,
 		"block_stamina": 250.0,
@@ -23,32 +23,32 @@
 		"death": "epicfight:biped/living/death"
 	},
 	"humanoid_weapon_motions": [
-		  {
+		{
 			"weapon_categories": ["axe", "hoe", "pickaxe", "shovel", "sword"],
 			"style":"common",
 			"livingmotions": {
 				"chase": "epicfight:biped/living/run",
-                "walk": "epicfight:biped/living/walk"
+				"walk": "epicfight:biped/living/walk"
 			}
-		  },
-              { 
-                  "weapon_categories": ["longsword"],
-                  "style":"common", 
-                  "livingmotions": {
-                        "chase": "epicfight:biped/living/hold_longsword",
-                        "walk": "epicfight:biped/living/hold_longsword"
-                  }
-              }
+		},
+		{
+			"weapon_categories": ["longsword"],
+			"style":"common",
+			"livingmotions": {
+				"chase": "epicfight:biped/living/hold_longsword",
+				"walk": "epicfight:biped/living/hold_longsword"
+			}
+		}
 	],
 	"custom_guard_motion": [
-			{ 
-                  "weapon_categories": ["spear"],
-                  "style":"common", 
-                  "guard": "annoyingvillagers:biped/skill/glowing_agony_guard",
-				  "counter": "wom:biped/combat/antitheus_auto_1",
-				  "speed": 2
-            }
-			
+		{
+			"weapon_categories": ["spear"],
+			"style":"common",
+			"guard": "annoyingvillagers:biped/skill/glowing_agony_guard",
+			"counter": "epicfight:biped/combat/spear_twohand_auto2",
+			"speed": 2
+		}
+
 	],
 	"stun_animations": {
 		"short": "epicfight:biped/combat/hit_short",
@@ -57,7 +57,7 @@
 		"fall": "epicfight:biped/living/landing"
 	},
 	"combat_behavior": [
-	{
+		{
 			"weapon_categories": ["spear"],
 			"style": "common",
 			"behavior_series": [
@@ -72,7 +72,7 @@
 							],
 							"guard": 1
 						}
-                    ]                 
+					]
 				},
 				{
 					"weight": 40.5,
@@ -112,14 +112,6 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 4.5}
-							],
-							"animation": "wom:biped/combat/antitheus_auto_1",
-							"convert_time": 0.15,
-							"play_speed": 1.1
-						},
-						{
-							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
 							],
 							"animation": "wom:biped/combat/antitheus_auto_2",
@@ -144,6 +136,22 @@
 						},
 						{
 							"conditions": [
+								{"predicate":"within_distance", "min": 0.0, "max": 4.5}
+							],
+							"animation": "wom:biped/combat/antitheus_agression",
+							"convert_time": 0.15,
+							"play_speed": 1.1
+						},
+						{
+							"conditions": [
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
+							],
+							"animation": "annoyingvillagers:biped/combat/spear_thrust",
+							"convert_time": 0.15,
+							"play_speed": 1.1
+						},
+						{
+							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 5.0}
 							],
 							"animation": "epicfight:biped/combat/spear_twohand_auto1",
@@ -156,13 +164,6 @@
 							],
 							"animation": "epicfight:biped/combat/spear_twohand_auto2",
 							"convert_time": 0.15,
-							"play_speed": 1.1
-						},
-						{
-							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
-							],
-							"animation": "wom:biped/combat/antitheus_agression",
 							"play_speed": 1.1
 						},
 						{
@@ -215,14 +216,14 @@
 							"guard": 1,
 							"play_speed": 1.1
 						}
-                        ]                 
+					]
 				},
 				{
 					"weight": 10.5,
 					"canBeInterrupted": false,
 					"looping": false,
 					"behaviors": [
-                        {
+						{
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 1.5}
 							],
@@ -230,12 +231,12 @@
 						}
 					]
 				},
-                {
+				{
 					"weight": 10.5,
 					"canBeInterrupted": false,
 					"looping": false,
 					"behaviors": [
-                        {
+						{
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
 							],
@@ -258,12 +259,26 @@
 						}
 					]
 				},
-                {
+				{
+					"weight": 10.5,
+					"canBeInterrupted": false,
+					"looping": false,
+					"behaviors": [
+						{
+							"conditions": [
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
+							],
+							"animation": "wom:biped/combat/antitheus_agression",
+							"play_speed": 1.1
+						}
+					]
+				},
+				{
 					"weight": 50.5,
 					"canBeInterrupted": false,
 					"looping": false,
 					"behaviors": [
-                        {
+						{
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 1.8}
 							],
@@ -271,12 +286,12 @@
 						}
 					]
 				},
-                {
+				{
 					"weight": 40.5,
 					"canBeInterrupted": false,
 					"looping": false,
 					"behaviors": [
-                        {
+						{
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 1.8}
 							],
@@ -284,12 +299,12 @@
 						}
 					]
 				},
-                {
+				{
 					"weight": 50.5,
 					"canBeInterrupted": false,
 					"looping": false,
 					"behaviors": [
-                        {
+						{
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 1.8}
 							],
@@ -297,12 +312,12 @@
 						}
 					]
 				},
-                {
+				{
 					"weight": 15.5,
 					"canBeInterrupted": false,
 					"looping": false,
 					"behaviors": [
-                        {
+						{
 							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 2.8}
 							],
@@ -310,13 +325,13 @@
 						}
 					]
 				},
-                {
+				{
 					"weight": 10.5,
 					"canBeInterrupted": false,
 					"looping": false,
 					"cooldown": 20,
 					"behaviors": [
-                        {
+						{
 							"conditions": [
 								{"predicate":"within_distance", "min": 1.0, "max": 7.0}
 							],
