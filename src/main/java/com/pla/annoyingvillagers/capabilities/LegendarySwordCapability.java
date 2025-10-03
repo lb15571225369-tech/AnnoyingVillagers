@@ -338,7 +338,7 @@ public class LegendarySwordCapability {
                         Animations.SWORD_MOUNT_ATTACK})
                 .innateSkill(Styles.TWO_HAND, (itemstack) -> CDSkills.SPEAR_SLASH)
                 .comboCancel((style) -> false)
-                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, WOMAnimations.ANTITHEUS_IDLE)
+                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_SPEAR)
                 .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, WOMAnimations.ANTITHEUS_WALK)
                 .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, WOMAnimations.ANTITHEUS_RUN)
                 .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, WOMAnimations.ANTITHEUS_RUN)

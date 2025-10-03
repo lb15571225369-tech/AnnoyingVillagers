@@ -23,22 +23,6 @@
 		"death": "epicfight:biped/living/death"
 	},
 	"humanoid_weapon_motions": [
-		  {
-			"weapon_categories": ["axe", "hoe", "pickaxe", "shovel", "sword"],
-			"style":"common",
-			"livingmotions": {
-				"chase": "epicfight:biped/living/run",
-                "walk": "epicfight:biped/living/walk"
-			}
-		  },
-              { 
-                  "weapon_categories": ["fist"],
-                  "style":"common", 
-                  "livingmotions": {
-                        "chase": "wom:biped/living/moonless_run",
-                        "walk": "wom:biped/living/moonless_run"
-                  }
-              }
 	],
 	"custom_guard_motion": [
 			{ 

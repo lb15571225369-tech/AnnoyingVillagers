@@ -241,11 +241,11 @@ public class DragonBeamEntity extends Entity {
                 if (shouldBreak) {
                     var hitState = world.getBlockState(hitBlock);
                     if (!hitState.isAir()) {
-                        float hardness = hitState.getDestroySpeed(world, hitBlock);
-                        boolean unbreakable = hardness < 0.0F;
-
-                        if (!unbreakable && ForgeHooks.canEntityDestroy(world, hitBlock, this.caster)) {
+                        if (ForgeHooks.canEntityDestroy(world, hitBlock, this.caster)) {
                             world.destroyBlock(hitBlock, true, this.caster);
+                        } else {
+                            world.setBlock(hitBlock, Blocks.AIR.defaultBlockState(),
+                                    net.minecraft.world.level.block.Block.UPDATE_ALL);
                         }
 
                         BlockPos above = hitBlock.above();
