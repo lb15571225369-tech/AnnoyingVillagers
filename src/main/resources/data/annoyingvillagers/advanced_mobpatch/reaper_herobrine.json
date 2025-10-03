@@ -112,33 +112,33 @@
 						},
 						{
 							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
-							],
-							"animation": "wom:biped/combat/antitheus_auto_2",
-							"convert_time": 0.15,
-							"play_speed": 1.1
-						},
-						{
-							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
-							],
-							"animation": "wom:biped/combat/antitheus_auto_3",
-							"convert_time": 0.15,
-							"play_speed": 1.1
-						},
-						{
-							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
-							],
-							"animation": "wom:biped/combat/antitheus_auto_4",
-							"convert_time": 0.15,
-							"play_speed": 1.1
-						},
-						{
-							"conditions": [
 								{"predicate":"within_distance", "min": 0.0, "max": 4.5}
 							],
-							"animation": "wom:biped/combat/antitheus_agression",
+							"animation": "wom:biped/combat/agony_auto_1",
+							"convert_time": 0.15,
+							"play_speed": 1.1
+						},
+						{
+							"conditions": [
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
+							],
+							"animation": "wom:biped/combat/agony_auto_2",
+							"convert_time": 0.15,
+							"play_speed": 1.1
+						},
+						{
+							"conditions": [
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
+							],
+							"animation": "wom:biped/combat/agony_auto_3",
+							"convert_time": 0.15,
+							"play_speed": 1.2
+						},
+						{
+							"conditions": [
+								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
+							],
+							"animation": "wom:biped/combat/agony_auto_4",
 							"convert_time": 0.15,
 							"play_speed": 1.1
 						},
@@ -255,20 +255,6 @@
 								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
 							],
 							"animation": "wom:biped/skill/torment_berserk_dash",
-							"play_speed": 1.1
-						}
-					]
-				},
-				{
-					"weight": 10.5,
-					"canBeInterrupted": false,
-					"looping": false,
-					"behaviors": [
-						{
-							"conditions": [
-								{"predicate":"within_distance", "min": 0.0, "max": 4.0}
-							],
-							"animation": "wom:biped/combat/antitheus_agression",
 							"play_speed": 1.1
 						}
 					]

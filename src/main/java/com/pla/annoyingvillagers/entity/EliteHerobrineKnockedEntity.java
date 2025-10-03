@@ -47,6 +47,9 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.ELITE_OBSIDIAN_LONG.get()));
         this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.ELITE_OBSIDIAN_BIG.get()));
         this.setItemSlot(EquipmentSlot.HEAD, new ItemStack((ItemLike) AnnoyingVillagersModItems.ELITE_OBSIDIAN.get()));
+        this.setDropChance(EquipmentSlot.MAINHAND, 0.0F);
+        this.setDropChance(EquipmentSlot.OFFHAND, 0.0F);
+        this.setDropChance(EquipmentSlot.HEAD, 0.0F);
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -174,6 +177,7 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
         builder = builder.add(Attributes.ARMOR, 0.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 1.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 128.0D);
+        builder = builder.add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
         return builder;
     }
 }

@@ -185,6 +185,8 @@ public class AVAnimations {
     public static StaticAnimation AXE_FUN_SKILL;
     public static StaticAnimation EXECUTE_ONE_HAND;
     public static StaticAnimation GLOWING_AGONY_GUARD;
+    public static StaticAnimation PORTAL_SUMMON;
+    public static StaticAnimation KNOCKED_ELITE;
 
 
     // Dual great sword
@@ -206,6 +208,8 @@ public class AVAnimations {
 
     private static void build() {
         HumanoidArmature humanoidarmature = Armatures.BIPED;
+        AVAnimations.KNOCKED_ELITE = new StaticAnimation(true, "biped/other/knocked_elite", humanoidarmature);
+        AVAnimations.PORTAL_SUMMON = new StaticAnimation(false, "biped/other/portal_summon", humanoidarmature);
         AVAnimations.GLOWING_AGONY_GUARD = (new StaticAnimation(0.05F, true, "biped/skill/glowing_agony_guard", humanoidarmature)).addEvents(new AnimationEvent.TimeStampedEvent[]{TimeStampedEvent.create(0.0F, WOMAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT), TimeStampedEvent.create(0.1F, WOMAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT), TimeStampedEvent.create(0.2F, WOMAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT), TimeStampedEvent.create(0.3F, WOMAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT), TimeStampedEvent.create(0.4F, WOMAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT), TimeStampedEvent.create(0.5F, WOMAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT), TimeStampedEvent.create(0.6F, WOMAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT), TimeStampedEvent.create(0.7F, WOMAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT)});
         AVAnimations.EAT_OFFHAND = new StaticAnimation(0.35F, true, "biped/living/eat_offhand", humanoidarmature);
         AVAnimations.DRINK_OFFHAND = new StaticAnimation(0.35F, true, "biped/living/drink_offhand", humanoidarmature);

@@ -62,6 +62,9 @@ public class HerobrineMob extends Monster {
 
     protected HerobrineMob(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+        this.setDropChance(EquipmentSlot.MAINHAND, 0.0F);
+        this.setDropChance(EquipmentSlot.CHEST, 0.0F);
+        this.setDropChance(EquipmentSlot.HEAD, 0.0F);
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
