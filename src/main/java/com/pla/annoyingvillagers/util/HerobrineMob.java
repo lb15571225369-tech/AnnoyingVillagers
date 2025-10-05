@@ -3,6 +3,8 @@ package com.pla.annoyingvillagers.util;
 import javax.annotation.Nullable;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.entity.ShadowHerobrineEntity;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.procedures.*;
 import net.minecraft.nbt.CompoundTag;
@@ -24,6 +26,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 import java.util.UUID;
 
@@ -153,6 +157,13 @@ public class HerobrineMob extends Monster {
                             new ClientboundHerobrinePortalFx(HerobrinePortalProcedure.finalSurfacePos(this))
                     );
                     this.renderPortal = false;
+                }
+
+                final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
+                if (this instanceof ShadowHerobrineEntity) {
+                    if (livingentitypatch != null && !this.level().isClientSide()) {
+                        livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_ANIMATE, 0.0F);
+                    }
                 }
             }
 

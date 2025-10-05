@@ -122,6 +122,7 @@ public class Herobrine4Entity extends Monster {
         }
         if (this.getHealth() <= 10 && this.summonTiming == -1) {
             this.summonTiming = 30;
+            this.setNoAi(true);
             this.setHealth(11);
         }
         if (this.summonTiming > 0) {
@@ -134,7 +135,6 @@ public class Herobrine4Entity extends Monster {
 
     private void summonHerobrines() {
         this.summoning = true;
-        this.setNoAi(true);
         this.whiteEye = true;
         final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
         if (livingentitypatch != null && !this.level().isClientSide()) {
