@@ -25,16 +25,24 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import static com.pla.annoyingvillagers.procedures.HerobrinePortalProcedure.SHINK_TIME_START;
-import static com.pla.annoyingvillagers.util.GroundRiseSpawner.NBT_RISING;
-import static com.pla.annoyingvillagers.util.GroundRiseSpawner.NBT_SINKING;
+import java.util.UUID;
 
+import static com.pla.annoyingvillagers.procedures.HerobrinePortalProcedure.*;
 
 public class HerobrineMob extends Monster {
     private boolean renderPortal = false;
     private int recallTicks = 0;
     private String chatName;
     private boolean neverRecall = false;
+    private UUID gregUUID = null;
+
+    public void setGregUUID(UUID gregUUID) {
+        this.gregUUID = gregUUID;
+    }
+
+    public UUID getGregUUID() {
+        return gregUUID;
+    }
 
     public void setRecallTicks(int recallTicks) {
         this.recallTicks = recallTicks;
@@ -122,6 +130,7 @@ public class HerobrineMob extends Monster {
         recallTicks = pCompound.getInt("RecallTicks");
         renderPortal = pCompound.getBoolean("RenderPortal");
         neverRecall = pCompound.getBoolean("NeverRecall");
+        gregUUID = pCompound.getUUID("GregUUID");
     }
 
     @Override
@@ -130,6 +139,7 @@ public class HerobrineMob extends Monster {
         pCompound.putInt("RecallTicks", recallTicks);
         pCompound.putBoolean("RenderPortal", renderPortal);
         pCompound.putBoolean("NeverRecall", neverRecall);
+        pCompound.putUUID("GregUUID", gregUUID);
     }
 
     @Override
@@ -156,7 +166,7 @@ public class HerobrineMob extends Monster {
                             new ClientboundHerobrinePortalFx(new Vec3(this.getX(), this.getY(), this.getZ()))
                     );
                     if (this.level() instanceof ServerLevel serverLevel) {
-                        GroundRiseSpawner.sinkIntoGround(serverLevel, this, 0.06);
+                        HerobrinePortalProcedure.sinkIntoGround(serverLevel, this, 0.06);
                     }
                 }
                 if (remaining <= 0) {

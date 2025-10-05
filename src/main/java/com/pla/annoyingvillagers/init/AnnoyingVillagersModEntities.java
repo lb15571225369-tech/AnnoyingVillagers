@@ -73,7 +73,6 @@ public class AnnoyingVillagersModEntities {
     public static final RegistryObject<EntityType<NullHoeEntity>> NULL_HOE = register("null_hoe", Builder.<NullHoeEntity>of(NullHoeEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(NullHoeEntity::new).fireImmune().sized(0.6F, 1.8F));
 
     public static final RegistryObject<EntityType<SnakeBladeEntity>> SNAKE_BLADE = register("snake_blade", Builder.<SnakeBladeEntity>of(SnakeBladeEntity::new, MobCategory.MISC).sized(0.1F, 0.1F));
-    public static final RegistryObject<EntityType<SummonPortalEntity>> SUMMON_PORTAL = register("summon_portal", Builder.<SummonPortalEntity>of(SummonPortalEntity::new, MobCategory.MISC).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(SummonPortalEntity::new).fireImmune().sized(3.0F, 0.01F));
     public static final RegistryObject<EntityType<DragonBeamEntity>> DRAGON_BEAM = register("dragon_beam", Builder.<DragonBeamEntity>of(DragonBeamEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20));
     public static final RegistryObject<EntityType<BabyEnderDragonEntity>> BABY_ENDER_DRAGON = register("baby_ender_dragon", Builder.<BabyEnderDragonEntity>of(BabyEnderDragonEntity::new, MobCategory.CREATURE).sized(0.9F, 0.5F).clientTrackingRange(8).updateInterval(3));
     public static final RegistryObject<EntityType<BabyDragonBeamEntity>> BABY_DRAGON_BEAM = register("baby_dragon_beam", Builder.<BabyDragonBeamEntity>of(BabyDragonBeamEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20));
@@ -147,7 +146,6 @@ public class AnnoyingVillagersModEntities {
             InfectedTheMostMoistBurrit0Entity.init();
             InfectedTheMostMoistBurrit0DeadEntity.init();
             ShadowHerobrineEntity.init();
-            SummonPortalEntity.init();
             GlaiveHerobrineEntity.init();
             InfectedPlayerMobEntity.init();
             ReaperHerobrineEntity.init();
@@ -205,7 +203,6 @@ public class AnnoyingVillagersModEntities {
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.INFECTED_THEMOSTMOISTBURRIT0.get(), InfectedTheMostMoistBurrit0Entity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.INFECTED_THEMOSTMOISTBURRIT0_DEAD.get(), InfectedTheMostMoistBurrit0DeadEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.SHADOW_HEROBRINE.get(), ShadowHerobrineEntity.createAttributes().build());
-        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.SUMMON_PORTAL.get(), SummonPortalEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.GLAIVE_HEROBRINE.get(), GlaiveHerobrineEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.INFECTED_PLAYER_MOB.get(), InfectedPlayerMobEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.REAPER_HEROBRINE.get(), ReaperHerobrineEntity.createAttributes().build());

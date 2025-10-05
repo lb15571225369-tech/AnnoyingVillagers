@@ -167,7 +167,7 @@ public class AegisHerobrineEntity extends HerobrineMob {
                     entity.setSprinting(false);
                 }
             };
-            if (Math.random() <= 1.0D && this instanceof LivingEntity) {
+            if (Math.random() <= 0.5D && this instanceof LivingEntity) {
                 LivingEntity livingentity = (LivingEntity)this;
 
                 if (!livingentity.level().isClientSide()) {

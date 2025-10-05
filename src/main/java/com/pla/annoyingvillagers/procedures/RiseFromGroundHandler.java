@@ -1,15 +1,14 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.util.GroundRiseSpawner;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.BlockParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
+import com.pla.annoyingvillagers.entity.Herobrine4Entity;
+import com.pla.annoyingvillagers.util.HerobrineMob;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -24,11 +23,11 @@ public class RiseFromGroundHandler {
         if (level.isClientSide()) return;
 
         var tag = entity.getPersistentData();
-        if (tag.getBoolean(GroundRiseSpawner.NBT_RISING)) {
-            double targetY = tag.getDouble(GroundRiseSpawner.NBT_TARGET_Y);
-            double speed   = tag.getDouble(GroundRiseSpawner.NBT_SPEED);
-            int    ticks   = tag.getInt(GroundRiseSpawner.NBT_TICKS);
-            int    max     = tag.getInt(GroundRiseSpawner.NBT_MAX_TICKS);
+        if (tag.getBoolean(HerobrinePortalProcedure.NBT_RISING)) {
+            double targetY = tag.getDouble(HerobrinePortalProcedure.NBT_TARGET_Y);
+            double speed   = tag.getDouble(HerobrinePortalProcedure.NBT_SPEED);
+            int    ticks   = tag.getInt(HerobrinePortalProcedure.NBT_TICKS);
+            int    max     = tag.getInt(HerobrinePortalProcedure.NBT_MAX_TICKS);
 
             if ((ticks % 8) == 0) {
                 level.playSound(null, entity.blockPosition(), SoundEvents.SOUL_ESCAPE, SoundSource.HOSTILE, 0.25f, 0.9f + entity.getRandom().nextFloat() * 0.2f);
@@ -40,23 +39,23 @@ public class RiseFromGroundHandler {
                 finishRise(entity);
             } else {
                 entity.setPos(entity.getX(), ny, entity.getZ());
-                tag.putInt(GroundRiseSpawner.NBT_TICKS, ticks + 1);
+                tag.putInt(HerobrinePortalProcedure.NBT_TICKS, ticks + 1);
             }
             return;
         }
 
-        if (tag.getBoolean(GroundRiseSpawner.NBT_SINKING)) {
-            double targetY = tag.getDouble(GroundRiseSpawner.NBT_SINK_TARGET_Y);
-            double speed   = tag.getDouble(GroundRiseSpawner.NBT_SINK_SPEED);
-            int    ticks   = tag.getInt(GroundRiseSpawner.NBT_SINK_TICKS);
-            int    max     = tag.getInt(GroundRiseSpawner.NBT_SINK_MAX_TICKS);
+        if (tag.getBoolean(HerobrinePortalProcedure.NBT_SINKING)) {
+            double targetY = tag.getDouble(HerobrinePortalProcedure.NBT_SINK_TARGET_Y);
+            double speed   = tag.getDouble(HerobrinePortalProcedure.NBT_SINK_SPEED);
+            int    ticks   = tag.getInt(HerobrinePortalProcedure.NBT_SINK_TICKS);
+            int    max     = tag.getInt(HerobrinePortalProcedure.NBT_SINK_MAX_TICKS);
 
             if ((ticks % 8) == 0) {
                 level.playSound(null, entity.blockPosition(), SoundEvents.SOUL_ESCAPE, SoundSource.HOSTILE, 0.25f, 1.05f + entity.getRandom().nextFloat() * 0.2f);
             }
 
             entity.setPos(entity.getX(), entity.getY() - speed, entity.getZ());
-            tag.putInt(GroundRiseSpawner.NBT_SINK_TICKS, ticks + 1);
+            tag.putInt(HerobrinePortalProcedure.NBT_SINK_TICKS, ticks + 1);
         }
     }
 
@@ -73,10 +72,22 @@ public class RiseFromGroundHandler {
             mob.setNoAi(false);
         }
 
-        tag.remove(GroundRiseSpawner.NBT_RISING);
-        tag.remove(GroundRiseSpawner.NBT_TARGET_Y);
-        tag.remove(GroundRiseSpawner.NBT_SPEED);
-        tag.remove(GroundRiseSpawner.NBT_TICKS);
-        tag.remove(GroundRiseSpawner.NBT_MAX_TICKS);
+        tag.remove(HerobrinePortalProcedure.NBT_RISING);
+        tag.remove(HerobrinePortalProcedure.NBT_TARGET_Y);
+        tag.remove(HerobrinePortalProcedure.NBT_SPEED);
+        tag.remove(HerobrinePortalProcedure.NBT_TICKS);
+        tag.remove(HerobrinePortalProcedure.NBT_MAX_TICKS);
+
+        if (entity instanceof HerobrineMob herobrineMob) {
+            if (herobrineMob.getGregUUID() != null) {
+                Entity greg = ((ServerLevel) herobrineMob.level()).getEntity(herobrineMob.getGregUUID());
+                if (greg instanceof Herobrine4Entity herobrine4Entity && herobrine4Entity.isAlive()) {
+                    if (herobrine4Entity.isSummoning()) {
+                        herobrine4Entity.setSummoning(false);
+                        herobrine4Entity.setNoAi(false);
+                    }
+                }
+            }
+        }
     }
 }

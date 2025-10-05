@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.compat.player_mobs;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.entity.Herobrine4Entity;
 import com.pla.annoyingvillagers.util.HerobrineEyesUtil;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -35,7 +36,8 @@ public class PlayerMobEpicFightOverlayLayer<E extends LivingEntity, AM extends H
         }  else if (EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_1")) ||
                 EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_2")) ||
                 EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_3")) ||
-//                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_4")) ||
+                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_4"))
+                        && (e instanceof Herobrine4Entity herobrine4Entity && herobrine4Entity.isWhiteEye()) ||
                 EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_6")) ||
                 EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_7")) ||
                 EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "null")) ||

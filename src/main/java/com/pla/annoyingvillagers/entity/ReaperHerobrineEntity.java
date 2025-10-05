@@ -157,7 +157,7 @@ public class ReaperHerobrineEntity extends HerobrineMob {
             this.enderDragon = dragon;
 
             if (this.level().getServer() != null) {
-                this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> Summon!!!"), false);
+                this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Reaper Herobrine§r> Summon!!!"), false);
             }
         }
     }
@@ -201,7 +201,7 @@ public class ReaperHerobrineEntity extends HerobrineMob {
                 enderDragon = null;
                 enderDragonUUID = null;
                 if (this.level().getServer() != null) {
-                    this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> Return!!!"), false);
+                    this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Reaper Herobrine§r> Return!!!"), false);
                 }
                 dragonSummonCooldown = 3600;
             }

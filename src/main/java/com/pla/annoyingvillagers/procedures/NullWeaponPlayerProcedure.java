@@ -15,11 +15,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
-import java.util.Random;
 
 @Mod.EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class NullWeaponPlayerProcedure {
@@ -102,39 +99,6 @@ public class NullWeaponPlayerProcedure {
             }
         }
     }
-
-//    @SubscribeEvent
-//    public static void onLivingHurt(LivingHurtEvent event) {
-//        LivingEntity target = event.getEntity();
-//        DamageSource source = event.getSource();
-//
-//        if (source.getEntity() == null) {
-//            return;
-//        }
-//
-//
-//        if (target instanceof Player player && !player.level().isClientSide()) {
-//            Entity attacker = source.getEntity();
-//            if ((attacker instanceof NullSwordEntity nullSwordEntity && nullSwordEntity.getPlayerUUID() != null && nullSwordEntity.getPlayerUUID().equals(player.getUUID())) ||
-//                    (attacker instanceof NullAxeEntity nullAxeEntity && nullAxeEntity.getPlayerUUID() != null && nullAxeEntity.getPlayerUUID().equals(player.getUUID())) ||
-//                    (attacker instanceof NullPickaxeEntity nullPickaxeEntity && nullPickaxeEntity.getPlayerUUID() != null && nullPickaxeEntity.getPlayerUUID().equals(player.getUUID())) ||
-//                    (attacker instanceof NullHoeEntity nullHoeEntity && nullHoeEntity.getPlayerUUID() != null && nullHoeEntity.getPlayerUUID().equals(player.getUUID())) ||
-//                    (attacker instanceof NullShovelEntity nullShovelEntity && nullShovelEntity.getPlayerUUID() != null&& nullShovelEntity.getPlayerUUID().equals(player.getUUID()))) {
-//                event.setCanceled(true);
-//            }
-//        }
-//
-//        if (target instanceof NullEntity nullEntity && !nullEntity.level().isClientSide()) {
-//            Entity attacker = source.getEntity();
-//            if ((attacker instanceof NullSwordEntity nullSwordEntity && nullSwordEntity.getNullUUID() != null && nullSwordEntity.getNullUUID().equals(nullEntity.getUUID())) ||
-//                    (attacker instanceof NullAxeEntity nullAxeEntity && nullAxeEntity.getNullUUID() != null && nullAxeEntity.getNullUUID().equals(nullEntity.getUUID())) ||
-//                    (attacker instanceof NullPickaxeEntity nullPickaxeEntity && nullPickaxeEntity.getNullUUID() != null && nullPickaxeEntity.getNullUUID().equals(nullEntity.getUUID())) ||
-//                    (attacker instanceof NullHoeEntity nullHoeEntity && nullHoeEntity.getNullUUID() != null && nullHoeEntity.getNullUUID().equals(nullEntity.getUUID())) ||
-//                    (attacker instanceof NullShovelEntity nullShovelEntity && nullShovelEntity.getNullUUID() != null && nullShovelEntity.getNullUUID().equals(nullEntity.getUUID()))) {
-//                event.setCanceled(true);
-//            }
-//        }
-//    }
 
     @SubscribeEvent
     public static void onLivingAttacked(LivingAttackEvent event) {

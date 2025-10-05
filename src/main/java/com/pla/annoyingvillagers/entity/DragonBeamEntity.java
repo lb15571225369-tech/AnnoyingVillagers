@@ -241,11 +241,8 @@ public class DragonBeamEntity extends Entity {
                 if (shouldBreak) {
                     var hitState = world.getBlockState(hitBlock);
                     if (!hitState.isAir()) {
-                        if (ForgeHooks.canEntityDestroy(world, hitBlock, this.caster)) {
+                        if (hitState.getDestroySpeed(world, hitBlock) > 0.0F) {
                             world.destroyBlock(hitBlock, true, this.caster);
-                        } else {
-                            world.setBlock(hitBlock, Blocks.AIR.defaultBlockState(),
-                                    net.minecraft.world.level.block.Block.UPDATE_ALL);
                         }
 
                         BlockPos above = hitBlock.above();
