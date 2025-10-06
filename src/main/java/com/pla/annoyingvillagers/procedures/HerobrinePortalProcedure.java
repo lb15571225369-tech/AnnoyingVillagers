@@ -1,5 +1,8 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.entity.Herobrine4Entity;
+import com.pla.annoyingvillagers.util.HerobrineMob;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -26,6 +29,16 @@ public class HerobrinePortalProcedure {
 
     public static void spawnHerobrine(LivingEntity livingEntity, int recallTicks) {
         if (livingEntity.level() instanceof ServerLevel serverLevel) {
+            if (livingEntity instanceof HerobrineMob herobrineMob) {
+                if (herobrineMob.getGregUUID() == null) {
+                    try {
+                        herobrineMob.getServer().getCommands().getDispatcher().execute(
+                                "playsound annoyingvillagers:portal_natural neutral @a ~ ~ ~",
+                                herobrineMob.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                    }
+                }
+            }
             spawnRising(serverLevel, livingEntity, livingEntity.getX(), livingEntity.getZ(), 0.03);
         }
     }

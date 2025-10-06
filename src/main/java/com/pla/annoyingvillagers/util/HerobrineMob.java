@@ -134,7 +134,9 @@ public class HerobrineMob extends Monster {
         recallTicks = pCompound.getInt("RecallTicks");
         renderPortal = pCompound.getBoolean("RenderPortal");
         neverRecall = pCompound.getBoolean("NeverRecall");
-        gregUUID = pCompound.getUUID("GregUUID");
+        if (pCompound.contains("GregUUID")) {
+            gregUUID = pCompound.getUUID("GregUUID");
+        }
     }
 
     @Override
@@ -143,7 +145,9 @@ public class HerobrineMob extends Monster {
         pCompound.putInt("RecallTicks", recallTicks);
         pCompound.putBoolean("RenderPortal", renderPortal);
         pCompound.putBoolean("NeverRecall", neverRecall);
-        pCompound.putUUID("GregUUID", gregUUID);
+        if (gregUUID != null) {
+            pCompound.putUUID("GregUUID", gregUUID);
+        }
     }
 
     @Override
@@ -158,12 +162,9 @@ public class HerobrineMob extends Monster {
                     );
                     this.renderPortal = false;
                 }
-
                 final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
-                if (this instanceof ShadowHerobrineEntity) {
-                    if (livingentitypatch != null && !this.level().isClientSide()) {
-                        livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_ANIMATE, 0.0F);
-                    }
+                if (livingentitypatch != null && !this.level().isClientSide()) {
+                    livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_ANIMATE, 0.0F);
                 }
             }
 

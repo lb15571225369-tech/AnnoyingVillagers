@@ -582,5 +582,21 @@
         "stream": false
       }
     ]
+  },
+  "portal_summon": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:portal_summon",
+        "stream": false
+      }
+    ]
+  },
+  "portal_natural": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:portal_natural",
+        "stream": false
+      }
+    ]
   }
 }

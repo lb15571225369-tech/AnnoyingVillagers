@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
@@ -120,13 +121,25 @@ public class Herobrine4Entity extends Monster {
                 this.whiteEye = false;
             }
         }
-        if (this.getHealth() <= 10 && this.summonTiming == -1) {
-            this.summonTiming = 30;
+        if (this.getHealth() <= 30 && this.summonTiming == -1) {
+            this.summonTiming = 20;
             this.setNoAi(true);
-            this.setHealth(11);
+            this.setHealth(31);
+            this.whiteEye = true;
+            this.summoning = true;
         }
         if (this.summonTiming > 0) {
             this.summonTiming = this.summonTiming - 1;
+        }
+        if (this.summonTiming == 10) {
+            if (!this.level().isClientSide()) {
+                try {
+                    this.getServer().getCommands().getDispatcher().execute(
+                            "playsound annoyingvillagers:portal_summon voice @a ~ ~ ~",
+                            this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+                }
+            }
         }
         if (this.summonTiming == 1) {
             summonHerobrines();
@@ -134,8 +147,6 @@ public class Herobrine4Entity extends Monster {
     }
 
     private void summonHerobrines() {
-        this.summoning = true;
-        this.whiteEye = true;
         final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
         if (livingentitypatch != null && !this.level().isClientSide()) {
             livingentitypatch.playAnimationSynchronized(AVAnimations.PORTAL_SUMMON, 0.0F);
@@ -179,7 +190,7 @@ public class Herobrine4Entity extends Monster {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        if (this.summoning || this.summonTiming > 0) {
+        if (this.summoning) {
             return false;
         }
         return super.hurt(damagesource, f);
