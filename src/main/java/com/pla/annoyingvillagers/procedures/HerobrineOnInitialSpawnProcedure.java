@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -19,7 +20,7 @@ import java.util.Random;
 
 public class HerobrineOnInitialSpawnProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, final Entity entity, int recallTicks) {
+    public static void execute(LevelAccessor levelaccessor, final Entity entity, int recallTicks, MobSpawnType mobSpawnType) {
         int min = AnnoyingVillagersConfig.HEROBRINE_RECALL_MIN_TIME.get();
         int max = AnnoyingVillagersConfig.HEROBRINE_RECALL_MAX_TIME.get();
         int randomMin = Math.min(min, max);
@@ -31,7 +32,7 @@ public class HerobrineOnInitialSpawnProcedure {
                 if (!killedName.isEmpty()) { // Herobrine #5, #6
                     levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal(killedName + " has been possessed by §5Herobrine§r."), false);
                 } else {
-                    if (entity instanceof Herobrine5Entity || entity instanceof Herobrine6Entity) {
+                    if ((entity instanceof Herobrine5Entity herobrine5Entity && !herobrine5Entity.isSummoned()) || (entity instanceof Herobrine6Entity herobrine6Entity && !herobrine6Entity.isSummoned())) {
                         levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("§5Herobrine§r has possessed a new player."), false);
                     } else {
                         if (recallTicks == 0) {
@@ -40,13 +41,7 @@ public class HerobrineOnInitialSpawnProcedure {
                                 herobrineMob.setRecallTicks(recallTicks);
                             }
                         }
-                        if ((entity instanceof NullEntity || entity instanceof ShadowHerobrineEntity || entity instanceof GlaiveHerobrineEntity ||
-                        entity instanceof ReaperHerobrineEntity || entity instanceof SwordsManHerobrineEntity || entity instanceof SledgehammerHerobrineEntity || entity instanceof AegisHerobrineEntity) && entity instanceof HerobrineMob herobrineMob) {
-                            // Elite Herobrine always being summoned by Greg
-                            herobrineMob.setRenderPortal(true);
-                            HerobrinePortalProcedure.spawnHerobrine(herobrineMob, herobrineMob.getRecallTicks());
-                            levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal(herobrineMob.getChatName() + " has arrived from the §4Herobrine Vessel Realm§r"), false);
-                        } else { // For natural herobrine
+                        if (mobSpawnType.equals(MobSpawnType.NATURAL)) { // For natural spawn
                             if (Math.random() <= 0.5D) { // Natural possessed
                                 levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("§5Herobrine§r has possessed a new player."), false);
                             } else { // Portal animation
@@ -55,6 +50,12 @@ public class HerobrineOnInitialSpawnProcedure {
                                     HerobrinePortalProcedure.spawnHerobrine(herobrineMob, herobrineMob.getRecallTicks());
                                     levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal(herobrineMob.getChatName() + " has arrived from the §4Herobrine Vessel Realm§r"), false);
                                 }
+                            }
+                        } else {
+                            if (entity instanceof HerobrineMob herobrineMob) {
+                                herobrineMob.setRenderPortal(true);
+                                HerobrinePortalProcedure.spawnHerobrine(herobrineMob, herobrineMob.getRecallTicks());
+                                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal(herobrineMob.getChatName() + " has arrived from the §4Herobrine Vessel Realm§r"), false);
                             }
                         }
                     }

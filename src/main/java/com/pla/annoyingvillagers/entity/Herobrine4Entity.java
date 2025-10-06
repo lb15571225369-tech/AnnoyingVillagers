@@ -139,6 +139,9 @@ public class Herobrine4Entity extends Monster {
                             this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 } catch (CommandSyntaxException e) {
                 }
+                if (this.level().getServer() != null) {
+                    this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine Greg§r> Summoning!!!"), false);
+                }
             }
         }
         if (this.summonTiming == 1) {

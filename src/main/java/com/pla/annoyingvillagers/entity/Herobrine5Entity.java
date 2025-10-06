@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.entity;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.procedures.Herobrine6OnHurtProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineOnInitialSpawnProcedure;
@@ -33,6 +32,15 @@ import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 import javax.annotation.Nullable;
 
 public class Herobrine5Entity extends PlayerMobEntity {
+    private boolean summoned = false;
+
+    public boolean isSummoned() {
+        return summoned;
+    }
+
+    public void setSummoned(boolean summoned) {
+        this.summoned = summoned;
+    }
 
     public Herobrine5Entity(EntityType<? extends Herobrine5Entity> type, Level level) {
         super(type, level);
@@ -73,7 +81,8 @@ public class Herobrine5Entity extends PlayerMobEntity {
     }
 
     protected void registerGoals() {
-        super.registerGoals();
+        this.goalSelector.getAvailableGoals().clear();
+        this.targetSelector.getAvailableGoals().clear();
         CommonGoals.registerGoalForHostileNpc(this);
     }
 
@@ -143,8 +152,20 @@ public class Herobrine5Entity extends PlayerMobEntity {
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
-        HerobrineOnInitialSpawnProcedure.execute(serverlevelaccessor, this, 0);
+        HerobrineOnInitialSpawnProcedure.execute(serverlevelaccessor, this, 0, mobspawntype);
         return spawngroupdata;
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag pCompound) {
+        super.readAdditionalSaveData(pCompound);
+        summoned = pCompound.getBoolean("Summoned");
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag pCompound) {
+        super.addAdditionalSaveData(pCompound);
+        pCompound.putBoolean("Summoned", summoned);
     }
 
     public void baseTick() {

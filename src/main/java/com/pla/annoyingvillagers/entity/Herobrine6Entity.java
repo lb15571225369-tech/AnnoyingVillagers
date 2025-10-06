@@ -34,6 +34,16 @@ import se.gory_moon.player_mobs.utils.NameManager;
 import javax.annotation.Nullable;
 
 public class Herobrine6Entity extends Monster {
+    private boolean summoned = false;
+
+    public boolean isSummoned() {
+        return summoned;
+    }
+
+    public void setSummoned(boolean summoned) {
+        this.summoned = summoned;
+    }
+
     public Herobrine6Entity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.HEROBRINE_6.get(), level);
     }
@@ -135,7 +145,7 @@ public class Herobrine6Entity extends Monster {
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
-        HerobrineOnInitialSpawnProcedure.execute(serverlevelaccessor, this, 0);
+        HerobrineOnInitialSpawnProcedure.execute(serverlevelaccessor, this, 0, mobspawntype);
         return spawngroupdata;
     }
 
@@ -155,6 +165,18 @@ public class Herobrine6Entity extends Monster {
         SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.HEROBRINE_6.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
             return serverlevelaccessor.getRawBrightness(blockpos, 0) <= 8;
         });
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag pCompound) {
+        super.readAdditionalSaveData(pCompound);
+        summoned = pCompound.getBoolean("Summoned");
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag pCompound) {
+        super.addAdditionalSaveData(pCompound);
+        pCompound.putBoolean("Summoned", summoned);
     }
 
     public static Builder createAttributes() {
