@@ -63,7 +63,6 @@ public class ShadowHerobrineEntity extends HerobrineMob {
         this.setCustomName(Component.literal("§5Shadow Herobrine§r"));
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
-        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get()));
         this.setChatName("§5Shadow Herobrine§r");
     }
 

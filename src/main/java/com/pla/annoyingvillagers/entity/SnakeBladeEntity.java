@@ -104,19 +104,12 @@ public class SnakeBladeEntity extends Entity {
         super.tick();
         Entity creator = getCreatorEntity();
         Entity current = getToEntity();
-        if(tickCount == 1){
-            if(!this.level().isClientSide){
-//                this.playSound(ModSounds.TIDAL_TENTACLE.get(),1.0F, 0.8F + this.random.nextFloat() * 0.4F);
-            }
-        }
         if(!this.isRetracting() && progress < MAX_EXTEND_TIME){
             this.setProgress(progress + 1);
         }
         if(this.isRetracting() && progress > 0F){
             this.setProgress(progress - 1);
         }
-//        if(this.isRetracting() && progress == 0F && !retractionHandled){
-//            retractionHandled = true;
         if(this.isRetracting() && progress == 0F) {
             Entity from = this.getFromEntity();
             if(from instanceof SnakeBladeEntity){

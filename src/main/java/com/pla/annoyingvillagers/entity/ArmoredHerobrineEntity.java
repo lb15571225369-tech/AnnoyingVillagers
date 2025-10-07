@@ -52,7 +52,6 @@ public class ArmoredHerobrineEntity extends HerobrineMob {
         this.setCustomName(Component.literal("§5Armored Herobrine§r"));
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
-        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
         this.setItemSlot(EquipmentSlot.HEAD, new ItemStack((ItemLike) AnnoyingVillagersModItems.HEROBRINE_OBSIDIAN_DIAMOND_HELMET.get()));
         this.setItemSlot(EquipmentSlot.CHEST, new ItemStack((ItemLike) AnnoyingVillagersModItems.HEROBRINE_OBSIDIAN_DIAMOND_CHESTPLATE.get()));
         this.setChatName("§5Armored Herobrine 7§r");

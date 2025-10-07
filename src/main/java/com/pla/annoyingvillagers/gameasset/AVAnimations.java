@@ -13,6 +13,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
@@ -35,6 +37,7 @@ import yesman.epicfight.api.animation.property.AnimationEvent;
 import yesman.epicfight.api.animation.property.AnimationEvent.AnimationEventConsumer;
 import yesman.epicfight.api.animation.property.AnimationEvent.Side;
 import yesman.epicfight.api.animation.property.AnimationEvent.TimeStampedEvent;
+import yesman.epicfight.api.animation.property.AnimationProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.ActionAnimationProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.AttackAnimationProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.AttackPhaseProperty;
@@ -62,6 +65,7 @@ import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.damagesource.EpicFightDamageType;
 import yesman.epicfight.world.damagesource.ExtraDamageInstance;
 import yesman.epicfight.world.damagesource.StunType;
+import yesman.epicfight.world.effect.EpicFightMobEffects;
 
 @Mod.EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AVAnimations {
@@ -220,7 +224,7 @@ public class AVAnimations {
         AVAnimations.PUSH_UP_IDLE = new StaticAnimation(true, "biped/idle/push_up", humanoidarmature);
         AVAnimations.SIT_IDLE = new StaticAnimation(true, "biped/idle/sit", humanoidarmature);
         AVAnimations.SLIGHT_IDLE = new StaticAnimation(true, "biped/idle/slight", humanoidarmature);
-        AVAnimations.FIST_GUARD = new StaticAnimation(true, "biped/guard/fist_guard", humanoidarmature);
+        AVAnimations.FIST_GUARD = new StaticAnimation(false, "biped/guard/fist_guard", humanoidarmature);
         AVAnimations.FIST_DASH = (new KickAttackAnimation(0.15F, 0.25F, 0.45F, 0.7F, 0.95F, ColliderPreset.BIPED_BODY_COLLIDER, humanoidarmature.toolR, "biped/combat/fist_dash", humanoidarmature)).addProperty(AttackPhaseProperty.SWING_SOUND, (SoundEvent) EpicFightSounds.WHOOSH.get()).addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.AIR_BURST).addProperty(AttackPhaseProperty.HIT_SOUND, (SoundEvent) EpicFightSounds.BLUNT_HIT_HARD.get()).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.5F)).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN).addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE);
         AVAnimations.WHIRLWIND_Kick = (new KickAttackAnimation(0.2F, 0.29F, 0.45F, 0.85F, 1.8F, ColliderPreset.BIPED_BODY_COLLIDER, humanoidarmature.legR, "biped/combat/whirlwind_kick", humanoidarmature)).addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT).addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.AIR_BURST).addProperty(AttackPhaseProperty.SWING_SOUND, (SoundEvent) EpicFightSounds.WHOOSH.get()).addProperty(AttackPhaseProperty.HIT_SOUND, (SoundEvent) EpicFightSounds.BLUNT_HIT_HARD.get()).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.5F)).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN).addEvents(new TimeStampedEvent[]{TimeStampedEvent.create(0.1F, ReusableSources.PLAY_SOUND, Side.SERVER).params(new Object[]{(SoundEvent) EpicFightSounds.WHOOSH.get()})}).addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE);
         AVAnimations.Legendary_Sword_Heavy_Attack = (new HeavyAttackAnimation(0.05F, 0.5F, 0.7F, 1.2F, WOMWeaponColliders.TORMENT_BERSERK_AIRSLAM, humanoidarmature.rootJoint, "biped/combat/legendary_sword_heavy_attack", humanoidarmature))

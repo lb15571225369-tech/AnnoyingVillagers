@@ -5,16 +5,24 @@ import javax.annotation.Nullable;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -24,6 +32,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
@@ -32,20 +41,30 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.effect.EpicFightMobEffects;
 
 public class Herobrine4Entity extends Monster {
-    private boolean whiteEye = false;
+    private static final EntityDataAccessor<Boolean> WHITE_EYE =
+            SynchedEntityData.defineId(Herobrine4Entity.class, EntityDataSerializers.BOOLEAN);
     private boolean summoning = false;
     private int summonTiming = -1;
+    private final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
 
     public void setWhiteEye(boolean whiteEye) {
-        this.whiteEye = whiteEye;
+        this.entityData.set(WHITE_EYE, whiteEye);
     }
 
     public boolean isWhiteEye() {
-        return whiteEye;
+        return this.entityData.get(WHITE_EYE);
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(WHITE_EYE, false);
     }
 
     public boolean isSummoning() {
@@ -114,19 +133,18 @@ public class Herobrine4Entity extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (!isDay(level())) {
-            this.setWhiteEye(true);
-        } else {
-            if (!this.summoning && this.whiteEye) {
-                this.whiteEye = false;
-            }
+        if (!this.level().isClientSide && !isDay(this.level())) {
+            setWhiteEye(true);
         }
-        if (this.getHealth() <= 30 && this.summonTiming == -1) {
-            this.summonTiming = 20;
+        if (this.getHealth() <= 2 && this.summonTiming == -1) {
+            if (!this.level().isClientSide) {
+                setWhiteEye(true);
+            }
             this.setNoAi(true);
-            this.setHealth(31);
-            this.whiteEye = true;
             this.summoning = true;
+            this.summonTiming = 20;
+            this.setHealth(1);
+            this.addEffect(new MobEffectInstance((MobEffect) EpicFightMobEffects.STUN_IMMUNITY.get(), 120, 3, false, false));
         }
         if (this.summonTiming > 0) {
             this.summonTiming = this.summonTiming - 1;
@@ -150,7 +168,6 @@ public class Herobrine4Entity extends Monster {
     }
 
     private void summonHerobrines() {
-        final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
         if (livingentitypatch != null && !this.level().isClientSide()) {
             livingentitypatch.playAnimationSynchronized(AVAnimations.PORTAL_SUMMON, 0.0F);
         }
@@ -195,8 +212,24 @@ public class Herobrine4Entity extends Monster {
     public boolean hurt(DamageSource damagesource, float f) {
         if (this.summoning) {
             return false;
+        } else if (this.getHealth() == 1) {
+            if (!this.level().isClientSide()) {
+                try {
+                    this.getServer().getCommands().getDispatcher().execute(
+                            "playsound epicfight:entity.hit.clash neutral @p",
+                            this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    this.getServer().getCommands().getDispatcher().execute(
+                            "execute at @s run particle epicfight:hit_blade ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
+                            this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+                }
+                if (livingentitypatch != null && !this.level().isClientSide()) {
+                    livingentitypatch.playAnimationSynchronized(AVAnimations.FIST_GUARD, 0.0F);
+                }
+            }
+            return false;
         }
-        return super.hurt(damagesource, f);
+        return super.hurt(damagesource, 1.0F);
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
@@ -216,7 +249,7 @@ public class Herobrine4Entity extends Monster {
     @Override
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
-        whiteEye = pCompound.getBoolean("WhiteEye");
+        setWhiteEye(pCompound.getBoolean("WhiteEye"));
         summoning = pCompound.getBoolean("Summoning");
         summonTiming = pCompound.getInt("SummonTiming");
     }
@@ -224,7 +257,7 @@ public class Herobrine4Entity extends Monster {
     @Override
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
-        pCompound.putBoolean("WhiteEye", whiteEye);
+        pCompound.putBoolean("WhiteEye", isWhiteEye());
         pCompound.putBoolean("Summoning", summoning);
         pCompound.putInt("SummonTiming", summonTiming);
     }
@@ -235,7 +268,7 @@ public class Herobrine4Entity extends Monster {
         Builder builder = Mob.createMobAttributes();
 
         builder = builder.add(Attributes.MOVEMENT_SPEED, 0.5D);
-        builder = builder.add(Attributes.MAX_HEALTH, 80.0D);
+        builder = builder.add(Attributes.MAX_HEALTH, 30.0D);
         builder = builder.add(Attributes.ARMOR, 0.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 128.0D);
