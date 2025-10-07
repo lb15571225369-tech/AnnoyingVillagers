@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -47,15 +48,20 @@ public class HerobrineOnInitialSpawnProcedure {
                             } else { // Portal animation
                                 if (entity instanceof HerobrineMob herobrineMob) {
                                     herobrineMob.setRenderPortal(true);
-                                    HerobrinePortalProcedure.spawnHerobrine(herobrineMob, herobrineMob.getRecallTicks());
+                                    HerobrinePortalProcedure.spawnHerobrine(herobrineMob);
                                     levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal(herobrineMob.getChatName() + " has arrived from the §4Herobrine Vessel Realm§r"), false);
                                 }
                             }
                         } else {
                             if (entity instanceof HerobrineMob herobrineMob) {
-                                herobrineMob.setRenderPortal(true);
-                                HerobrinePortalProcedure.spawnHerobrine(herobrineMob, herobrineMob.getRecallTicks());
+                                if (mobSpawnType.equals(MobSpawnType.SPAWN_EGG)) {
+                                    herobrineMob.setRenderPortal(true);
+                                }
+                                HerobrinePortalProcedure.spawnHerobrine(herobrineMob);
                                 levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal(herobrineMob.getChatName() + " has arrived from the §4Herobrine Vessel Realm§r"), false);
+                            } else if (entity instanceof LivingEntity livingEntity) {
+                                // This logic is for #5 and #6 ground spawn
+                                HerobrinePortalProcedure.spawnHerobrine(livingEntity);
                             }
                         }
                     }
@@ -64,7 +70,7 @@ public class HerobrineOnInitialSpawnProcedure {
 
             if (entity instanceof Herobrine3Entity) {
                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> Are you talking about ... me ?"), false);
+                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine Chris§r> Are you talking about ... me ?"), false);
                 }
 
                 if (levelaccessor instanceof Level) {
@@ -80,7 +86,7 @@ public class HerobrineOnInitialSpawnProcedure {
 
             if (entity instanceof ArmoredHerobrineEntity) {
                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> Anyone who stands in my way must die!"), false);
+                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Armored Herobrine§r> Anyone who stands in my way must die!"), false);
                 }
 
                 if (levelaccessor instanceof Level) {

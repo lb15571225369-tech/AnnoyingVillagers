@@ -3,11 +3,15 @@ package com.pla.annoyingvillagers.entity;
 import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
+import com.pla.annoyingvillagers.procedures.HerobrinePortalProcedure;
+import com.pla.annoyingvillagers.util.HerobrineMob;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -18,8 +22,8 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -35,22 +39,29 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
-import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.effect.EpicFightMobEffects;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 public class Herobrine4Entity extends Monster {
     private static final EntityDataAccessor<Boolean> WHITE_EYE =
             SynchedEntityData.defineId(Herobrine4Entity.class, EntityDataSerializers.BOOLEAN);
     private boolean summoning = false;
     private int summonTiming = -1;
+    private int escapeTiming = -1;
     private final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
 
     public void setWhiteEye(boolean whiteEye) {
@@ -133,66 +144,351 @@ public class Herobrine4Entity extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (!this.level().isClientSide && !isDay(this.level())) {
-            setWhiteEye(true);
-        }
-        if (this.getHealth() <= 2 && this.summonTiming == -1) {
-            if (!this.level().isClientSide) {
+
+        if (!this.level().isClientSide) {
+            if (!isDay(this.level())) {
                 setWhiteEye(true);
             }
-            this.setNoAi(true);
-            this.summoning = true;
-            this.summonTiming = 20;
-            this.setHealth(1);
-            this.addEffect(new MobEffectInstance((MobEffect) EpicFightMobEffects.STUN_IMMUNITY.get(), 120, 3, false, false));
-        }
-        if (this.summonTiming > 0) {
-            this.summonTiming = this.summonTiming - 1;
-        }
-        if (this.summonTiming == 10) {
-            if (!this.level().isClientSide()) {
+
+            if (this.getHealth() <= 2 && this.summonTiming == -1) {
+                if (!isDay(this.level())) {
+                    this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(AnnoyingVillagersModItems.BROKEN_DIAMOND_CHESTPLATE.get()));
+                }
+                setWhiteEye(true);
+                this.setNoAi(true);
+                this.summoning = true;
+                this.summonTiming = 20;
+                this.setHealth(1);
+                this.addEffect(new MobEffectInstance((MobEffect) EpicFightMobEffects.STUN_IMMUNITY.get(), 120, 3, false, false));
+            }
+
+            if (this.summonTiming > 0) {
+                this.summonTiming = this.summonTiming - 1;
+            }
+            if (this.summonTiming == 10) {
                 try {
                     this.getServer().getCommands().getDispatcher().execute(
                             "playsound annoyingvillagers:portal_summon voice @a ~ ~ ~",
                             this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 } catch (CommandSyntaxException e) {
                 }
-                if (this.level().getServer() != null) {
-                    this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine Greg§r> Summoning!!!"), false);
+                this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine Greg§r> Summoning!!!"), false);
+            }
+            if (this.summonTiming == 1) {
+                summonHerobrinesAndEscape();
+            }
+
+            if (this.escapeTiming > 0) {
+                this.escapeTiming = this.escapeTiming - 1;
+            }
+            if (this.escapeTiming == 40) {
+                if (this.level() instanceof ServerLevel serverLevel) {
+                    HerobrinePortalProcedure.sinkIntoGround(serverLevel, this, 0.06);
                 }
             }
-        }
-        if (this.summonTiming == 1) {
-            summonHerobrines();
+            if (this.escapeTiming == 1) {
+                this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine Greg§r> I will be back soon."), false);
+                this.discard();
+            }
         }
     }
 
-    private void summonHerobrines() {
-        if (livingentitypatch != null && !this.level().isClientSide()) {
-            livingentitypatch.playAnimationSynchronized(AVAnimations.PORTAL_SUMMON, 0.0F);
+    private void summonHerobrine(String herobrineMobId, double spawnX, double spawnY, double spawnZ, double summonLookX, double summonLookZ, boolean renderPortal) {
+        if (this.level() instanceof ServerLevel levelaccessor) {
+            ResourceLocation mobResourceLocation = new ResourceLocation(herobrineMobId);
+            EntityType<?> type = ForgeRegistries.ENTITY_TYPES.getValue(mobResourceLocation);
+            if (type != null && type.create(level()) instanceof Mob herobrine) {
+                if (herobrine instanceof HerobrineMob herobrineMob) {
+                    herobrineMob.setGregUUID(this.getUUID());
+                    herobrineMob.setRenderPortal(renderPortal);
+                } else if (herobrine instanceof Herobrine5Entity herobrine5Entity) {
+                    herobrine5Entity.setSummoned(true);
+                } else if (herobrine instanceof Herobrine6Entity herobrine6Entity) {
+                    if (renderPortal) {
+                        AnnoyingVillagers.PACKET_HANDLER.send(
+                                PacketDistributor.TRACKING_ENTITY.with(() -> this),
+                                new ClientboundHerobrinePortalFx(new Vec3(spawnX, spawnY, spawnZ))
+                        );
+                    }
+                    herobrine6Entity.setSummoned(true);
+                }
+
+                herobrine.moveTo(spawnX, spawnY, spawnZ, this.getYRot(), this.getXRot());
+                herobrine.lookAt(EntityAnchorArgument.Anchor.EYES, new Vec3(summonLookX, spawnY, summonLookZ));
+                herobrine.finalizeSpawn(levelaccessor, levelaccessor.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
+                levelaccessor.addFreshEntity(herobrine);
+            }
+        }
+    }
+
+    private void spawnHerobrineOffset(String id,
+                                      double forwardDist, double lateralDist, double baseY,
+                                      double fx, double fz, double lx, double lz, boolean renderPortal) {
+        double spawnX = this.getX() + fx * forwardDist + lx * lateralDist;
+        double spawnZ = this.getZ() + fz * forwardDist + lz * lateralDist;
+
+        double lookX = spawnX + fx * 10.0;
+        double lookZ = spawnZ + fz * 10.0;
+
+        summonHerobrine(id, spawnX, baseY, spawnZ, lookX, lookZ, renderPortal);
+    }
+
+    private void spawnRandomHerobrinesInRadius(String id, int count, int radius, boolean renderPortal) {
+        if (!(this.level() instanceof ServerLevel sl)) return;
+
+        int cx = Mth.floor(this.getX());
+        int cz = Mth.floor(this.getZ());
+
+        List<BlockPos> candidates = new ArrayList<>();
+        int r2 = radius * radius;
+        for (int dx = -radius; dx <= radius; dx++) {
+            for (int dz = -radius; dz <= radius; dz++) {
+                if (dx == 0 && dz == 0) continue;
+                if (dx * dx + dz * dz > r2) continue;
+                int x = cx + dx;
+                int z = cz + dz;
+
+                int y = sl.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
+                candidates.add(new BlockPos(x, y, z));
+            }
         }
 
+        Collections.shuffle(candidates, new java.util.Random(this.getRandom().nextLong()));
+        double yawRad = Math.toRadians(this.getYRot());
+        double fx = -Math.sin(yawRad);
+        double fz =  Math.cos(yawRad);
+
+        int spawned = 0;
+        for (BlockPos pos : candidates) {
+            if (spawned >= count) break;
+
+            if (!sl.isLoaded(pos)) continue;
+            if (!sl.getWorldBorder().isWithinBounds(pos)) continue;
+
+            if (!sl.isEmptyBlock(pos) || !sl.isEmptyBlock(pos.above())) continue;
+            if (sl.isEmptyBlock(pos.below())) continue;
+
+            double spawnX = pos.getX() + 0.5D;
+            double spawnY = pos.getY();
+            double spawnZ = pos.getZ() + 0.5D;
+
+            double lookX = spawnX + fx * 10.0D;
+            double lookZ = spawnZ + fz * 10.0D;
+
+            summonHerobrine(id, spawnX, spawnY, spawnZ, lookX, lookZ, renderPortal);
+            spawned++;
+        }
+    }
+
+    private void summonEscapeAtDay() {
+        this.escapeTiming = 70;
+        AnnoyingVillagers.PACKET_HANDLER.send(
+                PacketDistributor.TRACKING_ENTITY.with(() -> this),
+                new ClientboundHerobrinePortalFx(HerobrinePortalProcedure.finalSurfacePos(this))
+        );
+
+        double yawRad = Math.toRadians(this.getYRot());
+
+        double fx = -Math.sin(yawRad);
+        double fz =  Math.cos(yawRad);
+        double lx =  Math.cos(yawRad);
+        double lz =  Math.sin(yawRad);
+
+        double y = this.getY();
+        double front = 1.0;
+        double side  = 1.0;
+
+        // Herobrine on the left side
+        String leftHerobrine;
+        if (Math.random() <= 0.5D) {
+            leftHerobrine = "annoyingvillagers:herobrine_5";
+        } else {
+            leftHerobrine = "annoyingvillagers:herobrine_6";
+        }
+        spawnHerobrineOffset(leftHerobrine, 0.0, +side, y, fx, fz, lx, lz, false);
+
+        String rightHerobrine;
+        if (Math.random() <= 0.5D) {
+            rightHerobrine = "annoyingvillagers:herobrine_5";
+        } else {
+            rightHerobrine = "annoyingvillagers:herobrine_6";
+        }
+        spawnHerobrineOffset(rightHerobrine, 0.0, -side, y, fx, fz, lx, lz, false);
+
+        // 70% for 2 Herobrines, 30% for 3 Herobrines
+        if (Math.random() >= 0.7D) {
+            String frontHerobrine;
+            if (Math.random() <= 0.5D) {
+                frontHerobrine = "annoyingvillagers:herobrine_5";
+            } else {
+                frontHerobrine = "annoyingvillagers:herobrine_6";
+            }
+
+            spawnHerobrineOffset(frontHerobrine, front, 0.0, y, fx, fz, lx, lz, false);
+        }
+    }
+
+    private void summonEscapeAtNight() {
+        this.escapeTiming = 70;
+        AnnoyingVillagers.PACKET_HANDLER.send(
+                PacketDistributor.TRACKING_ENTITY.with(() -> this),
+                new ClientboundHerobrinePortalFx(HerobrinePortalProcedure.finalSurfacePos(this))
+        );
+
+        List<String> herobrines = new ArrayList<>();
+        herobrines.add("annoyingvillagers:herobrine_1");
+        herobrines.add("annoyingvillagers:herobrine_2");
+        herobrines.add("annoyingvillagers:herobrine_3");
+        herobrines.add("annoyingvillagers:herobrine_7");
+        herobrines.add("annoyingvillagers:armored_herobrine");
+        herobrines.add("annoyingvillagers:herobrine_6");
+
+        Random random = new Random();
+        String herobrineId = herobrines.get(random.nextInt(herobrines.size()));
+
+        // if herobrine_6, spawn 10 to 20 herobrine_6 around
+        if (herobrineId.equals("annoyingvillagers:herobrine_6")) {
+            spawnRandomHerobrinesInRadius(herobrineId, new Random().nextInt(10, 20), 20, true);
+        } else {
+            double yawRad = Math.toRadians(this.getYRot());
+
+            double fx = -Math.sin(yawRad);
+            double fz =  Math.cos(yawRad);
+            double lx =  Math.cos(yawRad);
+            double lz =  Math.sin(yawRad);
+
+            double y = this.getY();
+            double front = 1.0;
+
+            spawnHerobrineOffset(herobrineId, front, 0.0, y, fx, fz, lx, lz, false);
+        }
+    }
+
+    private enum ElitePattern {
+        SOLO_1E,
+        ONEE_PLUS_1S,
+        ONEE_PLUS_2S,
+        TWO_E,
+        TWOE_PLUS_1S,
+        THREE_E
+    }
+
+    private ElitePattern pickWeightedElitePattern(Random random) {
+        double roll = random.nextDouble();
+        if (roll <= 0.1F) {
+            return ElitePattern.THREE_E;
+        } else if (roll <= 0.2F) {
+            return ElitePattern.TWOE_PLUS_1S;
+        } else if (roll <= 0.3F) {
+            return ElitePattern.TWO_E;
+        } else if (roll <= 0.4F) {
+            return ElitePattern.ONEE_PLUS_2S;
+        } else if (roll <= 0.5F) {
+            return ElitePattern.ONEE_PLUS_1S;
+        } else {
+            return ElitePattern.SOLO_1E;
+        }
+    }
+
+    private static <T> T pickRandom(List<T> list, Random random) {
+        return list.remove(random.nextInt(list.size()));
+    }
+
+    private void summonAtNight() {
+        List<String> herobrines = new ArrayList<>();
+        herobrines.add("annoyingvillagers:shadow_herobrine");
+        herobrines.add("annoyingvillagers:elite");
+        herobrines.add("annoyingvillagers:null");
+        herobrines.add("annoyingvillagers:elite");
+
+        List<String> elites = new ArrayList<>();
+        elites.add("annoyingvillagers:swordsman_herobrine");
+        elites.add("annoyingvillagers:aegis_herobrine");
+        elites.add("annoyingvillagers:glaive_herobrine");
+        elites.add("annoyingvillagers:reaper_herobrine");
+        elites.add("annoyingvillagers:sledgehammer_herobrine");
+
         float yaw = this.getYRot();
-        double radians = Math.toRadians(yaw);
-        double offsetX = -Math.sin(radians);
-        double offsetZ = Math.cos(radians);
+        double rad = Math.toRadians(yaw);
+        double fx = -Math.sin(rad);
+        double fz =  Math.cos(rad);
+        double lx =  Math.cos(rad);
+        double lz =  Math.sin(rad);
 
-        double spawnX = this.getX() + offsetX * 3;
-        double spawnY = this.getY();
-        double spawnZ = this.getZ() + offsetZ * 3;
+        double baseY = this.getY();
+        double centerForward = 3.0;
+        double side = 1.0;
+        double thirdForward = 4.0;
 
-        double summonLookX = this.getX() + offsetX * 10;
-        double summonLookZ = this.getZ() + offsetZ * 10;
+        double centerX = this.getX() + fx * centerForward;
+        double centerZ = this.getZ() + fz * centerForward;
+        double lookX   = centerX + fx * 10.0;
+        double lookZ   = centerZ + fz * 10.0;
 
-        this.lookAt(EntityAnchorArgument.Anchor.EYES, new Vec3(spawnX, spawnY, spawnZ));
-        if (this.level() instanceof ServerLevel levelaccessor) {
-            ServerLevel serverlevel = (ServerLevel) levelaccessor;
-            ShadowHerobrineEntity shadowHerobrineEntity = new ShadowHerobrineEntity((EntityType) AnnoyingVillagersModEntities.SHADOW_HEROBRINE.get(), serverlevel);
-            shadowHerobrineEntity.moveTo(spawnX, spawnY, spawnZ, this.getYRot(), this.getXRot());
-            shadowHerobrineEntity.lookAt(EntityAnchorArgument.Anchor.EYES, new Vec3(summonLookX, spawnY, summonLookZ));
-            shadowHerobrineEntity.setGregUUID(this.getUUID());
-            shadowHerobrineEntity.finalizeSpawn(levelaccessor, levelaccessor.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
-            levelaccessor.addFreshEntity(shadowHerobrineEntity);
+        this.lookAt(EntityAnchorArgument.Anchor.EYES, new Vec3(centerX, baseY, centerZ));
+
+        if (!(this.level() instanceof ServerLevel)) return;
+        AnnoyingVillagers.PACKET_HANDLER.send(
+                PacketDistributor.TRACKING_ENTITY.with(() -> this),
+                new ClientboundHerobrinePortalFx(new Vec3(centerX, baseY, centerZ))
+        );
+
+        Random random = new Random();
+        String pick = herobrines.get(random.nextInt(herobrines.size()));
+
+        if (pick.equals("annoyingvillagers:shadow_herobrine") || pick.equals("annoyingvillagers:null")) {
+            summonHerobrine(pick, centerX, baseY, centerZ, lookX, lookZ, false);
+            return;
+        }
+
+        ElitePattern pattern = pickWeightedElitePattern(random);
+
+        switch (pattern) {
+            case SOLO_1E -> {
+                summonHerobrine(pickRandom(elites, random), centerX, baseY, centerZ, lookX, lookZ, false);
+            }
+            case ONEE_PLUS_1S -> {
+                // Two mobs: left + right around the portal; elite on left, shadow on right (arbitrary)
+                // Left
+                spawnHerobrineOffset(pickRandom(elites, random), centerForward, +side, baseY, fx, fz, lx, lz, false);
+                // Right
+                spawnHerobrineOffset("annoyingvillagers:shadow_herobrine", centerForward, -side, baseY, fx, fz, lx, lz, false);
+            }
+            case ONEE_PLUS_2S -> {
+                // Three mobs: left (shadow), right (shadow), middle+1 forward (elite)
+                spawnHerobrineOffset("annoyingvillagers:shadow_herobrine", centerForward, +side, baseY, fx, fz, lx, lz, false);
+                spawnHerobrineOffset("annoyingvillagers:shadow_herobrine", centerForward, -side, baseY, fx, fz, lx, lz, false);
+                spawnHerobrineOffset(pickRandom(elites, random), thirdForward, 0.0, baseY, fx, fz, lx, lz, false);
+            }
+            case TWO_E -> {
+                // Two elites: left + right
+                spawnHerobrineOffset(pickRandom(elites, random), centerForward, +side, baseY, fx, fz, lx, lz, false);
+                spawnHerobrineOffset(pickRandom(elites, random), centerForward, -side, baseY, fx, fz, lx, lz, false);
+            }
+            case TWOE_PLUS_1S -> {
+                // Three mobs: left (shadow), right (elite), middle+1 forward (elite)
+                spawnHerobrineOffset("annoyingvillagers:shadow_herobrine", centerForward, +side, baseY, fx, fz, lx, lz, false);
+                spawnHerobrineOffset(pickRandom(elites, random), centerForward, -side, baseY, fx, fz, lx, lz, false);
+                spawnHerobrineOffset(pickRandom(elites, random), thirdForward, 0.0, baseY, fx, fz, lx, lz, false);
+            }
+            case THREE_E -> {
+                // Three elites: left, right, and middle+1 forward (super rare)
+                spawnHerobrineOffset(pickRandom(elites, random), centerForward, +side, baseY, fx, fz, lx, lz, false);
+                spawnHerobrineOffset(pickRandom(elites, random), centerForward, -side, baseY, fx, fz, lx, lz, false);
+                spawnHerobrineOffset(pickRandom(elites, random), thirdForward, 0.0, baseY, fx, fz, lx, lz, false);
+            }
+        }
+    }
+
+    private void summonHerobrinesAndEscape() {
+        if (livingentitypatch != null) {
+            livingentitypatch.playAnimationSynchronized(AVAnimations.PORTAL_SUMMON, 0.0F);
+        }
+        if (isDay(this.level())) {
+            summonEscapeAtDay();
+        } else {
+//            summonEscapeAtNight();
+            summonAtNight();
         }
     }
 
@@ -252,6 +548,7 @@ public class Herobrine4Entity extends Monster {
         setWhiteEye(pCompound.getBoolean("WhiteEye"));
         summoning = pCompound.getBoolean("Summoning");
         summonTiming = pCompound.getInt("SummonTiming");
+        escapeTiming = pCompound.getInt("EscapeTiming");
     }
 
     @Override
@@ -260,6 +557,7 @@ public class Herobrine4Entity extends Monster {
         pCompound.putBoolean("WhiteEye", isWhiteEye());
         pCompound.putBoolean("Summoning", summoning);
         pCompound.putInt("SummonTiming", summonTiming);
+        pCompound.putInt("EscapeTiming", escapeTiming);
     }
 
     public static void init() {}
@@ -268,7 +566,7 @@ public class Herobrine4Entity extends Monster {
         Builder builder = Mob.createMobAttributes();
 
         builder = builder.add(Attributes.MOVEMENT_SPEED, 0.5D);
-        builder = builder.add(Attributes.MAX_HEALTH, 30.0D);
+        builder = builder.add(Attributes.MAX_HEALTH, 3.0D);
         builder = builder.add(Attributes.ARMOR, 0.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 128.0D);

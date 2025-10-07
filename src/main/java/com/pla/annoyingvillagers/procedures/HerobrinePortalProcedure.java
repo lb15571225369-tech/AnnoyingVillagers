@@ -27,7 +27,7 @@ public class HerobrinePortalProcedure {
     public static final String NBT_SINK_TICKS    = "sink_ticks";
     public static final String NBT_SINK_MAX_TICKS= "sink_max_ticks";
 
-    public static void spawnHerobrine(LivingEntity livingEntity, int recallTicks) {
+    public static void spawnHerobrine(LivingEntity livingEntity) {
         if (livingEntity.level() instanceof ServerLevel serverLevel) {
             if (livingEntity instanceof HerobrineMob herobrineMob) {
                 if (herobrineMob.getGregUUID() == null) {
