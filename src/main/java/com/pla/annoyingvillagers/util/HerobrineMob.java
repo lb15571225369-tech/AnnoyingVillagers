@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.util;
 import javax.annotation.Nullable;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.procedures.*;
@@ -25,6 +26,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
@@ -163,7 +165,14 @@ public class HerobrineMob extends Monster {
                 }
                 final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
                 if (livingentitypatch != null && !this.level().isClientSide()) {
-                    livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_ANIMATE, 0.0F);
+                    if (this instanceof ReaperHerobrineEntity || this instanceof GlaiveHerobrineEntity) {
+                        livingentitypatch.playAnimationSynchronized(AVAnimations.GLOWING_AGONY_GUARD, 0.0F);
+                    } else if (this instanceof AegisHerobrineEntity aegisHerobrineEntity) {
+                        // For some reason the block animation can't be played inside finalize spawn
+                        aegisHerobrineEntity.getPersistentData().putBoolean("init_animation", true);
+                    } else if (!(this instanceof SledgehammerHerobrineEntity) && !(this instanceof SwordsManHerobrineEntity)) {
+                        livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_ANIMATE, 0.0F);
+                    }
                 }
             }
 

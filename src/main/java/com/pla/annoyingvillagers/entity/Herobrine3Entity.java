@@ -57,11 +57,6 @@ public class Herobrine3Entity extends HerobrineMob {
         this.setChatName("§5Herobrine Chris§r");
     }
 
-    public Herobrine3Entity(EntityType<Herobrine3Entity> entitytype, Level level, boolean renderPortal) {
-        this(entitytype, level);
-        this.setRenderPortal(renderPortal);;
-    }
-
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }

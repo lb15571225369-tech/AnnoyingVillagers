@@ -62,11 +62,6 @@ public class SledgehammerHerobrineEntity extends HerobrineMob {
         this.setChatName("§5Sledgehammer Herobrine§r");
     }
 
-    public SledgehammerHerobrineEntity(EntityType<SledgehammerHerobrineEntity> entitytype, Level level, boolean renderPortal) {
-        this(entitytype, level);
-        this.setRenderPortal(renderPortal);;
-    }
-
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }

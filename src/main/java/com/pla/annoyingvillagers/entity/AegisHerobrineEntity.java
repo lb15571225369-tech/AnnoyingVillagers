@@ -1,5 +1,7 @@
 package com.pla.annoyingvillagers.entity;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
@@ -32,6 +34,8 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 import java.util.Random;
 
@@ -51,11 +55,6 @@ public class AegisHerobrineEntity extends HerobrineMob {
         this.setPersistenceRequired();
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.ENDER_AEGIS.get()));
         this.setChatName("§5Aegis Herobrine§r");
-    }
-
-    public AegisHerobrineEntity(EntityType<AegisHerobrineEntity> entitytype, Level level, boolean renderPortal) {
-        this(entitytype, level);
-        this.setRenderPortal(renderPortal);;
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -109,6 +108,13 @@ public class AegisHerobrineEntity extends HerobrineMob {
         super.tick();
         boolean playSound = false;
         if (!this.level().isClientSide()) {
+            if (this.tickCount == 5 && this.getPersistentData().getBoolean("init_animation")) {
+                final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
+                if (livingentitypatch != null) {
+                    livingentitypatch.playAnimationSynchronized(AVAnimations.BLOCK_MAINHAND, 0.0F);
+                }
+            }
+
             ItemStack itemStack = this.getMainHandItem();
             if (itemStack.getTag() == null) return;
             if (itemStack.getTag().getBoolean("SecondForm")) {

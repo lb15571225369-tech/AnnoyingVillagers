@@ -87,11 +87,6 @@ public class NullEntity extends HerobrineMob {
         this.setChatName("§5Null§r");
     }
 
-    public NullEntity(EntityType<NullEntity> entitytype, Level level, boolean renderPortal) {
-        this(entitytype, level);
-        this.setRenderPortal(renderPortal);;
-    }
-
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }

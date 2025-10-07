@@ -64,11 +64,6 @@ public class SwordsManHerobrineEntity extends HerobrineMob {
         this.setChatName("§5Swordsman Herobrine§r");
     }
 
-    public SwordsManHerobrineEntity(EntityType<SwordsManHerobrineEntity> entitytype, Level level, boolean renderPortal) {
-        this(entitytype, level);
-        this.setRenderPortal(renderPortal);;
-    }
-
     public int getCooldownTicks() {
         return this.getPersistentData().getInt("SwordCooldown");
     }

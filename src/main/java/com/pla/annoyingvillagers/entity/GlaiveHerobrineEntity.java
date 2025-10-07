@@ -70,11 +70,6 @@ public class GlaiveHerobrineEntity extends HerobrineMob {
         this.setChatName("§5Glaive Herobrine§r");
     }
 
-    public GlaiveHerobrineEntity(EntityType<GlaiveHerobrineEntity> entitytype, Level level, boolean renderPortal) {
-        this(entitytype, level);
-        this.setRenderPortal(renderPortal);;
-    }
-
     public int getCooldownTicks() {
         return this.getPersistentData().getInt("SwordCooldown");
     }

@@ -71,6 +71,7 @@ import yesman.epicfight.world.effect.EpicFightMobEffects;
 public class AVAnimations {
     public static StaticAnimation EAT_OFFHAND;
     public static StaticAnimation DRINK_OFFHAND;
+    public static StaticAnimation BLOCK_MAINHAND;
 
     public static StaticAnimation COUNTER;
     public static StaticAnimation FIST_GUARD;
@@ -219,6 +220,7 @@ public class AVAnimations {
         AVAnimations.GLOWING_AGONY_GUARD = (new StaticAnimation(0.05F, true, "biped/skill/glowing_agony_guard", humanoidarmature)).addEvents(new AnimationEvent.TimeStampedEvent[]{TimeStampedEvent.create(0.0F, WOMAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT), TimeStampedEvent.create(0.1F, WOMAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT), TimeStampedEvent.create(0.2F, WOMAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT), TimeStampedEvent.create(0.3F, WOMAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT), TimeStampedEvent.create(0.4F, WOMAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT), TimeStampedEvent.create(0.5F, WOMAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT), TimeStampedEvent.create(0.6F, WOMAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT), TimeStampedEvent.create(0.7F, WOMAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT)});
         AVAnimations.EAT_OFFHAND = new StaticAnimation(0.35F, true, "biped/living/eat_offhand", humanoidarmature);
         AVAnimations.DRINK_OFFHAND = new StaticAnimation(0.35F, true, "biped/living/drink_offhand", humanoidarmature);
+        AVAnimations.BLOCK_MAINHAND = new StaticAnimation(0.35F, true, "biped/living/block_mainhand", humanoidarmature);
         AVAnimations.COUNTER = (new BasicMultipleAttackAnimation(0.3F, 0.08F, 0.1F, 0.15F, 0.525F, ColliderPreset.FIST, humanoidarmature.legR, "biped/guard/counter", humanoidarmature)).addProperty(AttackPhaseProperty.SWING_SOUND, (SoundEvent) EpicFightSounds.WHOOSH.get()).addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT).addProperty(AttackPhaseProperty.HIT_SOUND, (SoundEvent) EpicFightSounds.BLUNT_HIT.get()).addProperty(AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageType.COUNTER)).addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG).addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(1.0F)).addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(0.5F)).addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.AIR_BURST).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(1.0F));
         AVAnimations.LAY_IDLE = new StaticAnimation(true, "biped/idle/lay", humanoidarmature);
         AVAnimations.PUSH_UP_IDLE = new StaticAnimation(true, "biped/idle/push_up", humanoidarmature);

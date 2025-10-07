@@ -57,12 +57,6 @@ public class ArmoredHerobrineEntity extends HerobrineMob {
         this.setChatName("§5Armored Herobrine 7§r");
     }
 
-    public ArmoredHerobrineEntity(EntityType<ArmoredHerobrineEntity> entitytype, Level level, boolean renderPortal) {
-        this(entitytype, level);
-        this.setRenderPortal(renderPortal);;
-    }
-
-
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }

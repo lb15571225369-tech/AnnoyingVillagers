@@ -71,11 +71,6 @@ public class ReaperHerobrineEntity extends HerobrineMob {
         this.setChatName("§5Reaper Herobrine§r");
     }
 
-    public ReaperHerobrineEntity(EntityType<ReaperHerobrineEntity> entitytype, Level level, boolean renderPortal) {
-        this(entitytype, level);
-        this.setRenderPortal(renderPortal);;
-    }
-
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
