@@ -63,6 +63,7 @@ public class Herobrine4Entity extends Monster {
     private int summonTiming = -1;
     private int escapeTiming = -1;
     private final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
+    private int summonTimestamp = -1;
 
     public void setWhiteEye(boolean whiteEye) {
         this.entityData.set(WHITE_EYE, whiteEye);
@@ -147,7 +148,34 @@ public class Herobrine4Entity extends Monster {
 
         if (!this.level().isClientSide) {
             if (!isDay(this.level())) {
-                setWhiteEye(true);
+                if (!this.isWhiteEye()) {
+                    setWhiteEye(true);
+                }
+                if (!this.getItemBySlot(EquipmentSlot.CHEST).getItem().equals(AnnoyingVillagersModItems.BROKEN_DIAMOND_CHESTPLATE.get())) {
+                    this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(AnnoyingVillagersModItems.BROKEN_DIAMOND_CHESTPLATE.get()));
+                }
+            } else {
+                if (this.isWhiteEye() && this.summonTiming == -1) {
+                    setWhiteEye(false);
+                }
+                if (this.getItemBySlot(EquipmentSlot.CHEST).getItem().equals(AnnoyingVillagersModItems.BROKEN_DIAMOND_CHESTPLATE.get())) {
+                    this.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
+                }
+            }
+
+            if (this.level().getDayTime() % 24000L == 13001 && this.summonTimestamp == -1) {
+                if (new Random().nextBoolean()) {
+                    this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine Greg§r> Prepare for a fight tonight !!!"), false);
+                    this.summonTimestamp = new Random().nextInt(13100, 22200);
+                    AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: Greg will summon elites at {}", this.summonTimestamp);
+                } else {
+                    this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine Greg§r> You are lucky tonight !!!"), false);
+                }
+            }
+
+            if (this.level().getDayTime() % 24000L == this.summonTimestamp) {
+                this.summonTimestamp = -2; // Greg will never summon again
+                summonHerobrines();
             }
 
             if (this.getHealth() <= 2 && this.summonTiming == -1) {
@@ -480,6 +508,13 @@ public class Herobrine4Entity extends Monster {
         }
     }
 
+    private void summonHerobrines() {
+        if (livingentitypatch != null) {
+            livingentitypatch.playAnimationSynchronized(AVAnimations.PORTAL_SUMMON, 0.0F);
+        }
+        summonAtNight();
+    }
+
     private void summonHerobrinesAndEscape() {
         if (livingentitypatch != null) {
             livingentitypatch.playAnimationSynchronized(AVAnimations.PORTAL_SUMMON, 0.0F);
@@ -487,8 +522,7 @@ public class Herobrine4Entity extends Monster {
         if (isDay(this.level())) {
             summonEscapeAtDay();
         } else {
-//            summonEscapeAtNight();
-            summonAtNight();
+            summonEscapeAtNight();
         }
     }
 
@@ -549,6 +583,7 @@ public class Herobrine4Entity extends Monster {
         summoning = pCompound.getBoolean("Summoning");
         summonTiming = pCompound.getInt("SummonTiming");
         escapeTiming = pCompound.getInt("EscapeTiming");
+        summonTimestamp = pCompound.getInt("SummonTimestamp");
     }
 
     @Override
@@ -558,6 +593,7 @@ public class Herobrine4Entity extends Monster {
         pCompound.putBoolean("Summoning", summoning);
         pCompound.putInt("SummonTiming", summonTiming);
         pCompound.putInt("EscapeTiming", escapeTiming);
+        pCompound.putInt("SummonTimestamp", summonTimestamp);
     }
 
     public static void init() {}
@@ -566,7 +602,7 @@ public class Herobrine4Entity extends Monster {
         Builder builder = Mob.createMobAttributes();
 
         builder = builder.add(Attributes.MOVEMENT_SPEED, 0.5D);
-        builder = builder.add(Attributes.MAX_HEALTH, 3.0D);
+        builder = builder.add(Attributes.MAX_HEALTH, 30.0D);
         builder = builder.add(Attributes.ARMOR, 0.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 128.0D);

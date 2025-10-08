@@ -1,22 +1,66 @@
 package com.pla.annoyingvillagers.mixin;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.util.CommonGoals;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
-import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.Skeleton;
+import net.minecraft.world.level.ServerLevelAccessor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import se.gory_moon.player_mobs.entity.PlayerMobEntity;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import javax.annotation.Nullable;
 
 @Mixin(value = {AbstractSkeleton.class}, remap = true)
 public class SkeletonMixin {
     @Inject(method = "registerGoals", at = @At("HEAD"))
     private void monsterTargetNpc(CallbackInfo ci) {
-        if ((Object) this instanceof Skeleton monster) {
-            CommonGoals.registerGoalForHostileNpc(monster);
+        AbstractSkeleton self = (AbstractSkeleton) (Object) this;
+        CommonGoals.registerGoalForHostileNpc(self);
+    }
+
+    @Inject(method = "finalizeSpawn", at = @At("RETURN"))
+    private void monsterJoinHerobrineTeam(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag, CallbackInfoReturnable<SpawnGroupData> cir) {
+        AbstractSkeleton self = (AbstractSkeleton) (Object) this;
+        if (!self.level().isClientSide() && self.getServer() != null) {
+            if (!self.level().isClientSide() && self.getServer() != null) {
+                try {
+                    self.getServer().getCommands().getDispatcher().execute(
+                            "team add herobrine",
+                            self.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+                }
+            }
+
+            if (!self.level().isClientSide() && self.getServer() != null) {
+                try {
+                    self.getServer().getCommands().getDispatcher().execute(
+                            "team modify herobrine friendlyFire false",
+                            self.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+                }
+            }
+
+            if (!self.level().isClientSide() && self.getServer() != null) {
+                try {
+                    self.getServer().getCommands().getDispatcher().execute(
+                            "team join herobrine @s",
+                            self.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+
+                }
+            }
+            try {
+                self.getServer().getCommands().getDispatcher().execute(
+                        "data merge entity @s {CanPickUpLoot: 1b}",
+                        self.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+            } catch (CommandSyntaxException e) {
+            }
         }
     }
 }

@@ -28,7 +28,11 @@
     "MixinPHumanoidRenderer",
     "WitherSkeletonMixin",
     "ItemRendererMixin",
-    "RenderBuffersMixin"
+    "RenderBuffersMixin",
+    "VillagerMixin",
+    "VindicatorMixin",
+    "IllagerMixin",
+    "GolemMixin"
   ],
   "client": [
   ],

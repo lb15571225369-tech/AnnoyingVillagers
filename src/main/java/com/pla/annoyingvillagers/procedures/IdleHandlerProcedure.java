@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.util.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
@@ -32,13 +33,16 @@ public class IdleHandlerProcedure {
 
     @SubscribeEvent
     public static void onLivingTick(LivingEvent.LivingTickEvent event) {
-        if (!(event.getEntity() instanceof Mob mob)) return;
-        if (mob.level().isClientSide()) return;
-        if (event.getEntity() != null && !mob.level().isClientSide() && (ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("minecraft:zombie") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("minecraft:husk") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("minecraft:skeleton") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("minecraft:stray") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("minecraft:wither_skeleton") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("annoyingvillagers:villager_scout") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("annoyingvillagers:villager_scout_captain") || ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("annoyingvillagers:jev"))) {
-            performIdleAction(mob, IdleAction.BURN_ITEM);
-        }
-        if (event.getEntity() != null && ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("player_mobs:player_mob")) {
-            scheduleIdleActionDecision((Mob) event.getEntity());
+        Entity entity = event.getEntity();
+        if (entity != null && !entity.level().isClientSide()) {
+            if (entity instanceof VillagerScoutEntity || entity instanceof VillagerScoutCaptainEntity ||
+            entity instanceof RedVillagerGeneralEntity || entity instanceof BlueVillagerGeneralEntity ||
+            entity instanceof GreenVillagerGeneralEntity || entity instanceof PurpleVillagerGeneralEntity) {
+                performIdleAction(entity, IdleAction.BURN_ITEM);
+            }
+            else if (ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("player_mobs:player_mob")) {
+                scheduleIdleActionDecision((Mob) event.getEntity());
+            }
         }
     }
 
@@ -122,8 +126,9 @@ public class IdleHandlerProcedure {
         }
     }
 
-    private static void performIdleAction(Mob mob, IdleAction action) {
-        if (mob == null || mob.isRemoved() || mob.isDeadOrDying()) return;
+    private static void performIdleAction(Entity entity, IdleAction action) {
+        if (!(entity instanceof Mob mob)) return;
+        if (mob.isRemoved() || mob.isDeadOrDying()) return;
         CompoundTag data = mob.getPersistentData();
         if (mob.getTarget() != null) {
             if (data.contains("av_idle_action")) {

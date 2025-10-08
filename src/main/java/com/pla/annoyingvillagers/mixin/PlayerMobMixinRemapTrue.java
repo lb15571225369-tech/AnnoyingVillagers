@@ -1,19 +1,24 @@
 package com.pla.annoyingvillagers.mixin;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.compat.player_mobs.ModCapabilities;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.Herobrine5Entity;
 import com.pla.annoyingvillagers.entity.InfectedPlayerMobEntity;
 import com.pla.annoyingvillagers.entity.PlayerMobDeadEntity;
 import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.util.EquipmentDataLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -45,6 +50,59 @@ public class PlayerMobMixinRemapTrue {
     @Inject(method = "finalizeSpawn", at = @At("RETURN"))
     private void teleportToSurfaceIfUnderground(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag, CallbackInfoReturnable<SpawnGroupData> cir) {
         PlayerMobEntity self = (PlayerMobEntity) (Object) this;
+
+        if (!self.level().isClientSide() && self.getServer() != null) {
+            List<String> commands = EquipmentDataLoader.getEquipCommands(0.85f, self);
+            for (String cmd : commands) {
+                try {
+                    self.getServer().getCommands().getDispatcher().execute(
+                            cmd,
+                            self.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                    );
+                } catch (CommandSyntaxException e) {
+
+                }
+            }
+        }
+        ((LivingEntity) self).getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0D);
+        ((LivingEntity) self).getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(1.0D);
+        ((LivingEntity) self).getAttribute(Attributes.ARMOR).setBaseValue(0.0D);
+        self.setCustomNameVisible(true);
+        self.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("\u00a7e" + self.getDisplayName().getString() + "\u00a7e has joined the game"), false);
+
+        if (!self.level().isClientSide() && self.getServer() != null) {
+            try {
+                self.getServer().getCommands().getDispatcher().execute(
+                        "data merge entity @s {CanPickUpLoot: 1b}",
+                        self.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+            } catch (CommandSyntaxException e) {
+            }
+        }
+        if (Math.random() <= 0.3D) {
+            if (!self.level().isClientSide() && self.getServer() != null) {
+                try {
+                    self.getServer().getCommands().getDispatcher().execute(
+                            "team add player",
+                            self.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+
+                }
+            }
+
+            if (!self.level().isClientSide() && self.getServer() != null) {
+                try {
+                    self.getServer().getCommands().getDispatcher().execute(
+                            "team join player @s",
+                            self.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+
+                }
+            }
+        }
+
+        if (Math.random() <= 0.3D) {
+            self.getPersistentData().putDouble("npc_level", 3.0D);
+        }
 
         if (reason == MobSpawnType.SPAWN_EGG) {
             return;

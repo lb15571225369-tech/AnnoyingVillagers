@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.mixin;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import net.minecraft.nbt.CompoundTag;
@@ -13,7 +12,6 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.IronGolem;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,7 +33,7 @@ public class PlayerMobMixinRemapFalse {
         CommonGoals.attackAllNpcGoals(self);
     }
     private void villagerHunterPlayerMob(PlayerMobEntity self) {
-        CommonGoals.runAwayFromHerobrineGoals(self);
+        CommonGoals.runAwayFromHerobrineGoals(self, 20.0F);
         self.goalSelector.addGoal(2, new AvoidEntityGoal<>(self, PlayerMobEntity.class, 12.0F, 1.2D, 1.8D));
         self.goalSelector.addGoal(2, new AvoidEntityGoal<>(self, Player.class, 12.0F, 1.2D, 1.8D));
         self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Villager.class, true));
@@ -49,14 +47,14 @@ public class PlayerMobMixinRemapFalse {
         CommonGoals.runAwayFromVillagerArmyGoals(self);
     }
     private void playerHunterPlayerMob(PlayerMobEntity self) {
-        CommonGoals.runAwayFromHerobrineGoals(self);
+        CommonGoals.runAwayFromHerobrineGoals(self, 20.0F);
         CommonGoals.runAwayFromVillagerArmyGoals(self);
         self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Player.class, true));
         self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, PlayerMobEntity.class, true));
         CommonGoals.attackAllNpcGoals(self);
     }
     private void animalHunterPlayerMob(PlayerMobEntity self) {
-        CommonGoals.runAwayFromHerobrineGoals(self);
+        CommonGoals.runAwayFromHerobrineGoals(self, 20.0F);
         CommonGoals.runAwayFromVillagerArmyGoals(self);
         self.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(self, Animal.class, true));
         self.goalSelector.addGoal(2, new AvoidEntityGoal<>(self, PlayerMobEntity.class, 12.0F, 1.2D, 1.8D));

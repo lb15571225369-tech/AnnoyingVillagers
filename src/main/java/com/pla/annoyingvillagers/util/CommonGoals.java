@@ -8,6 +8,7 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.monster.AbstractIllager;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
@@ -73,6 +74,7 @@ public class CommonGoals {
         monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(monster, SteveEntity.class, true, false));
         monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(monster, Steve2Entity.class, true, false));
         monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(monster, AlexEntity.class, true, false));
+        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(monster, ChrisEntity.class, true, false));
         monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(monster, Villager.class, true, false));
         monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(monster, NullEntity.class, true, false));
         monster.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(monster, VillagerScoutEntity.class, true, false));
@@ -81,6 +83,7 @@ public class CommonGoals {
         monster.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(monster, BlueVillagerGeneralEntity.class, true, false));
         monster.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(monster, GreenVillagerGeneralEntity.class, true, false));
         monster.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(monster, PurpleVillagerGeneralEntity.class, true, false));
+        monster.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(monster, AbstractIllager.class, true, false));
         monster.goalSelector.addGoal(3, new MeleeAttackGoal(monster, 1.2D, false) {
             protected double getAttackReachSqr(LivingEntity livingentity) {
                 return (double) (monster.getBbWidth() * monster.getBbWidth() + livingentity.getBbWidth());
@@ -113,12 +116,14 @@ public class CommonGoals {
         mob.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(mob, PlayerMobEntity.class, true, onlyAliveUninfectedPMs));
         mob.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(mob, Player.class, true, false));
         mob.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(mob, Monster.class, true, false));
+        mob.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(mob, AbstractIllager.class, true, false));
         mob.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(mob, BlueDemonEntity.class, true, false));
         mob.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(mob, BlueDemon2Entity.class, true, false));
 
         mob.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(mob, SteveEntity.class, true, false));
         mob.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(mob, Steve2Entity.class, true, false));
         mob.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(mob, AlexEntity.class, true, false));
+        mob.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(mob, ChrisEntity.class, true, false));
         mob.goalSelector.addGoal(5, new MeleeAttackGoal(mob, 1.5D, false) {
             protected double getAttackReachSqr(LivingEntity livingentity) {
                 return (double) (mob.getBbWidth() * mob.getBbWidth() + livingentity.getBbWidth());
@@ -163,6 +168,7 @@ public class CommonGoals {
         mob.goalSelector.addGoal(2, new AvoidEntityGoal<>(mob, RedVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
         mob.goalSelector.addGoal(2, new AvoidEntityGoal<>(mob, PurpleVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
         mob.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(mob, Monster.class, false, (target) -> !(target instanceof PlayerMobEntity)));
+        mob.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(mob, AbstractIllager.class, true, false));
         mob.goalSelector.addGoal(3, new MeleeAttackGoal(mob, 1.5D, false) {
             protected double getAttackReachSqr(LivingEntity livingentity) {
                 return (double) (mob.getBbWidth() * mob.getBbWidth() + livingentity.getBbWidth());
@@ -204,6 +210,7 @@ public class CommonGoals {
         mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, ShadowHerobrineEntity.class, true, false));
         mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, ArmoredHerobrineEntity.class, true, false));
         mob.targetSelector.addGoal(20, new NearestAttackableTargetGoal<>(mob, AlexEntity.class, false, false));
+        mob.targetSelector.addGoal(20, new NearestAttackableTargetGoal<>(mob, ChrisEntity.class, false, false));
         mob.targetSelector.addGoal(21, new NearestAttackableTargetGoal<>(mob, Player.class, true, true));
         mob.goalSelector.addGoal(22, new MeleeAttackGoal(mob, 1.5D, false) {
             protected double getAttackReachSqr(LivingEntity livingentity) {
@@ -217,6 +224,7 @@ public class CommonGoals {
 
     public static void attackAllMonstersGoals(PlayerMobEntity playerMobEntity) {
         playerMobEntity.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(playerMobEntity, Monster.class, true, (target) -> !(target instanceof PlayerMobEntity)));
+        playerMobEntity.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(playerMobEntity, AbstractIllager.class, true, false));
         playerMobEntity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(playerMobEntity, Herobrine1Entity.class, true, false));
         playerMobEntity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(playerMobEntity, Herobrine2Entity.class, true, false));
         playerMobEntity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(playerMobEntity, Herobrine3Entity.class, true, false));
@@ -235,21 +243,21 @@ public class CommonGoals {
         playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, BlueDemon2Entity.class, true));
     }
 
-    public static void runAwayFromHerobrineGoals(PlayerMobEntity playerMobEntity) {
-        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, Herobrine1Entity.class, 20.0F, 1.2D, 1.8D));
-        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, Herobrine2Entity.class, 20.0F, 1.2D, 1.8D));
-        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, Herobrine3Entity.class, 20.0F, 1.2D, 1.8D));
-        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, Herobrine5Entity.class, 20.0F, 1.2D, 1.8D));
-        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, Herobrine6Entity.class, 20.0F, 1.2D, 1.8D));
-        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, Herobrine7Entity.class, 20.0F, 1.2D, 1.8D));
-        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, NullEntity.class, 20.0F, 1.2D, 1.8D));
-        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, AegisHerobrineEntity.class, 20.0F, 1.2D, 1.8D));
-        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, SwordsManHerobrineEntity.class, 20.0F, 1.2D, 1.8D));
-        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, GlaiveHerobrineEntity.class, 20.0F, 1.2D, 1.8D));
-        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, ReaperHerobrineEntity.class, 20.0F, 1.2D, 1.8D));
-        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, SledgehammerHerobrineEntity.class, 20.0F, 1.2D, 1.8D));
-        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, ShadowHerobrineEntity.class, 20.0F, 1.2D, 1.8D));
-        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, ArmoredHerobrineEntity.class, 20.0F, 1.2D, 1.8D));
+    public static void runAwayFromHerobrineGoals(PathfinderMob playerMobEntity, float distance) {
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, Herobrine1Entity.class, distance, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, Herobrine2Entity.class, distance, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, Herobrine3Entity.class, distance, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, Herobrine5Entity.class, distance, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, Herobrine6Entity.class, distance, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, Herobrine7Entity.class, distance, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, NullEntity.class, distance, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, AegisHerobrineEntity.class, distance, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, SwordsManHerobrineEntity.class, distance, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, GlaiveHerobrineEntity.class, distance, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, ReaperHerobrineEntity.class, distance, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, SledgehammerHerobrineEntity.class, distance, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, ShadowHerobrineEntity.class, distance, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, ArmoredHerobrineEntity.class, distance, 1.2D, 1.8D));
     }
 
     public static void runAwayFromVillagerArmyGoals(PlayerMobEntity playerMobEntity) {
