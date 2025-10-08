@@ -1,15 +1,15 @@
 package com.pla.annoyingvillagers.util;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.TagParser;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 import java.util.Arrays;
 import java.util.List;
@@ -160,48 +160,16 @@ public class AnimationSheduler {
         this.data = mob.getPersistentData();
     }
 
-    private void resetItem() {
-        if (data.contains("av_idle_animate_backup_main_hand")) {
-            CompoundTag fullTag = null;
-            try {
-                fullTag = TagParser.parseTag(data.getString("av_idle_animate_backup_main_hand"));
-            } catch (CommandSyntaxException e) {
-                
-            }
-            String id = fullTag.getString("id");
-            String nbtPart = fullTag.contains("tag") ? fullTag.getCompound("tag").toString() : "";
-            String cmd = "item replace entity @s weapon.mainhand with " + id;
-            if (!nbtPart.isEmpty()) {
-                cmd += nbtPart;
-            }
-            try {
-                mob.getServer().getCommands().getDispatcher().execute(
-                        cmd,
-                        mob.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-                );
-            } catch (CommandSyntaxException e) {
-                
-            }
-            data.remove("av_idle_animate_backup_main_hand");
-            if (data.contains("av_idle_action")) {
-                data.remove("av_idle_action");
-            }
-            if (data.contains("idle_message_broadcasted")) {
-                data.remove("idle_message_broadcasted");
-            }
-        }
-    }
-
     public void run(IdleAnimation idleAnimation, boolean checkOnly, boolean reTry) {
         if (!(mob.level() instanceof ServerLevel serverLevel)) return;
 
         if (mob == null || !mob.isAlive() || mob.isRemoved() || ((LivingEntity) mob).isDeadOrDying()) {
-            resetItem();
+            mob.getPersistentData().remove("av_idle_animation_playing");
             return;
         }
 
         if (mob.getTarget() != null) {
-            resetItem();
+            mob.getPersistentData().remove("av_idle_animation_playing");
             return;
         }
 
@@ -212,27 +180,17 @@ public class AnimationSheduler {
         mob.setYHeadRot(mob.getYRot());
 
         if (!checkOnly) {
-            if (!mob.getMainHandItem().isEmpty()) {
-                mob.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
-            }
-            String command = switch (idleAnimation) {
-                case PUSH_UP -> "indestructible @s play \"annoyingvillagers:biped/idle/push_up\" 0 1";
-                case LAY -> "indestructible @s play \"annoyingvillagers:biped/idle/lay\" 0 1";
-                case SLEEP -> "indestructible @s play \"annoyingvillagers:biped/other/death_idle\" 0 1";
-                case SIT -> "indestructible @s play \"annoyingvillagers:biped/idle/sit\" 0 1";
-                case FUN_SIT -> "indestructible @s play \"annoyingvillagers:biped/other/funny_idle\" 0 1";
-                case SLIGHT -> "indestructible @s play \"annoyingvillagers:biped/idle/slight\" 0 1";
-            };
-
-            if (!mob.level().isClientSide() && mob.getServer() != null) {
-                try {
-                    mob.getServer().getCommands().getDispatcher().execute(
-                            command,
-                            mob.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-                    );
-                } catch (CommandSyntaxException e) {
-                    
+            final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(mob, LivingEntityPatch.class);
+            if (livingentitypatch != null) {
+                switch (idleAnimation) {
+                    case PUSH_UP -> livingentitypatch.playAnimationSynchronized(AVAnimations.PUSH_UP_IDLE, 0.0F);
+                    case LAY -> livingentitypatch.playAnimationSynchronized(AVAnimations.LAY_IDLE, 0.0F);
+                    case SLEEP -> livingentitypatch.playAnimationSynchronized(AVAnimations.DEATH_IDLE, 0.0F);
+                    case SIT -> livingentitypatch.playAnimationSynchronized(AVAnimations.SIT_IDLE, 0.0F);
+                    case FUN_SIT -> livingentitypatch.playAnimationSynchronized(AVAnimations.FUNNY_IDLE, 0.0F);
+                    case SLIGHT -> livingentitypatch.playAnimationSynchronized(AVAnimations.SLIGHT_IDLE, 0.0F);
                 }
+                mob.setNoAi(false);
             }
 
             if (reTry && !data.contains("idle_message_broadcasted") && ForgeRegistries.ENTITY_TYPES.getKey(mob.getType()).toString().equals("player_mobs:player_mob")) {

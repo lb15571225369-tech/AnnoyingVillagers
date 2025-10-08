@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.mixin;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -13,11 +14,12 @@ public class EntityMixin {
     private void clearNBTtag(CallbackInfo ci) {
         Entity self = (Entity) (Object) this;
         CompoundTag data = self.getPersistentData();
-        if (data.contains("av_idle_animate_backup_main_hand")) {
-            data.remove("av_idle_animate_backup_main_hand");
-        }
         if (data.contains("idle_message_broadcasted")) {
             data.remove("idle_message_broadcasted");
+        }
+        if (data.contains("av_idle_animation_playing") && self instanceof Mob mob) {
+            data.remove("av_idle_animation_playing");
+            mob.setNoAi(false);
         }
     }
 }
