@@ -1,8 +1,10 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.*;
+import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.util.HerobrineMob;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -15,6 +17,8 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Random;
@@ -50,6 +54,10 @@ public class HerobrineOnInitialSpawnProcedure {
                                     herobrineMob.setRenderPortal(true);
                                     HerobrinePortalProcedure.spawnHerobrine(herobrineMob);
                                     levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal(herobrineMob.getChatName() + " has arrived from the §4Herobrine Vessel Realm§r"), false);
+                                } else if (entity instanceof Herobrine6Entity herobrine6Entity) {
+                                    herobrine6Entity.setRenderPortal(true);
+                                    HerobrinePortalProcedure.spawnHerobrine(herobrine6Entity);
+                                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("§5Netherite Herobrine§r has arrived from the §4Herobrine Vessel Realm§r"), false);
                                 }
                             }
                         } else {

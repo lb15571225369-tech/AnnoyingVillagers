@@ -18,7 +18,7 @@ public class ObsidianWeaponUtil {
                 || e instanceof InfectedChrisEntity
                 || e instanceof GlaiveHerobrineEntity
                 || e instanceof AegisHerobrineEntity
-                || e instanceof SwordsManHerobrineEntity
+                || e instanceof SwordsmanHerobrineEntity
                 || e instanceof ReaperHerobrineEntity
                 || e instanceof SledgehammerHerobrineEntity
                 || e instanceof NullEntity

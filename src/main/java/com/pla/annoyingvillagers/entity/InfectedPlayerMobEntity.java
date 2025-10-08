@@ -204,8 +204,6 @@ public class InfectedPlayerMobEntity extends PlayerMobEntity {
 
     protected void pushEntities() {}
 
-    public static void init() {}
-
     public static AttributeSupplier.Builder createAttributes() {
         AttributeSupplier.Builder builder = Mob.createMobAttributes();
 

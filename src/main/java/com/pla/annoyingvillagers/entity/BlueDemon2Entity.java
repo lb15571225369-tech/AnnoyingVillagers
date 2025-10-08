@@ -227,8 +227,6 @@ public class BlueDemon2Entity extends Monster {
         }
     }
 
-    public static void init() {}
-
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();
 

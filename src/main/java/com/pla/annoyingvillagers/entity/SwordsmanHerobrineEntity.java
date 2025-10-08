@@ -28,15 +28,12 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -44,14 +41,14 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.Random;
 
 
-public class SwordsManHerobrineEntity extends HerobrineMob {
+public class SwordsmanHerobrineEntity extends HerobrineMob {
     private int nextStack = 3;
 
-    public SwordsManHerobrineEntity(SpawnEntity spawnentity, Level level) {
+    public SwordsmanHerobrineEntity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.SWORDSMAN_HEROBRINE.get(), level);
     }
 
-    public SwordsManHerobrineEntity(EntityType<SwordsManHerobrineEntity> entitytype, Level level) {
+    public SwordsmanHerobrineEntity(EntityType<SwordsmanHerobrineEntity> entitytype, Level level) {
         super(entitytype, level);
         this.setMaxUpStep(2.0F);
         this.xpReward = 80;
@@ -127,7 +124,7 @@ public class SwordsManHerobrineEntity extends HerobrineMob {
     public boolean hurt(DamageSource damagesource, float f) {
         if (!this.getPersistentData().getBoolean("kick_x")) {
             this.setSprinting(true);
-            SwordsManHerobrineEntity entity = this;
+            SwordsmanHerobrineEntity entity = this;
             new DelayedTask(10) {
                 @Override
                 public void run() {
@@ -204,12 +201,6 @@ public class SwordsManHerobrineEntity extends HerobrineMob {
             this.remove(RemovalReason.KILLED);
             levelaccessor.addFreshEntity(eliteHerobrineKnockedEntity);
         }
-    }
-
-    public static void init() {
-        SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.SWORDSMAN_HEROBRINE.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
-            return serverlevelaccessor.getRawBrightness(blockpos, 0) <= 8;
-        });
     }
 
     public static Builder createAttributes() {

@@ -76,8 +76,6 @@ public class EliteHerobrineDeadEntity extends Monster {
         return spawngroupdata1;
     }
 
-    public static void init() {}
-
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();
 

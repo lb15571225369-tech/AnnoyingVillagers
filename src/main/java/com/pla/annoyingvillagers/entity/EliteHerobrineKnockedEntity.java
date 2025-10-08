@@ -167,8 +167,6 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
     public void knockback(double strength, double x, double z) {
     }
 
-    public static void init() {}
-
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();
 

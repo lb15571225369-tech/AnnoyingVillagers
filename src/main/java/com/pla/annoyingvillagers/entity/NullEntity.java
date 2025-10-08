@@ -423,8 +423,6 @@ public class NullEntity extends HerobrineMob {
         super.remove(pReason);
     }
 
-    public static void init() {}
-
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();
 

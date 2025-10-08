@@ -153,8 +153,6 @@ public class SledgehammerHerobrineEntity extends HerobrineMob {
         super.baseTick();
     }
 
-    public static void init() {}
-
     @Override
     public boolean doHurtTarget(Entity pEntity) {
         if (!pEntity.level().isClientSide()) {

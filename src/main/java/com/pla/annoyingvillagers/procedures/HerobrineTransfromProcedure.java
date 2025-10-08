@@ -4,10 +4,8 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.util.InventoryUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.LevelAccessor;
@@ -34,7 +32,7 @@ public class HerobrineTransfromProcedure {
                     || herobrineEntity instanceof  NullPickaxeEntity || herobrineEntity instanceof NullShovelEntity
                     || herobrineEntity instanceof  NullHoeEntity || herobrineEntity instanceof GlaiveHerobrineEntity
                     || herobrineEntity instanceof AegisHerobrineEntity || herobrineEntity instanceof ReaperHerobrineEntity
-                    || herobrineEntity instanceof SwordsManHerobrineEntity || herobrineEntity instanceof SledgehammerHerobrineEntity) {
+                    || herobrineEntity instanceof SwordsmanHerobrineEntity || herobrineEntity instanceof SledgehammerHerobrineEntity) {
                 possessed = new Herobrine5Entity(AnnoyingVillagersModEntities.HEROBRINE_5.get(), serverLevel);
             } else {
                 possessed = new Herobrine6Entity(AnnoyingVillagersModEntities.HEROBRINE_6.get(), serverLevel);

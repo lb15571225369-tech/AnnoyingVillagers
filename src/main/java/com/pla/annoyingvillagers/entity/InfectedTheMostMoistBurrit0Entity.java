@@ -111,8 +111,6 @@ public class InfectedTheMostMoistBurrit0Entity extends PathfinderMob {
         return spawngroupdata1;
     }
 
-    public static void init() {}
-
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();
 

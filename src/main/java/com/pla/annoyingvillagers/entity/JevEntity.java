@@ -20,7 +20,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
@@ -241,8 +240,6 @@ public class JevEntity extends PathfinderMobInventory {
         if (damagesource.is(DamageTypes.FALLING_ANVIL)) return false;
         return super.hurt(damagesource, f);
     }
-
-    public static void init() {}
 
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();

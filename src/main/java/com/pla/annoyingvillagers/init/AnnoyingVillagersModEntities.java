@@ -6,7 +6,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityType.Builder;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -61,7 +64,7 @@ public class AnnoyingVillagersModEntities {
     public static final RegistryObject<EntityType<ShadowHerobrineEntity>> SHADOW_HEROBRINE = register("shadow_herobrine", Builder.<ShadowHerobrineEntity>of(ShadowHerobrineEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(ShadowHerobrineEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<GlaiveHerobrineEntity>> GLAIVE_HEROBRINE = register("glaive_herobrine", Builder.<GlaiveHerobrineEntity>of(GlaiveHerobrineEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(GlaiveHerobrineEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<ReaperHerobrineEntity>> REAPER_HEROBRINE = register("reaper_herobrine", Builder.<ReaperHerobrineEntity>of(ReaperHerobrineEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(ReaperHerobrineEntity::new).fireImmune().sized(0.6F, 1.8F));
-    public static final RegistryObject<EntityType<SwordsManHerobrineEntity>> SWORDSMAN_HEROBRINE = register("swordsman_herobrine", Builder.<SwordsManHerobrineEntity>of(SwordsManHerobrineEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(SwordsManHerobrineEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<SwordsmanHerobrineEntity>> SWORDSMAN_HEROBRINE = register("swordsman_herobrine", Builder.<SwordsmanHerobrineEntity>of(SwordsmanHerobrineEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(SwordsmanHerobrineEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<SledgehammerHerobrineEntity>> SLEDGEHAMMER_HEROBRINE = register("sledgehammer_herobrine", Builder.<SledgehammerHerobrineEntity>of(SledgehammerHerobrineEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(SledgehammerHerobrineEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<AegisHerobrineEntity>> AEGIS_HEROBRINE = register("aegis_herobrine", Builder.<AegisHerobrineEntity>of(AegisHerobrineEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(AegisHerobrineEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<EliteHerobrineKnockedEntity>> ELITE_HEROBRINE_KNOCKED = register("elite_herobrine_knocked", Builder.<EliteHerobrineKnockedEntity>of(EliteHerobrineKnockedEntity::new, MobCategory.MISC).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(EliteHerobrineKnockedEntity::new).fireImmune().sized(0.6F, 1.8F));
@@ -103,61 +106,133 @@ public class AnnoyingVillagersModEntities {
     }
 
     @SubscribeEvent
-    public static void init(FMLCommonSetupEvent fmlcommonsetupevent) {
-        fmlcommonsetupevent.enqueueWork(() -> {
-            Herobrine1Entity.init();
-            BlueDemonEntity.init();
-            Herobrine2Entity.init();
-            BlueDemonStagingEntity.init();
-            BlueDemon2Entity.init();
-            BlueDemonEndStagingEntity.init();
-            BlueDemonTridentParticleEntity.init();
-            VillagerScoutCaptainEntity.init();
-            VillagerScoutEntity.init();
-            BlueVillagerGeneralEntity.init();
-            PurpleVillagerGeneralEntity.init();
-            RedVillagerGeneralEntity.init();
-            GreenVillagerGeneralEntity.init();
-            AlexEntity.init();
-            JevEntity.init();
-            BbqEntity.init();
-            ChrisEntity.init();
-            InfectedChrisEntity.init();
-            Herobrine3Entity.init();
-            Steve2Entity.init();
-            SteveEntity.init();
-            AngrySteveEntity.init();
-            AlexDeadEntity.init();
-            SteveDeadEntity.init();
-            ChrisDeadEntity.init();
-            InfectedChrisDeadEntity.init();
-            JevDeadEntity.init();
-            VillagerScoutDeadEntity.init();
-            RedVillagerGeneralDeadEntity.init();
-            BlueVillagerGeneralDeadEntity.init();
-            GreenVillagerGeneralDeadEntity.init();
-            PurpleVillagerGeneralDeadEntity.init();
-            BlueDemonDeadEntity.init();
-            HerobrineDeadEntity.init();
-            ShadowHerobrineDeadEntity.init();
-            PlayerMobDeadEntity.init();
-            Herobrine7Entity.init();
-            ArmoredHerobrineEntity.init();
-            InfectedTheMostMoistBurrit0Entity.init();
-            InfectedTheMostMoistBurrit0DeadEntity.init();
-            ShadowHerobrineEntity.init();
-            GlaiveHerobrineEntity.init();
-            InfectedPlayerMobEntity.init();
-            ReaperHerobrineEntity.init();
-            SwordsManHerobrineEntity.init();
-            SledgehammerHerobrineEntity.init();
-            AegisHerobrineEntity.init();
-            EliteHerobrineKnockedEntity.init();
-            EliteHerobrineDeadEntity.init();
-            Herobrine5Entity.init();
-            Herobrine6Entity.init();
-            Herobrine4Entity.init();
-        });
+    public static void registerSpawnPlacements(SpawnPlacementRegisterEvent event) {
+        event.register(
+                AnnoyingVillagersModEntities.HEROBRINE_1.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.WORLD_SURFACE,
+                Herobrine1Entity::canSpawn,
+                SpawnPlacementRegisterEvent.Operation.REPLACE
+        );
+        event.register(
+                AnnoyingVillagersModEntities.HEROBRINE_2.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.WORLD_SURFACE,
+                Herobrine2Entity::canSpawn,
+                SpawnPlacementRegisterEvent.Operation.REPLACE
+        );
+        event.register(
+                AnnoyingVillagersModEntities.HEROBRINE_3.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.WORLD_SURFACE,
+                Herobrine3Entity::canSpawn,
+                SpawnPlacementRegisterEvent.Operation.REPLACE
+        );
+        event.register(
+                AnnoyingVillagersModEntities.HEROBRINE_4.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.WORLD_SURFACE,
+                Herobrine4Entity::canSpawn,
+                SpawnPlacementRegisterEvent.Operation.REPLACE
+        );
+        event.register(
+                AnnoyingVillagersModEntities.HEROBRINE_6.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.WORLD_SURFACE,
+                Herobrine6Entity::canSpawn,
+                SpawnPlacementRegisterEvent.Operation.REPLACE
+        );
+        event.register(
+                AnnoyingVillagersModEntities.HEROBRINE_7.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.WORLD_SURFACE,
+                Herobrine7Entity::canSpawn,
+                SpawnPlacementRegisterEvent.Operation.REPLACE
+        );
+        event.register(
+                AnnoyingVillagersModEntities.HEROBRINE_7.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.WORLD_SURFACE,
+                Herobrine7Entity::canSpawn,
+                SpawnPlacementRegisterEvent.Operation.REPLACE
+        );
+        event.register(
+                AnnoyingVillagersModEntities.ARMORED_HEROBRINE.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.WORLD_SURFACE,
+                ArmoredHerobrineEntity::canSpawn,
+                SpawnPlacementRegisterEvent.Operation.REPLACE
+        );
+        event.register(
+                AnnoyingVillagersModEntities.BLUE_DEMON.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.WORLD_SURFACE,
+                BlueDemonEntity::canSpawn,
+                SpawnPlacementRegisterEvent.Operation.REPLACE
+        );
+        event.register(
+                AnnoyingVillagersModEntities.STEVE.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.WORLD_SURFACE,
+                SteveEntity::canSpawn,
+                SpawnPlacementRegisterEvent.Operation.REPLACE
+        );
+        event.register(
+                AnnoyingVillagersModEntities.ALEX.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.WORLD_SURFACE,
+                AlexEntity::canSpawn,
+                SpawnPlacementRegisterEvent.Operation.REPLACE
+        );
+        event.register(
+                AnnoyingVillagersModEntities.CHRIS.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.WORLD_SURFACE,
+                ChrisEntity::canSpawn,
+                SpawnPlacementRegisterEvent.Operation.REPLACE
+        );
+        event.register(
+                AnnoyingVillagersModEntities.VILLAGER_SCOUT.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.WORLD_SURFACE,
+                VillagerScoutEntity::canSpawn,
+                SpawnPlacementRegisterEvent.Operation.REPLACE
+        );
+        event.register(
+                AnnoyingVillagersModEntities.VILLAGER_SCOUT_CAPTAIN.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.WORLD_SURFACE,
+                VillagerScoutCaptainEntity::canSpawn,
+                SpawnPlacementRegisterEvent.Operation.REPLACE
+        );
+        event.register(
+                AnnoyingVillagersModEntities.RED_VILLAGER_GENERAL.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.WORLD_SURFACE,
+                RedVillagerGeneralEntity::canSpawn,
+                SpawnPlacementRegisterEvent.Operation.REPLACE
+        );
+        event.register(
+                AnnoyingVillagersModEntities.BLUE_VILLAGER_GENERAL.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.WORLD_SURFACE,
+                BlueVillagerGeneralEntity::canSpawn,
+                SpawnPlacementRegisterEvent.Operation.REPLACE
+        );
+        event.register(
+                AnnoyingVillagersModEntities.PURPLE_VILLAGER_GENERAL.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.WORLD_SURFACE,
+                GreenVillagerGeneralEntity::canSpawn,
+                SpawnPlacementRegisterEvent.Operation.REPLACE
+        );
+        event.register(
+                AnnoyingVillagersModEntities.GREEN_VILLAGER_GENERAL.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.WORLD_SURFACE,
+                PurpleVillagerGeneralEntity::canSpawn,
+                SpawnPlacementRegisterEvent.Operation.REPLACE
+        );
     }
 
     @SubscribeEvent
@@ -206,7 +281,7 @@ public class AnnoyingVillagersModEntities {
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.GLAIVE_HEROBRINE.get(), GlaiveHerobrineEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.INFECTED_PLAYER_MOB.get(), InfectedPlayerMobEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.REAPER_HEROBRINE.get(), ReaperHerobrineEntity.createAttributes().build());
-        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.SWORDSMAN_HEROBRINE.get(), SwordsManHerobrineEntity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.SWORDSMAN_HEROBRINE.get(), SwordsmanHerobrineEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.SLEDGEHAMMER_HEROBRINE.get(), SledgehammerHerobrineEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.AEGIS_HEROBRINE.get(), AegisHerobrineEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.BABY_ENDER_DRAGON.get(), BabyEnderDragonEntity.createAttributes().build());

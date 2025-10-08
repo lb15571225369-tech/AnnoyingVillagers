@@ -1,15 +1,15 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.util.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.AbstractSkeleton;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -17,6 +17,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
+import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.capabilities.item.WeaponCapability;
@@ -36,10 +37,14 @@ public class IdleHandlerProcedure {
     public static void onLivingTick(LivingEvent.LivingTickEvent event) {
         Entity entity = event.getEntity();
         if (entity != null && !entity.level().isClientSide()) {
-            if (entity instanceof VillagerScoutEntity || entity instanceof VillagerScoutCaptainEntity ||
-            entity instanceof RedVillagerGeneralEntity || entity instanceof BlueVillagerGeneralEntity ||
-            entity instanceof GreenVillagerGeneralEntity || entity instanceof PurpleVillagerGeneralEntity) {
-                performIdleAction(entity, IdleAction.BURN_ITEM);
+            if (entity instanceof PathfinderMobInventory) {
+                scheduleIdleActionDecision((Mob) event.getEntity());
+            }
+            else if (entity instanceof Zombie || entity instanceof AbstractSkeleton) {
+                LivingEntity livingEntity = (LivingEntity) entity;
+                if (canPlayAnimation(livingEntity.getMainHandItem())) {
+                    performIdleAction(entity, IdleAction.PLAY_ANIMATION);
+                }
             }
             else if (ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("player_mobs:player_mob")) {
                 scheduleIdleActionDecision((Mob) event.getEntity());
@@ -154,7 +159,13 @@ public class IdleHandlerProcedure {
                 if (!data.contains("av_idle_animation_playing")) {
                     data.putString("av_idle_animation_playing", "playing");
                     mob.setNoAi(true);
-                    IdleAnimation idleAnimation = IdleAnimation.values()[RANDOM.nextInt(IdleAnimation.values().length)];
+                    IdleAnimation idleAnimation;
+                    if (mob instanceof PlayerMobEntity) {
+                        idleAnimation = IdleAnimation.values()[RANDOM.nextInt(IdleAnimation.values().length)];
+                    } else {
+                        IdleAnimation[] subset = {IdleAnimation.SIT, IdleAnimation.LAY};
+                        idleAnimation = subset[new Random().nextInt(subset.length)];
+                    }
                     TaskScheduler.schedule(() -> {
                         try {
                             new AnimationSheduler(mob).run(idleAnimation, false, true);

@@ -23,6 +23,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
@@ -596,7 +597,9 @@ public class Herobrine4Entity extends Monster {
         pCompound.putInt("SummonTimestamp", summonTimestamp);
     }
 
-    public static void init() {}
+    public static boolean canSpawn(EntityType<Herobrine4Entity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
+        return Monster.checkMonsterSpawnRules(entityType, level, spawnType, position, random);
+    }
 
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();

@@ -4,7 +4,6 @@ import javax.annotation.Nullable;
 
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -80,8 +79,6 @@ public class AlexDeadEntity extends Monster {
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
         return spawngroupdata1;
     }
-
-    public static void init() {}
 
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();

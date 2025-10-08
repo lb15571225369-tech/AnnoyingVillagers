@@ -26,7 +26,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
-import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
@@ -170,7 +169,7 @@ public class HerobrineMob extends Monster {
                     } else if (this instanceof AegisHerobrineEntity aegisHerobrineEntity) {
                         // For some reason the block animation can't be played inside finalize spawn
                         aegisHerobrineEntity.getPersistentData().putBoolean("init_animation", true);
-                    } else if (!(this instanceof SledgehammerHerobrineEntity) && !(this instanceof SwordsManHerobrineEntity)) {
+                    } else if (!(this instanceof SledgehammerHerobrineEntity) && !(this instanceof SwordsmanHerobrineEntity)) {
                         livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_ANIMATE, 0.0F);
                     }
                 }

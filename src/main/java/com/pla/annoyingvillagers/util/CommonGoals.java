@@ -12,7 +12,6 @@ import net.minecraft.world.entity.monster.AbstractIllager;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BowItem;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
 import java.util.function.Predicate;
@@ -63,7 +62,7 @@ public class CommonGoals {
         monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, Herobrine6Entity.class, true, false));
         monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, Herobrine7Entity.class, true, false));
         monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, AegisHerobrineEntity.class, true, false));
-        monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, SwordsManHerobrineEntity.class, true, false));
+        monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, SwordsmanHerobrineEntity.class, true, false));
         monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, GlaiveHerobrineEntity.class, true, false));
         monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, ReaperHerobrineEntity.class, true, false));
         monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, SledgehammerHerobrineEntity.class, true, false));
@@ -106,7 +105,7 @@ public class CommonGoals {
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, Herobrine7Entity.class, true, false));
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, NullEntity.class, true, false));
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, AegisHerobrineEntity.class, true, false));
-        mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, SwordsManHerobrineEntity.class, true, false));
+        mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, SwordsmanHerobrineEntity.class, true, false));
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, GlaiveHerobrineEntity.class, true, false));
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, ReaperHerobrineEntity.class, true, false));
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, SledgehammerHerobrineEntity.class, true, false));
@@ -147,7 +146,7 @@ public class CommonGoals {
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, Herobrine7Entity.class, true, false));
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, NullEntity.class, true, false));
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, AegisHerobrineEntity.class, true, false));
-        mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, SwordsManHerobrineEntity.class, true, false));
+        mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, SwordsmanHerobrineEntity.class, true, false));
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, GlaiveHerobrineEntity.class, true, false));
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, ReaperHerobrineEntity.class, true, false));
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, SledgehammerHerobrineEntity.class, true, false));
@@ -203,7 +202,7 @@ public class CommonGoals {
         mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, Herobrine7Entity.class, true, false));
         mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, NullEntity.class, true, false));
         mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, AegisHerobrineEntity.class, true, false));
-        mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, SwordsManHerobrineEntity.class, true, false));
+        mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, SwordsmanHerobrineEntity.class, true, false));
         mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, GlaiveHerobrineEntity.class, true, false));
         mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, ReaperHerobrineEntity.class, true, false));
         mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, SledgehammerHerobrineEntity.class, true, false));
@@ -233,7 +232,7 @@ public class CommonGoals {
         playerMobEntity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(playerMobEntity, Herobrine7Entity.class, true, false));
         playerMobEntity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(playerMobEntity, NullEntity.class, true, false));
         playerMobEntity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(playerMobEntity, AegisHerobrineEntity.class, true, false));
-        playerMobEntity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(playerMobEntity, SwordsManHerobrineEntity.class, true, false));
+        playerMobEntity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(playerMobEntity, SwordsmanHerobrineEntity.class, true, false));
         playerMobEntity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(playerMobEntity, GlaiveHerobrineEntity.class, true, false));
         playerMobEntity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(playerMobEntity, ReaperHerobrineEntity.class, true, false));
         playerMobEntity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(playerMobEntity, SledgehammerHerobrineEntity.class, true, false));
@@ -252,7 +251,7 @@ public class CommonGoals {
         playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, Herobrine7Entity.class, distance, 1.2D, 1.8D));
         playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, NullEntity.class, distance, 1.2D, 1.8D));
         playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, AegisHerobrineEntity.class, distance, 1.2D, 1.8D));
-        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, SwordsManHerobrineEntity.class, distance, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, SwordsmanHerobrineEntity.class, distance, 1.2D, 1.8D));
         playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, GlaiveHerobrineEntity.class, distance, 1.2D, 1.8D));
         playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, ReaperHerobrineEntity.class, distance, 1.2D, 1.8D));
         playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, SledgehammerHerobrineEntity.class, distance, 1.2D, 1.8D));

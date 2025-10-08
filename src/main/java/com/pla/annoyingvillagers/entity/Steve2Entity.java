@@ -22,7 +22,6 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
@@ -110,8 +109,6 @@ public class Steve2Entity extends PathfinderMobInventory {
         super.baseTick();
         SteveOnTickProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
-
-    public static void init() {}
 
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();

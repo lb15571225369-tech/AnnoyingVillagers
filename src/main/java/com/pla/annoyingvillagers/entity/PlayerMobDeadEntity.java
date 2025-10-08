@@ -30,8 +30,6 @@ public class PlayerMobDeadEntity extends PlayerMobEntity {
         return pSpawnData;
     }
 
-    public static void init() {}
-
     public static AttributeSupplier.Builder createAttributes() {
         return LivingEntity.createLivingAttributes().add(Attributes.FOLLOW_RANGE, (double)35.0F).add(Attributes.ATTACK_KNOCKBACK).add(Attributes.ATTACK_DAMAGE, (double)3.5F).add(Attributes.MOVEMENT_SPEED, 0.24);
     }

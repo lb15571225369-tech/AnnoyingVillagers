@@ -1,9 +1,12 @@
 package com.pla.annoyingvillagers.entity;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.util.CommonGoals;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -11,11 +14,11 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.SpawnPlacements.Type;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -26,8 +29,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import se.gory_moon.player_mobs.utils.NameManager;
@@ -45,6 +48,12 @@ public class Herobrine6Entity extends Monster {
 
     public void setSummoned(boolean summoned) {
         this.summoned = summoned;
+    }
+
+    boolean renderPortal = false;
+
+    public void setRenderPortal(boolean renderPortal) {
+        this.renderPortal = renderPortal;
     }
 
     public Herobrine6Entity(SpawnEntity spawnentity, Level level) {
@@ -161,6 +170,13 @@ public class Herobrine6Entity extends Monster {
         super.tick();
         if (!this.level().isClientSide) {
             if (this.tickCount == 1) {
+                if (this.renderPortal) {
+                    AnnoyingVillagers.PACKET_HANDLER.send(
+                            PacketDistributor.TRACKING_ENTITY.with(() -> this),
+                            new ClientboundHerobrinePortalFx(HerobrinePortalProcedure.finalSurfacePos(this))
+                    );
+                    renderPortal = false;
+                }
                 final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
                 if (livingentitypatch != null && !this.level().isClientSide()) {
                     livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_ANIMATE, 0.0F);
@@ -177,22 +193,24 @@ public class Herobrine6Entity extends Monster {
         super.playerTouch(player);
     }
 
-    public static void init() {
-        SpawnPlacements.register((EntityType) AnnoyingVillagersModEntities.HEROBRINE_6.get(), Type.ON_GROUND, Types.MOTION_BLOCKING_NO_LEAVES, (entitytype, serverlevelaccessor, mobspawntype, blockpos, random) -> {
-            return serverlevelaccessor.getRawBrightness(blockpos, 0) <= 8;
-        });
+    public static boolean canSpawn(EntityType<Herobrine6Entity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
+        boolean isNight = (level instanceof ServerLevel serverLevel) && (serverLevel.getDayTime() % 24000L >= 13000L && serverLevel.getDayTime() % 24000L <= 23000L);
+        if (!isNight) return false;
+        return Monster.checkMonsterSpawnRules(entityType, level, spawnType, position, random);
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         summoned = pCompound.getBoolean("Summoned");
+        renderPortal = pCompound.getBoolean("RenderPortal");
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putBoolean("Summoned", summoned);
+        pCompound.putBoolean("RenderPortal", renderPortal);
     }
 
     public static Builder createAttributes() {

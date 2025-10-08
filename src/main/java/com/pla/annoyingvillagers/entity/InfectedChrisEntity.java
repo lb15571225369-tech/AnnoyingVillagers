@@ -9,7 +9,6 @@ import com.pla.annoyingvillagers.procedures.InfectedChrisOnTickProcedure;
 import com.pla.annoyingvillagers.procedures.InfectedChrisOnInteractProcedure;
 import com.pla.annoyingvillagers.procedures.InfectedChrisOnSpawnProcedure;
 import com.pla.annoyingvillagers.procedures.Herobrine3OnDeathProcedure;
-import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -131,8 +130,6 @@ public class InfectedChrisEntity extends PathfinderMob {
     protected void doPush(Entity entity) {}
 
     protected void pushEntities() {}
-
-    public static void init() {}
 
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();

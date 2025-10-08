@@ -79,8 +79,6 @@ public class BlueVillagerGeneralDeadEntity extends PathfinderMob {
         return spawngroupdata1;
     }
 
-    public static void init() {}
-
     public static AttributeSupplier.Builder createAttributes() {
         AttributeSupplier.Builder builder = Mob.createMobAttributes();
 

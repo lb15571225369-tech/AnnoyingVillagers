@@ -250,8 +250,6 @@ public class GlaiveHerobrineEntity extends HerobrineMob {
         super.baseTick();
     }
 
-    public static void init() {}
-
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();
 

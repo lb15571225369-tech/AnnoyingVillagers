@@ -121,8 +121,6 @@ public class BlueDemonStagingEntity extends Monster {
 
     protected void pushEntities() {}
 
-    public static void init() {}
-
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();
 

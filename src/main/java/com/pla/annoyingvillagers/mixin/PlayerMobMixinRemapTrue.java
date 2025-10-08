@@ -47,10 +47,7 @@ public class PlayerMobMixinRemapTrue {
         ci.cancel();
     }
 
-    @Inject(method = "finalizeSpawn", at = @At("RETURN"))
-    private void teleportToSurfaceIfUnderground(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag, CallbackInfoReturnable<SpawnGroupData> cir) {
-        PlayerMobEntity self = (PlayerMobEntity) (Object) this;
-
+    private void initGear(PlayerMobEntity self) {
         if (!self.level().isClientSide() && self.getServer() != null) {
             List<String> commands = EquipmentDataLoader.getEquipCommands(0.85f, self);
             for (String cmd : commands) {
@@ -103,8 +100,13 @@ public class PlayerMobMixinRemapTrue {
         if (Math.random() <= 0.3D) {
             self.getPersistentData().putDouble("npc_level", 3.0D);
         }
+    }
 
+    @Inject(method = "finalizeSpawn", at = @At("RETURN"))
+    private void teleportToSurfaceIfUnderground(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag, CallbackInfoReturnable<SpawnGroupData> cir) {
+        PlayerMobEntity self = (PlayerMobEntity) (Object) this;
         if (reason == MobSpawnType.SPAWN_EGG) {
+            initGear(self);
             return;
         }
 
@@ -115,6 +117,7 @@ public class PlayerMobMixinRemapTrue {
             if (roll < 1.0F - spawnRate) {
                 self.discard();
             } else if (roll < 1.0F - spawnRate + spawnRate / 2.0F) {
+                initGear(self);
                 BlockPos pos = self.blockPosition();
                 int currentY = pos.getY();
                 int surfaceY = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, pos).getY();
@@ -137,7 +140,6 @@ public class PlayerMobMixinRemapTrue {
                             }
                         }
                     }
-
                 }
             }
         } else {

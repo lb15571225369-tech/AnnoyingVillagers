@@ -400,8 +400,6 @@ public class NullHoeEntity extends Monster {
         super.remove(pReason);
     }
 
-    public static void init() {}
-
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();
 
