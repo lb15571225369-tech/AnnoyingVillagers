@@ -8,6 +8,7 @@ import com.pla.annoyingvillagers.procedures.Steve2OnHurtProcedure;
 import com.pla.annoyingvillagers.procedures.Steve2OnDeathProcedure;
 import com.pla.annoyingvillagers.procedures.Steve2OnSpawnProcedure;
 import com.pla.annoyingvillagers.procedures.SteveOnTickProcedure;
+import com.pla.annoyingvillagers.spawnhandler.SteveData;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.util.PathfinderMobInventory;
 import net.minecraft.nbt.CompoundTag;
@@ -15,6 +16,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -108,6 +110,15 @@ public class Steve2Entity extends PathfinderMobInventory {
     public void baseTick() {
         super.baseTick();
         SteveOnTickProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        super.remove(reason);
+        if (!level().isClientSide && level() instanceof ServerLevel serverLevel &&
+                (reason == RemovalReason.KILLED || reason == RemovalReason.DISCARDED)) {
+            SteveData.get(serverLevel).releaseIfMatches(this.getUUID());
+        }
     }
 
     public static Builder createAttributes() {

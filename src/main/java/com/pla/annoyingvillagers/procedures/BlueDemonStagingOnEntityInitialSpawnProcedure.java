@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.spawnhandler.BluedemonData;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -590,11 +591,10 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                                                                                                     BlueDemonEndStagingEntity bluedemonendentity = new BlueDemonEndStagingEntity((EntityType)AnnoyingVillagersModEntities.BLUE_DEMON_END_STAGING.get(), serverlevel9);
 
                                                                                                     bluedemonendentity.moveTo(d0, d1, d2, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                                                                                                    if (bluedemonendentity instanceof Mob) {
-                                                                                                        Mob mob9 = (Mob)bluedemonendentity;
 
-                                                                                                        mob9.finalizeSpawn(serverlevel9, levelaccessor.getCurrentDifficultyAt(bluedemonendentity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                                                                                                    }
+                                                                                                    BluedemonData bluedemonData = BluedemonData.get(serverlevel9);
+                                                                                                    bluedemonData.forceClaim(serverlevel9, bluedemonendentity.getUUID());
+                                                                                                    bluedemonendentity.finalizeSpawn(serverlevel9, levelaccessor.getCurrentDifficultyAt(bluedemonendentity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
 
                                                                                                     levelaccessor.addFreshEntity(bluedemonendentity);
                                                                                                 }

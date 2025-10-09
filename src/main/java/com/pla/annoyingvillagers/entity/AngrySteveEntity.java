@@ -7,6 +7,7 @@ import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.*;
+import com.pla.annoyingvillagers.spawnhandler.SteveData;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.util.PathfinderMobInventory;
 import net.minecraft.nbt.CompoundTag;
@@ -134,6 +135,15 @@ public class AngrySteveEntity extends PathfinderMobInventory {
     public void baseTick() {
         super.baseTick();
         AngrySteveOnTickProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        super.remove(reason);
+        if (!level().isClientSide && level() instanceof ServerLevel serverLevel &&
+                (reason == RemovalReason.KILLED || reason == RemovalReason.DISCARDED)) {
+            SteveData.get(serverLevel).releaseIfMatches(this.getUUID());
+        }
     }
 
     public static Builder createAttributes() {

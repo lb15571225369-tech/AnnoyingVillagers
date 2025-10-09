@@ -6,6 +6,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.procedures.*;
+import com.pla.annoyingvillagers.spawnhandler.AlexData;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.util.PathfinderMobInventory;
 import net.minecraft.core.BlockPos;
@@ -176,6 +177,16 @@ public class AlexEntity extends PathfinderMobInventory {
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
+        if (mobspawntype == MobSpawnType.NATURAL || mobspawntype == MobSpawnType.CHUNK_GENERATION) {
+            ServerLevel serverLevel = serverlevelaccessor.getLevel();
+            AlexData alexData = AlexData.get(serverLevel);
+
+            if (!alexData.tryClaim(serverLevel, this.getUUID())) {
+                this.discard();
+                return null;
+            }
+        }
+
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
         AlexOnSpawnProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
         return spawngroupdata1;
@@ -243,7 +254,20 @@ public class AlexEntity extends PathfinderMobInventory {
     }
 
     public static boolean canSpawn(EntityType<AlexEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
+        ServerLevel serverLevel = level.getLevel();
+        if (AlexData.get(serverLevel).isOccupied(serverLevel)) {
+            return false;
+        }
         return PathfinderMob.checkMobSpawnRules(entityType, level, spawnType, position, random);
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        super.remove(reason);
+        if (!level().isClientSide && level() instanceof ServerLevel serverLevel &&
+                (reason == RemovalReason.KILLED || reason == RemovalReason.DISCARDED)) {
+            AlexData.get(serverLevel).releaseIfMatches(this.getUUID());
+        }
     }
 
     public static Builder createAttributes() {

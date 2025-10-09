@@ -2,11 +2,13 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
+import com.pla.annoyingvillagers.spawnhandler.BluedemonData;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -120,6 +122,15 @@ public class BlueDemonEndStagingEntity extends Monster {
     protected void doPush(Entity entity) {}
 
     protected void pushEntities() {}
+
+    @Override
+    public void remove(RemovalReason reason) {
+        super.remove(reason);
+        if (!level().isClientSide && level() instanceof ServerLevel serverLevel &&
+                (reason == RemovalReason.KILLED || reason == RemovalReason.DISCARDED)) {
+            BluedemonData.get(serverLevel).releaseIfMatches(this.getUUID());
+        }
+    }
 
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();

@@ -7,6 +7,8 @@ import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.procedures.*;
+import com.pla.annoyingvillagers.spawnhandler.ChrisData;
+import com.pla.annoyingvillagers.spawnhandler.HerobrineMobData;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -196,7 +198,27 @@ public class HerobrineMob extends Monster {
         }
     }
 
+    @Override
+    public void remove(RemovalReason reason) {
+        super.remove(reason);
+        if (!level().isClientSide && level() instanceof ServerLevel serverLevel &&
+                (reason == RemovalReason.KILLED || reason == RemovalReason.DISCARDED)) {
+            HerobrineMobData.get(serverLevel).releaseIfMatches(this.getUUID());
+        }
+    }
+
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
+        if (mobspawntype == MobSpawnType.NATURAL || mobspawntype == MobSpawnType.CHUNK_GENERATION) {
+            ServerLevel serverLevel = serverlevelaccessor.getLevel();
+            HerobrineMobData herobrineMobData = HerobrineMobData.get(serverLevel);
+
+            if (!herobrineMobData.tryClaim(serverLevel, this.getUUID())) {
+                this.discard();
+                return null;
+            } else {
+            }
+        }
+
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
         HerobrineOnInitialSpawnProcedure.execute(serverlevelaccessor, this, recallTicks, mobspawntype);
         return spawngroupdata1;

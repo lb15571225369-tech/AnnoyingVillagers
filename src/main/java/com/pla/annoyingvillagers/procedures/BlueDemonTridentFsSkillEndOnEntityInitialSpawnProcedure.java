@@ -1,9 +1,12 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
+import com.pla.annoyingvillagers.entity.BlueDemon2Entity;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.spawnhandler.BluedemonData;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.LevelAccessor;
@@ -47,21 +50,16 @@ public class BlueDemonTridentFsSkillEndOnEntityInitialSpawnProcedure {
             public void run() {
                 if (!entity.isAlive()) return;
 
-                String summonCommand = "summon annoyingvillagers:blue_demon_2";
+                if (world instanceof ServerLevel serverLevel) {
+                    BlueDemon2Entity blueDemon2Entity = new BlueDemon2Entity((EntityType) AnnoyingVillagersModEntities.BLUE_DEMON_2.get(), serverLevel);
+                    blueDemon2Entity.moveTo(entity.getX(), entity.getY(), entity.getZ());
 
-                if (!entity.level().isClientSide() && entity.getServer() != null) {
-                    try {
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                summonCommand,
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-                        );
-                    } catch (CommandSyntaxException e) {
-                        
-                    }
-                }
-
-                if (!entity.level().isClientSide()) {
                     entity.discard();
+
+                    BluedemonData bluedemonData = BluedemonData.get(serverLevel);
+                    bluedemonData.forceClaim(serverLevel, blueDemon2Entity.getUUID());
+                    blueDemon2Entity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(blueDemon2Entity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                    serverLevel.addFreshEntity(blueDemon2Entity);
                 }
             }
         };

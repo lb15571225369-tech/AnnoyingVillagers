@@ -9,6 +9,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.procedures.HerobrinePortalProcedure;
+import com.pla.annoyingvillagers.spawnhandler.GregData;
 import com.pla.annoyingvillagers.util.HerobrineMob;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
@@ -97,6 +98,7 @@ public class Herobrine4Entity extends Monster {
         this.setMaxUpStep(2.5F);
         this.xpReward = 50;
         this.setNoAi(false);
+        this.setPersistenceRequired();
         this.setCustomName(Component.literal("Greg"));
         this.setCustomNameVisible(true);
     }
@@ -527,6 +529,10 @@ public class Herobrine4Entity extends Monster {
         }
     }
 
+    public boolean removeWhenFarAway(double d0) {
+        return false;
+    }
+
     public @NotNull SoundEvent getHurtSound(DamageSource damagesource) {
         return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
     }
@@ -564,8 +570,26 @@ public class Herobrine4Entity extends Monster {
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
+        if (mobspawntype == MobSpawnType.NATURAL || mobspawntype == MobSpawnType.CHUNK_GENERATION) {
+            ServerLevel serverLevel = serverlevelaccessor.getLevel();
+            GregData gregData = GregData.get(serverLevel);
+
+            if (!gregData.tryClaim(serverLevel, this.getUUID())) {
+                this.discard();
+                return null;
+            } else {
+            }
+        }
+
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
-        this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Greg> This world is peaceful, right?"), false);
+        if (!this.level().isClientSide() && this.getServer() != null) {
+            try {
+                this.getServer().getCommands().getDispatcher().execute(
+                        "tellraw @a {\"text\":\"Greg has joined the game\",\"color\":\"yellow\"}",
+                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+            } catch (CommandSyntaxException e) {
+            }
+        }
         return spawngroupdata1;
     }
 
@@ -598,7 +622,20 @@ public class Herobrine4Entity extends Monster {
     }
 
     public static boolean canSpawn(EntityType<Herobrine4Entity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
+        ServerLevel serverLevel = level.getLevel();
+        if (GregData.get(serverLevel).isOccupied(serverLevel)) {
+            return false;
+        }
         return Monster.checkMonsterSpawnRules(entityType, level, spawnType, position, random);
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        super.remove(reason);
+        if (!level().isClientSide && level() instanceof ServerLevel serverLevel &&
+                (reason == RemovalReason.KILLED || reason == RemovalReason.DISCARDED)) {
+            GregData.get(serverLevel).releaseIfMatches(this.getUUID());
+        }
     }
 
     public static Builder createAttributes() {

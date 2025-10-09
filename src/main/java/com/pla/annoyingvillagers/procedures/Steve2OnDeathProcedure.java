@@ -5,6 +5,7 @@ import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.spawnhandler.SteveData;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.util.EquipmentDataLoader;
 import com.pla.annoyingvillagers.util.InventoryUtils;
@@ -20,7 +21,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -52,12 +52,18 @@ public class Steve2OnDeathProcedure {
                     }
                 }
 
-                if (levelaccessor instanceof ServerLevel) {
-                    ServerLevel serverlevel = (ServerLevel)levelaccessor;
-                    AngrySteveEntity angrySteveEntity = new AngrySteveEntity((EntityType) AnnoyingVillagersModEntities.ANGRY_STEVE.get(), serverlevel);
+                if (levelaccessor instanceof ServerLevel serverLevel) {
+                    AngrySteveEntity angrySteveEntity = new AngrySteveEntity((EntityType) AnnoyingVillagersModEntities.ANGRY_STEVE.get(), serverLevel);
 
                     angrySteveEntity.moveTo(d0, d1, d2, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                     InventoryUtils.transferInventory(((Steve2Entity) entity).getInventory(), angrySteveEntity.getInventory());
+
+
+                    entity.discard();
+                    SteveData steveData = SteveData.get(serverLevel);
+                    steveData.forceClaim(serverLevel, angrySteveEntity.getUUID());
+
+                    angrySteveEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(angrySteveEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
                     levelaccessor.addFreshEntity(angrySteveEntity);
                 }
             } else {

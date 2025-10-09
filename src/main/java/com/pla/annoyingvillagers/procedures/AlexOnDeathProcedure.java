@@ -25,7 +25,7 @@ public class AlexOnDeathProcedure {
                 }
             }
             new DelayedTask(20) {
-                @Override
+            @Override
                 public void run() {
                     LevelAccessor levelaccessor1 = levelaccessor;
                     Level level;

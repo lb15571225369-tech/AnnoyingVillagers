@@ -18,25 +18,6 @@ public class AngrySteveOnSpawnProcedure {
     public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity) {
         if (entity != null) {
             entity.getPersistentData().putBoolean("av_npc", true);
-            new DelayedTask(5000) {
-                @Override
-                public void run() {
-                    Entity entity1 = entity;
-
-                    if (!entity1.level().isClientSide() && entity1.getServer() != null) {
-                        try {
-                            entity1.getServer().getCommands().getDispatcher().execute(
-                                    "tellraw @a {\"text\":\"Steve has left the game\",\"color\":\"yellow\"}",
-                                    entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                        } catch (CommandSyntaxException e) {
-                        }
-                    }
-
-                    if (!entity.level().isClientSide()) {
-                        entity.discard();
-                    }
-                }
-            };
             new DelayedTask(10) {
                 @Override
                 public void run() {

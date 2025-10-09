@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.entity;
 import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEnchantments;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
@@ -10,6 +11,7 @@ import com.pla.annoyingvillagers.procedures.ChrisOnDeathProcedure;
 import com.pla.annoyingvillagers.procedures.ChrisOnHurtProcedure;
 import com.pla.annoyingvillagers.procedures.ChrisOnSpawnProcedure;
 import com.pla.annoyingvillagers.procedures.SteveOnTickProcedure;
+import com.pla.annoyingvillagers.spawnhandler.ChrisData;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.util.PathfinderMobInventory;
 import net.minecraft.core.BlockPos;
@@ -122,8 +124,17 @@ public class ChrisEntity extends PathfinderMobInventory {
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
-        SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
+        if (mobspawntype == MobSpawnType.NATURAL || mobspawntype == MobSpawnType.CHUNK_GENERATION) {
+            ServerLevel serverLevel = serverlevelaccessor.getLevel();
+            ChrisData chrisData = ChrisData.get(serverLevel);
 
+            if (!chrisData.tryClaim(serverLevel, this.getUUID())) {
+                this.discard();
+                return null;
+            }
+        }
+
+        SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
         ChrisOnSpawnProcedure.execute(this);
         return spawngroupdata1;
     }
@@ -146,7 +157,20 @@ public class ChrisEntity extends PathfinderMobInventory {
     }
 
     public static boolean canSpawn(EntityType<ChrisEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
+        ServerLevel serverLevel = level.getLevel();
+        if (ChrisData.get(serverLevel).isOccupied(serverLevel)) {
+            return false;
+        }
         return PathfinderMob.checkMobSpawnRules(entityType, level, spawnType, position, random);
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        super.remove(reason);
+        if (!level().isClientSide && level() instanceof ServerLevel serverLevel &&
+                (reason == RemovalReason.KILLED || reason == RemovalReason.DISCARDED)) {
+            ChrisData.get(serverLevel).releaseIfMatches(this.getUUID());
+        }
     }
 
     public static Builder createAttributes() {

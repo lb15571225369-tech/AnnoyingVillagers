@@ -110,126 +110,126 @@ public class AnnoyingVillagersModEntities {
         event.register(
                 AnnoyingVillagersModEntities.HEROBRINE_1.get(),
                 SpawnPlacements.Type.ON_GROUND,
-                Heightmap.Types.WORLD_SURFACE,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Herobrine1Entity::canSpawn,
                 SpawnPlacementRegisterEvent.Operation.REPLACE
         );
         event.register(
                 AnnoyingVillagersModEntities.HEROBRINE_2.get(),
                 SpawnPlacements.Type.ON_GROUND,
-                Heightmap.Types.WORLD_SURFACE,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Herobrine2Entity::canSpawn,
                 SpawnPlacementRegisterEvent.Operation.REPLACE
         );
         event.register(
                 AnnoyingVillagersModEntities.HEROBRINE_3.get(),
                 SpawnPlacements.Type.ON_GROUND,
-                Heightmap.Types.WORLD_SURFACE,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Herobrine3Entity::canSpawn,
                 SpawnPlacementRegisterEvent.Operation.REPLACE
         );
         event.register(
                 AnnoyingVillagersModEntities.HEROBRINE_4.get(),
                 SpawnPlacements.Type.ON_GROUND,
-                Heightmap.Types.WORLD_SURFACE,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Herobrine4Entity::canSpawn,
                 SpawnPlacementRegisterEvent.Operation.REPLACE
         );
         event.register(
                 AnnoyingVillagersModEntities.HEROBRINE_6.get(),
                 SpawnPlacements.Type.ON_GROUND,
-                Heightmap.Types.WORLD_SURFACE,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Herobrine6Entity::canSpawn,
                 SpawnPlacementRegisterEvent.Operation.REPLACE
         );
         event.register(
                 AnnoyingVillagersModEntities.HEROBRINE_7.get(),
                 SpawnPlacements.Type.ON_GROUND,
-                Heightmap.Types.WORLD_SURFACE,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Herobrine7Entity::canSpawn,
                 SpawnPlacementRegisterEvent.Operation.REPLACE
         );
         event.register(
                 AnnoyingVillagersModEntities.HEROBRINE_7.get(),
                 SpawnPlacements.Type.ON_GROUND,
-                Heightmap.Types.WORLD_SURFACE,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Herobrine7Entity::canSpawn,
                 SpawnPlacementRegisterEvent.Operation.REPLACE
         );
         event.register(
                 AnnoyingVillagersModEntities.ARMORED_HEROBRINE.get(),
                 SpawnPlacements.Type.ON_GROUND,
-                Heightmap.Types.WORLD_SURFACE,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 ArmoredHerobrineEntity::canSpawn,
                 SpawnPlacementRegisterEvent.Operation.REPLACE
         );
         event.register(
                 AnnoyingVillagersModEntities.BLUE_DEMON.get(),
                 SpawnPlacements.Type.ON_GROUND,
-                Heightmap.Types.WORLD_SURFACE,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 BlueDemonEntity::canSpawn,
                 SpawnPlacementRegisterEvent.Operation.REPLACE
         );
         event.register(
                 AnnoyingVillagersModEntities.STEVE.get(),
                 SpawnPlacements.Type.ON_GROUND,
-                Heightmap.Types.WORLD_SURFACE,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 SteveEntity::canSpawn,
                 SpawnPlacementRegisterEvent.Operation.REPLACE
         );
         event.register(
                 AnnoyingVillagersModEntities.ALEX.get(),
                 SpawnPlacements.Type.ON_GROUND,
-                Heightmap.Types.WORLD_SURFACE,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 AlexEntity::canSpawn,
                 SpawnPlacementRegisterEvent.Operation.REPLACE
         );
         event.register(
                 AnnoyingVillagersModEntities.CHRIS.get(),
                 SpawnPlacements.Type.ON_GROUND,
-                Heightmap.Types.WORLD_SURFACE,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 ChrisEntity::canSpawn,
                 SpawnPlacementRegisterEvent.Operation.REPLACE
         );
         event.register(
                 AnnoyingVillagersModEntities.VILLAGER_SCOUT.get(),
                 SpawnPlacements.Type.ON_GROUND,
-                Heightmap.Types.WORLD_SURFACE,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 VillagerScoutEntity::canSpawn,
                 SpawnPlacementRegisterEvent.Operation.REPLACE
         );
         event.register(
                 AnnoyingVillagersModEntities.VILLAGER_SCOUT_CAPTAIN.get(),
                 SpawnPlacements.Type.ON_GROUND,
-                Heightmap.Types.WORLD_SURFACE,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 VillagerScoutCaptainEntity::canSpawn,
                 SpawnPlacementRegisterEvent.Operation.REPLACE
         );
         event.register(
                 AnnoyingVillagersModEntities.RED_VILLAGER_GENERAL.get(),
                 SpawnPlacements.Type.ON_GROUND,
-                Heightmap.Types.WORLD_SURFACE,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 RedVillagerGeneralEntity::canSpawn,
                 SpawnPlacementRegisterEvent.Operation.REPLACE
         );
         event.register(
                 AnnoyingVillagersModEntities.BLUE_VILLAGER_GENERAL.get(),
                 SpawnPlacements.Type.ON_GROUND,
-                Heightmap.Types.WORLD_SURFACE,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 BlueVillagerGeneralEntity::canSpawn,
                 SpawnPlacementRegisterEvent.Operation.REPLACE
         );
         event.register(
                 AnnoyingVillagersModEntities.PURPLE_VILLAGER_GENERAL.get(),
                 SpawnPlacements.Type.ON_GROUND,
-                Heightmap.Types.WORLD_SURFACE,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 GreenVillagerGeneralEntity::canSpawn,
                 SpawnPlacementRegisterEvent.Operation.REPLACE
         );
         event.register(
                 AnnoyingVillagersModEntities.GREEN_VILLAGER_GENERAL.get(),
                 SpawnPlacements.Type.ON_GROUND,
-                Heightmap.Types.WORLD_SURFACE,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 PurpleVillagerGeneralEntity::canSpawn,
                 SpawnPlacementRegisterEvent.Operation.REPLACE
         );

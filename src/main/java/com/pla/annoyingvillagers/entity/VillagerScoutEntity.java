@@ -42,6 +42,7 @@ public class VillagerScoutEntity extends PathfinderMobInventory{
         this.setMaxUpStep(2.0F);
         this.xpReward = 8;
         this.setNoAi(false);
+        this.setPersistenceRequired();
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SWORD));
         this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.ENDER_PEARL));
         this.setItemSlot(EquipmentSlot.HEAD, new ItemStack((ItemLike) AnnoyingVillagersModItems.VILLAGER_SCOUT_HELMET.get()));
@@ -77,6 +78,10 @@ public class VillagerScoutEntity extends PathfinderMobInventory{
 
     public SoundEvent getDeathSound() {
         return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.villager.death"));
+    }
+
+    @Override public boolean removeWhenFarAway(double d0) {
+        return false;
     }
 
     public boolean hurt(DamageSource damagesource, float f) {

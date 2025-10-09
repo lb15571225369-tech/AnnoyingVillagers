@@ -5,6 +5,7 @@ import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.procedures.*;
+import com.pla.annoyingvillagers.spawnhandler.HerobrineMobData;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -196,6 +197,11 @@ public class Herobrine6Entity extends Monster {
     public static boolean canSpawn(EntityType<Herobrine6Entity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
         boolean isNight = (level instanceof ServerLevel serverLevel) && (serverLevel.getDayTime() % 24000L >= 13000L && serverLevel.getDayTime() % 24000L <= 23000L);
         if (!isNight) return false;
+
+        ServerLevel serverLevel = level.getLevel();
+        if (HerobrineMobData.get(serverLevel).isOccupied(serverLevel)) {
+            return false;
+        }
         return Monster.checkMonsterSpawnRules(entityType, level, spawnType, position, random);
     }
 

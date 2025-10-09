@@ -8,6 +8,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.monster.Drowned;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
@@ -27,7 +28,9 @@ public class ZombieMixin {
     @Inject(method = "registerGoals", at = @At("HEAD"))
     private void monsterTargetNpc(CallbackInfo ci) {
         Zombie self = (Zombie) (Object) this;
-        CommonGoals.registerGoalForHostileNpc(self);
+        if (!(self instanceof Drowned)) {
+            CommonGoals.registerGoalForHostileNpc(self);
+        }
     }
 
     @Inject(method = "finalizeSpawn", at = @At("RETURN"))

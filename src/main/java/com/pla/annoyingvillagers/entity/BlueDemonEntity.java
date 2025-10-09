@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
+import com.pla.annoyingvillagers.spawnhandler.BluedemonData;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -176,16 +177,14 @@ public class BlueDemonEntity extends Monster {
     }
 
     private void spawnBbq() {
-        if (this.level() instanceof ServerLevel levelaccessor) {
-            ServerLevel serverlevel = (ServerLevel) levelaccessor;
-
-            BbqEntity bbqEntity = new BbqEntity((EntityType) AnnoyingVillagersModEntities.BBQ.get(), serverlevel);
-            bbqEntity.moveTo(this.getX() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), this.getY() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), this.getZ() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+        if (this.level() instanceof ServerLevel serverLevel) {
+            BbqEntity bbqEntity = new BbqEntity((EntityType) AnnoyingVillagersModEntities.BBQ.get(), serverLevel);
+            bbqEntity.moveTo(this.getX() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), this.getY() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), this.getZ() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), serverLevel.getRandom().nextFloat() * 360.0F, 0.0F);
             bbqEntity.setFollowTarget(this);
             bbqEntity.setFollowTargetUUID(this.getUUID());
 
-            bbqEntity.finalizeSpawn(levelaccessor, levelaccessor.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
-            levelaccessor.addFreshEntity(bbqEntity);
+            bbqEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
+            serverLevel.addFreshEntity(bbqEntity);
 
             this.setProtectingBbq(bbqEntity);
             this.setBbqUUID(bbqEntity.getUUID());
@@ -193,8 +192,17 @@ public class BlueDemonEntity extends Monster {
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
-        SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
+        if (mobspawntype == MobSpawnType.NATURAL || mobspawntype == MobSpawnType.CHUNK_GENERATION) {
+            ServerLevel serverLevel = serverlevelaccessor.getLevel();
+            BluedemonData bluedemonData = BluedemonData.get(serverLevel);
 
+            if (!bluedemonData.tryClaim(serverLevel, this.getUUID())) {
+                this.discard();
+                return null;
+            }
+        }
+
+        SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
         BlueDemonOnEntityInitialSpawnProcedure.execute(this.level(), this);
         return spawngroupdata1;
     }
@@ -213,7 +221,21 @@ public class BlueDemonEntity extends Monster {
         if (!level.dimensionType().hasSkyLight()) return false;
         boolean thundering = (level instanceof ServerLevel serverLevel) && serverLevel.isThundering();
         if (!thundering) return false;
+
+        ServerLevel serverLevel = level.getLevel();
+        if (BluedemonData.get(serverLevel).isOccupied(serverLevel)) {
+            return false;
+        }
         return Monster.checkAnyLightMonsterSpawnRules(entityType, level, spawnType, position, random);
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        super.remove(reason);
+        if (!level().isClientSide && level() instanceof ServerLevel serverLevel &&
+                (reason == RemovalReason.KILLED || reason == RemovalReason.DISCARDED)) {
+            BluedemonData.get(serverLevel).releaseIfMatches(this.getUUID());
+        }
     }
 
     public static Builder createAttributes() {
