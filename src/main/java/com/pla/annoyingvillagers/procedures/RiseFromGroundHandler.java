@@ -1,14 +1,19 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.entity.ArmoredHerobrineEntity;
 import com.pla.annoyingvillagers.entity.Herobrine4Entity;
+import com.pla.annoyingvillagers.entity.NullEntity;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.util.HerobrineMob;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -24,14 +29,11 @@ public class RiseFromGroundHandler {
 
         var tag = entity.getPersistentData();
         if (tag.getBoolean(HerobrinePortalProcedure.NBT_RISING)) {
+
             double targetY = tag.getDouble(HerobrinePortalProcedure.NBT_TARGET_Y);
             double speed   = tag.getDouble(HerobrinePortalProcedure.NBT_SPEED);
             int    ticks   = tag.getInt(HerobrinePortalProcedure.NBT_TICKS);
             int    max     = tag.getInt(HerobrinePortalProcedure.NBT_MAX_TICKS);
-
-            if ((ticks % 8) == 0) {
-                level.playSound(null, entity.blockPosition(), SoundEvents.SOUL_ESCAPE, SoundSource.HOSTILE, 0.25f, 0.9f + entity.getRandom().nextFloat() * 0.2f);
-            }
 
             double ny = entity.getY() + speed;
             if (ny >= targetY || ticks > max) {
@@ -45,14 +47,8 @@ public class RiseFromGroundHandler {
         }
 
         if (tag.getBoolean(HerobrinePortalProcedure.NBT_SINKING)) {
-            double targetY = tag.getDouble(HerobrinePortalProcedure.NBT_SINK_TARGET_Y);
             double speed   = tag.getDouble(HerobrinePortalProcedure.NBT_SINK_SPEED);
             int    ticks   = tag.getInt(HerobrinePortalProcedure.NBT_SINK_TICKS);
-            int    max     = tag.getInt(HerobrinePortalProcedure.NBT_SINK_MAX_TICKS);
-
-            if ((ticks % 8) == 0) {
-                level.playSound(null, entity.blockPosition(), SoundEvents.SOUL_ESCAPE, SoundSource.HOSTILE, 0.25f, 1.05f + entity.getRandom().nextFloat() * 0.2f);
-            }
 
             entity.setPos(entity.getX(), entity.getY() - speed, entity.getZ());
             tag.putInt(HerobrinePortalProcedure.NBT_SINK_TICKS, ticks + 1);
@@ -60,10 +56,7 @@ public class RiseFromGroundHandler {
     }
 
     private static void finishRise(LivingEntity entity) {
-        var level = (net.minecraft.server.level.ServerLevel) entity.level();
         var tag = entity.getPersistentData();
-
-        level.playSound(null, entity.blockPosition(), SoundEvents.SAND_BREAK, SoundSource.BLOCKS, 0.7f, 0.9f);
 
         entity.noPhysics = false;
         entity.setNoGravity(false);
@@ -87,6 +80,13 @@ public class RiseFromGroundHandler {
                         herobrine4Entity.setNoAi(false);
                     }
                 }
+            }
+            if (entity instanceof NullEntity nullEntity) {
+                nullEntity.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+                nullEntity.setInitialSpawn(false);
+            }
+            if (entity instanceof ArmoredHerobrineEntity armoredHerobrineEntity) {
+                armoredHerobrineEntity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
             }
         }
     }

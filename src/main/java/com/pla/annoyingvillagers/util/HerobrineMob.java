@@ -2,12 +2,12 @@ package com.pla.annoyingvillagers.util;
 
 import javax.annotation.Nullable;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.procedures.*;
-import com.pla.annoyingvillagers.spawnhandler.ChrisData;
 import com.pla.annoyingvillagers.spawnhandler.HerobrineMobData;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -28,6 +28,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
+import reascer.wom.gameasset.WOMAnimations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
@@ -171,6 +172,8 @@ public class HerobrineMob extends Monster {
                     } else if (this instanceof AegisHerobrineEntity aegisHerobrineEntity) {
                         // For some reason the block animation can't be played inside finalize spawn
                         aegisHerobrineEntity.getPersistentData().putBoolean("init_animation", true);
+                    } else if (this instanceof NullEntity) {
+                        livingentitypatch.playAnimationSynchronized(WOMAnimations.TORMENT_BERSERK_IDLE, 0.0F);
                     } else if (!(this instanceof SledgehammerHerobrineEntity) && !(this instanceof SwordsmanHerobrineEntity)) {
                         livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_ANIMATE, 0.0F);
                     }
@@ -187,6 +190,12 @@ public class HerobrineMob extends Monster {
                             new ClientboundHerobrinePortalFx(new Vec3(this.getX(), this.getY(), this.getZ()))
                     );
                     if (this.level() instanceof ServerLevel serverLevel) {
+                        try {
+                            this.getServer().getCommands().getDispatcher().execute(
+                                    "playsound annoyingvillagers:portal_natural neutral @a ~ ~ ~",
+                                    this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException e) {
+                        }
                         HerobrinePortalProcedure.sinkIntoGround(serverLevel, this, 0.06);
                     }
                 }

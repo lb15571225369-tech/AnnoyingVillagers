@@ -4,6 +4,7 @@ import java.util.*;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.NullOnHurtProcedure;
 import com.pla.annoyingvillagers.util.HerobrineMob;
 import net.minecraft.core.BlockPos;
@@ -16,6 +17,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
@@ -27,6 +29,7 @@ import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -51,7 +54,11 @@ public class NullEntity extends HerobrineMob {
     private NullHoeEntity nullHoeEntity;
     private UUID nullHoeUUID;
 
-    private boolean initialSpawn = false;
+    private boolean initialSpawn = true;
+
+    public void setInitialSpawn(boolean initialSpawn) {
+        this.initialSpawn = initialSpawn;
+    }
 
     public NullSwordEntity getNullSwordEntity() {
         return nullSwordEntity;
@@ -85,6 +92,7 @@ public class NullEntity extends HerobrineMob {
         this.setPersistenceRequired();
         this.moveControl = new FlyingMoveControl(this, 10, true);
         this.setChatName("§5Null§r");
+        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.NULL_SWORD.get()));
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
