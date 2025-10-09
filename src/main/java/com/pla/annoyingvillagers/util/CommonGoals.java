@@ -14,20 +14,12 @@ import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
-import java.util.function.Predicate;
-
 public class CommonGoals {
-    static Predicate<LivingEntity> onlyAliveUninfectedPMs = target ->
-            target instanceof PlayerMobEntity
-                    && !(target instanceof PlayerMobDeadEntity)
-                    && !(target instanceof InfectedPlayerMobEntity)
-                    && !(target instanceof Herobrine5Entity);
-
     public static void registerGoalForHostileNpc(Monster monster) {
         monster.getNavigation().getNodeEvaluator().setCanOpenDoors(true);
         monster.targetSelector.addGoal(1, new HurtByTargetGoal(monster, new Class[0]));
         monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, Player.class, true, false));
-        monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, PlayerMobEntity.class, true, onlyAliveUninfectedPMs));
+        monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, PlayerNpcEntity.class, true, false));
         monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, SteveEntity.class, true, false));
         monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, Steve2Entity.class, true, false));
         monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, AngrySteveEntity.class, true, false));
@@ -69,7 +61,7 @@ public class CommonGoals {
         monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, ShadowHerobrineEntity.class, true, false));
         monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, ArmoredHerobrineEntity.class, true, false));
         monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(monster, Player.class, true, false));
-        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(monster, PlayerMobEntity.class, true, onlyAliveUninfectedPMs));
+        monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(monster, PlayerNpcEntity.class, true, false));
         monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(monster, SteveEntity.class, true, false));
         monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(monster, Steve2Entity.class, true, false));
         monster.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(monster, AlexEntity.class, true, false));
@@ -112,7 +104,7 @@ public class CommonGoals {
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, ShadowHerobrineEntity.class, true, false));
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, ArmoredHerobrineEntity.class, true, false));
 
-        mob.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(mob, PlayerMobEntity.class, true, onlyAliveUninfectedPMs));
+        mob.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(mob, PlayerNpcEntity.class, true, false));
         mob.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(mob, Player.class, true, false));
         mob.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(mob, Monster.class, true, false));
         mob.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(mob, AbstractIllager.class, true, false));
@@ -185,7 +177,7 @@ public class CommonGoals {
         mob.getNavigation().getNodeEvaluator().setCanOpenDoors(true);
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, Monster.class, false, false));
         mob.targetSelector.addGoal(2, new HurtByTargetGoal(mob, new Class[0]));
-        mob.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(mob, PlayerMobEntity.class, true, onlyAliveUninfectedPMs));
+        mob.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(mob, PlayerNpcEntity.class, true, false));
         mob.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(mob, VillagerScoutEntity.class, false, false));
         mob.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(mob, VillagerScoutCaptainEntity.class, false, false));
         mob.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(mob, RedVillagerGeneralEntity.class, false, false));
@@ -221,7 +213,7 @@ public class CommonGoals {
         mob.goalSelector.addGoal(25, new FloatGoal(mob));
     }
 
-    public static void attackAllMonstersGoals(PlayerMobEntity playerMobEntity) {
+    public static void attackAllMonstersGoals(PlayerNpcEntity playerMobEntity) {
         playerMobEntity.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(playerMobEntity, Monster.class, true, (target) -> !(target instanceof PlayerMobEntity)));
         playerMobEntity.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(playerMobEntity, AbstractIllager.class, true, false));
         playerMobEntity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(playerMobEntity, Herobrine1Entity.class, true, false));

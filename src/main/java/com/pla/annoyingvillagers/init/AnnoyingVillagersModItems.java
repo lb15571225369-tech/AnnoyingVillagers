@@ -100,6 +100,9 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> BBQ_SAUCE_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("bbq_sauce_spawn_egg", () -> {
         return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.BBQ, -1, -154, (new Properties()));
     });
+    public static final RegistryObject<Item> PLAYER_NPC_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("player_npc_spawn_egg", () -> {
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.PLAYER_NPC, -16737895, -16777216, (new Properties()));
+    });
 
     // ------------------------------
 

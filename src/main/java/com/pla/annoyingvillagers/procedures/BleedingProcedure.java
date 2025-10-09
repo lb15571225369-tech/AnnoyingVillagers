@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
@@ -514,7 +515,7 @@ public class BleedingProcedure {
                             }
                         }
 
-                        if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("player_mobs:player_mob")  || ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("guardvillagers:guard")) {
+                        if (entity instanceof PlayerNpcEntity || ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("guardvillagers:guard")) {
                             entity1.getPersistentData().putDouble("hit_npc", entity1.getPersistentData().getDouble("hit_npc") + 1.0D);
                             entity.getPersistentData().putDouble("hit_npc", entity.getPersistentData().getDouble("hit_npc") + 1.0D);
                             entity1.getPersistentData().putBoolean("dont_kill", false);

@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.procedures;
 import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.LevelAccessor;
@@ -33,7 +34,7 @@ public class NpcStandUpProcedure {
 
     private static void execute(@Nullable Event event, LevelAccessor levelaccessor, final Entity entity) {
         if (entity != null) {
-            if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("player_mobs:player_mob") && entity.getPersistentData().getDouble("npc_level") != 0.0D) {
+            if (entity instanceof PlayerNpcEntity && entity.getPersistentData().getDouble("npc_level") != 0.0D) {
                 LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch)EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 
                 if (livingentitypatch != null) {

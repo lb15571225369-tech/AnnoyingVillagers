@@ -23,7 +23,7 @@ public class HerobrineTransfromProcedure {
             return;
         }
 
-        if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("player_mobs:player_mob")) {
+        if (entity instanceof PlayerNpcEntity) {
             if (!(world instanceof ServerLevel serverLevel)) return;
             entity.getPersistentData().putBoolean("die_by_possess", true);
             Entity possessed;

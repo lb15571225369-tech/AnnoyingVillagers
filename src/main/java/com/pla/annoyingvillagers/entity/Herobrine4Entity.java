@@ -48,7 +48,6 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
-import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.effect.EpicFightMobEffects;
@@ -116,11 +115,7 @@ public class Herobrine4Entity extends Monster {
         this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, RedVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
         this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, PurpleVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
 
-        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, PlayerMobEntity.class, 12.0F, 1.2D, 1.8D, target ->
-                target instanceof PlayerMobEntity
-                        && !(target instanceof PlayerMobDeadEntity)
-                        && !(target instanceof InfectedPlayerMobEntity)
-                        && !(target instanceof Herobrine5Entity)));
+        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, PlayerNpcEntity.class, 12.0F, 1.2D, 1.8D));
         this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Player.class, 12.0F, 1.2D, 1.8D));
         this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, SteveEntity.class, 24.0F, 1.2D, 1.8D));
         this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Steve2Entity.class, 12.0F, 1.2D, 1.8D));

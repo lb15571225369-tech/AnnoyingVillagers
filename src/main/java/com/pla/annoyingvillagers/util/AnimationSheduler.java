@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.util;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -193,7 +194,7 @@ public class AnimationSheduler {
                 mob.setNoAi(false);
             }
 
-            if (reTry && !data.contains("idle_message_broadcasted") && ForgeRegistries.ENTITY_TYPES.getKey(mob.getType()).toString().equals("player_mobs:player_mob")) {
+            if (reTry && !data.contains("idle_message_broadcasted") && mob instanceof PlayerNpcEntity) {
                 // reTry is false meaning temp call so no message
                 String message = "<" + mob.getDisplayName().getString() + "> " + idleMessages
                         .getOrDefault(idleAnimation, List.of("..."))

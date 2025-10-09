@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.procedures;
 
 import javax.annotation.Nullable;
 
+import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.util.DelayedTask;
@@ -62,7 +63,7 @@ public class PlayerMobProcedure {
                     Level level;
                     Projectile projectile;
 
-                    if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("player_mobs:player_mob")) {
+                    if (entity instanceof PlayerNpcEntity) {
                         if (Math.random() <= 0.3D && entity instanceof LivingEntity) {
                             livingentity1 = (LivingEntity)entity;
                             if (!livingentity1.level().isClientSide()) {

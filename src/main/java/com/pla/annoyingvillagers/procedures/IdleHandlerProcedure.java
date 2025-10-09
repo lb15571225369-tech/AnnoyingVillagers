@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
 import com.pla.annoyingvillagers.util.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
@@ -16,8 +17,6 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
-import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.capabilities.item.WeaponCapability;
@@ -46,7 +45,7 @@ public class IdleHandlerProcedure {
                     performIdleAction(entity, IdleAction.PLAY_ANIMATION);
                 }
             }
-            else if (ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).toString().equals("player_mobs:player_mob")) {
+            else if (entity instanceof PlayerNpcEntity) {
                 scheduleIdleActionDecision((Mob) event.getEntity());
             }
         }
@@ -160,7 +159,7 @@ public class IdleHandlerProcedure {
                     data.putString("av_idle_animation_playing", "playing");
                     mob.setNoAi(true);
                     IdleAnimation idleAnimation;
-                    if (mob instanceof PlayerMobEntity) {
+                    if (mob instanceof PlayerNpcEntity) {
                         idleAnimation = IdleAnimation.values()[RANDOM.nextInt(IdleAnimation.values().length)];
                     } else {
                         IdleAnimation[] subset = {IdleAnimation.SIT, IdleAnimation.LAY};

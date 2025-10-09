@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.util;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
 import net.minecraft.Util;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -174,7 +175,7 @@ public class BurnItemScheduler {
                 if (rawName.startsWith("[") && rawName.endsWith("]")) {
                     rawName = rawName.substring(1, rawName.length() - 1).toLowerCase();;
                 }
-                if (ForgeRegistries.ENTITY_TYPES.getKey(mob.getType()).toString().equals("player_mobs:player_mob")
+                if (mob instanceof PlayerNpcEntity
                         && new Random().nextFloat() < 0.05f) {
                     String message = "<" + mob.getDisplayName().getString() + "> " +
                             getRandomBurnMessage(rawName);

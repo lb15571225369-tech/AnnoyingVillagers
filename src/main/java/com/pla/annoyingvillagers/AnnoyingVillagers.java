@@ -65,7 +65,6 @@ public class AnnoyingVillagers {
         modEventBus.addListener(AnnoyingVillagersModCapabilities::registerCapabilities);
         AVSkillDataKeys.DATA_KEYS.register(modEventBus);
         AnnoyingVillagersModCreativeTabs.register(modEventBus);
-//        AnnoyingVillagersModBiomeModifiers.register(modEventBus);
         AnnoyingVillagersModSounds.register(modEventBus);
         AVSounds.SOUNDS.register(modEventBus);
         MinecraftForge.EVENT_BUS.register(new NpcGearLoadProcedure());

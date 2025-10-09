@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.Util;
 import net.minecraft.advancements.Advancement;
@@ -54,7 +55,7 @@ public class PlayerNpcDeadProcedure {
 
     private static void execute(@Nullable Event event, LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity, final Entity entity1) {
         if (entity != null && entity1 != null) {
-            if (ForgeRegistries.ENTITY_TYPES.getKey(entity1.getType()).toString().equals("player_mobs:player_mob")) {
+            if (entity instanceof PlayerNpcEntity) {
                 new DelayedTask(Mth.nextInt(RandomSource.create(), 70, 100)) {
                     @Override
                     public void run() {
@@ -194,7 +195,7 @@ public class PlayerNpcDeadProcedure {
                 };
             }
 
-            if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("player_mobs:player_mob")) {
+            if (entity instanceof PlayerNpcEntity) {
                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                     PlayerList playerlist = levelaccessor.getServer().getPlayerList();
                     String s = entity.getDisplayName().getString();
@@ -570,7 +571,7 @@ public class PlayerNpcDeadProcedure {
                                     public void run() {
                                         try {
                                             entity.getServer().getCommands().getDispatcher().execute(
-                                                    "summon player_mobs:player_mob",
+                                                    "summon annoyingvillagers:player_npc",
                                                     entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                                             );
                                         } catch (CommandSyntaxException e) {
@@ -584,7 +585,7 @@ public class PlayerNpcDeadProcedure {
                                     public void run() {
                                         try {
                                             entity.getServer().getCommands().getDispatcher().execute(
-                                                    "summon player_mobs:player_mob",
+                                                    "summon annoyingvillagers:player_npc",
                                                     entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                                             );
                                         } catch (CommandSyntaxException e) {
@@ -598,7 +599,7 @@ public class PlayerNpcDeadProcedure {
                                     public void run() {
                                         try {
                                             entity.getServer().getCommands().getDispatcher().execute(
-                                                    "summon player_mobs:player_mob",
+                                                    "summon annoyingvillagers:player_npc",
                                                     entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                                             );
                                         } catch (CommandSyntaxException e) {

@@ -204,34 +204,6 @@ public class AngrySteveOnTickProcedure {
                     livingentity.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.BLOCK.get(), 10, 4, false, false));
                 }
             }
-            if (!levelaccessor.getEntitiesOfClass(Mob.class,
-                    AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D),
-                    mob -> true).isEmpty()
-                    && ForgeRegistries.ENTITY_TYPES.getKey(
-                    levelaccessor.getEntitiesOfClass(Mob.class,
-                                    AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D),
-                                    mob -> true)
-                            .stream()
-                            .sorted(new Comparator<Entity>() {
-                                @Override
-                                public int compare(Entity e1, Entity e2) {
-                                    double dist1 = e1.distanceToSqr(d0, d1, d2);
-                                    double dist2 = e2.distanceToSqr(d0, d1, d2);
-                                    return Double.compare(dist1, dist2);
-                                }
-                            })
-                            .findFirst()
-                            .orElse(null)
-                            .getType()
-            ).toString().equals("player_mobs:player_mob")
-                    && entity instanceof LivingEntity) {
-
-                LivingEntity entity1 = (LivingEntity) entity;
-                if (!entity1.level().isClientSide()) {
-                    entity1.addEffect(new MobEffectInstance(
-                            AnnoyingVillagersModMobEffects.BLOCK.get(), 10, 4, false, false));
-                }
-            }
 
             Mob mob;
             LivingEntity livingentity1;

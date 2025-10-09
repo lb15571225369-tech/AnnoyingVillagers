@@ -1,6 +1,8 @@
 package com.pla.annoyingvillagers.procedures;
 
 import javax.annotation.Nullable;
+
+import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -39,7 +41,7 @@ public class NpcRollUpProcedure {
                 boolean flag;
                 LivingEntity livingentity1;
 
-                if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("player_mobs:player_mob")) {
+                if (entity instanceof PlayerNpcEntity) {
                     if (entity.getPersistentData().getDouble("npc_level") != 0.0D) {
                         if (entity instanceof LivingEntity) {
                             livingentity = (LivingEntity) entity;

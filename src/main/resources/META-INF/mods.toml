@@ -59,7 +59,7 @@ description='''${mod_description}'''
     modId="player_mobs"
     mandatory=true
     versionRange="[4.1, )"
-    ordering="NONE"
+    ordering="AFTER"
     side="BOTH"
 [[dependencies.annoyingvillagers]]
     modId="aaa_particles"
