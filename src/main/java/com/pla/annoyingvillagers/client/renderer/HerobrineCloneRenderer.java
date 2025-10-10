@@ -8,12 +8,12 @@ import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
-import com.pla.annoyingvillagers.entity.Herobrine2Entity;
+import com.pla.annoyingvillagers.entity.HerobrineCloneEntity;
 import com.pla.annoyingvillagers.procedures.HerobrineLowProcedure;
 
-public class Herobrine2Renderer extends HumanoidMobRenderer<Herobrine2Entity, HumanoidModel<Herobrine2Entity>> {
+public class HerobrineCloneRenderer extends HumanoidMobRenderer<HerobrineCloneEntity, HumanoidModel<HerobrineCloneEntity>> {
 
-    public Herobrine2Renderer(Context context) {
+    public HerobrineCloneRenderer(Context context) {
         super(context, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER)), 0.5F);
         this.addLayer(new HumanoidArmorLayer(
                 this,
@@ -22,16 +22,16 @@ public class Herobrine2Renderer extends HumanoidMobRenderer<Herobrine2Entity, Hu
                 context.getModelManager()));
     }
 
-    public ResourceLocation getTextureLocation(Herobrine2Entity herobrine2entity) {
-        return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/herobrine_2.png");
+    public ResourceLocation getTextureLocation(HerobrineCloneEntity herobrineentity) {
+        return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/herobrine.png");
     }
 
-    protected boolean isShaking(Herobrine2Entity herobrine2entity) {
-        Level level = herobrine2entity.level();
-        double d0 = herobrine2entity.getX();
-        double d1 = herobrine2entity.getY();
-        double d2 = herobrine2entity.getZ();
+    protected boolean isShaking(HerobrineCloneEntity herobrineentity) {
+        Level level = herobrineentity.level();
+        double d0 = herobrineentity.getX();
+        double d1 = herobrineentity.getY();
+        double d2 = herobrineentity.getZ();
 
-        return HerobrineLowProcedure.execute(herobrine2entity);
+        return HerobrineLowProcedure.execute(herobrineentity);
     }
 }

@@ -80,11 +80,11 @@ public class InfectedPlayerMobEntity extends PlayerMobEntity {
     public void die(DamageSource damagesource) {
         super.die(damagesource);
         String possessedBy = this.getPersistentData().getString("possessed_by");
-        if (possessedBy.equals("herobrine_2")) {
+        if (possessedBy.equals("herobrine_clone")) {
             Herobrine2DieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
-        } else if (possessedBy.equals("herobrine_1")) {
+        } else if (possessedBy.equals("shadow_herobrine_clone")) {
             Herobrine1DieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
-        } else if (possessedBy.equals("herobrine_5") || possessedBy.equals("herobrine_6")) {
+        } else if (possessedBy.equals("low_herobrine_clone") || possessedBy.equals("low_shadow_herobrine_clone")) {
             HerobrineCloneDieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
         } else if (possessedBy.equals("herobrine_7")) {
             Herobrine7OnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);

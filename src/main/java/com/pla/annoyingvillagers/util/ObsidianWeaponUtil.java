@@ -5,11 +5,11 @@ import net.minecraft.world.entity.Entity;
 
 public class ObsidianWeaponUtil {
     public static boolean isHerobrineFaction(Entity e) {
-        return e instanceof Herobrine1Entity
-                || e instanceof Herobrine2Entity
-                || e instanceof Herobrine3Entity
-                || e instanceof Herobrine5Entity
-                || e instanceof Herobrine6Entity
+        return e instanceof HerobrineCloneEntity
+                || e instanceof ShadowHerobrineCloneEntity
+                || e instanceof HerobrineChrisEntity
+                || e instanceof LowHerobrineCloneEntity
+                || e instanceof LowShadowHerobrineCloneEntity
                 || e instanceof Herobrine7Entity
                 || e instanceof ArmoredHerobrineEntity
                 || e instanceof ShadowHerobrineEntity

@@ -18,12 +18,12 @@ public class AnnoyingVillagersModCreativeTabs {
             () -> CreativeModeTab.builder().icon(() -> new ItemStack(AnnoyingVillagersModItems.LEGENDARY_SWORD.get()))
                     .title(Component.translatable("creativetab.annoyingvillagers_tab"))
                     .displayItems((pParameters, pOutput) -> {
-                        pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_1_SPAWN_EGG.get());
-                        pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_2_SPAWN_EGG.get());
-                        pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_3_SPAWN_EGG.get());
-                        pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_4_SPAWN_EGG.get());
-                        pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_5_SPAWN_EGG.get());
-                        pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_6_SPAWN_EGG.get());
+                        pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_CLONE_SPAWN_EGG.get());
+                        pOutput.accept(AnnoyingVillagersModItems.SHADOW_HEROBRINE_CLONE_SPAWN_EGG.get());
+                        pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_CHRIS_SPAWN_EGG.get());
+                        pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_GREG_SPAWN_EGG.get());
+                        pOutput.accept(AnnoyingVillagersModItems.LOW_HEROBRINE_CLONE_SPAWN_EGG.get());
+                        pOutput.accept(AnnoyingVillagersModItems.LOW_SHADOW_HEROBRINE_CLONE_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_7_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.NULL_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.ARMORED_HEROBRINE_SPAWN_EGG.get());

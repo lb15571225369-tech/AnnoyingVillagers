@@ -2,7 +2,6 @@ package com.pla.annoyingvillagers.client.renderer;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.ArmoredHerobrineEntity;
-import com.pla.annoyingvillagers.entity.Herobrine1Entity;
 import com.pla.annoyingvillagers.procedures.HerobrineLowProcedure;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -10,7 +9,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.Level;
 
 public class ArmoredHerobrineRenderer extends HumanoidMobRenderer<ArmoredHerobrineEntity, HumanoidModel<ArmoredHerobrineEntity>> {
 
@@ -24,7 +22,7 @@ public class ArmoredHerobrineRenderer extends HumanoidMobRenderer<ArmoredHerobri
     }
 
     public ResourceLocation getTextureLocation(ArmoredHerobrineEntity herobrineentity) {
-        return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/herobrine_2.png");
+        return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/shadow_herobrine.png");
     }
 
     protected boolean isShaking(ArmoredHerobrineEntity herobrineentity) {

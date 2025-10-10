@@ -194,11 +194,11 @@ public class Herobrine7Entity extends HerobrineMob {
     }
 
     public static boolean canSpawn(EntityType<Herobrine7Entity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
-        boolean isNight = (level instanceof ServerLevel serverLevel) && (serverLevel.getDayTime() % 24000L >= 13000L && serverLevel.getDayTime() % 24000L <= 23000L);
-        if (!isNight) return false;
-
         ServerLevel serverLevel = level.getLevel();
         if (HerobrineMobData.get(serverLevel).isOccupied(serverLevel)) {
+            return false;
+        }
+        if (!serverLevel.isNight()) {
             return false;
         }
         return Monster.checkMonsterSpawnRules(entityType, level, spawnType, position, random);

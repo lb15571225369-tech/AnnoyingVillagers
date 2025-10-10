@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.procedures;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
@@ -9,7 +8,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraftforge.registries.ForgeRegistries;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
 import java.util.Random;
@@ -27,15 +25,15 @@ public class HerobrineTransfromProcedure {
             if (!(world instanceof ServerLevel serverLevel)) return;
             entity.getPersistentData().putBoolean("die_by_possess", true);
             Entity possessed;
-            if (herobrineEntity instanceof Herobrine1Entity || herobrineEntity instanceof Herobrine3Entity || herobrineEntity instanceof NullEntity
+            if (herobrineEntity instanceof HerobrineCloneEntity || herobrineEntity instanceof HerobrineChrisEntity || herobrineEntity instanceof NullEntity
                     || herobrineEntity instanceof NullSwordEntity || herobrineEntity instanceof NullAxeEntity
                     || herobrineEntity instanceof  NullPickaxeEntity || herobrineEntity instanceof NullShovelEntity
                     || herobrineEntity instanceof  NullHoeEntity || herobrineEntity instanceof GlaiveHerobrineEntity
                     || herobrineEntity instanceof AegisHerobrineEntity || herobrineEntity instanceof ReaperHerobrineEntity
                     || herobrineEntity instanceof SwordsmanHerobrineEntity || herobrineEntity instanceof SledgehammerHerobrineEntity) {
-                possessed = new Herobrine5Entity(AnnoyingVillagersModEntities.HEROBRINE_5.get(), serverLevel);
+                possessed = new LowHerobrineCloneEntity(AnnoyingVillagersModEntities.LOW_HEROBRINE_CLONE.get(), serverLevel);
             } else {
-                possessed = new Herobrine6Entity(AnnoyingVillagersModEntities.HEROBRINE_6.get(), serverLevel);
+                possessed = new LowShadowHerobrineCloneEntity(AnnoyingVillagersModEntities.LOW_SHADOW_HEROBRINE_CLONE.get(), serverLevel);
             }
             possessed.moveTo(entity.getX(), entity.getY(), entity.getZ(), entity.getYRot(), entity.getXRot());
             if (entity instanceof LivingEntity victim) {
@@ -53,9 +51,9 @@ public class HerobrineTransfromProcedure {
                 possessed.setItemSlot(EquipmentSlot.OFFHAND, victim.getItemBySlot(EquipmentSlot.OFFHAND).copy());
             }
             Mob mob = (Mob) possessed;
-            if (mob instanceof Herobrine5Entity herobrine5Entity) {
-                herobrine5Entity.setUsername(((PlayerMobEntity) entity).getUsername());
-                herobrine5Entity.setProfile(((PlayerMobEntity) entity).getProfile());
+            if (mob instanceof LowHerobrineCloneEntity lowHerobrineCloneEntity) {
+                lowHerobrineCloneEntity.setUsername(((PlayerMobEntity) entity).getUsername());
+                lowHerobrineCloneEntity.setProfile(((PlayerMobEntity) entity).getProfile());
             }
             mob.finalizeSpawn(serverLevel, world.getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
             serverLevel.addFreshEntity(possessed);

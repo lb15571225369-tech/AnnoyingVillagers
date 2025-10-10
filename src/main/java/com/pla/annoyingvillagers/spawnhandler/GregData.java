@@ -1,8 +1,6 @@
 package com.pla.annoyingvillagers.spawnhandler;
 
-import com.pla.annoyingvillagers.entity.Herobrine4Entity;
-import com.pla.annoyingvillagers.entity.Herobrine6Entity;
-import com.pla.annoyingvillagers.util.HerobrineMob;
+import com.pla.annoyingvillagers.entity.HerobrineGregEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -35,7 +33,7 @@ public class GregData extends SavedData {
             return false;
         }
         Entity entity = serverLevel.getEntity(activeId);
-        if (entity instanceof Herobrine4Entity && entity.isAlive()) {
+        if (entity instanceof HerobrineGregEntity && entity.isAlive()) {
             return true;
         } else {
             activeId = null;

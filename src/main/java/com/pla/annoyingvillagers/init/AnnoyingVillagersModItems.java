@@ -19,23 +19,23 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> BLUE_DEMON_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("blue_demon_spawn_egg", () -> {
         return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.BLUE_DEMON, -16737895, -16777216, (new Properties()));
     });
-    public static final RegistryObject<Item> HEROBRINE_1_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("herobrine_1_spawn_egg", () -> {
-        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.HEROBRINE_1, -10066330, -13421773, (new Properties()));
+    public static final RegistryObject<Item> HEROBRINE_CLONE_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("herobrine_clone_spawn_egg", () -> {
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.HEROBRINE_CLONE, -10066330, -13421773, (new Properties()));
     });
-    public static final RegistryObject<Item> HEROBRINE_2_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("herobrine_2_spawn_egg", () -> {
-        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.HEROBRINE_2, -10066330, -13421773, (new Properties()));
+    public static final RegistryObject<Item> SHADOW_HEROBRINE_CLONE_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("shadow_herobrine_clone_spawn_egg", () -> {
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.SHADOW_HEROBRINE_CLONE, -10066330, -13421773, (new Properties()));
     });
-    public static final RegistryObject<Item> HEROBRINE_3_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("herobrine_3_spawn_egg", () -> {
-        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.HEROBRINE_3, -10066330, -13421773, (new Properties()));
+    public static final RegistryObject<Item> HEROBRINE_CHRIS_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("herobrine_chris_spawn_egg", () -> {
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.HEROBRINE_CHRIS, -10066330, -13421773, (new Properties()));
     });
-    public static final RegistryObject<Item> HEROBRINE_4_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("herobrine_4_spawn_egg", () -> {
-        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.HEROBRINE_4, -3355648, -103, (new Properties()));
+    public static final RegistryObject<Item> HEROBRINE_GREG_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("herobrine_greg_spawn_egg", () -> {
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.HEROBRINE_GREG, -3355648, -103, (new Properties()));
     });
-    public static final RegistryObject<Item> HEROBRINE_5_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("herobrine_5_spawn_egg", () -> {
-        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.HEROBRINE_5, -10066330, -13421773, (new Properties()));
+    public static final RegistryObject<Item> LOW_HEROBRINE_CLONE_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("low_herobrine_clone_spawn_egg", () -> {
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.LOW_HEROBRINE_CLONE, -10066330, -13421773, (new Properties()));
     });
-    public static final RegistryObject<Item> HEROBRINE_6_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("herobrine_6_spawn_egg", () -> {
-        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.HEROBRINE_6, -10066330, -13421773, (new Properties()));
+    public static final RegistryObject<Item> LOW_SHADOW_HEROBRINE_CLONE_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("low_shadow_herobrine_clone_spawn_egg", () -> {
+        return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.LOW_SHADOW_HEROBRINE_CLONE, -10066330, -13421773, (new Properties()));
     });
     public static final RegistryObject<Item> HEROBRINE_7_SPAWN_EGG = AnnoyingVillagersModItems.REGISTRY.register("herobrine_7_spawn_egg", () -> {
         return new ForgeSpawnEggItem(AnnoyingVillagersModEntities.HEROBRINE_7, -1, -1, (new Properties()));

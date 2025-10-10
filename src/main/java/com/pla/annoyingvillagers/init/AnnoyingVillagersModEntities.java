@@ -54,12 +54,12 @@ public class AnnoyingVillagersModEntities {
     public static final RegistryObject<EntityType<BlueDemonTridentParticleEntity>> BD_TRIDENT = register("bd_trident", Builder.<BlueDemonTridentParticleEntity>of(BlueDemonTridentParticleEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(BlueDemonTridentParticleEntity::new).fireImmune().sized(0.0F, 1.8F));
     public static final RegistryObject<EntityType<DarkOBFarEntity>> DARK_OB_FAR = register("projectile_dark_ob_far", Builder.<DarkOBFarEntity>of(DarkOBFarEntity::new, MobCategory.MISC).setCustomClientFactory(DarkOBFarEntity::new).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).sized(0.5F, 0.5F));
 
-    public static final RegistryObject<EntityType<Herobrine1Entity>> HEROBRINE_1 = register("herobrine_1", Builder.<Herobrine1Entity>of(Herobrine1Entity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(Herobrine1Entity::new).fireImmune().sized(0.6F, 1.8F));
-    public static final RegistryObject<EntityType<Herobrine2Entity>> HEROBRINE_2 = register("herobrine_2", Builder.<Herobrine2Entity>of(Herobrine2Entity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(Herobrine2Entity::new).fireImmune().sized(0.6F, 1.8F));
-    public static final RegistryObject<EntityType<Herobrine3Entity>> HEROBRINE_3 = register("herobrine_3", Builder.<Herobrine3Entity>of(Herobrine3Entity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(Herobrine3Entity::new).fireImmune().sized(0.6F, 1.8F));
-    public static final RegistryObject<EntityType<Herobrine4Entity>> HEROBRINE_4 = register("herobrine_4", Builder.<Herobrine4Entity>of(Herobrine4Entity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(Herobrine4Entity::new).fireImmune().sized(0.6F, 1.8F));
-    public static final RegistryObject<EntityType<Herobrine5Entity>> HEROBRINE_5 = register("herobrine_5", Builder.<Herobrine5Entity>of(Herobrine5Entity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(Herobrine5Entity::new).fireImmune().sized(0.6F, 1.8F));
-    public static final RegistryObject<EntityType<Herobrine6Entity>> HEROBRINE_6 = register("herobrine_6", Builder.<Herobrine6Entity>of(Herobrine6Entity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(Herobrine6Entity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<HerobrineCloneEntity>> HEROBRINE_CLONE = register("herobrine_clone", Builder.<HerobrineCloneEntity>of(HerobrineCloneEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(HerobrineCloneEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<ShadowHerobrineCloneEntity>> SHADOW_HEROBRINE_CLONE = register("shadow_herobrine_clone", Builder.<ShadowHerobrineCloneEntity>of(ShadowHerobrineCloneEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(ShadowHerobrineCloneEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<HerobrineChrisEntity>> HEROBRINE_CHRIS = register("herobrine_chris", Builder.<HerobrineChrisEntity>of(HerobrineChrisEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(HerobrineChrisEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<HerobrineGregEntity>> HEROBRINE_GREG = register("herobrine_greg", Builder.<HerobrineGregEntity>of(HerobrineGregEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(HerobrineGregEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<LowHerobrineCloneEntity>> LOW_HEROBRINE_CLONE = register("low_herobrine_clone", Builder.<LowHerobrineCloneEntity>of(LowHerobrineCloneEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(LowHerobrineCloneEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<LowShadowHerobrineCloneEntity>> LOW_SHADOW_HEROBRINE_CLONE = register("low_shadow_herobrine_clone", Builder.<LowShadowHerobrineCloneEntity>of(LowShadowHerobrineCloneEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(LowShadowHerobrineCloneEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<Herobrine7Entity>> HEROBRINE_7 = register("herobrine_7", Builder.<Herobrine7Entity>of(Herobrine7Entity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(Herobrine7Entity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<ArmoredHerobrineEntity>> ARMORED_HEROBRINE = register("armored_herobrine", Builder.<ArmoredHerobrineEntity>of(ArmoredHerobrineEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(ArmoredHerobrineEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<ShadowHerobrineEntity>> SHADOW_HEROBRINE = register("shadow_herobrine", Builder.<ShadowHerobrineEntity>of(ShadowHerobrineEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(ShadowHerobrineEntity::new).fireImmune().sized(0.6F, 1.8F));
@@ -109,38 +109,38 @@ public class AnnoyingVillagersModEntities {
     @SubscribeEvent
     public static void registerSpawnPlacements(SpawnPlacementRegisterEvent event) {
         event.register(
-                AnnoyingVillagersModEntities.HEROBRINE_1.get(),
+                AnnoyingVillagersModEntities.HEROBRINE_CLONE.get(),
                 SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                Herobrine1Entity::canSpawn,
+                HerobrineCloneEntity::canSpawn,
                 SpawnPlacementRegisterEvent.Operation.REPLACE
         );
         event.register(
-                AnnoyingVillagersModEntities.HEROBRINE_2.get(),
+                AnnoyingVillagersModEntities.SHADOW_HEROBRINE_CLONE.get(),
                 SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                Herobrine2Entity::canSpawn,
+                ShadowHerobrineCloneEntity::canSpawn,
                 SpawnPlacementRegisterEvent.Operation.REPLACE
         );
         event.register(
-                AnnoyingVillagersModEntities.HEROBRINE_3.get(),
+                AnnoyingVillagersModEntities.HEROBRINE_CHRIS.get(),
                 SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                Herobrine3Entity::canSpawn,
+                HerobrineChrisEntity::canSpawn,
                 SpawnPlacementRegisterEvent.Operation.REPLACE
         );
         event.register(
-                AnnoyingVillagersModEntities.HEROBRINE_4.get(),
+                AnnoyingVillagersModEntities.HEROBRINE_GREG.get(),
                 SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                Herobrine4Entity::canSpawn,
+                HerobrineGregEntity::canSpawn,
                 SpawnPlacementRegisterEvent.Operation.REPLACE
         );
         event.register(
-                AnnoyingVillagersModEntities.HEROBRINE_6.get(),
+                AnnoyingVillagersModEntities.LOW_SHADOW_HEROBRINE_CLONE.get(),
                 SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                Herobrine6Entity::canSpawn,
+                LowShadowHerobrineCloneEntity::canSpawn,
                 SpawnPlacementRegisterEvent.Operation.REPLACE
         );
         event.register(
@@ -245,9 +245,9 @@ public class AnnoyingVillagersModEntities {
 
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent entityattributecreationevent) {
-        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.HEROBRINE_1.get(), Herobrine1Entity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.HEROBRINE_CLONE.get(), HerobrineCloneEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.BLUE_DEMON.get(), BlueDemonEntity.createAttributes().build());
-        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.HEROBRINE_2.get(), Herobrine2Entity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.SHADOW_HEROBRINE_CLONE.get(), ShadowHerobrineCloneEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.HEROBRINE_7.get(), Herobrine7Entity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.BLUE_DEMON_STAGING.get(), BlueDemonStagingEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.BLUE_DEMON_2.get(), BlueDemon2Entity.createAttributes().build());
@@ -265,7 +265,7 @@ public class AnnoyingVillagersModEntities {
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.BBQ.get(), BbqEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.CHRIS.get(), ChrisEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.INJECTED_CHRIS.get(), InfectedChrisEntity.createAttributes().build());
-        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.HEROBRINE_3.get(), Herobrine3Entity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.HEROBRINE_CHRIS.get(), HerobrineChrisEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.ARMORED_HEROBRINE.get(), ArmoredHerobrineEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.STEVE_2.get(), Steve2Entity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.STEVE_DEAD.get(), SteveDeadEntity.createAttributes().build());
@@ -295,15 +295,15 @@ public class AnnoyingVillagersModEntities {
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.BABY_ENDER_DRAGON.get(), BabyEnderDragonEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.ELITE_HEROBRINE_KNOCKED.get(), EliteHerobrineKnockedEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.ELITE_HEROBRINE_DEAD.get(), EliteHerobrineDeadEntity.createAttributes().build());
-        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.HEROBRINE_5.get(), Herobrine5Entity.createAttributes().build());
-        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.HEROBRINE_6.get(), Herobrine6Entity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.LOW_HEROBRINE_CLONE.get(), LowHerobrineCloneEntity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.LOW_SHADOW_HEROBRINE_CLONE.get(), LowShadowHerobrineCloneEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.NULL.get(), NullEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.NULL_SWORD.get(), NullSwordEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.NULL_AXE.get(), NullAxeEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.NULL_PICKAXE.get(), NullPickaxeEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.NULL_SHOVEL.get(), NullShovelEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.NULL_HOE.get(), NullHoeEntity.createAttributes().build());
-        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.HEROBRINE_4.get(), Herobrine4Entity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.HEROBRINE_GREG.get(), HerobrineGregEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.PLAYER_NPC.get(), PlayerNpcEntity.createAttributes().build());
     }
 }

@@ -8,12 +8,12 @@ import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
-import com.pla.annoyingvillagers.entity.Herobrine1Entity;
+import com.pla.annoyingvillagers.entity.ShadowHerobrineCloneEntity;
 import com.pla.annoyingvillagers.procedures.HerobrineLowProcedure;
 
-public class Herobrine1Renderer extends HumanoidMobRenderer<Herobrine1Entity, HumanoidModel<Herobrine1Entity>> {
+public class ShadowHerobrineCloneRenderer extends HumanoidMobRenderer<ShadowHerobrineCloneEntity, HumanoidModel<ShadowHerobrineCloneEntity>> {
 
-    public Herobrine1Renderer(Context context) {
+    public ShadowHerobrineCloneRenderer(Context context) {
         super(context, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER)), 0.5F);
         this.addLayer(new HumanoidArmorLayer(
                 this,
@@ -22,16 +22,16 @@ public class Herobrine1Renderer extends HumanoidMobRenderer<Herobrine1Entity, Hu
                 context.getModelManager()));
     }
 
-    public ResourceLocation getTextureLocation(Herobrine1Entity herobrineentity) {
-        return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/herobrine.png");
+    public ResourceLocation getTextureLocation(ShadowHerobrineCloneEntity shadowHerobrineCloneEntity) {
+        return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/shadow_herobrine.png");
     }
 
-    protected boolean isShaking(Herobrine1Entity herobrineentity) {
-        Level level = herobrineentity.level();
-        double d0 = herobrineentity.getX();
-        double d1 = herobrineentity.getY();
-        double d2 = herobrineentity.getZ();
+    protected boolean isShaking(ShadowHerobrineCloneEntity shadowHerobrineCloneEntity) {
+        Level level = shadowHerobrineCloneEntity.level();
+        double d0 = shadowHerobrineCloneEntity.getX();
+        double d1 = shadowHerobrineCloneEntity.getY();
+        double d2 = shadowHerobrineCloneEntity.getZ();
 
-        return HerobrineLowProcedure.execute(herobrineentity);
+        return HerobrineLowProcedure.execute(shadowHerobrineCloneEntity);
     }
 }

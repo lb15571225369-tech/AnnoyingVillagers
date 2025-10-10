@@ -36,13 +36,13 @@ import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 
-public class Herobrine3Entity extends HerobrineMob {
+public class HerobrineChrisEntity extends HerobrineMob {
     private boolean wasAiming = false;
-    public Herobrine3Entity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.HEROBRINE_3.get(), level);
+    public HerobrineChrisEntity(SpawnEntity spawnentity, Level level) {
+        this((EntityType) AnnoyingVillagersModEntities.HEROBRINE_CHRIS.get(), level);
     }
 
-    public Herobrine3Entity(EntityType<Herobrine3Entity> entitytype, Level level) {
+    public HerobrineChrisEntity(EntityType<HerobrineChrisEntity> entitytype, Level level) {
         super(entitytype, level);
         this.setMaxUpStep(3.0F);
         this.xpReward = 50;
@@ -106,12 +106,12 @@ public class Herobrine3Entity extends HerobrineMob {
         Herobrine3OnTouchProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
-    public static boolean canSpawn(EntityType<Herobrine3Entity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
-        boolean isNight = (level instanceof ServerLevel serverLevel) && (serverLevel.getDayTime() % 24000L >= 13000L && serverLevel.getDayTime() % 24000L <= 23000L);
-        if (!isNight) return false;
-
+    public static boolean canSpawn(EntityType<HerobrineChrisEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
         ServerLevel serverLevel = level.getLevel();
         if (HerobrineMobData.get(serverLevel).isOccupied(serverLevel)) {
+            return false;
+        }
+        if (!serverLevel.isNight()) {
             return false;
         }
         return Monster.checkMonsterSpawnRules(entityType, level, spawnType, position, random);
@@ -176,7 +176,7 @@ public class Herobrine3Entity extends HerobrineMob {
             String animId = currentEfAnimIdOrNull(this);
             boolean aimingNow = isAiming(animId);
             if (aimingNow && !wasAiming) {
-                Herobrine3Entity herobrine = this;
+                HerobrineChrisEntity herobrine = this;
                 new DelayedTask(10) {
                     @Override
                     public void run() {

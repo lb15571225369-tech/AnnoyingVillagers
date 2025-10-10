@@ -29,8 +29,7 @@
     "RenderBuffersMixin",
     "VillagerMixin",
     "VindicatorMixin",
-    "IllagerMixin",
-    "GolemMixin"
+    "IllagerMixin"
   ],
   "client": [
   ],

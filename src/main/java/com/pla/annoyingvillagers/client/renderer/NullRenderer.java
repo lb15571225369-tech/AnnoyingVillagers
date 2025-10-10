@@ -1,9 +1,7 @@
 package com.pla.annoyingvillagers.client.renderer;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.entity.Herobrine6Entity;
 import com.pla.annoyingvillagers.entity.NullEntity;
-import com.pla.annoyingvillagers.procedures.HerobrineLowProcedure;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;

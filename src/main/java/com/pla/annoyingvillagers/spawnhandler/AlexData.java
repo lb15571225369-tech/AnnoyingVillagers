@@ -1,7 +1,6 @@
 package com.pla.annoyingvillagers.spawnhandler;
 
 import com.pla.annoyingvillagers.entity.AlexEntity;
-import com.pla.annoyingvillagers.entity.Herobrine4Entity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;

@@ -1,7 +1,7 @@
 package com.pla.annoyingvillagers.client.renderer;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.entity.Herobrine3Entity;
+import com.pla.annoyingvillagers.entity.HerobrineChrisEntity;
 import com.pla.annoyingvillagers.procedures.HerobrineLowProcedure;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -10,9 +10,9 @@ import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.resources.ResourceLocation;
 
-public class Herobrine3Renderer extends HumanoidMobRenderer<Herobrine3Entity, HumanoidModel<Herobrine3Entity>> {
+public class HerobrineChrisRenderer extends HumanoidMobRenderer<HerobrineChrisEntity, HumanoidModel<HerobrineChrisEntity>> {
 
-    public Herobrine3Renderer(Context context) {
+    public HerobrineChrisRenderer(Context context) {
         super(context, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER)), 0.5F);
         this.addLayer(new HumanoidArmorLayer(
                 this,
@@ -21,7 +21,7 @@ public class Herobrine3Renderer extends HumanoidMobRenderer<Herobrine3Entity, Hu
                 context.getModelManager()));
     }
 
-    public ResourceLocation getTextureLocation(Herobrine3Entity herobrineentity) {
+    public ResourceLocation getTextureLocation(HerobrineChrisEntity herobrineentity) {
         if (herobrineentity.getHealth() <= 15) {
             return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/infected_chris.png");
         } else {
@@ -29,7 +29,7 @@ public class Herobrine3Renderer extends HumanoidMobRenderer<Herobrine3Entity, Hu
         }
     }
 
-    protected boolean isShaking(Herobrine3Entity herobrineentity) {
+    protected boolean isShaking(HerobrineChrisEntity herobrineentity) {
         return HerobrineLowProcedure.execute(herobrineentity);
     }
 }

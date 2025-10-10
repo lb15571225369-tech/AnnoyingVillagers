@@ -1,6 +1,6 @@
 package com.pla.annoyingvillagers.spawnhandler;
 
-import com.pla.annoyingvillagers.entity.Herobrine6Entity;
+import com.pla.annoyingvillagers.entity.LowShadowHerobrineCloneEntity;
 import com.pla.annoyingvillagers.util.HerobrineMob;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -34,7 +34,7 @@ public class HerobrineMobData extends SavedData {
             return false;
         }
         Entity entity = serverLevel.getEntity(activeId);
-        if ((entity instanceof HerobrineMob || entity instanceof Herobrine6Entity) && entity.isAlive()) {
+        if ((entity instanceof HerobrineMob || entity instanceof LowShadowHerobrineCloneEntity) && entity.isAlive()) {
             return true;
         } else {
             activeId = null;

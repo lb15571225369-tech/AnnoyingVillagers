@@ -57,9 +57,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class Herobrine4Entity extends Monster {
+public class HerobrineGregEntity extends Monster {
     private static final EntityDataAccessor<Boolean> WHITE_EYE =
-            SynchedEntityData.defineId(Herobrine4Entity.class, EntityDataSerializers.BOOLEAN);
+            SynchedEntityData.defineId(HerobrineGregEntity.class, EntityDataSerializers.BOOLEAN);
     private boolean summoning = false;
     private int summonTiming = -1;
     private int escapeTiming = -1;
@@ -88,11 +88,11 @@ public class Herobrine4Entity extends Monster {
         this.summoning = summoning;
     }
 
-    public Herobrine4Entity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.HEROBRINE_4.get(), level);
+    public HerobrineGregEntity(SpawnEntity spawnentity, Level level) {
+        this((EntityType) AnnoyingVillagersModEntities.HEROBRINE_GREG.get(), level);
     }
 
-    public Herobrine4Entity(EntityType<Herobrine4Entity> entitytype, Level level) {
+    public HerobrineGregEntity(EntityType<HerobrineGregEntity> entitytype, Level level) {
         super(entitytype, level);
         this.setMaxUpStep(2.5F);
         this.xpReward = 50;
@@ -227,16 +227,16 @@ public class Herobrine4Entity extends Monster {
                 if (herobrine instanceof HerobrineMob herobrineMob) {
                     herobrineMob.setGregUUID(this.getUUID());
                     herobrineMob.setRenderPortal(renderPortal);
-                } else if (herobrine instanceof Herobrine5Entity herobrine5Entity) {
-                    herobrine5Entity.setSummoned(true);
-                } else if (herobrine instanceof Herobrine6Entity herobrine6Entity) {
+                } else if (herobrine instanceof LowHerobrineCloneEntity lowHerobrineCloneEntity) {
+                    lowHerobrineCloneEntity.setSummoned(true);
+                } else if (herobrine instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
                     if (renderPortal) {
                         AnnoyingVillagers.PACKET_HANDLER.send(
                                 PacketDistributor.TRACKING_ENTITY.with(() -> this),
                                 new ClientboundHerobrinePortalFx(new Vec3(spawnX, spawnY, spawnZ))
                         );
                     }
-                    herobrine6Entity.setSummoned(true);
+                    lowShadowHerobrineCloneEntity.setSummoned(true);
                 }
 
                 herobrine.moveTo(spawnX, spawnY, spawnZ, this.getYRot(), this.getXRot());
@@ -327,17 +327,17 @@ public class Herobrine4Entity extends Monster {
         // Herobrine on the left side
         String leftHerobrine;
         if (Math.random() <= 0.5D) {
-            leftHerobrine = "annoyingvillagers:herobrine_5";
+            leftHerobrine = "annoyingvillagers:low_herobrine_clone";
         } else {
-            leftHerobrine = "annoyingvillagers:herobrine_6";
+            leftHerobrine = "annoyingvillagers:low_shadow_herobrine_clone";
         }
         spawnHerobrineOffset(leftHerobrine, 0.0, +side, y, fx, fz, lx, lz, false);
 
         String rightHerobrine;
         if (Math.random() <= 0.5D) {
-            rightHerobrine = "annoyingvillagers:herobrine_5";
+            rightHerobrine = "annoyingvillagers:low_herobrine_clone";
         } else {
-            rightHerobrine = "annoyingvillagers:herobrine_6";
+            rightHerobrine = "annoyingvillagers:low_shadow_herobrine_clone";
         }
         spawnHerobrineOffset(rightHerobrine, 0.0, -side, y, fx, fz, lx, lz, false);
 
@@ -345,9 +345,9 @@ public class Herobrine4Entity extends Monster {
         if (Math.random() >= 0.7D) {
             String frontHerobrine;
             if (Math.random() <= 0.5D) {
-                frontHerobrine = "annoyingvillagers:herobrine_5";
+                frontHerobrine = "annoyingvillagers:low_herobrine_clone";
             } else {
-                frontHerobrine = "annoyingvillagers:herobrine_6";
+                frontHerobrine = "annoyingvillagers:low_shadow_herobrine_clone";
             }
 
             spawnHerobrineOffset(frontHerobrine, front, 0.0, y, fx, fz, lx, lz, false);
@@ -362,18 +362,18 @@ public class Herobrine4Entity extends Monster {
         );
 
         List<String> herobrines = new ArrayList<>();
-        herobrines.add("annoyingvillagers:herobrine_1");
-        herobrines.add("annoyingvillagers:herobrine_2");
-        herobrines.add("annoyingvillagers:herobrine_3");
+        herobrines.add("annoyingvillagers:herobrine_clone");
+        herobrines.add("annoyingvillagers:shadow_herobrine_clone");
+        herobrines.add("annoyingvillagers:herobrine_chris");
         herobrines.add("annoyingvillagers:herobrine_7");
         herobrines.add("annoyingvillagers:armored_herobrine");
-        herobrines.add("annoyingvillagers:herobrine_6");
+        herobrines.add("annoyingvillagers:low_shadow_herobrine_clone");
 
         Random random = new Random();
         String herobrineId = herobrines.get(random.nextInt(herobrines.size()));
 
-        // if herobrine_6, spawn 10 to 20 herobrine_6 around
-        if (herobrineId.equals("annoyingvillagers:herobrine_6")) {
+        // if low_shadow_herobrine_clone, spawn 10 to 20 low_shadow_herobrine_clone around
+        if (herobrineId.equals("annoyingvillagers:low_shadow_herobrine_clone")) {
             spawnRandomHerobrinesInRadius(herobrineId, new Random().nextInt(10, 20), 20, true);
         } else {
             double yawRad = Math.toRadians(this.getYRot());
@@ -574,6 +574,11 @@ public class Herobrine4Entity extends Monster {
                 return null;
             } else {
             }
+
+            BlockPos blockPos = this.getOnPos();
+            int surfaceY = serverLevel.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, blockPos).getY();
+            BlockPos spawnPos = new BlockPos(blockPos.getX(), surfaceY, blockPos.getZ());
+            this.moveTo(spawnPos, this.getYRot(), this.getXRot());
         }
 
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
@@ -616,7 +621,7 @@ public class Herobrine4Entity extends Monster {
         pCompound.putInt("SummonTimestamp", summonTimestamp);
     }
 
-    public static boolean canSpawn(EntityType<Herobrine4Entity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
+    public static boolean canSpawn(EntityType<HerobrineGregEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
         ServerLevel serverLevel = level.getLevel();
         if (GregData.get(serverLevel).isOccupied(serverLevel)) {
             return false;

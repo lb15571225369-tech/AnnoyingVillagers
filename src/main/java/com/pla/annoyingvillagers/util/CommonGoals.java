@@ -47,11 +47,11 @@ public class CommonGoals {
     public static void registerGoalForBlueDemonNpc(Monster monster) {
         monster.getNavigation().getNodeEvaluator().setCanOpenDoors(true);
         monster.targetSelector.addGoal(1, new HurtByTargetGoal(monster, new Class[0]));
-        monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, Herobrine1Entity.class, true, false));
-        monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, Herobrine2Entity.class, true, false));
-        monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, Herobrine3Entity.class, true, false));
-        monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, Herobrine5Entity.class, true, false));
-        monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, Herobrine6Entity.class, true, false));
+        monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, HerobrineCloneEntity.class, true, false));
+        monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, ShadowHerobrineCloneEntity.class, true, false));
+        monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, HerobrineChrisEntity.class, true, false));
+        monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, LowHerobrineCloneEntity.class, true, false));
+        monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, LowShadowHerobrineCloneEntity.class, true, false));
         monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, Herobrine7Entity.class, true, false));
         monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, AegisHerobrineEntity.class, true, false));
         monster.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(monster, SwordsmanHerobrineEntity.class, true, false));
@@ -89,11 +89,11 @@ public class CommonGoals {
         mob.getNavigation().getNodeEvaluator().setCanOpenDoors(true);
         mob.targetSelector.addGoal(1, (new HurtByTargetGoal(mob, new Class[0])).setAlertOthers(new Class[0]));
 
-        mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, Herobrine1Entity.class, true, false));
-        mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, Herobrine2Entity.class, true, false));
-        mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, Herobrine3Entity.class, true, false));
-        mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, Herobrine5Entity.class, true, false));
-        mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, Herobrine6Entity.class, true, false));
+        mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, HerobrineCloneEntity.class, true, false));
+        mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, ShadowHerobrineCloneEntity.class, true, false));
+        mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, HerobrineChrisEntity.class, true, false));
+        mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, LowHerobrineCloneEntity.class, true, false));
+        mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, LowShadowHerobrineCloneEntity.class, true, false));
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, Herobrine7Entity.class, true, false));
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, NullEntity.class, true, false));
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, AegisHerobrineEntity.class, true, false));
@@ -130,11 +130,11 @@ public class CommonGoals {
 
     public static void registerGoalForNeutralNpc(PathfinderMob mob) {
         mob.getNavigation().getNodeEvaluator().setCanOpenDoors(true);
-        mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, Herobrine1Entity.class, true, false));
-        mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, Herobrine2Entity.class, true, false));
-        mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, Herobrine3Entity.class, true, false));
-        mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, Herobrine5Entity.class, true, false));
-        mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, Herobrine6Entity.class, true, false));
+        mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, HerobrineCloneEntity.class, true, false));
+        mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, ShadowHerobrineCloneEntity.class, true, false));
+        mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, HerobrineChrisEntity.class, true, false));
+        mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, LowHerobrineCloneEntity.class, true, false));
+        mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, LowShadowHerobrineCloneEntity.class, true, false));
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, Herobrine7Entity.class, true, false));
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, NullEntity.class, true, false));
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, AegisHerobrineEntity.class, true, false));
@@ -186,11 +186,11 @@ public class CommonGoals {
         mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, PurpleVillagerGeneralEntity.class, false, false));
         mob.targetSelector.addGoal(6, new NearestAttackableTargetGoal<>(mob, BlueDemonEntity.class, false, false));
         mob.targetSelector.addGoal(7, new NearestAttackableTargetGoal<>(mob, BlueDemon2Entity.class, false, false));
-        mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, Herobrine1Entity.class, true, false));
-        mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, Herobrine2Entity.class, true, false));
-        mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, Herobrine3Entity.class, true, false));
-        mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, Herobrine5Entity.class, true, false));
-        mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, Herobrine6Entity.class, true, false));
+        mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, HerobrineCloneEntity.class, true, false));
+        mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, ShadowHerobrineCloneEntity.class, true, false));
+        mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, HerobrineChrisEntity.class, true, false));
+        mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, LowHerobrineCloneEntity.class, true, false));
+        mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, LowShadowHerobrineCloneEntity.class, true, false));
         mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, Herobrine7Entity.class, true, false));
         mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, NullEntity.class, true, false));
         mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, AegisHerobrineEntity.class, true, false));
@@ -216,11 +216,11 @@ public class CommonGoals {
     public static void attackAllMonstersGoals(PlayerNpcEntity playerMobEntity) {
         playerMobEntity.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(playerMobEntity, Monster.class, true, (target) -> !(target instanceof PlayerMobEntity)));
         playerMobEntity.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(playerMobEntity, AbstractIllager.class, true, false));
-        playerMobEntity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(playerMobEntity, Herobrine1Entity.class, true, false));
-        playerMobEntity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(playerMobEntity, Herobrine2Entity.class, true, false));
-        playerMobEntity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(playerMobEntity, Herobrine3Entity.class, true, false));
-        playerMobEntity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(playerMobEntity, Herobrine5Entity.class, true, false));
-        playerMobEntity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(playerMobEntity, Herobrine6Entity.class, true, false));
+        playerMobEntity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(playerMobEntity, HerobrineCloneEntity.class, true, false));
+        playerMobEntity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(playerMobEntity, ShadowHerobrineCloneEntity.class, true, false));
+        playerMobEntity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(playerMobEntity, HerobrineChrisEntity.class, true, false));
+        playerMobEntity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(playerMobEntity, LowHerobrineCloneEntity.class, true, false));
+        playerMobEntity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(playerMobEntity, LowShadowHerobrineCloneEntity.class, true, false));
         playerMobEntity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(playerMobEntity, Herobrine7Entity.class, true, false));
         playerMobEntity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(playerMobEntity, NullEntity.class, true, false));
         playerMobEntity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(playerMobEntity, AegisHerobrineEntity.class, true, false));
@@ -235,11 +235,11 @@ public class CommonGoals {
     }
 
     public static void runAwayFromHerobrineGoals(PathfinderMob playerMobEntity, float distance) {
-        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, Herobrine1Entity.class, distance, 1.2D, 1.8D));
-        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, Herobrine2Entity.class, distance, 1.2D, 1.8D));
-        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, Herobrine3Entity.class, distance, 1.2D, 1.8D));
-        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, Herobrine5Entity.class, distance, 1.2D, 1.8D));
-        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, Herobrine6Entity.class, distance, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, HerobrineCloneEntity.class, distance, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, ShadowHerobrineCloneEntity.class, distance, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, HerobrineChrisEntity.class, distance, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, LowHerobrineCloneEntity.class, distance, 1.2D, 1.8D));
+        playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, LowShadowHerobrineCloneEntity.class, distance, 1.2D, 1.8D));
         playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, Herobrine7Entity.class, distance, 1.2D, 1.8D));
         playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, NullEntity.class, distance, 1.2D, 1.8D));
         playerMobEntity.goalSelector.addGoal(1, new AvoidEntityGoal<>(playerMobEntity, AegisHerobrineEntity.class, distance, 1.2D, 1.8D));

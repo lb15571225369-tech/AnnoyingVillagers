@@ -2,8 +2,9 @@ package com.pla.annoyingvillagers.compat.player_mobs;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.entity.Herobrine4Entity;
+import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.util.HerobrineEyesUtil;
+import com.pla.annoyingvillagers.util.HerobrineMob;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -28,26 +29,12 @@ public class PlayerMobEpicFightOverlayLayer<E extends LivingEntity, AM extends H
     public PlayerMobEpicFightOverlayLayer(MeshProvider<AM> mesh) { super(mesh); }
 
     private ResourceLocation pickTexture(E e) {
-        if (EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_5"))) {
+        if (e instanceof LowHerobrineCloneEntity) {
             String name = e.hasCustomName() ? e.getCustomName().getString() : e.getName().getString();
             return HerobrineEyesUtil.getHerobrineEyesTexture(name);
         } else if (EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "infected_player_mob"))) {
             return BLOOD_TEXTURE;
-        }  else if (EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_1")) ||
-                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_2")) ||
-                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_3")) ||
-                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_4"))
-                        && (e instanceof Herobrine4Entity herobrine4Entity && herobrine4Entity.isWhiteEye()) ||
-                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_6")) ||
-                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_7")) ||
-                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "null")) ||
-                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "armored_herobrine")) ||
-                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "shadow_herobrine")) ||
-                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "glaive_herobrine")) ||
-                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "reaper_herobrine")) ||
-                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "swordsman_herobrine")) ||
-                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "sledgehammer_herobrine")) ||
-                EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "aegis_herobrine"))) {
+        }  else if (e instanceof HerobrineMob || e instanceof LowShadowHerobrineCloneEntity) {
             return DEFAULT_EYE;
         }
         return null;

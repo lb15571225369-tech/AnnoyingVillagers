@@ -20,6 +20,6 @@ public class DarkHerobrineDeadRenderer extends HumanoidMobRenderer<ShadowHerobri
     }
 
     public ResourceLocation getTextureLocation(ShadowHerobrineDeadEntity darkHerobrineDeadEntity) {
-        return new ResourceLocation("annoyingvillagers", "textures/entities/herobrine_2.png");
+        return new ResourceLocation("annoyingvillagers", "textures/entities/shadow_herobrine.png");
     }
 }

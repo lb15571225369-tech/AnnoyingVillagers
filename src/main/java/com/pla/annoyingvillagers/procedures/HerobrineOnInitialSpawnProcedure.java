@@ -30,10 +30,10 @@ public class HerobrineOnInitialSpawnProcedure {
         if (entity != null) {
             if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                 String killedName = entity.getPersistentData().getString("killed_name");
-                if (!killedName.isEmpty()) { // Herobrine #5, #6
+                if (!killedName.isEmpty()) { // Low Herobrine Clone
                     levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal(killedName + " has been possessed by §5Herobrine§r."), false);
                 } else {
-                    if ((entity instanceof Herobrine5Entity herobrine5Entity && !herobrine5Entity.isSummoned()) || (entity instanceof Herobrine6Entity herobrine6Entity && !herobrine6Entity.isSummoned())) {
+                    if ((entity instanceof LowHerobrineCloneEntity lowHerobrineCloneEntity && !lowHerobrineCloneEntity.isSummoned()) || (entity instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity && !lowShadowHerobrineCloneEntity.isSummoned())) {
                         levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("§5Herobrine§r has possessed a new player."), false);
                     } else {
                         if (recallTicks == 0) {
@@ -50,9 +50,9 @@ public class HerobrineOnInitialSpawnProcedure {
                                     herobrineMob.setRenderPortal(true);
                                     HerobrinePortalProcedure.spawnHerobrine(herobrineMob);
                                     levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal(herobrineMob.getChatName() + " has arrived from the §4Herobrine Vessel Realm§r"), false);
-                                } else if (entity instanceof Herobrine6Entity herobrine6Entity) {
-                                    herobrine6Entity.setRenderPortal(true);
-                                    HerobrinePortalProcedure.spawnHerobrine(herobrine6Entity);
+                                } else if (entity instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
+                                    lowShadowHerobrineCloneEntity.setRenderPortal(true);
+                                    HerobrinePortalProcedure.spawnHerobrine(lowShadowHerobrineCloneEntity);
                                     levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("§5Netherite Herobrine§r has arrived from the §4Herobrine Vessel Realm§r"), false);
                                 }
                             }
@@ -72,7 +72,7 @@ public class HerobrineOnInitialSpawnProcedure {
                 }
             }
 
-            if (entity instanceof Herobrine3Entity) {
+            if (entity instanceof HerobrineChrisEntity) {
                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                     levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine Chris§r> Are you talking about ... me ?"), false);
                 }

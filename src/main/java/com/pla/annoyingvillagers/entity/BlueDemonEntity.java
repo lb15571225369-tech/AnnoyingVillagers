@@ -28,6 +28,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -200,6 +201,11 @@ public class BlueDemonEntity extends Monster {
                 this.discard();
                 return null;
             }
+
+            BlockPos blockPos = this.getOnPos();
+            int surfaceY = serverLevel.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, blockPos).getY();
+            BlockPos spawnPos = new BlockPos(blockPos.getX(), surfaceY, blockPos.getZ());
+            this.moveTo(spawnPos, this.getYRot(), this.getXRot());
         }
 
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
@@ -218,11 +224,8 @@ public class BlueDemonEntity extends Monster {
     }
 
     public static boolean canSpawn(EntityType<BlueDemonEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
-        if (!level.dimensionType().hasSkyLight()) return false;
-        boolean thundering = (level instanceof ServerLevel serverLevel) && serverLevel.isThundering();
-        if (!thundering) return false;
-
         ServerLevel serverLevel = level.getLevel();
+        if (!serverLevel.isThundering()) return false;
         if (BluedemonData.get(serverLevel).isOccupied(serverLevel)) {
             return false;
         }

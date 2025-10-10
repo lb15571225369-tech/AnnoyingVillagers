@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.entity;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.*;
@@ -37,22 +38,19 @@ import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 
-public class Herobrine1Entity extends HerobrineMob {
+public class ShadowHerobrineCloneEntity extends HerobrineMob {
     private boolean wasAiming = false;
-
-    public Herobrine1Entity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.HEROBRINE_1.get(), level);
+    public ShadowHerobrineCloneEntity(SpawnEntity spawnentity, Level level) {
+        this((EntityType) AnnoyingVillagersModEntities.SHADOW_HEROBRINE_CLONE.get(), level);
     }
 
-    public Herobrine1Entity(EntityType<Herobrine1Entity> entitytype, Level level) {
+    public ShadowHerobrineCloneEntity(EntityType<ShadowHerobrineCloneEntity> entitytype, Level level) {
         super(entitytype, level);
         this.setMaxUpStep(0.7F);
         this.xpReward = 300;
         this.setNoAi(false);
-        this.setPersistenceRequired();
-        this.setCustomNameVisible(false);
-        this.setChatName("§5Herobrine Clone§r");
-        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.OBSIDIAN_WEAPON.get()));
+        this.setChatName("§5Shadow Herobrine Clone§r");
+        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get()));
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -84,10 +82,6 @@ public class Herobrine1Entity extends HerobrineMob {
         return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.death"));
     }
 
-    public void thunderHit(ServerLevel serverlevel, LightningBolt lightningbolt) {
-        super.thunderHit(serverlevel, lightningbolt);
-    }
-
     public boolean causeFallDamage(float f, float f1, DamageSource damagesource) {
         return super.causeFallDamage(f, f1, damagesource);
     }
@@ -109,7 +103,7 @@ public class Herobrine1Entity extends HerobrineMob {
             InfectedPlayerMobEntity corpse = new InfectedPlayerMobEntity(AnnoyingVillagersModEntities.INFECTED_PLAYER_MOB.get(), serverLevel);
             corpse.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
             String killedName = this.getPersistentData().getString("killed_name");
-            corpse.getPersistentData().putString("possessed_by", "herobrine_1");
+            corpse.getPersistentData().putString("possessed_by", "shadow_herobrine_clone");
             if (killedName.isEmpty()) {
                 killedName = String.valueOf(NameManager.INSTANCE.getRandomName());
             }
@@ -166,7 +160,7 @@ public class Herobrine1Entity extends HerobrineMob {
             to = this.getEyePosition().add(this.getLookAngle().scale(16.0));
         }
 
-        BlockState block = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get().defaultBlockState();
+        BlockState block = AnnoyingVillagersModBlocks.DARKOB.get().defaultBlockState();
         BlockProjectileEntity throwingObsidian = new BlockProjectileEntity(
                 this.level(),
                 this,
@@ -186,7 +180,7 @@ public class Herobrine1Entity extends HerobrineMob {
             String animId = currentEfAnimIdOrNull(this);
             boolean aimingNow = isAiming(animId);
             if (aimingNow && !wasAiming) {
-                Herobrine1Entity herobrine = this;
+                ShadowHerobrineCloneEntity herobrine = this;
                 new DelayedTask(10) {
                     @Override
                     public void run() {
@@ -205,12 +199,12 @@ public class Herobrine1Entity extends HerobrineMob {
         Herobrine1OnEntityTickUpdateProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
-    public static boolean canSpawn(EntityType<Herobrine1Entity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
-        boolean isNight = (level instanceof ServerLevel serverLevel) && (serverLevel.getDayTime() % 24000L >= 13000L && serverLevel.getDayTime() % 24000L <= 23000L);
-        if (!isNight) return false;
-
+    public static boolean canSpawn(EntityType<ShadowHerobrineCloneEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
         ServerLevel serverLevel = level.getLevel();
         if (HerobrineMobData.get(serverLevel).isOccupied(serverLevel)) {
+            return false;
+        }
+        if (!serverLevel.isNight()) {
             return false;
         }
         return Monster.checkMonsterSpawnRules(entityType, level, spawnType, position, random);
@@ -222,7 +216,7 @@ public class Herobrine1Entity extends HerobrineMob {
         builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3D);
         builder = builder.add(Attributes.MAX_HEALTH, 40.0D);
         builder = builder.add(Attributes.ARMOR, 40.0D);
-        builder = builder.add(Attributes.ATTACK_DAMAGE, 9.0D);
+        builder = builder.add(Attributes.ATTACK_DAMAGE, 12.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 64.0D);
         builder = builder.add(Attributes.ATTACK_KNOCKBACK, 2.0D);
         return builder;

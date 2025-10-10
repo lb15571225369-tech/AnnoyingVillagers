@@ -2,14 +2,12 @@ package com.pla.annoyingvillagers.procedures;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.ArmoredHerobrineEntity;
-import com.pla.annoyingvillagers.entity.Herobrine4Entity;
-import com.pla.annoyingvillagers.entity.Herobrine6Entity;
+import com.pla.annoyingvillagers.entity.HerobrineGregEntity;
+import com.pla.annoyingvillagers.entity.LowShadowHerobrineCloneEntity;
 import com.pla.annoyingvillagers.entity.NullEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.util.HerobrineMob;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -75,10 +73,10 @@ public class RiseFromGroundHandler {
         if (entity instanceof HerobrineMob herobrineMob) {
             if (herobrineMob.getGregUUID() != null) {
                 Entity greg = ((ServerLevel) herobrineMob.level()).getEntity(herobrineMob.getGregUUID());
-                if (greg instanceof Herobrine4Entity herobrine4Entity && herobrine4Entity.isAlive()) {
-                    if (herobrine4Entity.isSummoning()) {
-                        herobrine4Entity.setSummoning(false);
-                        herobrine4Entity.setNoAi(false);
+                if (greg instanceof HerobrineGregEntity herobrineGregEntity && herobrineGregEntity.isAlive()) {
+                    if (herobrineGregEntity.isSummoning()) {
+                        herobrineGregEntity.setSummoning(false);
+                        herobrineGregEntity.setNoAi(false);
                     }
                 }
             }
@@ -90,8 +88,8 @@ public class RiseFromGroundHandler {
                 armoredHerobrineEntity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
             }
         }
-        if (entity instanceof Herobrine6Entity herobrine6Entity) {
-            herobrine6Entity.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+        if (entity instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
+            lowShadowHerobrineCloneEntity.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
         }
     }
 }

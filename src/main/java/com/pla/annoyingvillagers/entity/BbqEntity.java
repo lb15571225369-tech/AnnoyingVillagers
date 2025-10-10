@@ -106,10 +106,10 @@ public class BbqEntity extends PathfinderMob implements RangedAttackMob {
                 return followTarget != null && followTarget.isAlive() && distanceTo(followTarget) > 10.0D;
             }
         });
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, Herobrine1Entity.class, false, false));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, Herobrine2Entity.class, false, false));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, Herobrine1Entity.class, false, false));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, Herobrine3Entity.class, false, false));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, HerobrineCloneEntity.class, false, false));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, ShadowHerobrineCloneEntity.class, false, false));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, LowHerobrineCloneEntity.class, false, false));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, HerobrineChrisEntity.class, false, false));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, (target) -> followTarget != null
                 && followTarget.isAlive()
                 && target != null
@@ -130,8 +130,8 @@ public class BbqEntity extends PathfinderMob implements RangedAttackMob {
                 return (double) (this.mob.getBbWidth() * this.mob.getBbWidth() + livingentity.getBbWidth());
             }
         });
-        this.targetSelector.addGoal(25, new NearestAttackableTargetGoal(this, Herobrine3Entity.class, false, false));
-        this.targetSelector.addGoal(26, new NearestAttackableTargetGoal(this, Herobrine2Entity.class, false, false));
+        this.targetSelector.addGoal(25, new NearestAttackableTargetGoal(this, HerobrineChrisEntity.class, false, false));
+        this.targetSelector.addGoal(26, new NearestAttackableTargetGoal(this, LowShadowHerobrineCloneEntity.class, false, false));
         this.goalSelector.addGoal(27, new RandomStrollGoal(this, 1.0D));
         this.targetSelector.addGoal(28, new HurtByTargetGoal(this, new Class[0]));
         this.goalSelector.addGoal(29, new RandomLookAroundGoal(this));

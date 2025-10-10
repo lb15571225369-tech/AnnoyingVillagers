@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.util.HerobrineMob;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -60,18 +61,11 @@ public class GuardBreakProcedure {
         if (entity != null && entity1 != null) {
             LivingEntity livingentity;
 
-            if (ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString().equals("minecraft:player")) {
+            if (entity instanceof Player) {
                 float f;
                 LivingEntity livingentity1;
 
-                if (ForgeRegistries.ENTITY_TYPES.getKey(entity1.getType()).toString().equals(AnnoyingVillagers.MODID + ":herobrine")) {
-                    if (entity instanceof LivingEntity) {
-                        livingentity = (LivingEntity)entity;
-                        f = livingentity.getHealth();
-                    } else {
-                        f = -1.0F;
-                    }
-                } else if (ForgeRegistries.ENTITY_TYPES.getKey(entity1.getType()).toString().equals(AnnoyingVillagers.MODID + ":herobrine_2")) {
+                if (entity1 instanceof HerobrineMob) {
                     if (entity instanceof LivingEntity) {
                         livingentity = (LivingEntity)entity;
                         f = livingentity.getHealth();
@@ -81,7 +75,7 @@ public class GuardBreakProcedure {
                 }
             }
 
-            if (ForgeRegistries.ENTITY_TYPES.getKey(entity1.getType()).toString().equals("minecraft:player")) {
+            if (entity instanceof Player) {
                 LivingEntity livingentity2;
 
                 if (entity instanceof TamableAnimal) {
