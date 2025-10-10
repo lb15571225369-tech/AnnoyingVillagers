@@ -58,7 +58,7 @@ public class HerobrineOnInitialSpawnProcedure {
                             }
                         } else {
                             if (entity instanceof HerobrineMob herobrineMob) {
-                                if (mobSpawnType.equals(MobSpawnType.SPAWN_EGG)) {
+                                if (mobSpawnType.equals(MobSpawnType.SPAWN_EGG) || mobSpawnType.equals(MobSpawnType.COMMAND)) {
                                     herobrineMob.setRenderPortal(true);
                                 }
                                 HerobrinePortalProcedure.spawnHerobrine(herobrineMob);

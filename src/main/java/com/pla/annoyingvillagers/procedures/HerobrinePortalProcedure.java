@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.entity.Herobrine4Entity;
+import com.pla.annoyingvillagers.entity.ShadowHerobrineEntity;
 import com.pla.annoyingvillagers.util.HerobrineMob;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -37,6 +38,9 @@ public class HerobrinePortalProcedure {
                                 herobrineMob.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                     } catch (CommandSyntaxException e) {
                     }
+                }
+                if (herobrineMob instanceof ShadowHerobrineEntity shadowHerobrineEntity) {
+                    shadowHerobrineEntity.spawnDarkObEntities();
                 }
             }
             spawnRising(serverLevel, livingEntity, livingEntity.getX(), livingEntity.getZ(), 0.03);

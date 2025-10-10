@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.procedures;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.ArmoredHerobrineEntity;
 import com.pla.annoyingvillagers.entity.Herobrine4Entity;
+import com.pla.annoyingvillagers.entity.Herobrine6Entity;
 import com.pla.annoyingvillagers.entity.NullEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.util.HerobrineMob;
@@ -88,6 +89,9 @@ public class RiseFromGroundHandler {
             if (entity instanceof ArmoredHerobrineEntity armoredHerobrineEntity) {
                 armoredHerobrineEntity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
             }
+        }
+        if (entity instanceof Herobrine6Entity herobrine6Entity) {
+            herobrine6Entity.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
         }
     }
 }

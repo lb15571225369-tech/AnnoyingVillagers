@@ -22,7 +22,11 @@ public class Herobrine3Renderer extends HumanoidMobRenderer<Herobrine3Entity, Hu
     }
 
     public ResourceLocation getTextureLocation(Herobrine3Entity herobrineentity) {
-        return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/herobrine.png");
+        if (herobrineentity.getHealth() <= 15) {
+            return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/infected_chris.png");
+        } else {
+            return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/herobrine.png");
+        }
     }
 
     protected boolean isShaking(Herobrine3Entity herobrineentity) {

@@ -6,6 +6,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.util.HerobrineMob;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -13,6 +14,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -63,7 +65,6 @@ public class ShadowHerobrineEntity extends HerobrineMob {
         this.setPersistenceRequired();
         this.setChatName("§5Shadow Herobrine§r");
         this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get()));
-        this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get()));
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -173,7 +174,50 @@ public class ShadowHerobrineEntity extends HerobrineMob {
         DarkHerobrineOnPlayerTouchProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
-    private void spawnDarkObEntities() {
+    private Vec3 getUpBlockPos() {
+        final double upY     = 2.0;
+        Vec3 eye = this.getEyePosition(1.0F);
+        return eye.add(0.0, upY, 0.0);
+    }
+
+    private Vec3 getRightBlockPos() {
+        final double lateral = 2.0;
+        final double sideY   = 0.0;
+
+        Vec3 eye = this.getEyePosition(1.0F);
+        Vec3 look = this.getViewVector(1.0F);
+        Vec3 horiz = new Vec3(look.x, 0.0, look.z);
+
+        if (horiz.lengthSqr() < 1.0e-6) {
+            float yaw = this.getYRot() * ((float)Math.PI / 180F);
+            horiz = new Vec3(-Mth.sin(yaw), 0.0, Mth.cos(yaw));
+        }
+        Vec3 upAxis = new Vec3(0, 1, 0);
+        Vec3 rightAxis = horiz.cross(upAxis).normalize();
+
+        return eye.add(rightAxis.scale(lateral)).add(0.0, sideY, 0.0);
+    }
+
+    private Vec3 getLeftBlockPos() {
+        final double lateral = 2.0;
+        final double sideY   = 0.0;
+
+        Vec3 eye = this.getEyePosition(1.0F);
+        Vec3 look = this.getViewVector(1.0F);
+        Vec3 horiz = new Vec3(look.x, 0.0, look.z);
+
+        if (horiz.lengthSqr() < 1.0e-6) {
+            float yaw = this.getYRot() * ((float)Math.PI / 180F);
+            horiz = new Vec3(-Mth.sin(yaw), 0.0, Mth.cos(yaw));
+        }
+        Vec3 upAxis = new Vec3(0, 1, 0);
+        Vec3 rightAxis = horiz.cross(upAxis).normalize();
+        Vec3 leftAxis  = rightAxis.scale(-1);
+
+        return eye.add(leftAxis.scale(lateral)).add(0.0, sideY, 0.0);
+    }
+
+    public void spawnDarkObEntities() {
         if (this.level() instanceof ServerLevel serverLevel) {
             BlockState block = AnnoyingVillagersModBlocks.DARKOB.get().defaultBlockState();
 
@@ -185,7 +229,7 @@ public class ShadowHerobrineEntity extends HerobrineMob {
                 );
                 darkObbyUp.setNoGravity(true);
                 darkObbyUp.setNotReadyForShoot(true);
-                darkObbyUp.moveTo(this.getX(), this.getY() + 4, this.getZ(), 0.0F, 0.0F);
+                darkObbyUp.moveTo(getUpBlockPos());
                 serverLevel.addFreshEntity(darkObbyUp);
                 this.darkObUpUUID = darkObbyUp.getUUID();
                 this.darkObUp = darkObbyUp;
@@ -199,7 +243,7 @@ public class ShadowHerobrineEntity extends HerobrineMob {
                 );
                 darkObbyRight.setNoGravity(true);
                 darkObbyRight.setNotReadyForShoot(true);
-                darkObbyRight.moveTo(this.getX() + 2, this.getY() + 2, this.getZ(), 0.0F, 0.0F);
+                darkObbyRight.moveTo(getRightBlockPos());
                 serverLevel.addFreshEntity(darkObbyRight);
                 this.darkObRightUUID = darkObbyRight.getUUID();
                 this.darkObRight = darkObbyRight;
@@ -213,7 +257,7 @@ public class ShadowHerobrineEntity extends HerobrineMob {
                 );
                 darkObbyLeft.setNoGravity(true);
                 darkObbyLeft.setNotReadyForShoot(true);
-                darkObbyLeft.moveTo(this.getX() - 2, this.getY() + 2, this.getZ(), 0.0F, 0.0F);
+                darkObbyLeft.moveTo(getLeftBlockPos());
                 serverLevel.addFreshEntity(darkObbyLeft);
                 this.darkObLeftUUID = darkObbyLeft.getUUID();
                 this.darkObLeft = darkObbyLeft;
@@ -377,13 +421,13 @@ public class ShadowHerobrineEntity extends HerobrineMob {
                 }
             }
             if (this.darkObUp != null) {
-                this.darkObUp.moveTo(this.getX(), this.getY() + 4, this.getZ());
+                this.darkObUp.moveTo(getUpBlockPos());
             }
             if (this.darkObRight != null) {
-                this.darkObRight.moveTo(this.getX() + 2, this.getY() + 2, this.getZ());
+                this.darkObRight.moveTo(getRightBlockPos());
             }
             if (this.darkObLeft != null) {
-                this.darkObLeft.moveTo(this.getX() - 2, this.getY() + 2, this.getZ());
+                this.darkObLeft.moveTo(getLeftBlockPos());
             }
 
             boolean aimingNow = isAiming(animId);

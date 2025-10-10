@@ -5,6 +5,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -42,9 +43,29 @@ public class HerobrineEnderEyeItem extends Item {
     public static void spawnAndShootDarkObPillars(ServerLevel level, LivingEntity shooter, int delayTicks) {
         BlockState block = Objects.requireNonNull(AnnoyingVillagersModBlocks.DARKOB.get()).defaultBlockState();
 
-        BlockProjectileEntity up   = makeFloating(level, shooter, block, shooter.getX(),     shooter.getY() + 4, shooter.getZ());
-        BlockProjectileEntity left = makeFloating(level, shooter, block, shooter.getX() - 2, shooter.getY() + 2, shooter.getZ());
-        BlockProjectileEntity right= makeFloating(level, shooter, block, shooter.getX() + 2, shooter.getY() + 2, shooter.getZ());
+        final double lateral = 2.0;
+        final double sideY   = 0.0;
+        final double upY     = 2.0;
+
+        Vec3 eye = shooter.getEyePosition(1.0F);
+        Vec3 look = shooter.getViewVector(1.0F);
+        Vec3 horiz = new Vec3(look.x, 0.0, look.z);
+
+        if (horiz.lengthSqr() < 1.0e-6) {
+            float yaw = shooter.getYRot() * ((float)Math.PI / 180F);
+            horiz = new Vec3(-Mth.sin(yaw), 0.0, Mth.cos(yaw));
+        }
+        Vec3 upAxis = new Vec3(0, 1, 0);
+        Vec3 rightAxis = horiz.cross(upAxis).normalize();
+        Vec3 leftAxis  = rightAxis.scale(-1);
+
+        Vec3 upPos = eye.add(0.0, upY, 0.0);
+        Vec3 leftPos = eye.add(leftAxis.scale(lateral)).add(0.0, sideY, 0.0);
+        Vec3 rightPos = eye.add(rightAxis.scale(lateral)).add(0.0, sideY, 0.0);
+
+        BlockProjectileEntity up = makeFloating(level, shooter, block, upPos.x, upPos.y, upPos.z);
+        BlockProjectileEntity left = makeFloating(level, shooter, block, leftPos.x, leftPos.y, leftPos.z);
+        BlockProjectileEntity right = makeFloating(level, shooter, block, rightPos.x, rightPos.y, rightPos.z);
 
         new DelayedTask(delayTicks) {
             @Override public void run() {
