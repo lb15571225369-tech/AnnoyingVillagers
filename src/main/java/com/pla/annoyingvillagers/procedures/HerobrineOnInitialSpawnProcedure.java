@@ -74,7 +74,7 @@ public class HerobrineOnInitialSpawnProcedure {
 
             if (entity instanceof HerobrineChrisEntity) {
                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine Chris§r> Are you talking about ... me ?"), false);
+                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> Are you talking about ... me ?"), false);
                 }
 
                 if (levelaccessor instanceof Level) {

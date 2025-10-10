@@ -163,11 +163,11 @@ public class HerobrineGregEntity extends Monster {
 
             if (this.level().getDayTime() % 24000L == 13001 && this.summonTimestamp == -1) {
                 if (new Random().nextBoolean()) {
-                    this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine Greg§r> Prepare for a fight tonight !!!"), false);
+                    this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> Prepare for a fight tonight !!!"), false);
                     this.summonTimestamp = new Random().nextInt(13100, 22200);
                     AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: Greg will summon elites at {}", this.summonTimestamp);
                 } else {
-                    this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine Greg§r> You are lucky tonight !!!"), false);
+                    this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> You are lucky tonight !!!"), false);
                 }
             }
 
