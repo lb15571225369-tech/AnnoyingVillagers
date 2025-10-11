@@ -389,6 +389,13 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     }
 
     public static boolean canSpawn(EntityType<PlayerNpcEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
+        ServerLevel serverLevel = level.getLevel();
+        if (serverLevel.isNight()) {
+            // Nerft Player NPC spawn at night 50%
+            if(new Random().nextBoolean()) {
+                return false;
+            }
+        }
         return Monster.checkAnyLightMonsterSpawnRules(entityType, level, spawnType, position, random);
     }
 

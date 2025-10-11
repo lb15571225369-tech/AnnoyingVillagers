@@ -1,32 +1,18 @@
 package com.pla.annoyingvillagers.procedures;
 
-import java.util.Iterator;
-import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
 import com.pla.annoyingvillagers.util.DelayedTask;
-import net.minecraft.Util;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementProgress;
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -195,7 +181,7 @@ public class PlayerNpcDeadProcedure {
                 };
             }
 
-            if (entity1 instanceof PlayerNpcEntity) {
+            if (entity instanceof PlayerNpcEntity) {
                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                     PlayerList playerlist = levelaccessor.getServer().getPlayerList();
                     String s = entity.getDisplayName().getString();

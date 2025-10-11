@@ -12,6 +12,10 @@ public class GregData extends SavedData {
     public static final String ID = "av_singleton_greg";
     private UUID activeId = null;
 
+    public UUID getActiveId() {
+        return activeId;
+    }
+
     public static GregData get(ServerLevel serverLevel) {
         return serverLevel.getDataStorage().computeIfAbsent(GregData::load, GregData::new, ID);
     }

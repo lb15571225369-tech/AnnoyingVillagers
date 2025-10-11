@@ -444,6 +444,20 @@ public class ShadowHerobrineEntity extends HerobrineMob {
         }
     }
 
+    @Override
+    public void remove(RemovalReason reason) {
+        super.remove(reason);
+        if (this.darkObUp != null) {
+            this.darkObUp.discard();
+        }
+        if (this.darkObLeft != null) {
+            this.darkObLeft.discard();
+        }
+        if (this.darkObRight != null) {
+            this.darkObRight.discard();
+        }
+    }
+
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();
 

@@ -35,6 +35,7 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
+import reascer.wom.gameasset.WOMAnimations;
 import se.gory_moon.player_mobs.utils.NameManager;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
@@ -205,7 +206,11 @@ public class LowShadowHerobrineCloneEntity extends Monster {
                     }
                     final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
                     if (livingentitypatch != null && !this.level().isClientSide()) {
-                        livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_ANIMATE, 0.0F);
+                        if (this.getMainHandItem().isEmpty()) {
+                            livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_ANIMATE, 0.0F);
+                        } else {
+                            livingentitypatch.playAnimationSynchronized(WOMAnimations.TORMENT_BERSERK_IDLE, 0.0F);
+                        }
                     }
                 }
             }

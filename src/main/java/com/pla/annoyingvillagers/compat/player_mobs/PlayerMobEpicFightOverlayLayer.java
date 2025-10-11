@@ -34,7 +34,8 @@ public class PlayerMobEpicFightOverlayLayer<E extends LivingEntity, AM extends H
             return HerobrineEyesUtil.getHerobrineEyesTexture(name);
         } else if (EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "infected_player_mob"))) {
             return BLOOD_TEXTURE;
-        }  else if (e instanceof HerobrineMob || e instanceof LowShadowHerobrineCloneEntity) {
+        }  else if (e instanceof HerobrineMob || e instanceof LowShadowHerobrineCloneEntity
+                || (e instanceof HerobrineGregEntity herobrineGregEntity && herobrineGregEntity.isWhiteEye())) {
             return DEFAULT_EYE;
         }
         return null;

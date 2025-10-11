@@ -27,18 +27,18 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -52,19 +52,49 @@ import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.effect.EpicFightMobEffects;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class HerobrineGregEntity extends Monster {
     private static final EntityDataAccessor<Boolean> WHITE_EYE =
+            SynchedEntityData.defineId(HerobrineGregEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> USE_HEROBRINE_TEXTURE =
             SynchedEntityData.defineId(HerobrineGregEntity.class, EntityDataSerializers.BOOLEAN);
     private boolean summoning = false;
     private int summonTiming = -1;
     private int escapeTiming = -1;
     private final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
     private int summonTimestamp = -1;
+    private boolean combatMode = false;
+
+    private Entity firstSummonedHerobrine;
+    private Entity secondSummonedHerobrine;
+    private Entity thirdSummonedHerobrine;
+
+    private UUID firstSummonedHerobrineUUID;
+    private UUID secondSummonedHerobrineUUID;
+    private UUID thirdSummonedHerobrineUUID;
+
+    private final List<Item> listWeapons = new ArrayList<>(Arrays.asList(
+            Items.DIAMOND_SWORD,
+            Items.DIAMOND_AXE,
+            AnnoyingVillagersModItems.DIAMOND_SWORD.get(),
+            AnnoyingVillagersModItems.DIAMOND_SPEAR.get(),
+            AnnoyingVillagersModItems.DIAMOND_LONG_SWORD.get(),
+            AnnoyingVillagersModItems.DIAMOND_GREAT_SWORD.get(),
+            AnnoyingVillagersModItems.DIAMOND_BLADE.get(),
+            AnnoyingVillagersModItems.DIAMOND_DAGGER.get(),
+            AnnoyingVillagersModItems.HOOKED_DIAMOND_SWORD.get(),
+            AnnoyingVillagersModItems.DIAMOND_MAGNET_SWORD.get(),
+            AnnoyingVillagersModItems.DIAMOND_GREATE_BLADE.get(),
+            AnnoyingVillagersModItems.DIAMOND_LONG_BLADE.get(),
+            AnnoyingVillagersModItems.DIAMOND_HALBERD.get(),
+            AnnoyingVillagersModItems.DIAMOND_SCYTHE.get(),
+            AnnoyingVillagersModItems.DIAMOND_TWIN_BLADE.get(),
+            AnnoyingVillagersModItems.DIAMOND_GIANT_AXE.get(),
+            AnnoyingVillagersModItems.DIAMOND_BATTLE_AXE.get(),
+            AnnoyingVillagersModItems.DIAMOND_GLAIVE.get(),
+            AnnoyingVillagersModItems.DIAMOND_DOUBLE_BIT_AXE.get()
+    ));
 
     public void setWhiteEye(boolean whiteEye) {
         this.entityData.set(WHITE_EYE, whiteEye);
@@ -74,10 +104,17 @@ public class HerobrineGregEntity extends Monster {
         return this.entityData.get(WHITE_EYE);
     }
 
+    public void setUseHerobrineTexture(boolean useHerobrineTexture) {
+        this.entityData.set(USE_HEROBRINE_TEXTURE, useHerobrineTexture);
+    }
+
+    public boolean isUseHerobrineTexture() { return this.entityData.get(USE_HEROBRINE_TEXTURE); }
+
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(WHITE_EYE, false);
+        this.entityData.define(USE_HEROBRINE_TEXTURE, false);
     }
 
     public boolean isSummoning() {
@@ -86,6 +123,10 @@ public class HerobrineGregEntity extends Monster {
 
     public void setSummoning(boolean summoning) {
         this.summoning = summoning;
+    }
+
+    public int getSummonTimestamp() {
+        return summonTimestamp;
     }
 
     public HerobrineGregEntity(SpawnEntity spawnentity, Level level) {
@@ -108,28 +149,106 @@ public class HerobrineGregEntity extends Monster {
 
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, VillagerScoutEntity.class, 12.0F, 1.2D, 1.8D));
-        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, VillagerScoutCaptainEntity.class, 12.0F, 1.2D, 1.8D));
-        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, BlueVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
-        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, GreenVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
-        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, RedVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
-        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, PurpleVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(1, new Goal() {
+            @Override
+            public boolean canUse() {
+                return firstSummonedHerobrine != null && firstSummonedHerobrine.isAlive() && distanceTo(firstSummonedHerobrine) > (float)20.0D * 0.9F;
+            }
 
-        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, PlayerNpcEntity.class, 12.0F, 1.2D, 1.8D));
-        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Player.class, 12.0F, 1.2D, 1.8D));
-        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, SteveEntity.class, 24.0F, 1.2D, 1.8D));
-        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Steve2Entity.class, 12.0F, 1.2D, 1.8D));
-        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, AngrySteveEntity.class, 12.0F, 1.2D, 1.8D));
-        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, AlexEntity.class, 12.0F, 1.2D, 1.8D));
-        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, JevEntity.class, 12.0F, 1.2D, 1.8D));
-        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, ChrisEntity.class, 12.0F, 1.2D, 1.8D));
-        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, BlueDemonEntity.class, 12.0F, 1.2D, 1.8D));
-        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, BlueDemon2Entity.class, 12.0F, 1.2D, 1.8D));
-        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, BbqEntity.class, 12.0F, 1.2D, 1.8D));
+            @Override
+            public void tick() {
+                if (firstSummonedHerobrine != null && firstSummonedHerobrine.isAlive()) {
+                    getNavigation().moveTo(firstSummonedHerobrine, 2.0D);
+                    getLookControl().setLookAt(firstSummonedHerobrine, 30.0F, 30.0F);
+                    if (distanceToSqr(firstSummonedHerobrine) > 20.0D) {
+                        if (getNavigation().isDone()) {
+                            getNavigation().moveTo(firstSummonedHerobrine, 2.0D);
+                        }
+                    } else {
+                        getNavigation().stop();
+                    }
+                }
+            }
 
-        this.goalSelector.addGoal(2, new RandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(4, new FloatGoal(this));
+            @Override
+            public boolean canContinueToUse() {
+                return firstSummonedHerobrine != null && firstSummonedHerobrine.isAlive() && distanceTo(firstSummonedHerobrine) > 50.0D;
+            }
+        });
+        this.goalSelector.addGoal(1, new Goal() {
+            @Override
+            public boolean canUse() {
+                return secondSummonedHerobrine != null && secondSummonedHerobrine.isAlive() && distanceTo(secondSummonedHerobrine) > (float)20.0D * 0.9F;
+            }
+
+            @Override
+            public void tick() {
+                if (secondSummonedHerobrine != null && secondSummonedHerobrine.isAlive()) {
+                    getNavigation().moveTo(secondSummonedHerobrine, 2.0D);
+                    getLookControl().setLookAt(secondSummonedHerobrine, 30.0F, 30.0F);
+                    if (distanceToSqr(secondSummonedHerobrine) > 20.0D) {
+                        if (getNavigation().isDone()) {
+                            getNavigation().moveTo(secondSummonedHerobrine, 2.0D);
+                        }
+                    } else {
+                        getNavigation().stop();
+                    }
+                }
+            }
+
+            @Override
+            public boolean canContinueToUse() {
+                return secondSummonedHerobrine != null && secondSummonedHerobrine.isAlive() && distanceTo(secondSummonedHerobrine) > 50.0D;
+            }
+        });
+        this.goalSelector.addGoal(1, new Goal() {
+            @Override
+            public boolean canUse() {
+                return thirdSummonedHerobrine != null && thirdSummonedHerobrine.isAlive() && distanceTo(thirdSummonedHerobrine) > (float)20.0D * 0.9F;
+            }
+
+            @Override
+            public void tick() {
+                if (thirdSummonedHerobrine != null && thirdSummonedHerobrine.isAlive()) {
+                    getNavigation().moveTo(thirdSummonedHerobrine, 2.0D);
+                    getLookControl().setLookAt(thirdSummonedHerobrine, 30.0F, 30.0F);
+                    if (distanceToSqr(thirdSummonedHerobrine) > 20.0D) {
+                        if (getNavigation().isDone()) {
+                            getNavigation().moveTo(thirdSummonedHerobrine, 2.0D);
+                        }
+                    } else {
+                        getNavigation().stop();
+                    }
+                }
+            }
+
+            @Override
+            public boolean canContinueToUse() {
+                return thirdSummonedHerobrine != null && thirdSummonedHerobrine.isAlive() && distanceTo(thirdSummonedHerobrine) > 50.0D;
+            }
+        });
+        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, VillagerScoutEntity.class, 12.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, VillagerScoutCaptainEntity.class, 12.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, BlueVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, GreenVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, RedVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, PurpleVillagerGeneralEntity.class, 12.0F, 1.2D, 1.8D));
+
+        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, PlayerNpcEntity.class, 12.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Player.class, 12.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, SteveEntity.class, 24.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Steve2Entity.class, 12.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, AngrySteveEntity.class, 12.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, AlexEntity.class, 12.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, JevEntity.class, 12.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, ChrisEntity.class, 12.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, BlueDemonEntity.class, 12.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, BlueDemon2Entity.class, 12.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, BbqEntity.class, 12.0F, 1.2D, 1.8D));
+
+        this.goalSelector.addGoal(3, new RandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(5, new FloatGoal(this));
     }
 
     public @NotNull MobType getMobType() {
@@ -163,11 +282,11 @@ public class HerobrineGregEntity extends Monster {
 
             if (this.level().getDayTime() % 24000L == 13001 && this.summonTimestamp == -1) {
                 if (new Random().nextBoolean()) {
-                    this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> Prepare for a fight tonight !!!"), false);
+                    this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> Prepare for a fight tonight."), false);
                     this.summonTimestamp = new Random().nextInt(13100, 22200);
                     AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: Greg will summon elites at {}", this.summonTimestamp);
                 } else {
-                    this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> You are lucky tonight !!!"), false);
+                    this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> You are lucky tonight."), false);
                 }
             }
 
@@ -207,6 +326,21 @@ public class HerobrineGregEntity extends Monster {
             if (this.escapeTiming > 0) {
                 this.escapeTiming = this.escapeTiming - 1;
             }
+            if (this.escapeTiming == 60 && this.combatMode) {
+                try {
+                    this.getServer().getCommands().getDispatcher().execute(
+                            "playsound annoyingvillagers:portal_natural neutral @a ~ ~ ~",
+                            this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+                }
+                if (livingentitypatch != null) {
+                    livingentitypatch.playAnimationSynchronized(AVAnimations.PORTAL_SUMMON, 0.0F);
+                }
+                AnnoyingVillagers.PACKET_HANDLER.send(
+                        PacketDistributor.TRACKING_ENTITY.with(() -> this),
+                        new ClientboundHerobrinePortalFx(HerobrinePortalProcedure.finalSurfacePos(this))
+                );
+            }
             if (this.escapeTiming == 40) {
                 if (this.level() instanceof ServerLevel serverLevel) {
                     HerobrinePortalProcedure.sinkIntoGround(serverLevel, this, 0.06);
@@ -216,10 +350,57 @@ public class HerobrineGregEntity extends Monster {
                 this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine Greg§r> I will be back soon."), false);
                 this.discard();
             }
+
+            if (firstSummonedHerobrine == null && firstSummonedHerobrineUUID != null) {
+                Entity entity = ((ServerLevel) level()).getEntity(firstSummonedHerobrineUUID);
+                if (entity instanceof HerobrineMob || entity instanceof LowShadowHerobrineCloneEntity) {
+                    firstSummonedHerobrine = entity;
+                } else {
+                    firstSummonedHerobrineUUID = null;
+                }
+            }
+            if (firstSummonedHerobrine != null && !firstSummonedHerobrine.isAlive()) {
+                // handle logic when a summoned die
+                firstSummonedHerobrineUUID = null;
+            }
+
+            if (secondSummonedHerobrine == null && secondSummonedHerobrineUUID != null) {
+                Entity entity = ((ServerLevel) level()).getEntity(secondSummonedHerobrineUUID);
+                if (entity instanceof HerobrineMob || entity instanceof LowShadowHerobrineCloneEntity) {
+                    secondSummonedHerobrine = entity;
+                } else {
+                    secondSummonedHerobrineUUID = null;
+                }
+            }
+            if (secondSummonedHerobrine != null && !secondSummonedHerobrine.isAlive()) {
+                // handle logic when a summoned die
+                secondSummonedHerobrineUUID = null;
+            }
+
+            if (thirdSummonedHerobrine == null && thirdSummonedHerobrineUUID != null) {
+                Entity entity = ((ServerLevel) level()).getEntity(thirdSummonedHerobrineUUID);
+                if (entity instanceof HerobrineMob || entity instanceof LowShadowHerobrineCloneEntity) {
+                    thirdSummonedHerobrine = entity;
+                } else {
+                    thirdSummonedHerobrineUUID = null;
+                }
+            }
+            if (thirdSummonedHerobrine != null && !thirdSummonedHerobrine.isAlive()) {
+                // handle logic when a summoned die
+                thirdSummonedHerobrineUUID = null;
+            }
+
+            if (this.combatMode && this.firstSummonedHerobrineUUID == null
+                    && this.secondSummonedHerobrineUUID == null
+                    && this.thirdSummonedHerobrineUUID == null && this.escapeTiming == -1) {
+                this.escapeTiming = 80;
+                this.setNoAi(true);
+            }
         }
     }
 
-    private void summonHerobrine(String herobrineMobId, double spawnX, double spawnY, double spawnZ, double summonLookX, double summonLookZ, boolean renderPortal) {
+    private void summonHerobrine(String herobrineMobId, double spawnX, double spawnY,
+                                 double spawnZ, double summonLookX, double summonLookZ, boolean renderPortal) {
         if (this.level() instanceof ServerLevel levelaccessor) {
             ResourceLocation mobResourceLocation = new ResourceLocation(herobrineMobId);
             EntityType<?> type = ForgeRegistries.ENTITY_TYPES.getValue(mobResourceLocation);
@@ -229,12 +410,15 @@ public class HerobrineGregEntity extends Monster {
                     herobrineMob.setRenderPortal(renderPortal);
                 } else if (herobrine instanceof LowHerobrineCloneEntity lowHerobrineCloneEntity) {
                     lowHerobrineCloneEntity.setSummoned(true);
+                    equipGearForLowHerobrineClone(lowHerobrineCloneEntity);
                 } else if (herobrine instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
                     if (renderPortal) {
                         AnnoyingVillagers.PACKET_HANDLER.send(
                                 PacketDistributor.TRACKING_ENTITY.with(() -> this),
                                 new ClientboundHerobrinePortalFx(new Vec3(spawnX, spawnY, spawnZ))
                         );
+                    } else {
+                        equipGearForLowHerobrineClone(lowShadowHerobrineCloneEntity);
                     }
                     lowShadowHerobrineCloneEntity.setSummoned(true);
                 }
@@ -243,6 +427,19 @@ public class HerobrineGregEntity extends Monster {
                 herobrine.lookAt(EntityAnchorArgument.Anchor.EYES, new Vec3(summonLookX, spawnY, summonLookZ));
                 herobrine.finalizeSpawn(levelaccessor, levelaccessor.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
                 levelaccessor.addFreshEntity(herobrine);
+
+                if (this.combatMode) {
+                    if (this.firstSummonedHerobrineUUID == null) {
+                        this.firstSummonedHerobrineUUID = herobrine.getUUID();
+                        this.firstSummonedHerobrine = herobrine;
+                    } else if (this.secondSummonedHerobrineUUID == null) {
+                        this.secondSummonedHerobrineUUID = herobrine.getUUID();
+                        this.secondSummonedHerobrine = herobrine;
+                    }  else {
+                        this.thirdSummonedHerobrineUUID = herobrine.getUUID();
+                        this.thirdSummonedHerobrine = herobrine;
+                    }
+                }
             }
         }
     }
@@ -478,12 +675,12 @@ public class HerobrineGregEntity extends Monster {
                 // Left
                 spawnHerobrineOffset(pickRandom(elites, random), centerForward, +side, baseY, fx, fz, lx, lz, false);
                 // Right
-                spawnHerobrineOffset("annoyingvillagers:shadow_herobrine", centerForward, -side, baseY, fx, fz, lx, lz, false);
+                spawnHerobrineOffset("annoyingvillagers:low_shadow_herobrine_clone", centerForward, -side, baseY, fx, fz, lx, lz, false);
             }
             case ONEE_PLUS_2S -> {
                 // Three mobs: left (shadow), right (shadow), middle+1 forward (elite)
-                spawnHerobrineOffset("annoyingvillagers:shadow_herobrine", centerForward, +side, baseY, fx, fz, lx, lz, false);
-                spawnHerobrineOffset("annoyingvillagers:shadow_herobrine", centerForward, -side, baseY, fx, fz, lx, lz, false);
+                spawnHerobrineOffset("annoyingvillagers:low_shadow_herobrine_clone", centerForward, +side, baseY, fx, fz, lx, lz, false);
+                spawnHerobrineOffset("annoyingvillagers:low_shadow_herobrine_clone", centerForward, -side, baseY, fx, fz, lx, lz, false);
                 spawnHerobrineOffset(pickRandom(elites, random), thirdForward, 0.0, baseY, fx, fz, lx, lz, false);
             }
             case TWO_E -> {
@@ -493,7 +690,7 @@ public class HerobrineGregEntity extends Monster {
             }
             case TWOE_PLUS_1S -> {
                 // Three mobs: left (shadow), right (elite), middle+1 forward (elite)
-                spawnHerobrineOffset("annoyingvillagers:shadow_herobrine", centerForward, +side, baseY, fx, fz, lx, lz, false);
+                spawnHerobrineOffset("annoyingvillagers:low_shadow_herobrine_clone", centerForward, +side, baseY, fx, fz, lx, lz, false);
                 spawnHerobrineOffset(pickRandom(elites, random), centerForward, -side, baseY, fx, fz, lx, lz, false);
                 spawnHerobrineOffset(pickRandom(elites, random), thirdForward, 0.0, baseY, fx, fz, lx, lz, false);
             }
@@ -510,6 +707,9 @@ public class HerobrineGregEntity extends Monster {
         if (livingentitypatch != null) {
             livingentitypatch.playAnimationSynchronized(AVAnimations.PORTAL_SUMMON, 0.0F);
         }
+        this.combatMode = true;
+        this.setCustomNameVisible(false);
+        setUseHerobrineTexture(true);
         summonAtNight();
     }
 
@@ -542,9 +742,9 @@ public class HerobrineGregEntity extends Monster {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        if (this.summoning) {
+        if (this.summoning || this.escapeTiming >= 0) {
             return false;
-        } else if (this.getHealth() == 1) {
+        } else if (this.getHealth() == 1 || this.combatMode) {
             if (!this.level().isClientSide()) {
                 try {
                     this.getServer().getCommands().getDispatcher().execute(
@@ -561,11 +761,46 @@ public class HerobrineGregEntity extends Monster {
             }
             return false;
         }
-        return super.hurt(damagesource, 1.0F);
+        if (damagesource.is(DamageTypes.FELL_OUT_OF_WORLD)) {
+            return super.hurt(damagesource, f);
+        } else {
+            return super.hurt(damagesource, 1.0F);
+        }
+    }
+
+    private ItemStack randomDamage(ItemStack itemStack) {
+        int maxDamage = itemStack.getMaxDamage();
+        itemStack.setDamageValue(new Random().nextInt(maxDamage / 3, maxDamage * 3 / 4));
+        return itemStack;
+    }
+
+    private void equipGearForLowHerobrineClone(Entity entity) {
+        if (entity instanceof LowShadowHerobrineCloneEntity && random.nextFloat() < 0.2F) {
+            entity.setItemSlot(EquipmentSlot.HEAD, randomDamage(new ItemStack(Items.NETHERITE_HELMET)));
+            entity.setItemSlot(EquipmentSlot.CHEST, randomDamage(new ItemStack(Items.NETHERITE_CHESTPLATE)));
+            entity.setItemSlot(EquipmentSlot.LEGS, randomDamage(new ItemStack(Items.NETHERITE_LEGGINGS)));
+            entity.setItemSlot(EquipmentSlot.FEET, randomDamage(new ItemStack(Items.NETHERITE_BOOTS)));
+            entity.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_SWORD));
+            entity.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.GOLDEN_SWORD));
+        } else {
+            if (random.nextFloat() < 0.3f) {
+                entity.setItemSlot(EquipmentSlot.HEAD, randomDamage(new ItemStack(AnnoyingVillagersModItems.BROKEN_DIAMOND_HELMET.get())));
+            }
+            if (random.nextFloat() < 0.3f) {
+                entity.setItemSlot(EquipmentSlot.CHEST, randomDamage(new ItemStack(AnnoyingVillagersModItems.BROKEN_DIAMOND_CHESTPLATE.get())));
+            }
+            if (random.nextFloat() < 0.3f) {
+                entity.setItemSlot(EquipmentSlot.LEGS, randomDamage(new ItemStack(AnnoyingVillagersModItems.BROKEN_DIAMOND_LEGGINGS.get())));
+            }
+            if (random.nextFloat() < 0.3f) {
+                entity.setItemSlot(EquipmentSlot.FEET, randomDamage(new ItemStack(AnnoyingVillagersModItems.BROKEN_DIAMOND_BOOTS.get())));
+            }
+            entity.setItemSlot(EquipmentSlot.MAINHAND, randomDamage(new ItemStack(listWeapons.get(random.nextInt(listWeapons.size())))));
+        }
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
-        if (mobspawntype == MobSpawnType.NATURAL || mobspawntype == MobSpawnType.CHUNK_GENERATION) {
+        if (mobspawntype == MobSpawnType.NATURAL || mobspawntype == MobSpawnType.CHUNK_GENERATION || mobspawntype == MobSpawnType.SPAWN_EGG) {
             ServerLevel serverLevel = serverlevelaccessor.getLevel();
             GregData gregData = GregData.get(serverLevel);
 
@@ -605,20 +840,42 @@ public class HerobrineGregEntity extends Monster {
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         setWhiteEye(pCompound.getBoolean("WhiteEye"));
+        setUseHerobrineTexture(pCompound.getBoolean("UseHerobrineTexture"));
         summoning = pCompound.getBoolean("Summoning");
         summonTiming = pCompound.getInt("SummonTiming");
         escapeTiming = pCompound.getInt("EscapeTiming");
         summonTimestamp = pCompound.getInt("SummonTimestamp");
+        combatMode = pCompound.getBoolean("CombatMode");
+        if (firstSummonedHerobrineUUID != null) {
+            firstSummonedHerobrineUUID = pCompound.getUUID("FirstSummonedHerobrineUUID");
+        }
+        if (secondSummonedHerobrineUUID != null) {
+            secondSummonedHerobrineUUID = pCompound.getUUID("SecondSummonedHerobrineUUID");
+        }
+        if (thirdSummonedHerobrineUUID != null) {
+            thirdSummonedHerobrineUUID = pCompound.getUUID("ThirdSummonedHerobrineUUID");
+        }
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putBoolean("WhiteEye", isWhiteEye());
+        pCompound.putBoolean("UseHerobrineTexture", isUseHerobrineTexture());
         pCompound.putBoolean("Summoning", summoning);
         pCompound.putInt("SummonTiming", summonTiming);
         pCompound.putInt("EscapeTiming", escapeTiming);
         pCompound.putInt("SummonTimestamp", summonTimestamp);
+        pCompound.putBoolean("CombatMode", combatMode);
+        if (pCompound.contains("FirstSummonedHerobrineUUID")) {
+            pCompound.putUUID("FirstSummonedHerobrineUUID", firstSummonedHerobrineUUID);
+        }
+        if (pCompound.contains("SecondSummonedHerobrineUUID")) {
+            pCompound.putUUID("SecondSummonedHerobrineUUID", secondSummonedHerobrineUUID);
+        }
+        if (pCompound.contains("ThirdSummonedHerobrineUUID")) {
+            pCompound.putUUID("ThirdSummonedHerobrineUUID", thirdSummonedHerobrineUUID);
+        }
     }
 
     public static boolean canSpawn(EntityType<HerobrineGregEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
@@ -646,7 +903,7 @@ public class HerobrineGregEntity extends Monster {
         Builder builder = Mob.createMobAttributes();
 
         builder = builder.add(Attributes.MOVEMENT_SPEED, 0.5D);
-        builder = builder.add(Attributes.MAX_HEALTH, 40.0D);
+        builder = builder.add(Attributes.MAX_HEALTH, 4.0D);
         builder = builder.add(Attributes.ARMOR, 0.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 128.0D);

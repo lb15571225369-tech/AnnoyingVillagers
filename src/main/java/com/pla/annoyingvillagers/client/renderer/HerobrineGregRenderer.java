@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.client.renderer;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.HerobrineGregEntity;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -20,6 +21,10 @@ public class HerobrineGregRenderer extends HumanoidMobRenderer<HerobrineGregEnti
     }
 
     public ResourceLocation getTextureLocation(HerobrineGregEntity herobrineGregEntity) {
-        return new ResourceLocation("annoyingvillagers", "textures/entities/greg.png");
+        if (herobrineGregEntity.isUseHerobrineTexture()) {
+            return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/herobrine.png");
+        } else {
+            return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/greg.png");
+        }
     }
 }

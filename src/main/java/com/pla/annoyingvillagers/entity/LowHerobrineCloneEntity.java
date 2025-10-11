@@ -28,6 +28,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
 import net.minecraftforge.registries.ForgeRegistries;
+import reascer.wom.gameasset.WOMAnimations;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
@@ -143,7 +144,7 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
             if (!level.isClientSide()) {
                 itemstack = livingentity.getMainHandItem();
                 itementity = new ItemEntity(level, this.getX(), this.getY() + 1.0D, this.getZ(), itemstack);
-            itementity.setPickUpDelay(10);
+                itementity.setPickUpDelay(10);
                 level.addFreshEntity(itementity);
             }
         }
@@ -192,7 +193,11 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
                 }
                 final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
                 if (livingentitypatch != null && !this.level().isClientSide()) {
-                    livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_ANIMATE, 0.0F);
+                    if (this.getMainHandItem().isEmpty()) {
+                        livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_ANIMATE, 0.0F);
+                    } else {
+                        livingentitypatch.playAnimationSynchronized(WOMAnimations.TORMENT_BERSERK_IDLE, 0.0F);
+                    }
                 }
             }
         }
