@@ -54,11 +54,7 @@ public class NullEntity extends HerobrineMob {
     private NullHoeEntity nullHoeEntity;
     private UUID nullHoeUUID;
 
-    private boolean initialSpawn = true;
-
-    public void setInitialSpawn(boolean initialSpawn) {
-        this.initialSpawn = initialSpawn;
-    }
+    private boolean initialSpawn = false;
 
     public NullSwordEntity getNullSwordEntity() {
         return nullSwordEntity;
@@ -92,8 +88,6 @@ public class NullEntity extends HerobrineMob {
         this.setPersistenceRequired();
         this.moveControl = new FlyingMoveControl(this, 10, true);
         this.setChatName("§5Null§r");
-        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.NULL_AXE.get()));
-        this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(AnnoyingVillagersModItems.NULL_SWORD.get()));
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {

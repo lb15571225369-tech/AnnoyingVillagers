@@ -15,7 +15,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.level.LevelAccessor;
 
-public class Herobrine3DieProcedure {
+public class HerobrineChrisDieProcedure {
 
     public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity, Entity entity1) {
         if (entity != null && entity1 != null) {

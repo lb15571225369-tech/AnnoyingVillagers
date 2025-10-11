@@ -1,9 +1,7 @@
 package com.pla.annoyingvillagers.entity;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.spawnhandler.HerobrineMobData;
 import com.pla.annoyingvillagers.util.DelayedTask;
@@ -15,7 +13,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
@@ -23,7 +20,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -49,7 +45,6 @@ public class HerobrineChrisEntity extends HerobrineMob {
         this.setNoAi(false);
         this.setPersistenceRequired();
         this.setChatName("§5Herobrine Chris§r");
-        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.BEDROCK_WEAPON.get()));
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -77,7 +72,7 @@ public class HerobrineChrisEntity extends HerobrineMob {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        Herobrine3OnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
+        HerobrineChrisOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;
         if (damagesource.is(DamageTypes.WITHER)) return false;
@@ -89,7 +84,7 @@ public class HerobrineChrisEntity extends HerobrineMob {
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
-        Herobrine3DieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
+        HerobrineChrisDieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
     }
 
     public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
@@ -98,12 +93,12 @@ public class HerobrineChrisEntity extends HerobrineMob {
 
     public void baseTick() {
         super.baseTick();
-        Herobrine3OnTickProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        HerobrineChrisBaseTickProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
     public void playerTouch(Player player) {
         super.playerTouch(player);
-        Herobrine3OnTouchProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        HerobrineChrisOnTouchProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
     public static boolean canSpawn(EntityType<HerobrineChrisEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {

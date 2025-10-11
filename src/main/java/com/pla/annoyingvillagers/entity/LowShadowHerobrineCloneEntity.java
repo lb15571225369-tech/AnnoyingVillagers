@@ -3,7 +3,6 @@ package com.pla.annoyingvillagers.entity;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.spawnhandler.HerobrineMobData;
@@ -18,7 +17,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
@@ -45,6 +43,7 @@ import javax.annotation.Nullable;
 
 public class LowShadowHerobrineCloneEntity extends Monster {
     private boolean summoned = false;
+    private boolean initialSpawn = true;
 
     public boolean isSummoned() {
         return summoned;
@@ -60,6 +59,10 @@ public class LowShadowHerobrineCloneEntity extends Monster {
         this.renderPortal = renderPortal;
     }
 
+    public void setInitialSpawn(boolean initialSpawn) {
+        this.initialSpawn = initialSpawn;
+    }
+
     public LowShadowHerobrineCloneEntity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.LOW_SHADOW_HEROBRINE_CLONE.get(), level);
     }
@@ -71,7 +74,6 @@ public class LowShadowHerobrineCloneEntity extends Monster {
         this.setNoAi(false);
         this.setCustomNameVisible(false);
         this.setPersistenceRequired();
-        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get()));
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -104,7 +106,7 @@ public class LowShadowHerobrineCloneEntity extends Monster {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        Herobrine6OnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), damagesource.getEntity());
+        LowShadowHerobrineCloneOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), damagesource.getEntity());
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;
         if (damagesource.is(DamageTypes.WITHER)) return false;
@@ -197,9 +199,14 @@ public class LowShadowHerobrineCloneEntity extends Monster {
                     );
                     renderPortal = false;
                 }
-                final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
-                if (livingentitypatch != null && !this.level().isClientSide()) {
-                    livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_ANIMATE, 0.0F);
+                if (this.initialSpawn) {
+                    if (this.summoned) {
+                        this.setNoAi(true);
+                    }
+                    final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
+                    if (livingentitypatch != null && !this.level().isClientSide()) {
+                        livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_ANIMATE, 0.0F);
+                    }
                 }
             }
         }
@@ -229,6 +236,7 @@ public class LowShadowHerobrineCloneEntity extends Monster {
         super.readAdditionalSaveData(pCompound);
         summoned = pCompound.getBoolean("Summoned");
         renderPortal = pCompound.getBoolean("RenderPortal");
+        initialSpawn = pCompound.getBoolean("InitialSpawn");
     }
 
     @Override
@@ -236,6 +244,7 @@ public class LowShadowHerobrineCloneEntity extends Monster {
         super.addAdditionalSaveData(pCompound);
         pCompound.putBoolean("Summoned", summoned);
         pCompound.putBoolean("RenderPortal", renderPortal);
+        pCompound.putBoolean("InitialSpawn", initialSpawn);
     }
 
     public static Builder createAttributes() {

@@ -38,7 +38,7 @@ public class InfectedPlayerMobEntity extends PlayerMobEntity {
         this.xpReward = 300;
         this.setMaxUpStep(0.6F);
         this.xpReward = 7;
-        this.setNoAi(false);
+        this.setNoAi(true);
         this.setCustomNameVisible(true);
     }
 
@@ -81,13 +81,13 @@ public class InfectedPlayerMobEntity extends PlayerMobEntity {
         super.die(damagesource);
         String possessedBy = this.getPersistentData().getString("possessed_by");
         if (possessedBy.equals("herobrine_clone")) {
-            Herobrine2DieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+            ShadowHerobrineCloneDieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
         } else if (possessedBy.equals("shadow_herobrine_clone")) {
-            Herobrine1DieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
-        } else if (possessedBy.equals("low_herobrine_clone") || possessedBy.equals("low_shadow_herobrine_clone")) {
             HerobrineCloneDieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        } else if (possessedBy.equals("low_herobrine_clone") || possessedBy.equals("low_shadow_herobrine_clone")) {
+            LowHerobrineCloneDieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
         } else if (possessedBy.equals("herobrine_7")) {
-            Herobrine7OnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+            Herobrine7DieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
         } else if (possessedBy.equals("shadow_herobrine")) {
             DarkHerobrineOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
         } else if (possessedBy.equals("null")) {

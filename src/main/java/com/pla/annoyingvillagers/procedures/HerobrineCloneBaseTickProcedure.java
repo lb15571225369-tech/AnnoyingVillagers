@@ -8,7 +8,7 @@ import yesman.epicfight.api.animation.types.*;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
-public class Herobrine1OnEntityTickUpdateProcedure {
+public class HerobrineCloneBaseTickProcedure {
 
     public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) {
         if (entity != null) {

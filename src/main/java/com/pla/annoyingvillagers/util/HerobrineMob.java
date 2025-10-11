@@ -30,7 +30,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
-import reascer.wom.gameasset.WOMAnimations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
@@ -44,6 +43,7 @@ public class HerobrineMob extends Monster {
     private String chatName;
     private boolean neverRecall = false;
     private UUID gregUUID = null;
+    private boolean initialSpawn = true;
 
     public void setGregUUID(UUID gregUUID) {
         this.gregUUID = gregUUID;
@@ -75,6 +75,10 @@ public class HerobrineMob extends Monster {
 
     public void setNeverRecall(boolean neverRecall) {
         this.neverRecall = neverRecall;
+    }
+
+    public void setInitialSpawn(boolean initialSpawn) {
+        this.initialSpawn = initialSpawn;
     }
 
     protected HerobrineMob(EntityType<? extends Monster> pEntityType, Level pLevel) {
@@ -142,6 +146,7 @@ public class HerobrineMob extends Monster {
         if (pCompound.contains("GregUUID")) {
             gregUUID = pCompound.getUUID("GregUUID");
         }
+        initialSpawn = pCompound.getBoolean("InitialSpawn");
     }
 
     @Override
@@ -153,6 +158,7 @@ public class HerobrineMob extends Monster {
         if (gregUUID != null) {
             pCompound.putUUID("GregUUID", gregUUID);
         }
+        pCompound.putBoolean("InitialSpawn", initialSpawn);
     }
 
     @Override
@@ -167,17 +173,18 @@ public class HerobrineMob extends Monster {
                     );
                     this.renderPortal = false;
                 }
-                final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
-                if (livingentitypatch != null && !this.level().isClientSide()) {
-                    if (this instanceof ReaperHerobrineEntity || this instanceof GlaiveHerobrineEntity) {
-                        livingentitypatch.playAnimationSynchronized(AVAnimations.GLOWING_AGONY_GUARD, 0.0F);
-                    } else if (this instanceof AegisHerobrineEntity aegisHerobrineEntity) {
-                        // For some reason the block animation can't be played inside finalize spawn
-                        aegisHerobrineEntity.getPersistentData().putBoolean("init_animation", true);
-                    } else if (this instanceof NullEntity) {
-                        livingentitypatch.playAnimationSynchronized(WOMAnimations.TORMENT_BERSERK_IDLE, 0.0F);
-                    } else if (!(this instanceof SledgehammerHerobrineEntity) && !(this instanceof SwordsmanHerobrineEntity)) {
-                        livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_ANIMATE, 0.0F);
+                if (this.initialSpawn) {
+                    this.setNoAi(true);
+                    final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
+                    if (livingentitypatch != null && !this.level().isClientSide()) {
+                        if (this instanceof ReaperHerobrineEntity || this instanceof GlaiveHerobrineEntity) {
+                            livingentitypatch.playAnimationSynchronized(AVAnimations.GLOWING_AGONY_GUARD, 0.0F);
+                        } else if (this instanceof AegisHerobrineEntity aegisHerobrineEntity) {
+                            // For some reason the block animation can't be played inside finalize spawn
+                            aegisHerobrineEntity.getPersistentData().putBoolean("init_animation", true);
+                        } else if (!(this instanceof SledgehammerHerobrineEntity) && !(this instanceof SwordsmanHerobrineEntity)) {
+                            livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_ANIMATE, 0.0F);
+                        }
                     }
                 }
             }

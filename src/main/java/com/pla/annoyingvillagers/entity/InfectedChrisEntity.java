@@ -8,7 +8,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.procedures.InfectedChrisOnTickProcedure;
 import com.pla.annoyingvillagers.procedures.InfectedChrisOnInteractProcedure;
 import com.pla.annoyingvillagers.procedures.InfectedChrisOnSpawnProcedure;
-import com.pla.annoyingvillagers.procedures.Herobrine3OnDeathProcedure;
+import com.pla.annoyingvillagers.procedures.InfectedChrisDieProcedure;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -41,7 +41,7 @@ public class InfectedChrisEntity extends PathfinderMob {
         super(entitytype, level);
         this.setMaxUpStep(0.6F);
         this.xpReward = 7;
-        this.setNoAi(false);
+        this.setNoAi(true);
         this.setCustomName(Component.literal("Chris"));
         this.setCustomNameVisible(true);
     }
@@ -72,7 +72,7 @@ public class InfectedChrisEntity extends PathfinderMob {
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
-        Herobrine3OnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ());
+        InfectedChrisDieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ());
         double posX = this.getX();
         double posY = this.getY();
         double posZ = this.getZ();

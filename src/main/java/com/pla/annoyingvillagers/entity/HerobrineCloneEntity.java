@@ -1,8 +1,6 @@
 package com.pla.annoyingvillagers.entity;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.spawnhandler.HerobrineMobData;
 import com.pla.annoyingvillagers.util.DelayedTask;
@@ -15,7 +13,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
@@ -53,7 +50,7 @@ public class HerobrineCloneEntity extends HerobrineMob {
         this.setPersistenceRequired();
         this.setCustomNameVisible(false);
         this.setChatName("§5Herobrine Clone§r");
-        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.OBSIDIAN_WEAPON.get()));
+//        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.OBSIDIAN_WEAPON.get()));
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -94,7 +91,7 @@ public class HerobrineCloneEntity extends HerobrineMob {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        Herobrine1OnHurtProcedure.execute(this);
+        HerobrineCloneOnHurtProcedure.execute(this);
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;
         if (damagesource.is(DamageTypes.WITHER)) return false;
@@ -203,7 +200,7 @@ public class HerobrineCloneEntity extends HerobrineMob {
 
     public void baseTick() {
         super.baseTick();
-        Herobrine1OnEntityTickUpdateProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        HerobrineCloneBaseTickProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
     public static boolean canSpawn(EntityType<HerobrineCloneEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {

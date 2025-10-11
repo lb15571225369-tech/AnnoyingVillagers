@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.entity;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.*;
@@ -50,7 +49,6 @@ public class ShadowHerobrineCloneEntity extends HerobrineMob {
         this.xpReward = 300;
         this.setNoAi(false);
         this.setChatName("§5Shadow Herobrine Clone§r");
-        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get()));
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -87,7 +85,7 @@ public class ShadowHerobrineCloneEntity extends HerobrineMob {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        Herobrine1OnHurtProcedure.execute(this);
+        HerobrineCloneOnHurtProcedure.execute(this);
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;
         if (damagesource.is(DamageTypes.WITHER)) return false;
@@ -196,7 +194,7 @@ public class ShadowHerobrineCloneEntity extends HerobrineMob {
 
     public void baseTick() {
         super.baseTick();
-        Herobrine1OnEntityTickUpdateProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        HerobrineCloneBaseTickProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
     public static boolean canSpawn(EntityType<ShadowHerobrineCloneEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {

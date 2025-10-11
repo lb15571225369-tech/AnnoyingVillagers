@@ -65,9 +65,6 @@ public class HerobrinePortalProcedure {
         entity.noPhysics = true;
         entity.setNoGravity(true);
         entity.setInvulnerable(true);
-        if (entity instanceof Mob mob) {
-            mob.setNoAi(true);
-        }
 
         var tag = entity.getPersistentData();
         tag.putBoolean(NBT_RISING, true);

@@ -7,7 +7,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 
-public class Herobrine1OnHurtProcedure {
+public class HerobrineCloneOnHurtProcedure {
 
     public static void execute(Entity entity) {
         if (entity != null) {

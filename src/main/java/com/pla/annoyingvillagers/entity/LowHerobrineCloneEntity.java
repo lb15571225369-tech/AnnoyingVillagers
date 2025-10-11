@@ -2,7 +2,8 @@ package com.pla.annoyingvillagers.entity;
 
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.procedures.Herobrine6OnHurtProcedure;
+import com.pla.annoyingvillagers.procedures.LowHerobrineCloneOnHurtProcedure;
+import com.pla.annoyingvillagers.procedures.LowShadowHerobrineCloneOnHurtProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineOnInitialSpawnProcedure;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import net.minecraft.nbt.CompoundTag;
@@ -35,6 +36,7 @@ import javax.annotation.Nullable;
 
 public class LowHerobrineCloneEntity extends PlayerMobEntity {
     private boolean summoned = false;
+    private boolean initialSpawn = true;
 
     public boolean isSummoned() {
         return summoned;
@@ -42,6 +44,10 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
 
     public void setSummoned(boolean summoned) {
         this.summoned = summoned;
+    }
+
+    public void setInitialSpawn(boolean initialSpawn) {
+        this.initialSpawn = initialSpawn;
     }
 
     public LowHerobrineCloneEntity(EntityType<? extends LowHerobrineCloneEntity> type, Level level) {
@@ -58,7 +64,7 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        Herobrine6OnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), damagesource.getEntity());
+        LowHerobrineCloneOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), damagesource.getEntity());
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;
         if (damagesource.is(DamageTypes.WITHER)) return false;
@@ -162,12 +168,14 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         summoned = pCompound.getBoolean("Summoned");
+        initialSpawn = pCompound.getBoolean("InitialSpawn");
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putBoolean("Summoned", summoned);
+        pCompound.putBoolean("InitialSpawn", initialSpawn);
     }
 
     public void baseTick() {
@@ -178,7 +186,10 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
     public void tick() {
         super.tick();
         if (!this.level().isClientSide) {
-            if (this.tickCount == 1) {
+            if (this.tickCount == 1 && this.initialSpawn) {
+                if (this.summoned) {
+                    this.setNoAi(true);
+                }
                 final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
                 if (livingentitypatch != null && !this.level().isClientSide()) {
                     livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_ANIMATE, 0.0F);

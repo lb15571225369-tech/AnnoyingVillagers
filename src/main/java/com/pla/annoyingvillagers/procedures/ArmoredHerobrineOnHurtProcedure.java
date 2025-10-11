@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.procedures;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.entity.StealthAttackEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
@@ -28,7 +27,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class ArmoredHerobrineOnHurtProcedure {
 
     public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity) {
-        Herobrine1OnHurtProcedure.execute(entity);
+        HerobrineCloneOnHurtProcedure.execute(entity);
         if (entity != null) {
             if (!entity.getPersistentData().getBoolean("kick_x")) {
                 Level level;

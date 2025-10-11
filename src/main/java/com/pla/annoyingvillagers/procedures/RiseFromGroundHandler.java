@@ -1,18 +1,14 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.entity.ArmoredHerobrineEntity;
 import com.pla.annoyingvillagers.entity.HerobrineGregEntity;
+import com.pla.annoyingvillagers.entity.LowHerobrineCloneEntity;
 import com.pla.annoyingvillagers.entity.LowShadowHerobrineCloneEntity;
-import com.pla.annoyingvillagers.entity.NullEntity;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.util.HerobrineMob;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -80,16 +76,13 @@ public class RiseFromGroundHandler {
                     }
                 }
             }
-            if (entity instanceof NullEntity nullEntity) {
-                nullEntity.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
-                nullEntity.setInitialSpawn(false);
-            }
-            if (entity instanceof ArmoredHerobrineEntity armoredHerobrineEntity) {
-                armoredHerobrineEntity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
-            }
+            herobrineMob.setInitialSpawn(false);
+        }
+        if (entity instanceof LowHerobrineCloneEntity lowHerobrineCloneEntity) {
+            lowHerobrineCloneEntity.setInitialSpawn(false);
         }
         if (entity instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
-            lowShadowHerobrineCloneEntity.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+            lowShadowHerobrineCloneEntity.setInitialSpawn(false);
         }
     }
 }

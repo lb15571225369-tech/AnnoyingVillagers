@@ -25,7 +25,7 @@ import yesman.epicfight.api.animation.types.LongHitAnimation;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
-public class Herobrine3OnTouchProcedure {
+public class HerobrineChrisOnTouchProcedure {
 
     public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity) {
         if (entity != null) {

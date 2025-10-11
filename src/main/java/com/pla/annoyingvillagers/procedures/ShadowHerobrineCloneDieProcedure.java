@@ -10,7 +10,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 
-public class Herobrine2DieProcedure {
+public class ShadowHerobrineCloneDieProcedure {
     public static void execute(LevelAccessor world, double x, double y, double z, Entity sourceEntity) {
         if (sourceEntity == null) return;
 

@@ -2,18 +2,16 @@ package com.pla.annoyingvillagers.procedures;
 
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 
-public class Herobrine7OnDeathProcedure {
+public class Herobrine7DieProcedure {
 
     public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, Entity entity) {
         if (entity != null) {
