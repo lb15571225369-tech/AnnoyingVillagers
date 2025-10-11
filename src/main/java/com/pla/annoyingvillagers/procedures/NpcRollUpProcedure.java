@@ -12,7 +12,6 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.registries.ForgeRegistries;
 import com.pla.annoyingvillagers.animations.types.KickAttackAnimation;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import yesman.epicfight.api.animation.types.DynamicAnimation;

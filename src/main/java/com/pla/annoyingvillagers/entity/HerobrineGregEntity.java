@@ -623,6 +623,10 @@ public class HerobrineGregEntity extends Monster {
 
     public static boolean canSpawn(EntityType<HerobrineGregEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
         ServerLevel serverLevel = level.getLevel();
+        int passesDay = (int) (serverLevel.getGameTime() / 24000);
+        if (passesDay % 5 != 0) {
+            return false;
+        }
         if (GregData.get(serverLevel).isOccupied(serverLevel)) {
             return false;
         }

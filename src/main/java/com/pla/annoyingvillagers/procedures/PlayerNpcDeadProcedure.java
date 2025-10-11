@@ -55,7 +55,7 @@ public class PlayerNpcDeadProcedure {
 
     private static void execute(@Nullable Event event, LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity, final Entity entity1) {
         if (entity != null && entity1 != null) {
-            if (entity instanceof PlayerNpcEntity) {
+            if (entity1 instanceof PlayerNpcEntity) {
                 new DelayedTask(Mth.nextInt(RandomSource.create(), 70, 100)) {
                     @Override
                     public void run() {
@@ -195,7 +195,7 @@ public class PlayerNpcDeadProcedure {
                 };
             }
 
-            if (entity instanceof PlayerNpcEntity) {
+            if (entity1 instanceof PlayerNpcEntity) {
                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
                     PlayerList playerlist = levelaccessor.getServer().getPlayerList();
                     String s = entity.getDisplayName().getString();
