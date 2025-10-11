@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
@@ -54,6 +55,8 @@ import yesman.epicfight.world.effect.EpicFightMobEffects;
 
 import java.util.*;
 
+import static com.pla.annoyingvillagers.procedures.HerobrinePortalProcedure.SHINK_TIME_START;
+
 public class HerobrineGregEntity extends Monster {
     private static final EntityDataAccessor<Boolean> WHITE_EYE =
             SynchedEntityData.defineId(HerobrineGregEntity.class, EntityDataSerializers.BOOLEAN);
@@ -65,6 +68,7 @@ public class HerobrineGregEntity extends Monster {
     private final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
     private int summonTimestamp = -1;
     private boolean combatMode = false;
+    private int recallTime;
 
     private Entity firstSummonedHerobrine;
     private Entity secondSummonedHerobrine;
@@ -141,6 +145,12 @@ public class HerobrineGregEntity extends Monster {
         this.setPersistenceRequired();
         this.setCustomName(Component.literal("Greg"));
         this.setCustomNameVisible(true);
+
+        int min = AnnoyingVillagersConfig.HEROBRINE_RECALL_MIN_TIME.get();
+        int max = AnnoyingVillagersConfig.HEROBRINE_RECALL_MAX_TIME.get();
+        int randomMin = Math.min(min, max);
+        int randomMax = Math.max(min, max);
+        this.recallTime = (randomMin + new Random().nextInt(randomMax - randomMin + 1)) * 60 * 20;
     }
 
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -292,7 +302,11 @@ public class HerobrineGregEntity extends Monster {
 
             if (this.level().getDayTime() % 24000L == this.summonTimestamp) {
                 this.summonTimestamp = -2; // Greg will never summon again
-                summonHerobrines();
+                this.combatMode = true;
+                this.setNoAi(true);
+                this.summoning = true;
+                this.summonTiming = 20;
+                this.addEffect(new MobEffectInstance((MobEffect) EpicFightMobEffects.STUN_IMMUNITY.get(), 120, 3, false, false));
             }
 
             if (this.getHealth() <= 2 && this.summonTiming == -1) {
@@ -320,7 +334,11 @@ public class HerobrineGregEntity extends Monster {
                 this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine Greg§r> Summoning!!!"), false);
             }
             if (this.summonTiming == 1) {
-                summonHerobrinesAndEscape();
+                if (this.combatMode) {
+                    summonHerobrines();
+                } else {
+                    summonHerobrinesAndEscape();
+                }
             }
 
             if (this.escapeTiming > 0) {
@@ -347,7 +365,7 @@ public class HerobrineGregEntity extends Monster {
                 }
             }
             if (this.escapeTiming == 1) {
-                this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine Greg§r> I will be back soon."), false);
+                this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> We will be back."), false);
                 this.discard();
             }
 
@@ -390,11 +408,22 @@ public class HerobrineGregEntity extends Monster {
                 thirdSummonedHerobrineUUID = null;
             }
 
-            if (this.combatMode && this.firstSummonedHerobrineUUID == null
+            if (this.combatMode && this.escapeTiming == -1 && this.summonTiming == -2
+                    && this.firstSummonedHerobrineUUID == null
                     && this.secondSummonedHerobrineUUID == null
-                    && this.thirdSummonedHerobrineUUID == null && this.escapeTiming == -1) {
+                    && this.thirdSummonedHerobrineUUID == null) {
                 this.escapeTiming = 80;
                 this.setNoAi(true);
+            }
+
+            if (this.combatMode && this.escapeTiming == -1 && this.recallTime >= 0) {
+                this.recallTime = this.recallTime - 1;
+                if (this.recallTime == 20) {
+                    this.setNoAi(true);
+                }
+                if (this.recallTime <= 0) {
+                    this.escapeTiming = 61;
+                }
             }
         }
     }
@@ -408,6 +437,7 @@ public class HerobrineGregEntity extends Monster {
                 if (herobrine instanceof HerobrineMob herobrineMob) {
                     herobrineMob.setGregUUID(this.getUUID());
                     herobrineMob.setRenderPortal(renderPortal);
+                    herobrineMob.setRecallTicks(this.recallTime);
                 } else if (herobrine instanceof LowHerobrineCloneEntity lowHerobrineCloneEntity) {
                     lowHerobrineCloneEntity.setSummoned(true);
                     equipGearForLowHerobrineClone(lowHerobrineCloneEntity);
@@ -707,10 +737,10 @@ public class HerobrineGregEntity extends Monster {
         if (livingentitypatch != null) {
             livingentitypatch.playAnimationSynchronized(AVAnimations.PORTAL_SUMMON, 0.0F);
         }
-        this.combatMode = true;
         this.setCustomNameVisible(false);
         setUseHerobrineTexture(true);
         summonAtNight();
+        this.summonTiming = -2;
     }
 
     private void summonHerobrinesAndEscape() {
@@ -846,6 +876,7 @@ public class HerobrineGregEntity extends Monster {
         escapeTiming = pCompound.getInt("EscapeTiming");
         summonTimestamp = pCompound.getInt("SummonTimestamp");
         combatMode = pCompound.getBoolean("CombatMode");
+        recallTime = pCompound.getInt("RecallTime");
         if (firstSummonedHerobrineUUID != null) {
             firstSummonedHerobrineUUID = pCompound.getUUID("FirstSummonedHerobrineUUID");
         }
@@ -867,6 +898,7 @@ public class HerobrineGregEntity extends Monster {
         pCompound.putInt("EscapeTiming", escapeTiming);
         pCompound.putInt("SummonTimestamp", summonTimestamp);
         pCompound.putBoolean("CombatMode", combatMode);
+        pCompound.putInt("RecallTime", recallTime);
         if (pCompound.contains("FirstSummonedHerobrineUUID")) {
             pCompound.putUUID("FirstSummonedHerobrineUUID", firstSummonedHerobrineUUID);
         }
