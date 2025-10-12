@@ -1,11 +1,11 @@
 package com.pla.annoyingvillagers.network;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.client.engine.ClientPacketHandlers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
-import net.minecraft.client.Minecraft;
-import com.pla.annoyingvillagers.util.ExplosionFxMute;
 
 import java.util.function.Supplier;
 
@@ -30,10 +30,7 @@ public class ClientboundMuteExplosionAtPos {
     public static void handle(ClientboundMuteExplosionAtPos msg, Supplier<NetworkEvent.Context> ctx) {
         var c = ctx.get();
         c.enqueueWork(() -> {
-            var level = Minecraft.getInstance().level;
-            if (level == null) return;
-            long key = msg.pos.asLong();
-            ExplosionFxMute.mark(key, level.getGameTime() + msg.lifetimeTicks);
+            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientPacketHandlers.handleMuteExplosionAtPos(msg));
         });
         c.setPacketHandled(true);
     }

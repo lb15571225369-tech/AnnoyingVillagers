@@ -1,13 +1,10 @@
 package com.pla.annoyingvillagers.network;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
-import mod.chloeprime.aaaparticles.api.common.AAALevel;
-import mod.chloeprime.aaaparticles.api.common.ParticleEmitterInfo;
-import net.minecraft.client.Minecraft;
+import com.pla.annoyingvillagers.client.engine.ClientPacketHandlers;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -31,14 +28,7 @@ public class ClientboundHerobrinePortalFx {
     public static void handle(ClientboundHerobrinePortalFx msg, Supplier<NetworkEvent.Context> ctx) {
         NetworkEvent.Context c = ctx.get();
         c.enqueueWork(() -> {
-            Level level = Minecraft.getInstance().level;
-            if (level == null) {
-                return;
-            }
-            AAALevel.addParticle(level, false,
-                    new ParticleEmitterInfo(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_portal"))
-                            .clone()
-                            .position(msg.from.x, msg.from.y, msg.from.z));
+            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientPacketHandlers.handleHerobrinePortalFx(msg));
         });
         c.setPacketHandled(true);
     }
