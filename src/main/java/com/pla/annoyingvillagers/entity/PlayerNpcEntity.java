@@ -4,6 +4,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.procedures.PlayerNpcOnHurtProcedure;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.util.EquipmentDataLoader;
@@ -52,6 +53,24 @@ import java.util.Random;
 
 public class PlayerNpcEntity extends PlayerMobEntity {
     private final SimpleContainer inventory = new SimpleContainer(27);
+    private int gapCooldown;
+    private int enderPearlCooldown;
+
+    public int getGapCooldown() {
+        return gapCooldown;
+    }
+
+    public int getEnderPearlCooldown() {
+        return enderPearlCooldown;
+    }
+
+    public void setGapCooldown() {
+        this.gapCooldown = random.nextInt(60, 200);
+    }
+
+    public void setEnderPearlCooldown() {
+        this.enderPearlCooldown = random.nextInt(60, 200);
+    }
 
     public SimpleContainer getInventory() {
         return inventory;
@@ -74,6 +93,8 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.put("Inventory", this.inventory.createTag());
+        tag.putInt("GapCooldown", this.gapCooldown);
+        tag.putInt("EnderPearlCooldown", this.enderPearlCooldown);
     }
 
     @Override
@@ -82,6 +103,8 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         if (tag.contains("Inventory", Tag.TAG_COMPOUND)) {
             this.inventory.fromTag(tag.getList("Inventory", Tag.TAG_COMPOUND));
         }
+        this.gapCooldown = tag.getInt("GapCooldown");
+        this.enderPearlCooldown = tag.getInt("EnderPearlCooldown");
     }
 
     @Override
@@ -220,6 +243,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
+        PlayerNpcOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
         return super.hurt(damagesource, f);
     }
 
@@ -308,6 +332,14 @@ public class PlayerNpcEntity extends PlayerMobEntity {
                 }
             }
         }
+        if (!this.level().isClientSide) {
+            if (this.gapCooldown > 0) {
+                this.gapCooldown = this.gapCooldown - 1;
+            }
+            if (this.enderPearlCooldown > 0) {
+                this.enderPearlCooldown = this.enderPearlCooldown - 1;
+            }
+        }
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
@@ -350,7 +382,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         } catch (CommandSyntaxException e) {
         }
 
-        if (Math.random() <= 0.2D) {
+        if (Math.random() <= 0.05D) {
             try {
                 this.getServer().getCommands().getDispatcher().execute(
                         "team add player",
@@ -365,7 +397,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
             }
         }
 
-        if (Math.random() <= 0.3D) {
+        if (Math.random() <= 0.15D) {
             this.getPersistentData().putDouble("npc_level", 3.0D);
         }
 
@@ -380,21 +412,11 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         super.baseTick();
     }
 
-    public boolean canCollideWith(Entity entity) {
-        return true;
-    }
-
-    public boolean canBeCollidedWith() {
-        return true;
-    }
-
     public static boolean canSpawn(EntityType<PlayerNpcEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
         ServerLevel serverLevel = level.getLevel();
         if (serverLevel.isNight()) {
-            // Nerft Player NPC spawn at night 50%
-            if(new Random().nextBoolean()) {
-                return false;
-            }
+            // Nerft Player NPC spawn at night
+            return false;
         }
         return Monster.checkAnyLightMonsterSpawnRules(entityType, level, spawnType, position, random);
     }

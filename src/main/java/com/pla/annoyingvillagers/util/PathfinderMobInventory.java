@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.util;
 
+import com.pla.annoyingvillagers.entity.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.sounds.SoundEvents;
@@ -22,6 +23,24 @@ import java.util.List;
 
 public class PathfinderMobInventory extends PathfinderMob implements RangedAttackMob {
     private final SimpleContainer inventory = new SimpleContainer(27);
+    private int gapCooldown;
+    private int enderPearlCooldown;
+
+    public int getGapCooldown() {
+        return gapCooldown;
+    }
+
+    public int getEnderPearlCooldown() {
+        return enderPearlCooldown;
+    }
+
+    public void setGapCooldown() {
+        this.gapCooldown = random.nextInt(60, 200);
+    }
+
+    public void setEnderPearlCooldown() {
+        this.enderPearlCooldown = random.nextInt(60, 200);
+    }
 
     public SimpleContainer getInventory() {
         return inventory;
@@ -35,6 +54,8 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.put("Inventory", this.inventory.createTag());
+        tag.putInt("GapCooldown", this.gapCooldown);
+        tag.putInt("EnderPearlCooldown", this.enderPearlCooldown);
     }
 
     @Override
@@ -43,6 +64,8 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
         if (tag.contains("Inventory", Tag.TAG_COMPOUND)) {
             this.inventory.fromTag(tag.getList("Inventory", Tag.TAG_COMPOUND));
         }
+        this.gapCooldown = tag.getInt("GapCooldown");
+        this.enderPearlCooldown = tag.getInt("EnderPearlCooldown");
     }
 
     @Override
@@ -154,6 +177,14 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
                         itemEntity.setItem(remaining);
                     }
                 }
+            }
+        }
+        if (!this.level().isClientSide) {
+            if (this.gapCooldown > 0) {
+                this.gapCooldown = this.gapCooldown - 1;
+            }
+            if (this.enderPearlCooldown > 0) {
+                this.enderPearlCooldown = this.enderPearlCooldown - 1;
             }
         }
     }

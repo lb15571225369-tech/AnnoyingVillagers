@@ -147,14 +147,6 @@ public class ChrisEntity extends PathfinderMobInventory {
         SteveOnTickProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
-    public boolean canCollideWith(Entity entity) {
-        return true;
-    }
-
-    public boolean canBeCollidedWith() {
-        return true;
-    }
-
     public static boolean canSpawn(EntityType<ChrisEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
         ServerLevel serverLevel = level.getLevel();
         if (ChrisData.get(serverLevel).isOccupied(serverLevel)) {

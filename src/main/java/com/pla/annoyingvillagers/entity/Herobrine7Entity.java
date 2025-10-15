@@ -194,6 +194,10 @@ public class Herobrine7Entity extends HerobrineMob {
 
     public static boolean canSpawn(EntityType<Herobrine7Entity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
         ServerLevel serverLevel = level.getLevel();
+        int passesDay = (int) (serverLevel.getGameTime() / 24000);
+        if (passesDay != 0 && passesDay % 3 != 0) {
+            return false;
+        }
         if (HerobrineMobData.get(serverLevel).isOccupied(serverLevel)) {
             return false;
         }

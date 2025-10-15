@@ -82,7 +82,7 @@ public class GreenVillagerGeneralEntity extends PathfinderMobInventory {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        BlueVillagerGeneralOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
+        VillagerGeneralOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
         if (damagesource.is(DamageTypes.FALL)) return false;
         return super.hurt(damagesource, f);
     }

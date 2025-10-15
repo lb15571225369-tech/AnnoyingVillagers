@@ -87,7 +87,7 @@ public class VillagerScoutCaptainEntity extends PathfinderMobInventory {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        VillagerScoutCaptainOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        VillagerScoutOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;
         return super.hurt(damagesource, f);

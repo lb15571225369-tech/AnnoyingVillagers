@@ -1,11 +1,11 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.util.CombatBehaviour;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.util.PathfinderMobInventory;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -13,12 +13,12 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -26,7 +26,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.Objects;
 import java.util.Random;
 
-public class VillagerScoutOnHurtProcedure {
+public class VillagerGeneralOnHurtProcedure {
 
     public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final PathfinderMobInventory entity, Entity attacker) {
         if (entity != null && attacker != null) {
@@ -34,6 +34,16 @@ public class VillagerScoutOnHurtProcedure {
                 if (attacker == ((Mob)entity).getTarget() && entity.isAlive()) {
                     if (entity.getEnderPearlCooldown() == 0) {
                         CombatBehaviour.throwEnderPearl(entity, (float) new Random().nextDouble(90.0D, 180.0D));
+
+                        if (Math.random() <= 0.5D) {
+                            new DelayedTask(40) {
+                                public void run() {
+                                    if (entity.isAlive()) {
+                                        CombatBehaviour.throwEnderPearl(entity, 0.0F);
+                                    }
+                                }
+                            };
+                        }
 
                         entity.setSprinting(true);
                         new DelayedTask(10) {
@@ -45,21 +55,17 @@ public class VillagerScoutOnHurtProcedure {
                             }
                         };
 
-                        if (Math.random() <= 0.22D) {
-                            LivingEntity livingEntity = (LivingEntity) entity;
-                            if (!livingEntity.level().isClientSide()) {
-                                livingEntity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 1, 1, false, false));
-                            }
+                        entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get()));
+                        if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
+                            entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.SHARPNESS, 5);
                         }
 
-                        if (Math.random() <= 0.5D) {
-                            if (entity.isAlive()) {
-                                CombatBehaviour.throwEnderPearl(entity, 180.0F);
-                            }
+                        if (Math.random() <= 0.4D) {
+                            entity.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.LAVA_BUCKET));
                         }
 
-                        entity.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.IRON_SWORD));
-                        new DelayedTask(120) {
+                        new DelayedTask(150) {
+                            @Override
                             public void run() {
                                 if (entity.isAlive()) {
                                     entity.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.ENDER_PEARL));
@@ -68,6 +74,16 @@ public class VillagerScoutOnHurtProcedure {
                         };
 
                         if (Math.random() <= 0.3D) {
+                            if (!entity.level().isClientSide()) {
+                                entity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 1, 1, false, false));
+                            }
+                        }
+
+                        if (Math.random() <= 0.2D) {
+                            CombatBehaviour.throwEnderPearl(entity, 180.0F);
+                        }
+
+                        if (Math.random() <= 0.1D) {
                             new DelayedTask(20) {
                                 public void run() {
                                     if (entity.isAlive()) {
@@ -82,49 +98,52 @@ public class VillagerScoutOnHurtProcedure {
                                 public void run() {
                                     if (entity.isAlive()) {
                                         CombatBehaviour.throwEnderPearl(entity, 180.0F);
-                                        new DelayedTask(20) {
-                                            @Override
-                                            public void run() {
-                                                if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Villager Scout> Fire!"), false);
-                                                }
-                                            }
-                                        };
                                         entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BOW));
                                         if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
                                             entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.POWER_ARROWS, 3);
                                             entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.PUNCH_ARROWS, 3);
                                         }
-                                        new DelayedTask(80) {
-                                            @Override
-                                            public void run() {
+                                    }
+                                    new DelayedTask(80) {
+                                        public void run() {
+                                            if (entity.isAlive()) {
+                                                CombatBehaviour.throwEnderPearl(entity, 0.0F);
+
                                                 if (Math.random() <= 0.2D) {
-                                                    entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_SWORD));
+                                                    entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.DIAMOND_BLADE.get()));
                                                     if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
                                                         entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.SHARPNESS, 3);
                                                     }
                                                 } else {
-                                                    entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.IRON_SWORD));
+                                                    entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_SWORD));
                                                     if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
                                                         entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.SHARPNESS, 3);
-                                                        entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.KNOCKBACK, 3);
+                                                        entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.KNOCKBACK, 2);
+                                                    }
+                                                    if (Math.random() <= 0.2D) {
+                                                        entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.DIAMOND_DAGGER.get()));
+                                                        if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
+                                                            entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.SHARPNESS, 3);
+                                                            entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.KNOCKBACK, 2);
+                                                        }
                                                     }
                                                 }
                                             }
-                                        };
-                                    }
+                                        }
+                                    };
                                 }
                             };
                         }
 
                         entity.setEnderPearlCooldown();
                     }
+
                     if (entity.getHealth() <= 7.0F && levelaccessor instanceof Level) {
                         Level level = (Level)levelaccessor;
                         if (!level.isClientSide()) {
-                            level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "block.glass.break"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                            level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.item.break"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                         } else {
-                            level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "block.glass.break"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                            level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.item.break"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                         }
                     }
                 }
@@ -133,4 +152,3 @@ public class VillagerScoutOnHurtProcedure {
         }
     }
 }
-

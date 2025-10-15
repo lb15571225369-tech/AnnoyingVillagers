@@ -4,9 +4,9 @@ import javax.annotation.Nullable;
 
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.procedures.Steve2OnHurtProcedure;
 import com.pla.annoyingvillagers.procedures.Steve2OnDeathProcedure;
 import com.pla.annoyingvillagers.procedures.Steve2OnSpawnProcedure;
+import com.pla.annoyingvillagers.procedures.SteveOnHurtProcedure;
 import com.pla.annoyingvillagers.procedures.SteveOnTickProcedure;
 import com.pla.annoyingvillagers.spawnhandler.SteveData;
 import com.pla.annoyingvillagers.util.CommonGoals;
@@ -83,7 +83,7 @@ public class Steve2Entity extends PathfinderMobInventory {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        Steve2OnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
+        SteveOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;
         if (damagesource.is(DamageTypes.DROWN)) return false;

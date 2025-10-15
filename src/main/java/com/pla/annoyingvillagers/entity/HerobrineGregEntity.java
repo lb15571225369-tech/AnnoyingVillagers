@@ -830,7 +830,7 @@ public class HerobrineGregEntity extends Monster {
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
-        if (mobspawntype == MobSpawnType.NATURAL || mobspawntype == MobSpawnType.CHUNK_GENERATION || mobspawntype == MobSpawnType.SPAWN_EGG) {
+        if (mobspawntype == MobSpawnType.NATURAL || mobspawntype == MobSpawnType.CHUNK_GENERATION) {
             ServerLevel serverLevel = serverlevelaccessor.getLevel();
             GregData gregData = GregData.get(serverLevel);
 
@@ -913,7 +913,7 @@ public class HerobrineGregEntity extends Monster {
     public static boolean canSpawn(EntityType<HerobrineGregEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
         ServerLevel serverLevel = level.getLevel();
         int passesDay = (int) (serverLevel.getGameTime() / 24000);
-        if (passesDay % 5 != 0) {
+        if (passesDay != 0 && passesDay % 5 != 0) {
             return false;
         }
         if (GregData.get(serverLevel).isOccupied(serverLevel)) {

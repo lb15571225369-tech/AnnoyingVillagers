@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.entity;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
@@ -17,7 +16,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
@@ -211,6 +209,10 @@ public class ArmoredHerobrineEntity extends HerobrineMob {
 
     public static boolean canSpawn(EntityType<ArmoredHerobrineEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
         ServerLevel serverLevel = level.getLevel();
+        int passesDay = (int) (serverLevel.getGameTime() / 24000);
+        if (passesDay != 0 && passesDay % 3 != 0) {
+            return false;
+        }
         if (HerobrineMobData.get(serverLevel).isOccupied(serverLevel)) {
             return false;
         }
