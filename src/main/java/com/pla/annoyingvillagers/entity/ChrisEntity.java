@@ -92,7 +92,7 @@ public class ChrisEntity extends PathfinderMobInventory {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        ChrisOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        ChrisOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, f);
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;
         if (damagesource.is(DamageTypes.DROWN)) return false;

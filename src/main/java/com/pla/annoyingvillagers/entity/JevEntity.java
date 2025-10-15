@@ -4,6 +4,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.util.CombatBehaviour;
 import com.pla.annoyingvillagers.util.PathfinderMobInventory;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -233,6 +234,10 @@ public class JevEntity extends PathfinderMobInventory {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
+        if (this.getGapCooldown() == 0 && this.getHealth() <= ((float) 2/3 * this.getMaxHealth())) {
+            CombatBehaviour.drinkingHealingPotion(this, this.level(), false, f);
+            this.setGapCooldown();
+        }
         if (damagesource.is(DamageTypes.THROWN)) return false;
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;

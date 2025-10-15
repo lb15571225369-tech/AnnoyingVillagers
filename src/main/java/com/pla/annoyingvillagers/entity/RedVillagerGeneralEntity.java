@@ -86,7 +86,7 @@ public class RedVillagerGeneralEntity extends PathfinderMobInventory {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        VillagerGeneralOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
+        VillagerGeneralOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity(), f);
         return super.hurt(damagesource, f);
     }
 

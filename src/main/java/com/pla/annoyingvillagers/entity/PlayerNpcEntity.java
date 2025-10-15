@@ -243,7 +243,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        PlayerNpcOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
+        PlayerNpcOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity(), f);
         return super.hurt(damagesource, f);
     }
 

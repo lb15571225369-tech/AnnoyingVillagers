@@ -128,7 +128,7 @@ public class AlexEntity extends PathfinderMobInventory {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        AlexOnHurtProcedure.execute(this.level(), this, damagesource.getEntity());
+        AlexOnHurtProcedure.execute(this.level(), this, damagesource.getEntity(), f);
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;
         if (damagesource.is(DamageTypes.DROWN)) return false;

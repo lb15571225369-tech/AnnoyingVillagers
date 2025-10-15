@@ -31,7 +31,7 @@ public class AngrySteveOnHurtProcedure {
 
     public static void execute(LevelAccessor levelaccessor, final PathfinderMobInventory entity, final Entity attacker) {
         if (entity != null && attacker != null) {
-            if (entity.isAlive() && entity.getEnderPearlCooldown() == 0) {
+            if (entity.getEnderPearlCooldown() == 0) {
                 CombatBehaviour.throwEnderPearl(entity, (float) new Random().nextDouble(90.0D, 180.0D));
                 if (Math.random() <= 0.4D) {
                     new DelayedTask(40) {
@@ -152,6 +152,8 @@ public class AngrySteveOnHurtProcedure {
                         }
                     };
                 }
+
+                entity.setEnderPearlCooldown();
             }
 
             if (Math.random() <= 0.58D) {

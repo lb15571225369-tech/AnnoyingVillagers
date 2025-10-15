@@ -3,8 +3,8 @@
   "biomes": "#minecraft:is_overworld",
   "spawners": {
     "type": "annoyingvillagers:player_npc",
-    "weight": 3,
-    "minCount": 1,
-    "maxCount": 1
+    "weight": 6,
+    "minCount": 2,
+    "maxCount": 4
   }
 }

@@ -35,7 +35,7 @@ import java.util.Random;
 
 public class SteveOnHurtProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final PathfinderMobInventory entity, Entity attacker) {
+    public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final PathfinderMobInventory entity, Entity attacker, double amount) {
         if (entity != null) {
             if (!entity.getPersistentData().getBoolean("kick_x")) {
                 if (entity.getEnderPearlCooldown() == 0) {
@@ -256,126 +256,131 @@ public class SteveOnHurtProcedure {
                             }
                         }
                     };
-                }
 
-                if (entity instanceof Steve2Entity && attacker != null && attacker.isAlive()) {
-                    if (Math.random() <= 0.2D && !entity.getPersistentData().getBoolean("steve_l_g_h_a")) {
-                        entity.getPersistentData().putBoolean("steve_l_g_h_a", true);
-                        new DelayedTask(2) {
-                            @Override
-                            public void run() {
-                                if (entity.isAlive()) {
-                                    entity.setDeltaMovement(new Vec3(0.0D, 1.3D, 0.0D));
+                    if (entity instanceof Steve2Entity && attacker != null && attacker.isAlive()) {
+                        if (Math.random() <= 0.2D && !entity.getPersistentData().getBoolean("steve_l_g_h_a")) {
+                            entity.getPersistentData().putBoolean("steve_l_g_h_a", true);
+                            new DelayedTask(2) {
+                                @Override
+                                public void run() {
+                                    if (entity.isAlive()) {
+                                        entity.setDeltaMovement(new Vec3(0.0D, 1.3D, 0.0D));
+                                    }
+                                }
+                            };
+                            entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.HEAVY_ATTACK_LEGENDARY_SWORD_MOB.get()));
+
+                            if (!entity.level().isClientSide() && entity.getServer() != null) {
+                                try {
+                                    entity.getServer().getCommands().getDispatcher().execute(
+                                            "playsound epicfight:sfx.entity_move neutral @p",
+                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                } catch (CommandSyntaxException e) {
                                 }
                             }
-                        };
-                        entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.HEAVY_ATTACK_LEGENDARY_SWORD_MOB.get()));
 
-                        if (!entity.level().isClientSide() && entity.getServer() != null) {
-                            try {
-                                entity.getServer().getCommands().getDispatcher().execute(
-                                        "playsound epicfight:sfx.entity_move neutral @p",
-                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                            } catch (CommandSyntaxException e) {
+                            if (!entity.level().isClientSide() && entity.getServer() != null) {
+                                try {
+                                    entity.getServer().getCommands().getDispatcher().execute(
+                                            "indestructible @s play \"epicfight:biped/skill/demolition_leap\" 0 1",
+                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                } catch (CommandSyntaxException e) {
+                                }
                             }
-                        }
 
-                        if (!entity.level().isClientSide() && entity.getServer() != null) {
-                            try {
-                                entity.getServer().getCommands().getDispatcher().execute(
-                                        "indestructible @s play \"epicfight:biped/skill/demolition_leap\" 0 1",
-                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                            } catch (CommandSyntaxException e) {
+                            if (levelaccessor instanceof Level level) {
+                                if (!level.isClientSide()) {
+                                    level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "steveattack"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                } else {
+                                    level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "steveattack"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                }
                             }
-                        }
-
-                        if (levelaccessor instanceof Level level) {
-                            if (!level.isClientSide()) {
-                                level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "steveattack"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
-                            } else {
-                                level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "steveattack"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
-                            }
-                        }
-                        new DelayedTask(8) {
-                            public void run() {
-                                if (entity.isAlive()) {
-                                    entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.AXE_ATTACK_LEGENDARY_SWORD_MOB_AWAKENED.get()));
-                                }
-
-                                if (levelaccessor instanceof Level level) {
-                                    if (!level.isClientSide()) {
-                                        level.playSound((Player)null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "l_g_w_u"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
-                                    } else {
-                                        level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "l_g_w_u"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                            new DelayedTask(8) {
+                                public void run() {
+                                    if (entity.isAlive()) {
+                                        entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.AXE_ATTACK_LEGENDARY_SWORD_MOB_AWAKENED.get()));
                                     }
-                                }
 
-                                if (levelaccessor instanceof Level level) {
-                                    if (!level.isClientSide()) {
-                                        level.playSound((Player)null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "zhanshenzhirenjuexing"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
-                                    } else {
-                                        level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "zhanshenzhirenjuexing"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
-                                    }
-                                }
-
-                                if (levelaccessor instanceof ServerLevel serverLevel) {
-                                    serverLevel.sendParticles(ParticleTypes.TOTEM_OF_UNDYING, entity.getX(), entity.getZ(), entity.getY(), 15, 0.0D, 0.0D, 0.0D, 0.2D);
-                                }
-
-                                entity.setDeltaMovement(new Vec3(attacker.getX(), attacker.getY(), attacker.getZ()));
-                                if (!entity.level().isClientSide() && entity.getServer() != null) {
-                                    try {
-                                        entity.getServer().getCommands().getDispatcher().execute(
-                                                "playsound annoyingvillagers:heavy_attack_start neutral @p",
-                                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                    } catch (CommandSyntaxException e) {
-                                    }
-                                }
-
-                                if (!entity.level().isClientSide() && entity.getServer() != null) {
-                                    try {
-                                        entity.getServer().getCommands().getDispatcher().execute(
-                                                "execute as @s at @s anchored eyes run particle minecraft:totem_of_undying ~ ~ ~ 0 0 0 0.5 100",
-                                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                    } catch (CommandSyntaxException e) {
-                                    }
-                                }
-
-                                if (!entity.level().isClientSide()) {
-                                    entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 120, 2, false, false));
-                                }
-                                if (!entity.level().isClientSide() && entity.getServer() != null) {
-                                    try {
-                                        entity.getServer().getCommands().getDispatcher().execute(
-                                                "indestructible @s play \"annoyingvillagers:biped/combat/legendary_sword_heavy_attack\" 0 1",
-                                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                    } catch (CommandSyntaxException e) {
-                                    }
-                                }
-                                new DelayedTask(25) {
-                                    public void run() {
-                                        if (entity.isAlive()) {
-                                            entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.HEAVY_ATTACK_LEGENDARY_SWORD_MOB.get()));
-                                            new DelayedTask(20) {
-                                                public void run() {
-                                                    if (entity.isAlive()) {
-                                                        entity.getPersistentData().putBoolean("steve_l_g_h_a", false);
-                                                        entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get()));
-                                                        if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
-                                                            entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.SHARPNESS, 5);
-                                                        }
-                                                    }
-                                                }
-                                            };
+                                    if (levelaccessor instanceof Level level) {
+                                        if (!level.isClientSide()) {
+                                            level.playSound((Player)null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "l_g_w_u"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                        } else {
+                                            level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "l_g_w_u"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                         }
                                     }
-                                };
-                            }
-                        };
+
+                                    if (levelaccessor instanceof Level level) {
+                                        if (!level.isClientSide()) {
+                                            level.playSound((Player)null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "zhanshenzhirenjuexing"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                        } else {
+                                            level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "zhanshenzhirenjuexing"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                        }
+                                    }
+
+                                    if (levelaccessor instanceof ServerLevel serverLevel) {
+                                        serverLevel.sendParticles(ParticleTypes.TOTEM_OF_UNDYING, entity.getX(), entity.getZ(), entity.getY(), 15, 0.0D, 0.0D, 0.0D, 0.2D);
+                                    }
+
+                                    entity.setDeltaMovement(new Vec3(attacker.getX(), attacker.getY(), attacker.getZ()));
+                                    if (!entity.level().isClientSide() && entity.getServer() != null) {
+                                        try {
+                                            entity.getServer().getCommands().getDispatcher().execute(
+                                                    "playsound annoyingvillagers:heavy_attack_start neutral @p",
+                                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                        } catch (CommandSyntaxException e) {
+                                        }
+                                    }
+
+                                    if (!entity.level().isClientSide() && entity.getServer() != null) {
+                                        try {
+                                            entity.getServer().getCommands().getDispatcher().execute(
+                                                    "execute as @s at @s anchored eyes run particle minecraft:totem_of_undying ~ ~ ~ 0 0 0 0.5 100",
+                                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                        } catch (CommandSyntaxException e) {
+                                        }
+                                    }
+
+                                    if (!entity.level().isClientSide()) {
+                                        entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 120, 2, false, false));
+                                    }
+                                    if (!entity.level().isClientSide() && entity.getServer() != null) {
+                                        try {
+                                            entity.getServer().getCommands().getDispatcher().execute(
+                                                    "indestructible @s play \"annoyingvillagers:biped/combat/legendary_sword_heavy_attack\" 0 1",
+                                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                        } catch (CommandSyntaxException e) {
+                                        }
+                                    }
+                                    new DelayedTask(25) {
+                                        public void run() {
+                                            if (entity.isAlive()) {
+                                                entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.HEAVY_ATTACK_LEGENDARY_SWORD_MOB.get()));
+                                                new DelayedTask(20) {
+                                                    public void run() {
+                                                        if (entity.isAlive()) {
+                                                            entity.getPersistentData().putBoolean("steve_l_g_h_a", false);
+                                                            entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get()));
+                                                            if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
+                                                                entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.SHARPNESS, 5);
+                                                            }
+                                                        }
+                                                    }
+                                                };
+                                            }
+                                        }
+                                    };
+                                }
+                            };
+                        }
                     }
+
+                    entity.setEnderPearlCooldown();
                 }
 
-                entity.setEnderPearlCooldown();
+                if (entity.getGapCooldown() == 0 && entity.getHealth() <= ((float) 2/3 * entity.getMaxHealth())) {
+                    CombatBehaviour.eatingGoldenApple(entity, levelaccessor, amount);
+                    entity.setGapCooldown();
+                }
             }
         }
     }

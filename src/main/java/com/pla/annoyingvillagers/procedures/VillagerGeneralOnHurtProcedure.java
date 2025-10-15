@@ -13,7 +13,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -28,114 +27,110 @@ import java.util.Random;
 
 public class VillagerGeneralOnHurtProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final PathfinderMobInventory entity, Entity attacker) {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final PathfinderMobInventory entity, Entity attacker, double amount) {
         if (entity != null && attacker != null) {
             if (!entity.getPersistentData().getBoolean("kick_x")) {
-                if (attacker == ((Mob)entity).getTarget() && entity.isAlive()) {
-                    if (entity.getEnderPearlCooldown() == 0) {
-                        CombatBehaviour.throwEnderPearl(entity, (float) new Random().nextDouble(90.0D, 180.0D));
+                if (entity.getEnderPearlCooldown() == 0) {
+                    CombatBehaviour.throwEnderPearl(entity, (float) new Random().nextDouble(90.0D, 180.0D));
 
-                        if (Math.random() <= 0.5D) {
-                            new DelayedTask(40) {
-                                public void run() {
-                                    if (entity.isAlive()) {
-                                        CombatBehaviour.throwEnderPearl(entity, 0.0F);
-                                    }
-                                }
-                            };
-                        }
-
-                        entity.setSprinting(true);
-                        new DelayedTask(10) {
-                            @Override
+                    if (Math.random() <= 0.5D) {
+                        new DelayedTask(40) {
                             public void run() {
                                 if (entity.isAlive()) {
-                                    entity.setSprinting(false);
+                                    CombatBehaviour.throwEnderPearl(entity, 0.0F);
                                 }
                             }
                         };
+                    }
 
-                        entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get()));
-                        if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
-                            entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.SHARPNESS, 5);
+                    entity.setSprinting(true);
+                    new DelayedTask(10) {
+                        @Override
+                        public void run() {
+                            if (entity.isAlive()) {
+                                entity.setSprinting(false);
+                            }
                         }
+                    };
 
-                        if (Math.random() <= 0.4D) {
-                            entity.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.LAVA_BUCKET));
+                    entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get()));
+                    if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
+                        entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.SHARPNESS, 5);
+                    }
+
+                    if (Math.random() <= 0.4D) {
+                        entity.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.LAVA_BUCKET));
+                    }
+
+                    new DelayedTask(150) {
+                        @Override
+                        public void run() {
+                            if (entity.isAlive()) {
+                                entity.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.ENDER_PEARL));
+                            }
                         }
+                    };
 
-                        new DelayedTask(150) {
-                            @Override
+                    if (Math.random() <= 0.3D) {
+                        if (!entity.level().isClientSide()) {
+                            entity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 1, 1, false, false));
+                        }
+                    }
+
+                    if (Math.random() <= 0.2D) {
+                        CombatBehaviour.throwEnderPearl(entity, 180.0F);
+                    }
+
+                    if (Math.random() <= 0.1D) {
+                        new DelayedTask(20) {
                             public void run() {
                                 if (entity.isAlive()) {
-                                    entity.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.ENDER_PEARL));
+                                    CombatBehaviour.throwEnderPearl(entity, 90.0F);
                                 }
                             }
                         };
+                    }
 
-                        if (Math.random() <= 0.3D) {
-                            if (!entity.level().isClientSide()) {
-                                entity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 1, 1, false, false));
-                            }
-                        }
-
-                        if (Math.random() <= 0.2D) {
-                            CombatBehaviour.throwEnderPearl(entity, 180.0F);
-                        }
-
-                        if (Math.random() <= 0.1D) {
-                            new DelayedTask(20) {
-                                public void run() {
-                                    if (entity.isAlive()) {
-                                        CombatBehaviour.throwEnderPearl(entity, 90.0F);
+                    if (Math.random() <= 0.3D) {
+                        new DelayedTask(20) {
+                            public void run() {
+                                if (entity.isAlive()) {
+                                    CombatBehaviour.throwEnderPearl(entity, 180.0F);
+                                    entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BOW));
+                                    if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
+                                        entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.POWER_ARROWS, 3);
+                                        entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.PUNCH_ARROWS, 3);
                                     }
                                 }
-                            };
-                        }
+                                new DelayedTask(80) {
+                                    public void run() {
+                                        if (entity.isAlive()) {
+                                            CombatBehaviour.throwEnderPearl(entity, 0.0F);
 
-                        if (Math.random() <= 0.3D) {
-                            new DelayedTask(20) {
-                                public void run() {
-                                    if (entity.isAlive()) {
-                                        CombatBehaviour.throwEnderPearl(entity, 180.0F);
-                                        entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BOW));
-                                        if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
-                                            entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.POWER_ARROWS, 3);
-                                            entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.PUNCH_ARROWS, 3);
-                                        }
-                                    }
-                                    new DelayedTask(80) {
-                                        public void run() {
-                                            if (entity.isAlive()) {
-                                                CombatBehaviour.throwEnderPearl(entity, 0.0F);
-
+                                            if (Math.random() <= 0.2D) {
+                                                entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.DIAMOND_BLADE.get()));
+                                                if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
+                                                    entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.SHARPNESS, 3);
+                                                }
+                                            } else {
+                                                entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_SWORD));
+                                                if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
+                                                    entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.SHARPNESS, 3);
+                                                    entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.KNOCKBACK, 2);
+                                                }
                                                 if (Math.random() <= 0.2D) {
-                                                    entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.DIAMOND_BLADE.get()));
-                                                    if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
-                                                        entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.SHARPNESS, 3);
-                                                    }
-                                                } else {
-                                                    entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_SWORD));
+                                                    entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.DIAMOND_DAGGER.get()));
                                                     if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
                                                         entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.SHARPNESS, 3);
                                                         entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.KNOCKBACK, 2);
                                                     }
-                                                    if (Math.random() <= 0.2D) {
-                                                        entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.DIAMOND_DAGGER.get()));
-                                                        if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
-                                                            entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.SHARPNESS, 3);
-                                                            entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.KNOCKBACK, 2);
-                                                        }
-                                                    }
                                                 }
                                             }
                                         }
-                                    };
-                                }
-                            };
-                        }
-
-                        entity.setEnderPearlCooldown();
+                                    }
+                                };
+                            }
+                        };
                     }
 
                     if (entity.getHealth() <= 7.0F && levelaccessor instanceof Level) {
@@ -146,9 +141,15 @@ public class VillagerGeneralOnHurtProcedure {
                             level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.item.break"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                         }
                     }
+
+                    entity.setEnderPearlCooldown();
+                }
+
+                if (entity.getGapCooldown() == 0 && entity.getHealth() <= ((float) 2/3 * entity.getMaxHealth())) {
+                    CombatBehaviour.eatingGoldenApple(entity, levelaccessor, amount);
+                    entity.setGapCooldown();
                 }
             }
-
         }
     }
 }

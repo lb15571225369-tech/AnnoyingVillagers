@@ -17,7 +17,7 @@ import net.minecraft.world.level.LevelAccessor;
 
 public class ChrisOnHurtProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final PathfinderMobInventory entity) {
+    public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final PathfinderMobInventory entity, double amount) {
         if (entity != null) {
             if (!entity.getPersistentData().getBoolean("kick_x")) {
                 if (entity.getEnderPearlCooldown() == 0) {
@@ -81,6 +81,11 @@ public class ChrisOnHurtProcedure {
                     }
 
                     entity.setEnderPearlCooldown();
+                }
+
+                if (entity.getGapCooldown() == 0 && entity.getHealth() <= ((float) 2/3 * entity.getMaxHealth())) {
+                    CombatBehaviour.eatingGoldenApple(entity, levelaccessor, amount);
+                    entity.setGapCooldown();
                 }
             }
 
