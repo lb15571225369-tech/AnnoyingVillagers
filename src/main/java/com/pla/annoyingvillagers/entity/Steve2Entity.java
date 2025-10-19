@@ -117,7 +117,7 @@ public class Steve2Entity extends PathfinderMobInventory {
         super.remove(reason);
         if (!level().isClientSide && level() instanceof ServerLevel serverLevel &&
                 (reason == RemovalReason.KILLED || reason == RemovalReason.DISCARDED)) {
-            SteveData.get(serverLevel).releaseIfMatches(this.getUUID());
+            SteveData.get(serverLevel).releaseIfMatches(serverLevel, this.getUUID());
         }
     }
 

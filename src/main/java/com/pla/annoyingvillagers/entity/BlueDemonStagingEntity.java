@@ -120,7 +120,7 @@ public class BlueDemonStagingEntity extends Monster {
         super.remove(reason);
         if (!level().isClientSide && level() instanceof ServerLevel serverLevel &&
                 (reason == RemovalReason.KILLED || reason == RemovalReason.DISCARDED)) {
-            BluedemonData.get(serverLevel).releaseIfMatches(this.getUUID());
+            BluedemonData.get(serverLevel).releaseIfMatches(serverLevel, this.getUUID());
         }
     }
 

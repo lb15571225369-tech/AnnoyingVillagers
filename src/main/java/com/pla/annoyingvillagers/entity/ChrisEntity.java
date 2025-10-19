@@ -160,7 +160,7 @@ public class ChrisEntity extends PathfinderMobInventory {
         super.remove(reason);
         if (!level().isClientSide && level() instanceof ServerLevel serverLevel &&
                 (reason == RemovalReason.KILLED || reason == RemovalReason.DISCARDED)) {
-            ChrisData.get(serverLevel).releaseIfMatches(this.getUUID());
+            ChrisData.get(serverLevel).releaseIfMatches(serverLevel, this.getUUID());
         }
     }
 

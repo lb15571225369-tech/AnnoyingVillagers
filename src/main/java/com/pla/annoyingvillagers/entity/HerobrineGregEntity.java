@@ -927,7 +927,7 @@ public class HerobrineGregEntity extends Monster {
         super.remove(reason);
         if (!level().isClientSide && level() instanceof ServerLevel serverLevel &&
                 (reason == RemovalReason.KILLED || reason == RemovalReason.DISCARDED)) {
-            GregData.get(serverLevel).releaseIfMatches(this.getUUID());
+            GregData.get(serverLevel).releaseIfMatches(serverLevel, this.getUUID());
         }
     }
 

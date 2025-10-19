@@ -221,7 +221,7 @@ public class HerobrineMob extends Monster {
         super.remove(reason);
         if (!level().isClientSide && level() instanceof ServerLevel serverLevel &&
                 (reason == RemovalReason.KILLED || reason == RemovalReason.DISCARDED)) {
-            HerobrineMobData.get(serverLevel).releaseIfMatches(this.getUUID());
+            HerobrineMobData.get(serverLevel).releaseIfMatches(serverLevel, this.getUUID());
         }
     }
 

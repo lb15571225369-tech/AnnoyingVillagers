@@ -266,7 +266,7 @@ public class AlexEntity extends PathfinderMobInventory {
         super.remove(reason);
         if (!level().isClientSide && level() instanceof ServerLevel serverLevel &&
                 (reason == RemovalReason.KILLED || reason == RemovalReason.DISCARDED)) {
-            AlexData.get(serverLevel).releaseIfMatches(this.getUUID());
+            AlexData.get(serverLevel).releaseIfMatches(serverLevel, this.getUUID());
         }
     }
 
