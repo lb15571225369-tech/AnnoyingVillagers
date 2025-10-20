@@ -110,7 +110,7 @@ public class HerobrineMob extends Monster {
         this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, 0.0F);
     }
 
-    static class AnyFluidPathNavigation extends GroundPathNavigation {
+    public static class AnyFluidPathNavigation extends GroundPathNavigation {
         public AnyFluidPathNavigation(Mob mob, Level level) {
             super(mob, level);
         }
@@ -242,42 +242,6 @@ public class HerobrineMob extends Monster {
 
         this.fallDistance = 0.0F;
     }
-
-//    private void floatOnAnyFluid() {
-//        BlockPos feet = this.getOnPos();
-//        boolean onObsidian = this.level().getBlockState(feet)
-//                .is(AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get());
-//
-//        FluidState fluidState = this.level().getFluidState(feet);
-//        if (fluidState.isEmpty() && !onObsidian) return;
-//
-//        CollisionContext ctx = CollisionContext.of(this);
-//        double surfaceY;
-//        boolean atTop;
-//        if (onObsidian) {
-//            surfaceY = feet.getY() + 1.0D;
-//            atTop = true;
-//        } else {
-//            Fluid typeHere = fluidState.getType();
-//            FluidState above = this.level().getFluidState(feet.above());
-//            atTop = ctx.isAbove(LiquidBlock.STABLE_SHAPE, feet, true) && above.getType() != typeHere;
-//            surfaceY = feet.getY() + fluidState.getHeight(this.level(), feet);
-//        }
-//
-//        if (atTop) {
-//            this.setOnGround(true);
-//            double bottomY = this.getBoundingBox().minY;
-//            double diff = surfaceY - bottomY - 0.001D;
-//            if (diff > 0.0D) {
-//                Vec3 v = this.getDeltaMovement();
-//                this.setDeltaMovement(v.x, Math.max(v.y, Math.min(0.2D, diff * 0.2D)), v.z);
-//            }
-//        } else {
-//            this.setDeltaMovement(this.getDeltaMovement().scale(0.5D).add(0.0D, 0.05D, 0.0D));
-//        }
-//
-//        this.fallDistance = 0.0F;
-//    }
 
     @Override
     public boolean isInWater() {

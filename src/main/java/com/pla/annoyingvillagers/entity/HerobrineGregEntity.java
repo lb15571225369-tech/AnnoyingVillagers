@@ -4,8 +4,10 @@ import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.block.ObsidianBlock;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
@@ -24,6 +26,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -35,6 +38,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -42,8 +46,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
@@ -77,6 +87,8 @@ public class HerobrineGregEntity extends Monster {
     private UUID firstSummonedHerobrineUUID;
     private UUID secondSummonedHerobrineUUID;
     private UUID thirdSummonedHerobrineUUID;
+
+    private BlockPos lastFeetPos = null;
 
     private final List<Item> listWeapons = new ArrayList<>(Arrays.asList(
             Items.DIAMOND_SWORD,
@@ -151,6 +163,12 @@ public class HerobrineGregEntity extends Monster {
         int randomMin = Math.min(min, max);
         int randomMax = Math.max(min, max);
         this.recallTime = (randomMin + new Random().nextInt(randomMax - randomMin + 1)) * 60 * 20;
+
+        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.LAVA, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, 0.0F);
     }
 
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -270,10 +288,84 @@ public class HerobrineGregEntity extends Monster {
     }
 
     @Override
+    protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
+        return new HerobrineMob.AnyFluidPathNavigation(this, level);
+    }
+
+    @Override
+    public boolean isInWater() {
+        FluidState fs = this.level().getFluidState(this.blockPosition());
+        if (!fs.isEmpty() && this.canStandOnFluid(fs)) return false;
+        return super.isInWater();
+    }
+
+    @Override
+    public boolean canStandOnFluid(FluidState state) {
+        return !state.isEmpty();
+    }
+
+    @Override
+    public boolean isPushedByFluid() {
+        return false;
+    }
+
+    private void floatOnAnyFluid() {
+        BlockPos pos = this.blockPosition();
+        FluidState fluidState = this.level().getFluidState(pos);
+        if (fluidState.isEmpty()) {
+            return;
+        }
+
+        CollisionContext collisionContext = CollisionContext.of(this);
+        Fluid typeHere = fluidState.getType();
+        FluidState above = this.level().getFluidState(pos.above());
+
+        if (collisionContext.isAbove(LiquidBlock.STABLE_SHAPE, pos, true) && above.getType() != typeHere) {
+            this.setOnGround(true);
+
+            double surfaceY = pos.getY() + fluidState.getHeight(this.level(), pos);
+            double bottomY  = this.getBoundingBox().minY;
+            double diff     = surfaceY - bottomY - 0.001D;
+
+            if (diff > 0.0D) {
+                Vec3 vel = this.getDeltaMovement();
+                this.setDeltaMovement(vel.x, Math.max(vel.y, Math.min(0.2D, diff * 0.2D)), vel.z);
+            }
+        } else {
+            this.setDeltaMovement(this.getDeltaMovement().scale(0.5D).add(0.0D, 0.05D, 0.0D));
+        }
+
+        this.fallDistance = 0.0F;
+    }
+
+    private void placeObsidianBlockWhenInWater(Block block) {
+        BlockPos feet = this.getOnPos();
+        if (lastFeetPos == null) lastFeetPos = feet;
+        if (!feet.equals(lastFeetPos)) {
+            if (!this.level().getBlockState(lastFeetPos).is(block)) {
+                FluidState fluidState = this.level().getFluidState(lastFeetPos);
+                if (!fluidState.isEmpty()) {
+                    int replace = fluidState.is(FluidTags.WATER) ? 1 : (fluidState.is(FluidTags.LAVA) ? 2 : 0);
+                    this.level().setBlockAndUpdate(
+                            lastFeetPos,
+                            block
+                                    .defaultBlockState()
+                                    .setValue(ObsidianBlock.REPLACE_BY_LIQUID, replace)
+                    );
+                }
+            }
+            lastFeetPos = feet;
+        }
+    }
+
+
+    @Override
     public void tick() {
         super.tick();
-
+        this.floatOnAnyFluid();
+        this.checkInsideBlocks();
         if (!this.level().isClientSide) {
+            placeObsidianBlockWhenInWater(AnnoyingVillagersModBlocks.CRYING_OBSIDIAN_BLOCK.get());
             if (!isDay(this.level())) {
                 if (!this.isWhiteEye()) {
                     setWhiteEye(true);

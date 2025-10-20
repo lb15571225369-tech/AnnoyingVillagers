@@ -8,6 +8,7 @@ public class ObsidianWeaponUtil {
         return e instanceof HerobrineCloneEntity
                 || e instanceof ShadowHerobrineCloneEntity
                 || e instanceof HerobrineChrisEntity
+                || e instanceof HerobrineGregEntity
                 || e instanceof LowHerobrineCloneEntity
                 || e instanceof LowShadowHerobrineCloneEntity
                 || e instanceof Herobrine7Entity
