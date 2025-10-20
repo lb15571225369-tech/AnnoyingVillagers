@@ -42,6 +42,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 import java.util.UUID;
@@ -71,7 +72,7 @@ public class ReaperHerobrineEntity extends HerobrineMob {
         this.setChatName("§5Reaper Herobrine§r");
     }
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -83,7 +84,7 @@ public class ReaperHerobrineEntity extends HerobrineMob {
         this.getPersistentData().putInt("DragonCooldown", ticks);
     }
 
-    public MobType getMobType() {
+    public @NotNull MobType getMobType() {
         return MobType.UNDEFINED;
     }
 
@@ -95,16 +96,16 @@ public class ReaperHerobrineEntity extends HerobrineMob {
         return -0.35D;
     }
 
-    public SoundEvent getHurtSound(DamageSource damagesource) {
+    public @NotNull SoundEvent getHurtSound(DamageSource damagesource) {
         return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
     }
 
-    public SoundEvent getDeathSound() {
+    public @NotNull SoundEvent getDeathSound() {
         return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
+    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         if (enderDragonUUID != null) {
             tag.putUUID("EnderDragonUUID", enderDragonUUID);
@@ -115,7 +116,7 @@ public class ReaperHerobrineEntity extends HerobrineMob {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
+    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.hasUUID("EnderDragonUUID")) {
             enderDragonUUID = tag.getUUID("EnderDragonUUID");
@@ -255,7 +256,7 @@ public class ReaperHerobrineEntity extends HerobrineMob {
         serverLevel.addFreshEntity(beam);
     }
 
-    public boolean hurt(DamageSource damagesource, float f) {
+    public boolean hurt(@NotNull DamageSource damagesource, float f) {
         if (!this.getPersistentData().getBoolean("kick_x")) {
             this.setSprinting(true);
             ReaperHerobrineEntity entity = this;

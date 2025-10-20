@@ -1,11 +1,9 @@
 package com.pla.annoyingvillagers.block;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
-
-import com.pla.annoyingvillagers.blockentity.ShadowObsidianBlockEntity;
+import com.pla.annoyingvillagers.blockentity.ObsidianBlockEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
+import com.pla.annoyingvillagers.procedures.ObsidianBlockPlaceBlockProcedure;
+import com.pla.annoyingvillagers.procedures.ObsidianWhenEntityInsideBlockOnCollisionProcedure;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
@@ -34,15 +32,16 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.ForgeSoundType;
-import com.pla.annoyingvillagers.procedures.ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure;
-import com.pla.annoyingvillagers.procedures.ShadowObsidianPlaceBlockProcedure;
 import org.jetbrains.annotations.Nullable;
 
-public class ShadowObsidianBlock extends Block implements EntityBlock {
+import java.util.Collections;
+import java.util.List;
+
+public class CryingObsidianBlock extends Block implements EntityBlock {
     public static final BooleanProperty FROM_PLAYER = BooleanProperty.create("from_player");
     public static final IntegerProperty REPLACE_BY_LIQUID = IntegerProperty.create("replace_by_liquid", 0, 2);
 
-    public ShadowObsidianBlock() {
+    public CryingObsidianBlock() {
         super(Properties.of()
                 .sound(new ForgeSoundType(1.0F, 1.0F,
                         () -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("annoyingvillagers", "lost")),
@@ -51,7 +50,7 @@ public class ShadowObsidianBlock extends Block implements EntityBlock {
                         () -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("minecraft", "block.stone.hit")),
                         () -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("annoyingvillagers", "silent"))
                 ))
-                .strength(30.0F, 40.0F)
+                .strength(60.0F, 40.0F)
                 .lightLevel((blockstate) -> 4)
                 .noOcclusion()
                 .hasPostProcess((blockstate, blockgetter, blockpos) -> true)
@@ -78,7 +77,7 @@ public class ShadowObsidianBlock extends Block implements EntityBlock {
 
     public void appendHoverText(ItemStack itemstack, BlockGetter blockgetter, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, blockgetter, list, tooltipflag);
-        list.add(Component.literal("Shadow Obsidian Fired by Shadow Herobrine's Clone"));
+        list.add(Component.literal("Obsidian Fired by Elite Herobrine"));
     }
 
     public int getLightBlock(BlockState blockstate, BlockGetter blockgetter, BlockPos blockpos) {
@@ -101,12 +100,12 @@ public class ShadowObsidianBlock extends Block implements EntityBlock {
 
     public void onPlace(BlockState blockstate, Level level, BlockPos blockpos, BlockState blockstate1, boolean flag) {
         super.onPlace(blockstate, level, blockpos, blockstate1, flag);
-        ShadowObsidianPlaceBlockProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ());
+        ObsidianBlockPlaceBlockProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ());
     }
 
     public void entityInside(BlockState blockstate, Level level, BlockPos blockpos, Entity entity) {
         super.entityInside(blockstate, level, blockpos, entity);
-        ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), entity);
+        ObsidianWhenEntityInsideBlockOnCollisionProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), entity);
     }
 
     @Override
@@ -114,8 +113,8 @@ public class ShadowObsidianBlock extends Block implements EntityBlock {
         super.setPlacedBy(level, pos, state, placer, stack);
         if (!level.isClientSide) {
             var blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
-                shadowObsidianBlockEntity.setOwner(placer instanceof Player ? ((Player) placer).getUUID() : null);
+            if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
+                obsidianBlockEntity.setOwner(placer instanceof Player ? ((Player) placer).getUUID() : null);
                 blockEntity.setChanged();
                 level.sendBlockUpdated(pos, state, state, 3);
             }
@@ -124,13 +123,14 @@ public class ShadowObsidianBlock extends Block implements EntityBlock {
 
     @OnlyIn(Dist.CLIENT)
     public static void registerRenderLayer() {
-        ItemBlockRenderTypes.setRenderLayer((Block) AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get(), (rendertype) -> {
+        ItemBlockRenderTypes.setRenderLayer((Block) AnnoyingVillagersModBlocks.CRYING_OBSIDIAN_BLOCK.get(), (rendertype) -> {
             return rendertype == RenderType.cutoutMipped();
         });
     }
 
+
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new ShadowObsidianBlockEntity(pPos, pState);
+        return new ObsidianBlockEntity(pPos, pState);
     }
 }

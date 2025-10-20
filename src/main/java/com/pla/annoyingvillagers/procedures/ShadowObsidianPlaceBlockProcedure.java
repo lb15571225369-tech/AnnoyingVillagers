@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.pla.annoyingvillagers.block.ShadowObsidianBlock;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -11,6 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class ShadowObsidianPlaceBlockProcedure {
@@ -50,8 +52,18 @@ public class ShadowObsidianPlaceBlockProcedure {
                         level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "block.stone.break")), SoundSource.BLOCKS, 1.0F, (float)Mth.nextDouble(RandomSource.create(), 1.0D, 1.1D), false);
                     }
                 }
-
-                levelaccessor.setBlock(new BlockPos((int) d0, (int) d1, (int) d2), Blocks.AIR.defaultBlockState(), 3);
+                BlockPos pos = new BlockPos((int) d0, (int) d1, (int) d2);
+                BlockState current = levelaccessor.getBlockState(pos);
+                int replace = 0;
+                if (current.getBlock() instanceof ShadowObsidianBlock && current.hasProperty(ShadowObsidianBlock.REPLACE_BY_LIQUID)) {
+                    replace = current.getValue(ShadowObsidianBlock.REPLACE_BY_LIQUID);
+                }
+                BlockState replacement = switch (replace) {
+                    case 1 -> Blocks.WATER.defaultBlockState();
+                    case 2 -> Blocks.LAVA.defaultBlockState();
+                    default -> Blocks.AIR.defaultBlockState();
+                };
+                levelaccessor.setBlock(pos, replacement, 3);
             }
         };
 

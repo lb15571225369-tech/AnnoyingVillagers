@@ -29,6 +29,7 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.utils.NameManager;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
@@ -49,11 +50,11 @@ public class ShadowHerobrineCloneEntity extends HerobrineMob {
         this.setChatName("§5Shadow Herobrine Clone§r");
     }
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
-    public MobType getMobType() {
+    public @NotNull MobType getMobType() {
         return MobType.UNDEAD;
     }
 
@@ -65,24 +66,24 @@ public class ShadowHerobrineCloneEntity extends HerobrineMob {
         return -0.35D;
     }
 
-    protected void dropCustomDeathLoot(DamageSource damagesource, int i, boolean flag) {
+    protected void dropCustomDeathLoot(@NotNull DamageSource damagesource, int i, boolean flag) {
         super.dropCustomDeathLoot(damagesource, i, flag);
         this.spawnAtLocation(new ItemStack(Blocks.OBSIDIAN));
     }
 
-    public SoundEvent getHurtSound(DamageSource damagesource) {
+    public @NotNull SoundEvent getHurtSound(DamageSource damagesource) {
         return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.hurt"));
     }
 
-    public SoundEvent getDeathSound() {
+    public @NotNull SoundEvent getDeathSound() {
         return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.death"));
     }
 
-    public boolean causeFallDamage(float f, float f1, DamageSource damagesource) {
+    public boolean causeFallDamage(float f, float f1, @NotNull DamageSource damagesource) {
         return super.causeFallDamage(f, f1, damagesource);
     }
 
-    public boolean hurt(DamageSource damagesource, float f) {
+    public boolean hurt(@NotNull DamageSource damagesource, float f) {
         HerobrineCloneOnHurtProcedure.execute(this);
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;

@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 
 import com.pla.annoyingvillagers.blockentity.ObsidianBlockEntity;
-import com.pla.annoyingvillagers.blockentity.ShadowObsidianBlockEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.procedures.ObsidianWhenEntityInsideBlockOnCollisionProcedure;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -27,6 +26,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -35,10 +35,12 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.ForgeSoundType;
 import com.pla.annoyingvillagers.procedures.ObsidianBlockPlaceBlockProcedure;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ObsidianBlock extends Block implements EntityBlock {
     public static final BooleanProperty FROM_PLAYER = BooleanProperty.create("from_player");
+    public static final IntegerProperty REPLACE_BY_LIQUID = IntegerProperty.create("replace_by_liquid", 0, 2);
 
     public ObsidianBlock() {
         super(Properties.of()
@@ -55,19 +57,23 @@ public class ObsidianBlock extends Block implements EntityBlock {
                 .hasPostProcess((blockstate, blockgetter, blockpos) -> true)
                 .emissiveRendering((blockstate, blockgetter, blockpos) -> true)
                 .isRedstoneConductor((blockstate, blockgetter, blockpos) -> false));
-        this.registerDefaultState(this.stateDefinition.any().setValue(FROM_PLAYER, Boolean.FALSE));
+        this.registerDefaultState(
+                this.stateDefinition.any()
+                        .setValue(FROM_PLAYER, Boolean.FALSE)
+                        .setValue(REPLACE_BY_LIQUID, 0)
+        );
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FROM_PLAYER);
+        builder.add(FROM_PLAYER, REPLACE_BY_LIQUID);
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-        BlockState base = super.getStateForPlacement(ctx);
+    public BlockState getStateForPlacement(@NotNull BlockPlaceContext blockPlaceContext) {
+        BlockState base = super.getStateForPlacement(blockPlaceContext);
         if (base == null) base = this.defaultBlockState();
-        return base.setValue(FROM_PLAYER, ctx.getPlayer() != null);
+        return base.setValue(FROM_PLAYER, blockPlaceContext.getPlayer() != null);
     }
 
     public void appendHoverText(ItemStack itemstack, BlockGetter blockgetter, List<Component> list, TooltipFlag tooltipflag) {

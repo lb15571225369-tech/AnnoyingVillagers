@@ -4,8 +4,10 @@ import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.block.ObsidianBlock;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.spawnhandler.HerobrineMobData;
@@ -17,22 +19,36 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathFinder;
+import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import static com.pla.annoyingvillagers.procedures.HerobrinePortalProcedure.*;
@@ -44,6 +60,7 @@ public class HerobrineMob extends Monster {
     private boolean neverRecall = false;
     private UUID gregUUID = null;
     private boolean initialSpawn = true;
+    private BlockPos lastFeetPos = null;
 
     public void setGregUUID(UUID gregUUID) {
         this.gregUUID = gregUUID;
@@ -86,9 +103,44 @@ public class HerobrineMob extends Monster {
         this.setDropChance(EquipmentSlot.MAINHAND, 0.0F);
         this.setDropChance(EquipmentSlot.CHEST, 0.0F);
         this.setDropChance(EquipmentSlot.HEAD, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.LAVA, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, 0.0F);
     }
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    static class AnyFluidPathNavigation extends GroundPathNavigation {
+        public AnyFluidPathNavigation(Mob mob, Level level) {
+            super(mob, level);
+        }
+
+        @Override
+        protected @NotNull PathFinder createPathFinder(int maxVisitedNodes) {
+            this.nodeEvaluator = new WalkNodeEvaluator();
+            this.nodeEvaluator.setCanPassDoors(true);
+            return new PathFinder(this.nodeEvaluator, maxVisitedNodes);
+        }
+
+        @Override
+        protected boolean hasValidPathType(@NotNull BlockPathTypes type) {
+            if (type == BlockPathTypes.WATER
+                    || type == BlockPathTypes.WATER_BORDER
+                    || type == BlockPathTypes.LAVA
+                    || type == BlockPathTypes.DANGER_FIRE
+                    || type == BlockPathTypes.DAMAGE_FIRE) {
+                return true;
+            }
+            return super.hasValidPathType(type);
+        }
+
+        @Override
+        public boolean isStableDestination(@NotNull BlockPos blockPos) {
+            return this.level.getFluidState(blockPos).getType() != Fluids.EMPTY || super.isStableDestination(blockPos);
+        }
+    }
+
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -97,7 +149,7 @@ public class HerobrineMob extends Monster {
         CommonGoals.registerGoalForHostileNpc(this);
     }
 
-    public MobType getMobType() {
+    public @NotNull MobType getMobType() {
         return MobType.UNDEAD;
     }
 
@@ -109,28 +161,24 @@ public class HerobrineMob extends Monster {
         return -0.35D;
     }
 
-    protected void dropCustomDeathLoot(DamageSource damagesource, int i, boolean flag) {
+    protected void dropCustomDeathLoot(@NotNull DamageSource damagesource, int i, boolean flag) {
         super.dropCustomDeathLoot(damagesource, i, flag);
         this.spawnAtLocation(new ItemStack(Blocks.OBSIDIAN));
     }
 
-    public SoundEvent getHurtSound(DamageSource damagesource) {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.hurt"));
+    public @NotNull SoundEvent getHurtSound(DamageSource damagesource) {
+        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.hurt")));
     }
 
-    public SoundEvent getDeathSound() {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.death"));
+    public @NotNull SoundEvent getDeathSound() {
+        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.death")));
     }
 
-    public void thunderHit(ServerLevel serverlevel, LightningBolt lightningbolt) {
-        super.thunderHit(serverlevel, lightningbolt);
-    }
-
-    public boolean causeFallDamage(float f, float f1, DamageSource damagesource) {
+    public boolean causeFallDamage(float f, float f1, @NotNull DamageSource damagesource) {
         return super.causeFallDamage(f, f1, damagesource);
     }
 
-    public boolean hurt(DamageSource damagesource, float f) {
+    public boolean hurt(@NotNull DamageSource damagesource, float f) {
         if (this.getPersistentData().getBoolean(NBT_RISING) || this.getPersistentData().getBoolean(NBT_SINKING)) {
             return false;
         }
@@ -138,7 +186,7 @@ public class HerobrineMob extends Monster {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag pCompound) {
+    public void readAdditionalSaveData(@NotNull CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         recallTicks = pCompound.getInt("RecallTicks");
         renderPortal = pCompound.getBoolean("RenderPortal");
@@ -150,7 +198,7 @@ public class HerobrineMob extends Monster {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag pCompound) {
+    public void addAdditionalSaveData(@NotNull CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putInt("RecallTicks", recallTicks);
         pCompound.putBoolean("RenderPortal", renderPortal);
@@ -162,9 +210,126 @@ public class HerobrineMob extends Monster {
     }
 
     @Override
+    protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
+        return new AnyFluidPathNavigation(this, level);
+    }
+
+    private void floatOnAnyFluid() {
+        BlockPos pos = this.blockPosition();
+        FluidState fluidState = this.level().getFluidState(pos);
+        if (fluidState.isEmpty()) {
+            return;
+        }
+
+        CollisionContext collisionContext = CollisionContext.of(this);
+        Fluid typeHere = fluidState.getType();
+        FluidState above = this.level().getFluidState(pos.above());
+
+        if (collisionContext.isAbove(LiquidBlock.STABLE_SHAPE, pos, true) && above.getType() != typeHere) {
+            this.setOnGround(true);
+
+            double surfaceY = pos.getY() + fluidState.getHeight(this.level(), pos);
+            double bottomY  = this.getBoundingBox().minY;
+            double diff     = surfaceY - bottomY - 0.001D;
+
+            if (diff > 0.0D) {
+                Vec3 vel = this.getDeltaMovement();
+                this.setDeltaMovement(vel.x, Math.max(vel.y, Math.min(0.2D, diff * 0.2D)), vel.z);
+            }
+        } else {
+            this.setDeltaMovement(this.getDeltaMovement().scale(0.5D).add(0.0D, 0.05D, 0.0D));
+        }
+
+        this.fallDistance = 0.0F;
+    }
+
+//    private void floatOnAnyFluid() {
+//        BlockPos feet = this.getOnPos();
+//        boolean onObsidian = this.level().getBlockState(feet)
+//                .is(AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get());
+//
+//        FluidState fluidState = this.level().getFluidState(feet);
+//        if (fluidState.isEmpty() && !onObsidian) return;
+//
+//        CollisionContext ctx = CollisionContext.of(this);
+//        double surfaceY;
+//        boolean atTop;
+//        if (onObsidian) {
+//            surfaceY = feet.getY() + 1.0D;
+//            atTop = true;
+//        } else {
+//            Fluid typeHere = fluidState.getType();
+//            FluidState above = this.level().getFluidState(feet.above());
+//            atTop = ctx.isAbove(LiquidBlock.STABLE_SHAPE, feet, true) && above.getType() != typeHere;
+//            surfaceY = feet.getY() + fluidState.getHeight(this.level(), feet);
+//        }
+//
+//        if (atTop) {
+//            this.setOnGround(true);
+//            double bottomY = this.getBoundingBox().minY;
+//            double diff = surfaceY - bottomY - 0.001D;
+//            if (diff > 0.0D) {
+//                Vec3 v = this.getDeltaMovement();
+//                this.setDeltaMovement(v.x, Math.max(v.y, Math.min(0.2D, diff * 0.2D)), v.z);
+//            }
+//        } else {
+//            this.setDeltaMovement(this.getDeltaMovement().scale(0.5D).add(0.0D, 0.05D, 0.0D));
+//        }
+//
+//        this.fallDistance = 0.0F;
+//    }
+
+    @Override
+    public boolean isInWater() {
+        FluidState fs = this.level().getFluidState(this.blockPosition());
+        if (!fs.isEmpty() && this.canStandOnFluid(fs)) return false;
+        return super.isInWater();
+    }
+
+    @Override
+    public boolean canStandOnFluid(FluidState state) {
+        return !state.isEmpty();
+    }
+
+    @Override
+    public boolean isPushedByFluid() {
+        return false;
+    }
+
+    private void placeObsidianBlockWhenInWater(Block block) {
+        BlockPos feet = this.getOnPos();
+        if (lastFeetPos == null) lastFeetPos = feet;
+        if (!feet.equals(lastFeetPos)) {
+            if (!this.level().getBlockState(lastFeetPos).is(block)) {
+                FluidState fluidState = this.level().getFluidState(lastFeetPos);
+                if (!fluidState.isEmpty()) {
+                    int replace = fluidState.is(FluidTags.WATER) ? 1 : (fluidState.is(FluidTags.LAVA) ? 2 : 0);
+                    this.level().setBlockAndUpdate(
+                            lastFeetPos,
+                            block
+                                    .defaultBlockState()
+                                    .setValue(ObsidianBlock.REPLACE_BY_LIQUID, replace)
+                    );
+                }
+            }
+            lastFeetPos = feet;
+        }
+    }
+
+    @Override
     public void tick() {
         super.tick();
+        this.floatOnAnyFluid();
+        this.checkInsideBlocks();
         if (!this.level().isClientSide) {
+            if (this instanceof HerobrineCloneEntity || this instanceof HerobrineChrisEntity) {
+                placeObsidianBlockWhenInWater(AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get());
+            } else if (this instanceof ShadowHerobrineCloneEntity || this instanceof Herobrine7Entity
+                    || this instanceof ArmoredHerobrineEntity || this instanceof ShadowHerobrineEntity) {
+                placeObsidianBlockWhenInWater(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get());
+            } else if (!(this instanceof NullEntity)) {
+                placeObsidianBlockWhenInWater(AnnoyingVillagersModBlocks.CRYING_OBSIDIAN_BLOCK.get());
+            }
             if (this.tickCount == 1) {
                 if (this.renderPortal) {
                     AnnoyingVillagers.PACKET_HANDLER.send(

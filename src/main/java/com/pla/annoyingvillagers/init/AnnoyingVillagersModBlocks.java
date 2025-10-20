@@ -42,6 +42,9 @@ public class AnnoyingVillagersModBlocks {
     public static final RegistryObject<Block> OBSIDIAN_BLOCK = AnnoyingVillagersModBlocks.REGISTRY.register("obsidian", () -> {
         return new ObsidianBlock();
     });
+    public static final RegistryObject<Block> CRYING_OBSIDIAN_BLOCK = AnnoyingVillagersModBlocks.REGISTRY.register("crying_obsidian", () -> {
+        return new CryingObsidianBlock();
+    });
     public static final RegistryObject<EndFireBlock> END_FIRE = AnnoyingVillagersModBlocks.REGISTRY.register(
             "end_fire",
             () -> new EndFireBlock(
