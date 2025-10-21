@@ -86,5 +86,6 @@ public class AnnoyingVillagersModEntityRenderers {
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.BLOCK_PROJECTILE.get(), BlockProjectileRenderer::new);
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.HEROBRINE_GREG.get(), HerobrineGregRenderer::new);
         registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.PLAYER_NPC.get(), PlayerMobRenderer::new);
+        registerrenderers.registerEntityRenderer((EntityType) AnnoyingVillagersModEntities.HEROBRINE_WARDEN.get(), HerobrineWardenRenderer::new);
     }
 }

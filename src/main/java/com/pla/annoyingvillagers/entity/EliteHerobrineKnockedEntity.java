@@ -1,7 +1,9 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
@@ -14,25 +16,40 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.effect.EpicFightMobEffects;
+
+import java.util.Objects;
 
 public class EliteHerobrineKnockedEntity extends PathfinderMob {
+    private int wardenCallingCooldown;
+    private int eatCount = 0;
+    final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
+
     public EliteHerobrineKnockedEntity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.ELITE_HEROBRINE_KNOCKED.get(), level);
     }
@@ -50,6 +67,20 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
         this.setDropChance(EquipmentSlot.MAINHAND, 0.0F);
         this.setDropChance(EquipmentSlot.OFFHAND, 0.0F);
         this.setDropChance(EquipmentSlot.HEAD, 0.0F);
+    }
+
+    @Override
+    public void readAdditionalSaveData(@NotNull CompoundTag pCompound) {
+        super.readAdditionalSaveData(pCompound);
+        wardenCallingCooldown = pCompound.getInt("WardenCallingCooldown");
+        eatCount = pCompound.getInt("EatCount");
+    }
+
+    @Override
+    public void addAdditionalSaveData(@NotNull CompoundTag pCompound) {
+        super.addAdditionalSaveData(pCompound);
+        pCompound.putInt("WardenCallingCooldown", wardenCallingCooldown);
+        pCompound.putInt("EatCount", eatCount);
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -76,8 +107,59 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
         return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
     }
 
+    @Override
+    public boolean hurt(DamageSource pSource, float pAmount) {
+        if (pSource.getEntity() instanceof HerobrineWardenEntity) {
+            eatCount = eatCount + 1;
+            if (!this.level().isClientSide()) {
+                this.level().playSound((Player) null, new BlockPos((int) this.getX(), (int) this.getY(), (int) this.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+            } else {
+                this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.eat"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+            }
+            if (eatCount == 10) {
+                this.remove(RemovalReason.DISCARDED);
+            }
+            return super.hurt(pSource, 0.0F);
+        }
+        return super.hurt(pSource, 1.0F);
+    }
+
     public SoundEvent getDeathSound() {
         return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (!level().isClientSide()) {
+            if (this.wardenCallingCooldown >= 0) {
+                this.wardenCallingCooldown = this.wardenCallingCooldown - 1;
+            }
+            if (livingentitypatch != null) {
+                if (eatCount == 1 || eatCount == 2) {
+                    livingentitypatch.playAnimationSynchronized(AVAnimations.EATING_ELITE_1, 0.0F);
+                } else if (eatCount == 3 || eatCount == 4) {
+                    livingentitypatch.playAnimationSynchronized(AVAnimations.EATING_ELITE_2, 0.0F);
+                } else if (eatCount == 5 || eatCount == 6) {
+                    livingentitypatch.playAnimationSynchronized(AVAnimations.EATING_ELITE_3, 0.0F);
+                } else if (eatCount > 6) {
+                    livingentitypatch.playAnimationSynchronized(AVAnimations.EATING_ELITE_4, 0.0F);
+                }
+            }
+            this.addEffect(new MobEffectInstance((MobEffect) EpicFightMobEffects.STUN_IMMUNITY.get(), 1, 3, false, false));
+            if (this.wardenCallingCooldown == 0) {
+                ServerLevel serverlevel = (ServerLevel) this.level();
+                HerobrineWardenEntity herobrineWardenEntity = new HerobrineWardenEntity((EntityType) AnnoyingVillagersModEntities.HEROBRINE_WARDEN.get(), serverlevel);
+                double dist = (this.getBbWidth() + herobrineWardenEntity.getBbWidth()) * 0.5 + 0.5;
+                Vec3 backDir = Vec3.directionFromRotation(0.0F, this.getYRot()).normalize();
+                Vec3 backPos = this.position().subtract(backDir.scale(dist));
+                herobrineWardenEntity.moveTo(backPos.x, this.getY(), backPos.z, this.getYRot(), this.getXRot());
+                herobrineWardenEntity.finalizeSpawn(serverlevel, serverlevel.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
+                herobrineWardenEntity.setEatingUUID(this.getUUID());
+                herobrineWardenEntity.setEatingHerobrine(this);
+                serverlevel.addFreshEntity(herobrineWardenEntity);
+            }
+        }
     }
 
     public void die(DamageSource damagesource) {
@@ -136,6 +218,8 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
                 itemEntity3.setPickUpDelay(10);
                 pLevel.addFreshEntity(itemEntity3);
             }
+
+            this.wardenCallingCooldown = 1200;
         }
         return spawnGroupData;
     }
@@ -171,7 +255,7 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
         Builder builder = Mob.createMobAttributes();
 
         builder = builder.add(Attributes.MOVEMENT_SPEED, 0.06D);
-        builder = builder.add(Attributes.MAX_HEALTH, 50.0D);
+        builder = builder.add(Attributes.MAX_HEALTH, 20.0D);
         builder = builder.add(Attributes.ARMOR, 0.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 1.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 128.0D);

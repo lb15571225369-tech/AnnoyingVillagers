@@ -205,6 +205,5 @@ public class ModelBabyEnderDragon<T extends BabyEnderDragonEntity> extends Hiera
     public void setupAnim(BabyEnderDragonEntity pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
         root().getAllParts().forEach(ModelPart::resetPose);
         animate(pEntity.idleAnimationState, BabyEnderDragonAnimations.BABY_ENDER_DRAGON_IDLE, pAgeInTicks);
-//        animateWalk(BabyEnderDragonAnimations.BABY_ENDER_DRAGON_IDLE, pLimbSwing, pLimbSwingAmount, 1.0F, 2.5F);
     }
 }

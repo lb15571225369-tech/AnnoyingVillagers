@@ -193,7 +193,10 @@ public class AVAnimations {
     public static StaticAnimation PORTAL_SUMMON;
     public static StaticAnimation KNOCKED_ELITE;
     public static StaticAnimation HEROBRINE_ANIMATE;
-
+    public static StaticAnimation EATING_ELITE_1;
+    public static StaticAnimation EATING_ELITE_2;
+    public static StaticAnimation EATING_ELITE_3;
+    public static StaticAnimation EATING_ELITE_4;
 
     // Dual great sword
     public static StaticAnimation GREATSWORD_DUAL_AUTO_1;
@@ -216,6 +219,10 @@ public class AVAnimations {
         HumanoidArmature humanoidarmature = Armatures.BIPED;
         AVAnimations.HEROBRINE_ANIMATE = new StaticAnimation(false, "biped/other/herobrine_animate", humanoidarmature);
         AVAnimations.KNOCKED_ELITE = new StaticAnimation(true, "biped/other/knocked_elite", humanoidarmature);
+        AVAnimations.EATING_ELITE_1 = new StaticAnimation(true, "biped/other/eating_elite_1", humanoidarmature);
+        AVAnimations.EATING_ELITE_2 = new StaticAnimation(true, "biped/other/eating_elite_2", humanoidarmature);
+        AVAnimations.EATING_ELITE_3 = new StaticAnimation(true, "biped/other/eating_elite_3", humanoidarmature);
+        AVAnimations.EATING_ELITE_4 = new StaticAnimation(true, "biped/other/eating_elite_4", humanoidarmature);
         AVAnimations.PORTAL_SUMMON = new StaticAnimation(false, "biped/other/portal_summon", humanoidarmature);
         AVAnimations.GLOWING_AGONY_GUARD = (new StaticAnimation(0.05F, true, "biped/skill/glowing_agony_guard", humanoidarmature)).addEvents(new AnimationEvent.TimeStampedEvent[]{TimeStampedEvent.create(0.0F, WOMAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT), TimeStampedEvent.create(0.1F, WOMAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT), TimeStampedEvent.create(0.2F, WOMAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT), TimeStampedEvent.create(0.3F, WOMAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT), TimeStampedEvent.create(0.4F, WOMAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT), TimeStampedEvent.create(0.5F, WOMAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT), TimeStampedEvent.create(0.6F, WOMAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT), TimeStampedEvent.create(0.7F, WOMAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT)});
         AVAnimations.EAT_OFFHAND = new StaticAnimation(0.35F, true, "biped/living/eat_offhand", humanoidarmature);

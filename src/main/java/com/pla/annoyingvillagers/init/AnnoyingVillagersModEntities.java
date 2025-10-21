@@ -7,6 +7,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityType.Builder;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
@@ -42,7 +43,6 @@ public class AnnoyingVillagersModEntities {
     public static final RegistryObject<EntityType<AngrySteveEntity>> ANGRY_STEVE = register("angry_steve", Builder.<AngrySteveEntity>of(AngrySteveEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(AngrySteveEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<PlayerNpcEntity>> PLAYER_NPC = register("player_npc", Builder.<PlayerNpcEntity>of(PlayerNpcEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(PlayerNpcEntity::new).fireImmune().sized(0.6F, 1.8F));
 
-
     public static final RegistryObject<EntityType<InfectedTheMostMoistBurrit0Entity>> INFECTED_THEMOSTMOISTBURRIT0 = register("infected_the_moi_moist_burrit0", Builder.<InfectedTheMostMoistBurrit0Entity>of(InfectedTheMostMoistBurrit0Entity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(InfectedTheMostMoistBurrit0Entity::new).sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<InfectedPlayerMobEntity>> INFECTED_PLAYER_MOB = register("infected_player_mob", Builder.<InfectedPlayerMobEntity>of(InfectedPlayerMobEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(InfectedPlayerMobEntity::new).sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<InfectedChrisEntity>> INJECTED_CHRIS = register("infected_chris", Builder.<InfectedChrisEntity>of(InfectedChrisEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(InfectedChrisEntity::new).sized(0.6F, 1.8F));
@@ -75,6 +75,7 @@ public class AnnoyingVillagersModEntities {
     public static final RegistryObject<EntityType<NullPickaxeEntity>> NULL_PICKAXE = register("null_pickaxe", Builder.<NullPickaxeEntity>of(NullPickaxeEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(NullPickaxeEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<NullShovelEntity>> NULL_SHOVEL = register("null_shovel", Builder.<NullShovelEntity>of(NullShovelEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(NullShovelEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<NullHoeEntity>> NULL_HOE = register("null_hoe", Builder.<NullHoeEntity>of(NullHoeEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(NullHoeEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<HerobrineWardenEntity>> HEROBRINE_WARDEN = register("herobrine_warden", EntityType.Builder.of(HerobrineWardenEntity::new, MobCategory.MONSTER).sized(0.9F, 2.9F).clientTrackingRange(16).fireImmune());
 
     public static final RegistryObject<EntityType<SnakeBladeEntity>> SNAKE_BLADE = register("snake_blade", Builder.<SnakeBladeEntity>of(SnakeBladeEntity::new, MobCategory.MISC).sized(0.1F, 0.1F));
     public static final RegistryObject<EntityType<DragonBeamEntity>> DRAGON_BEAM = register("dragon_beam", Builder.<DragonBeamEntity>of(DragonBeamEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20));
@@ -305,5 +306,6 @@ public class AnnoyingVillagersModEntities {
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.NULL_HOE.get(), NullHoeEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.HEROBRINE_GREG.get(), HerobrineGregEntity.createAttributes().build());
         entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.PLAYER_NPC.get(), PlayerNpcEntity.createAttributes().build());
+        entityattributecreationevent.put((EntityType) AnnoyingVillagersModEntities.HEROBRINE_WARDEN.get(), HerobrineWardenEntity.createAttributes().build());
     }
 }
