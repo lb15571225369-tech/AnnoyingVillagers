@@ -1,15 +1,12 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.block.ObsidianBlock;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.procedures.EliteHerobrineOnDeathProcedure;
-import com.pla.annoyingvillagers.util.HerobrineMob;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -20,31 +17,27 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -57,13 +50,33 @@ import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.effect.EpicFightMobEffects;
 
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 public class EliteHerobrineKnockedEntity extends PathfinderMob {
     private int wardenCallingCooldown;
     private int eatCount = 0;
     final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
+    private final List<Item> listWeapons = new ArrayList<>(Arrays.asList(
+            Items.DIAMOND_SWORD,
+            Items.DIAMOND_AXE,
+            AnnoyingVillagersModItems.DIAMOND_SWORD.get(),
+            AnnoyingVillagersModItems.DIAMOND_SPEAR.get(),
+            AnnoyingVillagersModItems.DIAMOND_LONG_SWORD.get(),
+            AnnoyingVillagersModItems.DIAMOND_GREAT_SWORD.get(),
+            AnnoyingVillagersModItems.DIAMOND_BLADE.get(),
+            AnnoyingVillagersModItems.DIAMOND_DAGGER.get(),
+            AnnoyingVillagersModItems.HOOKED_DIAMOND_SWORD.get(),
+            AnnoyingVillagersModItems.DIAMOND_MAGNET_SWORD.get(),
+            AnnoyingVillagersModItems.DIAMOND_GREATE_BLADE.get(),
+            AnnoyingVillagersModItems.DIAMOND_LONG_BLADE.get(),
+            AnnoyingVillagersModItems.DIAMOND_HALBERD.get(),
+            AnnoyingVillagersModItems.DIAMOND_SCYTHE.get(),
+            AnnoyingVillagersModItems.DIAMOND_TWIN_BLADE.get(),
+            AnnoyingVillagersModItems.DIAMOND_GIANT_AXE.get(),
+            AnnoyingVillagersModItems.DIAMOND_BATTLE_AXE.get(),
+            AnnoyingVillagersModItems.DIAMOND_GLAIVE.get(),
+            AnnoyingVillagersModItems.DIAMOND_DOUBLE_BIT_AXE.get()
+    ));
 
     public EliteHerobrineKnockedEntity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.ELITE_HEROBRINE_KNOCKED.get(), level);
@@ -136,6 +149,7 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
             }
             return super.hurt(pSource, 0.0F);
         }
+        if (pSource.is(DamageTypes.IN_WALL)) return false;
         return super.hurt(pSource, 1.0F);
     }
 
@@ -164,6 +178,8 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
         this.setDeltaMovement(this.getDeltaMovement().x, 0.0D, this.getDeltaMovement().z);
         this.setPos(x, surfaceY, z);
         this.setOnGround(true);
+
+
 
         for (int dx = -1; dx <= 1; dx++) {
             for (int dz = -1; dz <= 1; dz++) {
@@ -233,6 +249,30 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
         }
     }
 
+    private ItemStack randomDamage(ItemStack itemStack) {
+        int maxDamage = itemStack.getMaxDamage();
+        itemStack.setDamageValue(new Random().nextInt(maxDamage / 3, maxDamage * 3 / 4));
+        return itemStack;
+    }
+
+    private void equipGearForLowClone(LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity, boolean randomWeapon) {
+        if (random.nextFloat() < 0.3f) {
+            lowShadowHerobrineCloneEntity.setItemSlot(EquipmentSlot.HEAD, randomDamage(new ItemStack(AnnoyingVillagersModItems.BROKEN_DIAMOND_HELMET.get())));
+        }
+        if (random.nextFloat() < 0.3f) {
+            lowShadowHerobrineCloneEntity.setItemSlot(EquipmentSlot.CHEST, randomDamage(new ItemStack(AnnoyingVillagersModItems.BROKEN_DIAMOND_CHESTPLATE.get())));
+        }
+        if (random.nextFloat() < 0.3f) {
+            lowShadowHerobrineCloneEntity.setItemSlot(EquipmentSlot.LEGS, randomDamage(new ItemStack(AnnoyingVillagersModItems.BROKEN_DIAMOND_LEGGINGS.get())));
+        }
+        if (random.nextFloat() < 0.3f) {
+            lowShadowHerobrineCloneEntity.setItemSlot(EquipmentSlot.FEET, randomDamage(new ItemStack(AnnoyingVillagersModItems.BROKEN_DIAMOND_BOOTS.get())));
+        }
+        if (randomWeapon) {
+            lowShadowHerobrineCloneEntity.setItemSlot(EquipmentSlot.MAINHAND, randomDamage(new ItemStack(listWeapons.get(random.nextInt(listWeapons.size())))));
+        }
+    }
+
     @Override
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
         SpawnGroupData spawnGroupData = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
@@ -252,14 +292,14 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
             final int totalProjectiles = new Random().nextInt(10, 20);
             for (int i = 0; i < totalProjectiles; i++) {
                 double x = this.getX() + Mth.nextDouble(randomSource, -1.5D, 1.5D);
-                double y = this.getY() + Mth.nextDouble(randomSource, -0.0D, 1.5D);
+                double y = this.getY() + Mth.nextDouble(randomSource, 1.0D, 1.5D);
                 double z = this.getZ() + Mth.nextDouble(randomSource, -1.5D, 1.5D);
                 BlockProjectileEntity blockProjectileEntity = new BlockProjectileEntity(pLevel.getLevel(), this, Blocks.CRYING_OBSIDIAN.defaultBlockState());
                 blockProjectileEntity.moveTo(new Vec3(x, y, z));
                 server.addFreshEntity(blockProjectileEntity);
             }
 
-            server.explode(this, this.getX(), this.getY() + 2, this.getZ(), 3.0F, Level.ExplosionInteraction.MOB);
+            server.explode(this, this.getX(), this.getY() + 3, this.getZ(), 3.0F, Level.ExplosionInteraction.MOB);
 
             for (int dy = 1; dy <= clearHeight; dy++) {
                 int y = yFeet + dy;
@@ -276,6 +316,35 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
 
             server.sendParticles((SimpleParticleType) AnnoyingVillagersModParticleTypes.LIGHT.get(),
                     this.getX(), this.getY(), this.getZ(), 1, 0, 0, 0, 0);
+
+            final double forwardDist = Math.max(1.5D, this.getBbWidth() * 1.5D);
+            final double sideDist = Math.max(1.2D, this.getBbWidth() * 1.2D);
+
+            final float yaw = this.getYRot();
+            final Vec3 forward = Vec3.directionFromRotation(0.0F, yaw).normalize();
+            final Vec3 right = new Vec3(-forward.z, 0.0D, forward.x);
+            final Vec3 base = this.position().add(forward.scale(forwardDist));
+
+            LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntityLeft = new LowShadowHerobrineCloneEntity((EntityType) AnnoyingVillagersModEntities.LOW_SHADOW_HEROBRINE_CLONE.get(), pLevel.getLevel());
+            lowShadowHerobrineCloneEntityLeft.moveTo(base.subtract(right.scale(sideDist)));
+            equipGearForLowClone(lowShadowHerobrineCloneEntityLeft, true);
+            lowShadowHerobrineCloneEntityLeft.setProtectUUID(this.getUUID());
+            lowShadowHerobrineCloneEntityLeft.setProtectEntity(this);
+            pLevel.getLevel().addFreshEntity(lowShadowHerobrineCloneEntityLeft);
+
+            LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntityMiddle = new LowShadowHerobrineCloneEntity((EntityType) AnnoyingVillagersModEntities.LOW_SHADOW_HEROBRINE_CLONE.get(), pLevel.getLevel());
+            lowShadowHerobrineCloneEntityMiddle.moveTo(base);
+            equipGearForLowClone(lowShadowHerobrineCloneEntityMiddle, true);
+            lowShadowHerobrineCloneEntityMiddle.setProtectUUID(this.getUUID());
+            lowShadowHerobrineCloneEntityMiddle.setProtectEntity(this);
+            pLevel.getLevel().addFreshEntity(lowShadowHerobrineCloneEntityMiddle);
+
+            LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntityRight = new LowShadowHerobrineCloneEntity((EntityType) AnnoyingVillagersModEntities.LOW_SHADOW_HEROBRINE_CLONE.get(), pLevel.getLevel());
+            lowShadowHerobrineCloneEntityRight.moveTo(base.add(right.scale(sideDist)));
+            equipGearForLowClone(lowShadowHerobrineCloneEntityRight, true);
+            lowShadowHerobrineCloneEntityRight.setProtectUUID(this.getUUID());
+            lowShadowHerobrineCloneEntityRight.setProtectEntity(this);
+            pLevel.getLevel().addFreshEntity(lowShadowHerobrineCloneEntityRight);
 
             if (this.getPersistentData().contains("FromElite") && this.getPersistentData().getString("FromElite").equals("DemoniacVoltageReaver")) {
                 ItemEntity itemEntity = new ItemEntity(this.level(), d0 + Mth.nextDouble(randomSource, -5.0D, 5.0D), d1, d2 + Mth.nextDouble(randomSource, -5.0D, 5.0D), new ItemStack((ItemLike)AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER_FRAGMENT.get()));

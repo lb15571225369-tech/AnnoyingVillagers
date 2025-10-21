@@ -144,6 +144,7 @@ public class CommonGoals {
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, SledgehammerHerobrineEntity.class, true, false));
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, ShadowHerobrineEntity.class, true, false));
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, ArmoredHerobrineEntity.class, true, false));
+        mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, EliteHerobrineKnockedEntity.class, true, false));
 
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, BlueDemonEntity.class, false, false));
         mob.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(mob, BlueDemon2Entity.class, false, false));
@@ -200,6 +201,7 @@ public class CommonGoals {
         mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, SledgehammerHerobrineEntity.class, true, false));
         mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, ShadowHerobrineEntity.class, true, false));
         mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, ArmoredHerobrineEntity.class, true, false));
+        mob.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(mob, EliteHerobrineKnockedEntity.class, true, false));
         mob.targetSelector.addGoal(20, new NearestAttackableTargetGoal<>(mob, AlexEntity.class, false, false));
         mob.targetSelector.addGoal(20, new NearestAttackableTargetGoal<>(mob, ChrisEntity.class, false, false));
         mob.targetSelector.addGoal(21, new NearestAttackableTargetGoal<>(mob, Player.class, true, true));
@@ -232,6 +234,7 @@ public class CommonGoals {
         playerMobEntity.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(playerMobEntity, ArmoredHerobrineEntity.class, true, false));
         playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, BlueDemonEntity.class, true));
         playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, BlueDemon2Entity.class, true));
+        playerMobEntity.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(playerMobEntity, EliteHerobrineKnockedEntity.class, true));
     }
 
     public static void runAwayFromHerobrineGoals(PathfinderMob playerMobEntity, float distance) {

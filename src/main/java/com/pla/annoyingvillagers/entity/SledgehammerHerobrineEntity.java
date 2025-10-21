@@ -147,6 +147,13 @@ public class SledgehammerHerobrineEntity extends HerobrineMob {
             eliteHerobrineKnockedEntity.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(eliteHerobrineKnockedEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
             this.remove(RemovalReason.KILLED);
             levelaccessor.addFreshEntity(eliteHerobrineKnockedEntity);
+
+            if (this.getGregUUID() != null) {
+                Entity entity = levelaccessor.getEntity(this.getGregUUID());
+                if (entity instanceof HerobrineGregEntity herobrineGregEntity && entity.isAlive()) {
+                    herobrineGregEntity.requestProtect(eliteHerobrineKnockedEntity.getUUID(), eliteHerobrineKnockedEntity);
+                }
+            }
         }
     }
 

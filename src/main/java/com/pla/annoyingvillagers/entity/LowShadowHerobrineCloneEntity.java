@@ -1,12 +1,15 @@
 package com.pla.annoyingvillagers.entity;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.spawnhandler.HerobrineMobData;
 import com.pla.annoyingvillagers.util.CommonGoals;
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -23,6 +26,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -41,10 +45,26 @@ import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 import javax.annotation.Nullable;
+import java.util.UUID;
 
 public class LowShadowHerobrineCloneEntity extends Monster {
     private boolean summoned = false;
     private boolean initialSpawn = true;
+    private EliteHerobrineKnockedEntity protectEntity;
+    private UUID protectUUID;
+    private boolean autoKill = false;
+
+    public void setProtectUUID(UUID protectUUID) {
+        this.protectUUID = protectUUID;
+    }
+
+    public void setProtectEntity(EliteHerobrineKnockedEntity protectEntity) {
+        this.protectEntity = protectEntity;
+    }
+
+    public void setAutoKill(boolean autoKill) {
+        this.autoKill = autoKill;
+    }
 
     public boolean isSummoned() {
         return summoned;
@@ -83,6 +103,32 @@ public class LowShadowHerobrineCloneEntity extends Monster {
 
     protected void registerGoals() {
         super.registerGoals();
+        this.goalSelector.addGoal(1, new Goal() {
+            @Override
+            public boolean canUse() {
+                return protectEntity != null && protectEntity.isAlive() && distanceTo(protectEntity) > (float)10.0D * 0.9F;
+            }
+
+            @Override
+            public void tick() {
+                if (protectEntity != null && protectEntity.isAlive()) {
+                    getNavigation().moveTo(protectEntity, 2.0D);
+                    getLookControl().setLookAt(protectEntity, 30.0F, 30.0F);
+                    if (distanceToSqr(protectEntity) > 10.0D) {
+                        if (getNavigation().isDone()) {
+                            getNavigation().moveTo(protectEntity, 2.0D);
+                        }
+                    } else {
+                        getNavigation().stop();
+                    }
+                }
+            }
+
+            @Override
+            public boolean canContinueToUse() {
+                return protectEntity != null && protectEntity.isAlive() && distanceTo(protectEntity) > 50.0D;
+            }
+        });
         CommonGoals.registerGoalForHostileNpc(this);
     }
 
@@ -120,24 +166,45 @@ public class LowShadowHerobrineCloneEntity extends Monster {
     public void die(DamageSource damagesource) {
         super.die(damagesource);
         if (this.level() instanceof ServerLevel serverLevel) {
-            InfectedPlayerMobEntity corpse = new InfectedPlayerMobEntity(AnnoyingVillagersModEntities.INFECTED_PLAYER_MOB.get(), serverLevel);
-            corpse.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
-            String killedName = this.getPersistentData().getString("killed_name");
-            corpse.getPersistentData().putString("possessed_by", "low_shadow_herobrine_clone");
-            if (killedName.isEmpty()) {
-                killedName = String.valueOf(NameManager.INSTANCE.getRandomName());
+            if (!autoKill) {
+                InfectedPlayerMobEntity corpse = new InfectedPlayerMobEntity(AnnoyingVillagersModEntities.INFECTED_PLAYER_MOB.get(), serverLevel);
+                corpse.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
+                String killedName = this.getPersistentData().getString("killed_name");
+                corpse.getPersistentData().putString("possessed_by", "low_shadow_herobrine_clone");
+                if (killedName.isEmpty()) {
+                    killedName = String.valueOf(NameManager.INSTANCE.getRandomName());
+                }
+                corpse.setUsername(killedName);
+                corpse.setCustomName(Component.literal(killedName));
+                corpse.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()),
+                        MobSpawnType.MOB_SUMMONED, null, null);
+                this.setInvisible(true);
+                this.remove(RemovalReason.KILLED);
+                corpse.setItemSlot(EquipmentSlot.HEAD, this.getItemBySlot(EquipmentSlot.HEAD).copy());
+                corpse.setItemSlot(EquipmentSlot.CHEST, this.getItemBySlot(EquipmentSlot.CHEST).copy());
+                corpse.setItemSlot(EquipmentSlot.LEGS, this.getItemBySlot(EquipmentSlot.LEGS).copy());
+                corpse.setItemSlot(EquipmentSlot.FEET, this.getItemBySlot(EquipmentSlot.FEET).copy());
+                serverLevel.addFreshEntity(corpse);
+            } else if (AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
+                ShadowHerobrineDeadEntity corpse = new ShadowHerobrineDeadEntity(AnnoyingVillagersModEntities.SHADOW_HEROBRINE_DEAD.get(), serverLevel);
+                corpse.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
+                corpse.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()),
+                        MobSpawnType.MOB_SUMMONED, null, null);
+                this.setInvisible(true);
+                this.remove(RemovalReason.KILLED);
+                serverLevel.addFreshEntity(corpse);
+                new DelayedTask(3) {
+                    @Override
+                    public void run() {
+                        try {
+                            corpse.getServer().getCommands().getDispatcher().execute(
+                                    "kill @s",
+                                    corpse.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException e) {
+                        }
+                    }
+                };
             }
-            corpse.setUsername(killedName);
-            corpse.setCustomName(Component.literal(killedName));
-            corpse.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()),
-                    MobSpawnType.MOB_SUMMONED, null, null);
-            this.setInvisible(true);
-            this.remove(RemovalReason.KILLED);
-            corpse.setItemSlot(EquipmentSlot.HEAD, this.getItemBySlot(EquipmentSlot.HEAD).copy());
-            corpse.setItemSlot(EquipmentSlot.CHEST, this.getItemBySlot(EquipmentSlot.CHEST).copy());
-            corpse.setItemSlot(EquipmentSlot.LEGS, this.getItemBySlot(EquipmentSlot.LEGS).copy());
-            corpse.setItemSlot(EquipmentSlot.FEET, this.getItemBySlot(EquipmentSlot.FEET).copy());
-            serverLevel.addFreshEntity(corpse);
         }
         LevelAccessor levelaccessor1 = this.level();
         ItemEntity itementity;
@@ -214,6 +281,25 @@ public class LowShadowHerobrineCloneEntity extends Monster {
                     }
                 }
             }
+            if (protectEntity == null && protectUUID != null) {
+                Entity entity = ((ServerLevel) level()).getEntity(protectUUID);
+                if (entity instanceof EliteHerobrineKnockedEntity eliteHerobrineKnockedEntity) {
+                    protectEntity = eliteHerobrineKnockedEntity;
+                } else {
+                    protectEntity = null;
+                }
+            }
+            if (protectEntity != null && !protectEntity.isAlive()) {
+                protectEntity = null;
+                protectUUID = null;
+                autoKill = true;
+                try {
+                    this.getServer().getCommands().getDispatcher().execute(
+                            "kill @s",
+                            this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+                }
+            }
         }
     }
 
@@ -246,6 +332,10 @@ public class LowShadowHerobrineCloneEntity extends Monster {
         summoned = pCompound.getBoolean("Summoned");
         renderPortal = pCompound.getBoolean("RenderPortal");
         initialSpawn = pCompound.getBoolean("InitialSpawn");
+        autoKill = pCompound.getBoolean("AutoKill");
+        if (pCompound.hasUUID("ProtectUUID")) {
+            protectUUID = pCompound.getUUID("ProtectUUID");
+        }
     }
 
     @Override
@@ -254,6 +344,10 @@ public class LowShadowHerobrineCloneEntity extends Monster {
         pCompound.putBoolean("Summoned", summoned);
         pCompound.putBoolean("RenderPortal", renderPortal);
         pCompound.putBoolean("InitialSpawn", initialSpawn);
+        pCompound.putBoolean("AutoKill", autoKill);
+        if (protectUUID != null) {
+            pCompound.putUUID("ProtectUUID", protectUUID);
+        }
     }
 
     public static Builder createAttributes() {

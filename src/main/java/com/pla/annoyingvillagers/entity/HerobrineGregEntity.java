@@ -124,6 +124,14 @@ public class HerobrineGregEntity extends Monster {
         this.entityData.set(USE_HEROBRINE_TEXTURE, useHerobrineTexture);
     }
 
+    public int getEscapeTiming() {
+        return escapeTiming;
+    }
+
+    public void setEscapeTiming(int escapeTiming) {
+        this.escapeTiming = escapeTiming;
+    }
+
     public boolean isUseHerobrineTexture() { return this.entityData.get(USE_HEROBRINE_TEXTURE); }
 
     @Override
@@ -309,6 +317,25 @@ public class HerobrineGregEntity extends Monster {
         return false;
     }
 
+    private void assignProtect(Entity entity, UUID protectUUID, EliteHerobrineKnockedEntity protectEntity) {
+        if (entity != null && entity.isAlive()) {
+            if (entity instanceof HerobrineMob herobrineMob) {
+                herobrineMob.setProtectUUID(protectUUID);
+                herobrineMob.setProtectEntity(protectEntity);
+            } else if (entity instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
+                lowShadowHerobrineCloneEntity.setProtectUUID(protectUUID);
+                lowShadowHerobrineCloneEntity.setProtectEntity(protectEntity);
+            }
+        }
+    }
+
+    public void requestProtect(UUID protectUUID, EliteHerobrineKnockedEntity protectEntity) {
+        this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> Protect him !!!"), false);
+        assignProtect(firstSummonedHerobrine, protectUUID, protectEntity);
+        assignProtect(secondSummonedHerobrine, protectUUID, protectEntity);
+        assignProtect(thirdSummonedHerobrine, protectUUID, protectEntity);
+    }
+
     private void floatOnAnyFluid() {
         BlockPos pos = this.blockPosition();
         FluidState fluidState = this.level().getFluidState(pos);
@@ -423,7 +450,7 @@ public class HerobrineGregEntity extends Monster {
                             this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 } catch (CommandSyntaxException e) {
                 }
-                this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine Greg§r> Summoning!!!"), false);
+                this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine Greg§r> Summoning !!!"), false);
             }
             if (this.summonTiming == 1) {
                 if (this.combatMode) {
@@ -458,6 +485,33 @@ public class HerobrineGregEntity extends Monster {
             }
             if (this.escapeTiming == 1) {
                 this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> We will be back."), false);
+                if (this.firstSummonedHerobrine instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
+                    lowShadowHerobrineCloneEntity.setAutoKill(true);
+                    try {
+                        lowShadowHerobrineCloneEntity.getServer().getCommands().getDispatcher().execute(
+                                "kill @s",
+                                this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                    }
+                }
+                if (this.secondSummonedHerobrine instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
+                    lowShadowHerobrineCloneEntity.setAutoKill(true);
+                    try {
+                        lowShadowHerobrineCloneEntity.getServer().getCommands().getDispatcher().execute(
+                                "kill @s",
+                                this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                    }
+                }
+                if (this.thirdSummonedHerobrine instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
+                    lowShadowHerobrineCloneEntity.setAutoKill(true);
+                    try {
+                        lowShadowHerobrineCloneEntity.getServer().getCommands().getDispatcher().execute(
+                                "kill @s",
+                                this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                    }
+                }
                 this.discard();
             }
 

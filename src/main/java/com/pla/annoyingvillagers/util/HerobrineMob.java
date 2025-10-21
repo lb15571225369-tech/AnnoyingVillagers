@@ -23,6 +23,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
@@ -61,6 +62,16 @@ public class HerobrineMob extends Monster {
     private UUID gregUUID = null;
     private boolean initialSpawn = true;
     private BlockPos lastFeetPos = null;
+    private EliteHerobrineKnockedEntity protectEntity;
+    private UUID protectUUID;
+
+    public void setProtectUUID(UUID protectUUID) {
+        this.protectUUID = protectUUID;
+    }
+
+    public void setProtectEntity(EliteHerobrineKnockedEntity protectEntity) {
+        this.protectEntity = protectEntity;
+    }
 
     public void setGregUUID(UUID gregUUID) {
         this.gregUUID = gregUUID;
@@ -146,6 +157,32 @@ public class HerobrineMob extends Monster {
 
     protected void registerGoals() {
         super.registerGoals();
+        this.goalSelector.addGoal(1, new Goal() {
+            @Override
+            public boolean canUse() {
+                return protectEntity != null && protectEntity.isAlive() && distanceTo(protectEntity) > (float)10.0D * 0.9F;
+            }
+
+            @Override
+            public void tick() {
+                if (protectEntity != null && protectEntity.isAlive()) {
+                    getNavigation().moveTo(protectEntity, 2.0D);
+                    getLookControl().setLookAt(protectEntity, 30.0F, 30.0F);
+                    if (distanceToSqr(protectEntity) > 10.0D) {
+                        if (getNavigation().isDone()) {
+                            getNavigation().moveTo(protectEntity, 2.0D);
+                        }
+                    } else {
+                        getNavigation().stop();
+                    }
+                }
+            }
+
+            @Override
+            public boolean canContinueToUse() {
+                return protectEntity != null && protectEntity.isAlive() && distanceTo(protectEntity) > 50.0D;
+            }
+        });
         CommonGoals.registerGoalForHostileNpc(this);
     }
 
@@ -195,6 +232,9 @@ public class HerobrineMob extends Monster {
             gregUUID = pCompound.getUUID("GregUUID");
         }
         initialSpawn = pCompound.getBoolean("InitialSpawn");
+        if (pCompound.hasUUID("ProtectUUID")) {
+            protectUUID = pCompound.getUUID("ProtectUUID");
+        }
     }
 
     @Override
@@ -207,6 +247,9 @@ public class HerobrineMob extends Monster {
             pCompound.putUUID("GregUUID", gregUUID);
         }
         pCompound.putBoolean("InitialSpawn", initialSpawn);
+        if (protectUUID != null) {
+            pCompound.putUUID("ProtectUUID", protectUUID);
+        }
     }
 
     @Override
@@ -341,6 +384,20 @@ public class HerobrineMob extends Monster {
                     this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal(this.getChatName() + " was sent back to the §4Herobrine Vessel Realm§r"), false);
                     this.discard();
                 }
+            }
+
+            if (protectEntity == null && protectUUID != null) {
+                Entity entity = ((ServerLevel) level()).getEntity(protectUUID);
+                if (entity instanceof EliteHerobrineKnockedEntity eliteHerobrineKnockedEntity) {
+                    protectEntity = eliteHerobrineKnockedEntity;
+                } else {
+                    protectEntity = null;
+                }
+            }
+            if (protectEntity != null && !protectEntity.isAlive()) {
+                protectEntity = null;
+                protectUUID = null;
+                this.recallTicks = 41;
             }
         }
     }
