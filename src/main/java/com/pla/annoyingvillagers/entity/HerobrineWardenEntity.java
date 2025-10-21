@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.entity;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -9,6 +10,8 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.Unit;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -23,10 +26,13 @@ import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.monster.warden.WardenAi;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Random;
 import java.util.UUID;
 
 public class HerobrineWardenEntity extends Warden {
@@ -41,6 +47,7 @@ public class HerobrineWardenEntity extends Warden {
     private static final int DIG_TICKS = 100;
     private static final EntityDataAccessor<Boolean> DATA_BONE_OPEN =
             SynchedEntityData.defineId(HerobrineWardenEntity.class, EntityDataSerializers.BOOLEAN);
+    private boolean infectedSculk = false;
 
     @Override
     protected void defineSynchedData() {
@@ -168,6 +175,30 @@ public class HerobrineWardenEntity extends Warden {
     @Override
     public void tick() {
         super.tick();
+        if (this.tickCount == 1 && !level().isClientSide() && !infectedSculk) {
+            final RandomSource randomSource = this.getRandom();
+
+            final int attempts = new Random().nextInt(25, 50);
+            for (int i = 0; i < attempts; i++) {
+                int dx = Mth.nextInt(randomSource, -5, 5);
+                int dz = Mth.nextInt(randomSource, -5, 5);
+
+                BlockPos pos = new BlockPos((int) (this.getX() + dx), this.getOnPos().getY(), (int) (this.getZ() + dz));
+                BlockState current = level().getBlockState(pos);
+
+                if (current.isAir()) continue;
+                if (!current.getFluidState().isEmpty()) continue;
+                if (current.getDestroySpeed(level(), pos) == -1.0F) continue;
+                if (current.hasBlockEntity()) continue;
+
+                BlockState newState = (randomSource.nextFloat() < 0.20f)
+                        ? Blocks.SCULK_CATALYST.defaultBlockState()
+                        : Blocks.SCULK.defaultBlockState();
+
+                level().setBlock(pos, newState, 3);
+            }
+            infectedSculk = true;
+        }
         if (level().isClientSide) {
             this.setupIdleAnimationStates();
             if (isBoneOpen()) {
@@ -201,6 +232,7 @@ public class HerobrineWardenEntity extends Warden {
         }
         tag.putBoolean("BurrowStarted", burrowStarted);
         tag.putInt("BurrowRemoveAt", burrowRemoveAt);
+        tag.putBoolean("InfectedSculk", infectedSculk);
     }
 
     @Override
@@ -211,6 +243,7 @@ public class HerobrineWardenEntity extends Warden {
         }
         burrowStarted = tag.getBoolean("BurrowStarted");
         burrowRemoveAt = tag.getInt("BurrowRemoveAt");
+        infectedSculk = tag.getBoolean("InfectedSculk");
     }
 
     @Override

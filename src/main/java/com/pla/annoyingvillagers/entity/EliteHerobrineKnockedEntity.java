@@ -1,14 +1,17 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.block.ObsidianBlock;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.procedures.EliteHerobrineOnDeathProcedure;
+import com.pla.annoyingvillagers.util.HerobrineMob;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -17,6 +20,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -26,14 +30,24 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -44,6 +58,7 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.effect.EpicFightMobEffects;
 
 import java.util.Objects;
+import java.util.Random;
 
 public class EliteHerobrineKnockedEntity extends PathfinderMob {
     private int wardenCallingCooldown;
@@ -128,10 +143,43 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
         return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
     }
 
+    private void solidifyFeetAndStandOnTop() {
+        if (this.level().isClientSide()) return;
+
+        BlockPos feet = this.getOnPos();
+        FluidState fluid = this.level().getFluidState(feet);
+        if (fluid.isEmpty()) return;
+
+        this.level().setBlockAndUpdate(feet, Blocks.CRYING_OBSIDIAN.defaultBlockState());
+
+        BlockState bs = this.level().getBlockState(feet);
+        VoxelShape shape = bs.getCollisionShape(this.level(), feet, CollisionContext.of(this));
+        double top = shape.isEmpty() ? 1.0D : shape.max(Direction.Axis.Y);
+
+        double surfaceY = feet.getY() + top + 1.0E-3;
+        double x = this.getX();
+        double z = this.getZ();
+
+        this.fallDistance = 0.0F;
+        this.setDeltaMovement(this.getDeltaMovement().x, 0.0D, this.getDeltaMovement().z);
+        this.setPos(x, surfaceY, z);
+        this.setOnGround(true);
+
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dz = -1; dz <= 1; dz++) {
+                BlockPos around = feet.offset(dx, 0, dz);
+                FluidState fs = this.level().getFluidState(around);
+                if (fs.isEmpty()) continue;
+                this.level().setBlockAndUpdate(around, Blocks.CRYING_OBSIDIAN.defaultBlockState());
+            }
+        }
+    }
+
     @Override
     public void tick() {
         super.tick();
         if (!level().isClientSide()) {
+            solidifyFeetAndStandOnTop();
             if (this.wardenCallingCooldown >= 0) {
                 this.wardenCallingCooldown = this.wardenCallingCooldown - 1;
             }
@@ -193,13 +241,41 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
             int d1 = (int) this.getY();
             int d2 = (int) this.getZ();
             RandomSource randomSource = RandomSource.create();
-            pLevel.addParticle((SimpleParticleType) AnnoyingVillagersModParticleTypes.LIGHT.get(), d0, d1, d2, 0, 0, 0);
-            pLevel.setBlock(new BlockPos(d0 + 1, d1, d2 + 1), Blocks.CRYING_OBSIDIAN.defaultBlockState(), 3);
-            pLevel.setBlock(new BlockPos((int) d0 + Mth.nextInt(randomSource, -5, 5), d1 - Mth.nextInt(randomSource, 0, 1), d2 + Mth.nextInt(randomSource, -5, 5)), Blocks.CRYING_OBSIDIAN.defaultBlockState(), 3);
-            pLevel.setBlock(new BlockPos(d0 + Mth.nextInt(randomSource, -5, 5), d1 + Mth.nextInt(randomSource, 0, 1), d2 + Mth.nextInt(randomSource, -5, 5)), Blocks.CRYING_OBSIDIAN.defaultBlockState(), 3);
-            pLevel.setBlock(new BlockPos(d0 + Mth.nextInt(randomSource, -5, 5), d1 - Mth.nextInt(randomSource, 0, 1), d2 + Mth.nextInt(randomSource, -5, 5)), Blocks.CRYING_OBSIDIAN.defaultBlockState(), 3);
-            pLevel.setBlock(new BlockPos(d0 + Mth.nextInt(randomSource, -5, 5), d1 - Mth.nextInt(randomSource, 0, 1), d2 + Mth.nextInt(randomSource, -5, 5)), Blocks.CRYING_OBSIDIAN.defaultBlockState(), 3);
-            pLevel.setBlock(new BlockPos(d0 + Mth.nextInt(randomSource, -5, 5), d1, d2 + Mth.nextInt(randomSource, 3, 10)), Blocks.CRYING_OBSIDIAN.defaultBlockState(), 3);
+
+            ServerLevel server = (ServerLevel) this.level();
+
+            final BlockPos feetPos = this.blockPosition();
+            final int yFeet = feetPos.getY();
+            final int radius = 2;
+            final int clearHeight = 3;
+
+            final int totalProjectiles = new Random().nextInt(10, 20);
+            for (int i = 0; i < totalProjectiles; i++) {
+                double x = this.getX() + Mth.nextDouble(randomSource, -1.5D, 1.5D);
+                double y = this.getY() + Mth.nextDouble(randomSource, -0.0D, 1.5D);
+                double z = this.getZ() + Mth.nextDouble(randomSource, -1.5D, 1.5D);
+                BlockProjectileEntity blockProjectileEntity = new BlockProjectileEntity(pLevel.getLevel(), this, Blocks.CRYING_OBSIDIAN.defaultBlockState());
+                blockProjectileEntity.moveTo(new Vec3(x, y, z));
+                server.addFreshEntity(blockProjectileEntity);
+            }
+
+            server.explode(this, this.getX(), this.getY() + 2, this.getZ(), 3.0F, Level.ExplosionInteraction.MOB);
+
+            for (int dy = 1; dy <= clearHeight; dy++) {
+                int y = yFeet + dy;
+                for (int dx = -radius; dx <= radius; dx++) {
+                    for (int dz = -radius; dz <= radius; dz++) {
+                        BlockPos pos = new BlockPos(feetPos.getX() + dx, y, feetPos.getZ() + dz);
+                        var state = server.getBlockState(pos);
+                        if (!state.isAir() && state.getDestroySpeed(server, pos) != -1.0F) {
+                            server.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+                        }
+                    }
+                }
+            }
+
+            server.sendParticles((SimpleParticleType) AnnoyingVillagersModParticleTypes.LIGHT.get(),
+                    this.getX(), this.getY(), this.getZ(), 1, 0, 0, 0, 0);
 
             if (this.getPersistentData().contains("FromElite") && this.getPersistentData().getString("FromElite").equals("DemoniacVoltageReaver")) {
                 ItemEntity itemEntity = new ItemEntity(this.level(), d0 + Mth.nextDouble(randomSource, -5.0D, 5.0D), d1, d2 + Mth.nextDouble(randomSource, -5.0D, 5.0D), new ItemStack((ItemLike)AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER_FRAGMENT.get()));
@@ -240,11 +316,6 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
 
     @Override
     public void push(Entity other) {
-    }
-
-    @Override
-    public boolean isPushedByFluid() {
-        return false;
     }
 
     @Override
