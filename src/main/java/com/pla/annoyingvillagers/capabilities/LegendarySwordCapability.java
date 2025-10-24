@@ -362,7 +362,7 @@ public class LegendarySwordCapability {
                         CorruptAnimations.SWORD_ONEHAND_DASH,
                         Animations.SWORD_AIR_SLASH
                 })
-                .innateSkill(Styles.ONE_HAND, (stack) -> CDSkills.YAMATOSKILL)
+                .innateSkill(Styles.ONE_HAND, (stack) -> CDSkills.GREAT_TACHI_SKILL)
                 .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, CorruptAnimations.BIPED_HOLD_KATANA)
                 .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, CorruptAnimations.RUN_KATANA)
                 .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, CorruptAnimations.WALK_KATANA)

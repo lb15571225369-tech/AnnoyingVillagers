@@ -66,7 +66,9 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
             }
         };
 
-        if (entity instanceof Player player && !player.level().isClientSide()) {
+        if (entity instanceof Player player && !player.level().isClientSide() &&
+        !player.getMainHandItem().getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get()) &&
+        !player.getOffhandItem().getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get())) {
             player.getInventory().items.stream()
                     .filter(s -> !s.isEmpty() && s.is(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get()))
                     .findFirst()
@@ -261,6 +263,33 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                     }
                 }
             } else if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.FIST && !entity.getPersistentData().getBoolean("fist_a")) {
+                if (entity instanceof Player player && !player.level().isClientSide() &&
+                        (player.getMainHandItem().getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get()) ||
+                                player.getOffhandItem().getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get()))) {
+                    try {
+                        player.getServer().getCommands().getDispatcher().execute(
+                                "indestructible @s play \"epicfight:biped/living/landing\" 0 1",
+                                player.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                    }
+                    HerobrineEnderEyeItem.startShadowObsidianMachineGun((ServerLevel) player.level(), player);
+                    if (player.getMainHandItem().getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get())) {
+                        player.getMainHandItem().hurtAndBreak(10, player, p -> {});
+                    } else if (player.getOffhandItem().getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get())) {
+                        player.getOffhandItem().hurtAndBreak(10, player, p -> {
+                        });
+                    }
+                    entity.getPersistentData().putBoolean("fist_a", true);
+                    entity.getPersistentData().putBoolean("kick_x", true);
+                    new DelayedTask(60) {
+                        @Override
+                        public void run() {
+                            entity.getPersistentData().putBoolean("kick_x", false);
+                            entity.getPersistentData().putBoolean("fist_a", false);
+                        }
+                    };
+                    return;
+                }
                 if (entity.isSprinting()) {
                     if (entity.isShiftKeyDown()) {
                         if (!entity.level().isClientSide() && entity.getServer() != null) {

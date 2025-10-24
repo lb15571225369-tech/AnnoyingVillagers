@@ -35,8 +35,8 @@ public class HerobrineEnderEyeItem extends Item {
         list.add(Component.literal(
                 "An Ender Eye infused with §5Herobrine§r's power\n" +
                         "§7(While in your inventory)§r\n" +
-                        "§6More Weapon Attack§r with any wepon to shoot 3 Shadow Obsidian Pillars.\n" +
-                        "§6Shift + Kick§r to activate Shadow Obsidian Machine Gun."
+                        "§6More Weapon Attack§r when not holding this weapon to shoot 3 Shadow Obsidian Pillars.\n" +
+                        "§6More Weapon Attack§r when holding this weapon to activate Shadow Obsidian Machine Gun."
         ));
     }
 
@@ -84,7 +84,7 @@ public class HerobrineEnderEyeItem extends Item {
         };
     }
 
-    public static void startShadowObsidianMachineGun(ServerLevel level, Player player, ItemStack stack) {
+    public static void startShadowObsidianMachineGun(ServerLevel level, Player player) {
         final int[] remaining = {20};
         fireChainTick(level, player, remaining);
     }

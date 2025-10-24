@@ -77,27 +77,6 @@ public class KickOnKeyPressedProcedure {
                                                 }
                                             }
                                         } else if (!entity.level().isClientSide() && entity.getServer() != null) {
-                                            if (entity instanceof Player player) {
-                                                 boolean isSuccess = player.getInventory().items.stream()
-                                                        .filter(s -> !s.isEmpty() && s.is(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get()))
-                                                        .findFirst()
-                                                        .map(stack -> {
-                                                            if (stack.getItem() instanceof HerobrineEnderEyeItem herobrineEnderEyeItem) {
-                                                                try {
-                                                                    player.getServer().getCommands().getDispatcher().execute(
-                                                                            "indestructible @s play \"epicfight:biped/living/landing\" 0 1",
-                                                                            player.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                                } catch (CommandSyntaxException e) {
-                                                                }
-                                                                HerobrineEnderEyeItem.startShadowObsidianMachineGun((ServerLevel) player.level(), player, stack);
-                                                                stack.hurtAndBreak(10, player, p -> {
-                                                                });
-                                                                return true;
-                                                            }
-                                                            return false;
-                                                        }).orElse(false);
-                                                 if (isSuccess) return;
-                                            }
                                             try {
                                                 entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/kick_h\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                                             } catch (CommandSyntaxException e) {

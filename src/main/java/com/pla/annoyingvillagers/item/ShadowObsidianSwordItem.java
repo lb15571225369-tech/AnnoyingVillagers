@@ -44,7 +44,6 @@ public class ShadowObsidianSwordItem  extends SwordItem {
         super.appendHoverText(itemstack, level, list, tooltipflag);
         list.add(Component.literal(
                 "One of the §5Shadow Herobrine§r's weapon.\n" +
-                        "This weapon has a §6unique moveset.§r\n" +
                         "Combine it with a Diamond Helmet or Diamond Chestplate in the Smithing Table," +
                         " using a Netherite Upgrade Smithing Template, to craft the §5Herobrine Obsidian Diamond Armor§r."
         ));
