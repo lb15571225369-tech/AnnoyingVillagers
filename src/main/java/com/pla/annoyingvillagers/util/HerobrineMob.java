@@ -583,7 +583,7 @@ public class HerobrineMob extends Monster {
                             this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 } catch (CommandSyntaxException e) {
                 }
-                this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getChatName() + "> Requesting assistant !!!"), false);
+                this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getChatName() + "> Requesting assistance !"), false);
             }
             if (this.healingAnimationCooldown > 0) {
                 this.healingAnimationCooldown = this.healingAnimationCooldown - 1;
