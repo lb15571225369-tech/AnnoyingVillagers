@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.procedures;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.util.HerobrineMob;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
@@ -27,8 +28,8 @@ public class HerobrineTransfromProcedure {
             Entity possessed;
             if (herobrineEntity instanceof HerobrineCloneEntity || herobrineEntity instanceof HerobrineChrisEntity || herobrineEntity instanceof NullEntity
                     || herobrineEntity instanceof NullSwordEntity || herobrineEntity instanceof NullAxeEntity
-                    || herobrineEntity instanceof  NullPickaxeEntity || herobrineEntity instanceof NullShovelEntity
-                    || herobrineEntity instanceof  NullHoeEntity || herobrineEntity instanceof GlaiveHerobrineEntity
+                    || herobrineEntity instanceof NullPickaxeEntity || herobrineEntity instanceof NullShovelEntity
+                    || herobrineEntity instanceof NullHoeEntity || herobrineEntity instanceof GlaiveHerobrineEntity
                     || herobrineEntity instanceof AegisHerobrineEntity || herobrineEntity instanceof ReaperHerobrineEntity
                     || herobrineEntity instanceof SwordsmanHerobrineEntity || herobrineEntity instanceof SledgehammerHerobrineEntity) {
                 possessed = new LowHerobrineCloneEntity(AnnoyingVillagersModEntities.LOW_HEROBRINE_CLONE.get(), serverLevel);
@@ -54,6 +55,32 @@ public class HerobrineTransfromProcedure {
             if (mob instanceof LowHerobrineCloneEntity lowHerobrineCloneEntity) {
                 lowHerobrineCloneEntity.setUsername(((PlayerMobEntity) entity).getUsername());
                 lowHerobrineCloneEntity.setProfile(((PlayerMobEntity) entity).getProfile());
+                if (herobrineEntity instanceof HerobrineMob herobrineMob) {
+                    lowHerobrineCloneEntity.setPossessedByEntity(herobrineMob);
+                    lowHerobrineCloneEntity.setPossessedByUuid(herobrineMob.getUUID());
+                } else if (herobrineEntity instanceof NullSwordEntity nullSwordEntity) {
+                    lowHerobrineCloneEntity.setPossessedByEntity(nullSwordEntity.getNullEntity());
+                    lowHerobrineCloneEntity.setPossessedByUuid(nullSwordEntity.getNullUUID());
+                } else if (herobrineEntity instanceof NullAxeEntity nullAxeEntity) {
+                    lowHerobrineCloneEntity.setPossessedByEntity(nullAxeEntity.getNullEntity());
+                    lowHerobrineCloneEntity.setPossessedByUuid(nullAxeEntity.getNullUUID());
+                } else if (herobrineEntity instanceof NullPickaxeEntity nullPickaxeEntity) {
+                    lowHerobrineCloneEntity.setPossessedByEntity(nullPickaxeEntity.getNullEntity());
+                    lowHerobrineCloneEntity.setPossessedByUuid(nullPickaxeEntity.getNullUUID());
+                } else if (herobrineEntity instanceof NullShovelEntity nullShovelEntity) {
+                    lowHerobrineCloneEntity.setPossessedByEntity(nullShovelEntity.getNullEntity());
+                    lowHerobrineCloneEntity.setPossessedByUuid(nullShovelEntity.getNullUUID());
+                } else {
+                    NullHoeEntity nullHoeEntity = (NullHoeEntity) herobrineEntity;
+                    lowHerobrineCloneEntity.setPossessedByEntity(nullHoeEntity.getNullEntity());
+                    lowHerobrineCloneEntity.setPossessedByUuid(nullHoeEntity.getNullUUID());
+                }
+            }
+            if (mob instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
+                if (herobrineEntity instanceof HerobrineMob herobrineMob) {
+                    lowShadowHerobrineCloneEntity.setPossessedByEntity(herobrineMob);
+                    lowShadowHerobrineCloneEntity.setPossessedByUuid(herobrineMob.getUUID());
+                }
             }
             mob.finalizeSpawn(serverLevel, world.getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
             serverLevel.addFreshEntity(possessed);

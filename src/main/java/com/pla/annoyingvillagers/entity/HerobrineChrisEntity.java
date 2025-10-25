@@ -99,7 +99,9 @@ public class HerobrineChrisEntity extends HerobrineMob {
 
     public void playerTouch(Player player) {
         super.playerTouch(player);
-        HerobrineChrisOnTouchProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        if (!this.isHealing()) {
+            HerobrineChrisOnTouchProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        }
     }
 
     public static boolean canSpawn(EntityType<HerobrineChrisEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {

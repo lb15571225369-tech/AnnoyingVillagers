@@ -8,9 +8,12 @@ import com.pla.annoyingvillagers.block.ObsidianBlock;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.spawnhandler.HerobrineMobData;
+import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -19,16 +22,25 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -46,11 +58,13 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.damagesource.StunType;
+import yesman.epicfight.world.effect.EpicFightMobEffects;
 
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 import static com.pla.annoyingvillagers.procedures.HerobrinePortalProcedure.*;
 
@@ -64,6 +78,57 @@ public class HerobrineMob extends Monster {
     private BlockPos lastFeetPos = null;
     private EliteHerobrineKnockedEntity protectEntity;
     private UUID protectUUID;
+    private int healingCooldown = 0;
+    private int healingAnimationCooldown = 0;
+    private boolean healing = false;
+    private final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
+
+    private Entity firstPossessedHerobrine;
+    private UUID firstPossessedHerobrineUuid;
+
+    private Entity secondPossessedHerobrine;
+    private UUID secondPossessedHerobrineUuid;
+
+    private Entity thirdPossessedHerobrine;
+    private UUID thirdPossessedHerobrineUuid;
+
+    private Entity fourthPossessedHerobrine;
+    private UUID fourthPossessedHerobrineUuid;
+
+    public boolean isAvailableSlot() {
+        return firstPossessedHerobrineUuid == null || secondPossessedHerobrineUuid == null || thirdPossessedHerobrineUuid == null || fourthPossessedHerobrineUuid == null;
+    }
+
+    private int getEmptyBoundClone() {
+        int returnValue = 0;
+        if (firstPossessedHerobrineUuid == null) returnValue = returnValue + 1;
+        if (secondPossessedHerobrineUuid == null) returnValue = returnValue + 1;
+        if (thirdPossessedHerobrineUuid == null) returnValue = returnValue + 1;
+        if (fourthPossessedHerobrineUuid == null) returnValue = returnValue + 1;
+        return returnValue;
+    }
+
+    public boolean boundPossessed(Entity entity) {
+        if (firstPossessedHerobrineUuid == null) {
+            firstPossessedHerobrineUuid = entity.getUUID();
+            firstPossessedHerobrine = entity;
+            return true;
+        } else if (secondPossessedHerobrineUuid == null) {
+            secondPossessedHerobrineUuid = entity.getUUID();
+            secondPossessedHerobrine = entity;
+            return true;
+        } else if (thirdPossessedHerobrineUuid == null) {
+            thirdPossessedHerobrineUuid = entity.getUUID();
+            thirdPossessedHerobrine = entity;
+            return true;
+        } else if (fourthPossessedHerobrineUuid == null) {
+            fourthPossessedHerobrineUuid = entity.getUUID();
+            fourthPossessedHerobrine = entity;
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public void setProtectUUID(UUID protectUUID) {
         this.protectUUID = protectUUID;
@@ -107,6 +172,10 @@ public class HerobrineMob extends Monster {
 
     public void setInitialSpawn(boolean initialSpawn) {
         this.initialSpawn = initialSpawn;
+    }
+
+    public boolean isHealing() {
+        return healing;
     }
 
     protected HerobrineMob(EntityType<? extends Monster> pEntityType, Level pLevel) {
@@ -216,7 +285,18 @@ public class HerobrineMob extends Monster {
     }
 
     public boolean hurt(@NotNull DamageSource damagesource, float f) {
-        if (this.getPersistentData().getBoolean(NBT_RISING) || this.getPersistentData().getBoolean(NBT_SINKING)) {
+        if (this.getPersistentData().getBoolean(NBT_RISING) || this.getPersistentData().getBoolean(NBT_SINKING) || this.healing) {
+            if (!this.level().isClientSide()) {
+                try {
+                    this.getServer().getCommands().getDispatcher().execute(
+                            "playsound epicfight:entity.hit.clash neutral @p",
+                            this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    this.getServer().getCommands().getDispatcher().execute(
+                            "execute at @s run particle epicfight:hit_blade ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
+                            this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+                }
+            }
             return false;
         }
         return super.hurt(damagesource, f);
@@ -235,6 +315,21 @@ public class HerobrineMob extends Monster {
         if (pCompound.hasUUID("ProtectUUID")) {
             protectUUID = pCompound.getUUID("ProtectUUID");
         }
+        if (pCompound.hasUUID("FirstPossessedHerobrineUuid")) {
+            firstPossessedHerobrineUuid = pCompound.getUUID("FirstPossessedHerobrineUuid");
+        }
+        if (pCompound.hasUUID("SecondPossessedHerobrineUuid")) {
+            secondPossessedHerobrineUuid = pCompound.getUUID("SecondPossessedHerobrineUuid");
+        }
+        if (pCompound.hasUUID("ThirdPossessedHerobrineUuid")) {
+            thirdPossessedHerobrineUuid = pCompound.getUUID("ThirdPossessedHerobrineUuid");
+        }
+        if (pCompound.hasUUID("FourthPossessedHerobrineUuid")) {
+            fourthPossessedHerobrineUuid = pCompound.getUUID("FourthPossessedHerobrineUuid");
+        }
+        healingCooldown = pCompound.getInt("HealingCooldown");
+        healing = pCompound.getBoolean("Healing");
+        healingAnimationCooldown = pCompound.getInt("HealingAnimationCooldown");
     }
 
     @Override
@@ -250,6 +345,21 @@ public class HerobrineMob extends Monster {
         if (protectUUID != null) {
             pCompound.putUUID("ProtectUUID", protectUUID);
         }
+        if (firstPossessedHerobrineUuid != null) {
+            pCompound.putUUID("FirstPossessedHerobrineUuid", firstPossessedHerobrineUuid);
+        }
+        if (secondPossessedHerobrineUuid != null) {
+            pCompound.putUUID("SecondPossessedHerobrineUuid", secondPossessedHerobrineUuid);
+        }
+        if (thirdPossessedHerobrineUuid != null) {
+            pCompound.putUUID("ThirdPossessedHerobrineUuid", thirdPossessedHerobrineUuid);
+        }
+        if (fourthPossessedHerobrineUuid != null) {
+            pCompound.putUUID("FourthPossessedHerobrineUuid", fourthPossessedHerobrineUuid);
+        }
+        pCompound.putInt("HealingCooldown", healingCooldown);
+        pCompound.putBoolean("Healing", healing);
+        pCompound.putInt("HealingAnimationCooldown", healingAnimationCooldown);
     }
 
     @Override
@@ -399,6 +509,284 @@ public class HerobrineMob extends Monster {
                 protectUUID = null;
                 this.recallTicks = 41;
             }
+
+            if (firstPossessedHerobrine == null && firstPossessedHerobrineUuid != null) {
+                Entity entity = ((ServerLevel) this.level()).getEntity(firstPossessedHerobrineUuid);
+                this.firstPossessedHerobrine = entity;
+            }
+            if (secondPossessedHerobrine == null && secondPossessedHerobrineUuid != null) {
+                Entity entity = ((ServerLevel) this.level()).getEntity(secondPossessedHerobrineUuid);
+                this.secondPossessedHerobrine = entity;
+            }
+            if (thirdPossessedHerobrine == null && thirdPossessedHerobrineUuid != null) {
+                Entity entity = ((ServerLevel) this.level()).getEntity(thirdPossessedHerobrineUuid);
+                this.thirdPossessedHerobrine = entity;
+            }
+            if (fourthPossessedHerobrine == null && fourthPossessedHerobrineUuid != null) {
+                Entity entity = ((ServerLevel) this.level()).getEntity(fourthPossessedHerobrineUuid);
+                this.fourthPossessedHerobrine = entity;
+            }
+
+            if (firstPossessedHerobrine != null && !firstPossessedHerobrine.isAlive()) {
+                firstPossessedHerobrine = null;
+                firstPossessedHerobrineUuid = null;
+                if (this.healing && this.getEmptyBoundClone() == 4) {
+                    this.healing = false;
+                    this.setNoAi(false);
+                    this.removeAllEffects();
+                    this.livingentitypatch.applyStun(StunType.FALL, 0.0F);
+                }
+            }
+            if (secondPossessedHerobrine != null && !secondPossessedHerobrine.isAlive()) {
+                secondPossessedHerobrine = null;
+                secondPossessedHerobrineUuid = null;
+                if (this.healing && this.getEmptyBoundClone() == 4) {
+                    this.healing = false;
+                    this.setNoAi(false);
+                    this.removeAllEffects();
+                    this.livingentitypatch.applyStun(StunType.FALL, 0.0F);
+                }
+            }
+            if (thirdPossessedHerobrine != null && !thirdPossessedHerobrine.isAlive()) {
+                thirdPossessedHerobrine = null;
+                thirdPossessedHerobrineUuid = null;
+                if (this.healing && this.getEmptyBoundClone() == 4) {
+                    this.healing = false;
+                    this.setNoAi(false);
+                    this.removeAllEffects();
+                    this.livingentitypatch.applyStun(StunType.FALL, 0.0F);
+                }
+            }
+            if (fourthPossessedHerobrine != null && !fourthPossessedHerobrine.isAlive()) {
+                fourthPossessedHerobrine = null;
+                fourthPossessedHerobrineUuid = null;
+                if (this.healing && this.getEmptyBoundClone() >= 4) {
+                    this.healing = false;
+                    this.setNoAi(false);
+                    this.removeAllEffects();
+                    this.livingentitypatch.applyStun(StunType.FALL, 0.0F);
+                }
+            }
+
+            if (!this.healing && this.healingCooldown > 0) {
+                this.healingCooldown = this.healingCooldown - 1;
+            }
+            if (this.getHealth() <= Math.max(0.1F * this.getMaxHealth(), 10.0F) && !this.healing && this.healingCooldown == 0) {
+                if (this.getEmptyBoundClone() > 0) {
+                    summonClonesByAmount(this.getEmptyBoundClone());
+                }
+                this.healingAnimationCooldown = 60;
+                this.healingCooldown = new Random().nextInt(1200, 2400);
+                try {
+                    this.getServer().getCommands().getDispatcher().execute(
+                            "playsound annoyingvillagers:herobrine_healing voice @a ~ ~ ~",
+                            this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+                }
+                this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getChatName() + "> Requesting assistant !!!"), false);
+            }
+            if (this.healingAnimationCooldown > 0) {
+                this.healingAnimationCooldown = this.healingAnimationCooldown - 1;
+            }
+            if (this.healingAnimationCooldown == 10) {
+                this.healing = true;
+                this.setNoAi(true);
+                this.addEffect(new MobEffectInstance((MobEffect) EpicFightMobEffects.STUN_IMMUNITY.get(), 10, 3, false, false));
+                if (this.firstPossessedHerobrine != null) {
+                    ((Mob) firstPossessedHerobrine).addEffect(new MobEffectInstance((MobEffect) EpicFightMobEffects.STUN_IMMUNITY.get(), 30, 3, false, false));
+                    ((Mob) firstPossessedHerobrine).setNoAi(true);
+                    this.clearHandAndDropItem(firstPossessedHerobrine);
+                    if (firstPossessedHerobrine instanceof LowHerobrineCloneEntity lowHerobrineCloneEntity) {
+                        lowHerobrineCloneEntity.setSacrificing(true);
+                    } else if (firstPossessedHerobrine instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
+                        lowShadowHerobrineCloneEntity.setSacrificing(true);
+                    }
+                    firstPossessedHerobrine.lookAt(EntityAnchorArgument.Anchor.EYES, new Vec3(this.getX(), this.getY(), this.getZ()));
+                    try {
+                        firstPossessedHerobrine.getServer().getCommands().getDispatcher().execute(
+                                "playsound annoyingvillagers:herobrine_understood voice @a ~ ~ ~",
+                                firstPossessedHerobrine.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                    }
+                }
+                if (this.secondPossessedHerobrine != null) {
+                    ((Mob) secondPossessedHerobrine).addEffect(new MobEffectInstance((MobEffect) EpicFightMobEffects.STUN_IMMUNITY.get(), 10, 3, false, false));
+                    ((Mob) secondPossessedHerobrine).setNoAi(true);
+                    this.clearHandAndDropItem(secondPossessedHerobrine);
+                    if (secondPossessedHerobrine instanceof LowHerobrineCloneEntity lowHerobrineCloneEntity) {
+                        lowHerobrineCloneEntity.setSacrificing(true);
+                    } else if (secondPossessedHerobrine instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
+                        lowShadowHerobrineCloneEntity.setSacrificing(true);
+                    }
+                    secondPossessedHerobrine.lookAt(EntityAnchorArgument.Anchor.EYES, new Vec3(this.getX(), this.getY(), this.getZ()));
+                    try {
+                        secondPossessedHerobrine.getServer().getCommands().getDispatcher().execute(
+                                "playsound annoyingvillagers:herobrine_understood voice @a ~ ~ ~",
+                                secondPossessedHerobrine.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                    }
+                }
+                if (this.thirdPossessedHerobrine != null) {
+                    ((Mob) thirdPossessedHerobrine).addEffect(new MobEffectInstance((MobEffect) EpicFightMobEffects.STUN_IMMUNITY.get(), 10, 3, false, false));
+                    ((Mob) thirdPossessedHerobrine).setNoAi(true);
+                    this.clearHandAndDropItem(thirdPossessedHerobrine);
+                    if (thirdPossessedHerobrine instanceof LowHerobrineCloneEntity lowHerobrineCloneEntity) {
+                        lowHerobrineCloneEntity.setSacrificing(true);
+                    } else if (thirdPossessedHerobrine instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
+                        lowShadowHerobrineCloneEntity.setSacrificing(true);
+                    }
+                    thirdPossessedHerobrine.lookAt(EntityAnchorArgument.Anchor.EYES, new Vec3(this.getX(), this.getY(), this.getZ()));
+                    thirdPossessedHerobrine.lookAt(EntityAnchorArgument.Anchor.EYES, new Vec3(this.getX(), this.getY(), this.getZ()));
+                    try {
+                        thirdPossessedHerobrine.getServer().getCommands().getDispatcher().execute(
+                                "playsound annoyingvillagers:herobrine_understood voice @a ~ ~ ~",
+                                thirdPossessedHerobrine.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                    }
+                }
+                if (this.fourthPossessedHerobrine != null) {
+                    ((Mob) fourthPossessedHerobrine).addEffect(new MobEffectInstance((MobEffect) EpicFightMobEffects.STUN_IMMUNITY.get(), 10, 3, false, false));
+                    ((Mob) fourthPossessedHerobrine).setNoAi(true);
+                    this.clearHandAndDropItem(fourthPossessedHerobrine);
+                    if (fourthPossessedHerobrine instanceof LowHerobrineCloneEntity lowHerobrineCloneEntity) {
+                        lowHerobrineCloneEntity.setSacrificing(true);
+                    } else if (fourthPossessedHerobrine instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
+                        lowShadowHerobrineCloneEntity.setSacrificing(true);
+                    }
+                    fourthPossessedHerobrine.lookAt(EntityAnchorArgument.Anchor.EYES, new Vec3(this.getX(), this.getY(), this.getZ()));
+                    try {
+                        fourthPossessedHerobrine.getServer().getCommands().getDispatcher().execute(
+                                "playsound annoyingvillagers:herobrine_understood voice @a ~ ~ ~",
+                                fourthPossessedHerobrine.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                    }
+                }
+            }
+            if (this.healing && this.healingAnimationCooldown == 0) {
+                if (this.getEmptyBoundClone() == 4) {
+                    this.setNoAi(false);
+                    return;
+                }
+                this.addEffect(new MobEffectInstance((MobEffect) EpicFightMobEffects.STUN_IMMUNITY.get(), 1, 3, false, false));
+                if (this.livingentitypatch != null) {
+                    this.livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_HEALING, 0.0F);
+                }
+            }
+        }
+    }
+
+    private void clearHandAndDropItem(Entity entity) {
+        LevelAccessor levelaccessor1 = this.level();
+        ItemEntity itementity;
+        LivingEntity livingentity = (LivingEntity)entity;
+        ItemStack itemstack;
+
+        if (levelaccessor1 instanceof Level level) {
+            if (!level.isClientSide()) {
+                itemstack = livingentity.getMainHandItem();
+                itementity = new ItemEntity(level, entity.getX(), entity.getY() + 1.0D, entity.getZ(), itemstack);
+                itementity.setPickUpDelay(10);
+                level.addFreshEntity(itementity);
+                ((LivingEntity) entity).setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+            }
+        }
+
+        if (levelaccessor1 instanceof Level level) {
+            if (!level.isClientSide()) {
+                itemstack = livingentity.getOffhandItem();
+                itementity = new ItemEntity(level, entity.getX(), entity.getY() + 1.0D, entity.getZ(), itemstack);
+                itementity.setPickUpDelay(10);
+                level.addFreshEntity(itementity);
+                ((LivingEntity) entity).setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+            }
+        }
+    }
+
+    private void summonClonesByAmount(int amount) {
+        if (!(this.level() instanceof ServerLevel server)) return;
+
+        final float yaw = this.getYRot();
+        final Vec3 forward = Vec3.directionFromRotation(0.0F, yaw).normalize();
+        final Vec3 right = new Vec3(-forward.z, 0.0D, forward.x).normalize();
+
+        final double fwdDist = Math.max(10.0D, this.getBbWidth() * 10.0D);
+        final double sideDist = Math.max(10.0D, this.getBbWidth() * 10.0D);
+
+        final double y = this.getY() + 0.01D;
+
+        final Vec3 posFront = this.position().add(forward.scale(fwdDist));
+        final Vec3 posBack  = this.position().subtract(forward.scale(fwdDist));
+        final Vec3 posLeft  = this.position().subtract(right.scale(sideDist));
+        final Vec3 posRight = this.position().add(right.scale(sideDist));
+
+        switch (amount) {
+            case 1 -> {
+                summonLowCloneAt(server, new Vec3(posFront.x, y, posFront.z));
+            }
+            case 2 -> {
+                summonLowCloneAt(server, new Vec3(posLeft.x,  y, posLeft.z));
+                summonLowCloneAt(server, new Vec3(posRight.x, y, posRight.z));
+            }
+            case 3 -> {
+                summonLowCloneAt(server, new Vec3(posFront.x, y, posFront.z));
+                summonLowCloneAt(server, new Vec3(posLeft.x,  y, posLeft.z));
+                summonLowCloneAt(server, new Vec3(posRight.x, y, posRight.z));
+            }
+            case 4 -> {
+                summonLowCloneAt(server, new Vec3(posFront.x, y, posFront.z));
+                summonLowCloneAt(server, new Vec3(posLeft.x,  y, posLeft.z));
+                summonLowCloneAt(server, new Vec3(posRight.x, y, posRight.z));
+                summonLowCloneAt(server, new Vec3(posBack.x, y, posBack.z));
+            }
+            default -> {}
+        }
+    }
+
+    private ItemStack randomDamage(ItemStack itemStack) {
+        int maxDamage = itemStack.getMaxDamage();
+        itemStack.setDamageValue(new Random().nextInt(maxDamage / 3, maxDamage * 3 / 4));
+        return itemStack;
+    }
+
+    private void equipGearForLowClone(LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
+        if (random.nextFloat() < 0.3f) {
+            lowShadowHerobrineCloneEntity.setItemSlot(EquipmentSlot.HEAD, randomDamage(new ItemStack(AnnoyingVillagersModItems.BROKEN_DIAMOND_HELMET.get())));
+        }
+        if (random.nextFloat() < 0.3f) {
+            lowShadowHerobrineCloneEntity.setItemSlot(EquipmentSlot.CHEST, randomDamage(new ItemStack(AnnoyingVillagersModItems.BROKEN_DIAMOND_CHESTPLATE.get())));
+        }
+        if (random.nextFloat() < 0.3f) {
+            lowShadowHerobrineCloneEntity.setItemSlot(EquipmentSlot.LEGS, randomDamage(new ItemStack(AnnoyingVillagersModItems.BROKEN_DIAMOND_LEGGINGS.get())));
+        }
+        if (random.nextFloat() < 0.3f) {
+            lowShadowHerobrineCloneEntity.setItemSlot(EquipmentSlot.FEET, randomDamage(new ItemStack(AnnoyingVillagersModItems.BROKEN_DIAMOND_BOOTS.get())));
+        }
+    }
+
+    private void summonLowCloneAt(ServerLevel server, Vec3 pos) {
+        LowShadowHerobrineCloneEntity clone = new LowShadowHerobrineCloneEntity(AnnoyingVillagersModEntities.LOW_SHADOW_HEROBRINE_CLONE.get(), server);
+        int surfaceY = server.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BlockPos.containing(pos)).getY();
+        clone.moveTo(pos.x, surfaceY, pos.z, this.getYRot(), this.getXRot());
+        clone.finalizeSpawn(server, server.getCurrentDifficultyAt(BlockPos.containing(pos)),
+                MobSpawnType.MOB_SUMMONED, null, null);
+        clone.setPossessedByEntity(this);
+        clone.setPossessedByUuid(this.getUUID());
+        equipGearForLowClone(clone);
+        server.addFreshEntity(clone);
+
+        server.playSound(
+                null,
+                BlockPos.containing(pos),
+                SoundEvents.LIGHTNING_BOLT_THUNDER,
+                SoundSource.WEATHER,
+                5.0F, 1.0F
+        );
+
+        LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(server);
+        if (bolt != null) {
+            bolt.moveTo(pos.x, surfaceY, pos.z);
+            bolt.setVisualOnly(true);
+            server.addFreshEntity(bolt);
         }
     }
 

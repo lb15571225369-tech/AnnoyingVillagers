@@ -22,8 +22,8 @@ public class LightParticle extends TextureSheetParticle {
     protected LightParticle(ClientLevel clientlevel, double d0, double d1, double d2, double d3, double d4, double d5, SpriteSet spriteset) {
         super(clientlevel, d0, d1, d2);
         this.spriteSet = spriteset;
-        this.setSize(0.2F, 0.2F);
-        this.quadSize *= 1.0F;
+        this.setSize(0.05F, 0.05F);
+        this.quadSize = 0.06F;
         this.lifetime = 30;
         this.gravity = 0.0F;
         this.hasPhysics = false;
@@ -46,7 +46,6 @@ public class LightParticle extends TextureSheetParticle {
         if (!this.removed) {
             this.setSprite(this.spriteSet.get((this.age / 3) % 9, 9));
         }
-
     }
 
     public static class LightParticleProvider implements ParticleProvider<SimpleParticleType> {

@@ -314,9 +314,6 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
                 }
             }
 
-            server.sendParticles((SimpleParticleType) AnnoyingVillagersModParticleTypes.LIGHT.get(),
-                    this.getX(), this.getY(), this.getZ(), 1, 0, 0, 0, 0);
-
             final double forwardDist = Math.max(1.5D, this.getBbWidth() * 1.5D);
             final double sideDist = Math.max(1.2D, this.getBbWidth() * 1.2D);
 

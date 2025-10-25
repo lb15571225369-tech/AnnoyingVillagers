@@ -76,6 +76,8 @@ public class AnnoyingVillagersModSounds {
     public static final RegistryObject<SoundEvent> SECOND_FORM_RELEASE = register("second_form_release");
     public static final RegistryObject<SoundEvent> PORTAL_SUMMON = register("portal_summon");
     public static final RegistryObject<SoundEvent> PORTAL_NATURAL = register("portal_natural");
+    public static final RegistryObject<SoundEvent> HEROBRINE_HEALING = register("herobrine_healing");
+    public static final RegistryObject<SoundEvent> HEROBRINE_UNDERSTOOD = register("herobrine_understood");
 
     private static RegistryObject<SoundEvent> register(String name) {
         return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(AnnoyingVillagers.MODID, name)));

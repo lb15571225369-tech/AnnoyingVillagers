@@ -106,7 +106,9 @@ public class ShadowObsidianBlock extends Block implements EntityBlock {
 
     public void entityInside(BlockState blockstate, Level level, BlockPos blockpos, Entity entity) {
         super.entityInside(blockstate, level, blockpos, entity);
-        ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), entity);
+        if (entity.tickCount % 5 == 0) {
+            ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), entity);
+        }
     }
 
     @Override

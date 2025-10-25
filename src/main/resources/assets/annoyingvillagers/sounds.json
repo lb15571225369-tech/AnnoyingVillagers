@@ -598,5 +598,21 @@
         "stream": false
       }
     ]
+  },
+  "herobrine_healing": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:requesting_assistant",
+        "stream": false
+      }
+    ]
+  },
+  "herobrine_understood": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:understood",
+        "stream": false
+      }
+    ]
   }
 }

@@ -197,6 +197,8 @@ public class AVAnimations {
     public static StaticAnimation EATING_ELITE_2;
     public static StaticAnimation EATING_ELITE_3;
     public static StaticAnimation EATING_ELITE_4;
+    public static StaticAnimation HEROBRINE_HEALING;
+    public static StaticAnimation HEROBRINE_SACRIFICING;
 
     // Dual great sword
     public static StaticAnimation GREATSWORD_DUAL_AUTO_1;
@@ -218,6 +220,8 @@ public class AVAnimations {
     private static void build() {
         HumanoidArmature humanoidarmature = Armatures.BIPED;
         AVAnimations.HEROBRINE_ANIMATE = new StaticAnimation(false, "biped/other/herobrine_animate", humanoidarmature);
+        AVAnimations.HEROBRINE_HEALING = new StaticAnimation(true, "biped/other/herobrine_healing", humanoidarmature);
+        AVAnimations.HEROBRINE_SACRIFICING = new StaticAnimation(true, "biped/other/herobrine_sacrificing", humanoidarmature);
         AVAnimations.KNOCKED_ELITE = new StaticAnimation(true, "biped/other/knocked_elite", humanoidarmature);
         AVAnimations.EATING_ELITE_1 = new StaticAnimation(true, "biped/other/eating_elite_1", humanoidarmature);
         AVAnimations.EATING_ELITE_2 = new StaticAnimation(true, "biped/other/eating_elite_2", humanoidarmature);

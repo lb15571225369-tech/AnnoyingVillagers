@@ -105,10 +105,6 @@ public class ArmoredHerobrineEntity extends HerobrineMob {
             infectedTheMostMoistBurrit0Entity.finalizeSpawn(serverlevel, serverlevel.getCurrentDifficultyAt(infectedTheMostMoistBurrit0Entity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
             serverlevel.addFreshEntity(infectedTheMostMoistBurrit0Entity);
         }
-
-        if (!this.level().isClientSide() && this.level().getServer() != null) {
-            this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("The clone has been destroyed, data has been transmitted to the terminal."), false);
-        }
         if (!this.level().isClientSide()) {
             this.discard();
         }
@@ -205,7 +201,9 @@ public class ArmoredHerobrineEntity extends HerobrineMob {
 
     public void playerTouch(Player player) {
         super.playerTouch(player);
-        ArmoredHerobrineOnPlayerTouchProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        if (!this.isHealing()) {
+            ArmoredHerobrineOnPlayerTouchProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        }
     }
 
     public static boolean canSpawn(EntityType<ArmoredHerobrineEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {

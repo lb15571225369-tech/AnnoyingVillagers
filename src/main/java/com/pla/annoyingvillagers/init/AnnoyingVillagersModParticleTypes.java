@@ -37,19 +37,16 @@ public class AnnoyingVillagersModParticleTypes {
     public static final RegistryObject<ParticleType<?>> GLOWINGEYES = AnnoyingVillagersModParticleTypes.REGISTRY.register("glowing_eyes", () -> {
         return new SimpleParticleType(true);
     });
-    public static final RegistryObject<ParticleType<?>> LIGHT = AnnoyingVillagersModParticleTypes.REGISTRY.register("light", () -> {
-        return new SimpleParticleType(true);
-    });
-    public static final RegistryObject<ParticleType<?>> BLUESPARK = AnnoyingVillagersModParticleTypes.REGISTRY.register("blue_spark", () -> {
-        return new SimpleParticleType(true);
-    });
+    public static final RegistryObject<SimpleParticleType> LIGHT =
+            REGISTRY.register("light", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> BLUESPARK =
+            REGISTRY.register("blue_spark", () -> new SimpleParticleType(true));
     public static final RegistryObject<ParticleType<?>> GREENSPARK = AnnoyingVillagersModParticleTypes.REGISTRY.register("green_spark", () -> {
         return new SimpleParticleType(true);
     });
     public static final RegistryObject<ParticleType<?>> ENDER = AnnoyingVillagersModParticleTypes.REGISTRY.register("ender", () -> {
         return new SimpleParticleType(true);
     });
-    public static final RegistryObject<ParticleType<?>> NULL = AnnoyingVillagersModParticleTypes.REGISTRY.register("null", () -> {
-        return new SimpleParticleType(true);
-    });
+    public static final RegistryObject<SimpleParticleType> NULL =
+            REGISTRY.register("null", () -> new SimpleParticleType(true));
 }

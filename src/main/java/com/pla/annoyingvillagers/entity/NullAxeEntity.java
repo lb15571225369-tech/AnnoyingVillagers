@@ -78,6 +78,10 @@ public class NullAxeEntity extends Monster {
         return nullUUID;
     }
 
+    public NullEntity getNullEntity() {
+        return nullEntity;
+    }
+
     public void setReturnGameTime(long returnGameTime) {
         this.returnGameTime = returnGameTime;
     }

@@ -169,7 +169,9 @@ public class ShadowHerobrineEntity extends HerobrineMob {
 
     public void playerTouch(Player player) {
         super.playerTouch(player);
-        DarkHerobrineOnPlayerTouchProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        if (!this.isHealing()) {
+            DarkHerobrineOnPlayerTouchProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        }
     }
 
     private Vec3 getUpBlockPos() {
