@@ -13,7 +13,6 @@ import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.util.HerobrineMob;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -35,7 +34,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -57,6 +55,7 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.effect.EpicFightMobEffects;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -352,6 +351,7 @@ public class LowShadowHerobrineCloneEntity extends Monster {
                     this.initialSpawn = false;
                 }
             }
+
             if (protectEntity == null && protectUUID != null) {
                 Entity entity = ((ServerLevel) level()).getEntity(protectUUID);
                 if (entity instanceof EliteHerobrineKnockedEntity eliteHerobrineKnockedEntity) {
@@ -364,12 +364,7 @@ public class LowShadowHerobrineCloneEntity extends Monster {
                 protectEntity = null;
                 protectUUID = null;
                 autoKill = true;
-                try {
-                    this.getServer().getCommands().getDispatcher().execute(
-                            "kill @s",
-                            this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException e) {
-                }
+                this.kill();
             }
 
             if (possessedByEntity == null && possessedByUuid != null) {
@@ -388,10 +383,27 @@ public class LowShadowHerobrineCloneEntity extends Monster {
                 }
             }
             if (possessedByEntity != null && !possessedByEntity.isAlive()) {
-                possessedByEntity = null;
-                possessedByUuid = null;
-                autoKill = true;
-                this.kill();
+                AABB area = new AABB(this.blockPosition()).inflate(60);
+                List<Entity> nearby = level().getEntities(this, area, entity ->
+                        entity instanceof EliteHerobrineKnockedEntity
+                );
+                if (!nearby.isEmpty()) {
+                    Entity entity = nearby.get(0);
+                    if (entity instanceof EliteHerobrineKnockedEntity eliteHerobrineKnockedEntity) {
+                        this.protectEntity = eliteHerobrineKnockedEntity;
+                        this.protectUUID = eliteHerobrineKnockedEntity.getUUID();
+                    } else {
+                        possessedByEntity = null;
+                        possessedByUuid = null;
+                        autoKill = true;
+                        this.kill();
+                    }
+                } else {
+                    possessedByEntity = null;
+                    possessedByUuid = null;
+                    autoKill = true;
+                    this.kill();
+                }
             }
             if (this.sacrificing) {
                 if (this.getHealth() <= 1) {
@@ -412,19 +424,22 @@ public class LowShadowHerobrineCloneEntity extends Monster {
                     }
                 }
                 if (this.tickCount % 20 == 0 && this.possessedByEntity != null) {
-                    if (this.getHealth() <= 2) {
+                    if (this.possessedByEntity.getMaxHealth() == this.possessedByEntity.getHealth()) {
+                        AnnoyingVillagers.LOGGER.info("AV MOD DEBUG: Low Shadow Herobrine Clone is {} health but possessedBy is max", this.getHealth());
+                        this.sacrificing = false;
+                        autoKill = true;
+                        this.kill();
+                    }
+                    if (this.getHealth() <= 4) {
+                        AnnoyingVillagers.LOGGER.info("AV MOD DEBUG: Low Shadow Herobrine Clone is <= 2 health, self killing");
                         this.sacrificing = false;
                         autoKill = true;
                         this.kill();
                     } else {
+                        AnnoyingVillagers.LOGGER.info("AV MOD DEBUG: Low Shadow Herobrine Clone is {} health", this.getHealth());
                         this.setHealth(this.getHealth() - 2.0F);
                     }
                     this.possessedByEntity.heal(this.possessedByEntity.getMaxHealth() * 0.01F);
-                    if (this.possessedByEntity.getMaxHealth() == this.possessedByEntity.getHealth()) {
-                        this.sacrificing = false;
-                        autoKill = true;
-                        this.kill();
-                    }
                 }
                 if (this.possessedByEntity != null) {
                     ServerLevel server = (ServerLevel)this.level();

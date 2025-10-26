@@ -19,6 +19,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
@@ -232,8 +233,16 @@ public class NullPickaxeEntity extends Monster {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        if (!this.level().isClientSide() && Math.random() <= 0.5D) {
-            this.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 60, 1, false, false));
+        if (!this.level().isClientSide() && !damagesource.is(DamageTypes.IN_WALL)) {
+            try {
+                this.getServer().getCommands().getDispatcher().execute(
+                        "playsound epicfight:entity.hit.clash neutral @p",
+                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                this.getServer().getCommands().getDispatcher().execute(
+                        "execute at @s run particle epicfight:hit_blade ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
+                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+            } catch (CommandSyntaxException e) {
+            }
         }
         return false;
     }

@@ -599,10 +599,18 @@
       }
     ]
   },
-  "herobrine_healing": {
+  "self_requesting_assistance": {
     "sounds": [
       {
-        "name": "annoyingvillagers:requesting_assistant",
+        "name": "annoyingvillagers:self_requesting_assistance",
+        "stream": false
+      }
+    ]
+  },
+  "greg_requesting_assistance": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:greg_requesting_assistance",
         "stream": false
       }
     ]

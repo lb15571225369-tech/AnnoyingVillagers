@@ -90,7 +90,9 @@ public class ShadowHerobrineEntity extends HerobrineMob {
     }
 
     public boolean hurt(@NotNull DamageSource damagesource, float f) {
-        DarkHerobrineOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        if (!this.isHealing()) {
+            DarkHerobrineOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        }
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;
         if (damagesource.is(DamageTypes.WITHER)) return false;

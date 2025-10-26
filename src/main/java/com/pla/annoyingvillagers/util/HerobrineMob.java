@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.block.ObsidianBlock;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
@@ -22,8 +23,6 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -36,9 +35,7 @@ import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -58,7 +55,6 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
-import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.damagesource.StunType;
@@ -468,6 +464,7 @@ public class HerobrineMob extends Monster {
                             livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_ANIMATE, 0.0F);
                         }
                     }
+                    this.initialSpawn = false;
                 }
             }
 
@@ -571,19 +568,61 @@ public class HerobrineMob extends Monster {
             if (!this.healing && this.healingCooldown > 0) {
                 this.healingCooldown = this.healingCooldown - 1;
             }
-            if (this.getHealth() <= Math.max(0.1F * this.getMaxHealth(), 10.0F) && !this.healing && this.healingCooldown == 0) {
-                if (this.getEmptyBoundClone() > 0) {
-                    summonClonesByAmount(this.getEmptyBoundClone());
+            if (this.getHealth() <= Math.max((float) AnnoyingVillagersConfig.HEROBRINE_HEALING_HEALTH_TRIGGER.get() / 100 * this.getMaxHealth(), 10.0F) && !this.healing && this.healingCooldown == 0) {
+                if (this instanceof ShadowHerobrineEntity || this instanceof NullEntity ||
+                        this instanceof AegisHerobrineEntity || this instanceof SwordsmanHerobrineEntity ||
+                        this instanceof GlaiveHerobrineEntity || this instanceof ReaperHerobrineEntity ||
+                        this instanceof SledgehammerHerobrineEntity) {
+                    if (this.getEmptyBoundClone() > 0) {
+                        summonClonesByAmount(this.getEmptyBoundClone());
+                    }
+                    this.healingAnimationCooldown = 60;
+                    if (this.gregUUID != null) {
+                        ServerLevel serverLevel = (ServerLevel) this.level();
+                        Entity entity = serverLevel.getEntity(this.gregUUID);
+                        if (entity instanceof HerobrineGregEntity herobrineGregEntity && entity.isAlive()) {
+                            try {
+                                herobrineGregEntity.getServer().getCommands().getDispatcher().execute(
+                                        "playsound annoyingvillagers:greg_requesting_assistance voice @a ~ ~ ~",
+                                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                            }
+                            herobrineGregEntity.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine Greg§r> Requesting assistance!!!"), false);
+                            if (herobrineGregEntity.getLivingentitypatch() != null) {
+                                herobrineGregEntity.getLivingentitypatch().playAnimationSynchronized(AVAnimations.PORTAL_SUMMON, 0.0F);
+                            }
+                        } else {
+                            try {
+                                this.getServer().getCommands().getDispatcher().execute(
+                                        "playsound annoyingvillagers:self_requesting_assistance voice @a ~ ~ ~",
+                                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException e) {
+                            }
+                            this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getChatName() + "> Requesting assistance!!!"), false);
+                        }
+                    } else {
+                        try {
+                            this.getServer().getCommands().getDispatcher().execute(
+                                    "playsound annoyingvillagers:self_requesting_assistance voice @a ~ ~ ~",
+                                    this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException e) {
+                        }
+                        this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getChatName() + "> Requesting assistance!!!"), false);
+                    }
+                    this.healingCooldown = new Random().nextInt(AnnoyingVillagersConfig.HEROBRINE_HEALING_MIN_COOLDOWN.get() * 1200, AnnoyingVillagersConfig.HEROBRINE_HEALING_MAX_COOLDOWN.get() * 1200);
+                } else {
+                    if (this.getEmptyBoundClone() != 4) {
+                        this.healingAnimationCooldown = 60;
+                        try {
+                            this.getServer().getCommands().getDispatcher().execute(
+                                    "playsound annoyingvillagers:self_requesting_assistance voice @a ~ ~ ~",
+                                    this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException e) {
+                        }
+                        this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getChatName() + "> Requesting assistance !!!"), false);
+                        this.healingCooldown = new Random().nextInt(AnnoyingVillagersConfig.HEROBRINE_HEALING_MIN_COOLDOWN.get() * 1200, AnnoyingVillagersConfig.HEROBRINE_HEALING_MAX_COOLDOWN.get() * 1200);
+                    }
                 }
-                this.healingAnimationCooldown = 60;
-                this.healingCooldown = new Random().nextInt(1200, 2400);
-                try {
-                    this.getServer().getCommands().getDispatcher().execute(
-                            "playsound annoyingvillagers:herobrine_healing voice @a ~ ~ ~",
-                            this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException e) {
-                }
-                this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getChatName() + "> Requesting assistance !"), false);
             }
             if (this.healingAnimationCooldown > 0) {
                 this.healingAnimationCooldown = this.healingAnimationCooldown - 1;
@@ -748,45 +787,47 @@ public class HerobrineMob extends Monster {
         return itemStack;
     }
 
-    private void equipGearForLowClone(LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
+    private void equipGearForLowClone(Mob mob) {
         if (random.nextFloat() < 0.3f) {
-            lowShadowHerobrineCloneEntity.setItemSlot(EquipmentSlot.HEAD, randomDamage(new ItemStack(AnnoyingVillagersModItems.BROKEN_DIAMOND_HELMET.get())));
+            mob.setItemSlot(EquipmentSlot.HEAD, randomDamage(new ItemStack(AnnoyingVillagersModItems.BROKEN_DIAMOND_HELMET.get())));
         }
         if (random.nextFloat() < 0.3f) {
-            lowShadowHerobrineCloneEntity.setItemSlot(EquipmentSlot.CHEST, randomDamage(new ItemStack(AnnoyingVillagersModItems.BROKEN_DIAMOND_CHESTPLATE.get())));
+            mob.setItemSlot(EquipmentSlot.CHEST, randomDamage(new ItemStack(AnnoyingVillagersModItems.BROKEN_DIAMOND_CHESTPLATE.get())));
         }
         if (random.nextFloat() < 0.3f) {
-            lowShadowHerobrineCloneEntity.setItemSlot(EquipmentSlot.LEGS, randomDamage(new ItemStack(AnnoyingVillagersModItems.BROKEN_DIAMOND_LEGGINGS.get())));
+            mob.setItemSlot(EquipmentSlot.LEGS, randomDamage(new ItemStack(AnnoyingVillagersModItems.BROKEN_DIAMOND_LEGGINGS.get())));
         }
         if (random.nextFloat() < 0.3f) {
-            lowShadowHerobrineCloneEntity.setItemSlot(EquipmentSlot.FEET, randomDamage(new ItemStack(AnnoyingVillagersModItems.BROKEN_DIAMOND_BOOTS.get())));
+            mob.setItemSlot(EquipmentSlot.FEET, randomDamage(new ItemStack(AnnoyingVillagersModItems.BROKEN_DIAMOND_BOOTS.get())));
         }
     }
 
     private void summonLowCloneAt(ServerLevel server, Vec3 pos) {
-        LowShadowHerobrineCloneEntity clone = new LowShadowHerobrineCloneEntity(AnnoyingVillagersModEntities.LOW_SHADOW_HEROBRINE_CLONE.get(), server);
+        Mob clone;
+        if (this instanceof ShadowHerobrineEntity || this instanceof NullEntity) {
+            clone = new LowShadowHerobrineCloneEntity(AnnoyingVillagersModEntities.LOW_SHADOW_HEROBRINE_CLONE.get(), server);
+        } else {
+            clone = new LowHerobrineCloneEntity(AnnoyingVillagersModEntities.LOW_HEROBRINE_CLONE.get(), server);
+        }
         int surfaceY = server.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BlockPos.containing(pos)).getY();
         clone.moveTo(pos.x, surfaceY, pos.z, this.getYRot(), this.getXRot());
-        clone.finalizeSpawn(server, server.getCurrentDifficultyAt(BlockPos.containing(pos)),
-                MobSpawnType.MOB_SUMMONED, null, null);
-        clone.setPossessedByEntity(this);
-        clone.setPossessedByUuid(this.getUUID());
+        if (clone instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
+            lowShadowHerobrineCloneEntity.setRenderPortal(true);
+            lowShadowHerobrineCloneEntity.setPossessedByEntity(this);
+            lowShadowHerobrineCloneEntity.setPossessedByUuid(this.getUUID());
+        } else {
+            LowHerobrineCloneEntity lowHerobrineCloneEntity = (LowHerobrineCloneEntity) clone;
+            lowHerobrineCloneEntity.setRenderPortal(true);
+            lowHerobrineCloneEntity.setPossessedByEntity(this);
+            lowHerobrineCloneEntity.setPossessedByUuid(this.getUUID());
+        }
         equipGearForLowClone(clone);
         server.addFreshEntity(clone);
-
-        server.playSound(
-                null,
-                BlockPos.containing(pos),
-                SoundEvents.LIGHTNING_BOLT_THUNDER,
-                SoundSource.WEATHER,
-                5.0F, 1.0F
-        );
-
-        LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(server);
-        if (bolt != null) {
-            bolt.moveTo(pos.x, surfaceY, pos.z);
-            bolt.setVisualOnly(true);
-            server.addFreshEntity(bolt);
+        try {
+            clone.getServer().getCommands().getDispatcher().execute(
+                    "playsound annoyingvillagers:portal_natural neutral @a ~ ~ ~",
+                    clone.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+        } catch (CommandSyntaxException e) {
         }
     }
 

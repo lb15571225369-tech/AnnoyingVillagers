@@ -15,6 +15,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.Unit;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -278,7 +279,7 @@ public class HerobrineWardenEntity extends Warden {
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (!this.level().isClientSide()) {
+        if (!this.level().isClientSide() && !pSource.is(DamageTypes.IN_WALL)) {
             try {
                 this.getServer().getCommands().getDispatcher().execute(
                         "playsound epicfight:entity.hit.clash neutral @p",

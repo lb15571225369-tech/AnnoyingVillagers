@@ -112,6 +112,10 @@ public class HerobrineGregEntity extends Monster {
             AnnoyingVillagersModItems.DIAMOND_DOUBLE_BIT_AXE.get()
     ));
 
+    public LivingEntityPatch<?> getLivingentitypatch() {
+        return livingentitypatch;
+    }
+
     public void setWhiteEye(boolean whiteEye) {
         this.entityData.set(WHITE_EYE, whiteEye);
     }
@@ -571,6 +575,10 @@ public class HerobrineGregEntity extends Monster {
                     this.escapeTiming = 61;
                 }
             }
+
+            if (this.combatMode) {
+                this.addEffect(new MobEffectInstance((MobEffect) EpicFightMobEffects.STUN_IMMUNITY.get(), 1, 3, false, false));
+            }
         }
     }
 
@@ -930,9 +938,6 @@ public class HerobrineGregEntity extends Monster {
                             "execute at @s run particle epicfight:hit_blade ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
                             this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 } catch (CommandSyntaxException e) {
-                }
-                if (livingentitypatch != null && !this.level().isClientSide()) {
-                    livingentitypatch.playAnimationSynchronized(AVAnimations.FIST_GUARD, 0.0F);
                 }
             }
             return false;

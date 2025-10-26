@@ -220,6 +220,11 @@ public class BoomlitProcedure {
                 f = -1.0F;
             }
 
+            if ((!levelaccessor.getServer().isPvpAllowed() && entity instanceof Player
+                    && event instanceof ExplosionEvent.Detonate detonate && detonate.getExplosion().getDirectSourceEntity() instanceof Player)) {
+                continue;
+            }
+
             if (f <= 30.0F && entity.isAlive() && !CheckGameMode.isSpectatorGamemode(entity)) {
                 LivingEntityPatch<?> livingentitypatch1 = (LivingEntityPatch)EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 

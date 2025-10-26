@@ -81,7 +81,9 @@ public class Herobrine7Entity extends HerobrineMob {
     }
 
     public boolean hurt(@NotNull DamageSource damagesource, float f) {
-        Herobrine7OnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
+        if (!this.isHealing()) {
+            Herobrine7OnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
+        }
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;
         if (damagesource.is(DamageTypes.WITHER)) return false;

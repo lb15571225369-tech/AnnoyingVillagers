@@ -119,7 +119,6 @@ public class NullWeaponPlayerProcedure {
                 if (entity instanceof NullSwordEntity nullSwordEntity) {
                     parried = true;
                     nullSwordEntity.moveTo(player.getX(), player.getY(), player.getZ());
-                    nullSwordEntity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 20, 1, false, false));
                 }
             }
             if (data.contains("NullAxeUUID") && Math.random() <= 0.5D && !parried) {
@@ -127,7 +126,6 @@ public class NullWeaponPlayerProcedure {
                 if (entity instanceof NullAxeEntity nullAxeEntity) {
                     parried = true;
                     nullAxeEntity.moveTo(player.getX(), player.getY(), player.getZ());
-                    nullAxeEntity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 20, 1, false, false));
                 }
             }
             if (data.contains("NullPickaxeUUID") && Math.random() <= 0.5D && !parried) {
@@ -135,7 +133,6 @@ public class NullWeaponPlayerProcedure {
                 parried = true;
                 if (entity instanceof NullPickaxeEntity nullPickaxeEntity) {
                     nullPickaxeEntity.moveTo(player.getX(), player.getY(), player.getZ());
-                    nullPickaxeEntity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 20, 1, false, false));
                 }
             }
             if (data.contains("NullHoeUUID") && Math.random() <= 0.5D && !parried) {
@@ -143,14 +140,12 @@ public class NullWeaponPlayerProcedure {
                 if (entity instanceof NullHoeEntity nullHoeEntity) {
                     parried = true;
                     nullHoeEntity.moveTo(player.getX(), player.getY(), player.getZ());
-                    nullHoeEntity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 20, 1, false, false));
                 }
             }
             if (data.contains("NullShovelUUID") && Math.random() <= 0.5D && !parried) {
                 Entity entity = server.getEntity(data.getUUID("NullShovelUUID"));
                 if (entity instanceof NullShovelEntity nullShovelEntity) {
                     nullShovelEntity.moveTo(player.getX(), player.getY(), player.getZ());
-                    nullShovelEntity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 20, 1, false, false));
                 }
             }
         }
@@ -162,19 +157,14 @@ public class NullWeaponPlayerProcedure {
             double chance = Math.random();
             if (chance <= 0.2D && nullEntity.getNullSwordEntity() != null) {
                 nullEntity.getNullSwordEntity().moveTo(d0, d1, d2);
-                nullEntity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 20, 1, false, false));
             } else if (chance <= 0.4D && nullEntity.getNullAxeEntity() != null) {
                 nullEntity.getNullAxeEntity().moveTo(d0, d1, d2);
-                nullEntity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 20, 1, false, false));
             } else if (chance <= 0.6D && nullEntity.getNullPickaxeEntity() != null) {
                 nullEntity.getNullPickaxeEntity().moveTo(d0, d1, d2);
-                nullEntity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 20, 1, false, false));
             } else if (chance <= 0.8D && nullEntity.getNullShovelEntity() != null) {
                 nullEntity.getNullShovelEntity().moveTo(d0, d1, d2);
-                nullEntity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 20, 1, false, false));
             } else if (nullEntity.getNullHoeEntity() != null) {
                 nullEntity.getNullHoeEntity().moveTo(d0, d1, d2);
-                nullEntity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 20, 1, false, false));
             }
         }
     }
