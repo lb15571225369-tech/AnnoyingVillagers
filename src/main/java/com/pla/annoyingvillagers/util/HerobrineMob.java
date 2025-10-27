@@ -11,6 +11,7 @@ import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.spawnhandler.HerobrineMobData;
@@ -29,6 +30,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
@@ -429,6 +431,18 @@ public class HerobrineMob extends Monster {
         }
     }
 
+    private void recoverAfterHealing() {
+        this.healing = false;
+        this.setNoAi(false);
+        this.removeAllEffects();
+        this.livingentitypatch.applyStun(StunType.FALL, 0.0F);
+        this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 1200, 3));
+        this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 1200, 3));
+        this.addEffect(new MobEffectInstance(MobEffects.JUMP, 1200, 3));
+        this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 1200, 3));
+        this.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.ELECTIFY.get(), 1200, 2));
+    }
+
     @Override
     public void tick() {
         super.tick();
@@ -528,40 +542,28 @@ public class HerobrineMob extends Monster {
                 firstPossessedHerobrine = null;
                 firstPossessedHerobrineUuid = null;
                 if (this.healing && this.getEmptyBoundClone() == 4) {
-                    this.healing = false;
-                    this.setNoAi(false);
-                    this.removeAllEffects();
-                    this.livingentitypatch.applyStun(StunType.FALL, 0.0F);
+                    recoverAfterHealing();
                 }
             }
             if (secondPossessedHerobrine != null && !secondPossessedHerobrine.isAlive()) {
                 secondPossessedHerobrine = null;
                 secondPossessedHerobrineUuid = null;
                 if (this.healing && this.getEmptyBoundClone() == 4) {
-                    this.healing = false;
-                    this.setNoAi(false);
-                    this.removeAllEffects();
-                    this.livingentitypatch.applyStun(StunType.FALL, 0.0F);
+                    recoverAfterHealing();
                 }
             }
             if (thirdPossessedHerobrine != null && !thirdPossessedHerobrine.isAlive()) {
                 thirdPossessedHerobrine = null;
                 thirdPossessedHerobrineUuid = null;
                 if (this.healing && this.getEmptyBoundClone() == 4) {
-                    this.healing = false;
-                    this.setNoAi(false);
-                    this.removeAllEffects();
-                    this.livingentitypatch.applyStun(StunType.FALL, 0.0F);
+                    recoverAfterHealing();
                 }
             }
             if (fourthPossessedHerobrine != null && !fourthPossessedHerobrine.isAlive()) {
                 fourthPossessedHerobrine = null;
                 fourthPossessedHerobrineUuid = null;
                 if (this.healing && this.getEmptyBoundClone() >= 4) {
-                    this.healing = false;
-                    this.setNoAi(false);
-                    this.removeAllEffects();
-                    this.livingentitypatch.applyStun(StunType.FALL, 0.0F);
+                    recoverAfterHealing();
                 }
             }
 
@@ -588,9 +590,7 @@ public class HerobrineMob extends Monster {
                             } catch (CommandSyntaxException e) {
                             }
                             herobrineGregEntity.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine Greg§r> Requesting assistance!!!"), false);
-                            if (herobrineGregEntity.getLivingentitypatch() != null) {
-                                herobrineGregEntity.getLivingentitypatch().playAnimationSynchronized(AVAnimations.PORTAL_SUMMON, 0.0F);
-                            }
+                            herobrineGregEntity.setNoAi(true);
                         } else {
                             try {
                                 this.getServer().getCommands().getDispatcher().execute(
@@ -627,9 +627,29 @@ public class HerobrineMob extends Monster {
             if (this.healingAnimationCooldown > 0) {
                 this.healingAnimationCooldown = this.healingAnimationCooldown - 1;
             }
+            if (this.healingAnimationCooldown == 50) {
+                this.healing = true;
+                this.setNoAi(true);
+                if (this.gregUUID != null) {
+                    ServerLevel serverLevel = (ServerLevel) this.level();
+                    Entity entity = serverLevel.getEntity(this.gregUUID);
+                    if (entity instanceof HerobrineGregEntity herobrineGregEntity && entity.isAlive()) {
+                        if (herobrineGregEntity.getLivingentitypatch() != null) {
+                            herobrineGregEntity.getLivingentitypatch().playAnimationSynchronized(AVAnimations.PORTAL_SUMMON, 0.0F);
+                        }
+                    }
+                }
+            }
             if (this.healingAnimationCooldown == 10) {
                 this.healing = true;
                 this.setNoAi(true);
+                if (this.gregUUID != null) {
+                    ServerLevel serverLevel = (ServerLevel) this.level();
+                    Entity entity = serverLevel.getEntity(this.gregUUID);
+                    if (entity instanceof HerobrineGregEntity herobrineGregEntity && entity.isAlive()) {
+                        herobrineGregEntity.setNoAi(false);
+                    }
+                }
                 this.addEffect(new MobEffectInstance((MobEffect) EpicFightMobEffects.STUN_IMMUNITY.get(), 10, 3, false, false));
                 if (this.firstPossessedHerobrine != null) {
                     ((Mob) firstPossessedHerobrine).addEffect(new MobEffectInstance((MobEffect) EpicFightMobEffects.STUN_IMMUNITY.get(), 30, 3, false, false));

@@ -424,20 +424,25 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
                 if (this.livingentitypatch != null) {
                     this.livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_SACRIFICING, 0.0F);
                 }
+                if (this.tickCount % 140 == 0) {
+                    try {
+                        this.getServer().getCommands().getDispatcher().execute(
+                                "playsound annoyingvillagers:herobrine_understood voice @a ~ ~ ~",
+                                this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+                    }
+                }
                 if (this.tickCount % 20 == 0 && this.possessedByEntity != null) {
                     if (this.possessedByEntity.getMaxHealth() == this.possessedByEntity.getHealth()) {
-                        AnnoyingVillagers.LOGGER.info("AV MOD DEBUG: Low Herobrine Clone is {} health but possessedBy is max", this.getHealth());
                         this.sacrificing = false;
                         autoKill = true;
                         this.kill();
                     }
                     if (this.getHealth() <= 4) {
-                        AnnoyingVillagers.LOGGER.info("AV MOD DEBUG: Low Herobrine Clone is <= 2 health, self killing");
                         this.sacrificing = false;
                         autoKill = true;
                         this.kill();
                     } else {
-                        AnnoyingVillagers.LOGGER.info("AV MOD DEBUG: Low Herobrine Clone is {} health", this.getHealth());
                         this.setHealth(this.getHealth() - 2.0F);
                     }
                     this.possessedByEntity.heal(this.possessedByEntity.getMaxHealth() * 0.01F);

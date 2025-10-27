@@ -408,7 +408,7 @@ public class HerobrineGregEntity extends Monster {
                 if (this.isWhiteEye() && this.summonTiming == -1) {
                     setWhiteEye(false);
                 }
-                if (this.getItemBySlot(EquipmentSlot.CHEST).getItem().equals(AnnoyingVillagersModItems.BROKEN_DIAMOND_CHESTPLATE.get())) {
+                if (!this.combatMode && this.getItemBySlot(EquipmentSlot.CHEST).getItem().equals(AnnoyingVillagersModItems.BROKEN_DIAMOND_CHESTPLATE.get())) {
                     this.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
                 }
             }
@@ -1028,13 +1028,13 @@ public class HerobrineGregEntity extends Monster {
         summonTimestamp = pCompound.getInt("SummonTimestamp");
         combatMode = pCompound.getBoolean("CombatMode");
         recallTime = pCompound.getInt("RecallTime");
-        if (firstSummonedHerobrineUUID != null) {
+        if (pCompound.hasUUID("FirstSummonedHerobrineUUID")) {
             firstSummonedHerobrineUUID = pCompound.getUUID("FirstSummonedHerobrineUUID");
         }
-        if (secondSummonedHerobrineUUID != null) {
+        if (pCompound.hasUUID("SecondSummonedHerobrineUUID")) {
             secondSummonedHerobrineUUID = pCompound.getUUID("SecondSummonedHerobrineUUID");
         }
-        if (thirdSummonedHerobrineUUID != null) {
+        if (pCompound.hasUUID("ThirdSummonedHerobrineUUID")) {
             thirdSummonedHerobrineUUID = pCompound.getUUID("ThirdSummonedHerobrineUUID");
         }
     }
@@ -1050,13 +1050,13 @@ public class HerobrineGregEntity extends Monster {
         pCompound.putInt("SummonTimestamp", summonTimestamp);
         pCompound.putBoolean("CombatMode", combatMode);
         pCompound.putInt("RecallTime", recallTime);
-        if (pCompound.contains("FirstSummonedHerobrineUUID")) {
+        if (firstSummonedHerobrineUUID != null) {
             pCompound.putUUID("FirstSummonedHerobrineUUID", firstSummonedHerobrineUUID);
         }
-        if (pCompound.contains("SecondSummonedHerobrineUUID")) {
+        if (secondSummonedHerobrineUUID != null) {
             pCompound.putUUID("SecondSummonedHerobrineUUID", secondSummonedHerobrineUUID);
         }
-        if (pCompound.contains("ThirdSummonedHerobrineUUID")) {
+        if (thirdSummonedHerobrineUUID != null) {
             pCompound.putUUID("ThirdSummonedHerobrineUUID", thirdSummonedHerobrineUUID);
         }
     }

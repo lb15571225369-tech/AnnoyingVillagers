@@ -425,18 +425,15 @@ public class LowShadowHerobrineCloneEntity extends Monster {
                 }
                 if (this.tickCount % 20 == 0 && this.possessedByEntity != null) {
                     if (this.possessedByEntity.getMaxHealth() == this.possessedByEntity.getHealth()) {
-                        AnnoyingVillagers.LOGGER.info("AV MOD DEBUG: Low Shadow Herobrine Clone is {} health but possessedBy is max", this.getHealth());
                         this.sacrificing = false;
                         autoKill = true;
                         this.kill();
                     }
                     if (this.getHealth() <= 4) {
-                        AnnoyingVillagers.LOGGER.info("AV MOD DEBUG: Low Shadow Herobrine Clone is <= 2 health, self killing");
                         this.sacrificing = false;
                         autoKill = true;
                         this.kill();
                     } else {
-                        AnnoyingVillagers.LOGGER.info("AV MOD DEBUG: Low Shadow Herobrine Clone is {} health", this.getHealth());
                         this.setHealth(this.getHealth() - 2.0F);
                     }
                     this.possessedByEntity.heal(this.possessedByEntity.getMaxHealth() * 0.01F);
