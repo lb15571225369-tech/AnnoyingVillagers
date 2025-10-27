@@ -3,9 +3,10 @@ package com.pla.annoyingvillagers.entity;
 import java.util.*;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.clazz.NullWeapon;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.procedures.NullOnHurtProcedure;
-import com.pla.annoyingvillagers.util.HerobrineMob;
+import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -14,8 +15,6 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
@@ -25,6 +24,7 @@ import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.monster.WitherSkeleton;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,42 +34,72 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.utils.NameManager;
+import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 public class NullEntity extends HerobrineMob {
-    private NullSwordEntity nullSwordEntity;
+    private NullWeapon nullSwordEntity;
     private UUID nullSwordUUID;
 
-    private NullAxeEntity nullAxeEntity;
+    private NullWeapon nullAxeEntity;
     private UUID nullAxeUUID;
 
-    private NullPickaxeEntity nullPickaxeEntity;
+    private NullWeapon nullPickaxeEntity;
     private UUID nullPickaxeUUID;
 
-    private NullShovelEntity nullShovelEntity;
+    private NullWeapon nullShovelEntity;
     private UUID nullShovelUUID;
 
-    private NullHoeEntity nullHoeEntity;
+    private NullWeapon nullHoeEntity;
     private UUID nullHoeUUID;
 
-    private boolean initialSpawn = false;
+    private WitherSkeleton firstWitherSkeleton;
+    private UUID firstWitherSkeletonUuid;
 
-    public NullSwordEntity getNullSwordEntity() {
+    private WitherSkeleton secondWitherSkeleton;
+    private UUID secondWitherSkeletonUuid;
+
+    private WitherSkeleton thirdWitherSkeleton;
+    private UUID thirdWitherSkeletonUuid;
+
+    public boolean isAvailableWitherSkeletonSlot() {
+        return firstWitherSkeletonUuid == null || secondWitherSkeletonUuid == null || thirdWitherSkeletonUuid == null;
+    }
+
+    public void claimWitherSkeletonSlot(WitherSkeleton witherSkeleton) {
+        if (firstWitherSkeletonUuid == null) {
+            firstWitherSkeletonUuid = witherSkeleton.getUUID();
+            firstWitherSkeleton = witherSkeleton;
+        } else if (secondWitherSkeletonUuid == null) {
+            secondWitherSkeletonUuid = witherSkeleton.getUUID();
+            secondWitherSkeleton = witherSkeleton;
+        } else {
+            thirdWitherSkeletonUuid = witherSkeleton.getUUID();
+            thirdWitherSkeleton = witherSkeleton;
+        }
+    }
+
+    private boolean spawnNullWeapon = false;
+    private boolean wasShooting = false;
+
+    public NullWeapon getNullSwordEntity() {
         return nullSwordEntity;
     }
 
-    public NullAxeEntity getNullAxeEntity() {
+    public NullWeapon getNullAxeEntity() {
         return nullAxeEntity;
     }
 
-    public NullPickaxeEntity getNullPickaxeEntity() {
+    public NullWeapon getNullPickaxeEntity() {
         return nullPickaxeEntity;
     }
 
-    public NullShovelEntity getNullShovelEntity() {
+    public NullWeapon getNullShovelEntity() {
         return nullShovelEntity;
     }
 
-    public NullHoeEntity getNullHoeEntity() {
+    public NullWeapon getNullHoeEntity() {
         return nullHoeEntity;
     }
 
@@ -113,7 +143,16 @@ public class NullEntity extends HerobrineMob {
         if (nullHoeUUID != null) {
             tag.putUUID("NullHoeUUID", nullHoeUUID);
         }
-        tag.putBoolean("InitialSpawn", initialSpawn);
+        if (firstWitherSkeletonUuid != null) {
+            tag.putUUID("FirstWitherSkeletonUuid", firstWitherSkeletonUuid);
+        }
+        if (secondWitherSkeletonUuid != null) {
+            tag.putUUID("SecondWitherSkeletonUuid", secondWitherSkeletonUuid);
+        }
+        if (thirdWitherSkeletonUuid != null) {
+            tag.putUUID("ThirdWitherSkeletonUuid", thirdWitherSkeletonUuid);
+        }
+        tag.putBoolean("SpawnNullWeapon", spawnNullWeapon);
     }
 
     @Override
@@ -134,15 +173,24 @@ public class NullEntity extends HerobrineMob {
         if (tag.hasUUID("NullHoeUUID")) {
             nullHoeUUID = tag.getUUID("NullHoeUUID");
         }
-        initialSpawn = tag.getBoolean("InitialSpawn");
+        if (tag.hasUUID("FirstWitherSkeletonUuid")) {
+            firstWitherSkeletonUuid = tag.getUUID("FirstWitherSkeletonUuid");
+        }
+        if (tag.hasUUID("SecondWitherSkeletonUuid")) {
+            secondWitherSkeletonUuid = tag.getUUID("SecondWitherSkeletonUuid");
+        }
+        if (tag.hasUUID("ThirdWitherSkeletonUuid")) {
+            thirdWitherSkeletonUuid = tag.getUUID("ThirdWitherSkeletonUuid");
+        }
+        spawnNullWeapon = tag.getBoolean("SpawnNullWeapon");
     }
 
     private void initialSpawn() {
         if (this.level() instanceof ServerLevel levelaccessor) {
             ServerLevel serverlevel = (ServerLevel) levelaccessor;
 
-            NullSwordEntity nullSwordEntity = new NullSwordEntity((EntityType) AnnoyingVillagersModEntities.NULL_SWORD.get(), serverlevel);
-            nullSwordEntity.moveTo(this.getX() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), this.getY() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), this.getZ() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+            NullWeapon nullSwordEntity = new NullSwordEntity((EntityType) AnnoyingVillagersModEntities.NULL_SWORD.get(), serverlevel);
+            nullSwordEntity.moveTo(this.getX() + new Random().nextDouble(1.0D, 10.0D), this.getY() + new Random().nextDouble(1.0D, 10.0D), this.getZ() + new Random().nextDouble(1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
             nullSwordEntity.finalizeSpawn(levelaccessor, levelaccessor.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
             levelaccessor.addFreshEntity(nullSwordEntity);
             this.nullSwordUUID = nullSwordEntity.getUUID();
@@ -150,8 +198,8 @@ public class NullEntity extends HerobrineMob {
             nullSwordEntity.setNullEntity(this);
             nullSwordEntity.setNullUUID(this.getUUID());
 
-            NullAxeEntity nullAxeEntity = new NullAxeEntity((EntityType) AnnoyingVillagersModEntities.NULL_AXE.get(), serverlevel);
-            nullAxeEntity.moveTo(this.getX() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), this.getY() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), this.getZ() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+            NullWeapon nullAxeEntity = new NullAxeEntity((EntityType) AnnoyingVillagersModEntities.NULL_AXE.get(), serverlevel);
+            nullAxeEntity.moveTo(this.getX() + new Random().nextDouble(1.0D, 10.0D), this.getY() + new Random().nextDouble(1.0D, 10.0D), this.getZ() + new Random().nextDouble(1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
             nullAxeEntity.finalizeSpawn(levelaccessor, levelaccessor.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
             levelaccessor.addFreshEntity(nullAxeEntity);
             this.nullAxeUUID = nullAxeEntity.getUUID();
@@ -159,8 +207,8 @@ public class NullEntity extends HerobrineMob {
             nullAxeEntity.setNullEntity(this);
             nullAxeEntity.setNullUUID(this.getUUID());
 
-            NullPickaxeEntity nullPickaxeEntity = new NullPickaxeEntity((EntityType) AnnoyingVillagersModEntities.NULL_PICKAXE.get(), serverlevel);
-            nullPickaxeEntity.moveTo(this.getX() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), this.getY() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), this.getZ() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+            NullWeapon nullPickaxeEntity = new NullPickaxeEntity((EntityType) AnnoyingVillagersModEntities.NULL_PICKAXE.get(), serverlevel);
+            nullPickaxeEntity.moveTo(this.getX() + new Random().nextDouble(1.0D, 10.0D), this.getY() + new Random().nextDouble(1.0D, 10.0D), this.getZ() + new Random().nextDouble(1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
             nullPickaxeEntity.finalizeSpawn(levelaccessor, levelaccessor.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
             levelaccessor.addFreshEntity(nullPickaxeEntity);
             this.nullPickaxeUUID = nullPickaxeEntity.getUUID();
@@ -168,8 +216,8 @@ public class NullEntity extends HerobrineMob {
             nullPickaxeEntity.setNullEntity(this);
             nullPickaxeEntity.setNullUUID(this.getUUID());
 
-            NullShovelEntity nullShovelEntity = new NullShovelEntity((EntityType) AnnoyingVillagersModEntities.NULL_SHOVEL.get(), serverlevel);
-            nullShovelEntity.moveTo(this.getX() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), this.getY() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), this.getZ() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+            NullWeapon nullShovelEntity = new NullShovelEntity((EntityType) AnnoyingVillagersModEntities.NULL_SHOVEL.get(), serverlevel);
+            nullShovelEntity.moveTo(this.getX() + new Random().nextDouble(1.0D, 10.0D), this.getY() + new Random().nextDouble(1.0D, 10.0D), this.getZ() + new Random().nextDouble(1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
             nullShovelEntity.finalizeSpawn(levelaccessor, levelaccessor.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
             levelaccessor.addFreshEntity(nullShovelEntity);
             this.nullShovelUUID = nullShovelEntity.getUUID();
@@ -177,8 +225,8 @@ public class NullEntity extends HerobrineMob {
             nullShovelEntity.setNullEntity(this);
             nullShovelEntity.setNullUUID(this.getUUID());
 
-            NullHoeEntity nullHoeEntity = new NullHoeEntity((EntityType) AnnoyingVillagersModEntities.NULL_HOE.get(), serverlevel);
-            nullHoeEntity.moveTo(this.getX() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), this.getY() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), this.getZ() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+            NullWeapon nullHoeEntity = new NullHoeEntity((EntityType) AnnoyingVillagersModEntities.NULL_HOE.get(), serverlevel);
+            nullHoeEntity.moveTo(this.getX() + new Random().nextDouble(1.0D, 10.0D), this.getY() + new Random().nextDouble(1.0D, 10.0D), this.getZ() + new Random().nextDouble(1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
             nullHoeEntity.finalizeSpawn(levelaccessor, levelaccessor.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
             levelaccessor.addFreshEntity(nullHoeEntity);
             this.nullHoeUUID = nullHoeEntity.getUUID();
@@ -193,13 +241,13 @@ public class NullEntity extends HerobrineMob {
         super.tick();
 
         if (!this.level().isClientSide()) {
-            if (!initialSpawn) {
-                this.initialSpawn = true;
+            if (!spawnNullWeapon) {
+                this.spawnNullWeapon = true;
                 initialSpawn();
             }
             if (nullSwordEntity == null && nullSwordUUID != null) {
                 Entity entity = ((ServerLevel) this.level()).getEntity(nullSwordUUID);
-                if (entity instanceof NullSwordEntity nullSword) {
+                if (entity instanceof NullWeapon nullSword) {
                     this.nullSwordEntity = nullSword;
                 } else {
                     this.nullSwordUUID = null;
@@ -207,7 +255,7 @@ public class NullEntity extends HerobrineMob {
             }
             if (nullAxeEntity == null && nullAxeUUID != null) {
                 Entity entity = ((ServerLevel) this.level()).getEntity(nullAxeUUID);
-                if (entity instanceof NullAxeEntity nullAxe) {
+                if (entity instanceof NullWeapon nullAxe) {
                     this.nullAxeEntity = nullAxe;
                 } else {
                     this.nullAxeUUID = null;
@@ -215,7 +263,7 @@ public class NullEntity extends HerobrineMob {
             }
             if (nullPickaxeEntity == null && nullPickaxeUUID != null) {
                 Entity entity = ((ServerLevel) this.level()).getEntity(nullPickaxeUUID);
-                if (entity instanceof NullPickaxeEntity nullPickaxe) {
+                if (entity instanceof NullWeapon nullPickaxe) {
                     this.nullPickaxeEntity = nullPickaxe;
                 } else {
                     this.nullPickaxeUUID = null;
@@ -223,7 +271,7 @@ public class NullEntity extends HerobrineMob {
             }
             if (nullShovelEntity == null && nullShovelUUID != null) {
                 Entity entity = ((ServerLevel) this.level()).getEntity(nullShovelUUID);
-                if (entity instanceof NullShovelEntity nullShovel) {
+                if (entity instanceof NullWeapon nullShovel) {
                     this.nullShovelEntity = nullShovel;
                 } else {
                     this.nullShovelUUID = null;
@@ -231,10 +279,136 @@ public class NullEntity extends HerobrineMob {
             }
             if (nullHoeEntity == null && nullHoeUUID != null) {
                 Entity entity = ((ServerLevel) this.level()).getEntity(nullHoeUUID);
-                if (entity instanceof NullHoeEntity nullHoe) {
+                if (entity instanceof NullWeapon nullHoe) {
                     this.nullHoeEntity = nullHoe;
                 } else {
                     nullHoeUUID = null;
+                }
+            }
+
+            if (firstWitherSkeleton == null && firstWitherSkeletonUuid != null) {
+                Entity entity = ((ServerLevel) this.level()).getEntity(firstWitherSkeletonUuid);
+                if (entity instanceof WitherSkeleton witherSkeleton) {
+                    this.firstWitherSkeleton = witherSkeleton;
+                } else {
+                    this.firstWitherSkeletonUuid = null;
+                }
+            }
+            if (secondWitherSkeleton == null && secondWitherSkeletonUuid != null) {
+                Entity entity = ((ServerLevel) this.level()).getEntity(secondWitherSkeletonUuid);
+                if (entity instanceof WitherSkeleton witherSkeleton) {
+                    this.secondWitherSkeleton = witherSkeleton;
+                } else {
+                    this.secondWitherSkeletonUuid = null;
+                }
+            }
+            if (thirdWitherSkeleton == null && thirdWitherSkeletonUuid != null) {
+                Entity entity = ((ServerLevel) this.level()).getEntity(thirdWitherSkeletonUuid);
+                if (entity instanceof WitherSkeleton witherSkeleton) {
+                    this.thirdWitherSkeleton = witherSkeleton;
+                } else {
+                    this.thirdWitherSkeletonUuid = null;
+                }
+            }
+            if (firstWitherSkeleton != null && !firstWitherSkeleton.isAlive()) {
+                firstWitherSkeleton = null;
+                firstWitherSkeletonUuid = null;
+            }
+            if (secondWitherSkeleton != null && !secondWitherSkeleton.isAlive()) {
+                secondWitherSkeleton = null;
+                secondWitherSkeletonUuid = null;
+            }
+            if (thirdWitherSkeleton != null && !thirdWitherSkeleton.isAlive()) {
+                thirdWitherSkeleton = null;
+                thirdWitherSkeletonUuid = null;
+            }
+
+            String animId = currentEfAnimIdOrNull(this);
+            boolean shootingNow = isShooting(animId);
+            if (shootingNow && !wasShooting && this.getTarget() != null) {
+                double d0 = this.getTarget().getX();
+                double d1 = this.getTarget().getY();
+                double d2 = this.getTarget().getZ();
+                double chance = Math.random();
+                if (chance <= 0.2D && this.nullSwordEntity != null && !this.nullSwordEntity.isReleased()) {
+                    this.nullSwordEntity.releaseForAWhile();
+                    this.nullSwordEntity.moveTo(d0, d1, d2);
+                } else if (chance <= 0.4D && this.nullAxeEntity != null && !this.nullAxeEntity.isReleased()) {
+                    this.nullAxeEntity.releaseForAWhile();
+                    this.nullAxeEntity.moveTo(d0, d1, d2);
+                } else if (chance <= 0.6D && this.nullPickaxeEntity != null && !this.nullPickaxeEntity.isReleased()) {
+                    this.nullPickaxeEntity.releaseForAWhile();
+                    this.nullPickaxeEntity.moveTo(d0, d1, d2);
+                } else if (chance <= 0.8D && this.nullShovelEntity != null && !this.nullShovelEntity.isReleased()) {
+                    this.nullShovelEntity.releaseForAWhile();
+                    this.nullShovelEntity.moveTo(d0, d1, d2);
+                } else if (this.nullHoeEntity != null && !this.nullHoeEntity.isReleased()) {
+                    this.nullHoeEntity.releaseForAWhile();
+                    this.nullHoeEntity.moveTo(d0, d1, d2);
+                }
+            }
+            wasShooting = shootingNow;
+
+            if (this.tickCount % 20 == 0) {
+                if (this.nullSwordEntity != null) {
+                    if (!this.nullSwordEntity.isReleased()) {
+                        this.nullSwordEntity.moveTo(getRandomPosition(this.getX(), -4, 4), getRandomPosition(this.getY(), -2, 2), getRandomPosition(this.getZ(), -4, 4));
+                    } else if (this.nullSwordEntity.isReleased()) {
+                        LivingEntity target = this.getTarget();
+                        if (target != null && target.isAlive()) {
+                            this.nullSwordEntity.moveTo(getRandomPosition(target.getX(), -4, 4), getRandomPosition(target.getY(), -2, 2), getRandomPosition(target.getZ(), -4, 4));
+                        } else {
+                            this.nullSwordEntity.stopRelease();
+                        }
+                    }
+                }
+                if (this.nullAxeEntity != null) {
+                    if (!this.nullAxeEntity.isReleased()) {
+                        this.nullAxeEntity.moveTo(getRandomPosition(this.getX(), -4, 4), getRandomPosition(this.getY(), -2, 2), getRandomPosition(this.getZ(), -4, 4));
+                    } else if (this.nullAxeEntity.isReleased()) {
+                        LivingEntity target = this.getTarget();
+                        if (target != null && target.isAlive()) {
+                            this.nullAxeEntity.moveTo(getRandomPosition(target.getX(), -4, 4), getRandomPosition(target.getY(), -2, 2), getRandomPosition(target.getZ(), -4, 4));
+                        } else {
+                            this.nullAxeEntity.stopRelease();
+                        }
+                    }
+                }
+                if (this.nullPickaxeEntity != null) {
+                    if (!this.nullPickaxeEntity.isReleased()) {
+                        this.nullPickaxeEntity.moveTo(getRandomPosition(this.getX(), -4, 4), getRandomPosition(this.getY(), -2, 2), getRandomPosition(this.getZ(), -4, 4));
+                    } else if (this.nullPickaxeEntity.isReleased()) {
+                        LivingEntity target = this.getTarget();
+                        if (target != null && target.isAlive()) {
+                            this.nullPickaxeEntity.moveTo(getRandomPosition(target.getX(), -4, 4), getRandomPosition(target.getY(), -2, 2), getRandomPosition(target.getZ(), -4, 4));
+                        } else {
+                            this.nullPickaxeEntity.stopRelease();
+                        }
+                    }
+                }
+                if (this.nullShovelEntity != null) {
+                    if (!this.nullShovelEntity.isReleased()) {
+                        this.nullShovelEntity.moveTo(getRandomPosition(this.getX(), -4, 4), getRandomPosition(this.getY(), -2, 2), getRandomPosition(this.getZ(), -4, 4));
+                    } else if (this.nullShovelEntity.isReleased()) {
+                        LivingEntity target = this.getTarget();
+                        if (target != null && target.isAlive()) {
+                            this.nullShovelEntity.moveTo(getRandomPosition(target.getX(), -4, 4), getRandomPosition(target.getY(), -2, 2), getRandomPosition(target.getZ(), -4, 4));
+                        } else {
+                            this.nullShovelEntity.stopRelease();
+                        }
+                    }
+                }
+                if (this.nullHoeEntity != null) {
+                    if (!this.nullHoeEntity.isReleased()) {
+                        this.nullShovelEntity.moveTo(getRandomPosition(this.getX(), -4, 4), getRandomPosition(this.getY(), -2, 2), getRandomPosition(this.getZ(), -4, 4));
+                    } else if (this.nullHoeEntity.isReleased()) {
+                        LivingEntity target = this.getTarget();
+                        if (target != null && target.isAlive()) {
+                            this.nullHoeEntity.moveTo(getRandomPosition(target.getX(), -4, 4), getRandomPosition(target.getY(), -2, 2), getRandomPosition(target.getZ(), -4, 4));
+                        } else {
+                            this.nullHoeEntity.stopRelease();
+                        }
+                    }
                 }
             }
         }
@@ -304,8 +478,38 @@ public class NullEntity extends HerobrineMob {
         return false;
     }
 
+    private static String currentEfAnimIdOrNull(LivingEntity self) {
+        try {
+            var patch = EpicFightCapabilities
+                    .getEntityPatch(self, LivingEntityPatch.class);
+            if (patch == null) return null;
+
+            var player = patch.getAnimator().getPlayerFor((DynamicAnimation) null);
+            if (player == null) return null;
+
+            var anim = player.getAnimation();
+            if (anim == null) return null;
+            try {
+                var m = anim.getClass().getMethod("getLocation");
+                var rl = (net.minecraft.resources.ResourceLocation) m.invoke(anim);
+                return rl != null ? rl.getPath().toLowerCase(java.util.Locale.ROOT) : null;
+            } catch (Exception ignored) {
+                return anim.toString().toLowerCase(java.util.Locale.ROOT);
+            }
+        } catch (Throwable t) {
+            return null;
+        }
+    }
+
+    private static boolean isShooting(String id) {
+        if (id == null) return false;
+        return id.contains("biped/skill/antitheus_shoot") || id.endsWith("/antitheus_shoot") || id.contains("antitheus_shoot");
+    }
+
     public boolean hurt(@NotNull DamageSource damagesource, float f) {
-        NullOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
+        if (!this.isHealing()) {
+            NullOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
+        }
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;
         if (damagesource.is(DamageTypes.WITHER)) return false;
@@ -366,28 +570,13 @@ public class NullEntity extends HerobrineMob {
             }
         }
 
-        if (Math.random() <= 0.1D) {
-            RandomSource randomSource = RandomSource.create();
-            if (this.nullSwordEntity != null) {
-                this.nullSwordEntity.moveTo(this.getX() + (double) Mth.nextInt(randomSource, -4, 4), this.getY() + (double) Mth.nextInt(randomSource, -2, 2), this.getZ() + (double) Mth.nextInt(randomSource, -4, 4));
-            }
-            if (this.nullAxeEntity != null) {
-                this.nullAxeEntity.moveTo(this.getX() + (double) Mth.nextInt(randomSource, -4, 4), this.getY() + (double) Mth.nextInt(randomSource, -2, 2), this.getZ() + (double) Mth.nextInt(randomSource, -4, 4));
-            }
-            if (this.nullPickaxeEntity != null) {
-                this.nullPickaxeEntity.moveTo(this.getX() + (double) Mth.nextInt(randomSource, -4, 4), this.getY() + (double) Mth.nextInt(randomSource, -2, 2), this.getZ() + (double) Mth.nextInt(randomSource, -4, 4));
-            }
-            if (this.nullShovelEntity != null) {
-                this.nullShovelEntity.moveTo(this.getX() + (double) Mth.nextInt(randomSource, -4, 4), this.getY() + (double) Mth.nextInt(randomSource, -2, 2), this.getZ() + (double) Mth.nextInt(randomSource, -4, 4));
-            }
-            if (this.nullHoeEntity != null) {
-                this.nullHoeEntity.moveTo(this.getX() + (double) Mth.nextInt(randomSource, -4, 4), this.getY() + (double) Mth.nextInt(randomSource, -2, 2), this.getZ() + (double) Mth.nextInt(randomSource, -4, 4));
-            }
-        }
-
         if (this.getTarget() != null) {
             this.setDeltaMovement(new Vec3(this.getLookAngle().x * 0.2D, this.getLookAngle().y * 0.2D, this.getLookAngle().z * 0.2D));
         }
+    }
+
+    private double getRandomPosition(double original, int min, int max) {
+        return original + (double) new Random().nextDouble(min, max);
     }
 
     protected void checkFallDamage(double d0, boolean flag, BlockState blockstate, BlockPos blockpos) {}

@@ -1,7 +1,7 @@
 package com.pla.annoyingvillagers.spawnhandler;
 
 import com.pla.annoyingvillagers.entity.LowShadowHerobrineCloneEntity;
-import com.pla.annoyingvillagers.util.HerobrineMob;
+import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;

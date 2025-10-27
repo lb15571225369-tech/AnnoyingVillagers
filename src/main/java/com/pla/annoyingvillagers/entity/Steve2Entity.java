@@ -10,7 +10,7 @@ import com.pla.annoyingvillagers.procedures.SteveOnHurtProcedure;
 import com.pla.annoyingvillagers.procedures.SteveOnTickProcedure;
 import com.pla.annoyingvillagers.spawnhandler.SteveData;
 import com.pla.annoyingvillagers.util.CommonGoals;
-import com.pla.annoyingvillagers.util.PathfinderMobInventory;
+import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;

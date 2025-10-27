@@ -2,14 +2,9 @@ package com.pla.annoyingvillagers.procedures;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.*;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -17,6 +12,8 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.Random;
 
 @Mod.EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class NullWeaponPlayerProcedure {
@@ -65,36 +62,120 @@ public class NullWeaponPlayerProcedure {
             }
         }
 
-        if (Math.random() <= 0.1D) {
-            RandomSource randomSource = RandomSource.create();
+        if (player.tickCount % 20 == 0) {
             if (data.contains("NullSwordUUID")) {
                 Entity entity = server.getEntity(data.getUUID("NullSwordUUID"));
                 if (entity instanceof NullSwordEntity nullSwordEntity) {
-                    nullSwordEntity.moveTo(player.getX() + (double) Mth.nextInt(randomSource, -4, 4), player.getY() + (double) Mth.nextInt(randomSource, -2, 2), player.getZ() + (double) Mth.nextInt(randomSource, -4, 4));
+                    if (!nullSwordEntity.isReleased()) {
+                        nullSwordEntity.moveTo(player.getX() + new Random().nextDouble(-4, 4), player.getY() + new Random().nextDouble(-2, 2), player.getZ() + new Random().nextDouble(-4, 4));
+                    } else if (nullSwordEntity.isReleased() && player.getLastHurtByMob() != null || player.getLastHurtMob() != null) {
+                        LivingEntity target = player.getLastHurtByMob() != null ? player.getLastHurtByMob() : (player.getLastHurtMob() != null ? player.getLastHurtMob() : null);
+                        if (target != null && target.isAlive()) {
+                            nullSwordEntity.moveTo(target.getX() + new Random().nextDouble(-4, 4), target.getY() + new Random().nextDouble(-2, 2), target.getZ() + new Random().nextDouble(-4, 4));
+                        } else {
+                            nullSwordEntity.stopRelease();
+                        }
+                    }
                 }
             }
             if (data.contains("NullAxeUUID")) {
                 Entity entity = server.getEntity(data.getUUID("NullAxeUUID"));
                 if (entity instanceof NullAxeEntity nullAxeEntity) {
-                    nullAxeEntity.moveTo(player.getX() + (double) Mth.nextInt(randomSource, -4, 4), player.getY() + (double) Mth.nextInt(randomSource, -2, 2), player.getZ() + (double) Mth.nextInt(randomSource, -4, 4));
+                    if (!nullAxeEntity.isReleased()) {
+                        nullAxeEntity.moveTo(player.getX() + new Random().nextDouble(-4, 4), player.getY() + new Random().nextDouble(-2, 2), player.getZ() + new Random().nextDouble(-4, 4));
+                    } else if (nullAxeEntity.isReleased() && player.getLastHurtByMob() != null || player.getLastHurtMob() != null) {
+                        LivingEntity target = player.getLastHurtByMob() != null ? player.getLastHurtByMob() : (player.getLastHurtMob() != null ? player.getLastHurtMob() : null);
+                        if (target != null && target.isAlive()) {
+                            nullAxeEntity.moveTo(target.getX() + new Random().nextDouble(-4, 4), target.getY() + new Random().nextDouble(-2, 2), target.getZ() + new Random().nextDouble(-4, 4));
+                        } else {
+                            nullAxeEntity.stopRelease();
+                        }
+                    }
                 }
             }
             if (data.contains("NullPickaxeUUID")) {
                 Entity entity = server.getEntity(data.getUUID("NullPickaxeUUID"));
                 if (entity instanceof NullPickaxeEntity nullPickaxeEntity) {
-                    nullPickaxeEntity.moveTo(player.getX() + (double) Mth.nextInt(randomSource, -4, 4), player.getY() + (double) Mth.nextInt(randomSource, -2, 2), player.getZ() + (double) Mth.nextInt(randomSource, -4, 4));
+                    if (!nullPickaxeEntity.isReleased()) {
+                        nullPickaxeEntity.moveTo(player.getX() + new Random().nextDouble(-4, 4), player.getY() + new Random().nextDouble(-2, 2), player.getZ() + new Random().nextDouble(-4, 4));
+                    } else if (nullPickaxeEntity.isReleased() && player.getLastHurtByMob() != null || player.getLastHurtMob() != null) {
+                        LivingEntity target = player.getLastHurtByMob() != null ? player.getLastHurtByMob() : (player.getLastHurtMob() != null ? player.getLastHurtMob() : null);
+                        if (target != null && target.isAlive()) {
+                            nullPickaxeEntity.moveTo(target.getX() + new Random().nextDouble(-4, 4), target.getY() + new Random().nextDouble(-2, 2), target.getZ() + new Random().nextDouble(-4, 4));
+                        } else {
+                            nullPickaxeEntity.stopRelease();
+                        }
+                    }
                 }
             }
             if (data.contains("NullHoeUUID")) {
                 Entity entity = server.getEntity(data.getUUID("NullHoeUUID"));
                 if (entity instanceof NullHoeEntity nullHoeEntity) {
-                    nullHoeEntity.moveTo(player.getX() + (double) Mth.nextInt(randomSource, -4, 4), player.getY() + (double) Mth.nextInt(randomSource, -2, 2), player.getZ() + (double) Mth.nextInt(randomSource, -4, 4));
+                    if (!nullHoeEntity.isReleased()) {
+                        nullHoeEntity.moveTo(player.getX() + new Random().nextDouble(-4, 4), player.getY() + new Random().nextDouble(-2, 2), player.getZ() + new Random().nextDouble(-4, 4));
+                    } else if (nullHoeEntity.isReleased() && player.getLastHurtByMob() != null || player.getLastHurtMob() != null) {
+                        LivingEntity target = player.getLastHurtByMob() != null ? player.getLastHurtByMob() : (player.getLastHurtMob() != null ? player.getLastHurtMob() : null);
+                        if (target != null && target.isAlive()) {
+                            nullHoeEntity.moveTo(target.getX() + new Random().nextDouble(-4, 4), target.getY() + new Random().nextDouble(-2, 2), target.getZ() + new Random().nextDouble(-4, 4));
+                        } else {
+                            nullHoeEntity.stopRelease();
+                        }
+                    }
                 }
             }
             if (data.contains("NullShovelUUID")) {
                 Entity entity = server.getEntity(data.getUUID("NullShovelUUID"));
                 if (entity instanceof NullShovelEntity nullShovelEntity) {
-                    nullShovelEntity.moveTo(player.getX() + (double) Mth.nextInt(randomSource, -4, 4), player.getY() + (double) Mth.nextInt(randomSource, -2, 2), player.getZ() + (double) Mth.nextInt(randomSource, -4, 4));
+                    if (!nullShovelEntity.isReleased()) {
+                        nullShovelEntity.moveTo(player.getX() + new Random().nextDouble(-4, 4), player.getY() + new Random().nextDouble(-2, 2), player.getZ() + new Random().nextDouble(-4, 4));
+                    } else if (nullShovelEntity.isReleased()) {
+                        LivingEntity target = player.getLastHurtByMob() != null ? player.getLastHurtByMob() : (player.getLastHurtMob() != null ? player.getLastHurtMob() : null);
+                        if (target != null && target.isAlive()) {
+                            nullShovelEntity.moveTo(target.getX() + new Random().nextDouble(-4, 4), target.getY() + new Random().nextDouble(-2, 2), target.getZ() + new Random().nextDouble(-4, 4));
+                        } else {
+                            nullShovelEntity.stopRelease();
+                        }
+                    }
+                }
+            }
+        }
+
+        if (player.tickCount % 60 == 0 && (player.getLastHurtByMob() != null || player.getLastHurtMob() != null)) {
+            LivingEntity target = player.getLastHurtByMob() != null ? player.getLastHurtByMob() : player.getLastHurtMob();
+            if (target == null || !target.isAlive()) return;
+            if (data.contains("NullSwordUUID")) {
+                Entity entity = server.getEntity(data.getUUID("NullSwordUUID"));
+                if (entity instanceof NullSwordEntity nullSwordEntity) {
+                    nullSwordEntity.releaseForAWhile();
+                    nullSwordEntity.moveTo(target.getX(), target.getY(), target.getZ());
+                }
+            }
+            if (data.contains("NullAxeUUID")) {
+                Entity entity = server.getEntity(data.getUUID("NullAxeUUID"));
+                if (entity instanceof NullAxeEntity nullAxeEntity && new Random().nextBoolean()) {
+                    nullAxeEntity.releaseForAWhile();
+                    nullAxeEntity.moveTo(target.getX(), target.getY(), target.getZ());
+                }
+            }
+            if (data.contains("NullPickaxeUUID")) {
+                Entity entity = server.getEntity(data.getUUID("NullPickaxeUUID"));
+                if (entity instanceof NullPickaxeEntity nullPickaxeEntity && new Random().nextBoolean()) {
+                    nullPickaxeEntity.releaseForAWhile();
+                    nullPickaxeEntity.moveTo(target.getX(), target.getY(), target.getZ());
+                }
+            }
+            if (data.contains("NullHoeUUID")) {
+                Entity entity = server.getEntity(data.getUUID("NullHoeUUID"));
+                if (entity instanceof NullHoeEntity nullHoeEntity && new Random().nextBoolean()) {
+                    nullHoeEntity.releaseForAWhile();
+                    nullHoeEntity.moveTo(target.getX(), target.getY(), target.getZ());
+                }
+            }
+            if (data.contains("NullShovelUUID")) {
+                Entity entity = server.getEntity(data.getUUID("NullShovelUUID"));
+                if (entity instanceof NullShovelEntity nullShovelEntity && new Random().nextBoolean()) {
+                    nullShovelEntity.releaseForAWhile();
+                    nullShovelEntity.moveTo(target.getX(), target.getY(), target.getZ());
                 }
             }
         }

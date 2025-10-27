@@ -4,7 +4,7 @@ import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.util.DelayedTask;
-import com.pla.annoyingvillagers.util.HerobrineMob;
+import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;

@@ -24,13 +24,14 @@ public class NullOnHurtProcedure {
                 LivingEntity target = nullEntity.getTarget();
 
                 if (attacker == target) {
-                    if (Math.random() <= AnnoyingVillagersConfig.NULL_SUMMON_WITHER_SKELETON_RATE.get() && levelaccessor instanceof ServerLevel) {
+                    if (Math.random() <= 0.2D && nullEntity.isAvailableWitherSkeletonSlot() && levelaccessor instanceof ServerLevel) {
                         ServerLevel serverlevel = (ServerLevel)levelaccessor;
                         WitherSkeleton witherskeleton = new WitherSkeleton(EntityType.WITHER_SKELETON, serverlevel);
                         witherskeleton.moveTo(d0 + (double)Mth.nextInt(randomSource, 1, 10), d1 + (double)Mth.nextInt(randomSource, 5, 10), d2 + (double)Mth.nextInt(randomSource, 1, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
                         witherskeleton.getPersistentData().putUUID("SpawnByNull", nullEntity.getUUID());
                         witherskeleton.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(witherskeleton.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
                         levelaccessor.addFreshEntity(witherskeleton);
+                        nullEntity.claimWitherSkeletonSlot(witherskeleton);
                         if (!witherskeleton.level().isClientSide() && witherskeleton.getServer() != null) {
                             try {
                                 witherskeleton.getServer().getCommands().getDispatcher().execute(

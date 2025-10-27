@@ -24,6 +24,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.Random;
+
 public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
 
     public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) {
@@ -82,7 +84,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
 
                 ItemStack itemstack1 = itemstack;
 
-                if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
+                if (itemstack1.hurt((int) new Random().nextDouble(1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -95,7 +97,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
+                if (itemstack1.hurt((int) new Random().nextDouble(1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -108,7 +110,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
+                if (itemstack1.hurt((int) new Random().nextDouble(1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -121,7 +123,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
+                if (itemstack1.hurt((int) new Random().nextDouble(1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -134,7 +136,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
+                if (itemstack1.hurt((int) new Random().nextDouble(1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }
@@ -147,7 +149,7 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                 }
 
                 itemstack1 = itemstack;
-                if (itemstack1.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
+                if (itemstack1.hurt((int) new Random().nextDouble(1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
                     itemstack1.shrink(1);
                     itemstack1.setDamageValue(0);
                 }

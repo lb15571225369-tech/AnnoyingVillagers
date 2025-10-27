@@ -12,7 +12,7 @@ import com.pla.annoyingvillagers.procedures.LowHerobrineCloneOnHurtProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineOnInitialSpawnProcedure;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.util.DelayedTask;
-import com.pla.annoyingvillagers.util.HerobrineMob;
+import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;

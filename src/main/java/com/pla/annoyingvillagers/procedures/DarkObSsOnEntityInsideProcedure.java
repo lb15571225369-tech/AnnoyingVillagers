@@ -7,7 +7,6 @@ import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.util.ObsidianWeaponUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -19,6 +18,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.Random;
 
 public class DarkObSsOnEntityInsideProcedure {
 
@@ -63,7 +64,7 @@ public class DarkObSsOnEntityInsideProcedure {
                     itemstack = ItemStack.EMPTY;
                 }
 
-                if (itemstack.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
+                if (itemstack.hurt((int) new Random().nextDouble(1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
                     itemstack.shrink(1);
                     itemstack.setDamageValue(0);
                 }
@@ -75,7 +76,7 @@ public class DarkObSsOnEntityInsideProcedure {
                     itemstack = ItemStack.EMPTY;
                 }
 
-                if (itemstack.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
+                if (itemstack.hurt((int) new Random().nextDouble(1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
                     itemstack.shrink(1);
                     itemstack.setDamageValue(0);
                 }
@@ -87,7 +88,7 @@ public class DarkObSsOnEntityInsideProcedure {
                     itemstack = ItemStack.EMPTY;
                 }
 
-                if (itemstack.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
+                if (itemstack.hurt((int) new Random().nextDouble(1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
                     itemstack.shrink(1);
                     itemstack.setDamageValue(0);
                 }
@@ -99,7 +100,7 @@ public class DarkObSsOnEntityInsideProcedure {
                     itemstack = ItemStack.EMPTY;
                 }
 
-                if (itemstack.hurt((int) Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
+                if (itemstack.hurt((int) new Random().nextDouble(1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
                     itemstack.shrink(1);
                     itemstack.setDamageValue(0);
                 }

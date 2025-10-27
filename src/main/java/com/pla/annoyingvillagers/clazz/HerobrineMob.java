@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.util;
+package com.pla.annoyingvillagers.clazz;
 
 import javax.annotation.Nullable;
 
@@ -15,6 +15,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.spawnhandler.HerobrineMobData;
+import com.pla.annoyingvillagers.util.CommonGoals;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -480,6 +481,10 @@ public class HerobrineMob extends Monster {
                     }
                     this.initialSpawn = false;
                 }
+            }
+
+            if (this.tickCount == 100) {
+                this.setNoAi(false);
             }
 
             if (!neverRecall) {

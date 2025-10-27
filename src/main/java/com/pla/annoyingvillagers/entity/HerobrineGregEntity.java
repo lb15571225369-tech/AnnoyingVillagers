@@ -13,7 +13,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.procedures.HerobrinePortalProcedure;
 import com.pla.annoyingvillagers.spawnhandler.GregData;
-import com.pla.annoyingvillagers.util.HerobrineMob;
+import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -64,8 +64,6 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.effect.EpicFightMobEffects;
 
 import java.util.*;
-
-import static com.pla.annoyingvillagers.procedures.HerobrinePortalProcedure.SHINK_TIME_START;
 
 public class HerobrineGregEntity extends Monster {
     private static final EntityDataAccessor<Boolean> WHITE_EYE =

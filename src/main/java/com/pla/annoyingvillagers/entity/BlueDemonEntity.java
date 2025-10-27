@@ -40,6 +40,7 @@ import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityDeathProcedure;
 import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityKillOtherEntityProcedure;
 import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityInitialSpawnProcedure;
 
+import java.util.Random;
 import java.util.UUID;
 import net.minecraft.util.RandomSource;
 
@@ -180,7 +181,7 @@ public class BlueDemonEntity extends Monster {
     private void spawnBbq() {
         if (this.level() instanceof ServerLevel serverLevel) {
             BbqEntity bbqEntity = new BbqEntity((EntityType) AnnoyingVillagersModEntities.BBQ.get(), serverLevel);
-            bbqEntity.moveTo(this.getX() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), this.getY() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), this.getZ() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), serverLevel.getRandom().nextFloat() * 360.0F, 0.0F);
+            bbqEntity.moveTo(this.getX() + new Random().nextDouble(1.0D, 10.0D), this.getY() + new Random().nextDouble(1.0D, 10.0D), this.getZ() + new Random().nextDouble(1.0D, 10.0D), serverLevel.getRandom().nextFloat() * 360.0F, 0.0F);
             bbqEntity.setFollowTarget(this);
             bbqEntity.setFollowTargetUUID(this.getUUID());
 

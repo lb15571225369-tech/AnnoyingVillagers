@@ -42,6 +42,7 @@ import com.pla.annoyingvillagers.procedures.BlueDemon2ParryingProcedure;
 import com.pla.annoyingvillagers.procedures.BlueDemon2OnEntityInitialSpawnProcedure;
 import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityKillOtherEntityProcedure;
 
+import java.util.Random;
 import java.util.UUID;
 
 public class BlueDemon2Entity extends Monster {
@@ -193,7 +194,7 @@ public class BlueDemon2Entity extends Monster {
             ServerLevel serverlevel = (ServerLevel) levelaccessor;
 
             BbqEntity bbqEntity = new BbqEntity((EntityType) AnnoyingVillagersModEntities.BBQ.get(), serverlevel);
-            bbqEntity.moveTo(this.getX() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), this.getY() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), this.getZ() + Mth.nextDouble(RandomSource.create(), 1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+            bbqEntity.moveTo(this.getX() + new Random().nextDouble(1.0D, 10.0D), this.getY() + new Random().nextDouble(1.0D, 10.0D), this.getZ() + new Random().nextDouble(1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
             bbqEntity.setFollowTarget(this);
             bbqEntity.setFollowTargetUUID(this.getUUID());
             bbqEntity.finalizeSpawn(levelaccessor, levelaccessor.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);

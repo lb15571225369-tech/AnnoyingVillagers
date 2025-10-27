@@ -1,6 +1,6 @@
-package com.pla.annoyingvillagers.util;
+package com.pla.annoyingvillagers.clazz;
 
-import com.pla.annoyingvillagers.entity.*;
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.sounds.SoundEvents;

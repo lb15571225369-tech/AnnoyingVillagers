@@ -4,7 +4,7 @@ import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.HerobrineGregEntity;
 import com.pla.annoyingvillagers.entity.LowHerobrineCloneEntity;
 import com.pla.annoyingvillagers.entity.LowShadowHerobrineCloneEntity;
-import com.pla.annoyingvillagers.util.HerobrineMob;
+import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
