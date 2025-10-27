@@ -424,7 +424,7 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
                 if (this.livingentitypatch != null) {
                     this.livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_SACRIFICING, 0.0F);
                 }
-                if (this.tickCount % 140 == 0) {
+                if (this.tickCount % 140 == 0 && this.possessedByEntity.getHealth() < this.possessedByEntity.getMaxHealth() * 0.8) {
                     try {
                         this.getServer().getCommands().getDispatcher().execute(
                                 "playsound annoyingvillagers:herobrine_understood voice @a ~ ~ ~",

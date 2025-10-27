@@ -441,7 +441,6 @@ public class HerobrineMob extends Monster {
         this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 1200, 2));
         this.addEffect(new MobEffectInstance(MobEffects.JUMP, 1200, 2));
         this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 1200, 2));
-        this.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.ELECTIFY.get(), 1200, 2));
     }
 
     @Override
@@ -458,6 +457,18 @@ public class HerobrineMob extends Monster {
             } else if (!(this instanceof NullEntity)) {
                 placeObsidianBlockWhenInWater(AnnoyingVillagersModBlocks.CRYING_OBSIDIAN_BLOCK.get());
             }
+
+            if (this.hasEffect(MobEffects.DAMAGE_BOOST) && this.hasEffect(MobEffects.MOVEMENT_SPEED) &&
+            this.hasEffect(MobEffects.JUMP) && this.hasEffect(MobEffects.DAMAGE_RESISTANCE)) {
+                if (new Random().nextBoolean()) {
+                    try {
+                        this.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:full_cowl ^ ^ ^ 0.3 1.2 0.3 0 1", this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                    } catch (CommandSyntaxException e) {
+
+                    }
+                }
+            }
+
             if (this.tickCount == 1) {
                 if (this.renderPortal) {
                     AnnoyingVillagers.PACKET_HANDLER.send(
@@ -481,10 +492,6 @@ public class HerobrineMob extends Monster {
                     }
                     this.initialSpawn = false;
                 }
-            }
-
-            if (this.tickCount == 100) {
-                this.setNoAi(false);
             }
 
             if (!neverRecall) {
@@ -877,6 +884,7 @@ public class HerobrineMob extends Monster {
             int surfaceY = serverLevel.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, blockPos).getY();
             BlockPos spawnPos = new BlockPos(blockPos.getX(), surfaceY, blockPos.getZ());
             this.moveTo(spawnPos, this.getYRot(), this.getXRot());
+            this.initialSpawn = false;
         }
 
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);

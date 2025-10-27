@@ -16,37 +16,30 @@ import net.minecraftforge.registries.RegistryObject;
 public class AnnoyingVillagersModParticleTypes {
 
     public static final DeferredRegister<ParticleType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, AnnoyingVillagers.MODID);
-    public static final RegistryObject<ParticleType<?>> RED_SPARK = AnnoyingVillagersModParticleTypes.REGISTRY.register("red_spark", () -> {
-        return new SimpleParticleType(true);
-    });
-    public static final RegistryObject<ParticleType<?>> DRAGON_SPARK = AnnoyingVillagersModParticleTypes.REGISTRY.register("dragon_spark", () -> {
-        return new SimpleParticleType(false);
-    });
-    public static final RegistryObject<ParticleType<?>> ELECTRIC_SPARK = AnnoyingVillagersModParticleTypes.REGISTRY.register("electric_spark", () -> {
-        return new SimpleParticleType(false);
-    });
-    public static final RegistryObject<ParticleType<?>> ELECTRIC_SPARK_2 = AnnoyingVillagersModParticleTypes.REGISTRY.register("electric_spark_2", () -> {
-        return new SimpleParticleType(false);
-    });
-    public static final RegistryObject<ParticleType<?>> SPARK = AnnoyingVillagersModParticleTypes.REGISTRY.register("spark", () -> {
-        return new SimpleParticleType(true);
-    });
-    public static final RegistryObject<ParticleType<?>> PE = AnnoyingVillagersModParticleTypes.REGISTRY.register("pe", () -> {
-        return new SimpleParticleType(false);
-    });
-    public static final RegistryObject<ParticleType<?>> GLOWINGEYES = AnnoyingVillagersModParticleTypes.REGISTRY.register("glowing_eyes", () -> {
-        return new SimpleParticleType(true);
-    });
+    public static final RegistryObject<SimpleParticleType> RED_SPARK =
+            REGISTRY.register("red_spark", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> DRAGON_SPARK =
+            REGISTRY.register("dragon_spark", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> ELECTRIC_SPARK =
+            REGISTRY.register("electric_spark", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> ELECTRIC_SPARK_2 =
+            REGISTRY.register("electric_spark_2", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> SPARK =
+            REGISTRY.register("spark", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> PE =
+            REGISTRY.register("pe", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> GLOWINGEYES =
+            REGISTRY.register("glowing_eyes", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> LIGHT =
             REGISTRY.register("light", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> BLUESPARK =
             REGISTRY.register("blue_spark", () -> new SimpleParticleType(true));
-    public static final RegistryObject<ParticleType<?>> GREENSPARK = AnnoyingVillagersModParticleTypes.REGISTRY.register("green_spark", () -> {
-        return new SimpleParticleType(true);
-    });
-    public static final RegistryObject<ParticleType<?>> ENDER = AnnoyingVillagersModParticleTypes.REGISTRY.register("ender", () -> {
-        return new SimpleParticleType(true);
-    });
+    public static final RegistryObject<SimpleParticleType> GREENSPARK =
+            REGISTRY.register("green_spark", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> ENDER =
+            REGISTRY.register("ender", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> NULL =
             REGISTRY.register("null", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> FULL_COWL =
+            REGISTRY.register("full_cowl", () -> new SimpleParticleType(true));
 }

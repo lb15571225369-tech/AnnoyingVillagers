@@ -25,5 +25,6 @@ public class AnnoyingVillagersModParticles {
         Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.GREENSPARK.get(), GreenSparkParticle::provider);
         Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.ENDER.get(), EnderParticle::provider);
         Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.NULL.get(), SmokeParticle.Provider::new);
+        Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.FULL_COWL.get(), FullCowlParticle::provider);
     }
 }
