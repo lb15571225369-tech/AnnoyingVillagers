@@ -436,10 +436,10 @@ public class HerobrineMob extends Monster {
         this.setNoAi(false);
         this.removeAllEffects();
         this.livingentitypatch.applyStun(StunType.FALL, 0.0F);
-        this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 1200, 3));
-        this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 1200, 3));
-        this.addEffect(new MobEffectInstance(MobEffects.JUMP, 1200, 3));
-        this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 1200, 3));
+        this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 1200, 2));
+        this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 1200, 2));
+        this.addEffect(new MobEffectInstance(MobEffects.JUMP, 1200, 2));
+        this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 1200, 2));
         this.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.ELECTIFY.get(), 1200, 2));
     }
 
@@ -653,7 +653,6 @@ public class HerobrineMob extends Monster {
                 this.addEffect(new MobEffectInstance((MobEffect) EpicFightMobEffects.STUN_IMMUNITY.get(), 10, 3, false, false));
                 if (this.firstPossessedHerobrine != null) {
                     ((Mob) firstPossessedHerobrine).addEffect(new MobEffectInstance((MobEffect) EpicFightMobEffects.STUN_IMMUNITY.get(), 30, 3, false, false));
-                    ((Mob) firstPossessedHerobrine).setNoAi(true);
                     this.clearHandAndDropItem(firstPossessedHerobrine);
                     if (firstPossessedHerobrine instanceof LowHerobrineCloneEntity lowHerobrineCloneEntity) {
                         lowHerobrineCloneEntity.setSacrificing(true);
@@ -670,7 +669,6 @@ public class HerobrineMob extends Monster {
                 }
                 if (this.secondPossessedHerobrine != null) {
                     ((Mob) secondPossessedHerobrine).addEffect(new MobEffectInstance((MobEffect) EpicFightMobEffects.STUN_IMMUNITY.get(), 10, 3, false, false));
-                    ((Mob) secondPossessedHerobrine).setNoAi(true);
                     this.clearHandAndDropItem(secondPossessedHerobrine);
                     if (secondPossessedHerobrine instanceof LowHerobrineCloneEntity lowHerobrineCloneEntity) {
                         lowHerobrineCloneEntity.setSacrificing(true);
@@ -687,7 +685,6 @@ public class HerobrineMob extends Monster {
                 }
                 if (this.thirdPossessedHerobrine != null) {
                     ((Mob) thirdPossessedHerobrine).addEffect(new MobEffectInstance((MobEffect) EpicFightMobEffects.STUN_IMMUNITY.get(), 10, 3, false, false));
-                    ((Mob) thirdPossessedHerobrine).setNoAi(true);
                     this.clearHandAndDropItem(thirdPossessedHerobrine);
                     if (thirdPossessedHerobrine instanceof LowHerobrineCloneEntity lowHerobrineCloneEntity) {
                         lowHerobrineCloneEntity.setSacrificing(true);
@@ -705,7 +702,6 @@ public class HerobrineMob extends Monster {
                 }
                 if (this.fourthPossessedHerobrine != null) {
                     ((Mob) fourthPossessedHerobrine).addEffect(new MobEffectInstance((MobEffect) EpicFightMobEffects.STUN_IMMUNITY.get(), 10, 3, false, false));
-                    ((Mob) fourthPossessedHerobrine).setNoAi(true);
                     this.clearHandAndDropItem(fourthPossessedHerobrine);
                     if (fourthPossessedHerobrine instanceof LowHerobrineCloneEntity lowHerobrineCloneEntity) {
                         lowHerobrineCloneEntity.setSacrificing(true);
@@ -843,6 +839,7 @@ public class HerobrineMob extends Monster {
         }
         equipGearForLowClone(clone);
         server.addFreshEntity(clone);
+        clone.setNoAi(true);
         try {
             clone.getServer().getCommands().getDispatcher().execute(
                     "playsound annoyingvillagers:portal_natural neutral @a ~ ~ ~",

@@ -34,7 +34,7 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import com.pla.annoyingvillagers.capabilities.LegendarySwordCapability;
+import com.pla.annoyingvillagers.capabilities.AVWeaponCapability;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSounds;
 
@@ -55,7 +55,7 @@ public class AnnoyingVillagers {
         AnnoyingVillagersModBlocks.REGISTRY.register(modEventBus);
         AnnoyingVillagersModBlockEntities.REGISTRY.register(modEventBus);
         AnnoyingVillagersModItems.REGISTRY.register(modEventBus);
-        modEventBus.addListener(LegendarySwordCapability::register);
+        modEventBus.addListener(AVWeaponCapability::register);
         modEventBus.addListener(AVAnimations::registerAnimations);
         AnnoyingVillagersModEntities.REGISTRY.register(modEventBus);
         AnnoyingVillagersModEnchantments.REGISTRY.register(modEventBus);

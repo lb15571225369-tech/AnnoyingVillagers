@@ -24,7 +24,7 @@ public abstract class SkillBookScreenMixin {
 
     @Inject(method = {"registerIconItems"}, at = {@At("HEAD")})
     private static void addCustomGuardScreen(CallbackInfo ci) {
-        WEAPON_CATEGORY_ICONS.put(AVCategories.LEGENDARYSWORD, new ItemStack(AnnoyingVillagersModItems.LEGENDARY_SWORD.get()));
-        WEAPON_CATEGORY_ICONS.put(AVCategories.HARDGREATSWORD, new ItemStack(AnnoyingVillagersModItems.HARD_GREAT_SWORD.get()));
+        WEAPON_CATEGORY_ICONS.put(AVCategories.LEGENDARY_SWORD, new ItemStack(AnnoyingVillagersModItems.LEGENDARY_SWORD.get()));
+        WEAPON_CATEGORY_ICONS.put(AVCategories.HARD_GREAT_SWORD, new ItemStack(AnnoyingVillagersModItems.HARD_GREAT_SWORD.get()));
     }
 }

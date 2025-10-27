@@ -32,10 +32,10 @@ public abstract class MoreParryMixin {
         builder.addGuardMotion(WeaponCategories.SPEAR, (capabilityitem, playerpatch) -> {
             return AVAnimations.SPEAR_GUARD_HIT;
         });
-        builder.addAdvancedGuardMotion(AVCategories.LEGENDARYSWORD, (capabilityitem, playerpatch) -> {
+        builder.addAdvancedGuardMotion(AVCategories.LEGENDARY_SWORD, (capabilityitem, playerpatch) -> {
             return new StaticAnimation[]{AVAnimations.LEGENDARY_SWORD_GUARD_PARRY};
         });
-        builder.addGuardMotion(AVCategories.LEGENDARYSWORD, (capabilityitem, playerpatch) -> {
+        builder.addGuardMotion(AVCategories.LEGENDARY_SWORD, (capabilityitem, playerpatch) -> {
             return AVAnimations.LEGENDARY_SWORD_GUARD_HIT;
         });
         builder.addAdvancedGuardMotion(WeaponCategories.AXE, (capabilityitem, playerpatch) -> {
@@ -50,10 +50,10 @@ public abstract class MoreParryMixin {
         builder.addGuardMotion(WeaponCategories.TACHI, (capabilityitem, playerpatch) -> {
             return capabilityitem.getStyle(playerpatch) == Styles.TWO_HAND ? Animations.LONGSWORD_GUARD_HIT : AVAnimations.DUAL_TACHI_GUARD_HIT;
         });
-        builder.addAdvancedGuardMotion(AVCategories.HARDGREATSWORD, (capabilityitem, playerpatch) -> {
+        builder.addAdvancedGuardMotion(AVCategories.HARD_GREAT_SWORD, (capabilityitem, playerpatch) -> {
             return new StaticAnimation[]{AVAnimations.HARD_GREAT_SWORD_GUARD};
         });
-        builder.addGuardMotion(AVCategories.HARDGREATSWORD, (capabilityitem, playerpatch) -> {
+        builder.addGuardMotion(AVCategories.HARD_GREAT_SWORD, (capabilityitem, playerpatch) -> {
             return AVAnimations.HARD_GREAT_SWORD_GUARD;
         });
     }
