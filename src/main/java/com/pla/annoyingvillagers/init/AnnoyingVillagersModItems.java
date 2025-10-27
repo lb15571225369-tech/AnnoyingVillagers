@@ -341,6 +341,9 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> SHADOW_OBSIDIAN_SWORD = AnnoyingVillagersModItems.REGISTRY.register("shadow_obsidian_sword", () -> {
         return new ShadowObsidianSwordItem();
     });
+    public static final RegistryObject<Item> DIAMOND_SHEAR = AnnoyingVillagersModItems.REGISTRY.register("diamond_shear", () -> {
+        return new DiamondShearItem();
+    });
     // ------------------------------
 
 

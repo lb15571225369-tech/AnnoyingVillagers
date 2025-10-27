@@ -99,6 +99,7 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_BATTLE_AXE.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_GLAIVE.get());
                         pOutput.accept(AnnoyingVillagersModItems.DIAMOND_DOUBLE_BIT_AXE.get());
+                        pOutput.accept(AnnoyingVillagersModItems.DIAMOND_SHEAR.get());
                         pOutput.accept(AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.HOOKED_GOLDEN_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.GOLDEN_LONG_SWORD.get());

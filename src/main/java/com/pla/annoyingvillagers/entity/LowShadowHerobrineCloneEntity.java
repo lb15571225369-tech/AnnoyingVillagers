@@ -20,6 +20,8 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -205,6 +207,25 @@ public class LowShadowHerobrineCloneEntity extends Monster {
 
     public SoundEvent getDeathSound() {
         return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
+    }
+
+    @Override
+    public boolean doHurtTarget(Entity pEntity) {
+        if (!this.level().isClientSide() && pEntity instanceof LivingEntity livingEntity) {
+            if (this.getPersistentData().contains("DiamondShearHit")) {
+                int hitCount = this.getPersistentData().getInt("DiamondShearHit");
+                this.level().playSound(null, pEntity.blockPosition(), SoundEvents.SHEEP_SHEAR, SoundSource.NEUTRAL, 1.0F, 1.0F);
+                if (hitCount == 10) {
+                    livingEntity.removeAllEffects();
+                    this.getPersistentData().putInt("DiamondShearHit", 0);
+                } else {
+                    this.getPersistentData().putInt("DiamondShearHit", hitCount + 1);
+                }
+            } else {
+                this.getPersistentData().putInt("DiamondShearHit", 1);
+            }
+        }
+        return super.doHurtTarget(pEntity);
     }
 
     public boolean hurt(DamageSource damagesource, float f) {

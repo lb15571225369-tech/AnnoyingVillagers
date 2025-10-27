@@ -20,6 +20,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
@@ -331,9 +332,11 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
 
             LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntityMiddle = new LowShadowHerobrineCloneEntity((EntityType) AnnoyingVillagersModEntities.LOW_SHADOW_HEROBRINE_CLONE.get(), pLevel.getLevel());
             lowShadowHerobrineCloneEntityMiddle.moveTo(base);
-            equipGearForLowClone(lowShadowHerobrineCloneEntityMiddle, true);
+            equipGearForLowClone(lowShadowHerobrineCloneEntityMiddle, false);
             lowShadowHerobrineCloneEntityMiddle.setProtectUUID(this.getUUID());
             lowShadowHerobrineCloneEntityMiddle.setProtectEntity(this);
+            lowShadowHerobrineCloneEntityMiddle.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.DIAMOND_SHEAR.get()));
+            lowShadowHerobrineCloneEntityMiddle.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(AnnoyingVillagersModItems.ELITE_OBSIDIAN.get()));
             pLevel.getLevel().addFreshEntity(lowShadowHerobrineCloneEntityMiddle);
 
             LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntityRight = new LowShadowHerobrineCloneEntity((EntityType) AnnoyingVillagersModEntities.LOW_SHADOW_HEROBRINE_CLONE.get(), pLevel.getLevel());

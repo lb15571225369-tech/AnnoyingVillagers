@@ -1,0 +1,7 @@
+{
+  "parent": "annoyingvillagers:custom/diamond_shear",
+  "textures": {
+    "0": "annoyingvillagers:block/diamond_shear",
+    "particle": "annoyingvillagers:item/diamond_shear"
+  }
+}
