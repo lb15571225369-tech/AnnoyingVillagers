@@ -162,12 +162,6 @@ public class ObsidianSledgehammerItem extends AxeItem {
     @Override
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal("One of §5Herobrine§r's legendary weapons.\n" +
-                "§aNormal Form§r: A normal hammer with no special powers. After 10 successful hits, it awakens into its §5Second Form§r.\n" +
-                "§5Second Form§r: Lasts for 10 seconds.\n" +
-                "- Grants §9JUMP BOOST§r and §dMOVEMENT SPEED§r effects.\n" +
-                "- Each ground slam summons a ring of shadow obsidian spikes from the ground.\n" +
-                "- The spikes knock enemies back and force them into a knocked-down state.\n" +
-                "§7(Current Combo Attack: " + getCurrentComboAttack(itemstack) + ")§r"));
+        list.add(Component.literal(Component.translatable("tooltip.annoyingvillagers.obsidian_sledgehammer").getString() + getCurrentComboAttack(itemstack) + ")§r"));
     }
 }

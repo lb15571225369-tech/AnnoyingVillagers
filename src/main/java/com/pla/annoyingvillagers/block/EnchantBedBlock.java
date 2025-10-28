@@ -55,7 +55,7 @@ public class EnchantBedBlock extends Block {
 
     public void appendHoverText(ItemStack itemstack, BlockGetter blockgetter, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, blockgetter, list, tooltipflag);
-        list.add(Component.literal("Right-click the Enchanted Bed once to set your respawn point. Upon death, you won't drop your items. You must right-click it again after each use to reactivate the effect. Conflicts with the Totem of Undying."));
+        list.add(Component.translatable("tooltip.annoyingvillagers.enchanted_bed"));
     }
 
     public boolean propagatesSkylightDown(BlockState blockstate, BlockGetter blockgetter, BlockPos blockpos) {

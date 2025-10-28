@@ -20,7 +20,7 @@ public class CompressedDiamondItem extends Item {
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal("Compressed Diamond: Highest Quality, Maximum Hardness"));
+        list.add(Component.translatable("tooltip.annoyingvillagers.compressessed_diamond"));
     }
 
     public void onCraftedBy(ItemStack itemstack, Level level, Player player) {

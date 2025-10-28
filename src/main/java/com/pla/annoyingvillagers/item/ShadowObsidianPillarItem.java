@@ -57,11 +57,7 @@ public class ShadowObsidianPillarItem extends SwordItem {
     @Override
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal(
-                "One of the §5Shadow Herobrine§r's weapon.\n" +
-                        "§6Right-click§r to launch a chain of Shadow Obsidian Pillar.\n" +
-                        "§6Weapon More Attack§r to summon a wall of Shadow Obsidian Pillar."
-        ));
+        list.add(Component.translatable("tooltip.annoyingvillagers.shadow_obsidian_pillar"));
     }
 
     public InteractionResult useOn(UseOnContext useoncontext) {

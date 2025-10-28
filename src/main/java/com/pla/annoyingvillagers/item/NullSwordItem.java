@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.item;
 
 import com.pla.annoyingvillagers.entity.NullSwordEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -10,8 +11,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+
+import java.util.List;
 
 public class NullSwordItem extends SwordItem {
 
@@ -81,5 +85,11 @@ public class NullSwordItem extends SwordItem {
         player.getPersistentData().putUUID("NullSwordUUID", sword.getUUID());
 
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
+    }
+
+    @Override
+    public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
+        super.appendHoverText(itemstack, level, list, tooltipflag);
+        list.add(Component.translatable("tooltip.annoyingvillagers.null_weapon"));
     }
 }

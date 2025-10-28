@@ -164,13 +164,7 @@ public class EnderAegisItem extends SwordItem {
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal("One of §5Herobrine§r's legendary weapons.\n" +
-                "§aNormal Form§r: A standard shield with no special powers. After 5 perfect parries, it awakens into its §5Second Form§r.\n" +
-                "§5Second Form§r: Lasts for 10 seconds.\n" +
-                "- Grants §dREGENERATION§r, §eABSORPTION§r, and §9DAMAGE RESISTANCE§r.\n" +
-                "- Each successful parry fires a blast at your attacker, dealing damage.\n" +
-                "- Normal hits inflict §7WEAKNESS§r, §7SLOWNESS§r, §7DARKNESS§r, and the §5HEROBRINE§r effect.\n" +
-                "§7(Current Combo Attack: " + getCurrentComboAttack(itemstack) + ")§r"));
+        list.add(Component.literal(Component.translatable("tooltip.annoyingvillagers.ender_aegis").getString() + getCurrentComboAttack(itemstack) + ")§r"));
 
     }
 

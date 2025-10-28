@@ -72,7 +72,7 @@ public class LegendarySwordItem extends SwordItem {
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal("One of the Legendary Weapons"));
+        list.add(Component.translatable("tooltip.annoyingvillagers.legendary_sword"));
     }
 
     @OnlyIn(Dist.CLIENT)

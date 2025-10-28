@@ -61,6 +61,6 @@ public class WoopieTheSwordItem extends SwordItem {
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal("A special weapon that can unleash a skill by right-clicking while sprinting after hitting an enemy."));
+        list.add(Component.translatable("tooltip.annoyingvillagers.woopie_the_sword"));
     }
 }

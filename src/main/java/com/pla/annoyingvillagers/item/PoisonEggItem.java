@@ -22,7 +22,7 @@ public class PoisonEggItem extends Item {
     }
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal("Thrown from BBQ Sauce"));
+        list.add(Component.translatable("tooltip.annoyingvillagers.poison_egg"));
     }
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
         ItemStack itemstack = pPlayer.getItemInHand(pHand);

@@ -52,11 +52,7 @@ public class ObsidianWeaponItem extends SwordItem {
     @Override
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal(
-                "An Obsidian Block infused with §5Herobrine§r's power.\n" +
-                        "§6Right-click§r to launch a chain of Obsidian.\n" +
-                        "§6Weapon More Attack§r to summon a wall of Obsidian."
-        ));
+        list.add(Component.translatable("tooltip.annoyingvillagers.obsidian_weapon"));
     }
 
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {

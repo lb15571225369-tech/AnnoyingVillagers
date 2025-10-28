@@ -16,6 +16,6 @@ public class DemoniacVoltageReaverHiltItem extends Item {
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal("The hilt of the Demoniac Voltage Reaver, forged from blended obsidian"));
+        list.add(Component.translatable("tooltip.annoyingvillagers.demoniac_voltage_reaver_hilt"));
     }
 }

@@ -92,11 +92,7 @@ public class DemoniacVoltageReaverItem extends SwordItem {
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal("One of §5Herobrine§r's legendary weapons.\n" +
-                "§aNormal Form§r: A basic greatsword with no special abilities.\n" +
-                "§eAwakened Form§r: Shift + right-click to swap forms. After 5 successful hits, the weapon transforms into the §5Second Form§r.\n" +
-                "§5Second Form§r: Unleashes a chain of Snake Blades that track enemies in a wide area, dealing damage, stunning, and knocking them back.\n" +
-                "§7(Current Combo Attack: " + getCurrentComboAttack(itemstack) + ")§r"));
+        list.add(Component.literal(Component.translatable("tooltip.annoyingvillagers.demoniac_voltage_reaver").getString() + getCurrentComboAttack(itemstack) + ")§r"));
     }
 
     public void inventoryTick(ItemStack itemstack, Level level, Entity entity, int i, boolean flag) {

@@ -32,12 +32,7 @@ public class HerobrineEnderEyeItem extends Item {
     @Override
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal(
-                "An Ender Eye infused with §5Herobrine§r's power\n" +
-                        "§7(While in your inventory)§r\n" +
-                        "§6More Weapon Attack§r when not holding this weapon to shoot 3 Shadow Obsidian Pillars.\n" +
-                        "§6More Weapon Attack§r when holding this weapon to activate Shadow Obsidian Machine Gun."
-        ));
+        list.add(Component.translatable("tooltip.annoyingvillagers.herobrine_ender_eye"));
     }
 
     public static void spawnAndShootDarkObPillars(ServerLevel level, LivingEntity shooter, int delayTicks) {

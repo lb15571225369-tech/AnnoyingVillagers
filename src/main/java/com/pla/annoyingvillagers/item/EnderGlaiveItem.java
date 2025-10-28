@@ -154,11 +154,6 @@ public class EnderGlaiveItem extends SwordItem {
     @Override
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal("One of §5Herobrine§r's legendary weapons.\n" +
-                "§aNormal Form§r: A standard glaive with no special powers. After 5 successful hits, the weapon transforms into the §5Second Form§r.\n" +
-                "§5Second Form§r: Lasts for 10 seconds.\n" +
-                "- Grants §dMOVEMENT SPEED§r and §9DAMAGE BOOST§r.\n" +
-                "- Press MORE WEAPON ATTACK KEY to trigger an explosion. Recharge after every 3 successful hits while in §5Second Form§r.\n" +
-                "§7(Current Combo Attack: " + getCurrentComboAttack(itemstack) + ")§r"));
+        list.add(Component.literal(Component.translatable("tooltip.annoyingvillagers.ender_glaive").getString() + getCurrentComboAttack(itemstack) + ")§r"));
     }
 }

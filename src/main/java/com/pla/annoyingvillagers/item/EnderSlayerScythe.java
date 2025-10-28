@@ -145,12 +145,6 @@ public class EnderSlayerScythe extends SwordItem {
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal("One of §5Herobrine§r's legendary weapons.\n" +
-                "§aNormal Form§r: A normal scythe with no special powers. After 15 successful hits, it awakens into its §5Second Form§r.\n" +
-                "§5Second Form§r: Lasts for 30 seconds.\n" +
-                "- Grants §9JUMP BOOST§r, and §dDAMAGE BOOST§r effects.\n" +
-                "- Summons a baby Ender Dragon that fires a tiny thunder beam every 6 seconds at any target that hurts or is hurt by the player.\n" +
-                "- If no valid target exists, it attacks a random nearby entity.\n" +
-                "§7(Current Combo Attack: " + getCurrentComboAttack(itemstack) + ")§r"));
+        list.add(Component.literal(Component.translatable("tooltip.annoyingvillagers.ender_slayer_scythe").getString() + getCurrentComboAttack(itemstack) + ")§r"));
     }
 }

@@ -42,10 +42,6 @@ public class ShadowObsidianSwordItem  extends SwordItem {
     @Override
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal(
-                "One of the §5Shadow Herobrine§r's weapon.\n" +
-                        "Combine it with a Diamond Helmet or Diamond Chestplate in the Smithing Table," +
-                        " using a Netherite Upgrade Smithing Template, to craft the §5Herobrine Obsidian Diamond Armor§r."
-        ));
+        list.add(Component.translatable("tooltip.annoyingvillagers.shadow_obsidian_sword"));
     }
 }

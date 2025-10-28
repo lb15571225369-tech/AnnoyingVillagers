@@ -44,8 +44,6 @@ public class DiamondShearItem extends ShearsItem {
     @Override
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal(
-                "Right-click to clear all effects from enemy."
-        ));
+        list.add(Component.translatable("tooltip.annoyingvillagers.diamond_shear"));
     }
 }

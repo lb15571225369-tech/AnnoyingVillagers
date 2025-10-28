@@ -24,7 +24,7 @@ public class VillagerHeadItem extends Item {
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal("A tool for disguising as a villager. Right-click to equip. Sneak + Right-click to toggle Disguise/Attack mode."));
+        list.add(Component.translatable("tooltip.annoyingvillagers.villager_head"));
     }
 
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {

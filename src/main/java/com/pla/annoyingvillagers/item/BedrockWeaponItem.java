@@ -74,11 +74,7 @@ public class BedrockWeaponItem extends SwordItem {
     @Override
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal(
-                "Forged from §7the hardest block§r known to exist.\n" +
-                        "No one knows how §5Herobrine§r obtained it.\n" +
-                        "Can mine anything and may stun enemies on hit."
-        ));
+        list.add(Component.translatable("tooltip.annoyingvillagers.bedrock_weapon"));
     }
 
     @Override

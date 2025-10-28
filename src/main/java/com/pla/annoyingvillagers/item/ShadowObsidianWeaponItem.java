@@ -64,11 +64,7 @@ public class ShadowObsidianWeaponItem extends SwordItem {
     @Override
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal(
-                "A Shadow Obsidian Block infused with §5Herobrine§r's power.\n" +
-                        "§6Right-click§r to launch a chain of Shadow Obsidian.\n" +
-                        "§6Weapon More Attack§r to summon a wall of Shadow Obsidian."
-        ));
+        list.add(Component.translatable("tooltip.annoyingvillagers.shadow_obsidian_weapon"));
     }
 
     public void specialAttack(LivingEntity entity) {

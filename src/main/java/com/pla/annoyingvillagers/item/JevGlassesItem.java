@@ -21,7 +21,7 @@ public class JevGlassesItem extends Item {
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal("Right-click to equip"));
+        list.add(Component.translatable("tooltip.annoyingvillagers.jev_glasses"));
     }
 
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {

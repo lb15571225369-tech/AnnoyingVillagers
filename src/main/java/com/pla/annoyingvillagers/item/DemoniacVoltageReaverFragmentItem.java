@@ -16,6 +16,6 @@ public class DemoniacVoltageReaverFragmentItem extends Item {
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal("A shattered fragment of the Demoniac Voltage Reaver, forged from a magnetic alloy of iron and blended obsidian."));
+        list.add(Component.translatable("tooltip.annoyingvillagers.demoniac_voltage_reaver_fragment"));
     }
 }
