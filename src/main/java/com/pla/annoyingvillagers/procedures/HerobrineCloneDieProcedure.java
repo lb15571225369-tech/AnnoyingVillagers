@@ -16,7 +16,7 @@ public class HerobrineCloneDieProcedure {
         if (source == null) return;
 
         if (!world.isClientSide() && world.getServer() != null) {
-            world.getServer().getPlayerList().broadcastSystemMessage(Component.literal("The clone has been destroyed, data has been transmitted to the terminal."), false);
+            world.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("subtitles.herobrine_clone_die"), false);
         }
 
         dropLoot(world, x, y, z);

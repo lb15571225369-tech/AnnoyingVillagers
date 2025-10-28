@@ -600,7 +600,9 @@ public class HerobrineMob extends Monster {
                                         this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                             } catch (CommandSyntaxException e) {
                             }
-                            herobrineGregEntity.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine Greg§r> Requesting assistance!!!"), false);
+                            herobrineGregEntity.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<"
+                                    + Component.translatable("entity.annoyingvillagers.herobrine_greg").getString() + "> "
+                                    + Component.translatable("subtitles.herobrine_request").getString()), false);
                             herobrineGregEntity.setNoAi(true);
                         } else {
                             try {
@@ -609,7 +611,8 @@ public class HerobrineMob extends Monster {
                                         this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                             } catch (CommandSyntaxException e) {
                             }
-                            this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getChatName() + "> Requesting assistance!!!"), false);
+                            this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getChatName() + "> "
+                                    + Component.translatable("subtitles.herobrine_request").getString()), false);
                         }
                     } else {
                         try {
@@ -618,7 +621,8 @@ public class HerobrineMob extends Monster {
                                     this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                         } catch (CommandSyntaxException e) {
                         }
-                        this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getChatName() + "> Requesting assistance!!!"), false);
+                        this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getChatName() + "> "
+                                + Component.translatable("subtitles.herobrine_request").getString()), false);
                     }
                     this.healingCooldown = new Random().nextInt(AnnoyingVillagersConfig.HEROBRINE_HEALING_MIN_COOLDOWN.get() * 1200, AnnoyingVillagersConfig.HEROBRINE_HEALING_MAX_COOLDOWN.get() * 1200);
                 } else {
@@ -630,7 +634,8 @@ public class HerobrineMob extends Monster {
                                     this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                         } catch (CommandSyntaxException e) {
                         }
-                        this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getChatName() + "> Requesting assistance !!!"), false);
+                        this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getChatName() + "> "
+                                + Component.translatable("subtitles.herobrine_request").getString()), false);
                         this.healingCooldown = new Random().nextInt(AnnoyingVillagersConfig.HEROBRINE_HEALING_MIN_COOLDOWN.get() * 1200, AnnoyingVillagersConfig.HEROBRINE_HEALING_MAX_COOLDOWN.get() * 1200);
                     }
                 }

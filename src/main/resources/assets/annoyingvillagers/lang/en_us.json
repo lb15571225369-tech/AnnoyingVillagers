@@ -227,5 +227,21 @@
   "skill.annoyingvillagers.clash": "Clash Blades",
   "skill.annoyingvillagers.clash.tooltip": "Cancels out the opponent's attack when attacking",
   "enchantment.annoyingvillagers.break_armor.desc": "Breaks more faster the armor of the target",
-  "enchantment.annoyingvillagers.fast_shot.desc": "Increases the number of arrows a bow fires"
+  "enchantment.annoyingvillagers.fast_shot.desc": "Increases the number of arrows a bow fires",
+  "subtitles.possessed_npc": "has been possessed by §5Herobrine§r.",
+  "subtitles.possessed_random": "has possessed a new player.",
+  "subtitles.herobrine_arrive": "has arrived from the §4Herobrine Vessel Realm§r.",
+  "subtitles.herobrine_chris_spawn": "Are you talking about ... me ?",
+  "subtitles.armored_herobrine_spawn": "Anyone who stands in my way must die !",
+  "subtitles.herobrine_request": "Requesting assistance !!!",
+  "subtitles.herobrine_prepare_for_fight": "Prepare for a fight tonight.",
+  "subtitles.herobrine_no_fight": "You are lucky tonight.",
+  "subtitles.herobrine_will_be_back": "We will be back.",
+  "subtitles.herobrine_summon": "Summoning !!!",
+  "subtitles.reaper_herobrine_return_dragon": "Return !!!",
+  "subtitles.herobrine_chris_say_weak": "You are weak , you are nothing !!!",
+  "subtitles.herobrine_chris_say_enough": "Enough !!!",
+  "subtitles.herobrine_chris_say_how_foolish": "How foolish !!!",
+  "subtitles.herobrine_clone_die": "The clone has been destroyed, data has been transmitted to the terminal.",
+  "subtitles.shadow_herobrine_die": "§5Shadow Herobrine§r has been destroyed."
 }

@@ -24,7 +24,7 @@ public class ArmoredHerobrineOnDeathProcedure {
 
         if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
             levelaccessor.getServer().getPlayerList().broadcastSystemMessage(
-                    Component.literal("The clone has been destroyed, data has been transmitted to the terminal."),
+                    Component.translatable("subtitles.herobrine_clone_die"),
                     false
             );
         }

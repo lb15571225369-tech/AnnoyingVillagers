@@ -641,7 +641,8 @@ public class HerobrineChrisOnHurtProcedure {
                                 }
 
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> You are weak , you are nothing! ! !"), false);
+                                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> " +
+                                            Component.translatable("subtitles.herobrine_chris_say_weak").getString()), false);
                                 }
 
                                 LevelAccessor levelaccessor1 = levelaccessor;
@@ -707,7 +708,8 @@ public class HerobrineChrisOnHurtProcedure {
                             @Override
                             public void run() {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> Enough!"), false);
+                                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> " +
+                                            Component.translatable("subtitles.herobrine_chris_say_enough").getString()), false);
                                 }
 
                                 LevelAccessor levelaccessor1 = levelaccessor;
@@ -730,7 +732,8 @@ public class HerobrineChrisOnHurtProcedure {
                             @Override
                             public void run() {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> How foolish!"), false);
+                                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> " +
+                                            Component.translatable("subtitles.herobrine_chris_say_how_foolish").getString()), false);
                                 }
 
                                 LevelAccessor levelaccessor1 = levelaccessor;

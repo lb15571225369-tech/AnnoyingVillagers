@@ -34,7 +34,7 @@ public class HerobrineChrisDieProcedure {
             }
 
             if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("The clone has been destroyed, data has been transmitted to the terminal."), false);
+                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("subtitles.herobrine_clone_die"), false);
             }
 
             levelaccessor.addParticle(ParticleTypes.EXPLOSION, d0, d1, d2, 0.0D, 1.0D, 0.0D);

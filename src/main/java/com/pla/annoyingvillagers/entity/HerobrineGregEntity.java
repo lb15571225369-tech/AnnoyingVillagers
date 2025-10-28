@@ -165,7 +165,7 @@ public class HerobrineGregEntity extends Monster {
         this.xpReward = 50;
         this.setNoAi(false);
         this.setPersistenceRequired();
-        this.setCustomName(this.getDisplayName());
+        this.setCustomName(Component.literal("Greg"));
         this.setCustomNameVisible(true);
 
         int min = AnnoyingVillagersConfig.HEROBRINE_RECALL_MIN_TIME.get();
@@ -413,11 +413,13 @@ public class HerobrineGregEntity extends Monster {
 
             if (this.level().getDayTime() % 24000L == 13001 && this.summonTimestamp == -1) {
                 if (new Random().nextBoolean()) {
-                    this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> Prepare for a fight tonight."), false);
+                    this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> " +
+                            Component.translatable("subtitles.herobrine_prepare_for_fight").getString()), false);
                     this.summonTimestamp = new Random().nextInt(13100, 22200);
                     AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: Greg will summon elites at {}", this.summonTimestamp);
                 } else {
-                    this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> You are lucky tonight."), false);
+                    this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> " +
+                            Component.translatable("subtitles.herobrine_no_fight")), false);
                 }
             }
 
@@ -452,7 +454,8 @@ public class HerobrineGregEntity extends Monster {
                             this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 } catch (CommandSyntaxException e) {
                 }
-                this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getDisplayName().getString() + "> Summoning !!!"), false);
+                this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getDisplayName().getString() + "> " +
+                        Component.translatable("subtitles.herobrine_summon").getString()), false);
             }
             if (this.summonTiming == 1) {
                 if (this.combatMode) {
@@ -486,7 +489,8 @@ public class HerobrineGregEntity extends Monster {
                 }
             }
             if (this.escapeTiming == 1) {
-                this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> We will be back."), false);
+                this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> " +
+                        Component.translatable("subtitles.herobrine_will_be_back").getString()), false);
                 if (this.firstSummonedHerobrine instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
                     lowShadowHerobrineCloneEntity.setAutoKill(true);
                     try {

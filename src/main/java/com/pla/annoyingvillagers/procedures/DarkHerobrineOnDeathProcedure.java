@@ -20,7 +20,7 @@ public class DarkHerobrineOnDeathProcedure {
 
         if (!world.isClientSide() && world.getServer() != null) {
             world.getServer().getPlayerList().broadcastSystemMessage(
-                    Component.literal("§5Shadow Herobrine§r has been destroyed."),
+                    Component.translatable("subtitles.shadow_herobrine_die"),
                     false
             );
         }

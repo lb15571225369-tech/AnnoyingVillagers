@@ -16,7 +16,7 @@ public class Herobrine7DieProcedure {
     public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, Entity entity) {
         if (entity != null) {
             if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("The clone has been destroyed, data has been transmitted to the terminal."), false);
+                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("subtitles.herobrine_clone_die"), false);
             }
 
             dropLoot(levelaccessor, d0, d1, d2);
