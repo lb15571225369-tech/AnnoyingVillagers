@@ -467,13 +467,13 @@ public class RedVillageGeneralOnDeathProcedure {
                 }
 
                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Villager Red General> We've encountered a skilled player, requesting support!"), false);
+                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + entity.getDisplayName().getString() + "> We've encountered a skilled player, requesting support!"), false);
                 }
 
                 new DelayedTask(400) {
                     public void run() {
                         if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                            levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Villager Scout> Reinforcements have arrived!"), false);
+                            levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + Component.translatable("entity.annoyingvillagers.villager_scout").getString() + "> Reinforcements have arrived!"), false);
                         }
 
                         Entity entity1 = entity;
@@ -512,7 +512,7 @@ public class RedVillageGeneralOnDeathProcedure {
                     }
                 };
             } else if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Villager Red General> I swear to serve the Villager King to the death..."), false);
+                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + entity.getDisplayName().getString() + "> I swear to serve the Villager King to the death..."), false);
             }
 
         }

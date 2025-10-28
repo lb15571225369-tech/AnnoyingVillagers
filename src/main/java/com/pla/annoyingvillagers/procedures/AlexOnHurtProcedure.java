@@ -5,6 +5,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.util.CombatBehaviour;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -21,12 +22,7 @@ public class AlexOnHurtProcedure {
             if (!entity.getPersistentData().getBoolean("kick_x")) {
                 if (entity.getEnderPearlCooldown() == 0) {
                     if (Math.random() <= 0.2D && !entity.level().isClientSide() && entity.getServer() != null) {
-                        try {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "tellraw @a {\"text\":\"<Alex> Are you being serious ?\"}",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                        } catch (CommandSyntaxException e) {
-                        }
+                        entity.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + entity.getDisplayName().getString() + "> Are you being serious ?"), false);
                     }
 
                     if (Math.random() <= 0.5D) {

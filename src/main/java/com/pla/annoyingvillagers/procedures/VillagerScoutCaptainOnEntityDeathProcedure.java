@@ -378,13 +378,13 @@ public class VillagerScoutCaptainOnEntityDeathProcedure {
                         }
 
                         if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                            levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Villager Scout> Requesting backup!"), false);
+                            levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + entity.getDisplayName().getString() + "> Requesting backup!"), false);
                         }
 
                         new DelayedTask(400) {
                             public void run() {
                                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Villager Scout> Reinforcements have arrived!"), false);
+                                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + Component.translatable("entity.annoyingvillagers.villager_scout").getString() + "> Reinforcements have arrived!"), false);
                                 }
 
                                 Entity entity2 = entity;

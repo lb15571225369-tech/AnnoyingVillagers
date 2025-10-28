@@ -84,7 +84,7 @@ public class VillagerScoutOnHurtProcedure {
                                         @Override
                                         public void run() {
                                             if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Villager Scout> Fire!"), false);
+                                                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + entity.getDisplayName().getString() + "> Fire!"), false);
                                             }
                                         }
                                     };

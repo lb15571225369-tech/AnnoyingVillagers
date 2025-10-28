@@ -4,6 +4,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.util.EquipmentDataLoader;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
@@ -17,12 +18,7 @@ public class AlexOnDeathProcedure {
     public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, Entity entity) {
         if (entity != null) {
             if (!entity.level().isClientSide() && entity.getServer() != null) {
-                try {
-                    entity.getServer().getCommands().getDispatcher().execute(
-                            "tellraw @a {\"text\":\"<Alex> Damn it!\"}",
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException e) {
-                }
+                entity.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + entity.getDisplayName().getString() + "> Damn it !"), false);
             }
             new DelayedTask(20) {
             @Override

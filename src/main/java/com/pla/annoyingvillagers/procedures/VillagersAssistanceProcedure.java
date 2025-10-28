@@ -45,7 +45,7 @@ public class VillagersAssistanceProcedure {
 
                 if (serverlevel.isRaided(new BlockPos((int) d0, (int) d1, (int) d2)) && Math.random() <= 0.2D) {
                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Villager> Help !"), false);
+                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + Component.translatable("entity.minecraft.villager").getString() + "> Help !"), false);
                     }
 
                     new DelayedTask(11) {

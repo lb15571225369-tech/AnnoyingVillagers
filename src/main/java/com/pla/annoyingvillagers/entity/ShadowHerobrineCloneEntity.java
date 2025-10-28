@@ -47,7 +47,7 @@ public class ShadowHerobrineCloneEntity extends HerobrineMob {
         this.setMaxUpStep(0.7F);
         this.xpReward = 300;
         this.setNoAi(false);
-        this.setChatName("§5Shadow Herobrine Clone§r");
+        this.setChatName(this.getDisplayName().getString());
     }
 
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {

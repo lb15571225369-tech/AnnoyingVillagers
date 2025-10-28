@@ -54,12 +54,12 @@ public class SwordsmanHerobrineEntity extends HerobrineMob {
         this.setMaxUpStep(2.0F);
         this.xpReward = 80;
         this.setNoAi(false);
-        this.setCustomName(Component.literal("§5Swordsman Herobrine§r"));
+        this.setCustomName(this.getDisplayName());
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
         ItemStack sword = new ItemStack(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER.get());
         this.setItemSlot(EquipmentSlot.MAINHAND, sword);
-        this.setChatName("§5Swordsman Herobrine§r");
+        this.setChatName(this.getDisplayName().getString());
     }
 
     public int getCooldownTicks() {

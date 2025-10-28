@@ -15,7 +15,6 @@ import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -48,7 +47,7 @@ public class ChrisEntity extends PathfinderMobInventory {
         this.setMaxUpStep(2.6F);
         this.xpReward = 50;
         this.setNoAi(false);
-        this.setCustomName(Component.literal("Chris"));
+        this.setCustomName(this.getDisplayName());
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
         ItemStack sword = new ItemStack(Items.DIAMOND_SWORD);
@@ -102,7 +101,7 @@ public class ChrisEntity extends PathfinderMobInventory {
 
     public void die(DamageSource damagesource) {
         super.die(damagesource);
-        ChrisOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ());
+        ChrisOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
         if (this.level() instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
             ServerLevel serverlevel = levelaccessor;
             ChrisDeadEntity deadEntity = new ChrisDeadEntity((EntityType) AnnoyingVillagersModEntities.CHRIS_DEAD.get(), serverlevel);

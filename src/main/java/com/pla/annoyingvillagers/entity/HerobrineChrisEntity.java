@@ -45,7 +45,7 @@ public class HerobrineChrisEntity extends HerobrineMob {
         this.xpReward = 50;
         this.setNoAi(false);
         this.setPersistenceRequired();
-        this.setChatName("§5Herobrine Chris§r");
+        this.setChatName(this.getDisplayName().getString());
     }
 
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {

@@ -14,10 +14,6 @@ import net.minecraft.world.level.block.Blocks;
 public class InfectedChrisDieProcedure {
 
     public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2) {
-        if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-            levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("Chris has died."), false);
-        }
-
         dropLoot(levelaccessor, d0, d1, d2);
     }
 

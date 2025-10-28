@@ -4,6 +4,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModEnchantments;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.util.EquipmentDataLoader;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -14,9 +15,10 @@ import net.minecraft.world.level.block.Blocks;
 
 public class ChrisOnDeathProcedure {
 
-    public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2) {
+    public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, Entity entity) {
         if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-            levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Chris> Steve, I'm sorry."), false);
+            levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + entity.getDisplayName().getString() + "> Steve, I'm sorry."), false);
+
         }
         new DelayedTask(20) {
             public void run() {

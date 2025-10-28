@@ -42,7 +42,7 @@ public class VillagerScoutCaptainEntity extends PathfinderMobInventory {
         this.setMaxUpStep(2.5F);
         this.xpReward = 0;
         this.setNoAi(false);
-        this.setCustomName(Component.literal("Villager Scout Captain"));
+        this.setCustomName(this.getDisplayName());
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.DIAMOND_SWORD));

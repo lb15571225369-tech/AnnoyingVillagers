@@ -50,7 +50,7 @@ public class HerobrineCloneEntity extends HerobrineMob {
         this.setNoAi(false);
         this.setPersistenceRequired();
         this.setCustomNameVisible(false);
-        this.setChatName("§5Herobrine Clone§r");
+        this.setChatName(this.getDisplayName().getString());
 //        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.OBSIDIAN_WEAPON.get()));
     }
 

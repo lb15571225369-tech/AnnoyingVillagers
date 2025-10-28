@@ -54,7 +54,7 @@ public class JevEntity extends PathfinderMobInventory {
         this.setMaxUpStep(0.6F);
         this.xpReward = 10;
         this.setNoAi(false);
-        this.setCustomName(Component.literal("Jev"));
+        this.setCustomName(this.getDisplayName());
         this.setPersistenceRequired();
         this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.JEV_BOOK.get()));
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.JEV_PENCIL.get()));
@@ -171,7 +171,7 @@ public class JevEntity extends PathfinderMobInventory {
                         };
 
                         String message = ALEX_DEATH_LINES[level().getRandom().nextInt(ALEX_DEATH_LINES.length)];
-                        serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Jev> " + message), false);
+                        serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getDisplayName().getString() + "> " + message), false);
                     }
                 }
                 followTarget = null;

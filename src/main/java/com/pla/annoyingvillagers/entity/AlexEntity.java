@@ -61,7 +61,7 @@ public class AlexEntity extends PathfinderMobInventory {
         this.setMaxUpStep(2.8F);
         this.xpReward = 60;
         this.setNoAi(false);
-        this.setCustomName(Component.literal("Alex"));
+        this.setCustomName(Component.translatable(this.getType().getDescriptionId()));
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
         ItemStack sword = new ItemStack(Items.DIAMOND_SWORD);
@@ -196,12 +196,7 @@ public class AlexEntity extends PathfinderMobInventory {
         super.awardKillScore(entity, i, damagesource);
         if (entity != null) {
             if (Math.random() < 0.2D && !entity.level().isClientSide() && entity.getServer() != null) {
-                try {
-                    entity.getServer().getCommands().getDispatcher().execute(
-                            "tellraw @a {\"text\":\"<Alex> Hah, a loser beneath me\"}",
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException e) {
-                }
+                entity.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getDisplayName().getString() + "> " + "Hah, a loser beneath me"), false);
             }
         }
     }
@@ -244,7 +239,7 @@ public class AlexEntity extends PathfinderMobInventory {
                         };
 
                         String message = JEV_DEATH_LINES[level().getRandom().nextInt(JEV_DEATH_LINES.length)];
-                        serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Alex> " + message), false);
+                        serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getDisplayName().getString() + "> " + message), false);
                     }
                 }
                 jevToProtect = null;

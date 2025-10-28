@@ -165,7 +165,7 @@ public class HerobrineGregEntity extends Monster {
         this.xpReward = 50;
         this.setNoAi(false);
         this.setPersistenceRequired();
-        this.setCustomName(Component.literal("Greg"));
+        this.setCustomName(this.getDisplayName());
         this.setCustomNameVisible(true);
 
         int min = AnnoyingVillagersConfig.HEROBRINE_RECALL_MIN_TIME.get();
@@ -332,7 +332,7 @@ public class HerobrineGregEntity extends Monster {
     }
 
     public void requestProtect(UUID protectUUID, EliteHerobrineKnockedEntity protectEntity) {
-        this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> Protect him !!!"), false);
+        this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getDisplayName().getString() + "> Protect him !!!"), false);
         assignProtect(firstSummonedHerobrine, protectUUID, protectEntity);
         assignProtect(secondSummonedHerobrine, protectUUID, protectEntity);
         assignProtect(thirdSummonedHerobrine, protectUUID, protectEntity);
@@ -452,7 +452,7 @@ public class HerobrineGregEntity extends Monster {
                             this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 } catch (CommandSyntaxException e) {
                 }
-                this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine Greg§r> Summoning !!!"), false);
+                this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getDisplayName().getString() + "> Summoning !!!"), false);
             }
             if (this.summonTiming == 1) {
                 if (this.combatMode) {

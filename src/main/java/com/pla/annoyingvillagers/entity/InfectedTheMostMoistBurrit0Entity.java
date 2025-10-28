@@ -43,7 +43,7 @@ public class InfectedTheMostMoistBurrit0Entity extends PathfinderMob {
         this.setMaxUpStep(0.6F);
         this.xpReward = 0;
         this.setNoAi(true);
-        this.setCustomName(Component.literal("TheMostMoistBurrit0"));
+        this.setCustomName(this.getDisplayName());
         this.setCustomNameVisible(true);
         this.setItemSlot(EquipmentSlot.HEAD, new ItemStack((ItemLike) AnnoyingVillagersModItems.BROKEN_DIAMOND_HELMET.get()));
         this.setItemSlot(EquipmentSlot.CHEST, new ItemStack((ItemLike) AnnoyingVillagersModItems.BROKEN_DIAMOND_CHESTPLATE.get()));

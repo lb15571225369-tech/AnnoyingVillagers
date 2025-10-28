@@ -61,7 +61,7 @@ public class Steve2OnSpawnProcedure {
             }
 
             if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Steve> I can't believe I'm using it here."), false);
+                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + entity.getDisplayName().getString() + "> I can't believe I'm using it here."), false);
             }
             new DelayedTask(20) {
                 public void run() {

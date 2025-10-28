@@ -44,7 +44,7 @@ public class AngrySteveEntity extends PathfinderMobInventory {
         this.setMaxUpStep(3.0F);
         this.xpReward = 0;
         this.setNoAi(false);
-        this.setCustomName(Component.literal("Steve"));
+        this.setCustomName(this.getDisplayName());
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.LEGENDARY_SWORD_MOB.get()));

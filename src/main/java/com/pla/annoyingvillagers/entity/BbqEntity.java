@@ -55,7 +55,7 @@ public class BbqEntity extends PathfinderMob implements RangedAttackMob {
         this.setMaxUpStep(0.6F);
         this.xpReward = 0;
         this.setNoAi(false);
-        this.setCustomName(Component.literal("BBQ Sauce"));
+        this.setCustomName(this.getDisplayName());
         this.setCustomNameVisible(true);
     }
 

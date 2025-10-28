@@ -26,7 +26,7 @@ public class BlueDemon2OnEntityDeathProcedure {
                 @Override
                 public void run() {
                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Blue Demon> Ultimately couldn't withstand the pressure of this chaotic world..."), false);
+                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + entity.getDisplayName().getString() + "> Ultimately couldn't withstand the pressure of this chaotic world..."), false);
                     }
 
                     LevelAccessor levelaccessor1 = levelaccessor;

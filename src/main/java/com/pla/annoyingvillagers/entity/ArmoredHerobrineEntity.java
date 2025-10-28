@@ -53,12 +53,12 @@ public class ArmoredHerobrineEntity extends HerobrineMob {
         this.setMaxUpStep(4.0F);
         this.xpReward = 60;
         this.setNoAi(false);
-        this.setCustomName(Component.literal("§5Armored Herobrine§r"));
+        this.setCustomName(this.getDisplayName());
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
         this.setItemSlot(EquipmentSlot.HEAD, new ItemStack((ItemLike) AnnoyingVillagersModItems.HEROBRINE_OBSIDIAN_DIAMOND_HELMET.get()));
         this.setItemSlot(EquipmentSlot.CHEST, new ItemStack((ItemLike) AnnoyingVillagersModItems.HEROBRINE_OBSIDIAN_DIAMOND_CHESTPLATE.get()));
-        this.setChatName("§5Armored Herobrine 7§r");
+        this.setChatName(this.getDisplayName().getString());
     }
 
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {

@@ -33,7 +33,7 @@ public class AngrySteveOnSpawnProcedure {
                     }
 
                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Steve> I will kill you"), false);
+                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + entity.getDisplayName().getString() + "> I will kill you"), false);
                     }
                 }
             };

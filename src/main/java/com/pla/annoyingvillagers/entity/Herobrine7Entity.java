@@ -49,11 +49,11 @@ public class Herobrine7Entity extends HerobrineMob {
         this.setMaxUpStep(2.0F);
         this.xpReward = 50;
         this.setNoAi(false);
-        this.setCustomName(Component.literal("§5Herobrine 7§r"));
+        this.setCustomName(this.getDisplayName());
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get()));
-        this.setChatName("§5Herobrine 7§r");
+        this.setChatName(this.getDisplayName().getString());
     }
 
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {

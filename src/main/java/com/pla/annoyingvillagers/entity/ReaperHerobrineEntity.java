@@ -65,11 +65,11 @@ public class ReaperHerobrineEntity extends HerobrineMob {
         this.setMaxUpStep(2.9F);
         this.xpReward = 300;
         this.setNoAi(false);
-        this.setCustomName(Component.literal("§5Reaper Herobrine§r"));
+        this.setCustomName(this.getDisplayName());
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.ENDER_SLAYER_SCYTHE.get()));
-        this.setChatName("§5Reaper Herobrine§r");
+        this.setChatName(this.getDisplayName().getString());
     }
 
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -153,7 +153,7 @@ public class ReaperHerobrineEntity extends HerobrineMob {
             this.enderDragon = dragon;
 
             if (this.level().getServer() != null) {
-                this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Reaper Herobrine§r> Summon!!!"), false);
+                this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getChatName() + "> Summon!!!"), false);
             }
         }
     }
@@ -197,7 +197,7 @@ public class ReaperHerobrineEntity extends HerobrineMob {
                 enderDragon = null;
                 enderDragonUUID = null;
                 if (this.level().getServer() != null) {
-                    this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Reaper Herobrine§r> Return!!!"), false);
+                    this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getChatName() + "> Return!!!"), false);
                 }
                 dragonSummonCooldown = 3600;
             }

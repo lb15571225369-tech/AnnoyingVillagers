@@ -59,10 +59,10 @@ public class ShadowHerobrineEntity extends HerobrineMob {
         this.setMaxUpStep(2.8F);
         this.xpReward = 60;
         this.setNoAi(false);
-        this.setCustomName(Component.literal("§5Shadow Herobrine§r"));
+        this.setCustomName(this.getDisplayName());
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
-        this.setChatName("§5Shadow Herobrine§r");
+        this.setChatName(this.getDisplayName().getString());
     }
 
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {

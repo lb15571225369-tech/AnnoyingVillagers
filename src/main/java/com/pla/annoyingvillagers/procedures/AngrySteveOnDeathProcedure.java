@@ -9,6 +9,7 @@ import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.util.EquipmentDataLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -34,12 +35,7 @@ public class AngrySteveOnDeathProcedure {
     public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, Entity entity) {
         if (entity != null) {
             if (!entity.level().isClientSide() && entity.getServer() != null) {
-                try {
-                    entity.getServer().getCommands().getDispatcher().execute(
-                            "tellraw @a {\"text\":\"<Steve> Nooooooooooooooo !!\"}",
-                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException e) {
-                }
+                entity.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + entity.getDisplayName().getString() + "> Noooooooooooooooooooooooooo!"), false);
             }
 
             if (levelaccessor instanceof Level) {

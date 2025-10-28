@@ -2,17 +2,16 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
+import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.spawnhandler.BluedemonData;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -34,11 +33,6 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityUpdateProcedure;
-import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityDamageProcedure;
-import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityDeathProcedure;
-import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityKillOtherEntityProcedure;
-import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityInitialSpawnProcedure;
 
 import java.util.Random;
 import java.util.UUID;
@@ -70,7 +64,7 @@ public class BlueDemonEntity extends Monster {
         this.setMaxUpStep(3.0F);
         this.xpReward = 0;
         this.setNoAi(false);
-        this.setCustomName(Component.literal("§bBlue Demon§r"));
+        this.setCustomName(this.getDisplayName());
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.TRIDENT));
@@ -144,7 +138,7 @@ public class BlueDemonEntity extends Monster {
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        BlueDemonOnEntityDamageProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
+        BlueDemonOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;
         if (damagesource.is(DamageTypes.DROWN)) return false;

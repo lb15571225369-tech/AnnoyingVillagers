@@ -64,11 +64,11 @@ public class GlaiveHerobrineEntity extends HerobrineMob {
         this.setMaxUpStep(2.9F);
         this.xpReward = 300;
         this.setNoAi(false);
-        this.setCustomName(Component.literal("§5Glaive Herobrine§r"));
+        this.setCustomName(this.getDisplayName());
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.ENDER_GLAIVE.get()));
-        this.setChatName("§5Glaive Herobrine§r");
+        this.setChatName(this.getDisplayName().getString());
     }
 
     public int getCooldownTicks() {

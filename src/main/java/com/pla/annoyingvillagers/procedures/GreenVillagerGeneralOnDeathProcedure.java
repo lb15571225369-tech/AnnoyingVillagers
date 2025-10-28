@@ -524,13 +524,13 @@ public class GreenVillagerGeneralOnDeathProcedure {
                 }
 
                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Villager Purple General> We've encountered an extremely powerful player, requesting support!"), false);
+                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + entity.getDisplayName().getString() + "> We've encountered an extremely powerful player, requesting support!"), false);
                 }
 
                 new DelayedTask(400) {
                     public void run() {
                         if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                            levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Villager Scout> Reinforcements have arrived!"), false);
+                            levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + Component.translatable("entity.annoyingvillagers.villager_scout").getString() + "> Reinforcements have arrived!"), false);
                         }
 
                         Entity entity1 = entity;

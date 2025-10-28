@@ -4,9 +4,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.util.DelayedTask;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -16,12 +14,11 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.level.Explosion.BlockInteraction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class BlueDemonOnEntityDamageProcedure {
+public class BlueDemonOnHurtProcedure {
 
     public static void execute(LevelAccessor world, double x, double y, double z, Entity entity, Entity entity1) {
         if (entity == null || entity1 == null || world == null) return;
@@ -49,7 +46,7 @@ public class BlueDemonOnEntityDamageProcedure {
                     new DelayedTask(20) {
                         @Override
                         public void run() {
-                            broadcast(world, "<Blue Demon> You're way too predictable.");
+                            broadcast(world, "<" + entity.getDisplayName().getString() + "> You're way too predictable.");
                             playSound(world, x, y, z, AnnoyingVillagers.MODID + ":bluedemonsayyc");
                             applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 3);
                             applyEffect(entity1, MobEffects.BLINDNESS, 80, 3);
@@ -69,7 +66,7 @@ public class BlueDemonOnEntityDamageProcedure {
                     new DelayedTask(20) {
                         @Override
                         public void run() {
-                            broadcast(world, "<Blue Demon> Don't be arrogant.");
+                            broadcast(world, "<" + entity.getDisplayName().getString() + "> Don't be arrogant.");
 
                             new DelayedTask(20) {
                                 @Override
@@ -88,7 +85,7 @@ public class BlueDemonOnEntityDamageProcedure {
                             new DelayedTask(20) {
                                 @Override
                                 public void run() {
-                                    broadcast(world, "<Blue Demon> Looking down on us undead creatures only highlights how ignorant you are.");
+                                    broadcast(world, "<" + entity.getDisplayName().getString() + "> Looking down on us undead creatures only highlights how ignorant you are.");
                                     playSound(world, x, y, z, AnnoyingVillagers.MODID + ":bluedemon_say_you_no_know");
                                     applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 10);
                                     runParticle(entity);
@@ -104,7 +101,7 @@ public class BlueDemonOnEntityDamageProcedure {
                             new DelayedTask(20) {
                                 @Override
                                 public void run() {
-                                    broadcast(world, "<Blue Demon> How interesting. But I really want to know what is your motive?");
+                                    broadcast(world, "<" + entity.getDisplayName().getString() + "> How interesting. But I really want to know what is your motive?");
                                     playSound(world, x, y, z, AnnoyingVillagers.MODID + ":bluedemon_say_player_interesting");
                                     runParticle(entity);
                                     applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 5);

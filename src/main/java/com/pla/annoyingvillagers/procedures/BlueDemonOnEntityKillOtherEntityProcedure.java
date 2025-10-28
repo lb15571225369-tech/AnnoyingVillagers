@@ -23,7 +23,7 @@ public class BlueDemonOnEntityKillOtherEntityProcedure {
 
             if (Math.random() <= 0.2D) {
                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Blue Demon> Don't be arrogant."), false);
+                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + entity.getDisplayName().getString() + "> Don't be arrogant."), false);
                 }
 
                 if (levelaccessor instanceof Level) {
@@ -37,7 +37,7 @@ public class BlueDemonOnEntityKillOtherEntityProcedure {
             } else if (Math.random() <= 0.3D) {
                 if (entity instanceof Player) {
                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Blue Demon> Amusing. Torturing players is really fun."), false);
+                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + entity.getDisplayName().getString() + "> Amusing. Torturing players is really fun."), false);
                     }
 
                     if (levelaccessor instanceof Level) {
@@ -51,7 +51,7 @@ public class BlueDemonOnEntityKillOtherEntityProcedure {
                 }
             } else if (Math.random() <= 0.2D) {
                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Blue Demon> Underestimating others only shows how ignorant you are."), false);
+                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + entity.getDisplayName().getString() + "> Underestimating others only shows how ignorant you are."), false);
                 }
 
                 if (levelaccessor instanceof Level) {
@@ -64,7 +64,7 @@ public class BlueDemonOnEntityKillOtherEntityProcedure {
                 }
             } else if (Math.random() <= 0.2D) {
                 if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Blue Demon> You're getting nervous."), false);
+                    levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + entity.getDisplayName().getString() + "> You're getting nervous."), false);
                 }
 
                 if (levelaccessor instanceof Level) {

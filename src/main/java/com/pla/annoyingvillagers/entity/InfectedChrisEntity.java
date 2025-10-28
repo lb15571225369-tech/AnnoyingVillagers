@@ -42,7 +42,7 @@ public class InfectedChrisEntity extends PathfinderMob {
         this.setMaxUpStep(0.6F);
         this.xpReward = 7;
         this.setNoAi(true);
-        this.setCustomName(Component.literal("Chris"));
+        this.setCustomName(this.getDisplayName());
         this.setCustomNameVisible(true);
     }
 

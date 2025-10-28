@@ -56,11 +56,11 @@ public class SledgehammerHerobrineEntity extends HerobrineMob {
         this.setMaxUpStep(2.5F);
         this.xpReward = 80;
         this.setNoAi(false);
-        this.setCustomName(Component.literal("§5Sledgehammer Herobrine§r"));
+        this.setCustomName(this.getDisplayName());
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.OBSIDIAN_SLEDGEHAMMER.get()));
-        this.setChatName("§5Sledgehammer Herobrine§r");
+        this.setChatName(this.getDisplayName().getString());
     }
 
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {

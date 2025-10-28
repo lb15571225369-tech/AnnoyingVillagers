@@ -11,7 +11,6 @@ import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.spawnhandler.HerobrineMobData;

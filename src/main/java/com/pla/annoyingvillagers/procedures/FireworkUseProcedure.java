@@ -169,7 +169,7 @@ public class FireworkUseProcedure {
 
                                 if (Math.random() <= 0.6D) {
                                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Villager Scout> What the matter?"), false);
+                                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + Component.translatable("entity.annoyingvillagers.villager_scout").getString() + "> What the matter?"), false);
                                     }
 
                                     entity1 = entity;
@@ -186,7 +186,7 @@ public class FireworkUseProcedure {
                                     }
                                 } else if (Math.random() <= 0.1D) {
                                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Villager Blue General> What the matter?"), false);
+                                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + Component.translatable("entity.annoyingvillagers.blue_villager_general").getString() + "> What the matter?"), false);
                                     }
 
                                     entity1 = entity;
@@ -203,7 +203,7 @@ public class FireworkUseProcedure {
                                     }
                                 } else if (Math.random() <= 0.1D) {
                                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Villager Purple General> What the matter?"), false);
+                                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + Component.translatable("entity.annoyingvillagers.purple_villager_general").getString() + "> What the matter?"), false);
                                     }
 
                                     entity1 = entity;
@@ -218,7 +218,7 @@ public class FireworkUseProcedure {
                                     }
                                 } else if (Math.random() <= 0.1D) {
                                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Villager Red General> What the matter?"), false);
+                                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + Component.translatable("entity.annoyingvillagers.red_villager_general").getString() + "> What the matter?"), false);
                                     }
 
                                     entity1 = entity;
@@ -235,7 +235,7 @@ public class FireworkUseProcedure {
                                     }
                                 } else {
                                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Villager Green General> What the matter?"), false);
+                                        levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + Component.translatable("entity.annoyingvillagers.green_villager_general").getString() + "> What the matter ?"), false);
                                     }
 
                                     entity1 = entity;

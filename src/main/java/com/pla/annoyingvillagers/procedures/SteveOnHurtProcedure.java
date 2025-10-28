@@ -163,7 +163,7 @@ public class SteveOnHurtProcedure {
                         }
                     } else if (Math.random() <= 0.1D) {
                         if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                            levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Steve> Why do we have to keep fighting?"), false);
+                            levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + entity.getDisplayName().getString() + "> Why do we have to keep fighting ?"), false);
                         }
 
                         if (levelaccessor instanceof Level level) {
@@ -175,7 +175,7 @@ public class SteveOnHurtProcedure {
                         }
                     } else if (Math.random() <= 0.1D) {
                         if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                            levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Steve> Why?"), false);
+                            levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + entity.getDisplayName().getString() + "> Why ?"), false);
                         }
 
                         if (levelaccessor instanceof Level level) {

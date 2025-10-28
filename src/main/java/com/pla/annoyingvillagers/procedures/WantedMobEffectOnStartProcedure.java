@@ -75,7 +75,7 @@ public class WantedMobEffectOnStartProcedure {
                         }
 
                         if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                            levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Villager Scout> Found them! There's a wanted criminal here!"), false);
+                            levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + Component.translatable("entity.annoyingvillagers.villager_scout").getString() + "> Found them! There's a wanted criminal here!"), false);
                         }
                     }
                 };

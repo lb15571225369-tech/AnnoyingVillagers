@@ -163,7 +163,7 @@ public class SteveOnSpawnProcedure {
             }
 
             if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
-                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<Steve> My name is Steve. I'm here to destroy Herobrine."), false);
+                levelaccessor.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + entity.getDisplayName().getString() + "> My name is Steve. I'm here to destroy Herobrine."), false);
             }
 
             if (!entity.level().isClientSide() && entity.getServer() != null) {
