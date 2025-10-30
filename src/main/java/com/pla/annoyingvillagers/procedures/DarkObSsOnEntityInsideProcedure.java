@@ -44,6 +44,10 @@ public class DarkObSsOnEntityInsideProcedure {
                 return;
             }
 
+            if (entity instanceof Player && fromPlayer && levelaccessor.getServer() != null && !levelaccessor.getServer().isPvpAllowed()) {
+                return;
+            }
+
             if (!entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));

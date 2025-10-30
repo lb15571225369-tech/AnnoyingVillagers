@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.procedures;
 import javax.annotation.Nullable;
 
 import com.pla.annoyingvillagers.capabilities.AVCategories;
+import com.pla.annoyingvillagers.clazz.NullWeapon;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.util.DelayedTask;
@@ -18,6 +19,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.WitherSkeleton;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
@@ -49,7 +51,9 @@ public class ExecuteNpcProcedure {
     }
 
     public static void execute(LevelAccessor levelaccessor, Entity victim, Entity attacker) {
-        if (attacker instanceof NullEntity || !AnnoyingVillagersConfig.EXECUTION_NPC.get()) return;
+        if (attacker instanceof NullEntity || attacker instanceof NullWeapon
+                || (attacker instanceof WitherSkeleton && attacker.getPersistentData().hasUUID("SpawnByNull"))
+                || !AnnoyingVillagersConfig.EXECUTION_NPC.get()) return;
         execute((Event) null, levelaccessor, victim, attacker);
     }
 
@@ -112,7 +116,9 @@ public class ExecuteNpcProcedure {
     }
 
     private static void execute(@Nullable Event event, LevelAccessor levelaccessor, final Entity victim, final Entity attacker) {
-        if (attacker instanceof NullEntity || !AnnoyingVillagersConfig.EXECUTION_NPC.get()) return;
+        if (attacker instanceof NullEntity || attacker instanceof NullWeapon
+                || (attacker instanceof WitherSkeleton && attacker.getPersistentData().hasUUID("SpawnByNull"))
+                || !AnnoyingVillagersConfig.EXECUTION_NPC.get()) return;
         if (victim != null && attacker != null) {
             if (!(attacker instanceof Player)) {
                 boolean flag = false;

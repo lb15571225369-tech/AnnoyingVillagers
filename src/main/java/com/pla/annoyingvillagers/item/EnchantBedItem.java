@@ -29,7 +29,7 @@ public class EnchantBedItem extends Item {
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal("Right-click the Enchanted Bed once to save your respawn point. Upon death, you will not drop your items. You must right-click it again after each use to reactivate the effect. Conflicts with the Totem of Undying."));
+        list.add(Component.translatable("tooltip.annoyingvillagers.enchanted_bed"));
     }
 
     public InteractionResult useOn(UseOnContext useoncontext) {

@@ -24,7 +24,7 @@ public class NullOnHurtProcedure {
                 LivingEntity target = nullEntity.getTarget();
 
                 if (attacker == target) {
-                    if (Math.random() <= 0.2D && nullEntity.isAvailableWitherSkeletonSlot() && levelaccessor instanceof ServerLevel) {
+                    if (Math.random() <= 0.2D && nullEntity.isAvailableWitherSkeletonSlot() && nullEntity.getWitherSkeletonSummonCooldown() == 0 && levelaccessor instanceof ServerLevel) {
                         ServerLevel serverlevel = (ServerLevel)levelaccessor;
                         WitherSkeleton witherskeleton = new WitherSkeleton(EntityType.WITHER_SKELETON, serverlevel);
                         witherskeleton.moveTo(d0 + (double)Mth.nextInt(randomSource, 1, 10), d1 + (double)Mth.nextInt(randomSource, 5, 10), d2 + (double)Mth.nextInt(randomSource, 1, 10), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);

@@ -462,6 +462,9 @@ public class LowShadowHerobrineCloneEntity extends Monster {
                 if (this.possessedByEntity != null) {
                     ServerLevel server = (ServerLevel)this.level();
                     Vec3 from = getArmPosition(this, new Vec3f(0,0,0), Armatures.BIPED.toolR, 1.2F, 0.0F);
+                    if (from == null) {
+                        return;
+                    }
                     Vec3 to = this.possessedByEntity.getEyePosition();
 
                     AABB box = this.possessedByEntity.getBoundingBox().inflate(0.05);

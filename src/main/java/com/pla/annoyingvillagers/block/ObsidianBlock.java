@@ -78,7 +78,7 @@ public class ObsidianBlock extends Block implements EntityBlock {
 
     public void appendHoverText(ItemStack itemstack, BlockGetter blockgetter, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, blockgetter, list, tooltipflag);
-        list.add(Component.literal("Obsidian Fired by Herobrine's Clone"));
+        list.add(Component.translatable("tooltip.annoyingvillagers.obsidian"));
     }
 
     public int getLightBlock(BlockState blockstate, BlockGetter blockgetter, BlockPos blockpos) {

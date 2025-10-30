@@ -78,7 +78,7 @@ public class ShadowObsidianBlock extends Block implements EntityBlock {
 
     public void appendHoverText(ItemStack itemstack, BlockGetter blockgetter, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, blockgetter, list, tooltipflag);
-        list.add(Component.literal("Shadow Obsidian Fired by Shadow Herobrine's Clone"));
+        list.add(Component.translatable("tooltip.annoyingvillagers.shadow_obsidian"));
     }
 
     public int getLightBlock(BlockState blockstate, BlockGetter blockgetter, BlockPos blockpos) {

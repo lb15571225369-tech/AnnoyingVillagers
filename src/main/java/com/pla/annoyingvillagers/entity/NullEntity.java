@@ -7,6 +7,7 @@ import com.pla.annoyingvillagers.clazz.NullWeapon;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.procedures.NullOnHurtProcedure;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
+import net.corruptdog.cdm.api.animation.types.ExecutedAnimation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -35,12 +36,15 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.utils.NameManager;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.animation.types.LongHitAnimation;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 public class NullEntity extends HerobrineMob {
     private NullWeapon nullSwordEntity;
     private UUID nullSwordUUID;
+    private int witherSkeletonSummonCooldown = 0;
 
     private NullWeapon nullAxeEntity;
     private UUID nullAxeUUID;
@@ -63,8 +67,14 @@ public class NullEntity extends HerobrineMob {
     private WitherSkeleton thirdWitherSkeleton;
     private UUID thirdWitherSkeletonUuid;
 
+    final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
+
     public boolean isAvailableWitherSkeletonSlot() {
         return firstWitherSkeletonUuid == null || secondWitherSkeletonUuid == null || thirdWitherSkeletonUuid == null;
+    }
+
+    public int getWitherSkeletonSummonCooldown() {
+        return witherSkeletonSummonCooldown;
     }
 
     public void claimWitherSkeletonSlot(WitherSkeleton witherSkeleton) {
@@ -153,6 +163,7 @@ public class NullEntity extends HerobrineMob {
             tag.putUUID("ThirdWitherSkeletonUuid", thirdWitherSkeletonUuid);
         }
         tag.putBoolean("SpawnNullWeapon", spawnNullWeapon);
+        tag.putInt("WitherSkeletonSummonCooldown", witherSkeletonSummonCooldown);
     }
 
     @Override
@@ -183,6 +194,7 @@ public class NullEntity extends HerobrineMob {
             thirdWitherSkeletonUuid = tag.getUUID("ThirdWitherSkeletonUuid");
         }
         spawnNullWeapon = tag.getBoolean("SpawnNullWeapon");
+        witherSkeletonSummonCooldown = tag.getInt("WitherSkeletonSummonCooldown");
     }
 
     private void initialSpawn() {
@@ -310,17 +322,29 @@ public class NullEntity extends HerobrineMob {
                     this.thirdWitherSkeletonUuid = null;
                 }
             }
+            if (witherSkeletonSummonCooldown > 0) {
+                witherSkeletonSummonCooldown = witherSkeletonSummonCooldown - 1;
+            }
             if (firstWitherSkeleton != null && !firstWitherSkeleton.isAlive()) {
                 firstWitherSkeleton = null;
                 firstWitherSkeletonUuid = null;
+                if (witherSkeletonSummonCooldown == 0) {
+                    witherSkeletonSummonCooldown = 1200;
+                }
             }
             if (secondWitherSkeleton != null && !secondWitherSkeleton.isAlive()) {
                 secondWitherSkeleton = null;
                 secondWitherSkeletonUuid = null;
+                if (witherSkeletonSummonCooldown == 0) {
+                    witherSkeletonSummonCooldown = 1200;
+                }
             }
             if (thirdWitherSkeleton != null && !thirdWitherSkeleton.isAlive()) {
                 thirdWitherSkeleton = null;
                 thirdWitherSkeletonUuid = null;
+                if (witherSkeletonSummonCooldown == 0) {
+                    witherSkeletonSummonCooldown = 1200;
+                }
             }
 
             String animId = currentEfAnimIdOrNull(this);
@@ -350,27 +374,42 @@ public class NullEntity extends HerobrineMob {
             wasShooting = shootingNow;
 
             if (this.tickCount % 20 == 0) {
+                DynamicAnimation dynamicanimation = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
                 if (this.nullSwordEntity != null) {
-                    if (!this.nullSwordEntity.isReleased()) {
+                   if (!this.nullSwordEntity.isReleased()) {
                         this.nullSwordEntity.moveTo(getRandomPosition(this.getX(), -4, 4), getRandomPosition(this.getY(), -2, 2), getRandomPosition(this.getZ(), -4, 4));
                     } else if (this.nullSwordEntity.isReleased()) {
-                        LivingEntity target = this.getTarget();
-                        if (target != null && target.isAlive()) {
-                            this.nullSwordEntity.moveTo(getRandomPosition(target.getX(), -4, 4), getRandomPosition(target.getY(), -2, 2), getRandomPosition(target.getZ(), -4, 4));
-                        } else {
-                            this.nullSwordEntity.stopRelease();
-                        }
+                       if ((this.getTarget() != null && !(dynamicanimation instanceof LongHitAnimation) && dynamicanimation != Animations.BIPED_COMMON_NEUTRALIZED && dynamicanimation != Animations.BIPED_KNOCKDOWN && !(dynamicanimation instanceof ExecutedAnimation)) || livingentitypatch.isStunned()) {
+                           this.nullSwordEntity.stopRelease();
+                       } else {
+                           LivingEntity target = this.getTarget();
+                           if (target != null && target.isAlive()) {
+                               if (this.isHealing()) {
+                                   this.nullSwordEntity.stopRelease();
+                               }
+                               this.nullSwordEntity.moveTo(getRandomPosition(target.getX(), -4, 4), getRandomPosition(target.getY(), -2, 2), getRandomPosition(target.getZ(), -4, 4));
+                           } else {
+                               this.nullSwordEntity.stopRelease();
+                           }
+                       }
                     }
                 }
                 if (this.nullAxeEntity != null) {
                     if (!this.nullAxeEntity.isReleased()) {
                         this.nullAxeEntity.moveTo(getRandomPosition(this.getX(), -4, 4), getRandomPosition(this.getY(), -2, 2), getRandomPosition(this.getZ(), -4, 4));
                     } else if (this.nullAxeEntity.isReleased()) {
-                        LivingEntity target = this.getTarget();
-                        if (target != null && target.isAlive()) {
-                            this.nullAxeEntity.moveTo(getRandomPosition(target.getX(), -4, 4), getRandomPosition(target.getY(), -2, 2), getRandomPosition(target.getZ(), -4, 4));
-                        } else {
+                        if ((this.getTarget() != null && !(dynamicanimation instanceof LongHitAnimation) && dynamicanimation != Animations.BIPED_COMMON_NEUTRALIZED && dynamicanimation != Animations.BIPED_KNOCKDOWN && !(dynamicanimation instanceof ExecutedAnimation)) || livingentitypatch.isStunned()) {
                             this.nullAxeEntity.stopRelease();
+                        } else {
+                            LivingEntity target = this.getTarget();
+                            if (target != null && target.isAlive()) {
+                                if (this.isHealing()) {
+                                    this.nullAxeEntity.stopRelease();
+                                }
+                                this.nullAxeEntity.moveTo(getRandomPosition(target.getX(), -4, 4), getRandomPosition(target.getY(), -2, 2), getRandomPosition(target.getZ(), -4, 4));
+                            } else {
+                                this.nullAxeEntity.stopRelease();
+                            }
                         }
                     }
                 }
@@ -378,11 +417,18 @@ public class NullEntity extends HerobrineMob {
                     if (!this.nullPickaxeEntity.isReleased()) {
                         this.nullPickaxeEntity.moveTo(getRandomPosition(this.getX(), -4, 4), getRandomPosition(this.getY(), -2, 2), getRandomPosition(this.getZ(), -4, 4));
                     } else if (this.nullPickaxeEntity.isReleased()) {
-                        LivingEntity target = this.getTarget();
-                        if (target != null && target.isAlive()) {
-                            this.nullPickaxeEntity.moveTo(getRandomPosition(target.getX(), -4, 4), getRandomPosition(target.getY(), -2, 2), getRandomPosition(target.getZ(), -4, 4));
-                        } else {
+                        if ((this.getTarget() != null && !(dynamicanimation instanceof LongHitAnimation) && dynamicanimation != Animations.BIPED_COMMON_NEUTRALIZED && dynamicanimation != Animations.BIPED_KNOCKDOWN && !(dynamicanimation instanceof ExecutedAnimation)) || livingentitypatch.isStunned()) {
                             this.nullPickaxeEntity.stopRelease();
+                        } else {
+                            LivingEntity target = this.getTarget();
+                            if (target != null && target.isAlive()) {
+                                if (this.isHealing()) {
+                                    this.nullPickaxeEntity.stopRelease();
+                                }
+                                this.nullPickaxeEntity.moveTo(getRandomPosition(target.getX(), -4, 4), getRandomPosition(target.getY(), -2, 2), getRandomPosition(target.getZ(), -4, 4));
+                            } else {
+                                this.nullPickaxeEntity.stopRelease();
+                            }
                         }
                     }
                 }
@@ -390,11 +436,18 @@ public class NullEntity extends HerobrineMob {
                     if (!this.nullShovelEntity.isReleased()) {
                         this.nullShovelEntity.moveTo(getRandomPosition(this.getX(), -4, 4), getRandomPosition(this.getY(), -2, 2), getRandomPosition(this.getZ(), -4, 4));
                     } else if (this.nullShovelEntity.isReleased()) {
-                        LivingEntity target = this.getTarget();
-                        if (target != null && target.isAlive()) {
-                            this.nullShovelEntity.moveTo(getRandomPosition(target.getX(), -4, 4), getRandomPosition(target.getY(), -2, 2), getRandomPosition(target.getZ(), -4, 4));
-                        } else {
+                        if (this.getTarget() != null && !(dynamicanimation instanceof LongHitAnimation) && dynamicanimation != Animations.BIPED_COMMON_NEUTRALIZED && dynamicanimation != Animations.BIPED_KNOCKDOWN && !(dynamicanimation instanceof ExecutedAnimation)) {
                             this.nullShovelEntity.stopRelease();
+                        } else {
+                            LivingEntity target = this.getTarget();
+                            if (target != null && target.isAlive()) {
+                                if (this.isHealing()) {
+                                    this.nullShovelEntity.stopRelease();
+                                }
+                                this.nullShovelEntity.moveTo(getRandomPosition(target.getX(), -4, 4), getRandomPosition(target.getY(), -2, 2), getRandomPosition(target.getZ(), -4, 4));
+                            } else {
+                                this.nullShovelEntity.stopRelease();
+                            }
                         }
                     }
                 }
@@ -402,11 +455,18 @@ public class NullEntity extends HerobrineMob {
                     if (!this.nullHoeEntity.isReleased()) {
                         this.nullShovelEntity.moveTo(getRandomPosition(this.getX(), -4, 4), getRandomPosition(this.getY(), -2, 2), getRandomPosition(this.getZ(), -4, 4));
                     } else if (this.nullHoeEntity.isReleased()) {
-                        LivingEntity target = this.getTarget();
-                        if (target != null && target.isAlive()) {
-                            this.nullHoeEntity.moveTo(getRandomPosition(target.getX(), -4, 4), getRandomPosition(target.getY(), -2, 2), getRandomPosition(target.getZ(), -4, 4));
-                        } else {
+                        if (this.getTarget() != null && !(dynamicanimation instanceof LongHitAnimation) && dynamicanimation != Animations.BIPED_COMMON_NEUTRALIZED && dynamicanimation != Animations.BIPED_KNOCKDOWN && !(dynamicanimation instanceof ExecutedAnimation)) {
                             this.nullHoeEntity.stopRelease();
+                        } else {
+                            LivingEntity target = this.getTarget();
+                            if (target != null && target.isAlive()) {
+                                if (this.isHealing()) {
+                                    this.nullHoeEntity.stopRelease();
+                                }
+                                this.nullHoeEntity.moveTo(getRandomPosition(target.getX(), -4, 4), getRandomPosition(target.getY(), -2, 2), getRandomPosition(target.getZ(), -4, 4));
+                            } else {
+                                this.nullHoeEntity.stopRelease();
+                            }
                         }
                     }
                 }
@@ -569,8 +629,8 @@ public class NullEntity extends HerobrineMob {
 
             }
         }
-
-        if (this.getTarget() != null) {
+        DynamicAnimation dynamicanimation = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
+        if (this.getTarget() != null && (!(dynamicanimation instanceof LongHitAnimation) && dynamicanimation != Animations.BIPED_COMMON_NEUTRALIZED && dynamicanimation != Animations.BIPED_KNOCKDOWN && !(dynamicanimation instanceof ExecutedAnimation) || !livingentitypatch.isStunned())) {
             this.setDeltaMovement(new Vec3(this.getLookAngle().x * 0.2D, this.getLookAngle().y * 0.2D, this.getLookAngle().z * 0.2D));
         }
     }

@@ -436,10 +436,10 @@ public class HerobrineMob extends Monster {
         this.setNoAi(false);
         this.removeAllEffects();
         this.livingentitypatch.applyStun(StunType.FALL, 0.0F);
-        this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 1200, 2));
-        this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 1200, 2));
-        this.addEffect(new MobEffectInstance(MobEffects.JUMP, 1200, 2));
-        this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 1200, 2));
+        this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 2400, 2));
+        this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 2400, 2));
+        this.addEffect(new MobEffectInstance(MobEffects.JUMP, 2400, 2));
+        this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 2400, 2));
     }
 
     @Override
@@ -624,7 +624,11 @@ public class HerobrineMob extends Monster {
                         this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getChatName() + "> "
                                 + Component.translatable("subtitles.herobrine_request").getString()), false);
                     }
-                    this.healingCooldown = new Random().nextInt(AnnoyingVillagersConfig.HEROBRINE_HEALING_MIN_COOLDOWN.get() * 1200, AnnoyingVillagersConfig.HEROBRINE_HEALING_MAX_COOLDOWN.get() * 1200);
+                    if (AnnoyingVillagersConfig.HEROBRINE_HEALING_MIN_COOLDOWN.get() == AnnoyingVillagersConfig.HEROBRINE_HEALING_MAX_COOLDOWN.get()) {
+                        this.healingCooldown = AnnoyingVillagersConfig.HEROBRINE_HEALING_MIN_COOLDOWN.get() * 1200;
+                    } else {
+                        this.healingCooldown = new Random().nextInt(AnnoyingVillagersConfig.HEROBRINE_HEALING_MIN_COOLDOWN.get() * 1200, AnnoyingVillagersConfig.HEROBRINE_HEALING_MAX_COOLDOWN.get() * 1200);
+                    }
                 } else {
                     if (this.getEmptyBoundClone() != 4) {
                         this.healingAnimationCooldown = 60;
@@ -636,7 +640,11 @@ public class HerobrineMob extends Monster {
                         }
                         this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getChatName() + "> "
                                 + Component.translatable("subtitles.herobrine_request").getString()), false);
-                        this.healingCooldown = new Random().nextInt(AnnoyingVillagersConfig.HEROBRINE_HEALING_MIN_COOLDOWN.get() * 1200, AnnoyingVillagersConfig.HEROBRINE_HEALING_MAX_COOLDOWN.get() * 1200);
+                        if (AnnoyingVillagersConfig.HEROBRINE_HEALING_MIN_COOLDOWN.get() == AnnoyingVillagersConfig.HEROBRINE_HEALING_MAX_COOLDOWN.get()) {
+                            this.healingCooldown = AnnoyingVillagersConfig.HEROBRINE_HEALING_MIN_COOLDOWN.get() * 1200;
+                        } else {
+                            this.healingCooldown = new Random().nextInt(AnnoyingVillagersConfig.HEROBRINE_HEALING_MIN_COOLDOWN.get() * 1200, AnnoyingVillagersConfig.HEROBRINE_HEALING_MAX_COOLDOWN.get() * 1200);
+                        }
                     }
                 }
             }

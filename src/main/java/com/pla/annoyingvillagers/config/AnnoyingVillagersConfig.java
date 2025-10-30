@@ -50,17 +50,17 @@ public class AnnoyingVillagersConfig {
         HEROBRINE_HEALING_MIN_COOLDOWN = BUILDER.comment(
                         "The minimum value (in minutes) for Herobrine's healing cooldown time. This value should be lower than or equal the maximum. " +
                                 "After a random time between min and max, Herobrine will heal again.")
-                .defineInRange("herobrineHealingCooldownMinTime", 1, 1, 10080);
+                .defineInRange("herobrineHealingCooldownMinTime", 5, 1, 10080);
         HEROBRINE_HEALING_MAX_COOLDOWN = BUILDER.comment(
                         "The maximum value (in minutes) for Herobrine's healing cooldown time. This value should be greater than or equal to the minimum. " +
                                 "After a random time between min and max, Herobrine will heal again.")
-                .defineInRange("herobrineHealingCooldownMaxTime", 2, 1, 10080);
+                .defineInRange("herobrineHealingCooldownMaxTime", 5, 1, 10080);
         HEROBRINE_HEALING_HEALTH_TRIGGER = BUILDER.comment(
                         "The threshold (in percent) that determines when Herobrine starts healing. " +
                                 "If Herobrine's current health is less than or equal to this percentage of his max health, he will begin healing. " +
                                 "If the calculated value (percentage × max health) is less than 10, the threshold will default to 10 instead. " +
                                 "This ensures healing works correctly for low-health Herobrine (herobrine_clone, shadow_herobrine_clone, ...).")
-                .defineInRange("herobrineHealingHealthTrigger", 10, 5, 80);
+                .defineInRange("herobrineHealingHealthTrigger", 30, 5, 80);
         SPEC = BUILDER.build();
     }
 }

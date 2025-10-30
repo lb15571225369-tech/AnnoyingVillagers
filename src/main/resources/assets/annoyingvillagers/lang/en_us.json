@@ -268,5 +268,7 @@
   "tooltip.annoyingvillagers.poison_egg": "Thrown from BBQ Sauce.",
   "tooltip.annoyingvillagers.jev_glasses": "Right-click to equip.",
   "tooltip.annoyingvillagers.villager_head": "A tool for disguising as a villager. Right-click to equip. Sneak + Right-click to toggle Disguise/Attack mode.",
-  "tooltip.annoyingvillagers.enchanted_bed": "Right-click the Enchanted Bed once to set your respawn point. Upon death, you won't drop your items. You must right-click it again after each use to reactivate the effect. Conflicts with the Totem of Undying."
+  "tooltip.annoyingvillagers.enchanted_bed": "Right-click the Enchanted Bed once to set your respawn point. Upon death, you won't drop your items. You must right-click it again after each use to reactivate the effect. Conflicts with the Totem of Undying.",
+  "tooltip.annoyingvillagers.obsidian": "Obsidian Fired by Herobrine's Clone",
+  "tooltip.annoyingvillagers.shadow_obsidian": "Shadow Obsidian Fired by Shadow Herobrine's Clone"
 }

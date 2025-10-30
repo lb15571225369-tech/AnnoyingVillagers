@@ -49,6 +49,10 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                 return;
             }
 
+            if (entity instanceof Player && fromPlayer && levelaccessor.getServer() != null && !levelaccessor.getServer().isPvpAllowed()) {
+                return;
+            }
+
             if (!entity.level().isClientSide() && entity.getServer() != null) {
                 try {
                     entity.getServer().getCommands().getDispatcher().execute(
