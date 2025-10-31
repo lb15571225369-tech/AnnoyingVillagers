@@ -23,6 +23,7 @@ import yesman.epicfight.api.animation.types.AttackAnimation;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.EntityState;
 import yesman.epicfight.api.animation.types.EntityState.StateFactor;
+import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.client.animation.Layer.Priority;
 import yesman.epicfight.api.client.animation.property.ClientAnimationProperties;
 import yesman.epicfight.api.client.animation.property.JointMask;
@@ -34,7 +35,7 @@ import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.damagesource.EpicFightDamageSource;
 import yesman.epicfight.world.damagesource.StunType;
-import yesman.epicfight.world.gamerule.EpicFightGamerules;
+import yesman.epicfight.world.gamerule.EpicFightGameRules;
 
 public class KickAttackAnimation extends AttackAnimation {
     private void init() {
@@ -73,33 +74,27 @@ public class KickAttackAnimation extends AttackAnimation {
         }
     }
 
-    public KickAttackAnimation(float f, float f1, float f2, float f3, @Nullable Collider collider, Joint joint, String s, Armature armature) {
-        this(f, f1, f1, f2, f3, collider, joint, s, armature);
+    public KickAttackAnimation(float convertTime, float antic, float preDelay,
+                               float contact, float recovery,
+                               @Nullable Collider collider, Joint colliderJoint,
+                               String path, AssetAccessor<? extends Armature> armatureAccessor) {
+        this(convertTime, path, armatureAccessor,
+                new Phase(0.0F, antic, preDelay, contact, recovery, Float.MAX_VALUE, colliderJoint, collider));
     }
 
-    public KickAttackAnimation(float f, float f1, float f2, float f3, float f4, @Nullable Collider collider, Joint joint, String s, Armature armature) {
-        this(f, s, armature, new Phase(0.0F, f1, f2, f3, f4, Float.MAX_VALUE, joint, collider));
-    }
-
-    public KickAttackAnimation(float f, float f1, float f2, float f3, InteractionHand interactionhand, @Nullable Collider collider, Joint joint, String s, Armature armature) {
-        this(f, s, armature, new Phase(0.0F, f1, f1, f2, f3, Float.MAX_VALUE, interactionhand, joint, collider));
-    }
-
-    public KickAttackAnimation(float f, String s, Armature armature, boolean flag, Phase... aphase) {
-        super(f, s, armature, aphase);
-        init();
-    }
-
-    public KickAttackAnimation(float f, String s, Armature armature, Phase... aphase) {
-        super(f, s, armature, aphase);
+    public KickAttackAnimation(float convertTime,
+                               String path,
+                               AssetAccessor<? extends Armature> armatureAccessor,
+                               Phase... phases) {
+        super(convertTime, path, armatureAccessor, phases);
         init();
         this.newTimePair(0.0F, Float.MAX_VALUE);
         this.addStateRemoveOld(EntityState.TURNING_LOCKED, false);
-        this.addProperty(ActionAnimationProperty.COORD_SET_BEGIN, MoveCoordFunctions.TRACE_LOC_TARGET);
+        this.addProperty(ActionAnimationProperty.COORD_SET_BEGIN, MoveCoordFunctions.TRACE_TARGET_DISTANCE);
         this.addProperty(ActionAnimationProperty.COORD_SET_TICK, (dynamicanimation, livingentitypatch, transformsheet) -> {
             LivingEntity livingentity = livingentitypatch.getTarget();
 
-            if (!(Boolean) dynamicanimation.getRealAnimation().getProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE).orElse(false) && livingentity != null) {
+            if (!(Boolean) dynamicanimation.getRealAnimation().get().getProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE).orElse(false) && livingentity != null) {
                 TransformSheet transformsheet1 = ((TransformSheet) dynamicanimation.getTransfroms().get("Root")).copyAll();
                 Keyframe[] akeyframe = transformsheet1.getKeyframes();
                 byte b0 = 0;
@@ -125,12 +120,12 @@ public class KickAttackAnimation extends AttackAnimation {
         });
     }
 
-    public void end(LivingEntityPatch<?> livingentitypatch, DynamicAnimation dynamicanimation, boolean flag) {
-        super.end(livingentitypatch, dynamicanimation, flag);
-        boolean flag1 = ((BooleanValue) ((LivingEntity) livingentitypatch.getOriginal()).level().getGameRules().getRule(EpicFightGamerules.STIFF_COMBO_ATTACKS)).get();
+    public void end(LivingEntityPatch<?> livingentitypatch, AssetAccessor<? extends DynamicAnimation> nextAnimation, boolean flag) {
+        super.end(livingentitypatch, nextAnimation, flag);
+        boolean flag1 = ((BooleanValue) ((LivingEntity) livingentitypatch.getOriginal()).level().getGameRules().getRule(EpicFightGameRules.STIFF_COMBO_ATTACKS.getRuleKey())).get();
 
-        if (!flag && !dynamicanimation.isMainFrameAnimation() && livingentitypatch.isLogicalClient() && !flag1) {
-            float f = 0.05F * this.getPlaySpeed(livingentitypatch, dynamicanimation);
+        if (!flag && !nextAnimation.get().isMainFrameAnimation() && livingentitypatch.isLogicalClient() && !flag1) {
+            float f = 0.05F * this.getPlaySpeed(livingentitypatch, nextAnimation.get());
 
             livingentitypatch.getClientAnimator().baseLayer.copyLayerTo(livingentitypatch.getClientAnimator().baseLayer.getLayer(Priority.HIGHEST), f);
         }
@@ -140,15 +135,15 @@ public class KickAttackAnimation extends AttackAnimation {
     public TypeFlexibleHashMap<StateFactor<?>> getStatesMap(LivingEntityPatch<?> livingentitypatch, float f) {
         TypeFlexibleHashMap<StateFactor<?>> typeflexiblehashmap = super.getStatesMap(livingentitypatch, f);
 
-        if (!((BooleanValue) ((LivingEntity) livingentitypatch.getOriginal()).level().getGameRules().getRule(EpicFightGamerules.STIFF_COMBO_ATTACKS)).get()) {
+        if (!((BooleanValue) ((LivingEntity) livingentitypatch.getOriginal()).level().getGameRules().getRule(EpicFightGameRules.STIFF_COMBO_ATTACKS.getRuleKey())).get()) {
             typeflexiblehashmap.put(EntityState.MOVEMENT_LOCKED, Optional.of(false));
         }
 
         return typeflexiblehashmap;
     }
 
-    public Vec3 getCoordVector(LivingEntityPatch<?> livingentitypatch, DynamicAnimation dynamicanimation) {
-        Vec3 vec3 = super.getCoordVector(livingentitypatch, dynamicanimation);
+    public Vec3 getCoordVector(LivingEntityPatch<?> livingentitypatch, AssetAccessor<? extends DynamicAnimation> nextAnimation) {
+        Vec3 vec3 = super.getCoordVector(livingentitypatch, nextAnimation);
 
         if (livingentitypatch.shouldBlockMoving() && (Boolean) this.getProperty(ActionAnimationProperty.CANCELABLE_MOVE).orElse(false)) {
             vec3 = vec3.scale(0.0D);

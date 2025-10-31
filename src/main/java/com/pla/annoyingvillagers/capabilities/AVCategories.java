@@ -7,7 +7,7 @@ import yesman.epicfight.world.capabilities.item.WeaponCategory;
 
 public enum AVCategories implements WeaponCategory, Function<Item, Builder> {
 
-    LEGENDARY_SWORD, IRON_FIST, DUAL_PISTOL, HARD_GREAT_SWORD, KNIFE;
+    LEGENDARY_SWORD, HARD_GREAT_SWORD, KNIFE;
 
     final int id;
 
