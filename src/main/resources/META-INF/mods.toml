@@ -22,37 +22,25 @@ description='''${mod_description}'''
 [[dependencies.annoyingvillagers]]
     modId="epicfight"
     mandatory=true
-    versionRange="[20.9.7]"
+    versionRange="[20.13, )"
     ordering="AFTER"
     side="BOTH"
 [[dependencies.annoyingvillagers]]
     modId="wom"
     mandatory=true
-    versionRange="[20.1, )"
+    versionRange="[20.2, )"
     ordering="NONE"
     side="BOTH"
 [[dependencies.annoyingvillagers]]
-    modId="falchionmoveset"
+    modId="efn"
     mandatory=true
-    versionRange="[20.8, )"
+    versionRange="[2.3, )"
     ordering="NONE"
     side="BOTH"
 [[dependencies.annoyingvillagers]]
     modId="indestructible"
     mandatory=true
-    versionRange="[20.9, )"
-    ordering="NONE"
-    side="BOTH"
-[[dependencies.annoyingvillagers]]
-    modId="dualaxes"
-    mandatory=true
-    versionRange="[20.9.9.2]"
-    ordering="AFTER"
-    side="BOTH"
-[[dependencies.annoyingvillagers]]
-    modId="cdmoveset"
-    mandatory=true
-    versionRange="[1.28]"
+    versionRange="[20.13, )"
     ordering="NONE"
     side="BOTH"
 [[dependencies.annoyingvillagers]]
