@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.compat.player_mobs;
+package com.pla.annoyingvillagers.client.overlaylayer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.PlayerModel;

@@ -1,6 +1,6 @@
 package com.pla.annoyingvillagers.mixin;
 
-import com.pla.annoyingvillagers.compat.player_mobs.PlayerMobEpicFightOverlayLayer;
+import com.pla.annoyingvillagers.client.overlaylayer.PlayerMobEpicFightOverlayLayer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.entity.EntityType;
 import org.spongepowered.asm.mixin.Mixin;

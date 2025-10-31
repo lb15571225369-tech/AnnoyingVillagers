@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.compat.aaa_particles;
+package com.pla.annoyingvillagers.client.emitterinfo;
 
 import mod.chloeprime.aaaparticles.api.client.effekseer.ParticleEmitter;
 import mod.chloeprime.aaaparticles.api.common.ParticleEmitterInfo;

@@ -1,7 +1,7 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.compat.aaa_particles.BabyDragonBeamParticleEmitterInfo;
+import com.pla.annoyingvillagers.client.emitterinfo.BabyDragonBeamParticleEmitterInfo;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import mod.chloeprime.aaaparticles.api.common.AAALevel;
 import mod.chloeprime.aaaparticles.api.common.ParticleEmitterInfo;

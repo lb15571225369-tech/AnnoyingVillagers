@@ -1,6 +1,6 @@
 package com.pla.annoyingvillagers.client.renderer;
 
-import com.pla.annoyingvillagers.compat.player_mobs.PlayerMobBloodOverlayLayer;
+import com.pla.annoyingvillagers.client.overlaylayer.PlayerMobBloodOverlayLayer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import se.gory_moon.player_mobs.client.render.PlayerMobRenderer;
 
