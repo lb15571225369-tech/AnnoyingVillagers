@@ -6,9 +6,6 @@ import java.util.function.Function;
 
 import com.pla.annoyingvillagers.gameasset.AVCollider;
 import com.pla.annoyingvillagers.gameasset.AVSkill;
-import net.corruptdog.cdm.gameasset.CDSkills;
-import net.corruptdog.cdm.gameasset.CorruptAnimations;
-import net.corruptdog.cdm.world.CorruptWeaponCategories;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
@@ -18,7 +15,6 @@ import net.minecraft.world.item.Tiers;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSounds;
 import reascer.wom.gameasset.WOMAnimations;
-import reascer.wom.gameasset.WOMWeaponColliders;
 import yesman.epicfight.api.animation.LivingMotions;
 import yesman.epicfight.api.forgeevent.WeaponCapabilityPresetRegistryEvent;
 import yesman.epicfight.gameasset.Animations;
@@ -35,7 +31,6 @@ import yesman.epicfight.world.capabilities.item.CapabilityItem.Styles;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
 import yesman.epicfight.world.capabilities.item.WeaponCapability;
 import yesman.epicfight.world.entity.ai.attribute.EpicFightAttributes;
-import M6FGR.dualaxes.gameassets.DualAxesAnimations;
 
 public class AVWeaponCapability {
 

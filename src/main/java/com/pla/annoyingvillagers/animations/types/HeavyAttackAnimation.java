@@ -12,6 +12,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import yesman.epicfight.api.animation.AnimationManager;
+import yesman.epicfight.api.animation.Joint;
 import yesman.epicfight.api.animation.property.AnimationProperty.ActionAnimationProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.AttackAnimationProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.StaticAnimationProperty;
@@ -24,12 +25,15 @@ import yesman.epicfight.api.client.animation.Layer.Priority;
 import yesman.epicfight.api.client.animation.property.ClientAnimationProperties;
 import yesman.epicfight.api.client.animation.property.JointMask;
 import yesman.epicfight.api.client.animation.property.JointMaskEntry;
+import yesman.epicfight.api.collider.Collider;
 import yesman.epicfight.api.model.Armature;
 import yesman.epicfight.api.utils.datastruct.TypeFlexibleHashMap;
 import yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerPatch;
 import yesman.epicfight.gameasset.Animations.ReusableSources;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.gamerule.EpicFightGameRules;
+
+import javax.annotation.Nullable;
 
 public class HeavyAttackAnimation extends AttackAnimation {
     void init() {
@@ -65,6 +69,15 @@ public class HeavyAttackAnimation extends AttackAnimation {
 
             this.addProperty(ClientAnimationProperties.JOINT_MASK, jointMaskEntry);
         }
+    }
+
+    public HeavyAttackAnimation(float convertTime, float antic, float preDelay,
+                                float contact, float recovery,
+                                @Nullable Collider collider, Joint colliderJoint,
+                                AnimationManager.AnimationAccessor<? extends HeavyAttackAnimation> accessor,
+                                AssetAccessor<? extends Armature> armature) {
+        this(convertTime, accessor, armature,
+                new Phase(0.0F, antic, preDelay, contact, recovery, Float.MAX_VALUE, colliderJoint, collider));
     }
 
     public HeavyAttackAnimation(float convertTime,

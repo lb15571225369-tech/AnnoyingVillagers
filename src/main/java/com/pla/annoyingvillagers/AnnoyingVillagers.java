@@ -5,7 +5,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
-import com.pla.annoyingvillagers.gameasset.AVSkillDataKeys;
 import com.pla.annoyingvillagers.init.*;
 import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
@@ -63,7 +62,6 @@ public class AnnoyingVillagers {
         AnnoyingVillagersModParticleTypes.REGISTRY.register(modEventBus);
         MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, AnnoyingVillagersModCapabilities::attachEntityCapability);
         modEventBus.addListener(AnnoyingVillagersModCapabilities::registerCapabilities);
-        AVSkillDataKeys.DATA_KEYS.register(modEventBus);
         AnnoyingVillagersModCreativeTabs.register(modEventBus);
         AnnoyingVillagersModSounds.register(modEventBus);
         AVSounds.SOUNDS.register(modEventBus);

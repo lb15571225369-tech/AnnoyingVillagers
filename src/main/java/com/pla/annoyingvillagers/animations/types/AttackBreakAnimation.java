@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.animations.types;
 
+import yesman.epicfight.api.animation.AnimationManager;
 import yesman.epicfight.api.animation.property.AnimationProperty.ActionAnimationProperty;
 import yesman.epicfight.api.animation.types.ActionAnimation;
 import yesman.epicfight.api.animation.types.EntityState;
@@ -9,10 +10,9 @@ import yesman.epicfight.api.model.Armature;
 public class AttackBreakAnimation extends ActionAnimation {
 
     public AttackBreakAnimation(float transitionTime,
-                                float postDelay,
-                                String path,
-                                AssetAccessor<? extends Armature> armatureAccessor) {
-        super(transitionTime, postDelay, path, armatureAccessor);
+                                AnimationManager.AnimationAccessor<? extends AttackBreakAnimation> accessor,
+                                AssetAccessor<? extends Armature> armature) {
+        super(transitionTime, accessor, armature);
         this.addProperty(ActionAnimationProperty.STOP_MOVEMENT, true);
         this.stateSpectrumBlueprint
                 .clear()

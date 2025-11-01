@@ -3,16 +3,15 @@ package com.pla.annoyingvillagers.animations.types;
 import java.util.*;
 import javax.annotation.Nullable;
 
-import com.google.common.collect.Lists;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.GameRules.BooleanValue;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.loading.FMLEnvironment;
+import yesman.epicfight.api.animation.AnimationManager;
 import yesman.epicfight.api.animation.Joint;
 import yesman.epicfight.api.animation.Keyframe;
 import yesman.epicfight.api.animation.TransformSheet;
@@ -77,16 +76,17 @@ public class KickAttackAnimation extends AttackAnimation {
     public KickAttackAnimation(float convertTime, float antic, float preDelay,
                                float contact, float recovery,
                                @Nullable Collider collider, Joint colliderJoint,
-                               String path, AssetAccessor<? extends Armature> armatureAccessor) {
-        this(convertTime, path, armatureAccessor,
+                               AnimationManager.AnimationAccessor<? extends KickAttackAnimation> accessor,
+                               AssetAccessor<? extends Armature> armature) {
+        this(convertTime, accessor, armature,
                 new Phase(0.0F, antic, preDelay, contact, recovery, Float.MAX_VALUE, colliderJoint, collider));
     }
 
     public KickAttackAnimation(float convertTime,
-                               String path,
-                               AssetAccessor<? extends Armature> armatureAccessor,
+                               AnimationManager.AnimationAccessor<? extends KickAttackAnimation> accessor,
+                               AssetAccessor<? extends Armature> armature,
                                Phase... phases) {
-        super(convertTime, path, armatureAccessor, phases);
+        super(convertTime, accessor, armature, phases);
         init();
         this.newTimePair(0.0F, Float.MAX_VALUE);
         this.addStateRemoveOld(EntityState.TURNING_LOCKED, false);
