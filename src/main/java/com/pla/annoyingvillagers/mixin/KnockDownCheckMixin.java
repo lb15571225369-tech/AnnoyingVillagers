@@ -18,7 +18,7 @@ public abstract class KnockDownCheckMixin {
     @Inject(method = {"attackResult"}, at = {@At("HEAD")}, cancellable = true)
     public void Inject(DamageSource damagesource, CallbackInfoReturnable<ResultType> callbackinforeturnable) {
         if (damagesource instanceof EpicFightDamageSource epicfightdamagesource) {
-            epicfightdamagesource.getHurtItem().getCapability(EpicFightCapabilities.CAPABILITY_ITEM).ifPresent((capabilityitem) -> {
+            epicfightdamagesource.getUsedItem().getCapability(EpicFightCapabilities.CAPABILITY_ITEM).ifPresent((capabilityitem) -> {
                 Object state = ((EntityState)(Object)this).getState(EntityState.KNOCKDOWN);
                 if (Boolean.TRUE.equals(state)) {
                     callbackinforeturnable.setReturnValue(ResultType.SUCCESS);

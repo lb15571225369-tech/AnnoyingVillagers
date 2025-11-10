@@ -23,7 +23,7 @@ public abstract class NoKnockDownProMixin {
 
     @Inject(at = {@At("HEAD")}, method = {"onInitiate"})
     public void InjectOnInitiate(SkillContainer skillcontainer, CallbackInfo callbackinfo) {
-        skillcontainer.getExecuter().getEventListener().addEventListener(EventType.DEALT_DAMAGE_EVENT_ATTACK, NoKnockDownProMixin.EVENT_UUID, (dealtdamageevent) -> {
+        skillcontainer.getExecutor().getEventListener().addEventListener(EventType.DEAL_DAMAGE_EVENT_ATTACK, NoKnockDownProMixin.EVENT_UUID, (dealtdamageevent) -> {
             dealtdamageevent.getTarget().getCapability(EpicFightCapabilities.CAPABILITY_ENTITY).ifPresent((entitypatch) -> {
                 if (entitypatch instanceof LivingEntityPatch) {
                     LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) entitypatch;

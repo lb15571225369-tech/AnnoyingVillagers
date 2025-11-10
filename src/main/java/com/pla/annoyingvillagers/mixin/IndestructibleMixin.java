@@ -2,14 +2,12 @@ package com.pla.annoyingvillagers.mixin;
 
 import com.nameless.indestructible.world.capability.Utils.CapabilityState;
 import com.nameless.indestructible.world.capability.Utils.IAdvancedCapability;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.AegisHerobrineEntity;
 import com.pla.annoyingvillagers.item.EnderAegisItem;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import yesman.epicfight.api.utils.AttackResult;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 import yesman.epicfight.world.damagesource.EpicFightDamageSource;
-import yesman.epicfight.world.damagesource.EpicFightDamageType;
+import yesman.epicfight.world.damagesource.EpicFightDamageTypeTags;
 
 @Mixin(value = {CapabilityState.class}, remap = false)
 public abstract class IndestructibleMixin {
@@ -47,8 +45,8 @@ public abstract class IndestructibleMixin {
                         float impact;
                         if (damageSource instanceof EpicFightDamageSource) {
                             EpicFightDamageSource efDamageSource = (EpicFightDamageSource) damageSource;
-                            impact = efDamageSource.getImpact();
-                            if (efDamageSource.is(EpicFightDamageType.GUARD_PUNCTURE)) {
+                            impact = efDamageSource.getBaseImpact();
+                            if (efDamageSource.is(EpicFightDamageTypeTags.GUARD_PUNCTURE)) {
                                 guardSuccess = false;
                             }
                         } else {

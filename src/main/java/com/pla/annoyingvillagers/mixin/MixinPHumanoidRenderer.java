@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import yesman.epicfight.api.client.model.MeshProvider;
+import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.client.renderer.patched.entity.PHumanoidRenderer;
 import yesman.epicfight.client.renderer.patched.entity.PatchedLivingEntityRenderer;
 
@@ -15,12 +15,12 @@ import yesman.epicfight.client.renderer.patched.entity.PatchedLivingEntityRender
 public abstract class MixinPHumanoidRenderer {
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    private void addHerobrineEye(MeshProvider<?> mesh,
+    private void addHerobrineEye(AssetAccessor<?> mesh,
                                  EntityRendererProvider.Context ctx,
                                  EntityType<?> type,
                                  CallbackInfo ci) {
         PatchedLivingEntityRenderer<?, ?, ?, ?, ?> self =
                 (PatchedLivingEntityRenderer<?, ?, ?, ?, ?>)(Object)this;
-        self.addCustomLayer(new PlayerMobEpicFightOverlayLayer<>((MeshProvider) mesh));
+        self.addCustomLayer(new PlayerMobEpicFightOverlayLayer<>((AssetAccessor) mesh));
     }
 }

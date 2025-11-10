@@ -14,8 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
-import yesman.epicfight.api.client.model.AnimatedMesh;
-import yesman.epicfight.api.client.model.MeshProvider;
+import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.client.renderer.patched.layer.ModelRenderLayer;
 import yesman.epicfight.client.mesh.HumanoidMesh;
@@ -26,7 +25,7 @@ public class PlayerMobEpicFightOverlayLayer<E extends LivingEntity, AM extends H
     private final ResourceLocation BLOOD_TEXTURE = new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/player_mob_blood.png");
     private final ResourceLocation DEFAULT_EYE = new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/herobrine_eyes/default/default.png");
 
-    public PlayerMobEpicFightOverlayLayer(MeshProvider<AM> mesh) { super(mesh); }
+    public PlayerMobEpicFightOverlayLayer(AssetAccessor<AM> mesh) { super(mesh); }
 
     private ResourceLocation pickTexture(E e) {
         if (e instanceof LowHerobrineCloneEntity) {
@@ -46,14 +45,14 @@ public class PlayerMobEpicFightOverlayLayer<E extends LivingEntity, AM extends H
         ResourceLocation tex = pickTexture(e);
         if (tex == null) return;
         if (tex == BLOOD_TEXTURE) {
-            ((AnimatedMesh) this.mesh.get()).draw(
+            (this.mesh.get()).draw(
                     poseStack, multiBufferSource, RenderType.entityCutoutNoCull(tex),
                     i,
                     1f, 1f, 1f, 1f, OverlayTexture.NO_OVERLAY,
                     eLivingEntityPatch.getArmature(), openMatrix4fs
             );
         } else {
-            ((AnimatedMesh) this.mesh.get()).draw(
+            (this.mesh.get()).draw(
                     poseStack, multiBufferSource, RenderType.eyes(tex),
                     i,
                     1f, 1f, 1f, 1f, OverlayTexture.NO_OVERLAY,
