@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import com.pla.annoyingvillagers.animations.types.KickAttackAnimation;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
@@ -62,7 +63,7 @@ public class NpcRollUpProcedure {
                                 LivingEntityPatch<?> livingentitypatch1 = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 
                                 if (livingentitypatch != null && livingentitypatch1 != null) {
-                                    DynamicAnimation dynamicanimation = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
+                                    AssetAccessor<? extends DynamicAnimation> dynamicanimation = livingentitypatch.getAnimator().getPlayerFor(null).getAnimation();
 
                                     if (dynamicanimation instanceof KickAttackAnimation && entity instanceof LivingEntity) {
                                         LivingEntity livingentity2 = (LivingEntity) entity;

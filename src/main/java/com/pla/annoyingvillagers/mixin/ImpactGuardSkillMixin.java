@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import yesman.epicfight.skill.guard.ImpactGuardSkill;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
-import yesman.epicfight.world.entity.eventlistener.HurtEvent;
+import yesman.epicfight.world.entity.eventlistener.TakeDamageEvent;
 
 @Mixin(value = {ImpactGuardSkill.class}, remap = false)
 public abstract class ImpactGuardSkillMixin {
@@ -22,7 +22,7 @@ public abstract class ImpactGuardSkillMixin {
     }
 
     @Inject(method = {"dealEvent"}, at = {@At("HEAD")}, cancellable = true)
-    private void playerOnGuard(PlayerPatch<?> playerpatch, HurtEvent.Pre event, boolean advanced, CallbackInfo ci) {
+    private void playerOnGuard(PlayerPatch<?> playerpatch, TakeDamageEvent.Attack event, boolean advanced, CallbackInfo ci) {
         boolean isSpecialSource = isAdvancedBlockableDamageSource((DamageSource)event.getDamageSource());
         if (!isSpecialSource) {
             Player player = playerpatch.getOriginal();

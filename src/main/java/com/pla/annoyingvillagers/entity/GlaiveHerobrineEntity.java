@@ -174,7 +174,7 @@ public class GlaiveHerobrineEntity extends HerobrineMob {
                                 Vec3 tipPos = enderGlaiveItem.getJointWithTranslation(
                                         glaiveHerobrineEntity,
                                         new Vec3f(0.0F, 0.0F, 0.0F),
-                                        Armatures.BIPED.toolR,
+                                        Armatures.BIPED.get().toolR,
                                         4.3F,
                                         2.3F
                                 );
@@ -186,9 +186,9 @@ public class GlaiveHerobrineEntity extends HerobrineMob {
                                 glaiveHerobrineEntity.level().explode(glaiveHerobrineEntity, tipPos.x, tipPos.y, tipPos.z,
                                         2.0F, true, Level.ExplosionInteraction.TNT);
                                 Vec3 glaivePos = enderGlaiveItem.getJointWithTranslation(glaiveHerobrineEntity, new Vec3f(0,0,0),
-                                        Armatures.BIPED.toolR, 1.3F, 2.3F);
+                                        Armatures.BIPED.get().toolR, 1.3F, 2.3F);
                                 Vec3 explosionPos = enderGlaiveItem.getJointWithTranslation(glaiveHerobrineEntity, new Vec3f(0,0,0),
-                                        Armatures.BIPED.toolR, 10.3F, 2.3F);
+                                        Armatures.BIPED.get().toolR, 10.3F, 2.3F);
                                 AnnoyingVillagers.PACKET_HANDLER.send(
                                         PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> glaiveHerobrineEntity),
                                         new ClientboundGlaiveExplosionFx(glaivePos, explosionPos)

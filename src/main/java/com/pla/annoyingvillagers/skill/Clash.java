@@ -3,10 +3,7 @@ package com.pla.annoyingvillagers.skill;
 import java.util.List;
 import java.util.UUID;
 
-import M6FGR.dualaxes.gameassets.DualAxesAnimations;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -20,16 +17,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import com.pla.annoyingvillagers.capabilities.AVCategories;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
-import yesman.epicfight.api.animation.AnimationProvider;
+import yesman.epicfight.api.animation.AnimationManager;
+import yesman.epicfight.api.animation.types.AttackAnimation;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
-import yesman.epicfight.api.animation.types.StaticAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.AttackResult.ResultType;
-import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.particle.HitParticleType;
-import yesman.epicfight.skill.Skill;
-import yesman.epicfight.skill.Skill.Builder;
+import yesman.epicfight.skill.SkillBuilder;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.passive.PassiveSkill;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
@@ -44,19 +40,19 @@ public class Clash extends PassiveSkill {
 
     private static final UUID EVENT_UUID = UUID.fromString("b422f7a0-f378-3344-1111-0252ac130003");
 
-    public Clash(Builder<? extends Skill> builder) {
+    public Clash(SkillBuilder<? extends PassiveSkill> builder) {
         super(builder);
     }
 
     public void onInitiate(SkillContainer skillcontainer) {
         super.onInitiate(skillcontainer);
         skillcontainer.getDataManager();
-        skillcontainer.getExecuter().getEventListener().addEventListener(EventType.HURT_EVENT_PRE, Clash.EVENT_UUID, (pre) -> {
+        skillcontainer.getExecutor().getEventListener().addEventListener(EventType.TAKE_DAMAGE_EVENT_ATTACK, Clash.EVENT_UUID, (pre) -> {
             PlayerPatch<?> playerpatch = pre.getPlayerPatch();
             ServerPlayer serverplayer = (ServerPlayer) ((ServerPlayerPatch) pre.getPlayerPatch()).getOriginal();
             DamageSource damagesource = (DamageSource) pre.getDamageSource();
-            DynamicAnimation dynamicanimation = playerpatch.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
-            float f = pre.getAmount();
+            AssetAccessor<? extends DynamicAnimation> dynamicanimation = playerpatch.getAnimator().getPlayerFor(null).getAnimation();
+            float f = pre.getDamage();
 
             if ((playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.SWORD || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.AXE || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.LONGSWORD || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.TACHI || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.SPEAR || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.UCHIGATANA || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.GREATSWORD || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.TRIDENT || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.LEGENDARY_SWORD || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.HARD_GREAT_SWORD) && !damagesource.is(DamageTypes.MAGIC) && !damagesource.is(DamageTypes.EXPLOSION) && !damagesource.is(DamageTypes.ON_FIRE) && !damagesource.is(DamageTypes.IN_FIRE) && !damagesource.is(DamageTypes.FALL)) {
                 boolean flag = false;
@@ -73,10 +69,10 @@ public class Clash extends PassiveSkill {
                 }
 
                 CapabilityItem capabilityitem = EpicFightCapabilities.getItemStackCapability(serverplayer.getMainHandItem());
-                List<AnimationProvider<?>> list = capabilityitem.getAutoAttckMotion(pre.getPlayerPatch());
+                List<AnimationManager.AnimationAccessor<? extends AttackAnimation>> list = capabilityitem.getAutoAttackMotion(pre.getPlayerPatch());
                 LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 
-                if (flag && list.contains(dynamicanimation) || dynamicanimation == AVAnimations.GIANT_WHIRLWIND_2 || dynamicanimation == AVAnimations.DUAL_SWORD_DANCING_EDGE || dynamicanimation == DualAxesAnimations.AXE_SPINNING_DEATH) {
+                if (flag && list.contains(dynamicanimation) || dynamicanimation == AVAnimations.GIANT_WHIRLWIND_2 || dynamicanimation == AVAnimations.DUAL_SWORD_DANCING_EDGE) {
                     pre.setCanceled(true);
                     pre.setResult(ResultType.BLOCKED);
                     playerpatch.playSound((SoundEvent) EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
@@ -127,7 +123,7 @@ public class Clash extends PassiveSkill {
 
     public void onRemoved(SkillContainer skillcontainer) {
         super.onRemoved(skillcontainer);
-        skillcontainer.getExecuter().getEventListener().removeListener(EventType.HURT_EVENT_PRE, Clash.EVENT_UUID);
-        skillcontainer.getExecuter().getEventListener().removeListener(EventType.MODIFY_ATTACK_SPEED_EVENT, Clash.EVENT_UUID);
+        skillcontainer.getExecutor().getEventListener().removeListener(EventType.TAKE_DAMAGE_EVENT_ATTACK, Clash.EVENT_UUID);
+        skillcontainer.getExecutor().getEventListener().removeListener(EventType.MODIFY_ATTACK_SPEED_EVENT, Clash.EVENT_UUID);
     }
 }

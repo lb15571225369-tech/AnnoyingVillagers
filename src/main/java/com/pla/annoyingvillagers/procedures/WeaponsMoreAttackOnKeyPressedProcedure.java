@@ -9,7 +9,6 @@ import com.pla.annoyingvillagers.item.*;
 import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
 import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
 import com.pla.annoyingvillagers.util.DelayedTask;
-import net.corruptdog.cdm.world.CorruptWeaponCategories;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -30,6 +29,7 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.LongHitAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.Armatures;
@@ -55,7 +55,7 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
         LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
         if (patch == null) return;
 
-        DynamicAnimation dynamicanimation = patch.getAnimator().getPlayerFor(null).getAnimation();
+        AssetAccessor<? extends DynamicAnimation> dynamicanimation = patch.getAnimator().getPlayerFor(null).getAnimation();
         if (dynamicanimation instanceof LongHitAnimation || entity.getPersistentData().getBoolean("kick_x")) return;
 
         entity.getPersistentData().putBoolean("kick_x", true);
@@ -90,7 +90,7 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
         }
 
         PlayerPatch<?> playerpatch = (PlayerPatch) EpicFightCapabilities.getEntityPatch(entity, PlayerPatch.class);
-        if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.SWORD && playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.TACHI && playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.LONGSWORD && playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.UCHIGATANA && playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != CorruptWeaponCategories.YAMATO && playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != CorruptWeaponCategories.S_SWORD && playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != CorruptWeaponCategories.S_TACHI && playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != CorruptWeaponCategories.GREAT_TACHI && playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != CorruptWeaponCategories.S_LONGSWORD) {
+        if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.SWORD && playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.TACHI && playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.LONGSWORD && playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.UCHIGATANA) {
             if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.AXE) {
                 if (playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE) {
                     if (entity.isShiftKeyDown()) {
@@ -361,7 +361,7 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                         }
                     }
                 } else if (playerpatch != null) {
-                    DynamicAnimation dynamicanimation1 = playerpatch.getAnimator().getPlayerFor(null).getAnimation();
+                    AssetAccessor<? extends DynamicAnimation> dynamicanimation1 = playerpatch.getAnimator().getPlayerFor(null).getAnimation();
 
                     if (dynamicanimation1 == AVAnimations.FIST_UP) {
                         if (!entity.level().isClientSide() && entity.getServer() != null) {
@@ -607,9 +607,9 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
             }
         }
 
-        if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.GREATSWORD || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.LEGENDARY_SWORD || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.HARD_GREAT_SWORD || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == CorruptWeaponCategories.S_GREATSWORD) {
+        if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.GREATSWORD || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.LEGENDARY_SWORD || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.HARD_GREAT_SWORD ) {
             LivingEntityPatch<?> livingentitypatch1 = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
-            DynamicAnimation dynamicanimation2 = livingentitypatch1.getAnimator().getPlayerFor(null).getAnimation();
+            AssetAccessor<? extends DynamicAnimation> dynamicanimation2 = livingentitypatch1.getAnimator().getPlayerFor(null).getAnimation();
 
             if (dynamicanimation2 != Animations.STEEL_WHIRLWIND && dynamicanimation2 != Animations.STEEL_WHIRLWIND_CHARGING) {
                 if (!(entity instanceof LivingEntity livingEntity) || !entity.isAlive()) {
@@ -677,7 +677,7 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
             }
         }
 
-        if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.SPEAR || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == CorruptWeaponCategories.S_SPEAR) {
+        if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.SPEAR) {
             if (entity.getPersistentData().getDouble("sword_a") < 1.0D) {
                 entity.getPersistentData().putDouble("sword_a", 1.5D);
                 if (!(entity instanceof LivingEntity livingEntity) || !entity.isAlive()) {
@@ -698,7 +698,7 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                                     Vec3 tipPos = enderGlaiveItem.getJointWithTranslation(
                                             entity,
                                             new Vec3f(0.0F, 0.0F, 0.0F),
-                                            Armatures.BIPED.toolR,
+                                            Armatures.BIPED.get().toolR,
                                             4.3F,
                                             2.3F
                                     );
@@ -710,9 +710,9 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                                     entity.level().explode(entity, tipPos.x, tipPos.y, tipPos.z,
                                             2.0F, true, Level.ExplosionInteraction.TNT);
                                     Vec3 glaivePos = enderGlaiveItem.getJointWithTranslation(entity, new Vec3f(0,0,0),
-                                            Armatures.BIPED.toolR, 1.3F, 2.3F);
+                                            Armatures.BIPED.get().toolR, 1.3F, 2.3F);
                                     Vec3 explosionPos = enderGlaiveItem.getJointWithTranslation(entity, new Vec3f(0,0,0),
-                                            Armatures.BIPED.toolR, 10.3F, 2.3F);
+                                            Armatures.BIPED.get().toolR, 10.3F, 2.3F);
                                     AnnoyingVillagers.PACKET_HANDLER.send(
                                             PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity),
                                             new ClientboundGlaiveExplosionFx(glaivePos, explosionPos)

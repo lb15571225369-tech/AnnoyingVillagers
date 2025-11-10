@@ -13,6 +13,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.KnockdownAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
@@ -45,13 +46,13 @@ public class KnockDownHitProcedure {
                 }
 
                 LivingEntityPatch livingentitypatch;
-                DynamicAnimation dynamicanimation;
+                AssetAccessor<? extends DynamicAnimation> dynamicanimation;
 
                 if (f >= 30.0F) {
                     if (!ForgeRegistries.ENTITY_TYPES.getKey(entity1.getType()).toString().equals("cgm:projectile")) {
                         livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                         if (livingentitypatch != null) {
-                            dynamicanimation = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
+                            dynamicanimation = livingentitypatch.getAnimator().getPlayerFor(null).getAnimation();
                             if (dynamicanimation instanceof KnockdownAnimation || dynamicanimation == AVAnimations.KNOCKDOWN_FORWRAD || dynamicanimation == AVAnimations.KNOCKDOWN_RIGHT || dynamicanimation == AVAnimations.KNOCKDOWN_RIGHT || dynamicanimation == AVAnimations.KNOCKDOWN_LEFT) {
                                 if (Math.random() <= 0.4D) {
                                     if (!entity.level().isClientSide() && entity.getServer() != null) {
@@ -82,7 +83,7 @@ public class KnockDownHitProcedure {
                 } else {
                     livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                     if (livingentitypatch != null) {
-                        dynamicanimation = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
+                        dynamicanimation = livingentitypatch.getAnimator().getPlayerFor(null).getAnimation();
                         if (dynamicanimation instanceof KnockdownAnimation || dynamicanimation == AVAnimations.KNOCKDOWN_FORWRAD || dynamicanimation == AVAnimations.KNOCKDOWN_RIGHT || dynamicanimation == AVAnimations.KNOCKDOWN_RIGHT || dynamicanimation == AVAnimations.KNOCKDOWN_LEFT) {
                             if (Math.random() <= 0.4D) {
                                 if (!entity.level().isClientSide() && entity.getServer() != null) {

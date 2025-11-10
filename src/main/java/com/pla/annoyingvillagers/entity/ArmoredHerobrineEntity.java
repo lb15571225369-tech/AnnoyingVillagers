@@ -119,7 +119,7 @@ public class ArmoredHerobrineEntity extends HerobrineMob {
                     .getEntityPatch(self, LivingEntityPatch.class);
             if (patch == null) return null;
 
-            var player = patch.getAnimator().getPlayerFor((DynamicAnimation) null);
+            var player = patch.getAnimator().getPlayerFor(null);
             if (player == null) return null;
 
             var anim = player.getAnimation();

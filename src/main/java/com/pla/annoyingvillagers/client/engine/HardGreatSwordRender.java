@@ -28,7 +28,7 @@ public class HardGreatSwordRender extends RenderItemBase {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void renderItemInHand(ItemStack stack, LivingEntityPatch<?> entitypatch, InteractionHand hand, HumanoidArmature armature, OpenMatrix4f[] poses, MultiBufferSource buffer, PoseStack poseStack, int packedLight, float partialTicks) {
-        if (entitypatch instanceof LivingEntityPatch) {
+        if (entitypatch != null) {
             OpenMatrix4f openmatrix4f = new OpenMatrix4f(this.mainhandcorrectionMatrix);
 
             openmatrix4f.mulFront(poses[armature.toolR.getId()]);

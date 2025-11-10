@@ -42,6 +42,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
@@ -103,7 +104,7 @@ public class BoomlitProcedure {
                     LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch)EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 
                     if (livingentitypatch != null) {
-                        DynamicAnimation dynamicanimation = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation)null).getAnimation();
+                        AssetAccessor<? extends DynamicAnimation> dynamicanimation = livingentitypatch.getAnimator().getPlayerFor(null).getAnimation();
 
                         if (dynamicanimation != AVAnimations.HARD_GREAT_SWORD_GUARD_SKILL && AnnoyingVillagersConfig.EXPLOSION_BREAK_ARMOR.get()) {
                             entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * (double)Math.max(-1, -3), 1.0D, entity.getLookAngle().z * (double)Math.max(-1, -3)));
@@ -229,7 +230,7 @@ public class BoomlitProcedure {
                 LivingEntityPatch<?> livingentitypatch1 = (LivingEntityPatch)EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 
                 if (livingentitypatch1 != null) {
-                    DynamicAnimation dynamicanimation1 = livingentitypatch1.getAnimator().getPlayerFor((DynamicAnimation)null).getAnimation();
+                    AssetAccessor<? extends DynamicAnimation> dynamicanimation1 = livingentitypatch1.getAnimator().getPlayerFor(null).getAnimation();
 
                     if (dynamicanimation1 != AVAnimations.HARD_GREAT_SWORD_GUARD_SKILL) {
                         if (!entity.level().isClientSide() && entity.getServer() != null) {

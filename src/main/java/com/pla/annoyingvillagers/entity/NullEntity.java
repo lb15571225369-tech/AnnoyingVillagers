@@ -7,7 +7,6 @@ import com.pla.annoyingvillagers.clazz.NullWeapon;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.procedures.NullOnHurtProcedure;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
-import net.corruptdog.cdm.api.animation.types.ExecutedAnimation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -37,6 +36,7 @@ import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.utils.NameManager;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.LongHitAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
@@ -374,12 +374,12 @@ public class NullEntity extends HerobrineMob {
             wasShooting = shootingNow;
 
             if (this.tickCount % 20 == 0) {
-                DynamicAnimation dynamicanimation = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
+                AssetAccessor<? extends DynamicAnimation> dynamicanimation = livingentitypatch.getAnimator().getPlayerFor(null).getAnimation();
                 if (this.nullSwordEntity != null) {
                    if (!this.nullSwordEntity.isReleased()) {
                         this.nullSwordEntity.moveTo(getRandomPosition(this.getX(), -4, 4), getRandomPosition(this.getY(), -2, 2), getRandomPosition(this.getZ(), -4, 4));
                     } else if (this.nullSwordEntity.isReleased()) {
-                       if ((this.getTarget() != null && !(dynamicanimation instanceof LongHitAnimation) && dynamicanimation != Animations.BIPED_COMMON_NEUTRALIZED && dynamicanimation != Animations.BIPED_KNOCKDOWN && !(dynamicanimation instanceof ExecutedAnimation)) || livingentitypatch.isStunned()) {
+                       if ((this.getTarget() != null && !(dynamicanimation instanceof LongHitAnimation) && dynamicanimation != Animations.BIPED_COMMON_NEUTRALIZED && dynamicanimation != Animations.BIPED_KNOCKDOWN) || livingentitypatch.isStunned()) {
                            this.nullSwordEntity.stopRelease();
                        } else {
                            LivingEntity target = this.getTarget();
@@ -398,7 +398,7 @@ public class NullEntity extends HerobrineMob {
                     if (!this.nullAxeEntity.isReleased()) {
                         this.nullAxeEntity.moveTo(getRandomPosition(this.getX(), -4, 4), getRandomPosition(this.getY(), -2, 2), getRandomPosition(this.getZ(), -4, 4));
                     } else if (this.nullAxeEntity.isReleased()) {
-                        if ((this.getTarget() != null && !(dynamicanimation instanceof LongHitAnimation) && dynamicanimation != Animations.BIPED_COMMON_NEUTRALIZED && dynamicanimation != Animations.BIPED_KNOCKDOWN && !(dynamicanimation instanceof ExecutedAnimation)) || livingentitypatch.isStunned()) {
+                        if ((this.getTarget() != null && !(dynamicanimation instanceof LongHitAnimation) && dynamicanimation != Animations.BIPED_COMMON_NEUTRALIZED && dynamicanimation != Animations.BIPED_KNOCKDOWN ) || livingentitypatch.isStunned()) {
                             this.nullAxeEntity.stopRelease();
                         } else {
                             LivingEntity target = this.getTarget();
@@ -417,7 +417,7 @@ public class NullEntity extends HerobrineMob {
                     if (!this.nullPickaxeEntity.isReleased()) {
                         this.nullPickaxeEntity.moveTo(getRandomPosition(this.getX(), -4, 4), getRandomPosition(this.getY(), -2, 2), getRandomPosition(this.getZ(), -4, 4));
                     } else if (this.nullPickaxeEntity.isReleased()) {
-                        if ((this.getTarget() != null && !(dynamicanimation instanceof LongHitAnimation) && dynamicanimation != Animations.BIPED_COMMON_NEUTRALIZED && dynamicanimation != Animations.BIPED_KNOCKDOWN && !(dynamicanimation instanceof ExecutedAnimation)) || livingentitypatch.isStunned()) {
+                        if ((this.getTarget() != null && !(dynamicanimation instanceof LongHitAnimation) && dynamicanimation != Animations.BIPED_COMMON_NEUTRALIZED && dynamicanimation != Animations.BIPED_KNOCKDOWN) || livingentitypatch.isStunned()) {
                             this.nullPickaxeEntity.stopRelease();
                         } else {
                             LivingEntity target = this.getTarget();
@@ -436,7 +436,7 @@ public class NullEntity extends HerobrineMob {
                     if (!this.nullShovelEntity.isReleased()) {
                         this.nullShovelEntity.moveTo(getRandomPosition(this.getX(), -4, 4), getRandomPosition(this.getY(), -2, 2), getRandomPosition(this.getZ(), -4, 4));
                     } else if (this.nullShovelEntity.isReleased()) {
-                        if (this.getTarget() != null && !(dynamicanimation instanceof LongHitAnimation) && dynamicanimation != Animations.BIPED_COMMON_NEUTRALIZED && dynamicanimation != Animations.BIPED_KNOCKDOWN && !(dynamicanimation instanceof ExecutedAnimation)) {
+                        if (this.getTarget() != null && !(dynamicanimation instanceof LongHitAnimation) && dynamicanimation != Animations.BIPED_COMMON_NEUTRALIZED && dynamicanimation != Animations.BIPED_KNOCKDOWN) {
                             this.nullShovelEntity.stopRelease();
                         } else {
                             LivingEntity target = this.getTarget();
@@ -455,7 +455,7 @@ public class NullEntity extends HerobrineMob {
                     if (!this.nullHoeEntity.isReleased()) {
                         this.nullShovelEntity.moveTo(getRandomPosition(this.getX(), -4, 4), getRandomPosition(this.getY(), -2, 2), getRandomPosition(this.getZ(), -4, 4));
                     } else if (this.nullHoeEntity.isReleased()) {
-                        if (this.getTarget() != null && !(dynamicanimation instanceof LongHitAnimation) && dynamicanimation != Animations.BIPED_COMMON_NEUTRALIZED && dynamicanimation != Animations.BIPED_KNOCKDOWN && !(dynamicanimation instanceof ExecutedAnimation)) {
+                        if (this.getTarget() != null && !(dynamicanimation instanceof LongHitAnimation) && dynamicanimation != Animations.BIPED_COMMON_NEUTRALIZED && dynamicanimation != Animations.BIPED_KNOCKDOWN) {
                             this.nullHoeEntity.stopRelease();
                         } else {
                             LivingEntity target = this.getTarget();
@@ -544,7 +544,7 @@ public class NullEntity extends HerobrineMob {
                     .getEntityPatch(self, LivingEntityPatch.class);
             if (patch == null) return null;
 
-            var player = patch.getAnimator().getPlayerFor((DynamicAnimation) null);
+            var player = patch.getAnimator().getPlayerFor(null);
             if (player == null) return null;
 
             var anim = player.getAnimation();
@@ -629,8 +629,8 @@ public class NullEntity extends HerobrineMob {
 
             }
         }
-        DynamicAnimation dynamicanimation = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
-        if (this.getTarget() != null && (!(dynamicanimation instanceof LongHitAnimation) && dynamicanimation != Animations.BIPED_COMMON_NEUTRALIZED && dynamicanimation != Animations.BIPED_KNOCKDOWN && !(dynamicanimation instanceof ExecutedAnimation) || !livingentitypatch.isStunned())) {
+        AssetAccessor<? extends DynamicAnimation> dynamicanimation = livingentitypatch.getAnimator().getPlayerFor(null).getAnimation();
+        if (this.getTarget() != null && (!(dynamicanimation instanceof LongHitAnimation) && dynamicanimation != Animations.BIPED_COMMON_NEUTRALIZED && dynamicanimation != Animations.BIPED_KNOCKDOWN || !livingentitypatch.isStunned())) {
             this.setDeltaMovement(new Vec3(this.getLookAngle().x * 0.2D, this.getLookAngle().y * 0.2D, this.getLookAngle().z * 0.2D));
         }
     }

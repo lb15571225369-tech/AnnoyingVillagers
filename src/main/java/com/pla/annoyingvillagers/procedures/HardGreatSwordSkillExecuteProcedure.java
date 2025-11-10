@@ -14,6 +14,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import yesman.epicfight.api.animation.types.AttackAnimation;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
@@ -36,12 +37,12 @@ public class HardGreatSwordSkillExecuteProcedure {
     private static void execute(@Nullable Event event, Entity entity, Entity entity1) {
         if (entity != null && entity1 != null) {
             LivingEntityPatch livingentitypatch;
-            DynamicAnimation dynamicanimation;
+            AssetAccessor<? extends DynamicAnimation> dynamicanimation;
 
             if (entity1.isAlive()) {
                 livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                 if (livingentitypatch != null) {
-                    dynamicanimation = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
+                    dynamicanimation = livingentitypatch.getAnimator().getPlayerFor( null).getAnimation();
                     boolean flag = false;
 
                     if (entity != null) {
@@ -63,7 +64,7 @@ public class HardGreatSwordSkillExecuteProcedure {
                         LivingEntityPatch<?> livingentitypatch1 = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity1, LivingEntityPatch.class);
 
                         if (livingentitypatch1 != null) {
-                            DynamicAnimation dynamicanimation1 = livingentitypatch1.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
+                            AssetAccessor<? extends DynamicAnimation> dynamicanimation1 = livingentitypatch1.getAnimator().getPlayerFor(null).getAnimation();
 
                             if (dynamicanimation1 instanceof AttackAnimation) {
                                 entity1.setDeltaMovement(new Vec3(entity1.getLookAngle().x * -0.4D, 0.0D, entity1.getLookAngle().z * -0.4D));
@@ -85,7 +86,7 @@ public class HardGreatSwordSkillExecuteProcedure {
             } else {
                 livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                 if (livingentitypatch != null) {
-                    dynamicanimation = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
+                    dynamicanimation = livingentitypatch.getAnimator().getPlayerFor(null).getAnimation();
                     if (dynamicanimation == AVAnimations.HARD_GREAT_SWORD_GUARD_SKILL) {
                         if (event != null && event.isCancelable()) {
                             event.setCanceled(true);

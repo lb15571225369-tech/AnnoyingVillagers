@@ -19,6 +19,7 @@ import yesman.epicfight.api.animation.types.DodgeAnimation;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.GuardAnimation;
 import yesman.epicfight.api.animation.types.HitAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.HumanoidMobPatch;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
@@ -65,8 +66,8 @@ public class NpcKickProcedure {
                         LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch)EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 
                         if (humanoidmobpatch != null && livingentitypatch != null) {
-                            DynamicAnimation dynamicanimation = livingentitypatch.getAnimator().getPlayerFor((DynamicAnimation)null).getAnimation();
-                            DynamicAnimation dynamicanimation1 = humanoidmobpatch.getAnimator().getPlayerFor((DynamicAnimation)null).getAnimation();
+                            AssetAccessor<? extends DynamicAnimation> dynamicanimation = livingentitypatch.getAnimator().getPlayerFor(null).getAnimation();
+                            AssetAccessor<? extends DynamicAnimation> dynamicanimation1 = humanoidmobpatch.getAnimator().getPlayerFor(null).getAnimation();
 
                             if (dynamicanimation1 instanceof AttackAnimation && (dynamicanimation instanceof HitAnimation || dynamicanimation instanceof DodgeAnimation || dynamicanimation instanceof GuardAnimation)) {
                                 if (entity1.getPersistentData().getDouble("kick") < 1.0D) {

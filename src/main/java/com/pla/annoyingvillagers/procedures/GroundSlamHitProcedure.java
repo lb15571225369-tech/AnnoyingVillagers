@@ -15,6 +15,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
@@ -68,10 +69,10 @@ public final class GroundSlamHitProcedure {
         LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
         if (patch == null) { STATES.remove(entity.getUUID()); return; }
 
-        var animPlayer = patch.getAnimator().getPlayerFor((DynamicAnimation) null);
+        var animPlayer = patch.getAnimator().getPlayerFor(null);
         if (animPlayer == null) { STATES.remove(entity.getUUID()); return; }
 
-        DynamicAnimation anim = animPlayer.getAnimation();
+        AssetAccessor<? extends DynamicAnimation> anim = animPlayer.getAnimation();
         if (anim == null) { STATES.remove(entity.getUUID()); return; }
 
         String id = animationId(anim);
@@ -101,7 +102,7 @@ public final class GroundSlamHitProcedure {
     }
 
     private static void handleGroundHit(LivingEntity who, LivingEntityPatch<?> patch) {
-        Vec3 tip = GroundSlamUtil.jointWorldPoint(patch, TIP_LOCAL, Armatures.BIPED.toolR);
+        Vec3 tip = GroundSlamUtil.jointWorldPoint(patch, TIP_LOCAL, Armatures.BIPED.get().toolR);
         BlockHitResult hit = GroundSlamUtil.raycastDown(who.level(), tip.add(0, 0.25, 0), patch, 6.0);
         if (hit == null) return;
 
@@ -115,7 +116,7 @@ public final class GroundSlamHitProcedure {
         }
     }
 
-    private static String animationId(DynamicAnimation anim) {
+    private static String animationId(AssetAccessor<? extends DynamicAnimation> anim) {
         try {
             ResourceLocation rl = (ResourceLocation) anim.getClass().getMethod("getLocation").invoke(anim);
             if (rl != null) return rl.getPath().toLowerCase(Locale.ROOT);

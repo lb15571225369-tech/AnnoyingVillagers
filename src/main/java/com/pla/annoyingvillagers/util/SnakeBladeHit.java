@@ -134,7 +134,7 @@ public class SnakeBladeHit {
         if (patch == null) return null;
 
         OpenMatrix4f joint = patch.getArmature()
-                .getBindedTransformFor(patch.getAnimator().getPose(partialTicks), Armatures.BIPED.toolR);
+                .getBindedTransformFor(patch.getAnimator().getPose(partialTicks), Armatures.BIPED.get().toolR);
 
         OpenMatrix4f localOffset = new OpenMatrix4f().translate(new Vec3f(0.0F, 0.0F, -handToTip));
         OpenMatrix4f.mul(joint, localOffset, joint);

@@ -28,6 +28,7 @@ import yesman.epicfight.api.animation.types.AttackAnimation;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.HitAnimation;
 import yesman.epicfight.api.animation.types.LongHitAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
@@ -68,7 +69,7 @@ public class CombatBehaviour {
         }
     }
 
-    private static boolean performEatingGoldenAppleAction(Entity entity, LevelAccessor levelaccessor, DynamicAnimation dynamicanimation, LivingEntityPatch livingEntityPatch) {
+    private static boolean performEatingGoldenAppleAction(Entity entity, LevelAccessor levelaccessor, AssetAccessor<? extends DynamicAnimation> dynamicanimation, LivingEntityPatch livingEntityPatch) {
         if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
             if (!entity.level().isClientSide() && entity.getServer() != null) {
                 livingEntityPatch.playAnimationSynchronized(AVAnimations.EAT_OFFHAND, 0.0F);
@@ -96,7 +97,7 @@ public class CombatBehaviour {
         }
     }
 
-    private static boolean performDrinkingHealingPotionAction(Entity entity, LevelAccessor levelaccessor, DynamicAnimation dynamicanimation, LivingEntityPatch livingEntityPatch) {
+    private static boolean performDrinkingHealingPotionAction(Entity entity, LevelAccessor levelaccessor, AssetAccessor<? extends DynamicAnimation> dynamicanimation, LivingEntityPatch livingEntityPatch) {
         if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
             if (!entity.level().isClientSide() && entity.getServer() != null) {
                 livingEntityPatch.playAnimationSynchronized(AVAnimations.DRINK_OFFHAND, 0.0F);
@@ -120,7 +121,7 @@ public class CombatBehaviour {
         LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 
         if (livingEntityPatch != null) {
-            final DynamicAnimation dynamicAnimation = livingEntityPatch.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
+            final AssetAccessor<? extends DynamicAnimation> dynamicAnimation = livingEntityPatch.getAnimator().getPlayerFor(null).getAnimation();
             if (entity instanceof LivingEntity livingEntity) {
                 if (entity.isPassenger()) {
                     entity.stopRiding();
@@ -237,7 +238,7 @@ public class CombatBehaviour {
     public static void drinkingHealingPotion(Entity entity, LevelAccessor levelaccessor, boolean isHostile, double amount) {
         LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
         if (livingEntityPatch != null) {
-            final DynamicAnimation dynamicAnimation = livingEntityPatch.getAnimator().getPlayerFor((DynamicAnimation) null).getAnimation();
+            final AssetAccessor<? extends DynamicAnimation> dynamicAnimation = livingEntityPatch.getAnimator().getPlayerFor(null).getAnimation();
             if (entity instanceof LivingEntity livingEntity) {
                 if (entity.isPassenger()) {
                     entity.stopRiding();
