@@ -100,80 +100,23 @@ public class EnderAegisItem extends SwordItem {
         }
     }
 
-    @Override
-    public boolean hurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
-        if (pStack.getTag().getBoolean("SecondForm")) {
-            if (!pTarget.level().isClientSide()) {
-                pTarget.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 40, 2));
-                pTarget.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 2));
-                pTarget.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 40, 2));
-                pTarget.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.HEROBRINE.get(), 40, 2));
-            }
-        }
-        return super.hurtEnemy(pStack, pTarget, pAttacker);
-    }
-
     public void inventoryTick(ItemStack itemstack, Level level, Entity entity, int i, boolean flag) {
         super.inventoryTick(itemstack, level, entity, i, flag);
         if (flag) {
             if (itemstack.getTag().getBoolean("SecondForm")) {
                 HerobrineWeaponEffectProcedure.execute(level, entity.getX(), entity.getY(), entity.getZ(), entity);
-                if (entity instanceof LivingEntity livingEntity) {
-                    if (!livingEntity.level().isClientSide()) {
-                        livingEntity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 1, 2));
-                        livingEntity.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 1, 2));
-                        livingEntity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 1, 2));
-                    }
-                }
             }
-        }
-        if (!itemstack.getTag().getBoolean("SecondForm") && itemstack.getTag().getInt("ParryCount") >= 5) {
-            if (entity instanceof Player player) {
-                ItemCooldowns cooldowns = player.getCooldowns();
-                cooldowns.addCooldown(itemstack.getItem(), 200);
-                itemstack.getTag().remove("ParryCount");
-            }
-        }
-        if (entity instanceof Player player) {
-            float percent = player.getCooldowns().getCooldownPercent(itemstack.getItem(), 0);
-            if (percent > 0.0F) {
-                if (!itemstack.getTag().getBoolean("SecondForm")) {
-                    itemstack.getTag().putBoolean("SecondForm", true);
-
-                    if (!player.level().isClientSide()) {
-                        player.level().playSound((Player) null, new BlockPos((int) player.getX(), (int) player.getY(), (int) player.getZ()), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID,"second_form_release")), SoundSource.NEUTRAL, 1.0F, 1.0F);
-                    } else {
-                        player.level().playLocalSound(player.getX(), player.getY(), player.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID,"second_form_release")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
-                    }
-
-                    shieldShoot(level, player);
-                }
-            } else {
-                if (itemstack.getTag().getBoolean("SecondForm")) {
-                    itemstack.getTag().remove("SecondForm");
-                }
-            }
-        }
-    }
-
-    String getCurrentComboAttack(ItemStack itemstack) {
-        if (!itemstack.getTag().getBoolean("SecondForm")) {
-            return String.format("%d/5", itemstack.getTag().contains("ParryCount") ? itemstack.getTag().getInt("ParryCount") : 0);
-        } else {
-            return String.format("∞/∞");
         }
     }
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal(Component.translatable("tooltip.annoyingvillagers.ender_aegis").getString() + getCurrentComboAttack(itemstack) + ")§r"));
-
+        list.add(Component.literal(Component.translatable("tooltip.annoyingvillagers.ender_aegis").getString() + ")§r"));
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         if (pPlayer.getMainHandItem().getTag().getBoolean("SecondForm")) {
-//            shieldShoot(pLevel, pPlayer);
         }
         return super.use(pLevel, pPlayer, pUsedHand);
     }

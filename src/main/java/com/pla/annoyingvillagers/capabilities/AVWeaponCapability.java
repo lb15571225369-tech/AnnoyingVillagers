@@ -1,9 +1,15 @@
 package com.pla.annoyingvillagers.capabilities;
 
+import com.hm.efn.gameasset.EFNAnimations;
+import com.hm.efn.gameasset.animations.EFNShortSwordAnimations;
+import com.hm.efn.gameasset.animations.EFNSwordAnimations;
+import com.merlin204.avalon.epicfight.animations.AvalonAttackAnimation;
+import com.merlin204.avalon.util.AvalonAnimationUtils;
 import com.mojang.datafixers.util.Pair;
 import java.util.function.Function;
 
 import com.pla.annoyingvillagers.gameasset.AVCollider;
+import com.pla.annoyingvillagers.gameasset.AVSkill;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
@@ -13,15 +19,17 @@ import net.minecraft.world.item.Tiers;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSounds;
 import reascer.wom.gameasset.WOMAnimations;
+import reascer.wom.gameasset.WOMSkills;
 import reascer.wom.gameasset.animations.weapons.AnimsAgony;
+import reascer.wom.gameasset.animations.weapons.AnimsNapoleon;
 import reascer.wom.gameasset.animations.weapons.AnimsSolar;
 import reascer.wom.gameasset.colliders.WOMWeaponColliders;
 import yesman.epicfight.api.animation.LivingMotions;
+import yesman.epicfight.api.animation.property.AnimationProperty;
+import yesman.epicfight.api.collider.Collider;
 import yesman.epicfight.api.forgeevent.WeaponCapabilityPresetRegistryEvent;
-import yesman.epicfight.gameasset.Animations;
-import yesman.epicfight.gameasset.ColliderPreset;
-import yesman.epicfight.gameasset.EpicFightSkills;
-import yesman.epicfight.gameasset.EpicFightSounds;
+import yesman.epicfight.gameasset.*;
+import yesman.epicfight.model.armature.HumanoidArmature;
 import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.skill.SkillDataKeys;
 import yesman.epicfight.skill.SkillSlots;
@@ -597,7 +605,7 @@ public class AVWeaponCapability {
             .livingMotionModifier(Styles.TWO_HAND, LivingMotions.SWIM, Animations.BIPED_HOLD_GREATSWORD)
             .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.GREATSWORD_GUARD);
 
-    public static final Function<Item, Builder> SWORD_SHIELD = (item) ->
+    public static final Function<Item, Builder> ENDER_AEGIS = (item) ->
             WeaponCapability.builder()
             .category(WeaponCategories.SWORD)
             .styleProvider((patch) -> Styles.ONE_HAND)
@@ -606,18 +614,16 @@ public class AVWeaponCapability {
             .swingSound(AVSounds.SWORD_WHOOSH.get())
             .hitSound(EpicFightSounds.BLADE_HIT.get())
             .newStyleCombo(Styles.ONE_HAND,
-                    AVAnimations.SWORD_HEAVY_AUTO_1,
-                    AVAnimations.SWORD_HEAVY_AUTO_2,
-                    AVAnimations.SWORD_HEAVY_AUTO_3,
-                    AVAnimations.AXE_HEAVY_AUTO_1,
-                    AVAnimations.AXE_HEAVY_AUTO_2,
-                    Animations.AXE_AIRSLASH)
-            .innateSkill(Styles.ONE_HAND, (stack) -> EpicFightSkills.SWEEPING_EDGE)
-            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
-            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, Animations.BIPED_RUN)
-            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
-            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.SNEAK, Animations.BIPED_SNEAK)
-            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.JUMP, Animations.BIPED_JUMP)
+                    AnimsNapoleon.NAPOLEON_AUTO_1,
+                    EFNShortSwordAnimations.NF_SHORTSWORD_AUTO1,
+                    EFNShortSwordAnimations.NF_SHORTSWORD_AUTO2,
+                    AnimsSolar.SOLAR_QUEMADURA,
+                    AnimsSolar.SOLAR_OBSCURIDAD_IMPACTO,
+                    AnimsSolar.SOLAR_HORNO)
+            .innateSkill(Styles.ONE_HAND, (stack) -> AVSkill.ENDER_AEGIS)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, EFNSwordAnimations.NF_SWORD_IDLE)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, EFNSwordAnimations.NF_SWORD_RUN)
+            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, EFNSwordAnimations.NF_SWORD_WALK)
             .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.BIPED_BLOCK)
             .weaponCombinationPredicator((patch) -> true);
 
@@ -740,7 +746,7 @@ public class AVWeaponCapability {
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "hardgreatsword"), AVWeaponCapability.HARD_GREAT_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "uchigatana"), AVWeaponCapability.UCHIGATANA);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "greatsword"), AVWeaponCapability.GREATSWORD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "sword_shield"), AVWeaponCapability.SWORD_SHIELD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "ender_aegis"), AVWeaponCapability.ENDER_AEGIS);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "agony_spear"), AVWeaponCapability.AGONY_SPEAR);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "antitheus_spear"), AVWeaponCapability.ANTITHEUS_SPEAR);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "shadow_obsidian_sword"), AVWeaponCapability.SHADOW_OBSIDIAN_SWORD);

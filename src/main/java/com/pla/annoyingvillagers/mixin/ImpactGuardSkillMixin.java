@@ -2,6 +2,8 @@ package com.pla.annoyingvillagers.mixin;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.item.EnderAegisItem;
+import com.pla.annoyingvillagers.skill.EnderAegisSkill;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -13,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import yesman.epicfight.skill.guard.ImpactGuardSkill;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
+import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.entity.eventlistener.TakeDamageEvent;
 
 @Mixin(value = {ImpactGuardSkill.class}, remap = false)
@@ -25,15 +28,16 @@ public abstract class ImpactGuardSkillMixin {
     private void playerOnGuard(PlayerPatch<?> playerpatch, TakeDamageEvent.Attack event, boolean advanced, CallbackInfo ci) {
         boolean isSpecialSource = isAdvancedBlockableDamageSource((DamageSource)event.getDamageSource());
         if (!isSpecialSource) {
-            Player player = playerpatch.getOriginal();
-            ItemStack itemStack = player.getMainHandItem();
-            if (itemStack.getItem() instanceof EnderAegisItem && !player.level().isClientSide()) {
-                if (itemStack.getTag().getBoolean("SecondForm")) {
-                    ((EnderAegisItem) itemStack.getItem()).shieldShoot(player.level(), player);
-                } else {
-                    itemStack.getTag().putInt("ParryCount", (itemStack.getTag().contains("ParryCount") ? itemStack.getTag().getInt("ParryCount") : 0) + 1);
-                }
-            }
+//            Player player = playerpatch.getOriginal();
+//            if (!(player instanceof ServerPlayer serverPlayer)) return;
+//
+//            ItemStack main = serverPlayer.getMainHandItem();
+//            if (!(main.getItem() instanceof EnderAegisItem)) return;
+//            if (main.hasTag() && main.getTag().getBoolean("SecondForm")) {
+//                ((EnderAegisItem) main.getItem()).shieldShoot(serverPlayer.level(), serverPlayer);
+//            } else {
+//                EnderAegisSkill.onParry((ServerPlayerPatch) playerpatch);
+//            }
         }
     }
 }

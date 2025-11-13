@@ -6,15 +6,15 @@
   },
   "overrides": [
     {
-      "predicate": { "second_form": 1.0 },
+      "predicate": { "annoyingvillagers:second_form": 1.0 },
       "model": "annoyingvillagers:item/demoniac_voltage_reaver_awakened"
     },
     {
-      "predicate": { "snake_animation": 1.0 },
+      "predicate": { "annoyingvillagers:snake_animation": 1.0 },
       "model": "annoyingvillagers:item/demoniac_voltage_reaver_snake"
     },
     {
-      "predicate": { "snake_animation_ready": 1.0 },
+      "predicate": { "annoyingvillagers:snake_animation_ready": 1.0 },
       "model": "annoyingvillagers:item/demoniac_voltage_reaver_snake_ready"
     }
   ]
