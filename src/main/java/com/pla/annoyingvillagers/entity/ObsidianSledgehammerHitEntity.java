@@ -5,6 +5,7 @@
     import javax.annotation.Nullable;
 
     import com.mojang.brigadier.exceptions.CommandSyntaxException;
+    import com.pla.annoyingvillagers.gameasset.AVAnimations;
     import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
     import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
     import com.pla.annoyingvillagers.util.DelayedTask;
@@ -26,6 +27,9 @@
     import net.minecraftforge.api.distmarker.Dist;
     import net.minecraftforge.api.distmarker.OnlyIn;
     import net.minecraftforge.network.NetworkHooks;
+    import yesman.epicfight.gameasset.Animations;
+    import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+    import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
     public class ObsidianSledgehammerHitEntity extends Entity {
         private int warmupDelayTicks;
@@ -176,9 +180,9 @@
             this.entityData.set(ACTIVATE, Activate);
         }
 
-        private void damage(LivingEntity Hitentity) {
+        private void damage(LivingEntity hitEntity) {
             LivingEntity livingentity = this.getCaster();
-            if (Hitentity.isAlive() && !Hitentity.isInvulnerable() && Hitentity != livingentity) {
+            if (hitEntity.isAlive() && !hitEntity.isInvulnerable() && hitEntity != livingentity) {
                 if (this.tickCount % 5 == 0) {
                     try {
                         this.getServer().getCommands().getDispatcher().execute(
@@ -188,26 +192,23 @@
 
                     }
                     if (livingentity == null) {
-                        Hitentity.hurt(this.level().damageSources().magic(), this.getDamage());
+                        hitEntity.hurt(this.level().damageSources().magic(), this.getDamage());
                     } else {
-                        if (livingentity.isAlliedTo(Hitentity)) {
+                        if (livingentity.isAlliedTo(hitEntity)) {
                             return;
                         }
-                        Hitentity.hurt(this.level().damageSources().indirectMagic(this, livingentity), this.getDamage());
+                        hitEntity.hurt(this.level().damageSources().indirectMagic(this, livingentity), this.getDamage());
                     }
-                    if (!Hitentity.level().isClientSide() && Hitentity.getServer() != null) {
-                        try {
-                            Hitentity.getServer().getCommands().getDispatcher().execute(
-                                    "indestructible @s play \"epicfight:biped/skill/guard_break1\" 0 10",
-                                    Hitentity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                        } catch (CommandSyntaxException e) {
-
+                    if (!hitEntity.level().isClientSide() && hitEntity.getServer() != null) {
+                        LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(hitEntity, LivingEntityPatch.class);
+                        if (livingEntityPatch != null) {
+                            livingEntityPatch.playAnimationSynchronized(Animations.BIPED_COMMON_NEUTRALIZED, 0.0F);
                         }
                     }
                     float strength = 3.0F;
-                    double dx = this.getX() - Hitentity.getX();
-                    double dz = this.getZ() - Hitentity.getZ();
-                    Hitentity.knockback(strength, dx, dz);
+                    double dx = this.getX() - hitEntity.getX();
+                    double dz = this.getZ() - hitEntity.getZ();
+                    hitEntity.knockback(strength, dx, dz);
                 }
             }
         }

@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.util.CombatBehaviour;
@@ -24,6 +25,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
+import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 import java.util.Objects;
 import java.util.Random;
@@ -67,11 +71,9 @@ public class AngrySteveOnHurtProcedure {
                     }
 
                     if (!entity.level().isClientSide() && entity.getServer() != null) {
-                        try {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "indestructible @s play \"epicfight:biped/skill/demolition_leap\" 0 1",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                        } catch (CommandSyntaxException e) {
+                        LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                        if (livingEntityPatch != null) {
+                            livingEntityPatch.playAnimationSynchronized(Animations.BIPED_DEMOLITION_LEAP, 0.0F);
                         }
                     }
                     new DelayedTask(2) {
@@ -133,11 +135,9 @@ public class AngrySteveOnHurtProcedure {
 
                                 entity2 = entity;
                                 if (!entity2.level().isClientSide() && entity2.getServer() != null) {
-                                    try {
-                                        entity2.getServer().getCommands().getDispatcher().execute(
-                                                "indestructible @s play \"annoyingvillagers:biped/combat/legendary_sword_heavy_attack\" 0 1",
-                                                entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                    } catch (CommandSyntaxException e) {
+                                    LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity2, LivingEntityPatch.class);
+                                    if (livingEntityPatch != null) {
+                                        livingEntityPatch.playAnimationSynchronized(AVAnimations.LEGENDARY_SWORD_HEAVY_ATTACK, 0.0F);
                                     }
                                 }
                                 new DelayedTask(20) {

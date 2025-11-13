@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.procedures;
 import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -11,6 +12,9 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
+import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 @EventBusSubscriber
 public class LongHitProcedure {
@@ -43,21 +47,17 @@ public class LongHitProcedure {
                 if (!flag) {
                     if (d0 >= 35.0D) {
                         if (!entity.level().isClientSide() && entity.getServer() != null) {
-                            try {
-                                entity.getServer().getCommands().getDispatcher().execute(
-                                        "indestructible @s play \"annoyingvillagers:biped/combat/longest_hit\" 0 10",
-                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                            } catch (CommandSyntaxException e) {
-
+                            LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                            if (livingEntityPatch != null) {
+                                livingEntityPatch.playAnimationSynchronized(AVAnimations.LONGEST_HIT, 0.0F);
                             }
                         }
                     } else if (d0 >= 30.0D && !entity.level().isClientSide() && entity.getServer() != null) {
-                        try {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                        } catch (CommandSyntaxException e) {
-
+                        if (!entity.level().isClientSide() && entity.getServer() != null) {
+                            LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                            if (livingEntityPatch != null) {
+                                livingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN, 0.0F);
+                            }
                         }
                     }
                 }

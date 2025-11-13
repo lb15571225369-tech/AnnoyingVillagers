@@ -40,6 +40,10 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
 import net.minecraftforge.registries.ForgeRegistries;
+import reascer.wom.gameasset.WOMAnimations;
+import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 public class SnakeBladeEntity extends Entity {
 
@@ -157,12 +161,9 @@ public class SnakeBladeEntity extends Entity {
                                         this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "obsidian_hit"))), SoundSource.BLOCKS, 1.0F, (float) (0.5 + Math.random() * 0.5), false);
                                     }
                                     if (!current.level().isClientSide() && current.getServer() != null) {
-                                        try {
-                                            current.getServer().getCommands().getDispatcher().execute(
-                                                    "indestructible @s play \"epicfight:biped/combat/hit_long\" 0 10",
-                                                    current.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                        } catch (CommandSyntaxException e) {
-
+                                        LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(current, LivingEntityPatch.class);
+                                        if (livingEntityPatch != null) {
+                                            livingEntityPatch.playAnimationSynchronized(Animations.BIPED_HIT_LONG, 0.0F);
                                         }
                                     }
                                     if (current instanceof LivingEntity livingEntity) {
@@ -173,12 +174,9 @@ public class SnakeBladeEntity extends Entity {
                                     }
                                     if (new Random().nextBoolean()) {
                                         if (!current.level().isClientSide() && current.getServer() != null) {
-                                            try {
-                                                current.getServer().getCommands().getDispatcher().execute(
-                                                        "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10",
-                                                        current.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                            } catch (CommandSyntaxException e) {
-
+                                            LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(current, LivingEntityPatch.class);
+                                            if (livingEntityPatch != null) {
+                                                livingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN, 0.0F);
                                             }
                                         }
                                     }

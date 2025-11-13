@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.procedures;
 import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import net.minecraft.client.Minecraft;
@@ -32,6 +33,10 @@ import net.minecraftforge.registries.ForgeRegistries;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import net.minecraft.util.RandomSource;
+import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+
 @EventBusSubscriber
 public class GuardBreakProcedure {
 
@@ -103,11 +108,15 @@ public class GuardBreakProcedure {
 
                 entity.getPersistentData().putBoolean("s_g", false);
                 if (!entity1.level().isClientSide() && entity1.getServer() != null) {
+                    LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity1, LivingEntityPatch.class);
+                    if (livingEntityPatch != null) {
+                        livingEntityPatch.playAnimationSynchronized(Animations.BIPED_COMMON_NEUTRALIZED, 0.0F);
+                    }
+                    LivingEntityPatch<?> livingEntityPatch1 = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                    if (livingEntityPatch1 != null) {
+                        livingEntityPatch1.playAnimationSynchronized(Animations.TACHI_AUTO2, 0.0F);
+                    }
                     try {
-                        entity1.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/skill/guard_break1\" 0 1", entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-
-                        entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/combat/tachi_auto2\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-
                         entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
 
                         entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
@@ -171,10 +180,9 @@ public class GuardBreakProcedure {
                             Entity entity2 = entity1;
 
                             if (!entity2.level().isClientSide() && entity2.getServer() != null) {
-                                try {
-                                    entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/skill/grasping_spire_second\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                } catch (CommandSyntaxException e) {
-
+                                LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity2, LivingEntityPatch.class);
+                                if (livingEntityPatch != null) {
+                                    livingEntityPatch.playAnimationSynchronized(Animations.GRASPING_SPIRAL_SECOND, 0.0F);
                                 }
                             }
                         }

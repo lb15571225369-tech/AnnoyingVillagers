@@ -39,31 +39,22 @@ public class HitAnimProcedure {
 
                 if (dynamicanimation instanceof HitAnimation) {
                     if (!entity.level().isClientSide() && entity.getServer() != null) {
-                        try {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "indestructible @s play \"annoyingvillagers:biped/combat/hit_left\" 0 1",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                        } catch (CommandSyntaxException e) {
-
+                        LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                        if (livingEntityPatch != null) {
+                            livingEntityPatch.playAnimationSynchronized(AVAnimations.HIT_LEFT, 0.0F);
                         }
                     }
                 } else if (dynamicanimation == AVAnimations.HIT_LEFT) {
                     if (!entity.level().isClientSide() && entity.getServer() != null) {
-                        try {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "indestructible @s play \"annoyingvillagers:biped/combat/hit_right\" 0 1",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                        } catch (CommandSyntaxException e) {
-
+                        LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                        if (livingEntityPatch != null) {
+                            livingEntityPatch.playAnimationSynchronized(AVAnimations.HIT_LEFT, 0.0F);
                         }
                     }
                 } else if (dynamicanimation == AVAnimations.HIT_RIGHT && !entity.level().isClientSide() && entity.getServer() != null) {
-                    try {
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                "indestructible @s play \"annoyingvillagers:biped/combat/hit_right\" 0 1",
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                    } catch (CommandSyntaxException e) {
-
+                    LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                    if (livingEntityPatch != null) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.HIT_RIGHT, 0.0F);
                     }
                 }
             }

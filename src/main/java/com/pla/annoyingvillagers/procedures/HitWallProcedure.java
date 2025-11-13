@@ -11,6 +11,9 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 @EventBusSubscriber
 public class HitWallProcedure {
@@ -31,12 +34,9 @@ public class HitWallProcedure {
         if (entity != null) {
             if (damagesource.is(DamageTypes.FLY_INTO_WALL)) {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
-                    try {
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10",
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                    } catch (CommandSyntaxException e) {
-
+                    LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                    if (livingEntityPatch != null) {
+                        livingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN, 0.0F);
                     }
                 }
 
@@ -65,14 +65,13 @@ public class HitWallProcedure {
                     if (!entity.level().isClientSide() && entity.getServer() != null) {
                         try {
                             entity.getServer().getCommands().getDispatcher().execute(
-                                    "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-
-                            entity.getServer().getCommands().getDispatcher().execute(
                                     "impactful @s shake 20 5 6",
                                     entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                         } catch (CommandSyntaxException e) {
-
+                        }
+                        LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                        if (livingEntityPatch != null) {
+                            livingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN, 0.0F);
                         }
                     }
                 }

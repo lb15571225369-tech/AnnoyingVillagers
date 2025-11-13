@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.util.DelayedTask;
@@ -24,6 +25,8 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.registries.ForgeRegistries;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 public class HerobrineChrisOnHurtProcedure {
 
@@ -633,11 +636,9 @@ public class HerobrineChrisOnHurtProcedure {
 
                                 entity2 = entity;
                                 if (!entity2.level().isClientSide() && entity2.getServer() != null) {
-                                    try {
-                                        entity2.getServer().getCommands().getDispatcher().execute(
-                                                "indestructible @s play \"annoyingvillagers:biped/combat/fist_dash\" 0 1",
-                                                entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                    } catch (CommandSyntaxException e) {
+                                    LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity2, LivingEntityPatch.class);
+                                    if (livingEntityPatch != null) {
+                                        livingEntityPatch.playAnimationSynchronized(AVAnimations.FIST_DASH, 0.0F);
                                     }
                                 }
 

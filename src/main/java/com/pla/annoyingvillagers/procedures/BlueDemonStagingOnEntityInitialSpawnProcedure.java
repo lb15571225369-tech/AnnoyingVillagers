@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.spawnhandler.BluedemonData;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
@@ -38,6 +39,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import com.pla.annoyingvillagers.entity.BlueDemonTridentParticleEntity;
 import com.pla.annoyingvillagers.entity.BlueDemonEndStagingEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 public class BlueDemonStagingOnEntityInitialSpawnProcedure {
 
@@ -81,10 +85,12 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                     entity.getServer().getCommands().getDispatcher().execute( "item replace entity @s weapon.mainhand with annoyingvillagers:bluedemontrident", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
 
                     entity.getServer().getCommands().getDispatcher().execute("item replace entity @s weapon.offhand with annoyingvillagers:bluedemontrident", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-
-                    entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/other/blue_demon_start_skill\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 } catch (CommandSyntaxException e) {
                     
+                }
+                LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                if (livingEntityPatch != null) {
+                    livingEntityPatch.playAnimationSynchronized(AVAnimations.BLUE_DEMON_START_SKILL, 0.0F);
                 }
             }
 

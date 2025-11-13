@@ -18,6 +18,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 import java.util.Random;
 
@@ -111,10 +114,9 @@ public class DarkObSsOnEntityInsideProcedure {
             }
 
             if (!entity.level().isClientSide() && entity.getServer() != null) {
-                try {
-                    entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/combat/hit_short\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException e) {
-                    
+                LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                if (livingEntityPatch != null) {
+                    livingEntityPatch.playAnimationSynchronized(Animations.BIPED_HIT_SHORT, 0.0F);
                 }
             }
 

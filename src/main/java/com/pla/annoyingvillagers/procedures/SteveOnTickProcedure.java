@@ -45,6 +45,7 @@ import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.HitAnimation;
 import yesman.epicfight.api.animation.types.LongHitAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import net.minecraft.util.RandomSource;
@@ -331,11 +332,9 @@ public class SteveOnTickProcedure {
 
                                                 entity2 = entity;
                                                 if (!entity2.level().isClientSide() && entity2.getServer() != null) {
-                                                    try {
-                                                        entity2.getServer().getCommands().getDispatcher().execute(
-                                                                "indestructible @s play \"epicfight:biped/combat/bow_shot_mid\" 0 1",
-                                                                entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                    } catch (CommandSyntaxException e) {
+                                                    LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity2, LivingEntityPatch.class);
+                                                    if (livingEntityPatch != null) {
+                                                        livingEntityPatch.playAnimationSynchronized(Animations.BIPED_BOW_SHOT, 0.0F);
                                                     }
                                                 }
 
@@ -429,11 +428,9 @@ public class SteveOnTickProcedure {
 
                                                         entity2 = entity;
                                                         if (!entity2.level().isClientSide() && entity2.getServer() != null) {
-                                                            try {
-                                                                entity2.getServer().getCommands().getDispatcher().execute(
-                                                                        "indestructible @s play \"epicfight:biped/combat/bow_shot_mid\" 0 1",
-                                                                        entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                            } catch (CommandSyntaxException e) {
+                                                            LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity2, LivingEntityPatch.class);
+                                                            if (livingEntityPatch != null) {
+                                                                livingEntityPatch.playAnimationSynchronized(Animations.BIPED_BOW_SHOT, 0.0F);
                                                             }
                                                         }
 

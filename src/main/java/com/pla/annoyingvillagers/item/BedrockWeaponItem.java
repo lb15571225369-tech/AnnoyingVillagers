@@ -19,6 +19,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.registries.ForgeRegistries;
+import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 import java.util.List;
 import java.util.Objects;
@@ -61,12 +64,9 @@ public class BedrockWeaponItem extends SwordItem {
                 pTarget.level().playLocalSound(pTarget.getX(), pTarget.getY(), pTarget.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "obsidian_hit"))), SoundSource.BLOCKS, 1.0F, (float) (0.5 + Math.random() * 0.5), false);
             }
             if (!pTarget.level().isClientSide() && pTarget.getServer() != null) {
-                try {
-                    pTarget.getServer().getCommands().getDispatcher().execute(
-                            "indestructible @s play \"epicfight:biped/combat/hit_long\" 0 10",
-                            pTarget.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException e) {
-
+                LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(pTarget, LivingEntityPatch.class);
+                if (livingEntityPatch != null) {
+                    livingEntityPatch.playAnimationSynchronized(Animations.BIPED_HIT_LONG, 0.0F);
                 }
             }
         }

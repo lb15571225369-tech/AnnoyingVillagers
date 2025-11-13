@@ -5,6 +5,7 @@ import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.block.ObsidianBlock;
 import com.pla.annoyingvillagers.blockentity.ObsidianBlockEntity;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.util.ObsidianWeaponUtil;
 import net.minecraft.core.BlockPos;
@@ -24,7 +25,11 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
+import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class ObsidianWhenEntityInsideBlockOnCollisionProcedure {
@@ -69,9 +74,9 @@ public class ObsidianWhenEntityInsideBlockOnCollisionProcedure {
             if (levelaccessor instanceof Level) {
                 level = (Level) levelaccessor;
                 if (!level.isClientSide()) {
-                    level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "obsidian_hit")), SoundSource.BLOCKS, 1.0F, (float) (0.5 + Math.random() * 0.5));
+                    level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "obsidian_hit"))), SoundSource.BLOCKS, 1.0F, (float) (0.5 + Math.random() * 0.5));
                 } else {
-                    level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "obsidian_hit")), SoundSource.BLOCKS, 1.0F, (float) (0.5 + Math.random() * 0.5), false);
+                    level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "obsidian_hit"))), SoundSource.BLOCKS, 1.0F, (float) (0.5 + Math.random() * 0.5), false);
                 }
             }
 
@@ -168,12 +173,9 @@ public class ObsidianWhenEntityInsideBlockOnCollisionProcedure {
                         Entity entity1 = entity;
 
                         if (!entity1.level().isClientSide() && entity1.getServer() != null) {
-                            try {
-                                entity1.getServer().getCommands().getDispatcher().execute(
-                                        "indestructible @s play \"epicfight:biped/combat/hit_long\" 0 10",
-                                        entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                            } catch (CommandSyntaxException e) {
-
+                            LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity1, LivingEntityPatch.class);
+                            if (livingEntityPatch != null) {
+                                livingEntityPatch.playAnimationSynchronized(Animations.BIPED_HIT_LONG, 0.0F);
                             }
                         }
                     }
@@ -186,12 +188,9 @@ public class ObsidianWhenEntityInsideBlockOnCollisionProcedure {
                             Entity entity1 = entity;
 
                             if (!entity1.level().isClientSide() && entity1.getServer() != null) {
-                                try {
-                                    entity1.getServer().getCommands().getDispatcher().execute(
-                                            "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10",
-                                            entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                } catch (CommandSyntaxException e) {
-
+                                LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity1, LivingEntityPatch.class);
+                                if (livingEntityPatch != null) {
+                                    livingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN, 0.0F);
                                 }
                             }
                         }

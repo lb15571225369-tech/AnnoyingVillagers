@@ -43,6 +43,7 @@ import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
@@ -234,10 +235,9 @@ public class BoomlitProcedure {
 
                     if (dynamicanimation1 != AVAnimations.HARD_GREAT_SWORD_GUARD_SKILL) {
                         if (!entity.level().isClientSide() && entity.getServer() != null) {
-                            try {
-                                entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                            } catch (CommandSyntaxException e) {
-                                
+                            LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                            if (livingEntityPatch != null) {
+                                livingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN, 0.0F);
                             }
                         }
 

@@ -24,6 +24,9 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
+import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 import java.util.Random;
 
@@ -171,12 +174,9 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                         Entity entity1 = entity;
 
                         if (!entity1.level().isClientSide() && entity1.getServer() != null) {
-                            try {
-                                entity1.getServer().getCommands().getDispatcher().execute(
-                                        "indestructible @s play \"epicfight:biped/combat/hit_long\" 0 10",
-                                        entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                            } catch (CommandSyntaxException e) {
-
+                            LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity1, LivingEntityPatch.class);
+                            if (livingEntityPatch != null) {
+                                livingEntityPatch.playAnimationSynchronized(Animations.BIPED_HIT_LONG, 0.0F);
                             }
                         }
                     }
@@ -189,12 +189,11 @@ public class ShadowObsidianWhenEntityInsideBlockOnCollisionProcedure {
                             Entity entity1 = entity;
 
                             if (!entity1.level().isClientSide() && entity1.getServer() != null) {
-                                try {
-                                    entity1.getServer().getCommands().getDispatcher().execute(
-                                            "indestructible @s play \"epicfight:biped/combat/knockdown\" 0 10",
-                                            entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                } catch (CommandSyntaxException e) {
-
+                                if (!entity1.level().isClientSide() && entity1.getServer() != null) {
+                                    LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity1, LivingEntityPatch.class);
+                                    if (livingEntityPatch != null) {
+                                        livingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN, 0.0F);
+                                    }
                                 }
                             }
                         }

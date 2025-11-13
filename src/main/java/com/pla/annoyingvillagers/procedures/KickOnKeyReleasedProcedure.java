@@ -8,6 +8,10 @@ import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.level.LevelAccessor;
+import reascer.wom.gameasset.WOMAnimations;
+import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 public class KickOnKeyReleasedProcedure {
 
@@ -27,10 +31,9 @@ public class KickOnKeyReleasedProcedure {
                 if (itemstack.getItem() instanceof SwordItem) {
                     if (entity.getPersistentData().getDouble("dash_auto") != 1.0D) {
                         if (!entity.level().isClientSide() && entity.getServer() != null) {
-                            try {
-                                entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"wom:biped/combat/torment_charged_attack_2\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                            } catch (CommandSyntaxException e) {
-                                
+                            LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                            if (livingEntityPatch != null) {
+                                livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_CHARGED_ATTACK_2, 0.0F);
                             }
                         }
 
@@ -53,10 +56,9 @@ public class KickOnKeyReleasedProcedure {
 
                     if (itemstack.getItem() instanceof AxeItem && entity.getPersistentData().getDouble("dash_auto") != 1.0D) {
                         if (!entity.level().isClientSide() && entity.getServer() != null) {
-                            try {
-                                entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"wom:biped/combat/torment_charged_attack_2\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                            } catch (CommandSyntaxException e) {
-                                
+                            LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                            if (livingEntityPatch != null) {
+                                livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_CHARGED_ATTACK_2, 0.0F);
                             }
                         }
 

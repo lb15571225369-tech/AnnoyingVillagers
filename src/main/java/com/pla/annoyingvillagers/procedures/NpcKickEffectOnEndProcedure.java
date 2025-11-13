@@ -35,12 +35,9 @@ public class NpcKickEffectOnEndProcedure {
                         AssetAccessor<? extends DynamicAnimation> dynamicanimation = livingentitypatch.getAnimator().getPlayerFor(null).getAnimation();
 
                         if ((dynamicanimation instanceof LongHitAnimation || dynamicanimation == Animations.BIPED_COMMON_NEUTRALIZED || dynamicanimation == Animations.BIPED_KNOCKDOWN) && !entity.level().isClientSide() && entity.getServer() != null) {
-                            try {
-                                entity.getServer().getCommands().getDispatcher().execute(
-                                        "indestructible @s play \"epicfight:biped/skill/roll_backward\" 0 1",
-                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                            } catch (CommandSyntaxException e) {
-                                
+                            LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                            if (livingEntityPatch != null) {
+                                livingEntityPatch.playAnimationSynchronized(Animations.BIPED_ROLL_BACKWARD, 0.0F);
                             }
                         }
                     }

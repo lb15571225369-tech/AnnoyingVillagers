@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
@@ -20,6 +21,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
+import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 public class WoopieTheSwordItemOnUseProcedure {
 
@@ -41,12 +45,9 @@ public class WoopieTheSwordItemOnUseProcedure {
                     if (itemstack1.getItem() == AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get()) {
                         itemstack.getOrCreateTag().putDouble("woopie_dash", itemstack.getOrCreateTag().getDouble("woopie_dash") - 1.0D);
                         if (!entity.level().isClientSide() && entity.getServer() != null) {
-                            try {
-                                entity.getServer().getCommands().getDispatcher().execute(
-                                        "indestructible @s play \"annoyingvillagers:biped/combat/rush_sword\" 0 1",
-                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                            } catch (CommandSyntaxException e) {
-                                
+                            LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                            if (livingEntityPatch != null) {
+                                livingEntityPatch.playAnimationSynchronized(AVAnimations.RUSH_SWORD, 0.0F);
                             }
                         }
                         new DelayedTask(4) {

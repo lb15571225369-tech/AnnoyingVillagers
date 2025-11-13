@@ -28,6 +28,7 @@ import yesman.epicfight.api.animation.types.HitAnimation;
 import yesman.epicfight.api.animation.types.KnockdownAnimation;
 import yesman.epicfight.api.animation.types.LongHitAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
@@ -121,13 +122,9 @@ public class BlueDemonOnEntityUpdateProcedure {
                         public void run() {
                             if (dynamicanimation instanceof KnockdownAnimation) {
                                 if (!entity.level().isClientSide() && entity.getServer() != null) {
-                                    try {
-                                        entity.getServer().getCommands().getDispatcher().execute(
-                                                "indestructible @s play \"epicfight:biped/skill/knockdown_wakeup_left\" 0 1",
-                                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-                                        );
-                                    } catch (CommandSyntaxException e) {
-                                        
+                                    LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                                    if (livingEntityPatch != null) {
+                                        livingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_LEFT, 0.0F);
                                     }
                                 }
                             }

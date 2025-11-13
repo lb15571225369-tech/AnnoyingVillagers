@@ -176,12 +176,9 @@ public class ParryProcedure {
                                                 Entity entity2 = entity;
 
                                                 if (!entity2.level().isClientSide() && entity2.getServer() != null) {
-                                                    try {
-                                                        entity2.getServer().getCommands().getDispatcher().execute(
-                                                                "indestructible @s play \"epicfight:biped/skill/guard_break1\" 0 10",
-                                                                entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                    } catch (CommandSyntaxException e) {
-
+                                                    LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity2, LivingEntityPatch.class);
+                                                    if (livingEntityPatch != null) {
+                                                        livingEntityPatch.playAnimationSynchronized(Animations.BIPED_COMMON_NEUTRALIZED, 0.0F);
                                                     }
                                                 }
                                             }
@@ -277,12 +274,9 @@ public class ParryProcedure {
 
                                             entity2 = entity;
                                             if (!entity2.level().isClientSide() && entity2.getServer() != null) {
-                                                try {
-                                                    entity2.getServer().getCommands().getDispatcher().execute(
-                                                            "indestructible @s play \"annoyingvillagers:biped/combat/guard_break_attack\" 0 10",
-                                                            entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                } catch (CommandSyntaxException e) {
-
+                                                LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity2, LivingEntityPatch.class);
+                                                if (livingEntityPatch != null) {
+                                                    livingEntityPatch.playAnimationSynchronized(AVAnimations.GUARD_BREAK_ATTACK, 0.0F);
                                                 }
                                             }
 
@@ -297,12 +291,9 @@ public class ParryProcedure {
                                         Entity entity2 = entity;
 
                                         if (!entity2.level().isClientSide() && entity2.getServer() != null) {
-                                            try {
-                                                entity2.getServer().getCommands().getDispatcher().execute(
-                                                        "indestructible @s play \"epicfight:biped/skill/guard_break1\" 0 10",
-                                                        entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                            } catch (CommandSyntaxException e) {
-
+                                            LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity2, LivingEntityPatch.class);
+                                            if (livingEntityPatch != null) {
+                                                livingEntityPatch.playAnimationSynchronized(Animations.BIPED_COMMON_NEUTRALIZED, 0.0F);
                                             }
                                         }
                                     }
@@ -340,12 +331,9 @@ public class ParryProcedure {
                                         Entity entity2 = entity;
 
                                         if (!entity2.level().isClientSide() && entity2.getServer() != null) {
-                                            try {
-                                                entity2.getServer().getCommands().getDispatcher().execute(
-                                                        "indestructible @s play \"epicfight:biped/skill/guard_break1\" 0 10",
-                                                        entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                            } catch (CommandSyntaxException e) {
-
+                                            LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity2, LivingEntityPatch.class);
+                                            if (livingEntityPatch != null) {
+                                                livingEntityPatch.playAnimationSynchronized(Animations.BIPED_COMMON_NEUTRALIZED, 0.0F);
                                             }
                                         }
                                     }
@@ -431,23 +419,9 @@ public class ParryProcedure {
                                     Entity entity2 = entity;
 
                                     if (!entity2.level().isClientSide() && entity2.getServer() != null) {
-                                        try {
-                                            entity2.getServer().getCommands().getDispatcher().execute(
-                                                    "indestructible @s play \"annoyingvillagers:biped/combat/guard_break_attack\" 0 10",
-                                                    entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                        } catch (CommandSyntaxException e) {
-
-                                        }
-                                    }
-
-                                    entity2 = entity1;
-                                    if (!entity2.level().isClientSide() && entity2.getServer() != null) {
-                                        try {
-                                            entity2.getServer().getCommands().getDispatcher().execute(
-                                                    "indestructible @s play \"annoyingvillagers:biped/combat/guard_break_attack\" 0 10",
-                                                    entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                        } catch (CommandSyntaxException e) {
-
+                                        LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity2, LivingEntityPatch.class);
+                                        if (livingEntityPatch != null) {
+                                            livingEntityPatch.playAnimationSynchronized(AVAnimations.GUARD_BREAK_ATTACK, 0.0F);
                                         }
                                     }
                                 }

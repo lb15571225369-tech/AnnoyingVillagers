@@ -28,6 +28,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
+import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 @OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
 public class StealthAttackEntity extends AbstractArrow implements ItemSupplier {
@@ -110,11 +113,9 @@ public class StealthAttackEntity extends AbstractArrow implements ItemSupplier {
             try {
                 vicTim.getServer().getCommands().getDispatcher().execute("execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1", vicTim.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 vicTim.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 5", vicTim.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                try {
-                    vicTim.getServer().getCommands().getDispatcher().execute(
-                            "indestructible @s play \"epicfight:biped/combat/hit_long\" 0 10",
-                            vicTim.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException e) {
+                LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(vicTim, LivingEntityPatch.class);
+                if (livingEntityPatch != null) {
+                    livingEntityPatch.playAnimationSynchronized(Animations.BIPED_HIT_LONG, 0.0F);
                 }
             } catch (CommandSyntaxException e) {
             }

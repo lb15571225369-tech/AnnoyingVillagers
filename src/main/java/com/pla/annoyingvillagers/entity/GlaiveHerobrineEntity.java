@@ -46,8 +46,11 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import reascer.wom.gameasset.animations.weapons.AnimsAgony;
 import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.gameasset.Armatures;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 import java.util.Objects;
 import java.util.Random;
@@ -55,6 +58,7 @@ import java.util.Random;
 
 public class GlaiveHerobrineEntity extends HerobrineMob {
     private int nextStack = 3;
+    private final LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
 
     public GlaiveHerobrineEntity(SpawnEntity spawnentity, Level level) {
         this((EntityType) AnnoyingVillagersModEntities.GLAIVE_HEROBRINE.get(), level);
@@ -162,46 +166,40 @@ public class GlaiveHerobrineEntity extends HerobrineMob {
         if (this.getPersistentData().getBoolean("SecondForm") && this.getPersistentData().getInt("HitCount") >= 3) {
             GlaiveHerobrineEntity glaiveHerobrineEntity = this;
             if (itemStack.getItem() instanceof EnderGlaiveItem enderGlaiveItem) {
-                try {
-                    if (!this.level().isClientSide()) {
-                        this.getServer().getCommands().getDispatcher().execute(
-                                "indestructible @s play \"wom:biped/combat/agony_auto_1\" 0 1",
-                                this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                    }
-                    new DelayedTask(3) {
-                        @Override
-                        public void run() {
-                            if (!glaiveHerobrineEntity.level().isClientSide()) {
-                                Vec3 tipPos = enderGlaiveItem.getJointWithTranslation(
-                                        glaiveHerobrineEntity,
-                                        new Vec3f(0.0F, 0.0F, 0.0F),
-                                        Armatures.BIPED.get().toolR,
-                                        4.3F,
-                                        2.3F
-                                );
-                                BlockPos mutePos = BlockPos.containing(tipPos);
-                                AnnoyingVillagers.PACKET_HANDLER.send(
-                                        PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> glaiveHerobrineEntity),
-                                        new ClientboundMuteExplosionAtPos(mutePos, 4)
-                                );
-                                glaiveHerobrineEntity.level().explode(glaiveHerobrineEntity, tipPos.x, tipPos.y, tipPos.z,
-                                        2.0F, true, Level.ExplosionInteraction.TNT);
-                                Vec3 glaivePos = enderGlaiveItem.getJointWithTranslation(glaiveHerobrineEntity, new Vec3f(0,0,0),
-                                        Armatures.BIPED.get().toolR, 1.3F, 2.3F);
-                                Vec3 explosionPos = enderGlaiveItem.getJointWithTranslation(glaiveHerobrineEntity, new Vec3f(0,0,0),
-                                        Armatures.BIPED.get().toolR, 10.3F, 2.3F);
-                                AnnoyingVillagers.PACKET_HANDLER.send(
-                                        PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> glaiveHerobrineEntity),
-                                        new ClientboundGlaiveExplosionFx(glaivePos, explosionPos)
-                                );
-                                glaiveHerobrineEntity.level().playSound((Player) null, new BlockPos((int) explosionPos.x, (int) explosionPos.y, (int) explosionPos.z), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_shot")), SoundSource.NEUTRAL, 1.0F, 1.0F);
-                                glaiveHerobrineEntity.getPersistentData().putInt("HitCount", glaiveHerobrineEntity.getPersistentData().contains("HitCount") ? glaiveHerobrineEntity.getPersistentData().getInt("HitCount") - 3 : 0);
-                            }
-                        }
-                    };
-                } catch (CommandSyntaxException e) {
-
+                if (!this.level().isClientSide() && this.livingEntityPatch != null) {
+                    this.livingEntityPatch.playAnimationSynchronized(AnimsAgony.AGONY_AUTO_1, 0.0F);
                 }
+                new DelayedTask(3) {
+                    @Override
+                    public void run() {
+                        if (!glaiveHerobrineEntity.level().isClientSide()) {
+                            Vec3 tipPos = enderGlaiveItem.getJointWithTranslation(
+                                    glaiveHerobrineEntity,
+                                    new Vec3f(0.0F, 0.0F, 0.0F),
+                                    Armatures.BIPED.get().toolR,
+                                    4.3F,
+                                    2.3F
+                            );
+                            BlockPos mutePos = BlockPos.containing(tipPos);
+                            AnnoyingVillagers.PACKET_HANDLER.send(
+                                    PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> glaiveHerobrineEntity),
+                                    new ClientboundMuteExplosionAtPos(mutePos, 4)
+                            );
+                            glaiveHerobrineEntity.level().explode(glaiveHerobrineEntity, tipPos.x, tipPos.y, tipPos.z,
+                                    2.0F, true, Level.ExplosionInteraction.TNT);
+                            Vec3 glaivePos = enderGlaiveItem.getJointWithTranslation(glaiveHerobrineEntity, new Vec3f(0,0,0),
+                                    Armatures.BIPED.get().toolR, 1.3F, 2.3F);
+                            Vec3 explosionPos = enderGlaiveItem.getJointWithTranslation(glaiveHerobrineEntity, new Vec3f(0,0,0),
+                                    Armatures.BIPED.get().toolR, 10.3F, 2.3F);
+                            AnnoyingVillagers.PACKET_HANDLER.send(
+                                    PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> glaiveHerobrineEntity),
+                                    new ClientboundGlaiveExplosionFx(glaivePos, explosionPos)
+                            );
+                            glaiveHerobrineEntity.level().playSound((Player) null, new BlockPos((int) explosionPos.x, (int) explosionPos.y, (int) explosionPos.z), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_shot")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                            glaiveHerobrineEntity.getPersistentData().putInt("HitCount", glaiveHerobrineEntity.getPersistentData().contains("HitCount") ? glaiveHerobrineEntity.getPersistentData().getInt("HitCount") - 3 : 0);
+                        }
+                    }
+                };
             }
         }
 

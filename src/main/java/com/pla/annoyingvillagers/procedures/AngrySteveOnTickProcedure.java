@@ -41,6 +41,10 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraft.util.RandomSource;
+import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+
 public class AngrySteveOnTickProcedure {
 
     public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity) {
@@ -379,11 +383,9 @@ public class AngrySteveOnTickProcedure {
 
                                     entity2 = entity;
                                     if (!entity2.level().isClientSide() && entity2.getServer() != null) {
-                                        try {
-                                            entity2.getServer().getCommands().getDispatcher().execute(
-                                                    "indestructible @s play \"epicfight:biped/combat/bow_shot_mid\" 0 1",
-                                                    entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                        } catch (CommandSyntaxException e) {
+                                        LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity2, LivingEntityPatch.class);
+                                        if (livingEntityPatch != null) {
+                                            livingEntityPatch.playAnimationSynchronized(Animations.BIPED_BOW_SHOT, 0.0F);
                                         }
                                     }
 

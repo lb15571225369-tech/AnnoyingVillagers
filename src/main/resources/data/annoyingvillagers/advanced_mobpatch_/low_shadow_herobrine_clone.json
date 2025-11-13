@@ -384,9 +384,7 @@
 							],
 							"animation": "wom:biped/combat/torment_charged_attack_2",
 							"command_list": [
-							{"time":0.5, "command":"indestructible @s play \"wom:biped/combat/torment_charged_attack_2d_weapon_hit\" 0 1", "execute_at_target":true},
 							{"command":"effect give @s epicfight:stun_immunity 2 3", "execute_at_target":false}
-
 							],
 							"play_speed": 0.8
 						}

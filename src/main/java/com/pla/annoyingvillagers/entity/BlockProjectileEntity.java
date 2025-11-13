@@ -29,6 +29,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraftforge.registries.ForgeRegistries;
+import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -129,12 +132,9 @@ public class BlockProjectileEntity extends ThrowableProjectile {
             target.hurt(target.level().damageSources().indirectMagic(this, this.getOwner()), 2.0F);
         }
         if (!target.level().isClientSide() && target.getServer() != null) {
-            try {
-                target.getServer().getCommands().getDispatcher().execute(
-                        "indestructible @s play \"epicfight:biped/combat/hit_long\" 0 10",
-                        target.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
-
+            LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(target, LivingEntityPatch.class);
+            if (livingEntityPatch != null) {
+                livingEntityPatch.playAnimationSynchronized(Animations.BIPED_HIT_LONG, 0.0F);
             }
 
             if (target instanceof LivingEntity livingEntity) {

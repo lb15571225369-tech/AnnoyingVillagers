@@ -15,6 +15,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.KnockdownAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
@@ -49,23 +50,17 @@ public class NpcStandUpProcedure {
                                 if (Math.random() <= 0.4D) {
                                     entity1 = entity;
                                     if (!entity1.level().isClientSide() && entity1.getServer() != null) {
-                                        try {
-                                            entity1.getServer().getCommands().getDispatcher().execute(
-                                                    "indestructible @s play \"epicfight:biped/skill/knockdown_wakeup_left\" 0 1",
-                                                    entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                        } catch (CommandSyntaxException e) {
-
+                                        LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity1, LivingEntityPatch.class);
+                                        if (livingEntityPatch != null) {
+                                            livingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_LEFT, 0.0F);
                                         }
                                     }
                                 } else {
                                     entity1 = entity;
                                     if (!entity1.level().isClientSide() && entity1.getServer() != null) {
-                                        try {
-                                            entity1.getServer().getCommands().getDispatcher().execute(
-                                                    "indestructible @s play \"epicfight:biped/skill/knockdown_wakeup_right\" 0 1",
-                                                    entity1.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                        } catch (CommandSyntaxException e) {
-
+                                        LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity1, LivingEntityPatch.class);
+                                        if (livingEntityPatch != null) {
+                                            livingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_RIGHT, 0.0F);
                                         }
                                     }
                                 }

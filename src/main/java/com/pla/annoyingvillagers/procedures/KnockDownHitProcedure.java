@@ -14,6 +14,7 @@ import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.KnockdownAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
@@ -35,79 +36,23 @@ public class KnockDownHitProcedure {
     private static void execute(@Nullable Event event, Entity entity, Entity entity1) {
         if (entity != null && entity1 != null) {
             if (entity.isAlive()) {
-                float f;
-
-                if (entity instanceof LivingEntity) {
-                    LivingEntity livingentity = (LivingEntity) entity;
-
-                    f = livingentity.getMaxHealth();
-                } else {
-                    f = -1.0F;
-                }
-
-                LivingEntityPatch livingentitypatch;
+                LivingEntityPatch<?> livingEntityPatch;
                 AssetAccessor<? extends DynamicAnimation> dynamicanimation;
+                livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 
-                if (f >= 30.0F) {
-                    if (!ForgeRegistries.ENTITY_TYPES.getKey(entity1.getType()).toString().equals("cgm:projectile")) {
-                        livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
-                        if (livingentitypatch != null) {
-                            dynamicanimation = livingentitypatch.getAnimator().getPlayerFor(null).getAnimation();
-                            if (dynamicanimation instanceof KnockdownAnimation || dynamicanimation == AVAnimations.KNOCKDOWN_FORWRAD || dynamicanimation == AVAnimations.KNOCKDOWN_RIGHT || dynamicanimation == AVAnimations.KNOCKDOWN_RIGHT || dynamicanimation == AVAnimations.KNOCKDOWN_LEFT) {
-                                if (Math.random() <= 0.4D) {
-                                    if (!entity.level().isClientSide() && entity.getServer() != null) {
-                                        try {
-                                            entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/knockdown_right\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                        } catch (CommandSyntaxException e) {
-
-                                        }
-                                    }
-                                } else if (Math.random() <= 0.4D) {
-                                    if (!entity.level().isClientSide() && entity.getServer() != null) {
-                                        try {
-                                            entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/knockdown_left\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                        } catch (CommandSyntaxException e) {
-
-                                        }
-                                    }
-                                } else if (!entity.level().isClientSide() && entity.getServer() != null) {
-                                    try {
-                                        entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/knockdown_forward\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                    } catch (CommandSyntaxException e) {
-
-                                    }
-                                }
+                if (livingEntityPatch != null) {
+                    dynamicanimation = livingEntityPatch.getAnimator().getPlayerFor(null).getAnimation();
+                    if (dynamicanimation instanceof KnockdownAnimation || dynamicanimation == AVAnimations.KNOCKDOWN_FORWRAD || dynamicanimation == AVAnimations.KNOCKDOWN_RIGHT || dynamicanimation == AVAnimations.KNOCKDOWN_LEFT) {
+                        if (Math.random() <= 0.4D) {
+                            if (!entity.level().isClientSide() && entity.getServer() != null) {
+                                livingEntityPatch.playAnimationSynchronized(AVAnimations.KNOCKDOWN_RIGHT, 0.0F);
                             }
-                        }
-                    }
-                } else {
-                    livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
-                    if (livingentitypatch != null) {
-                        dynamicanimation = livingentitypatch.getAnimator().getPlayerFor(null).getAnimation();
-                        if (dynamicanimation instanceof KnockdownAnimation || dynamicanimation == AVAnimations.KNOCKDOWN_FORWRAD || dynamicanimation == AVAnimations.KNOCKDOWN_RIGHT || dynamicanimation == AVAnimations.KNOCKDOWN_RIGHT || dynamicanimation == AVAnimations.KNOCKDOWN_LEFT) {
-                            if (Math.random() <= 0.4D) {
-                                if (!entity.level().isClientSide() && entity.getServer() != null) {
-                                    try {
-                                        entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/knockdown_right\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                    } catch (CommandSyntaxException e) {
-
-                                    }
-                                }
-                            } else if (Math.random() <= 0.4D) {
-                                if (!entity.level().isClientSide() && entity.getServer() != null) {
-                                    try {
-                                        entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/knockdown_left\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                    } catch (CommandSyntaxException e) {
-
-                                    }
-                                }
-                            } else if (!entity.level().isClientSide() && entity.getServer() != null) {
-                                try {
-                                    entity.getServer().getCommands().getDispatcher().execute("indestructible @s play \"annoyingvillagers:biped/combat/knockdown_forward\" 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                } catch (CommandSyntaxException e) {
-
-                                }
+                        } else if (Math.random() <= 0.4D) {
+                            if (!entity.level().isClientSide() && entity.getServer() != null) {
+                                livingEntityPatch.playAnimationSynchronized(AVAnimations.KNOCKDOWN_LEFT, 0.0F);
                             }
+                        } else if (!entity.level().isClientSide() && entity.getServer() != null) {
+                            livingEntityPatch.playAnimationSynchronized(AVAnimations.KNOCKDOWN_FORWRAD, 0.0F);
                         }
                     }
                 }

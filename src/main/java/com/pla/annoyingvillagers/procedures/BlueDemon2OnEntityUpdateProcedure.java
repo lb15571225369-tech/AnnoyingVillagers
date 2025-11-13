@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -28,6 +29,7 @@ import yesman.epicfight.api.animation.types.HitAnimation;
 import yesman.epicfight.api.animation.types.KnockdownAnimation;
 import yesman.epicfight.api.animation.types.LongHitAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
@@ -135,10 +137,9 @@ public class BlueDemon2OnEntityUpdateProcedure {
                                     Entity entity2 = entity;
 
                                     if (!entity2.level().isClientSide() && entity2.getServer() != null) {
-                                        try {
-                                            entity2.getServer().getCommands().getDispatcher().execute("indestructible @s play \"epicfight:biped/skill/knockdown_wakeup_left\" 0 1", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                        } catch (CommandSyntaxException e) {
-                                            
+                                        LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity2, LivingEntityPatch.class);
+                                        if (livingEntityPatch != null) {
+                                            livingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_LEFT, 0.0F);
                                         }
                                     }
                                 }

@@ -79,7 +79,7 @@ public class HerobrineMob extends Monster {
     private int healingCooldown = 0;
     private int healingAnimationCooldown = 0;
     private boolean healing = false;
-    private final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
+    private final LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
 
     private Entity firstPossessedHerobrine;
     private UUID firstPossessedHerobrineUuid;
@@ -451,7 +451,7 @@ public class HerobrineMob extends Monster {
         this.healing = false;
         this.setNoAi(false);
         this.removeAllEffects();
-        this.livingentitypatch.applyStun(StunType.FALL, 0.0F);
+        this.livingEntityPatch.applyStun(StunType.FALL, 0.0F);
         this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 2400, 2));
         this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 2400, 2));
         this.addEffect(new MobEffectInstance(MobEffects.JUMP, 2400, 2));
@@ -763,8 +763,8 @@ public class HerobrineMob extends Monster {
                     return;
                 }
                 this.addEffect(new MobEffectInstance((MobEffect) EpicFightMobEffects.STUN_IMMUNITY.get(), 1, 3, false, false));
-                if (this.livingentitypatch != null) {
-                    this.livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_HEALING, 0.0F);
+                if (this.livingEntityPatch != null) {
+                    this.livingEntityPatch.playAnimationSynchronized(AVAnimations.HEROBRINE_HEALING, 0.0F);
                 }
             }
         }

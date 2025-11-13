@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.procedures;
 import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
@@ -79,12 +80,9 @@ public class NpcKickProcedure {
                                                 Entity entity2 = entity1;
 
                                                 if (!entity2.level().isClientSide() && entity2.getServer() != null) {
-                                                    try {
-                                                        entity2.getServer().getCommands().getDispatcher().execute(
-                                                                "indestructible @s play \"annoyingvillagers:biped/combat/kick_1\" 0 1",
-                                                                entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                    } catch (CommandSyntaxException e) {
-
+                                                    LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity2, LivingEntityPatch.class);
+                                                    if (livingEntityPatch != null) {
+                                                        livingEntityPatch.playAnimationSynchronized(AVAnimations.KICK_1, 0.0F);
                                                     }
                                                 }
                                             }
@@ -99,12 +97,9 @@ public class NpcKickProcedure {
                                                 Entity entity2 = entity1;
 
                                                 if (!entity2.level().isClientSide() && entity2.getServer() != null) {
-                                                    try {
-                                                        entity2.getServer().getCommands().getDispatcher().execute(
-                                                                "indestructible @s play \"annoyingvillagers:biped/combat/kick_2\" 0 1",
-                                                                entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                    } catch (CommandSyntaxException e) {
-
+                                                    LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity2, LivingEntityPatch.class);
+                                                    if (livingEntityPatch != null) {
+                                                        livingEntityPatch.playAnimationSynchronized(AVAnimations.KICK_2, 0.0F);
                                                     }
                                                 }
                                             }
@@ -119,12 +114,9 @@ public class NpcKickProcedure {
                                                 Entity entity2 = entity1;
 
                                                 if (!entity2.level().isClientSide() && entity2.getServer() != null) {
-                                                    try {
-                                                        entity2.getServer().getCommands().getDispatcher().execute(
-                                                                "indestructible @s play \"annoyingvillagers:biped/combat/kick_3\" 0 1",
-                                                                entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                    } catch (CommandSyntaxException e) {
-
+                                                    LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity2, LivingEntityPatch.class);
+                                                    if (livingEntityPatch != null) {
+                                                        livingEntityPatch.playAnimationSynchronized(AVAnimations.KICK_3, 0.0F);
                                                     }
                                                 }
                                             }
