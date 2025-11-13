@@ -14,6 +14,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.Objects;
+
 public abstract class EmeraldArmorItem extends ArmorItem {
 
     public EmeraldArmorItem(ArmorItem.Type type, Properties properties) {
@@ -43,7 +45,7 @@ public abstract class EmeraldArmorItem extends ArmorItem {
             }
 
             public SoundEvent getEquipSound() {
-                return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "item.armor.equip_diamond"));
+                return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.armor.equip_diamond")));
             }
 
             public Ingredient getRepairIngredient() {
@@ -75,8 +77,11 @@ public abstract class EmeraldArmorItem extends ArmorItem {
         }
 
         @Override
-        public void onArmorTick(ItemStack itemstack, Level level, Player player) {
-            EmeraldArmorJumpBootProcedure.execute(player);
+        public void onInventoryTick(ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex) {
+            super.onInventoryTick(stack, level, player, slotIndex, selectedIndex);
+            if (player.getItemBySlot(EquipmentSlot.FEET) == stack) {
+                EmeraldArmorJumpBootProcedure.execute(player);
+            }
         }
     }
 
@@ -91,8 +96,11 @@ public abstract class EmeraldArmorItem extends ArmorItem {
         }
 
         @Override
-        public void onArmorTick(ItemStack itemstack, Level level, Player player) {
-            EmeraldArmorJumpBootProcedure.execute(player);
+        public void onInventoryTick(ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex) {
+            super.onInventoryTick(stack, level, player, slotIndex, selectedIndex);
+            if (player.getItemBySlot(EquipmentSlot.LEGS) == stack) {
+                EmeraldArmorJumpBootProcedure.execute(player);
+            }
         }
     }
 
@@ -107,8 +115,11 @@ public abstract class EmeraldArmorItem extends ArmorItem {
         }
 
         @Override
-        public void onArmorTick(ItemStack itemstack, Level level, Player player) {
-            EmeraldArmorJumpBootProcedure.execute(player);
+        public void onInventoryTick(ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex) {
+            super.onInventoryTick(stack, level, player, slotIndex, selectedIndex);
+            if (player.getItemBySlot(EquipmentSlot.CHEST) == stack) {
+                EmeraldArmorJumpBootProcedure.execute(player);
+            }
         }
     }
 
@@ -123,8 +134,11 @@ public abstract class EmeraldArmorItem extends ArmorItem {
         }
 
         @Override
-        public void onArmorTick(ItemStack itemstack, Level level, Player player) {
-            EmeraldArmorJumpBootProcedure.execute(player);
+        public void onInventoryTick(ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex) {
+            super.onInventoryTick(stack, level, player, slotIndex, selectedIndex);
+            if (player.getItemBySlot(EquipmentSlot.HEAD) == stack) {
+                EmeraldArmorJumpBootProcedure.execute(player);
+            }
         }
     }
 }

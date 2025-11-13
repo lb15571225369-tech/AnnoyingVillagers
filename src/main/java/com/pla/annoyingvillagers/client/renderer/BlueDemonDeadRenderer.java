@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.client.renderer;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.AlexDeadEntity;
 import com.pla.annoyingvillagers.entity.BlueDemonDeadEntity;
 import net.minecraft.client.model.HumanoidModel;
@@ -21,6 +22,6 @@ public class BlueDemonDeadRenderer extends HumanoidMobRenderer<BlueDemonDeadEnti
     }
 
     public ResourceLocation getTextureLocation(BlueDemonDeadEntity blueDemonDeadEntity) {
-        return new ResourceLocation("annoyingvillagers", "textures/entities/blue_demon.png");
+        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/blue_demon.png");
     }
 }

@@ -22,8 +22,8 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 public class PlayerMobEpicFightOverlayLayer<E extends LivingEntity, AM extends HumanoidMesh>
         extends ModelRenderLayer<E, LivingEntityPatch<E>, HumanoidModel<E>, RenderLayer<E, HumanoidModel<E>>, AM> {
-    private final ResourceLocation BLOOD_TEXTURE = new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/player_mob_blood.png");
-    private final ResourceLocation DEFAULT_EYE = new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/herobrine_eyes/default/default.png");
+    private final ResourceLocation BLOOD_TEXTURE = ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/player_mob_blood.png");
+    private final ResourceLocation DEFAULT_EYE = ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/herobrine_eyes/default/default.png");
 
     public PlayerMobEpicFightOverlayLayer(AssetAccessor<AM> mesh) { super(mesh); }
 
@@ -31,7 +31,7 @@ public class PlayerMobEpicFightOverlayLayer<E extends LivingEntity, AM extends H
         if (e instanceof LowHerobrineCloneEntity) {
             String name = e.hasCustomName() ? e.getCustomName().getString() : e.getName().getString();
             return HerobrineEyesUtil.getHerobrineEyesTexture(name);
-        } else if (EntityType.getKey(e.getType()).equals(new ResourceLocation(AnnoyingVillagers.MODID, "infected_player_mob"))) {
+        } else if (EntityType.getKey(e.getType()).equals(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "infected_player_mob"))) {
             return BLOOD_TEXTURE;
         }  else if (e instanceof HerobrineMob || e instanceof LowShadowHerobrineCloneEntity
                 || (e instanceof HerobrineGregEntity herobrineGregEntity && herobrineGregEntity.isWhiteEye())) {

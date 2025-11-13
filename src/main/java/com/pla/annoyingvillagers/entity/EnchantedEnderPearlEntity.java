@@ -1,7 +1,9 @@
 package com.pla.annoyingvillagers.entity;
 
+import java.util.Objects;
 import java.util.Random;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.EnchantedEnderPearlOnProjectileHitBlockProcedure;
@@ -94,7 +96,7 @@ public class EnchantedEnderPearlEntity extends AbstractArrow implements ItemSupp
         enchantedEnderPearl.setBaseDamage(d0);
         enchantedEnderPearl.setKnockback(i);
         level.addFreshEntity(enchantedEnderPearl);
-        level.playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "throw")), SoundSource.PLAYERS, 1.0F, 1.0F / (random.nextFloat() * 0.5F + 1.0F) + f / 2.0F);
+        level.playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "throw"))), SoundSource.PLAYERS, 1.0F, 1.0F / (random.nextFloat() * 0.5F + 1.0F) + f / 2.0F);
         return enchantedEnderPearl;
     }
 
@@ -110,7 +112,7 @@ public class EnchantedEnderPearlEntity extends AbstractArrow implements ItemSupp
         enchantedEnderPearl.setKnockback(0);
         enchantedEnderPearl.setCritArrow(false);
         livingentity.level().addFreshEntity(enchantedEnderPearl);
-        livingentity.level().playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "throw")), SoundSource.PLAYERS, 1.0F, 1.0F / ((new Random()).nextFloat() * 0.5F + 1.0F));
+        livingentity.level().playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "throw"))), SoundSource.PLAYERS, 1.0F, 1.0F / ((new Random()).nextFloat() * 0.5F + 1.0F));
         return enchantedEnderPearl;
     }
 }

@@ -13,6 +13,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.Objects;
+
 public abstract class CompressedDiamondArmorItem extends ArmorItem {
 
     public CompressedDiamondArmorItem(ArmorItem.Type type, Properties properties) {
@@ -42,7 +44,7 @@ public abstract class CompressedDiamondArmorItem extends ArmorItem {
             }
 
             public SoundEvent getEquipSound() {
-                return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "item.armor.equip_diamond"));
+                return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.armor.equip_diamond")));
             }
 
             public Ingredient getRepairIngredient() {

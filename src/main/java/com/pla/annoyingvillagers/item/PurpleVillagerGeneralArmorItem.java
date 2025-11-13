@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.item;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import com.pla.annoyingvillagers.client.model.ModelVillagerGeneralArmor;
@@ -51,7 +52,7 @@ public abstract class PurpleVillagerGeneralArmorItem extends ArmorItem {
             }
 
             public SoundEvent getEquipSound() {
-                return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "item.armor.equip_chain"));
+                return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.armor.equip_chain")));
             }
 
             public Ingredient getRepairIngredient() {

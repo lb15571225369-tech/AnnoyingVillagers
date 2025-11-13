@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.client.renderer;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.ChrisEntity;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -20,6 +21,6 @@ public class ChrisRenderer extends HumanoidMobRenderer<ChrisEntity, HumanoidMode
     }
 
     public ResourceLocation getTextureLocation(ChrisEntity kelisientity) {
-        return new ResourceLocation("annoyingvillagers", "textures/entities/chris.png");
+        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/chris.png");
     }
 }

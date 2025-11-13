@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.StealthAttackEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
@@ -24,6 +25,8 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.Objects;
+
 public class ArmoredHerobrineOnHurtProcedure {
 
     public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, final Entity entity) {
@@ -41,9 +44,9 @@ public class ArmoredHerobrineOnHurtProcedure {
                     if (levelaccessor instanceof Level) {
                         level = (Level)levelaccessor;
                         if (!level.isClientSide()) {
-                            level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:obsidian_place")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                            level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "obsidian_place"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                         } else {
-                            level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:obsidian_place")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                            level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "obsidian_place"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                         }
                     }
                 }
@@ -52,18 +55,18 @@ public class ArmoredHerobrineOnHurtProcedure {
                     if (levelaccessor instanceof Level) {
                         level = (Level)levelaccessor;
                         if (!level.isClientSide()) {
-                            level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.player.attack.sweep")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                            level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.player.attack.sweep"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                         } else {
-                            level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.player.attack.sweep")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                            level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.player.attack.sweep"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                         }
                     }
 
                     if (levelaccessor instanceof Level) {
                         level = (Level)levelaccessor;
                         if (!level.isClientSide()) {
-                            level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.stone.place")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                            level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","block.stone.place")), SoundSource.BLOCKS, 1.0F, 1.0F);
                         } else {
-                            level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.stone.place")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                            level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","block.stone.place")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                         }
                     }
 
@@ -164,7 +167,7 @@ public class ArmoredHerobrineOnHurtProcedure {
                                 Level level3 = (Level)levelaccessor1;
 
                                 if (!level3.isClientSide()) {
-                                    level3.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.iron_golem.repair")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                                    level3.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.iron_golem.repair")), SoundSource.BLOCKS, 1.0F, 1.0F);
                                 }
                             }
                             new DelayedTask(4) {
@@ -202,18 +205,18 @@ public class ArmoredHerobrineOnHurtProcedure {
                     if (levelaccessor instanceof Level) {
                         level = (Level)levelaccessor;
                         if (!level.isClientSide()) {
-                            level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.player.attack.sweep")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                            level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.player.attack.sweep"))), SoundSource.BLOCKS, 1.0F, 1.0F);
                         } else {
-                            level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.player.attack.sweep")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                            level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.player.attack.sweep"))), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                         }
                     }
 
                     if (levelaccessor instanceof Level) {
                         level = (Level)levelaccessor;
                         if (!level.isClientSide()) {
-                            level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.stone.place")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                            level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.stone.place"))), SoundSource.BLOCKS, 1.0F, 1.0F);
                         } else {
-                            level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.stone.place")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                            level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.stone.place"))), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                         }
                     }
 
@@ -298,7 +301,7 @@ public class ArmoredHerobrineOnHurtProcedure {
                                 Level level3 = (Level)levelaccessor1;
 
                                 if (!level3.isClientSide()) {
-                                    level3.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.iron_golem.repair")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                                    level3.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.iron_golem.repair")), SoundSource.BLOCKS, 1.0F, 1.0F);
                                 }
                             }
                             new DelayedTask(1) {
@@ -432,7 +435,7 @@ public class ArmoredHerobrineOnHurtProcedure {
                                                         Level level7 = (Level)levelaccessor2;
 
                                                         if (!level7.isClientSide()) {
-                                                            level7.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.iron_golem.repair")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                                                            level7.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.iron_golem.repair"))), SoundSource.BLOCKS, 1.0F, 1.0F);
                                                         }
                                                     }
                                                     new DelayedTask(1) {
@@ -498,7 +501,7 @@ public class ArmoredHerobrineOnHurtProcedure {
                                                                         Level level10 = (Level)levelaccessor3;
 
                                                                         if (!level10.isClientSide()) {
-                                                                            level10.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.iron_golem.repair")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                                                                            level10.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.iron_golem.repair"))), SoundSource.BLOCKS, 1.0F, 1.0F);
                                                                         }
                                                                     }
 
@@ -535,7 +538,7 @@ public class ArmoredHerobrineOnHurtProcedure {
                                                                 Level level9 = (Level)levelaccessor3;
 
                                                                 if (!level9.isClientSide()) {
-                                                                    level9.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.iron_golem.repair")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                                                                    level9.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.iron_golem.repair"))), SoundSource.BLOCKS, 1.0F, 1.0F);
                                                                 }
                                                             }
                                                         }
@@ -553,18 +556,18 @@ public class ArmoredHerobrineOnHurtProcedure {
                 if (Math.random() == 0.04D && levelaccessor instanceof Level) {
                     level = (Level)levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:soul_legend")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "soul_legend"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:soul_legend")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "soul_legend"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                     }
                 }
 
                 if (Math.random() == 0.04D && levelaccessor instanceof Level) {
                     level = (Level)levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:himattack")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "himattack"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:himattack")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "himattack"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                     }
                 }
 

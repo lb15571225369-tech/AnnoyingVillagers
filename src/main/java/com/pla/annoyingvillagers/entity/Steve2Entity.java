@@ -75,11 +75,11 @@ public class Steve2Entity extends PathfinderMobInventory {
     }
 
     public SoundEvent getHurtSound(DamageSource damagesource) {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
+        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.generic.hurt"));
     }
 
     public SoundEvent getDeathSound() {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
+        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.generic.death"));
     }
 
     public boolean hurt(DamageSource damagesource, float f) {

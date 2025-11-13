@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.client.renderer;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.AngrySteveEntity;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -21,12 +22,12 @@ public class AngrySteveRenderer extends HumanoidMobRenderer<AngrySteveEntity, Hu
                 context.getModelManager()));
         this.addLayer(new EyesLayer<AngrySteveEntity, HumanoidModel<AngrySteveEntity>>(this) {
             public RenderType renderType() {
-                return RenderType.eyes(new ResourceLocation("annoyingvillagers", "textures/entities/angry_steve_eyes.png"));
+                return RenderType.eyes(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/angry_steve_eyes.png"));
             }
         });
     }
 
     public ResourceLocation getTextureLocation(AngrySteveEntity angrySteveEntity) {
-        return new ResourceLocation("annoyingvillagers", "textures/entities/angry_steve.png");
+        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/angry_steve.png");
     }
 }

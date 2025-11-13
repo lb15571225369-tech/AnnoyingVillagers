@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.client.renderer;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.SteveEntity;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -20,6 +21,6 @@ public class SteveRenderer extends HumanoidMobRenderer<SteveEntity, HumanoidMode
     }
 
     public ResourceLocation getTextureLocation(SteveEntity steveentity) {
-        return new ResourceLocation("annoyingvillagers", "textures/entities/steve.png");
+        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/steve.png");
     }
 }

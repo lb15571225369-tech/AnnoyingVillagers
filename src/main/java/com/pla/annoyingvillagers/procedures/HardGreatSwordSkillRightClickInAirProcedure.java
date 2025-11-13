@@ -60,7 +60,7 @@ public class HardGreatSwordSkillRightClickInAirProcedure {
                     }
 
                     if (world instanceof Level level) {
-                        SoundEvent sound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "hard_great_sword_skill"));
+                        SoundEvent sound = ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "hard_great_sword_skill"));
                         if (!level.isClientSide()) {
                             level.playSound(null, new BlockPos((int) x, (int) y, (int) z), sound, SoundSource.NEUTRAL, 1.0F, 1.0F);
                         } else {

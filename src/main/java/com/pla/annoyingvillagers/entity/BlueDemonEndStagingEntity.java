@@ -38,6 +38,8 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.BlueDemonEndStagingOnEntityUpdateProcedure;
 import com.pla.annoyingvillagers.procedures.BlueDemonTridentFsSkillEndOnEntityInitialSpawnProcedure;
 
+import java.util.Objects;
+
 public class BlueDemonEndStagingEntity extends Monster {
 
     public BlueDemonEndStagingEntity(SpawnEntity spawnentity, Level level) {
@@ -79,11 +81,11 @@ public class BlueDemonEndStagingEntity extends Monster {
     }
 
     public SoundEvent getHurtSound(DamageSource damagesource) {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.hurt"));
+        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.hurt")));
     }
 
     public SoundEvent getDeathSound() {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.death"));
+        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.death")));
     }
 
     public boolean hurt(DamageSource damagesource, float f) {

@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.client.renderer;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.AlexDeadEntity;
 import com.pla.annoyingvillagers.entity.PurpleVillagerGeneralDeadEntity;
 import net.minecraft.client.model.HumanoidModel;
@@ -21,6 +22,6 @@ public class PurpleVillagerGeneralDeadRenderer extends HumanoidMobRenderer<Purpl
     }
 
     public ResourceLocation getTextureLocation(PurpleVillagerGeneralDeadEntity purpleVillagerGeneralDeadEntity) {
-        return new ResourceLocation("annoyingvillagers", "textures/entities/purple_villager_general_dead.png");
+        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/purple_villager_general_dead.png");
     }
 }

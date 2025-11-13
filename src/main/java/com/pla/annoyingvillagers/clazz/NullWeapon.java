@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.clazz;
 
 import java.util.EnumSet;
+import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 import javax.annotation.Nullable;
@@ -256,11 +257,11 @@ public class NullWeapon extends Monster {
     }
 
     public SoundEvent getHurtSound(DamageSource damagesource) {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(""));
+        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("", "")));
     }
 
     public SoundEvent getDeathSound() {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(""));
+        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("", "")));
     }
 
     public boolean causeFallDamage(float f, float f1, DamageSource damagesource) {

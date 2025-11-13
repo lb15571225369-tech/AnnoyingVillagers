@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -63,9 +64,9 @@ public class HerobrineChrisOnTouchProcedure {
                                 if (levelaccessor instanceof Level) {
                                     level = (Level)levelaccessor;
                                     if (!level.isClientSide()) {
-                                        level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "ob_place")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                                        level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ob_place")), SoundSource.BLOCKS, 1.0F, 1.0F);
                                     } else {
-                                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "ob_place")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ob_place")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                                     }
                                 }
 
@@ -99,9 +100,9 @@ public class HerobrineChrisOnTouchProcedure {
                                 if (levelaccessor instanceof Level) {
                                     level = (Level)levelaccessor;
                                     if (!level.isClientSide()) {
-                                        level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "ob_place")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                                        level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ob_place")), SoundSource.BLOCKS, 1.0F, 1.0F);
                                     } else {
-                                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "ob_place")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ob_place")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                                     }
                                 }
                                 new DelayedTask(1) {
@@ -211,9 +212,9 @@ public class HerobrineChrisOnTouchProcedure {
                                                 Level level1 = (Level)levelaccessor1;
 
                                                 if (!level1.isClientSide()) {
-                                                    level1.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "ob_place")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                                                    level1.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ob_place")), SoundSource.BLOCKS, 1.0F, 1.0F);
                                                 } else {
-                                                    level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "ob_place")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                                                    level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ob_place")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                                                 }
                                             }
 

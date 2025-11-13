@@ -142,9 +142,9 @@ public class FireworkUseProcedure {
                             Level level = (Level)levelaccessor;
 
                             if (!level.isClientSide()) {
-                                level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.firework_rocket.launch")), SoundSource.NEUTRAL, 1.0F, 2.0F);
+                                level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.firework_rocket.launch")), SoundSource.NEUTRAL, 1.0F, 2.0F);
                             } else {
-                                level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.firework_rocket.launch")), SoundSource.NEUTRAL, 1.0F, 2.0F, false);
+                                level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.firework_rocket.launch")), SoundSource.NEUTRAL, 1.0F, 2.0F, false);
                             }
                         }
 
@@ -159,9 +159,9 @@ public class FireworkUseProcedure {
                                     Level level1 = (Level)levelaccessor1;
 
                                     if (!level1.isClientSide()) {
-                                        level1.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.experience_orb.pickup")), SoundSource.NEUTRAL, 1.0F, 2.0F);
+                                        level1.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.experience_orb.pickup")), SoundSource.NEUTRAL, 1.0F, 2.0F);
                                     } else {
-                                        level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.experience_orb.pickup")), SoundSource.NEUTRAL, 1.0F, 2.0F, false);
+                                        level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.experience_orb.pickup")), SoundSource.NEUTRAL, 1.0F, 2.0F, false);
                                     }
                                 }
 

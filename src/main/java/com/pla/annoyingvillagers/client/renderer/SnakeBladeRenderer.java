@@ -31,8 +31,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
 public class SnakeBladeRenderer extends EntityRenderer<SnakeBladeEntity> {
-    private static final ResourceLocation SNAKE_BLADE_TEXTURE =new ResourceLocation(AnnoyingVillagers.MODID,"textures/entities/snake_blade.png");
-    private static final ResourceLocation FRAGMENT_CHAIN_TEXTURE =new ResourceLocation(AnnoyingVillagers.MODID,"textures/entities/fragment_chain.png");
+    private static final ResourceLocation SNAKE_BLADE_TEXTURE =ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID,"textures/entities/snake_blade.png");
+    private static final ResourceLocation FRAGMENT_CHAIN_TEXTURE =ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID,"textures/entities/fragment_chain.png");
     private static ModelSnakeBlade snakeBladeModel;
     private static ModelSnakeBladeFragment tongueModel;
     public static final int MAX_NECK_SEGMENTS = 128;

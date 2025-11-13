@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
@@ -81,9 +82,9 @@ public class HerobrineOnInitialSpawnProcedure {
                     Level level = (Level) levelaccessor;
 
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "areyoutalkingaboutme")), SoundSource.BLOCKS, 5.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "areyoutalkingaboutme")), SoundSource.BLOCKS, 5.0F, 1.0F);
                     } else {
-                        level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "areyoutalkingaboutme")), SoundSource.BLOCKS, 5.0F, 1.0F, false);
+                        level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "areyoutalkingaboutme")), SoundSource.BLOCKS, 5.0F, 1.0F, false);
                     }
                 }
             }
@@ -97,9 +98,9 @@ public class HerobrineOnInitialSpawnProcedure {
                     Level level = (Level) levelaccessor;
 
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "himsaydzlsddds")), SoundSource.BLOCKS, 5.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "himsaydzlsddds")), SoundSource.BLOCKS, 5.0F, 1.0F);
                     } else {
-                        level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "himsaydzlsddds")), SoundSource.BLOCKS, 5.0F, 1.0F, false);
+                        level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "himsaydzlsddds")), SoundSource.BLOCKS, 5.0F, 1.0F, false);
                     }
                 }
             }

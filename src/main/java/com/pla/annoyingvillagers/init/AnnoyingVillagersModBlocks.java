@@ -21,30 +21,14 @@ import net.minecraftforge.registries.RegistryObject;
 public class AnnoyingVillagersModBlocks {
 
     public static final DeferredRegister<Block> REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCKS, AnnoyingVillagers.MODID);
-    public static final RegistryObject<Block> ENCHANT_BED = AnnoyingVillagersModBlocks.REGISTRY.register("enchant_bed", () -> {
-        return new EnchantBedBlock();
-    });
-    public static final RegistryObject<Block> DARK_OB_SS = AnnoyingVillagersModBlocks.REGISTRY.register("dark_ob_ss", () -> {
-        return new DarkObSsBlock();
-    });
-    public static final RegistryObject<Block> NONEOB = AnnoyingVillagersModBlocks.REGISTRY.register("noneob", () -> {
-        return new NoneObBlock();
-    });
-    public static final RegistryObject<Block> DARKOB = AnnoyingVillagersModBlocks.REGISTRY.register("darkob", () -> {
-        return new DarkObBlock();
-    });
-    public static final RegistryObject<Block> DARK_OB_UP = AnnoyingVillagersModBlocks.REGISTRY.register("dark_ob_up", () -> {
-        return new DarkObUpBlock();
-    });
-    public static final RegistryObject<Block> SHADOW_OBSIDIAN_BLOCK = AnnoyingVillagersModBlocks.REGISTRY.register("shadow_obsidian", () -> {
-        return new ShadowObsidianBlock();
-    });
-    public static final RegistryObject<Block> OBSIDIAN_BLOCK = AnnoyingVillagersModBlocks.REGISTRY.register("obsidian", () -> {
-        return new ObsidianBlock();
-    });
-    public static final RegistryObject<Block> CRYING_OBSIDIAN_BLOCK = AnnoyingVillagersModBlocks.REGISTRY.register("crying_obsidian", () -> {
-        return new CryingObsidianBlock();
-    });
+    public static final RegistryObject<Block> ENCHANT_BED = AnnoyingVillagersModBlocks.REGISTRY.register("enchant_bed", EnchantBedBlock::new);
+    public static final RegistryObject<Block> DARK_OB_SS = AnnoyingVillagersModBlocks.REGISTRY.register("dark_ob_ss", DarkObSsBlock::new);
+    public static final RegistryObject<Block> NONEOB = AnnoyingVillagersModBlocks.REGISTRY.register("noneob", NoneObBlock::new);
+    public static final RegistryObject<Block> DARKOB = AnnoyingVillagersModBlocks.REGISTRY.register("darkob", DarkObBlock::new);
+    public static final RegistryObject<Block> DARK_OB_UP = AnnoyingVillagersModBlocks.REGISTRY.register("dark_ob_up", DarkObUpBlock::new);
+    public static final RegistryObject<Block> SHADOW_OBSIDIAN_BLOCK = AnnoyingVillagersModBlocks.REGISTRY.register("shadow_obsidian", ShadowObsidianBlock::new);
+    public static final RegistryObject<Block> OBSIDIAN_BLOCK = AnnoyingVillagersModBlocks.REGISTRY.register("obsidian", ObsidianBlock::new);
+    public static final RegistryObject<Block> CRYING_OBSIDIAN_BLOCK = AnnoyingVillagersModBlocks.REGISTRY.register("crying_obsidian", CryingObsidianBlock::new);
     public static final RegistryObject<EndFireBlock> END_FIRE = AnnoyingVillagersModBlocks.REGISTRY.register(
             "end_fire",
             () -> new EndFireBlock(
@@ -62,17 +46,11 @@ public class AnnoyingVillagersModBlocks {
 
         @SubscribeEvent
         public static void clientSetup(FMLClientSetupEvent fmlclientsetupevent) {
-            EnchantBedBlock.registerRenderLayer();
-            DarkObSsBlock.registerRenderLayer();
-            NoneObBlock.registerRenderLayer();
-            DarkObBlock.registerRenderLayer();
-            DarkObUpBlock.registerRenderLayer();
-            EndFireBlock.registerRenderLayer();
         }
 
         @SubscribeEvent
-        public static void blockColorLoad(net.minecraftforge.client.event.RegisterColorHandlersEvent.Block net_minecraftforge_client_event_colorhandlerevent_block) {
-            NoneObBlock.blockColorLoad(net_minecraftforge_client_event_colorhandlerevent_block);
+        public static void blockColorLoad(net.minecraftforge.client.event.RegisterColorHandlersEvent.Block block) {
+            NoneObBlock.blockColorLoad(block);
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.client.renderer;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.BbqEntity;
 import net.minecraft.client.model.ChickenModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -14,6 +15,6 @@ public class BbqRenderer extends MobRenderer<BbqEntity, ChickenModel<BbqEntity>>
     }
 
     public ResourceLocation getTextureLocation(BbqEntity bbqentity) {
-        return new ResourceLocation("annoyingvillagers", "textures/entities/chicken.png");
+        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/chicken.png");
     }
 }

@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.item;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import com.pla.annoyingvillagers.client.model.ModelVillagerGeneralArmor;
@@ -26,7 +27,7 @@ public abstract class RedVillagerGeneralArmorItem extends ArmorItem {
     public RedVillagerGeneralArmorItem(ArmorItem.Type type, Properties properties) {
         super(new ArmorMaterial() {
             @Override
-            public int getDurabilityForType(ArmorItem.Type type) {
+            public int getDurabilityForType(ArmorItem.@NotNull Type type) {
                 return switch (type) {
                     case BOOTS      -> 13 * 25;
                     case LEGGINGS   -> 15 * 25;
@@ -36,7 +37,7 @@ public abstract class RedVillagerGeneralArmorItem extends ArmorItem {
             }
 
             @Override
-            public int getDefenseForType(ArmorItem.Type type) {
+            public int getDefenseForType(ArmorItem.@NotNull Type type) {
                 return switch (type) {
                     case BOOTS      -> 4;
                     case LEGGINGS   -> 5;
@@ -49,15 +50,15 @@ public abstract class RedVillagerGeneralArmorItem extends ArmorItem {
                 return 10;
             }
 
-            public SoundEvent getEquipSound() {
-                return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "item.armor.equip_chain"));
+            public @NotNull SoundEvent getEquipSound() {
+                return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.armor.equip_chain")));
             }
 
-            public Ingredient getRepairIngredient() {
+            public @NotNull Ingredient getRepairIngredient() {
                 return Ingredient.of();
             }
 
-            public String getName() {
+            public @NotNull String getName() {
                 return "red_villager_general_armor";
             }
 
@@ -114,12 +115,12 @@ public abstract class RedVillagerGeneralArmorItem extends ArmorItem {
             consumer.accept(new IClientItemExtensions() {
                 @Override
                 public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
-                    HumanoidModel humanoidmodel1 = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of("head", (new ModelVillagerGeneralArmor<>(Minecraft.getInstance().getEntityModels().bakeLayer(ModelVillagerGeneralArmor.LAYER_LOCATION))).Head, "hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "body", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "right_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "left_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "right_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "left_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()))));
+                    HumanoidModel humanoidmodel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of("head", (new ModelVillagerGeneralArmor<>(Minecraft.getInstance().getEntityModels().bakeLayer(ModelVillagerGeneralArmor.LAYER_LOCATION))).Head, "hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "body", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "right_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "left_arm", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "right_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()), "left_leg", new ModelPart(Collections.emptyList(), Collections.emptyMap()))));
 
-                    humanoidmodel1.crouching = livingEntity.isShiftKeyDown();
-                    humanoidmodel1.riding = original.riding;
-                    humanoidmodel1.young = livingEntity.isBaby();
-                    return humanoidmodel1;
+                    humanoidmodel.crouching = livingEntity.isShiftKeyDown();
+                    humanoidmodel.riding = original.riding;
+                    humanoidmodel.young = livingEntity.isBaby();
+                    return humanoidmodel;
                 }
             });
         }

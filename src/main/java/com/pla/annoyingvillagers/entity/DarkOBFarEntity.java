@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.entity;
 
+import java.util.Objects;
 import java.util.Random;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -90,7 +91,7 @@ public class DarkOBFarEntity extends AbstractArrow implements ItemSupplier {
         darkobfarentity.setBaseDamage(d0);
         darkobfarentity.setKnockback(i);
         level.addFreshEntity(darkobfarentity);
-        level.playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.arrow.shoot")), SoundSource.PLAYERS, 1.0F, 1.0F / (random.nextFloat() * 0.5F + 1.0F) + f / 2.0F);
+        level.playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.arrow.shoot"))), SoundSource.PLAYERS, 1.0F, 1.0F / (random.nextFloat() * 0.5F + 1.0F) + f / 2.0F);
         return darkobfarentity;
     }
 
@@ -106,7 +107,7 @@ public class DarkOBFarEntity extends AbstractArrow implements ItemSupplier {
         darkobfarentity.setKnockback(0);
         darkobfarentity.setCritArrow(false);
         livingentity.level().addFreshEntity(darkobfarentity);
-        livingentity.level().playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.arrow.shoot")), SoundSource.PLAYERS, 1.0F, 1.0F / ((new Random()).nextFloat() * 0.5F + 1.0F));
+        livingentity.level().playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.arrow.shoot"))), SoundSource.PLAYERS, 1.0F, 1.0F / ((new Random()).nextFloat() * 0.5F + 1.0F));
         return darkobfarentity;
     }
 }

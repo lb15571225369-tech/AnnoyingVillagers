@@ -6,6 +6,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.util.CombatBehaviour;
 import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -139,9 +140,9 @@ public class SteveOnHurtProcedure {
 
                                             if (levelaccessor instanceof Level level) {
                                                 if (!level.isClientSide()) {
-                                                    level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "stevechuanqi"))), SoundSource.NEUTRAL, 0.4F, 1.0F);
+                                                    level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "stevechuanqi"))), SoundSource.NEUTRAL, 0.4F, 1.0F);
                                                 } else {
-                                                    level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "stevechuanqi"))), SoundSource.NEUTRAL, 0.4F, 1.0F, false);
+                                                    level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "stevechuanqi"))), SoundSource.NEUTRAL, 0.4F, 1.0F, false);
                                                 }
                                             }
                                         }
@@ -151,15 +152,15 @@ public class SteveOnHurtProcedure {
                         };
                     } else if (Math.random() <= 0.2D && levelaccessor instanceof Level level) {
                         if (!level.isClientSide()) {
-                            level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "steveattack"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                            level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "steveattack"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                         } else {
-                            level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "steveattack"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                            level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "steveattack"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                         }
                     } else if (Math.random() <= 0.1D && levelaccessor instanceof Level level) {
                         if (!level.isClientSide()) {
-                            level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "stevechuanqi"))), SoundSource.NEUTRAL, 0.4F, 1.0F);
+                            level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "stevechuanqi"))), SoundSource.NEUTRAL, 0.4F, 1.0F);
                         } else {
-                            level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "stevechuanqi"))), SoundSource.NEUTRAL, 0.4F, 1.0F, false);
+                            level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "stevechuanqi"))), SoundSource.NEUTRAL, 0.4F, 1.0F, false);
                         }
                     } else if (Math.random() <= 0.1D) {
                         if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
@@ -168,9 +169,9 @@ public class SteveOnHurtProcedure {
 
                         if (levelaccessor instanceof Level level) {
                             if (!level.isClientSide()) {
-                                level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "stevesaywhyfighting"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "stevesaywhyfighting"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                             } else {
-                                level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "stevesaywhyfighting"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "stevesaywhyfighting"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                             }
                         }
                     } else if (Math.random() <= 0.1D) {
@@ -180,9 +181,9 @@ public class SteveOnHurtProcedure {
 
                         if (levelaccessor instanceof Level level) {
                             if (!level.isClientSide()) {
-                                level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "stevesaywhy"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "stevesaywhy"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                             } else {
-                                level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "stevesaywhy"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "stevesaywhy"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                             }
                         }
                     }
@@ -215,9 +216,9 @@ public class SteveOnHurtProcedure {
                         entity.setItemSlot(EquipmentSlot.HEAD, new ItemStack((ItemLike) AnnoyingVillagersModItems.COMPRESSED_DIAMOND_HELMET.get()));
                         if (levelaccessor instanceof Level level) {
                             if (!level.isClientSide()) {
-                                level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("item.armor.equip_diamond"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.armor.equip_diamond"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                             } else {
-                                level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("item.armor.equip_diamond"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.armor.equip_diamond"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                             }
                         }
                         new DelayedTask(10) {
@@ -227,9 +228,9 @@ public class SteveOnHurtProcedure {
                                     entity.setItemSlot(EquipmentSlot.CHEST, new ItemStack((ItemLike) AnnoyingVillagersModItems.COMPRESSED_DIAMOND_CHESTPLATE.get()));
                                     if (levelaccessor instanceof Level level) {
                                         if (!level.isClientSide()) {
-                                            level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("item.armor.equip_diamond"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                            level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.armor.equip_diamond"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                         } else {
-                                            level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("item.armor.equip_diamond"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                            level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.armor.equip_diamond"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                         }
                                     }
                                 }
@@ -290,9 +291,9 @@ public class SteveOnHurtProcedure {
 
                             if (levelaccessor instanceof Level level) {
                                 if (!level.isClientSide()) {
-                                    level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "steveattack"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                    level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "steveattack"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                 } else {
-                                    level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "steveattack"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                    level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "steveattack"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                 }
                             }
                             new DelayedTask(8) {
@@ -303,17 +304,17 @@ public class SteveOnHurtProcedure {
 
                                     if (levelaccessor instanceof Level level) {
                                         if (!level.isClientSide()) {
-                                            level.playSound((Player)null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "l_g_w_u"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                            level.playSound((Player)null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "l_g_w_u"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                         } else {
-                                            level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "l_g_w_u"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                            level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "l_g_w_u"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                         }
                                     }
 
                                     if (levelaccessor instanceof Level level) {
                                         if (!level.isClientSide()) {
-                                            level.playSound((Player)null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "zhanshenzhirenjuexing"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                            level.playSound((Player)null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "zhanshenzhirenjuexing"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                         } else {
-                                            level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "zhanshenzhirenjuexing"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                            level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "zhanshenzhirenjuexing"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                         }
                                     }
 

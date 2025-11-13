@@ -53,6 +53,7 @@ import yesman.epicfight.world.effect.EpicFightMobEffects;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 
@@ -231,11 +232,11 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
     }
 
     public SoundEvent getHurtSound(DamageSource damagesource) {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
+        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.generic.hurt")));
     }
 
     public SoundEvent getDeathSound() {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
+        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.generic.death")));
     }
 
     @Override
@@ -514,7 +515,7 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
 
         float interpolation = 0.0F;
         OpenMatrix4f m = entitypatch.getArmature()
-                .getBindedTransformFor(entitypatch.getAnimator().getPose(interpolation), joint);
+                .getBoundTransformFor(entitypatch.getAnimator().getPose(interpolation), joint);
 
         if (translation != null) {
             OpenMatrix4f tLocal = new OpenMatrix4f().translate(translation);

@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.client.renderer;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.SteveDeadEntity;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -20,6 +21,6 @@ public class SteveDeadRenderer extends HumanoidMobRenderer<SteveDeadEntity, Huma
     }
 
     public ResourceLocation getTextureLocation(SteveDeadEntity stevedeadentity) {
-        return new ResourceLocation("annoyingvillagers", "textures/entities/steve_dead.png");
+        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/steve_dead.png");
     }
 }

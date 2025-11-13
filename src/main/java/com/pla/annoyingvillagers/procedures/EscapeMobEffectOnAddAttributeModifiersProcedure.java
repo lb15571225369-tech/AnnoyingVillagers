@@ -44,36 +44,36 @@ public class EscapeMobEffectOnAddAttributeModifiersProcedure {
                             if (levelaccessor instanceof Level) {
                                 level = (Level) levelaccessor;
                                 if (!level.isClientSide()) {
-                                    level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "whoosh")), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 0.9D), 1.0F);
+                                    level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "whoosh")), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 0.9D), 1.0F);
                                 } else {
-                                    level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "whoosh")), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 0.9D), 1.0F, false);
+                                    level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "whoosh")), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 0.9D), 1.0F, false);
                                 }
                             }
 
                             if (levelaccessor instanceof Level) {
                                 level = (Level) levelaccessor;
                                 if (!level.isClientSide()) {
-                                    level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "get_out")), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 0.9D), 1.0F);
+                                    level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "get_out")), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 0.9D), 1.0F);
                                 } else {
-                                    level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "get_out")), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 0.9D), 1.0F, false);
+                                    level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "get_out")), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 0.9D), 1.0F, false);
                                 }
                             }
 
                             if (levelaccessor instanceof Level) {
                                 level = (Level) levelaccessor;
                                 if (!level.isClientSide()) {
-                                    level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "cooldown")), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 0.9D), 1.0F);
+                                    level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "cooldown")), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 0.9D), 1.0F);
                                 } else {
-                                    level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "cooldown")), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 0.9D), 1.0F, false);
+                                    level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "cooldown")), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 0.9D), 1.0F, false);
                                 }
                             }
 
                             if (levelaccessor instanceof Level) {
                                 level = (Level) levelaccessor;
                                 if (!level.isClientSide()) {
-                                    level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "wing")), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 0.9D), 1.0F);
+                                    level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "wing")), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 0.9D), 1.0F);
                                 } else {
-                                    level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "wing")), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 0.9D), 1.0F, false);
+                                    level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "wing")), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.5D, 0.9D), 1.0F, false);
                                 }
                             }
 

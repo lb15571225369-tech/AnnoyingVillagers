@@ -287,11 +287,11 @@ public class HerobrineMob extends Monster {
     }
 
     public @NotNull SoundEvent getHurtSound(DamageSource damagesource) {
-        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.hurt")));
+        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.hurt")));
     }
 
     public @NotNull SoundEvent getDeathSound() {
-        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "entity.generic.death")));
+        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.death")));
     }
 
     public boolean causeFallDamage(float f, float f1, @NotNull DamageSource damagesource) {

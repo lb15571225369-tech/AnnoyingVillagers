@@ -22,7 +22,7 @@ public class Herobrine7Renderer extends HumanoidMobRenderer<Herobrine7Entity, Hu
     }
 
     public ResourceLocation getTextureLocation(Herobrine7Entity herobrineentity) {
-        return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/shadow_herobrine.png");
+        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/shadow_herobrine.png");
     }
 
     protected boolean isShaking(Herobrine7Entity herobrineentity) {

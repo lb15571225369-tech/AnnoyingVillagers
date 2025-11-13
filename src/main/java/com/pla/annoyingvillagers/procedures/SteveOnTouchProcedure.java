@@ -1,5 +1,7 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -16,9 +18,9 @@ public class SteveOnTouchProcedure {
             Level level = (Level) levelaccessor;
 
             if (!level.isClientSide()) {
-                level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "stevewin")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "stevewin")), SoundSource.NEUTRAL, 1.0F, 1.0F);
             } else {
-                level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "stevewin")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "stevewin")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
             }
         }
 

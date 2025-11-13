@@ -18,7 +18,7 @@ public final class HerobrineEnderEyeGlintRenderTypes extends RenderType {
     }
 
     private static final ResourceLocation ORANGE_TEX =
-            new ResourceLocation(AnnoyingVillagers.MODID, "textures/glint/enchanted_item_glint_orange.png");
+            ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/glint/enchanted_item_glint_orange.png");
 
     public static final RenderType GLINT_DIRECT_ORANGE = RenderType.create(
             "glint_direct_orange",

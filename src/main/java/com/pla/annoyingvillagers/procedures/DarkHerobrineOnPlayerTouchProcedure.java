@@ -35,9 +35,9 @@ public class DarkHerobrineOnPlayerTouchProcedure {
                     Level level = (Level)levelaccessor;
 
                     if (!level.isClientSide()) {
-                        level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.anvil.place")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.anvil.place")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.anvil.place")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.anvil.place")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                     }
                 }
 
@@ -113,7 +113,7 @@ public class DarkHerobrineOnPlayerTouchProcedure {
                         if (levelaccessor1 instanceof Level) {
                             level1 = (Level)levelaccessor1;
                             if (!level1.isClientSide()) {
-                                level1.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.player.attack.sweep")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                                level1.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.player.attack.sweep")), SoundSource.BLOCKS, 1.0F, 1.0F);
                             }
                         }
 
@@ -121,7 +121,7 @@ public class DarkHerobrineOnPlayerTouchProcedure {
                         if (levelaccessor1 instanceof Level) {
                             level1 = (Level)levelaccessor1;
                             if (!level1.isClientSide()) {
-                                level1.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.stone.place")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                                level1.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.stone.place")), SoundSource.BLOCKS, 1.0F, 1.0F);
                             }
                         }
 
@@ -188,7 +188,7 @@ public class DarkHerobrineOnPlayerTouchProcedure {
                                     Level level4 = (Level)levelaccessor2;
 
                                     if (!level4.isClientSide()) {
-                                        level4.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.iron_golem.repair")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                                        level4.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.iron_golem.repair")), SoundSource.BLOCKS, 1.0F, 1.0F);
                                     }
                                 }
                                 new DelayedTask(4) {
@@ -242,7 +242,7 @@ public class DarkHerobrineOnPlayerTouchProcedure {
                                                     Level level6 = (Level)levelaccessor3;
 
                                                     if (!level6.isClientSide()) {
-                                                        level6.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.iron_golem.repair")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                                                        level6.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.iron_golem.repair")), SoundSource.BLOCKS, 1.0F, 1.0F);
                                                     }
                                                 }
 

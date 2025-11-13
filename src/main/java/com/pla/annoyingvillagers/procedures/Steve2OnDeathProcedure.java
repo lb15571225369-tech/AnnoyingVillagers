@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
@@ -71,9 +72,9 @@ public class Steve2OnDeathProcedure {
                     Level level = (Level)levelaccessor;
 
                     if (!level.isClientSide()) {
-                        level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "stevesayno")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "stevesayno")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "stevesayno")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "stevesayno")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                     }
                 }
 

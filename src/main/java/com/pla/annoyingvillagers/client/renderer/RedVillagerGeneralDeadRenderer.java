@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.client.renderer;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.AlexDeadEntity;
 import com.pla.annoyingvillagers.entity.RedVillagerGeneralDeadEntity;
 import net.minecraft.client.model.HumanoidModel;
@@ -21,6 +22,6 @@ public class RedVillagerGeneralDeadRenderer extends HumanoidMobRenderer<RedVilla
     }
 
     public ResourceLocation getTextureLocation(RedVillagerGeneralDeadEntity redVillagerGeneralDeadEntity) {
-        return new ResourceLocation("annoyingvillagers", "textures/entities/red_villager_general_dead.png");
+        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/red_villager_general_dead.png");
     }
 }

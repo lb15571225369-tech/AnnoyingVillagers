@@ -16,7 +16,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
-;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
@@ -51,15 +50,15 @@ public abstract class BlueVillagerGeneralArmorItem extends ArmorItem {
                 return 10;
             }
 
-            public SoundEvent getEquipSound() {
-                return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "item.armor.equip_chain"));
+            public @NotNull SoundEvent getEquipSound() {
+                return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.armor.equip_chain"));
             }
 
-            public Ingredient getRepairIngredient() {
+            public @NotNull Ingredient getRepairIngredient() {
                 return Ingredient.of();
             }
 
-            public String getName() {
+            public @NotNull String getName() {
                 return "blue_villager_general_armor";
             }
 

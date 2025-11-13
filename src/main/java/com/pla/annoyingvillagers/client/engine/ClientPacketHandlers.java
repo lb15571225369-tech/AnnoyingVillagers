@@ -27,13 +27,13 @@ public final class ClientPacketHandlers {
         if (level == null) return;
 
         new EnderGlaiveExplosionParticleEmitterInfo(
-                new ResourceLocation(AnnoyingVillagers.MODID, "ender_glaive_explosion"))
+                ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_glaive_explosion"))
                 .fromTo(msg.from, msg.to,
                         EnderGlaiveExplosionParticleEmitterInfo.ForwardAxis.PLUS_Z, 0f, true)
                 .spawnInWorld(level, null);
 
         SoundEvent se = ForgeRegistries.SOUND_EVENTS.getValue(
-                new ResourceLocation("annoyingvillagers:ender_shot"));
+                ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_shot"));
         if (se != null) {
             level.playLocalSound(msg.from.x, msg.from.y, msg.from.z, se,
                     SoundSource.NEUTRAL, 1.0F, 1.0F, false);
@@ -51,7 +51,7 @@ public final class ClientPacketHandlers {
         if (level == null) return;
 
         AAALevel.addParticle(level, false,
-                new ParticleEmitterInfo(new ResourceLocation(AnnoyingVillagers.MODID, "herobrine_portal"))
+                new ParticleEmitterInfo(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "herobrine_portal"))
                         .clone()
                         .position(msg.from.x, msg.from.y, msg.from.z));
     }

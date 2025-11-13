@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.client.renderer;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.AlexDeadEntity;
 import com.pla.annoyingvillagers.entity.ChrisDeadEntity;
 import net.minecraft.client.model.HumanoidModel;
@@ -21,6 +22,6 @@ public class ChrisDeadRenderer extends HumanoidMobRenderer<ChrisDeadEntity, Huma
     }
 
     public ResourceLocation getTextureLocation(ChrisDeadEntity chrisDeadEntity) {
-        return new ResourceLocation("annoyingvillagers", "textures/entities/chris_dead.png");
+        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/chris_dead.png");
     }
 }

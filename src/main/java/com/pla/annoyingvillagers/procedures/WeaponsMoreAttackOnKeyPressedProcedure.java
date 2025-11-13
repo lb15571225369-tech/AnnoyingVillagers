@@ -717,7 +717,7 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                                             PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity),
                                             new ClientboundGlaiveExplosionFx(glaivePos, explosionPos)
                                     );
-                                    entity.level().playSound((Player) null, new BlockPos((int) explosionPos.x, (int) explosionPos.y, (int) explosionPos.z), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:ender_shot")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                    entity.level().playSound((Player) null, new BlockPos((int) explosionPos.x, (int) explosionPos.y, (int) explosionPos.z), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_shot")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                     itemStack.getTag().putInt("HitCount", itemStack.getTag().contains("HitCount") ? itemStack.getTag().getInt("HitCount") - 3 : 0);
                                 }
                             };

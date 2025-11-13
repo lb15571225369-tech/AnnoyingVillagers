@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.procedures;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -96,9 +97,9 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
                         Level level = (Level)levelaccessor1;
 
                         if (!level.isClientSide()) {
-                            level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "tridentfs_skill")), SoundSource.NEUTRAL, 5.0F, 1.0F);
+                            level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "tridentfs_skill"))), SoundSource.NEUTRAL, 5.0F, 1.0F);
                         } else {
-                            level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "tridentfs_skill")), SoundSource.NEUTRAL, 5.0F, 1.0F, false);
+                            level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "tridentfs_skill"))), SoundSource.NEUTRAL, 5.0F, 1.0F, false);
                         }
                     }
 

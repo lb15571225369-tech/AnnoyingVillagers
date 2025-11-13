@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.block;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.blockentity.ObsidianBlockEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.procedures.ObsidianBlockPlaceBlockProcedure;
@@ -44,11 +45,11 @@ public class CryingObsidianBlock extends Block implements EntityBlock {
     public CryingObsidianBlock() {
         super(Properties.of()
                 .sound(new ForgeSoundType(1.0F, 1.0F,
-                        () -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("annoyingvillagers", "lost")),
-                        () -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("minecraft", "block.stone.step")),
-                        () -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("minecraft", "block.stone.place")),
-                        () -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("minecraft", "block.stone.hit")),
-                        () -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("annoyingvillagers", "silent"))
+                        () -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "lost")),
+                        () -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.fromNamespaceAndPath("minecraft", "block.stone.step")),
+                        () -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.fromNamespaceAndPath("minecraft", "block.stone.place")),
+                        () -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.fromNamespaceAndPath("minecraft", "block.stone.hit")),
+                        () -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "silent"))
                 ))
                 .strength(60.0F, 40.0F)
                 .lightLevel((blockstate) -> 4)
@@ -120,14 +121,6 @@ public class CryingObsidianBlock extends Block implements EntityBlock {
             }
         }
     }
-
-    @OnlyIn(Dist.CLIENT)
-    public static void registerRenderLayer() {
-        ItemBlockRenderTypes.setRenderLayer((Block) AnnoyingVillagersModBlocks.CRYING_OBSIDIAN_BLOCK.get(), (rendertype) -> {
-            return rendertype == RenderType.cutoutMipped();
-        });
-    }
-
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {

@@ -21,6 +21,6 @@ public class GreenVillagerGeneralRenderer extends HumanoidMobRenderer<GreenVilla
     }
 
     public ResourceLocation getTextureLocation(GreenVillagerGeneralEntity zicunqientity) {
-        return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/green_villager_general.png");
+        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/green_villager_general.png");
     }
 }

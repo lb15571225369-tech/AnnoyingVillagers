@@ -9,13 +9,16 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public abstract class BrokenDiamondArmorItem extends ArmorItem {
 
     public BrokenDiamondArmorItem(ArmorItem.Type type, Properties properties) {
         super(new ArmorMaterial() {
             @Override
-            public int getDurabilityForType(ArmorItem.Type type) {
+            public int getDurabilityForType(ArmorItem.@NotNull Type type) {
                 return switch (type) {
                     case BOOTS      -> 13 * 10;
                     case LEGGINGS   -> 15 * 10;
@@ -25,7 +28,7 @@ public abstract class BrokenDiamondArmorItem extends ArmorItem {
             }
 
             @Override
-            public int getDefenseForType(ArmorItem.Type type) {
+            public int getDefenseForType(ArmorItem.@NotNull Type type) {
                 return switch (type) {
                     case BOOTS      -> 2;
                     case LEGGINGS   -> 6;
@@ -38,15 +41,15 @@ public abstract class BrokenDiamondArmorItem extends ArmorItem {
                 return 9;
             }
 
-            public SoundEvent getEquipSound() {
-                return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "item.armor.equip_diamond"));
+            public @NotNull SoundEvent getEquipSound() {
+                return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.armor.equip_diamond")));
             }
 
-            public Ingredient getRepairIngredient() {
+            public @NotNull Ingredient getRepairIngredient() {
                 return Ingredient.of();
             }
 
-            public String getName() {
+            public @NotNull String getName() {
                 return "broken_diamond_armor";
             }
 

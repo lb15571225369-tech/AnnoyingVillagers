@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.item;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.BabyEnderDragonEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
@@ -22,6 +23,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
+import java.util.Objects;
 
 public class EnderSlayerScythe extends SwordItem {
 
@@ -117,9 +119,9 @@ public class EnderSlayerScythe extends SwordItem {
                     itemstack.getTag().putBoolean("SecondForm", true);
 
                     if (!player.level().isClientSide()) {
-                        player.level().playSound((Player) null, new BlockPos((int) player.getX(), (int) player.getY(), (int) player.getZ()), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:second_form_release")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        player.level().playSound((Player) null, new BlockPos((int) player.getX(), (int) player.getY(), (int) player.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "second_form_release"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     } else {
-                        player.level().playLocalSound(player.getX(), player.getY(), player.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:second_form_release")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                        player.level().playLocalSound(player.getX(), player.getY(), player.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "second_form_release"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                     }
 
                     if (!itemstack.getTag().contains("DragonSummon")) {

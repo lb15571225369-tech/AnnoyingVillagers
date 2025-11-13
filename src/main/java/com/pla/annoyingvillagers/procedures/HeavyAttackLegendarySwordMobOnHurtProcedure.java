@@ -95,9 +95,9 @@ public class HeavyAttackLegendarySwordMobOnHurtProcedure {
                 if (levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.glass.break")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.glass.break")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.glass.break")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.glass.break")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                     }
                 }
             }
@@ -119,9 +119,9 @@ public class HeavyAttackLegendarySwordMobOnHurtProcedure {
                 if (levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.glass.break")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.glass.break")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.glass.break")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.glass.break")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                     }
                 }
             }
@@ -143,9 +143,9 @@ public class HeavyAttackLegendarySwordMobOnHurtProcedure {
                 if (levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.glass.break")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.glass.break")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.glass.break")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.glass.break")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                     }
                 }
             }
@@ -167,9 +167,9 @@ public class HeavyAttackLegendarySwordMobOnHurtProcedure {
                 if (levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.glass.break")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.glass.break")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.glass.break")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.glass.break")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                     }
                 }
             }
@@ -230,18 +230,18 @@ public class HeavyAttackLegendarySwordMobOnHurtProcedure {
                 if (levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.item.break")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.item.break")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.item.break")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.item.break")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                     }
                 }
 
                 if (levelaccessor instanceof Level) {
                     level = (Level) levelaccessor;
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.glass.break")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.glass.break")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("block.glass.break")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.glass.break")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                     }
                 }
             }

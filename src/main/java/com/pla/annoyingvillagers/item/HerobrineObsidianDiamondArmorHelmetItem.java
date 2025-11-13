@@ -101,10 +101,11 @@ public abstract class HerobrineObsidianDiamondArmorHelmetItem extends ArmorItem 
         }
 
         @Override
-        public void onArmorTick(ItemStack itemstack, Level level, Player player) {
-            if (player != null) {
-                dropArmorSlot(player, EquipmentSlot.FEET, "Herobrine Obsidian Diamond Helmet");
-                dropArmorSlot(player, EquipmentSlot.LEGS, "Herobrine Obsidian Diamond Helmet");
+        public void onInventoryTick(ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex) {
+            super.onInventoryTick(stack, level, player, slotIndex, selectedIndex);
+            if (player.getItemBySlot(EquipmentSlot.HEAD) == stack) {
+                dropArmorSlot(player, EquipmentSlot.FEET, "Herobrine Obsidian Diamond Chestplate");
+                dropArmorSlot(player, EquipmentSlot.LEGS, "Herobrine Obsidian Diamond Chestplate");
             }
         }
     }

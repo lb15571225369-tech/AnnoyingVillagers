@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.ObsidianSledgehammerHitEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HierarchicalModel;
@@ -12,7 +13,7 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.resources.ResourceLocation;
 
 public class ModelObsidianSledgehammerHit<T extends ObsidianSledgehammerHitEntity> extends HierarchicalModel<ObsidianSledgehammerHitEntity> {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("annoyingvillagers", "modelobsidiansledgehammerhit"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "modelobsidiansledgehammerhit"), "main");
     private final ModelPart root;
     private final ModelPart all;
 

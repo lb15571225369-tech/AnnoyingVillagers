@@ -1,7 +1,9 @@
 package com.pla.annoyingvillagers.item;
 
 import java.util.List;
+import java.util.Objects;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.procedures.DemoniacVoltageReaverOnUseProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
 import com.pla.annoyingvillagers.util.SnakeBladeHit;
@@ -70,9 +72,9 @@ public class DemoniacVoltageReaverItem extends SwordItem {
                 }
 
                 if (!pAttacker.level().isClientSide()) {
-                    pAttacker.level().playSound((Player) null, new BlockPos((int) pAttacker.getX(), (int) pAttacker.getY(), (int) pAttacker.getZ()), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:second_form_release")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                    pAttacker.level().playSound((Player) null, new BlockPos((int) pAttacker.getX(), (int) pAttacker.getY(), (int) pAttacker.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "second_form_release"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                 } else {
-                    pAttacker.level().playLocalSound(pAttacker.getX(), pAttacker.getY(), pAttacker.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:second_form_release")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                    pAttacker.level().playLocalSound(pAttacker.getX(), pAttacker.getY(), pAttacker.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "second_form_release"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                 }
             } else {
                 itemstack.getTag().putInt("HitCount", (itemstack.getTag().contains("HitCount") ? itemstack.getTag().getInt("HitCount") : 0) + 1);

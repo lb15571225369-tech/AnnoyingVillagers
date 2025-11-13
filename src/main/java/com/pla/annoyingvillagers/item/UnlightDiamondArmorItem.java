@@ -11,13 +11,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public abstract class UnlightDiamondArmorItem extends ArmorItem {
 
     public UnlightDiamondArmorItem(ArmorItem.Type type, Properties properties) {
         super(new ArmorMaterial() {
             @Override
-            public int getDurabilityForType(ArmorItem.Type type) {
+            public int getDurabilityForType(ArmorItem.@NotNull Type type) {
                 return switch (type) {
                     case BOOTS      -> 13 * 46;
                     case LEGGINGS   -> 15 * 46;
@@ -27,7 +30,7 @@ public abstract class UnlightDiamondArmorItem extends ArmorItem {
             }
 
             @Override
-            public int getDefenseForType(ArmorItem.Type type) {
+            public int getDefenseForType(ArmorItem.@NotNull Type type) {
                 return switch (type) {
                     case BOOTS      -> 4;
                     case LEGGINGS   -> 5;
@@ -39,15 +42,15 @@ public abstract class UnlightDiamondArmorItem extends ArmorItem {
                 return 10;
             }
 
-            public SoundEvent getEquipSound() {
-                return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "item.armor.equip_diamond"));
+            public @NotNull SoundEvent getEquipSound() {
+                return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.armor.equip_diamond")));
             }
 
-            public Ingredient getRepairIngredient() {
+            public @NotNull Ingredient getRepairIngredient() {
                 return Ingredient.of(new ItemStack[]{new ItemStack(Items.DIAMOND)});
             }
 
-            public String getName() {
+            public @NotNull String getName() {
                 return "unlight_diamond_armor";
             }
 

@@ -17,7 +17,7 @@ import org.joml.Matrix4f;
 
 @OnlyIn(Dist.CLIENT)
 public class DragonBeamRenderer extends EntityRenderer<DragonBeamEntity> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/dragon_beam.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/dragon_beam.png");
 
     public DragonBeamRenderer(EntityRendererProvider.Context pContext) {
         super(pContext);

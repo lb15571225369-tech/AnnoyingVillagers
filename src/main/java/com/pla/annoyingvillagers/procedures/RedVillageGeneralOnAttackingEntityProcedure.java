@@ -66,28 +66,18 @@ public class RedVillageGeneralOnAttackingEntityProcedure {
                     if (levelaccessor instanceof Level) {
                         level = (Level)levelaccessor;
                         if (!level.isClientSide()) {
-                            level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "item.armor.equip_leather")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                            level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.armor.equip_leather")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                         } else {
-                            level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "item.armor.equip_leather")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                            level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.armor.equip_leather")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                         }
                     }
 
                     if (levelaccessor instanceof Level) {
                         level = (Level)levelaccessor;
                         if (!level.isClientSide()) {
-                            level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "block.stone.place")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                            level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.stone.place")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                         } else {
-                            level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "block.stone.place")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
-                        }
-                    }
-
-                    if (!entity.level().isClientSide() && entity.getServer() != null) {
-                        try {
-                            entity.getServer().getCommands().getDispatcher().execute(
-                                    "summon annoying_villagersbychentu:hong_cun_qi_fu_lu ^ ^ ^ {VillagerData:{level:4,profession:\"minecraft:weaponsmith\"}}",
-                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                        } catch (CommandSyntaxException e) {
-                            
+                            level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.stone.place")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                         }
                     }
 
@@ -152,18 +142,18 @@ public class RedVillageGeneralOnAttackingEntityProcedure {
                         if (levelaccessor instanceof Level) {
                             level = (Level)levelaccessor;
                             if (!level.isClientSide()) {
-                                level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "block.stone.place")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.stone.place")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                             } else {
-                                level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "block.stone.place")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "block.stone.place")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                             }
                         }
 
                         if (levelaccessor instanceof Level) {
                             level = (Level)levelaccessor;
                             if (!level.isClientSide()) {
-                                level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "item.armor.equip_leather")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.armor.equip_leather")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                             } else {
-                                level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "item.armor.equip_leather")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.armor.equip_leather")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                             }
                         }
 

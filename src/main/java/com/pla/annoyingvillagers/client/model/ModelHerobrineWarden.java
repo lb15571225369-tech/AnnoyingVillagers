@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ModelHerobrineWarden extends WardenModel<HerobrineWardenEntity> {
     public static final ModelLayerLocation LAYER_LOCATION =
-            new ModelLayerLocation(new ResourceLocation(AnnoyingVillagers.MODID, "modelherobrinewarden"), "main");
+            new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "modelherobrinewarden"), "main");
 
     private final ModelPart left_ribcage_extra;
     private final ModelPart right_ribcage_extra;

@@ -1,8 +1,5 @@
     package com.pla.annoyingvillagers.block;
 
-    import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
-    import net.minecraft.client.renderer.ItemBlockRenderTypes;
-    import net.minecraft.client.renderer.RenderType;
     import net.minecraft.core.BlockPos;
     import net.minecraft.core.Direction;
     import net.minecraft.server.level.ServerLevel;
@@ -19,8 +16,6 @@
     import net.minecraft.world.level.block.state.StateDefinition;
     import net.minecraft.world.level.block.state.properties.BlockStateProperties;
     import net.minecraft.world.level.block.state.properties.IntegerProperty;
-    import net.minecraftforge.api.distmarker.Dist;
-    import net.minecraftforge.api.distmarker.OnlyIn;
 
     public class EndFireBlock extends BaseFireBlock {
         public static final IntegerProperty AGE = BlockStateProperties.AGE_15;
@@ -49,13 +44,6 @@
         @Override
         protected boolean canBurn(BlockState pState) {
             return true;
-        }
-
-        @OnlyIn(Dist.CLIENT)
-        public static void registerRenderLayer() {
-            ItemBlockRenderTypes.setRenderLayer((Block) AnnoyingVillagersModBlocks.END_FIRE.get(), (rendertype) -> {
-                return rendertype == RenderType.cutout();
-            });
         }
 
         private static int getEndFireTickDelay(RandomSource random) {

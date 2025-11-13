@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.SteveDeadEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
@@ -30,6 +31,8 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.Objects;
+
 public class AngrySteveOnDeathProcedure {
 
     public static void execute(LevelAccessor levelaccessor, final double d0, final double d1, final double d2, Entity entity) {
@@ -42,9 +45,9 @@ public class AngrySteveOnDeathProcedure {
                 Level level = (Level)levelaccessor;
 
                 if (!level.isClientSide()) {
-                    level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "stevesayno")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                    level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "stevesayno"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                 } else {
-                    level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "stevesayno")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                    level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "stevesayno"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                 }
             }
             new DelayedTask(20) {

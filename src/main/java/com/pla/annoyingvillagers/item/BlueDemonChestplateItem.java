@@ -14,6 +14,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import com.pla.annoyingvillagers.procedures.BlueDemonChestplateEventProcedure;
 
+import static com.pla.annoyingvillagers.util.ArmorUtil.dropArmorSlot;
+
 public abstract class BlueDemonChestplateItem extends ArmorItem {
 
     public BlueDemonChestplateItem(ArmorItem.Type type, Properties properties) {
@@ -75,8 +77,11 @@ public abstract class BlueDemonChestplateItem extends ArmorItem {
         }
 
         @Override
-        public void onArmorTick(ItemStack itemstack, Level level, Player player) {
-            BlueDemonChestplateEventProcedure.execute(player);
+        public void onInventoryTick(ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex) {
+            super.onInventoryTick(stack, level, player, slotIndex, selectedIndex);
+            if (player.getItemBySlot(EquipmentSlot.CHEST) == stack) {
+                BlueDemonChestplateEventProcedure.execute(player);
+            }
         }
     }
 }

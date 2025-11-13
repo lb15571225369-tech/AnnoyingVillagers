@@ -15,8 +15,6 @@
     "ZombieMixin",
     "SkillBookScreenMixin",
     "AimAnimationMixin",
-    "DualAxeMixin",
-    "ExecutionMixin",
     "EnderDragonMixin",
     "IndestructibleMixin",
     "GuardSkillMixin",

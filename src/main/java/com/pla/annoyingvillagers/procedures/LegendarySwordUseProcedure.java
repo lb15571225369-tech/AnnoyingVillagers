@@ -19,6 +19,8 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.Objects;
+
 public class LegendarySwordUseProcedure {
 
     public static void execute(LevelAccessor levelaccessor, final Entity entity, ItemStack itemstack) {
@@ -40,9 +42,9 @@ public class LegendarySwordUseProcedure {
                                 Level level = (Level)levelaccessor;
 
                                 if (!level.isClientSide()) {
-                                    level.playSound((Player)null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "heavy_attack_legendary_sword")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                    level.playSound((Player)null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "heavy_attack_legendary_sword"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                 } else {
-                                    level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "heavy_attack_legendary_sword")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                    level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "heavy_attack_legendary_sword"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                 }
                             }
 
@@ -120,9 +122,9 @@ public class LegendarySwordUseProcedure {
                                 if (levelaccessor1 instanceof Level) {
                                     level1 = (Level)levelaccessor1;
                                     if (!level1.isClientSide()) {
-                                        level1.playSound((Player)null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "heavy_attack_legendary_sword")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                        level1.playSound((Player)null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "heavy_attack_legendary_sword"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                     } else {
-                                        level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "heavy_attack_legendary_sword")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                        level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "heavy_attack_legendary_sword"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                     }
                                 }
 
@@ -130,9 +132,9 @@ public class LegendarySwordUseProcedure {
                                 if (levelaccessor1 instanceof Level) {
                                     level1 = (Level)levelaccessor1;
                                     if (!level1.isClientSide()) {
-                                        level1.playSound((Player)null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "heavy_attack_legendary_sword_2")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                        level1.playSound((Player)null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "heavy_attack_legendary_sword_2"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                     } else {
-                                        level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "heavy_attack_legendary_sword_2")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                        level1.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "heavy_attack_legendary_sword_2"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                     }
                                 }
 

@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.block.DarkObUpBlock;
 import com.pla.annoyingvillagers.block.ShadowObsidianBlock;
 import com.pla.annoyingvillagers.blockentity.DarkObUpBlockEntity;
@@ -29,6 +30,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class BlockProjectileEntity extends ThrowableProjectile {
@@ -117,9 +119,9 @@ public class BlockProjectileEntity extends ThrowableProjectile {
         }
 
         if (!target.level().isClientSide()) {
-            target.level().playSound((Player) null, new BlockPos((int) this.getX(), (int) this.getY(), (int) this.getZ()), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "obsidian_hit")), SoundSource.BLOCKS, 1.0F, (float) (0.5 + Math.random() * 0.5));
+            target.level().playSound((Player) null, new BlockPos((int) this.getX(), (int) this.getY(), (int) this.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "obsidian_hit"))), SoundSource.BLOCKS, 1.0F, (float) (0.5 + Math.random() * 0.5));
         } else {
-            target.level().playLocalSound(this.getX(), this.getY(), this.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "obsidian_hit")), SoundSource.BLOCKS, 1.0F, (float) (0.5 + Math.random() * 0.5), false);
+            target.level().playLocalSound(this.getX(), this.getY(), this.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "obsidian_hit"))), SoundSource.BLOCKS, 1.0F, (float) (0.5 + Math.random() * 0.5), false);
         }
         if (this.getOwner() == null) {
             target.hurt(target.level().damageSources().generic(), 2.0F);

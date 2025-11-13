@@ -32,6 +32,7 @@ import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 import java.util.List;
+import java.util.Objects;
 
 public class EnderGlaiveItem extends SwordItem {
 
@@ -69,7 +70,7 @@ public class EnderGlaiveItem extends SwordItem {
 
         float interpolation = 0.0F;
         OpenMatrix4f m = entitypatch.getArmature()
-                .getBindedTransformFor(entitypatch.getAnimator().getPose(interpolation), joint);
+                .getBoundTransformFor(entitypatch.getAnimator().getPose(interpolation), joint);
 
         if (translation != null) {
             OpenMatrix4f tLocal = new OpenMatrix4f().translate(translation);
@@ -127,9 +128,9 @@ public class EnderGlaiveItem extends SwordItem {
                     itemstack.getTag().putBoolean("SecondForm", true);
 
                     if (!player.level().isClientSide()) {
-                        player.level().playSound((Player) null, new BlockPos((int) player.getX(), (int) player.getY(), (int) player.getZ()), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:second_form_release")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        player.level().playSound((Player) null, new BlockPos((int) player.getX(), (int) player.getY(), (int) player.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "second_form_release"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     } else {
-                        player.level().playLocalSound(player.getX(), player.getY(), player.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:second_form_release")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                        player.level().playLocalSound(player.getX(), player.getY(), player.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "second_form_release"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                     }
 
                     itemstack.getTag().putInt("HitCount", 3);

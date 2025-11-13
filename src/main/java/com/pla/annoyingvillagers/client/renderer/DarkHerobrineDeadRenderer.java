@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.client.renderer;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.ShadowHerobrineDeadEntity;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -20,6 +21,6 @@ public class DarkHerobrineDeadRenderer extends HumanoidMobRenderer<ShadowHerobri
     }
 
     public ResourceLocation getTextureLocation(ShadowHerobrineDeadEntity darkHerobrineDeadEntity) {
-        return new ResourceLocation("annoyingvillagers", "textures/entities/shadow_herobrine.png");
+        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/shadow_herobrine.png");
     }
 }

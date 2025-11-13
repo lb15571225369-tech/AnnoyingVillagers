@@ -725,24 +725,24 @@ public class AVWeaponCapability {
             .weaponCombinationPredicator((patch) -> true);
 
     public static void register(WeaponCapabilityPresetRegistryEvent weaponcapabilitypresetregistryevent) {
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "legendary_sword"), AVWeaponCapability.LEGENDARY_SWORD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "axe"), AVWeaponCapability.AXE);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "sword"), AVWeaponCapability.SWORD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "spear"), AVWeaponCapability.SPEAR);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "iron_fist"), AVWeaponCapability.IRON_FIST);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "tachi"), AVWeaponCapability.TACHI);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "longsword"), AVWeaponCapability.LONGSWORD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "torment_greatsword"), AVWeaponCapability.TORMENT_GREATSWORD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "e_sword"), AVWeaponCapability.ESWORD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "e_trident"), AVWeaponCapability.ETRIDENT);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "knife"), AVWeaponCapability.KNIFE);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "redgreatsword"), AVWeaponCapability.REDGREATSWORD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "hardgreatsword"), AVWeaponCapability.HARD_GREAT_SWORD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "uchigatana"), AVWeaponCapability.UCHIGATANA);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "greatsword"), AVWeaponCapability.GREATSWORD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "sword_shield"), AVWeaponCapability.SWORD_SHIELD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "agony_spear"), AVWeaponCapability.AGONY_SPEAR);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "antitheus_spear"), AVWeaponCapability.ANTITHEUS_SPEAR);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(new ResourceLocation("epicfight", "shadow_obsidian_sword"), AVWeaponCapability.SHADOW_OBSIDIAN_SWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "legendary_sword"), AVWeaponCapability.LEGENDARY_SWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "axe"), AVWeaponCapability.AXE);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "sword"), AVWeaponCapability.SWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "spear"), AVWeaponCapability.SPEAR);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "iron_fist"), AVWeaponCapability.IRON_FIST);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "tachi"), AVWeaponCapability.TACHI);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "longsword"), AVWeaponCapability.LONGSWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "torment_greatsword"), AVWeaponCapability.TORMENT_GREATSWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "e_sword"), AVWeaponCapability.ESWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "e_trident"), AVWeaponCapability.ETRIDENT);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "knife"), AVWeaponCapability.KNIFE);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "redgreatsword"), AVWeaponCapability.REDGREATSWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "hardgreatsword"), AVWeaponCapability.HARD_GREAT_SWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "uchigatana"), AVWeaponCapability.UCHIGATANA);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "greatsword"), AVWeaponCapability.GREATSWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "sword_shield"), AVWeaponCapability.SWORD_SHIELD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "agony_spear"), AVWeaponCapability.AGONY_SPEAR);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "antitheus_spear"), AVWeaponCapability.ANTITHEUS_SPEAR);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "shadow_obsidian_sword"), AVWeaponCapability.SHADOW_OBSIDIAN_SWORD);
     }
 }

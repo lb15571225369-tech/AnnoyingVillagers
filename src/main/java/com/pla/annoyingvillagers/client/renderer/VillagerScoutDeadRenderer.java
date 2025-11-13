@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.client.renderer;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.AlexDeadEntity;
 import com.pla.annoyingvillagers.entity.VillagerScoutDeadEntity;
 import net.minecraft.client.model.HumanoidModel;
@@ -21,6 +22,6 @@ public class VillagerScoutDeadRenderer extends HumanoidMobRenderer<VillagerScout
     }
 
     public ResourceLocation getTextureLocation(VillagerScoutDeadEntity villagerScoutDeadEntity) {
-        return new ResourceLocation("annoyingvillagers", "textures/entities/villager_scout_dead.png");
+        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/villager_scout_dead.png");
     }
 }

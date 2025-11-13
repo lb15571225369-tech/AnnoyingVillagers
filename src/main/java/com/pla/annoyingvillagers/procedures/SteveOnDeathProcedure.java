@@ -37,9 +37,9 @@ public class SteveOnDeathProcedure {
                 Level level = (Level)levelaccessor1;
 
                 if (!level.isClientSide()) {
-                    level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("item.totem.use")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                    level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.totem.use")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                 } else {
-                    level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("item.totem.use")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                    level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.totem.use")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                 }
             }
             if (levelaccessor instanceof ServerLevel serverLevel) {

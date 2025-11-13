@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import com.pla.annoyingvillagers.client.model.ModelHerobrineObsidianDiamondChestplate;
+import com.pla.annoyingvillagers.procedures.EmeraldArmorJumpBootProcedure;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -102,8 +103,9 @@ public abstract class HerobrineObsidianDiamondArmorChestplateItem extends ArmorI
         }
 
         @Override
-        public void onArmorTick(ItemStack itemstack, Level level, Player player) {
-            if (player != null) {
+        public void onInventoryTick(ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex) {
+            super.onInventoryTick(stack, level, player, slotIndex, selectedIndex);
+            if (player.getItemBySlot(EquipmentSlot.CHEST) == stack) {
                 dropArmorSlot(player, EquipmentSlot.FEET, "Herobrine Obsidian Diamond Chestplate");
                 dropArmorSlot(player, EquipmentSlot.LEGS, "Herobrine Obsidian Diamond Chestplate");
             }

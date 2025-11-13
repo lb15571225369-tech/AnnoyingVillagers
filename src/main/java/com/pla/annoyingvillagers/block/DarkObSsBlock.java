@@ -2,11 +2,7 @@ package com.pla.annoyingvillagers.block;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -19,16 +15,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
-import net.minecraft.world.level.storage.loot.LootContext.Builder;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.procedures.DarkObSsOnDestroyedByPlayerProcedure;
 import com.pla.annoyingvillagers.procedures.DarkObSsOnEntityInsideProcedure;
 import com.pla.annoyingvillagers.procedures.DarkObSsOnAttackProcedure;
@@ -109,12 +100,5 @@ public class DarkObSsBlock extends Block {
     public void entityInside(BlockState blockstate, Level level, BlockPos blockpos, Entity entity) {
         super.entityInside(blockstate, level, blockpos, entity);
         DarkObSsOnEntityInsideProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), entity);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public static void registerRenderLayer() {
-        ItemBlockRenderTypes.setRenderLayer((Block) AnnoyingVillagersModBlocks.DARK_OB_SS.get(), (rendertype) -> {
-            return rendertype == RenderType.cutout();
-        });
     }
 }

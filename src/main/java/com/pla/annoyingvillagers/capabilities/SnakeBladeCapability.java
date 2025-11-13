@@ -16,7 +16,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 
 public class SnakeBladeCapability {
-    public static ResourceLocation ID = new ResourceLocation(AnnoyingVillagers.MODID, "snake_blade_cap");
+    public static ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "snake_blade_cap");
 
     public interface ISnakeBladeCapability extends INBTSerializable<CompoundTag> {
 

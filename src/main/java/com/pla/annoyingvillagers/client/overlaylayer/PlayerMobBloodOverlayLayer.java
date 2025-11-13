@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.client.overlaylayer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -12,7 +13,7 @@ import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
 public class PlayerMobBloodOverlayLayer extends RenderLayer<PlayerMobEntity, PlayerModel<PlayerMobEntity>> {
     private static final ResourceLocation TEX =
-            new ResourceLocation("annoyingvillagers", "textures/entities/player_mob_blood.png");
+            ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/player_mob_blood.png");
 
     public PlayerMobBloodOverlayLayer(RenderLayerParent<PlayerMobEntity, PlayerModel<PlayerMobEntity>> parent) {
         super(parent);

@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.client.renderer;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.GlaiveHerobrineEntity;
 import com.pla.annoyingvillagers.entity.ReaperHerobrineEntity;
 import net.minecraft.client.model.HumanoidModel;
@@ -23,6 +24,6 @@ public class ReaperHerobrineRenderer extends HumanoidMobRenderer<ReaperHerobrine
     }
 
     public ResourceLocation getTextureLocation(ReaperHerobrineEntity reaperHerobrineEntity) {
-        return new ResourceLocation("annoyingvillagers:textures/entities/elite_herobrine.png");
+        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID,"textures/entities/elite_herobrine.png");
     }
 }

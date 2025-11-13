@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.client.renderer;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.SwordsmanHerobrineEntity;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -20,6 +21,6 @@ public class SwordsmanHerobrineRenderer extends HumanoidMobRenderer<SwordsmanHer
     }
 
     public ResourceLocation getTextureLocation(SwordsmanHerobrineEntity swordsManHerobrineEntity) {
-        return new ResourceLocation("annoyingvillagers:textures/entities/elite_herobrine.png");
+        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID,"textures/entities/elite_herobrine.png");
     }
 }

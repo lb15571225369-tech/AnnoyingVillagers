@@ -81,7 +81,7 @@ public class AnnoyingVillagersModSounds {
     public static final RegistryObject<SoundEvent> HEROBRINE_UNDERSTOOD = register("herobrine_understood");
 
     private static RegistryObject<SoundEvent> register(String name) {
-        return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(AnnoyingVillagers.MODID, name)));
+        return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, name)));
     }
 
     public static void register(IEventBus bus) {

@@ -13,6 +13,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.Objects;
+
 public class DarkObSsOnAttackProcedure {
 
     public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) {
@@ -29,9 +31,9 @@ public class DarkObSsOnAttackProcedure {
                 Level level = (Level) levelaccessor;
 
                 if (!level.isClientSide()) {
-                    level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "ob_place")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                    level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ob_place"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                 } else {
-                    level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(AnnoyingVillagers.MODID, "ob_place")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                    level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ob_place"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                 }
             }
 

@@ -30,6 +30,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 public class InfectedPlayerMobEntity extends PlayerMobEntity {
 
@@ -64,11 +65,11 @@ public class InfectedPlayerMobEntity extends PlayerMobEntity {
     }
 
     public SoundEvent getHurtSound(DamageSource damagesource) {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
+        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.hurt")));
     }
 
     public SoundEvent getDeathSound() {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
+        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.death")));
     }
 
     public void baseTick() {

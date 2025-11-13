@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.client.renderer;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.EliteHerobrineDeadEntity;
 import com.pla.annoyingvillagers.entity.EliteHerobrineKnockedEntity;
 import net.minecraft.client.model.HumanoidModel;
@@ -21,6 +22,6 @@ public class EliteHerobrineDeadRenderer extends HumanoidMobRenderer<EliteHerobri
     }
 
     public ResourceLocation getTextureLocation(EliteHerobrineDeadEntity eliteHerobrineDeadEntity) {
-        return new ResourceLocation("annoyingvillagers:textures/entities/elite_herobrine_dead.png");
+        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID,"textures/entities/elite_herobrine_dead.png");
     }
 }

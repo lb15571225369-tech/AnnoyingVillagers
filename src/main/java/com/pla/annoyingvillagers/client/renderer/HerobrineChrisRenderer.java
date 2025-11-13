@@ -23,9 +23,9 @@ public class HerobrineChrisRenderer extends HumanoidMobRenderer<HerobrineChrisEn
 
     public ResourceLocation getTextureLocation(HerobrineChrisEntity herobrineentity) {
         if (herobrineentity.getHealth() <= 15) {
-            return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/infected_chris.png");
+            return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/infected_chris.png");
         } else {
-            return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/herobrine.png");
+            return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/herobrine.png");
         }
     }
 

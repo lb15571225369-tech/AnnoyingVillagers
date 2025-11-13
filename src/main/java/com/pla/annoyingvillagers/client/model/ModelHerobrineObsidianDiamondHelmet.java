@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -16,7 +17,7 @@ import net.minecraft.world.entity.Entity;
 
 public class ModelHerobrineObsidianDiamondHelmet<T extends Entity> extends EntityModel<T> {
 
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("annoyingvillagers", "modelherobrineobsidiandiamondhelmet"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "modelherobrineobsidiandiamondhelmet"), "main");
     public final ModelPart Head;
 
     public ModelHerobrineObsidianDiamondHelmet(ModelPart modelpart) {

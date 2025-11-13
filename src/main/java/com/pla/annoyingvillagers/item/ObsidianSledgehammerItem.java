@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.item;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.ObsidianSledgehammerHitEntity;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
 import net.minecraft.core.BlockPos;
@@ -20,8 +21,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ObsidianSledgehammerItem extends AxeItem {
 
@@ -47,7 +50,7 @@ public class ObsidianSledgehammerItem extends AxeItem {
                 return 32;
             }
 
-            public Ingredient getRepairIngredient() {
+            public @NotNull Ingredient getRepairIngredient() {
                 return Ingredient.of();
             }
         }, 1.0F, -2.6F, (new Properties()).fireResistant());
@@ -138,9 +141,9 @@ public class ObsidianSledgehammerItem extends AxeItem {
                     itemstack.getTag().putBoolean("SecondForm", true);
 
                     if (!player.level().isClientSide()) {
-                        player.level().playSound((Player) null, new BlockPos((int) player.getX(), (int) player.getY(), (int) player.getZ()), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:second_form_release")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        player.level().playSound((Player) null, new BlockPos((int) player.getX(), (int) player.getY(), (int) player.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "second_form_release"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     } else {
-                        player.level().playLocalSound(player.getX(), player.getY(), player.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers:second_form_release")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                        player.level().playLocalSound(player.getX(), player.getY(), player.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "second_form_release"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                     }
                 }
             } else {

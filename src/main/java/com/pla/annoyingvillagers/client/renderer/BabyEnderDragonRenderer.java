@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class BabyEnderDragonRenderer extends MobRenderer<BabyEnderDragonEntity, ModelBabyEnderDragon<BabyEnderDragonEntity>> {
     private final EntityRendererProvider.Context context;
-    public static final ResourceLocation TEXTURE = new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/baby_ender_dragon.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/baby_ender_dragon.png");
 
     public BabyEnderDragonRenderer(EntityRendererProvider.Context pContext) {
         super(pContext, new ModelBabyEnderDragon<>(pContext.bakeLayer(ModelBabyEnderDragon.LAYER_LOCATION)), 0.0f);

@@ -11,15 +11,15 @@ import net.minecraft.util.Mth;
 
 public class HerobrineWardenRenderer extends MobRenderer<HerobrineWardenEntity, ModelHerobrineWarden> {
     private static final ResourceLocation BASE =
-            new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/herobrine_warden.png");
+            ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/herobrine_warden.png");
     private static final ResourceLocation BIOLUM =
-            new ResourceLocation("textures/entity/warden/warden_bioluminescent_layer.png");
+            ResourceLocation.fromNamespaceAndPath("minecraft","textures/entity/warden/warden_bioluminescent_layer.png");
     private static final ResourceLocation HEART =
-            new ResourceLocation("textures/entity/warden/warden_heart.png");
+            ResourceLocation.fromNamespaceAndPath("minecraft","textures/entity/warden/warden_heart.png");
     private static final ResourceLocation SPOTS1 =
-            new ResourceLocation("textures/entity/warden/warden_pulsating_spots_1.png");
+            ResourceLocation.fromNamespaceAndPath("minecraft","textures/entity/warden/warden_pulsating_spots_1.png");
     private static final ResourceLocation SPOTS2 =
-            new ResourceLocation("textures/entity/warden/warden_pulsating_spots_2.png");
+            ResourceLocation.fromNamespaceAndPath("minecraft","textures/entity/warden/warden_pulsating_spots_2.png");
 
     public HerobrineWardenRenderer(EntityRendererProvider.Context ctx) {
         super(ctx, new ModelHerobrineWarden(ctx.bakeLayer(ModelHerobrineWarden.LAYER_LOCATION)), 0.9F);

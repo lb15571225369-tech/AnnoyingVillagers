@@ -22,7 +22,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class ObsidianSledgehammerHitRenderer extends EntityRenderer<ObsidianSledgehammerHitEntity> {
-    private static final ResourceLocation SHADOW_OBSIDIAN_TEXTURE =new ResourceLocation(AnnoyingVillagers.MODID,"textures/entities/obsidian_sledgehammer.png");
+    private static final ResourceLocation SHADOW_OBSIDIAN_TEXTURE = ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID,"textures/entities/obsidian_sledgehammer.png");
     private final ModelObsidianSledgehammerHit model;
     private final Random random = new Random();
 

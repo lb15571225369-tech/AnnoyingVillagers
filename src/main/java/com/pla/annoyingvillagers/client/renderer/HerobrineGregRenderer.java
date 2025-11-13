@@ -22,9 +22,9 @@ public class HerobrineGregRenderer extends HumanoidMobRenderer<HerobrineGregEnti
 
     public ResourceLocation getTextureLocation(HerobrineGregEntity herobrineGregEntity) {
         if (herobrineGregEntity.isUseHerobrineTexture()) {
-            return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/herobrine.png");
+            return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/herobrine.png");
         } else {
-            return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/greg.png");
+            return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/greg.png");
         }
     }
 }

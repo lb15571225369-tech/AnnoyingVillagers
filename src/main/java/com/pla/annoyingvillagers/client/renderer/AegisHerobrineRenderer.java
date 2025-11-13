@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.client.renderer;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.AegisHerobrineEntity;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -20,6 +21,6 @@ public class AegisHerobrineRenderer extends HumanoidMobRenderer<AegisHerobrineEn
     }
 
     public ResourceLocation getTextureLocation(AegisHerobrineEntity aegisHerobrineEntity) {
-        return new ResourceLocation("annoyingvillagers:textures/entities/elite_herobrine.png");
+        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/elite_herobrine.png");
     }
 }

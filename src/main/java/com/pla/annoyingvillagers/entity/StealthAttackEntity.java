@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.entity;
 
+import java.util.Objects;
 import java.util.Random;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -82,7 +83,7 @@ public class StealthAttackEntity extends AbstractArrow implements ItemSupplier {
         stealthAttackEntity.setBaseDamage(d0);
         stealthAttackEntity.setKnockback(i);
         level.addFreshEntity(stealthAttackEntity);
-        level.playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.arrow.shoot")), SoundSource.PLAYERS, 1.0F, 1.0F / (random.nextFloat() * 0.5F + 1.0F) + f / 2.0F);
+        level.playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.arrow.shoot"))), SoundSource.PLAYERS, 1.0F, 1.0F / (random.nextFloat() * 0.5F + 1.0F) + f / 2.0F);
         return stealthAttackEntity;
     }
 
@@ -98,7 +99,7 @@ public class StealthAttackEntity extends AbstractArrow implements ItemSupplier {
         stealthAttackEntity.setKnockback(7);
         stealthAttackEntity.setCritArrow(false);
         livingentity.level().addFreshEntity(stealthAttackEntity);
-        livingentity.level().playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.arrow.shoot")), SoundSource.PLAYERS, 1.0F, 1.0F / ((new Random()).nextFloat() * 0.5F + 1.0F));
+        livingentity.level().playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.arrow.shoot"))), SoundSource.PLAYERS, 1.0F, 1.0F / ((new Random()).nextFloat() * 0.5F + 1.0F));
         return stealthAttackEntity;
     }
 

@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.util.CombatBehaviour;
@@ -86,17 +87,17 @@ public class AngrySteveOnHurtProcedure {
 
                                 if (levelaccessor instanceof Level level) {
                                     if (!level.isClientSide()) {
-                                        level.playSound((Player)null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "l_g_w_u"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                        level.playSound((Player)null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "l_g_w_u"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                     } else {
-                                        level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "l_g_w_u"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                        level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "l_g_w_u"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                     }
                                 }
 
                                 if (levelaccessor instanceof Level level) {
                                     if (!level.isClientSide()) {
-                                        level.playSound((Player)null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "zhanshenzhirenjuexing"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                        level.playSound((Player)null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "zhanshenzhirenjuexing"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                     } else {
-                                        level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "zhanshenzhirenjuexing"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                        level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "zhanshenzhirenjuexing"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                     }
                                 }
 

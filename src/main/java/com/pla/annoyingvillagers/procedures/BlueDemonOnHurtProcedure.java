@@ -142,7 +142,7 @@ public class BlueDemonOnHurtProcedure {
             String[] parts = soundName.split(":", 2);
             String namespace = parts[0];
             String path = parts[1];
-            SoundEvent sound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(namespace, path));
+            SoundEvent sound = ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(namespace, path));
             if (!level.isClientSide()) {
                 level.playSound(null, new BlockPos((int) x, (int) y, (int) z), sound, SoundSource.NEUTRAL, 1.0F, 1.0F);
             } else {

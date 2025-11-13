@@ -587,7 +587,8 @@ public class HerobrineGregEntity extends Monster {
     private void summonHerobrine(String herobrineMobId, double spawnX, double spawnY,
                                  double spawnZ, double summonLookX, double summonLookZ, boolean renderPortal) {
         if (this.level() instanceof ServerLevel levelaccessor) {
-            ResourceLocation mobResourceLocation = new ResourceLocation(herobrineMobId);
+            String[] parts = herobrineMobId.split(":");
+            ResourceLocation mobResourceLocation = ResourceLocation.fromNamespaceAndPath(parts[0], parts[1]);
             EntityType<?> type = ForgeRegistries.ENTITY_TYPES.getValue(mobResourceLocation);
             if (type != null && type.create(level()) instanceof Mob herobrine) {
                 if (herobrine instanceof HerobrineMob herobrineMob) {
@@ -915,11 +916,11 @@ public class HerobrineGregEntity extends Monster {
     }
 
     public @NotNull SoundEvent getHurtSound(DamageSource damagesource) {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
+        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.hurt")));
     }
 
     public @NotNull SoundEvent getDeathSound() {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
+        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.death")));
     }
 
     public boolean isDay(Level level) {

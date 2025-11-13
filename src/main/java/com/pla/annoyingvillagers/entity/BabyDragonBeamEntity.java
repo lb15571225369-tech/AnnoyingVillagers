@@ -39,6 +39,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class BabyDragonBeamEntity extends Entity {
@@ -214,7 +215,7 @@ public class BabyDragonBeamEntity extends Entity {
 
             if (world.isClientSide) {
                 AAALevel.addParticle(world, false,
-                        new ParticleEmitterInfo(new ResourceLocation(AnnoyingVillagers.MODID, "baby_dragon_beam_hit"))
+                        new ParticleEmitterInfo(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "baby_dragon_beam_hit"))
                                 .clone()
                                 .position(hitBlock.getX(), hitBlock.getY(), hitBlock.getZ()));
             }
@@ -379,7 +380,7 @@ public class BabyDragonBeamEntity extends Entity {
                     .add(fwd.scale(muzzle));
             Vec3 to = target.getEyePosition(1.0F);
 
-            new BabyDragonBeamParticleEmitterInfo(new ResourceLocation(AnnoyingVillagers.MODID, "baby_dragon_beam"))
+            new BabyDragonBeamParticleEmitterInfo(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "baby_dragon_beam"))
                     .fromTo(from, to, BabyDragonBeamParticleEmitterInfo.ForwardAxis.PLUS_Z, 0f)
                     .follow(caster, target, 120, BabyDragonBeamParticleEmitterInfo.ForwardAxis.PLUS_Z, 0f)
                     .spawnInWorld(caster.level(), null);
@@ -389,9 +390,9 @@ public class BabyDragonBeamEntity extends Entity {
             if (!playSound) {
                 playSound = true;
                 if (!this.level().isClientSide()) {
-                    this.level().playSound((Player) null, new BlockPos((int) targetPos.x, (int) targetPos.y, (int) targetPos.z), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "dragon_breath")), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.05D, 0.5D), (float) Mth.nextDouble(RandomSource.create(), 0.8D, 1.1D));
+                    this.level().playSound((Player) null, new BlockPos((int) targetPos.x, (int) targetPos.y, (int) targetPos.z), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "dragon_breath"))), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.05D, 0.5D), (float) Mth.nextDouble(RandomSource.create(), 0.8D, 1.1D));
                 } else {
-                    this.level().playLocalSound(targetPos.x, targetPos.y, targetPos.z, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "dragon_breath")), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.05D, 0.5D), (float) Mth.nextDouble(RandomSource.create(), 0.8D, 1.1D), false);
+                    this.level().playLocalSound(targetPos.x, targetPos.y, targetPos.z, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "dragon_breath"))), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.05D, 0.5D), (float) Mth.nextDouble(RandomSource.create(), 0.8D, 1.1D), false);
                 }
             }
             List<LivingEntity> hit = this.raytraceEntities(this.level(), new Vec3(this.getX(), this.getY(), this.getZ()), new Vec3(this.endPosX, this.endPosY, this.endPosZ), false, true, true).entities;

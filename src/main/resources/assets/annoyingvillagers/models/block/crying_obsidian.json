@@ -1,5 +1,6 @@
 {
   "parent": "block/cube",
+  "render_type": "minecraft:cutout_mipped",
   "textures": {
     "down": "annoyingvillagers:block/crying_obsidian",
     "up": "annoyingvillagers:block/crying_obsidian",

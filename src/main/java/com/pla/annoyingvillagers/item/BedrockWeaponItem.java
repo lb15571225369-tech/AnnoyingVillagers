@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.item;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -20,6 +21,7 @@ import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
+import java.util.Objects;
 
 public class BedrockWeaponItem extends SwordItem {
     public BedrockWeaponItem() {
@@ -54,9 +56,9 @@ public class BedrockWeaponItem extends SwordItem {
     public boolean hurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         if (Math.random() <= 0.2D) {
             if (!pTarget.level().isClientSide()) {
-                pTarget.level().playSound(null, new BlockPos((int) pTarget.getX(), (int) pTarget.getY(), (int) pTarget.getZ()), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "obsidian_hit")), SoundSource.BLOCKS, 1.0F, (float) (0.5 + Math.random() * 0.5));
+                pTarget.level().playSound(null, new BlockPos((int) pTarget.getX(), (int) pTarget.getY(), (int) pTarget.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "obsidian_hit"))), SoundSource.BLOCKS, 1.0F, (float) (0.5 + Math.random() * 0.5));
             } else {
-                pTarget.level().playLocalSound(pTarget.getX(), pTarget.getY(), pTarget.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "obsidian_hit")), SoundSource.BLOCKS, 1.0F, (float) (0.5 + Math.random() * 0.5), false);
+                pTarget.level().playLocalSound(pTarget.getX(), pTarget.getY(), pTarget.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "obsidian_hit"))), SoundSource.BLOCKS, 1.0F, (float) (0.5 + Math.random() * 0.5), false);
             }
             if (!pTarget.level().isClientSide() && pTarget.getServer() != null) {
                 try {

@@ -37,6 +37,8 @@ import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
+import java.util.Objects;
+
 
 public class Herobrine7Entity extends HerobrineMob {
     private boolean wasAiming = false;
@@ -73,11 +75,11 @@ public class Herobrine7Entity extends HerobrineMob {
     }
 
     public @NotNull SoundEvent getHurtSound(DamageSource damagesource) {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.hurt"));
+        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.generic.hurt")));
     }
 
     public @NotNull SoundEvent getDeathSound() {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.generic.death"));
+        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.generic.death")));
     }
 
     public boolean hurt(@NotNull DamageSource damagesource, float f) {

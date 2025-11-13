@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.client.renderer;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.InfectedTheMostMoistBurrit0Entity;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -20,6 +21,6 @@ public class InfectedTheMostMoistBurrit0Renderer extends HumanoidMobRenderer<Inf
     }
 
     public ResourceLocation getTextureLocation(InfectedTheMostMoistBurrit0Entity infectedTheMostMoistBurrit0Entity) {
-        return new ResourceLocation("annoyingvillagers:textures/entities/infected_themostmoistburrit0.png");
+        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID,"textures/entities/infected_themostmoistburrit0.png");
     }
 }

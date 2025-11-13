@@ -21,6 +21,6 @@ public class NullRenderer extends HumanoidMobRenderer<NullEntity, HumanoidModel<
     }
 
     public ResourceLocation getTextureLocation(NullEntity herobrineentity) {
-        return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/null.png");
+        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/null.png");
     }
 }

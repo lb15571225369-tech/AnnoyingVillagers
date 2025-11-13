@@ -17,7 +17,7 @@ public final class GroundSlamUtil {
         Vec3 pos = patch.getOriginal().position();
         OpenMatrix4f model =
                 patch.getArmature()
-                        .getBindedTransformFor(patch.getAnimator().getPose(1.0F), joint)
+                        .getBoundTransformFor(patch.getAnimator().getPose(1.0F), joint)
                         .mulFront(OpenMatrix4f.createTranslation((float) pos.x, (float) pos.y, (float) pos.z)
                                 .mulBack(OpenMatrix4f.createRotatorDeg(180.0F, Vec3f.Y_AXIS)
                                         .mulBack(patch.getModelMatrix(1.0F))));

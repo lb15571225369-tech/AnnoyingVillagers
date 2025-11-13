@@ -22,7 +22,7 @@ public class LowShadowHerobrineCloneRenderer extends HumanoidMobRenderer<LowShad
     }
 
     public ResourceLocation getTextureLocation(LowShadowHerobrineCloneEntity herobrineentity) {
-        return new ResourceLocation(AnnoyingVillagers.MODID, "textures/entities/shadow_herobrine.png");
+        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/shadow_herobrine.png");
     }
 
     protected boolean isShaking(LowShadowHerobrineCloneEntity herobrineentity) {

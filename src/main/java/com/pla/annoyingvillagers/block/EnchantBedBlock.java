@@ -2,8 +2,7 @@ package com.pla.annoyingvillagers.block;
 
 import java.util.Collections;
 import java.util.List;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -30,9 +29,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.EnchantBedRightClickOnBlockProcedure;
 
@@ -124,12 +120,5 @@ public class EnchantBedBlock extends Block {
 
         EnchantBedRightClickOnBlockProcedure.execute(level, (double) i, (double) j, (double) k, player);
         return InteractionResult.SUCCESS;
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public static void registerRenderLayer() {
-        ItemBlockRenderTypes.setRenderLayer((Block) AnnoyingVillagersModBlocks.ENCHANT_BED.get(), (rendertype) -> {
-            return rendertype == RenderType.cutout();
-        });
     }
 }

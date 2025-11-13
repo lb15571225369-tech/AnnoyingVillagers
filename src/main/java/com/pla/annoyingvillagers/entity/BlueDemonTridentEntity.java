@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.entity;
 
+import java.util.Objects;
 import java.util.Random;
 
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
@@ -93,7 +94,7 @@ public class BlueDemonTridentEntity extends AbstractArrow implements ItemSupplie
         bluedemontridententity.setKnockback(i);
         bluedemontridententity.setSecondsOnFire(100);
         level.addFreshEntity(bluedemontridententity);
-        level.playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft", "item.trident.throw")), SoundSource.PLAYERS, 1.0F, 1.0F / (random.nextFloat() * 0.5F + 1.0F) + f / 2.0F);
+        level.playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.trident.throw"))), SoundSource.PLAYERS, 1.0F, 1.0F / (random.nextFloat() * 0.5F + 1.0F) + f / 2.0F);
         return bluedemontridententity;
     }
 
@@ -110,7 +111,7 @@ public class BlueDemonTridentEntity extends AbstractArrow implements ItemSupplie
         bluedemontridententity.setCritArrow(false);
         bluedemontridententity.setSecondsOnFire(100);
         livingentity.level().addFreshEntity(bluedemontridententity);
-        livingentity.level().playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("minecraft","item.trident.throw")), SoundSource.PLAYERS, 1.0F, 1.0F / ((new Random()).nextFloat() * 0.5F + 1.0F));
+        livingentity.level().playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.trident.throw"))), SoundSource.PLAYERS, 1.0F, 1.0F / ((new Random()).nextFloat() * 0.5F + 1.0F));
         return bluedemontridententity;
     }
 }

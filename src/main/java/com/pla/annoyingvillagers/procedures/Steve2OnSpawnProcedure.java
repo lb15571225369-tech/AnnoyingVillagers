@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
@@ -45,18 +46,18 @@ public class Steve2OnSpawnProcedure {
             if (levelaccessor instanceof Level) {
                 level = (Level)levelaccessor;
                 if (!level.isClientSide()) {
-                    level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "pop")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                    level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "pop")), SoundSource.BLOCKS, 1.0F, 1.0F);
                 } else {
-                    level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "pop")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                    level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "pop")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                 }
             }
 
             if (levelaccessor instanceof Level) {
                 level = (Level)levelaccessor;
                 if (!level.isClientSide()) {
-                    level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "stevesayiwanttuseuthere")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                    level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "stevesayiwanttuseuthere")), SoundSource.BLOCKS, 1.0F, 1.0F);
                 } else {
-                    level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("annoyingvillagers", "stevesayiwanttuseuthere")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                    level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "stevesayiwanttuseuthere")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                 }
             }
 
@@ -84,9 +85,9 @@ public class Steve2OnSpawnProcedure {
                         Level level1 = (Level)levelaccessor1;
 
                         if (!level1.isClientSide()) {
-                            level1.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("item.armor.equip_diamond")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                            level1.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.armor.equip_diamond")), SoundSource.BLOCKS, 1.0F, 1.0F);
                         } else {
-                            level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("item.armor.equip_diamond")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                            level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.armor.equip_diamond")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                         }
                     }
 
@@ -125,9 +126,9 @@ public class Steve2OnSpawnProcedure {
                                 Level level2 = (Level)levelaccessor2;
 
                                 if (!level2.isClientSide()) {
-                                    level2.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("item.armor.equip_diamond")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                                    level2.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.armor.equip_diamond")), SoundSource.BLOCKS, 1.0F, 1.0F);
                                 } else {
-                                    level2.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("item.armor.equip_diamond")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                                    level2.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.armor.equip_diamond")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                                 }
                             }
 

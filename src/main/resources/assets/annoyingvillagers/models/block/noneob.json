@@ -1,5 +1,6 @@
 {
   "parent": "block/cube",
+  "render_type": "minecraft:cutout",
   "textures": {
     "down": "annoyingvillagers:block/empty",
     "up": "annoyingvillagers:block/empty",

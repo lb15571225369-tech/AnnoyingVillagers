@@ -1,8 +1,6 @@
 package com.pla.annoyingvillagers.block;
 
 import com.pla.annoyingvillagers.blockentity.DarkObUpBlockEntity;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -23,16 +21,11 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.procedures.DarkObSsOnEntityInsideProcedure;
 import com.pla.annoyingvillagers.procedures.DarkObSsOnAttackProcedure;
 import com.pla.annoyingvillagers.procedures.DarkObSsOnTickProcedure;
 import com.pla.annoyingvillagers.procedures.DarkObSsOnPlaceProcedure;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.UUID;
 
 public class DarkObUpBlock extends Block implements EntityBlock {
     public static final BooleanProperty FROM_PLAYER = BooleanProperty.create("from_player");
@@ -115,13 +108,6 @@ public class DarkObUpBlock extends Block implements EntityBlock {
                 level.sendBlockUpdated(pos, state, state, 3);
             }
         }
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public static void registerRenderLayer() {
-        ItemBlockRenderTypes.setRenderLayer((Block) AnnoyingVillagersModBlocks.DARK_OB_UP.get(), (rendertype) -> {
-            return rendertype == RenderType.cutout();
-        });
     }
 
     @Override
