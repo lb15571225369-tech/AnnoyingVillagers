@@ -29,6 +29,7 @@ import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.HitAnimation;
 import yesman.epicfight.api.animation.types.LongHitAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
@@ -193,6 +194,7 @@ public class CombatBehaviour {
                                                                                                                                                                     if (!livingEntity.level().isClientSide()) {
                                                                                                                                                                         livingEntity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 1));
                                                                                                                                                                     }
+                                                                                                                                                                    livingEntityPatch.playAnimationSynchronized(Animations.BIPED_IDLE, 0.0F);
                                                                                                                                                                     entity.getPersistentData().putBoolean("av_healing", false);
                                                                                                                                                                 }
                                                                                                                                                             }
@@ -320,6 +322,7 @@ public class CombatBehaviour {
                                                                                                                                                                     if (!livingEntity.level().isClientSide()) {
                                                                                                                                                                         livingEntity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 1));
                                                                                                                                                                     }
+                                                                                                                                                                    livingEntityPatch.playAnimationSynchronized(Animations.BIPED_IDLE, 0.0F);
                                                                                                                                                                     entity.getPersistentData().putBoolean("av_healing", false);
                                                                                                                                                                 }
                                                                                                                                                             }

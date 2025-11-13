@@ -1,7 +1,6 @@
 package com.pla.annoyingvillagers.skill;
 
 import java.util.List;
-import java.util.UUID;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.server.level.ServerLevel;
@@ -25,9 +24,8 @@ import yesman.epicfight.api.utils.AttackResult.ResultType;
 import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.particle.HitParticleType;
-import yesman.epicfight.skill.SkillBuilder;
 import yesman.epicfight.skill.SkillContainer;
-import yesman.epicfight.skill.passive.PassiveSkill;
+import yesman.epicfight.skill.guard.GuardSkill;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
@@ -36,18 +34,16 @@ import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
 import yesman.epicfight.world.entity.eventlistener.PlayerEventListener.EventType;
 
-public class Clash extends PassiveSkill {
-
-    private static final UUID EVENT_UUID = UUID.fromString("b422f7a0-f378-3344-1111-0252ac130003");
-
-    public Clash(SkillBuilder<? extends PassiveSkill> builder) {
+public class ClashSkill extends GuardSkill {
+    public ClashSkill(GuardSkill.Builder builder) {
         super(builder);
     }
 
+    @Override
     public void onInitiate(SkillContainer skillcontainer) {
         super.onInitiate(skillcontainer);
         skillcontainer.getDataManager();
-        skillcontainer.getExecutor().getEventListener().addEventListener(EventType.TAKE_DAMAGE_EVENT_ATTACK, Clash.EVENT_UUID, (pre) -> {
+        skillcontainer.getExecutor().getEventListener().addEventListener(EventType.TAKE_DAMAGE_EVENT_ATTACK, ClashSkill.EVENT_UUID, (pre) -> {
             PlayerPatch<?> playerpatch = pre.getPlayerPatch();
             ServerPlayer serverplayer = (ServerPlayer) ((ServerPlayerPatch) pre.getPlayerPatch()).getOriginal();
             DamageSource damagesource = (DamageSource) pre.getDamageSource();
@@ -92,14 +88,14 @@ public class Clash extends PassiveSkill {
                         try {
                             serverplayer.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 100", serverplayer.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                         } catch (CommandSyntaxException e) {
-                            
+
                         }
                     }
 
                     try {
                         serverplayer.getServer().getCommands().getDispatcher().execute("impactful @s shake 15 10 10", serverplayer.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                     } catch (CommandSyntaxException e) {
-                        
+
                     }
                     if (itemstack.isDamageableItem()) {
                         int i = itemstack.getDamageValue();
@@ -121,9 +117,10 @@ public class Clash extends PassiveSkill {
         });
     }
 
+    @Override
     public void onRemoved(SkillContainer skillcontainer) {
         super.onRemoved(skillcontainer);
-        skillcontainer.getExecutor().getEventListener().removeListener(EventType.TAKE_DAMAGE_EVENT_ATTACK, Clash.EVENT_UUID);
-        skillcontainer.getExecutor().getEventListener().removeListener(EventType.MODIFY_ATTACK_SPEED_EVENT, Clash.EVENT_UUID);
+        skillcontainer.getExecutor().getEventListener().removeListener(EventType.TAKE_DAMAGE_EVENT_ATTACK, ClashSkill.EVENT_UUID);
+        skillcontainer.getExecutor().getEventListener().removeListener(EventType.MODIFY_ATTACK_SPEED_EVENT, ClashSkill.EVENT_UUID);
     }
 }
