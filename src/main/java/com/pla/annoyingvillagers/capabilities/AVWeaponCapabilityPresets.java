@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.capabilities;
 
+import com.hm.efn.gameasset.animations.EFNGreatSwordAnimations;
 import com.hm.efn.gameasset.animations.EFNLanceAnimations;
 import com.hm.efn.gameasset.animations.EFNShortSwordAnimations;
 import com.hm.efn.gameasset.animations.EFNSwordAnimations;
@@ -19,6 +20,7 @@ import com.pla.annoyingvillagers.gameasset.AVSounds;
 import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.animations.weapons.AnimsAgony;
 import reascer.wom.gameasset.animations.weapons.AnimsNapoleon;
+import reascer.wom.gameasset.animations.weapons.AnimsRuine;
 import reascer.wom.gameasset.animations.weapons.AnimsSolar;
 import reascer.wom.gameasset.colliders.WOMWeaponColliders;
 import yesman.epicfight.api.animation.LivingMotions;
@@ -83,6 +85,37 @@ public class AVWeaponCapabilityPresets {
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AnimsAgony.AGONY_RUN)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.SWIM, Animations.BIPED_HOLD_SPEAR)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AVAnimations.GLOWING_AGONY_GUARD);
+
+    public static final Function<Item, Builder> DEMONIAC_VOLTAGE_REAVER = (item) ->
+            WeaponCapability.builder()
+                    .category(WeaponCategories.GREATSWORD)
+                    .styleProvider(
+                            (livingentitypatch) -> Styles.TWO_HAND)
+                    .collider(ColliderPreset.GREATSWORD)
+                    .swingSound(EpicFightSounds.WHOOSH_BIG.get())
+                    .hitSound(EpicFightSounds.BLADE_HIT.get())
+                    .canBePlacedOffhand(false)
+                    .newStyleCombo(Styles.TWO_HAND,
+                            EFNGreatSwordAnimations.NG_GREATSWORD_AUTO1,
+                            WOMAnimations.TORMENT_BERSERK_AUTO_2,
+                            WOMAnimations.TORMENT_BERSERK_AUTO_1,
+                            EFNGreatSwordAnimations.NG_GREATSWORD_AUTO2,
+                            WOMAnimations.TORMENT_AUTO_4,
+                            EFNGreatSwordAnimations.NG_GREATSWORD_AIRSLASH,
+                            AnimsRuine.RUINE_COMET
+                    ).newStyleCombo(Styles.MOUNT,
+                            Animations.SWORD_MOUNT_ATTACK)
+                    .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.DEMONIAC_VOLTAGE_REAVER)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, WOMAnimations.TORMENT_BERSERK_IDLE)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, EFNGreatSwordAnimations.NG_GREATSWOED_WALK)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, EFNGreatSwordAnimations.NG_GREATSWORD_RUN)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, EFNGreatSwordAnimations.NG_GREATSWORD_RUN)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.SWIM, Animations.BIPED_HOLD_GREATSWORD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AnimsSolar.SOLAR_GUARD)
+                    .weaponCombinationPredicator(
+                            (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE
+                                    || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SWORD
+                                    || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.DAGGER)));
 
     public static final Function<Item, Builder> LEGENDARY_SWORD = (item) ->
             WeaponCapability.builder()
@@ -646,37 +679,6 @@ public class AVWeaponCapabilityPresets {
             .livingMotionModifier(Styles.TWO_HAND, LivingMotions.SWIM, Animations.BIPED_HOLD_GREATSWORD)
             .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.GREATSWORD_GUARD);
 
-
-    public static final Function<Item, Builder> TORMENT_GREATSWORD = (item) ->
-            WeaponCapability.builder()
-                    .category(WeaponCategories.GREATSWORD)
-                    .styleProvider(
-                            (livingentitypatch) -> Styles.TWO_HAND)
-            .collider(ColliderPreset.GREATSWORD)
-            .swingSound(EpicFightSounds.WHOOSH_BIG.get())
-            .hitSound(EpicFightSounds.BLADE_HIT.get())
-            .canBePlacedOffhand(false)
-            .newStyleCombo(Styles.TWO_HAND,
-                    WOMAnimations.TORMENT_AUTO_1,
-                    WOMAnimations.TORMENT_AUTO_2,
-                    WOMAnimations.TORMENT_AUTO_3,
-                    WOMAnimations.TORMENT_AUTO_4,
-                    WOMAnimations.TORMENT_DASH,
-                    WOMAnimations.TORMENT_AIRSLAM
-            ).newStyleCombo(Styles.MOUNT,
-                    Animations.SWORD_MOUNT_ATTACK)
-            .innateSkill(Styles.TWO_HAND, (itemstack) -> EpicFightSkills.STEEL_WHIRLWIND)
-            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, WOMAnimations.TORMENT_BERSERK_IDLE)
-            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AnimsSolar.SOLAR_WALK)
-            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AnimsSolar.SOLAR_RUN)
-            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AnimsSolar.SOLAR_RUN)
-            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.SWIM, Animations.BIPED_HOLD_GREATSWORD)
-            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.GREATSWORD_GUARD)
-            .weaponCombinationPredicator(
-                    (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE
-                            || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SWORD
-                            || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.DAGGER)));
-
     public static final Function<Item, CapabilityItem.Builder> ANTITHEUS_SPEAR = (item) ->
             WeaponCapability.builder().category(WeaponCategories.SPEAR)
             .styleProvider((entitypatch) -> Styles.TWO_HAND)
@@ -728,6 +730,7 @@ public class AVWeaponCapabilityPresets {
     public static void register(WeaponCapabilityPresetRegistryEvent weaponcapabilitypresetregistryevent) {
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "ender_aegis"), AVWeaponCapabilityPresets.ENDER_AEGIS);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "ender_glaive"), AVWeaponCapabilityPresets.ENDER_GLAIVE);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "demoniac_voltage_reaver"), AVWeaponCapabilityPresets.DEMONIAC_VOLTAGE_REAVER);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "legendary_sword"), AVWeaponCapabilityPresets.LEGENDARY_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "axe"), AVWeaponCapabilityPresets.AXE);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "sword"), AVWeaponCapabilityPresets.SWORD);
@@ -735,7 +738,6 @@ public class AVWeaponCapabilityPresets {
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "iron_fist"), AVWeaponCapabilityPresets.IRON_FIST);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "tachi"), AVWeaponCapabilityPresets.TACHI);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "longsword"), AVWeaponCapabilityPresets.LONGSWORD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "torment_greatsword"), AVWeaponCapabilityPresets.TORMENT_GREATSWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "e_sword"), AVWeaponCapabilityPresets.ESWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "e_trident"), AVWeaponCapabilityPresets.ETRIDENT);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "knife"), AVWeaponCapabilityPresets.KNIFE);

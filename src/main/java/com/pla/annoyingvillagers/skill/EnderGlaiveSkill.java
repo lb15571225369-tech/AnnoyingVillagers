@@ -23,13 +23,12 @@ import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.skill.SkillBuilder;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
-import yesman.epicfight.world.entity.eventlistener.PlayerEventListener.EventType;
 
 import java.util.Objects;
 import java.util.UUID;
 
 public class EnderGlaiveSkill extends WeaponInnateSkill {
-    private static final UUID EVENT_UUID = UUID.fromString("021ebecb-c7e5-4f6c-9ad8-8fe9f1e166ee");
+    private static final UUID EVENT_UUID = UUID.fromString("f79be742-fddd-454d-bd28-4d030613b284");
 
     public EnderGlaiveSkill(SkillBuilder<? extends WeaponInnateSkill> builder) {
         super(builder);
@@ -110,16 +109,5 @@ public class EnderGlaiveSkill extends WeaponInnateSkill {
                 itemStack.getItem() instanceof EnderGlaiveItem && itemStack.getTag().getBoolean("PlaySound")) {
             itemStack.getTag().remove("PlaySound");
         }
-    }
-
-    @Override
-    public void onInitiate(SkillContainer container) {
-        super.onInitiate(container);
-    }
-
-    @Override
-    public void onRemoved(SkillContainer container) {
-        container.getExecutor().getEventListener().removeListener(EventType.BASIC_ATTACK_EVENT, EVENT_UUID);
-        container.getExecutor().getEventListener().removeListener(EventType.DEAL_DAMAGE_EVENT_DAMAGE, EVENT_UUID);
     }
 }

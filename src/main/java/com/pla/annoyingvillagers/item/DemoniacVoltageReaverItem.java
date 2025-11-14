@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.procedures.DemoniacVoltageReaverOnUseProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
 import com.pla.annoyingvillagers.util.SnakeBladeHit;
@@ -24,6 +25,10 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
+import yesman.epicfight.skill.SkillContainer;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
+import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 public class DemoniacVoltageReaverItem extends SwordItem {
 
@@ -38,7 +43,7 @@ public class DemoniacVoltageReaverItem extends SwordItem {
             }
 
             public float getAttackDamageBonus() {
-                return 18.0F;
+                return 3.0F;
             }
 
             public int getLevel() {
@@ -55,52 +60,28 @@ public class DemoniacVoltageReaverItem extends SwordItem {
         }, 3, -3.0F, (new Properties()));
     }
 
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {
-        InteractionResultHolder<ItemStack> interactionresultholder = super.use(level, player, interactionhand);
-
-        DemoniacVoltageReaverOnUseProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, player.getMainHandItem());
-        return interactionresultholder;
-    }
-
-    @Override
-    public boolean hurtEnemy(ItemStack itemstack, LivingEntity pTarget, LivingEntity pAttacker) {
-        if (itemstack.getTag().getBoolean("SecondForm") && !itemstack.getTag().getBoolean("SnakeAnimation")) {
-            if (itemstack.getTag().getInt("HitCount") >= 5) {
-                if (SnakeBladeHit.process(itemstack, pAttacker)) {
-                    itemstack.getOrCreateTag().putBoolean("SnakeAnimation", true);
-                    itemstack.removeTagKey("HitCount");
-                }
-
-                if (!pAttacker.level().isClientSide()) {
-                    pAttacker.level().playSound((Player) null, new BlockPos((int) pAttacker.getX(), (int) pAttacker.getY(), (int) pAttacker.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "second_form_release"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
-                } else {
-                    pAttacker.level().playLocalSound(pAttacker.getX(), pAttacker.getY(), pAttacker.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "second_form_release"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
-                }
-            } else {
-                itemstack.getTag().putInt("HitCount", (itemstack.getTag().contains("HitCount") ? itemstack.getTag().getInt("HitCount") : 0) + 1);
-            }
-        }
-
-        return super.hurtEnemy(itemstack, pTarget, pAttacker);
-    }
-
-    String getCurrentComboAttack(ItemStack itemstack) {
-        if (itemstack.getTag().getBoolean("SecondForm") && !itemstack.getTag().getBoolean("SnakeAnimation")) {
-            return String.format("%d/5", itemstack.getTag().contains("HitCount") ? itemstack.getTag().getInt("HitCount") : 0);
-        } else {
-            return String.format("∞/∞");
-        }
-    }
-
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal(Component.translatable("tooltip.annoyingvillagers.demoniac_voltage_reaver").getString() + getCurrentComboAttack(itemstack) + ")§r"));
+        list.add(Component.literal(Component.translatable("tooltip.annoyingvillagers.demoniac_voltage_reaver").getString() + ")§r"));
     }
 
     public void inventoryTick(ItemStack itemstack, Level level, Entity entity, int i, boolean flag) {
         super.inventoryTick(itemstack, level, entity, i, flag);
-        if (flag && itemstack.getTag().getBoolean("SecondForm")) {
-            HerobrineWeaponEffectProcedure.execute(level, entity.getX(), entity.getY(), entity.getZ(), entity);
+        if (flag && entity instanceof Player player) {
+            PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+            if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
+                SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.DEMONIAC_VOLTAGE_REAVER);
+                if (skillContainer != null) {
+                    if (skillContainer.getStack() >= 1) {
+                        HerobrineWeaponEffectProcedure.execute(level, entity.getX(), entity.getY(), entity.getZ(), entity);
+                        if (itemstack.getTag() != null && !itemstack.getTag().getBoolean("SecondForm")) {
+                            itemstack.getTag().putBoolean("SecondForm", true);
+                        }
+                    } else if (skillContainer.getStack() < 1 && itemstack.getTag() != null && itemstack.getTag().getBoolean("SecondForm")) {
+                        itemstack.getTag().remove("SecondForm");
+                    }
+                }
+            }
         }
         if (!flag && itemstack.getTag().getBoolean("SecondForm") && itemstack.getTag().getBoolean("SnakeAnimation")) {
             itemstack.getTag().remove("SnakeAnimation");

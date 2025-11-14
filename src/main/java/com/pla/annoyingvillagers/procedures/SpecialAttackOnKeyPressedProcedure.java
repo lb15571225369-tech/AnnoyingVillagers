@@ -173,6 +173,17 @@ public class SpecialAttackOnKeyPressedProcedure {
                     return;
                 }
             }
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER.get())) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    if (holdingItem.getTag().getBoolean("SecondForm")) {
+                        livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_CHARGED_ATTACK_1, 0.0F);
+                    } else {
+                        livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_CHARGED_ATTACK_1, 0.0F);
+                    }
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
+                    return;
+                }
+            }
 
             // Check by categories
             if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.SWORD && playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.TACHI && playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.LONGSWORD && playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.UCHIGATANA) {
