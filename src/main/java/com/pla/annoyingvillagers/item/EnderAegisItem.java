@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.item;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.StealthAttackEntity;
+import com.pla.annoyingvillagers.gameasset.AVSkill;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
@@ -25,6 +26,11 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
+import yesman.epicfight.skill.SkillContainer;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
+import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 import java.util.List;
 import java.util.Objects;
@@ -43,7 +49,7 @@ public class EnderAegisItem extends SwordItem {
             }
 
             public float getAttackDamageBonus() {
-                return 8.0F;
+                return 4.0F;
             }
 
             public int getLevel() {
@@ -65,7 +71,7 @@ public class EnderAegisItem extends SwordItem {
             for(float i = 1.0F; i <= 5.0F; i = i + 1.0F) {
                 StealthAttackEntity stealthAttackEntity = new StealthAttackEntity((EntityType) AnnoyingVillagersModEntities.STEALTH_ATTACK_PROJECTILE.get(), level);
                 stealthAttackEntity.setOwner(entity);
-                stealthAttackEntity.setBaseDamage((double) 8.0F);
+                stealthAttackEntity.setBaseDamage((double) 4.0F);
                 stealthAttackEntity.setKnockback(5);
                 stealthAttackEntity.setSilent(true);
                 stealthAttackEntity.setPierceLevel((byte) 5);
@@ -76,7 +82,7 @@ public class EnderAegisItem extends SwordItem {
             }
 
             try {
-                entity.getServer().getCommands().getDispatcher().execute("execute as @s at @s anchored eyes run particle annoyingvillagers:spark ^ ^1 ^2 0 0 0 0.1 2000",
+                entity.getServer().getCommands().getDispatcher().execute("execute as @s at @s anchored eyes run particle annoyingvillagers:spark ^ ^1 ^2 0 0 0 0.1 200",
                         entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
             } catch (CommandSyntaxException e) {
             }
@@ -105,6 +111,20 @@ public class EnderAegisItem extends SwordItem {
         if (flag) {
             if (itemstack.getTag().getBoolean("SecondForm")) {
                 HerobrineWeaponEffectProcedure.execute(level, entity.getX(), entity.getY(), entity.getZ(), entity);
+            }
+        }
+        if (entity instanceof Player player) {
+            PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+            if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
+                SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkill.ENDER_AEGIS);
+                if (skillContainer != null && itemstack.getTag() != null) {
+                    if (!skillContainer.isActivated() && itemstack.getTag().getBoolean("SecondForm")) {
+                        itemstack.getTag().putBoolean("SecondForm", false);
+                    }
+                    if (skillContainer.isActivated() && !itemstack.getTag().getBoolean("SecondForm")) {
+                        itemstack.getTag().putBoolean("SecondForm", true);
+                    }
+                }
             }
         }
     }

@@ -20,6 +20,6 @@ public class AVSkill {
     public static void buildSkillEvent(SkillBuildEvent skillbuildevent) {
         SkillBuildEvent.ModRegistryWorker modRegistry = skillbuildevent.createRegistryWorker(AnnoyingVillagers.MODID);
         AVSkill.CLASH = modRegistry.build("clash", ClashSkill::new, GuardSkill.createGuardBuilder());
-        AVSkill.ENDER_AEGIS = modRegistry.build("ender_aegis", EnderAegisSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
+        AVSkill.ENDER_AEGIS = modRegistry.build("ender_aegis", EnderAegisSkill::new, WeaponInnateSkill.createWeaponInnateBuilder().setActivateType(Skill.ActivateType.DURATION));
     }
 }

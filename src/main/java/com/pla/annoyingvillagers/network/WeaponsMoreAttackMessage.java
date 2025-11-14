@@ -2,7 +2,6 @@ package com.pla.annoyingvillagers.network;
 
 import java.util.function.Supplier;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -12,7 +11,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.network.NetworkEvent.Context;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.procedures.WeaponsMoreAttackOnKeyPressedProcedure;
+import com.pla.annoyingvillagers.procedures.SpecialAttackOnKeyPressedProcedure;
 
 @EventBusSubscriber(bus = Bus.MOD)
 public class WeaponsMoreAttackMessage {
@@ -52,7 +51,7 @@ public class WeaponsMoreAttackMessage {
 
         if (level.hasChunkAt(player.blockPosition())) {
             if (i == 0) {
-                WeaponsMoreAttackOnKeyPressedProcedure.execute(level, player);
+                SpecialAttackOnKeyPressedProcedure.execute(level, player);
             }
 
         }

@@ -5,17 +5,18 @@ import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.StealthAttackEntity;
 import com.pla.annoyingvillagers.gameasset.AVSkill;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 import reascer.wom.gameasset.WOMAnimations;
+import reascer.wom.gameasset.animations.weapons.AnimsNapoleon;
 import yesman.epicfight.skill.SkillBuilder;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
@@ -27,9 +28,6 @@ import java.util.UUID;
 
 public class EnderAegisSkill extends WeaponInnateSkill {
     private static final UUID EVENT_UUID = UUID.fromString("348aa19d-7c78-4959-9639-00c467ed258d");
-    private static final String NBT_SECOND_FORM = "SecondForm";
-    private static final int HIT_TRIGGER_COOLDOWN_TICKS = 10;
-    private static final String NBT_HIT_CD = "ender_aegis_hit_cd";
 
     public EnderAegisSkill(SkillBuilder<? extends WeaponInnateSkill> builder) {
         super(builder);
@@ -38,17 +36,44 @@ public class EnderAegisSkill extends WeaponInnateSkill {
     public static void onParry(ServerPlayerPatch serverPlayerPatch) {
         SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkill.ENDER_AEGIS);
         if (skillContainer == null) return;
+        EnderAegisSkill enderAegisSkill = (EnderAegisSkill) skillContainer.getSkill();
 
-        if (!skillContainer.isActivated()) {
-            EnderAegisSkill skill = (EnderAegisSkill) skillContainer.getSkill();
-            skill.setStackSynchronize(skillContainer, skillContainer.getStack() + 1);
+        if (!skillContainer.isActivated() && skillContainer.getStack() < 1) {
+            float currentResource = skillContainer.getResource();
+            float neededResource = skillContainer.getNeededResource();
+            float addResource = Math.min(20f, neededResource);
+            enderAegisSkill.setConsumptionSynchronize(skillContainer, currentResource + addResource);
+        } else if (skillContainer.isActivated()) {
+            enderAegisSkill.setDurationSynchronize(skillContainer, skillContainer.getRemainDuration() + 40);
         }
     }
 
     @Override
     public void executeOnServer(SkillContainer skillContainer, FriendlyByteBuf friendlyByteBuf) {
-        super.executeOnServer(skillContainer, friendlyByteBuf);
-        setSecondForm(skillContainer, true);
+        skillContainer.getExecutor().playAnimationSynchronized(AnimsNapoleon.NAPOLEON_RELOAD_1, 0.0F);
+        skillContainer.getExecutor().playSound(AnnoyingVillagersModSounds.SECOND_FORM_RELEASE.get(), 0.0F, 0.0F);
+        if (this.isActivated(skillContainer)) {
+            this.cancelOnServer(skillContainer, friendlyByteBuf);
+        } else {
+            super.executeOnServer(skillContainer, friendlyByteBuf);
+            skillContainer.activate();
+        }
+    }
+
+    @Override
+    public void cancelOnServer(SkillContainer skillContainer, FriendlyByteBuf friendlyByteBuf) {
+        skillContainer.deactivate();
+        super.cancelOnServer(skillContainer, friendlyByteBuf);
+    }
+
+    public void executeOnClient(SkillContainer container, FriendlyByteBuf args) {
+        super.executeOnClient(container, args);
+        container.activate();
+    }
+
+    public void cancelOnClient(SkillContainer container, FriendlyByteBuf args) {
+        super.cancelOnClient(container, args);
+        container.deactivate();
     }
 
     @Override
@@ -78,18 +103,11 @@ public class EnderAegisSkill extends WeaponInnateSkill {
                     ServerPlayer player = event.getPlayerPatch().getOriginal();
 
                     if (skillContainer.isActivated()) {
-                        int coolDown = player.getPersistentData().getInt(NBT_HIT_CD);
-                        if (coolDown > 0) {
-                            return;
-                        }
-
                         LivingEntity target = event.getTarget();
                         if (target == null || !target.isAlive()) {
                             return;
                         }
-
                         shieldShootAtTarget(player, target.getEyePosition());
-                        player.getPersistentData().putInt(NBT_HIT_CD, HIT_TRIGGER_COOLDOWN_TICKS);
                     }
                 }
         );
@@ -97,52 +115,8 @@ public class EnderAegisSkill extends WeaponInnateSkill {
 
     @Override
     public void onRemoved(SkillContainer container) {
-        setSecondForm(container, false);
         container.getExecutor().getEventListener().removeListener(EventType.BASIC_ATTACK_EVENT, EVENT_UUID);
         container.getExecutor().getEventListener().removeListener(EventType.DEAL_DAMAGE_EVENT_DAMAGE, EVENT_UUID);
-    }
-
-    @Override
-    public void updateContainer(SkillContainer skillContainer) {
-        super.updateContainer(skillContainer);
-
-        if (!skillContainer.getExecutor().isLogicalClient()) {
-            ServerPlayer serverPlayer = ((ServerPlayerPatch) skillContainer.getExecutor()).getOriginal();
-            int coolDown = serverPlayer.getPersistentData().getInt(NBT_HIT_CD);
-            if (coolDown > 0) serverPlayer.getPersistentData().putInt(NBT_HIT_CD, coolDown - 1);
-        }
-
-        if (!skillContainer.getExecutor().isLogicalClient() && skillContainer.isActivated()) {
-            int remaining = skillContainer.getRemainDuration();
-            if (remaining > 0) {
-                this.setDurationSynchronize(skillContainer, remaining - 1);
-            } else {
-                setSecondForm(skillContainer, false);
-                this.cancelOnServer(skillContainer, null);
-                skillContainer.deactivate();
-            }
-        }
-    }
-
-    @Override
-    public void cancelOnServer(SkillContainer skillContainer, FriendlyByteBuf friendlyByteBuf) {
-        setSecondForm(skillContainer, false);
-        super.cancelOnServer(skillContainer, friendlyByteBuf);
-    }
-
-    private void setSecondForm(SkillContainer container, boolean value) {
-        if (container.getExecutor().isLogicalClient()) return;
-
-        ServerPlayer serverPlayer = ((ServerPlayerPatch) container.getExecutor()).getOriginal();
-        ItemStack itemStack = serverPlayer.getMainHandItem();
-        if (itemStack.isEmpty()) return;
-
-        ItemStack copy = itemStack.copy();
-        copy.getOrCreateTag().putBoolean(NBT_SECOND_FORM, value);
-
-        int slot = serverPlayer.getInventory().selected;
-        serverPlayer.getInventory().setItem(slot, copy);
-        serverPlayer.inventoryMenu.broadcastChanges();
     }
 
     private void shieldShootAtTarget(ServerPlayer player, Vec3 targetPos) {
@@ -157,7 +131,7 @@ public class EnderAegisSkill extends WeaponInnateSkill {
             for (float speed = 1.0F; speed <= 5.0F; speed += 1.0F) {
                 StealthAttackEntity stealth = new StealthAttackEntity(AnnoyingVillagersModEntities.STEALTH_ATTACK_PROJECTILE.get(), level);
                 stealth.setOwner(player);
-                stealth.setBaseDamage(8.0D);
+                stealth.setBaseDamage(4.0D);
                 stealth.setKnockback(5);
                 stealth.setSilent(true);
                 stealth.setPierceLevel((byte) 5);
@@ -169,7 +143,7 @@ public class EnderAegisSkill extends WeaponInnateSkill {
 
             try {
                 player.getServer().getCommands().getDispatcher().execute(
-                        "execute as @s at @s anchored eyes run particle annoyingvillagers:spark ^ ^1 ^2 0 0 0 0.1 2000",
+                        "execute as @s at @s anchored eyes run particle annoyingvillagers:spark ^ ^1 ^2 0 0 0 0.1 200",
                         player.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                 );
             } catch (CommandSyntaxException ignored) {

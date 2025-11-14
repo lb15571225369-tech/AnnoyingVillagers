@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.hm.efn.gameasset.animations.EFNGreatSwordAnimations;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.capabilities.AVCategories;
@@ -9,11 +10,10 @@ import com.pla.annoyingvillagers.item.*;
 import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
 import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
 import com.pla.annoyingvillagers.util.DelayedTask;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -21,14 +21,17 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.animations.weapons.AnimsAgony;
+import reascer.wom.gameasset.animations.weapons.AnimsHerrscher;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.LongHitAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
@@ -40,33 +43,39 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
 
-public class WeaponsMoreAttackOnKeyPressedProcedure {
-    private static boolean isSpectatorGamemode(Entity entity) {
-        if (entity instanceof ServerPlayer sp) {
-            return sp.gameMode.getGameModeForPlayer() == GameType.SPECTATOR;
-        } else if (entity instanceof Player player && entity.level().isClientSide()) {
-            var info = Minecraft.getInstance().getConnection().getPlayerInfo(player.getGameProfile().getId());
-            return info != null && info.getGameMode() == GameType.SPECTATOR;
+@Mod.EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+public class SpecialAttackOnKeyPressedProcedure {
+    private static final String NBT_SPECIAL_CD = "SpecialAttackCooldown";
+    @SubscribeEvent
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        Player player = event.player;
+        if (event.phase != TickEvent.Phase.END) return;
+        if (player.level().isClientSide()) return;
+
+        CompoundTag data = player.getPersistentData();
+
+        if (player.tickCount % 20 == 0 && data.contains(NBT_SPECIAL_CD)) {
+            int coolDownValue = data.getInt(NBT_SPECIAL_CD);
+            if (coolDownValue > 0) {
+                data.putInt(NBT_SPECIAL_CD, coolDownValue - 1);
+            } else {
+                data.remove(NBT_SPECIAL_CD);
+            }
         }
-        return false;
     }
 
     public static void execute(LevelAccessor world, Entity entity) {
-        if (entity == null || isSpectatorGamemode(entity)) return;
+        if (entity == null) return;
 
         LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
         if (patch == null) return;
 
-        AssetAccessor<? extends DynamicAnimation> dynamicanimation = patch.getAnimator().getPlayerFor(null).getAnimation();
-        if (dynamicanimation instanceof LongHitAnimation || entity.getPersistentData().getBoolean("kick_x")) return;
+        if (entity.getPersistentData().getInt(NBT_SPECIAL_CD) > 0) {
+            return;
+        }
 
-        entity.getPersistentData().putBoolean("kick_x", true);
-        new DelayedTask(4) {
-            @Override
-            public void run() {
-                entity.getPersistentData().putBoolean("kick_x", false);
-            }
-        };
+        AssetAccessor<? extends DynamicAnimation> dynamicanimation = patch.getAnimator().getPlayerFor(null).getAnimation();
+        if (dynamicanimation instanceof LongHitAnimation) return;
 
         if (entity instanceof Player player && !player.level().isClientSide() &&
                 !player.getMainHandItem().getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get()) &&
@@ -85,6 +94,7 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                             player.getCooldowns().addCooldown(herobrineEnderEyeItem, 40);
                             stack.hurtAndBreak(5, player, p -> {
                             });
+                            player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
                             return true;
                         }
                         return false;
@@ -93,7 +103,22 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
 
         PlayerPatch<?> playerpatch = (PlayerPatch) EpicFightCapabilities.getEntityPatch(entity, PlayerPatch.class);
         LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
-        if (livingEntityPatch != null) {
+        if (livingEntityPatch != null && entity instanceof Player player) {
+            // Check by item
+            ItemStack holdingItem = player.getMainHandItem();
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.ENDER_AEGIS.get())) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    if (holdingItem.getTag().getBoolean("SecondForm")) {
+                        livingEntityPatch.playAnimationSynchronized(AnimsHerrscher.GESETZ_SPRENGKOPF, 0.0F);
+                    } else {
+                        livingEntityPatch.playAnimationSynchronized(EFNGreatSwordAnimations.NG_GREATSWORD_AIRSLASH, 0.0F);
+                    }
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
+                    return;
+                }
+            }
+
+            // Check by categories
             if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.SWORD && playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.TACHI && playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.LONGSWORD && playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.UCHIGATANA) {
                 if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.AXE) {
                     if (playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE) {
@@ -207,7 +232,7 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                         }
                     }
                 } else if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.FIST && !entity.getPersistentData().getBoolean("fist_a")) {
-                    if (entity instanceof Player player && !player.level().isClientSide() &&
+                    if (!player.level().isClientSide() &&
                             (player.getMainHandItem().getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get()) ||
                                     player.getOffhandItem().getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get()))) {
                         livingEntityPatch.playAnimationSynchronized(Animations.BIPED_LANDING, 0.0F);
@@ -220,11 +245,10 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                             });
                         }
                         entity.getPersistentData().putBoolean("fist_a", true);
-                        entity.getPersistentData().putBoolean("kick_x", true);
+                        
                         new DelayedTask(60) {
                             @Override
                             public void run() {
-                                entity.getPersistentData().putBoolean("kick_x", false);
                                 entity.getPersistentData().putBoolean("fist_a", false);
                             }
                         };
@@ -237,11 +261,10 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                             }
 
                             entity.getPersistentData().putBoolean("fist_a", true);
-                            entity.getPersistentData().putBoolean("kick_x", true);
+                            
                             new DelayedTask(20) {
                                 @Override
                                 public void run() {
-                                    entity.getPersistentData().putBoolean("kick_x", false);
                                 }
                             };
                             new DelayedTask(35) {
@@ -263,13 +286,6 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
 
                             entity.getPersistentData().putBoolean("fist_a", true);
                             entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * 0.2D, entity.getLookAngle().y * 0.5D, entity.getLookAngle().z * 0.2D));
-                            entity.getPersistentData().putBoolean("kick_x", true);
-                            new DelayedTask(20) {
-                                @Override
-                                public void run() {
-                                    entity.getPersistentData().putBoolean("kick_x", false);
-                                }
-                            };
                             new DelayedTask(40) {
                                 @Override
                                 public void run() {
@@ -300,13 +316,6 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                             }
 
                             entity.getPersistentData().putBoolean("fist_a", true);
-                            entity.getPersistentData().putBoolean("kick_x", true);
-                            new DelayedTask(20) {
-                                @Override
-                                public void run() {
-                                    entity.getPersistentData().putBoolean("kick_x", false);
-                                }
-                            };
                             new DelayedTask(20) {
                                 @Override
                                 public void run() {
@@ -319,13 +328,6 @@ public class WeaponsMoreAttackOnKeyPressedProcedure {
                             }
 
                             entity.getPersistentData().putBoolean("fist_a", true);
-                            entity.getPersistentData().putBoolean("kick_x", true);
-                            new DelayedTask(25) {
-                                @Override
-                                public void run() {
-                                    entity.getPersistentData().putBoolean("kick_x", false);
-                                }
-                            };
                             new DelayedTask(40) {
                                 @Override
                                 public void run() {

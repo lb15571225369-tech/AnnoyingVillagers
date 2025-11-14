@@ -28,6 +28,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
@@ -107,8 +108,18 @@ public class StealthAttackEntity extends AbstractArrow implements ItemSupplier {
     }
 
     @Override
+    protected boolean canHitEntity(@NotNull Entity entity) {
+        Entity owner = this.getOwner();
+        if (entity == owner) return false;
+        if (owner instanceof LivingEntity livingOwner && entity instanceof LivingEntity livingTarget && livingOwner.isAlliedTo(livingTarget)) return false;
+        return super.canHitEntity(entity);
+    }
+
+    @Override
     protected void onHitEntity(EntityHitResult pResult) {
         Entity vicTim = pResult.getEntity();
+        Entity owner = this.getOwner();
+        if (vicTim == owner) return;
         if (fromAegis && !vicTim.level().isClientSide() && vicTim.getServer() != null) {
             try {
                 vicTim.getServer().getCommands().getDispatcher().execute("execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1", vicTim.createCommandSourceStack().withSuppressedOutput().withPermission(4));
