@@ -55,6 +55,7 @@ public class EnderAegisSkill extends WeaponInnateSkill {
         if (this.isActivated(skillContainer)) {
             this.cancelOnServer(skillContainer, friendlyByteBuf);
         } else {
+            AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: executeOnServer() is called");
             super.executeOnServer(skillContainer, friendlyByteBuf);
             skillContainer.activate();
         }
@@ -79,6 +80,7 @@ public class EnderAegisSkill extends WeaponInnateSkill {
     @Override
     public void onInitiate(SkillContainer container) {
         super.onInitiate(container);
+        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: onInitiate() is called");
         container.getExecutor().getEventListener().addEventListener(
                 EventType.BASIC_ATTACK_EVENT, EVENT_UUID, event -> {
                     SkillContainer skillContainer = event.getPlayerPatch().getSkill(this);
@@ -88,7 +90,7 @@ public class EnderAegisSkill extends WeaponInnateSkill {
                             event.setCanceled(true);
                         } catch (Throwable ignored) {
                         }
-                        skillContainer.getExecutor().playAnimationSynchronized(WOMAnimations.BULL_CHARGE, 0.0F);
+                        skillContainer.getExecutor().playAnimationSynchronized(WOMAnimations.RAVANGER_CHARGE, 0.0F);
                     }
                 }
         );
@@ -115,6 +117,7 @@ public class EnderAegisSkill extends WeaponInnateSkill {
 
     @Override
     public void onRemoved(SkillContainer container) {
+        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: onRemoved() is called");
         container.getExecutor().getEventListener().removeListener(EventType.BASIC_ATTACK_EVENT, EVENT_UUID);
         container.getExecutor().getEventListener().removeListener(EventType.DEAL_DAMAGE_EVENT_DAMAGE, EVENT_UUID);
     }
