@@ -18,15 +18,15 @@ import yesman.epicfight.world.entity.eventlistener.TakeDamageEvent;
 public abstract class GuardSkillMixin {
     @Inject(method = {"dealEvent"}, at = {@At("HEAD")}, cancellable = true)
     private void playerOnGuard(PlayerPatch<?> playerpatch, TakeDamageEvent.Attack event, boolean advanced, CallbackInfo ci) {
-//        Player player = playerpatch.getOriginal();
-//        if (!(player instanceof ServerPlayer serverPlayer)) return;
-//
-//        ItemStack main = serverPlayer.getMainHandItem();
-//        if (!(main.getItem() instanceof EnderAegisItem)) return;
-//        if (main.hasTag() && main.getTag().getBoolean("SecondForm")) {
-//            ((EnderAegisItem) main.getItem()).shieldShoot(serverPlayer.level(), serverPlayer);
-//        } else {
-//            EnderAegisSkill.onParry((ServerPlayerPatch) playerpatch);
-//        }
+        Player player = playerpatch.getOriginal();
+        if (!(player instanceof ServerPlayer serverPlayer)) return;
+
+        ItemStack main = serverPlayer.getMainHandItem();
+        if (!(main.getItem() instanceof EnderAegisItem)) return;
+        if (main.hasTag() && main.getTag().getBoolean("SecondForm")) {
+            ((EnderAegisItem) main.getItem()).shieldShoot(serverPlayer.level(), serverPlayer);
+        } else {
+            EnderAegisSkill.onParry((ServerPlayerPatch) playerpatch);
+        }
     }
 }

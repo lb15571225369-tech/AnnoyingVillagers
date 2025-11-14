@@ -28,16 +28,16 @@ public abstract class ImpactGuardSkillMixin {
     private void playerOnGuard(PlayerPatch<?> playerpatch, TakeDamageEvent.Attack event, boolean advanced, CallbackInfo ci) {
         boolean isSpecialSource = isAdvancedBlockableDamageSource((DamageSource)event.getDamageSource());
         if (!isSpecialSource) {
-//            Player player = playerpatch.getOriginal();
-//            if (!(player instanceof ServerPlayer serverPlayer)) return;
-//
-//            ItemStack main = serverPlayer.getMainHandItem();
-//            if (!(main.getItem() instanceof EnderAegisItem)) return;
-//            if (main.hasTag() && main.getTag().getBoolean("SecondForm")) {
-//                ((EnderAegisItem) main.getItem()).shieldShoot(serverPlayer.level(), serverPlayer);
-//            } else {
-//                EnderAegisSkill.onParry((ServerPlayerPatch) playerpatch);
-//            }
+            Player player = playerpatch.getOriginal();
+            if (!(player instanceof ServerPlayer serverPlayer)) return;
+
+            ItemStack main = serverPlayer.getMainHandItem();
+            if (!(main.getItem() instanceof EnderAegisItem)) return;
+            if (main.hasTag() && main.getTag().getBoolean("SecondForm")) {
+                ((EnderAegisItem) main.getItem()).shieldShoot(serverPlayer.level(), serverPlayer);
+            } else {
+                EnderAegisSkill.onParry((ServerPlayerPatch) playerpatch);
+            }
         }
     }
 }

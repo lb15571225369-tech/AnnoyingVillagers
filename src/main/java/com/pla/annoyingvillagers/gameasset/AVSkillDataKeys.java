@@ -13,8 +13,8 @@ public final class AVSkillDataKeys {
             DeferredRegister.create(ResourceLocation.fromNamespaceAndPath("epicfight", "skill_data_keys"),
                     AnnoyingVillagers.MODID);
 
-    public static final RegistryObject<SkillDataKey<Integer>> ENDER_AEGIS_STACKS =
-            DATA_KEYS.register("ender_aegis_stacks",
+    public static final RegistryObject<SkillDataKey<Integer>> ENDER_AEGIS_COOLDOWN  =
+            DATA_KEYS.register("ender_aegis_cooldown",
                     () -> SkillDataKey.createSkillDataKey(PacketBufferCodec.INTEGER, 0,
                             new Class[]{EnderAegisSkill.class}));
 
