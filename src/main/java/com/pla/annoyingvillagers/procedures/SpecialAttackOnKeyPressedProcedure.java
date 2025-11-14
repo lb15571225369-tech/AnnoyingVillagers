@@ -5,10 +5,12 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.capabilities.AVCategories;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.item.*;
 import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
 import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
+import com.pla.annoyingvillagers.skill.EnderGlaiveSkill;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -30,18 +32,22 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import reascer.wom.gameasset.WOMAnimations;
-import reascer.wom.gameasset.animations.weapons.AnimsAgony;
 import reascer.wom.gameasset.animations.weapons.AnimsHerrscher;
+import reascer.wom.gameasset.animations.weapons.AnimsNapoleon;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.LongHitAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.Armatures;
+import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
+import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
+
+import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class SpecialAttackOnKeyPressedProcedure {
@@ -109,9 +115,59 @@ public class SpecialAttackOnKeyPressedProcedure {
             if (holdingItem.getItem().equals(AnnoyingVillagersModItems.ENDER_AEGIS.get())) {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
                     if (holdingItem.getTag().getBoolean("SecondForm")) {
-                        livingEntityPatch.playAnimationSynchronized(AnimsHerrscher.GESETZ_SPRENGKOPF, 0.0F);
+                        livingEntityPatch.playAnimationSynchronized(WOMAnimations.RAVANGER_CHARGE, 0.0F);
                     } else {
                         livingEntityPatch.playAnimationSynchronized(EFNGreatSwordAnimations.NG_GREATSWORD_AIRSLASH, 0.0F);
+                    }
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
+                    return;
+                }
+            }
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.ENDER_GLAIVE.get())) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    livingEntityPatch.playAnimationSynchronized(AnimsNapoleon.NAPOLEON_SHOOT_3, 0.0F);
+                    PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+                    if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
+                        SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.ENDER_GLAIVE);
+                        if (skillContainer != null && skillContainer.getSkill() instanceof EnderGlaiveSkill enderGlaiveSkill) {
+                            if (skillContainer.getStack() >= 1) {
+                                enderGlaiveSkill.getResourceType().consumer
+                                        .consume(skillContainer, serverPlayerPatch, enderGlaiveSkill.getDefaultConsumptionAmount(serverPlayerPatch));
+
+                                new DelayedTask(10) {
+                                    @Override
+                                    public void run() {
+                                        Vec3 tipPos = EnderGlaiveItem.getJointWithTranslation(
+                                                player,
+                                                new Vec3f(0.0F, 0.0F, 0.0F),
+                                                Armatures.BIPED.get().toolR,
+                                                4.3F,
+                                                2.3F
+                                        );
+                                        if (tipPos != null) {
+                                            BlockPos mutePos = BlockPos.containing(tipPos);
+                                            AnnoyingVillagers.PACKET_HANDLER.send(
+                                                    PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player),
+                                                    new ClientboundMuteExplosionAtPos(mutePos, 4)
+                                            );
+                                            player.level().explode(player, tipPos.x, tipPos.y, tipPos.z,
+                                                    2.0F, true, Level.ExplosionInteraction.TNT);
+                                            Vec3 glaivePos = EnderGlaiveItem.getJointWithTranslation(player, new Vec3f(0, 0, 0),
+                                                    Armatures.BIPED.get().toolR, 1.3F, 2.3F);
+                                            Vec3 explosionPos = EnderGlaiveItem.getJointWithTranslation(player, new Vec3f(0, 0, 0),
+                                                    Armatures.BIPED.get().toolR, 10.3F, 2.3F);
+                                            AnnoyingVillagers.PACKET_HANDLER.send(
+                                                    PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player),
+                                                    new ClientboundGlaiveExplosionFx(glaivePos, explosionPos)
+                                            );
+                                            if (explosionPos != null) {
+                                                player.level().playSound((Player) null, new BlockPos((int) explosionPos.x, (int) explosionPos.y, (int) explosionPos.z), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_shot"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                            }
+                                        }
+                                    }
+                                };
+                            };
+                        }
                     }
                     player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
                     return;
@@ -516,49 +572,8 @@ public class SpecialAttackOnKeyPressedProcedure {
             if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.SPEAR) {
                 if (entity.getPersistentData().getDouble("sword_a") < 1.0D) {
                     entity.getPersistentData().putDouble("sword_a", 1.5D);
-                    if (!(entity instanceof LivingEntity livingEntity) || !entity.isAlive()) {
-                        return;
-                    }
-                    ItemStack itemStack = livingEntity.getMainHandItem();
-                    if (itemStack.getItem() instanceof EnderGlaiveItem enderGlaiveItem
-                            && itemStack.getTag().getBoolean("SecondForm")
-                            && itemStack.getTag().getInt("HitCount") >= 3) {
-                        if (!entity.level().isClientSide()) {
-                            livingEntityPatch.playAnimationSynchronized(AnimsAgony.AGONY_AUTO_1, 0.0F);
-                            new DelayedTask(3) {
-                                @Override
-                                public void run() {
-                                    Vec3 tipPos = enderGlaiveItem.getJointWithTranslation(
-                                            entity,
-                                            new Vec3f(0.0F, 0.0F, 0.0F),
-                                            Armatures.BIPED.get().toolR,
-                                            4.3F,
-                                            2.3F
-                                    );
-                                    BlockPos mutePos = BlockPos.containing(tipPos);
-                                    AnnoyingVillagers.PACKET_HANDLER.send(
-                                            PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity),
-                                            new ClientboundMuteExplosionAtPos(mutePos, 4)
-                                    );
-                                    entity.level().explode(entity, tipPos.x, tipPos.y, tipPos.z,
-                                            2.0F, true, Level.ExplosionInteraction.TNT);
-                                    Vec3 glaivePos = enderGlaiveItem.getJointWithTranslation(entity, new Vec3f(0, 0, 0),
-                                            Armatures.BIPED.get().toolR, 1.3F, 2.3F);
-                                    Vec3 explosionPos = enderGlaiveItem.getJointWithTranslation(entity, new Vec3f(0, 0, 0),
-                                            Armatures.BIPED.get().toolR, 10.3F, 2.3F);
-                                    AnnoyingVillagers.PACKET_HANDLER.send(
-                                            PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity),
-                                            new ClientboundGlaiveExplosionFx(glaivePos, explosionPos)
-                                    );
-                                    entity.level().playSound((Player) null, new BlockPos((int) explosionPos.x, (int) explosionPos.y, (int) explosionPos.z), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_shot")), SoundSource.NEUTRAL, 1.0F, 1.0F);
-                                    itemStack.getTag().putInt("HitCount", itemStack.getTag().contains("HitCount") ? itemStack.getTag().getInt("HitCount") - 3 : 0);
-                                }
-                            };
-                        }
-                    } else {
-                        if (!entity.level().isClientSide() && entity.getServer() != null) {
-                            livingEntityPatch.playAnimationSynchronized(AVAnimations.SPEAR_THRUST, 0.0F);
-                        }
+                    if (!entity.level().isClientSide() && entity.getServer() != null) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.SPEAR_THRUST, 0.0F);
                     }
 
                     new DelayedTask(30) {

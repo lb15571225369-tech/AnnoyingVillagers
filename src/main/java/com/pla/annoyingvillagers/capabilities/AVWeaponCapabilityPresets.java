@@ -37,6 +37,53 @@ import yesman.epicfight.world.entity.ai.attribute.EpicFightAttributes;
 
 public class AVWeaponCapabilityPresets {
 
+    public static final Function<Item, Builder> ENDER_AEGIS = (item) ->
+            WeaponCapability.builder()
+                    .category(WeaponCategories.SWORD)
+                    .styleProvider((patch) -> Styles.ONE_HAND)
+                    .canBePlacedOffhand(false)
+                    .collider(ColliderPreset.SWORD)
+                    .swingSound(AVSounds.SWORD_WHOOSH.get())
+                    .hitSound(EpicFightSounds.BLADE_HIT.get())
+                    .newStyleCombo(Styles.ONE_HAND,
+                            AnimsNapoleon.NAPOLEON_AUTO_1,
+                            EFNShortSwordAnimations.NF_SHORTSWORD_AUTO1,
+                            EFNShortSwordAnimations.NF_SHORTSWORD_AUTO2,
+                            AnimsSolar.SOLAR_QUEMADURA,
+                            AnimsSolar.SOLAR_OBSCURIDAD_IMPACTO,
+                            AnimsSolar.SOLAR_HORNO)
+                    .innateSkill(Styles.ONE_HAND, (stack) -> AVSkills.ENDER_AEGIS)
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, EFNSwordAnimations.NF_SWORD_IDLE)
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, EFNLanceAnimations.NF_MEEN_RUN)
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, EFNSwordAnimations.NF_SWORD_WALK)
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.BIPED_BLOCK)
+                    .weaponCombinationPredicator((patch) -> true);
+
+    public static final Function<Item, CapabilityItem.Builder> ENDER_GLAIVE = (item) ->
+            WeaponCapability.builder().category(WeaponCategories.SPEAR)
+                    .styleProvider((livingEntityPatch) -> Styles.TWO_HAND)
+                    .collider(WOMWeaponColliders.AGONY)
+                    .hitSound(EpicFightSounds.BLADE_HIT.get())
+                    .canBePlacedOffhand(false)
+                    .newStyleCombo(Styles.TWO_HAND,
+                            AnimsNapoleon.NAPOLEON_AUTO_1,
+                            AnimsAgony.AGONY_AUTO_4,
+                            EFNLanceAnimations.NF_MEEN_AUTO1,
+                            EFNLanceAnimations.NF_MEEN_AUTO2,
+                            AnimsNapoleon.NAPOLEON_AUSTERLITZ,
+                            AnimsAgony.AGONY_RIPPING_FANGS)
+                    .newStyleCombo(Styles.MOUNT,
+                            Animations.SPEAR_MOUNT_ATTACK)
+                    .innateSkill(Styles.TWO_HAND,
+                            (itemstack) -> AVSkills.ENDER_GLAIVE)
+                    .comboCancel((style) -> false)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AnimsNapoleon.NAPOLEON_IDLE)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AnimsNapoleon.NAPOLEON_WALK)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AnimsAgony.AGONY_RUN)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AnimsAgony.AGONY_RUN)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.SWIM, Animations.BIPED_HOLD_SPEAR)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AVAnimations.GLOWING_AGONY_GUARD);
+
     public static final Function<Item, Builder> LEGENDARY_SWORD = (item) ->
             WeaponCapability.builder()
                     .category(AVCategories.LEGENDARY_SWORD)
@@ -599,52 +646,6 @@ public class AVWeaponCapabilityPresets {
             .livingMotionModifier(Styles.TWO_HAND, LivingMotions.SWIM, Animations.BIPED_HOLD_GREATSWORD)
             .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.GREATSWORD_GUARD);
 
-    public static final Function<Item, Builder> ENDER_AEGIS = (item) ->
-            WeaponCapability.builder()
-            .category(WeaponCategories.SWORD)
-            .styleProvider((patch) -> Styles.ONE_HAND)
-            .canBePlacedOffhand(false)
-            .collider(ColliderPreset.SWORD)
-            .swingSound(AVSounds.SWORD_WHOOSH.get())
-            .hitSound(EpicFightSounds.BLADE_HIT.get())
-            .newStyleCombo(Styles.ONE_HAND,
-                    AnimsNapoleon.NAPOLEON_AUTO_1,
-                    EFNShortSwordAnimations.NF_SHORTSWORD_AUTO1,
-                    EFNShortSwordAnimations.NF_SHORTSWORD_AUTO2,
-                    AnimsSolar.SOLAR_QUEMADURA,
-                    AnimsSolar.SOLAR_OBSCURIDAD_IMPACTO,
-                    AnimsSolar.SOLAR_HORNO)
-            .innateSkill(Styles.ONE_HAND, (stack) -> AVSkills.ENDER_AEGIS)
-            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, EFNSwordAnimations.NF_SWORD_IDLE)
-            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, EFNLanceAnimations.NF_MEEN_RUN)
-            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, EFNSwordAnimations.NF_SWORD_WALK)
-            .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.BIPED_BLOCK)
-            .weaponCombinationPredicator((patch) -> true);
-
-    public static final Function<Item, CapabilityItem.Builder> AGONY_SPEAR = (item) ->
-            WeaponCapability.builder().category(WeaponCategories.SPEAR)
-            .styleProvider((livingEntityPatch) -> Styles.TWO_HAND)
-            .collider(WOMWeaponColliders.AGONY)
-            .hitSound(EpicFightSounds.BLADE_HIT.get())
-            .canBePlacedOffhand(false)
-            .newStyleCombo(Styles.TWO_HAND,
-                    AnimsAgony.AGONY_AUTO_1,
-                    AnimsAgony.AGONY_AUTO_2,
-                    AnimsAgony.AGONY_AUTO_3,
-                    AnimsAgony.AGONY_AUTO_4,
-                    AnimsAgony.AGONY_CLAWSTRIKE,
-                    AnimsAgony.AGONY_RIPPING_FANGS)
-            .newStyleCombo(Styles.MOUNT,
-                    Animations.SPEAR_MOUNT_ATTACK)
-            .innateSkill(Styles.TWO_HAND,
-                    (itemstack) -> EpicFightSkills.GRASPING_SPIRE)
-            .comboCancel((style) -> false)
-            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AnimsAgony.AGONY_IDLE)
-            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AnimsAgony.AGONY_WALK)
-            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AnimsAgony.AGONY_RUN)
-            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AnimsAgony.AGONY_RUN)
-            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.SWIM, Animations.BIPED_HOLD_SPEAR)
-            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AVAnimations.GLOWING_AGONY_GUARD);
 
     public static final Function<Item, Builder> TORMENT_GREATSWORD = (item) ->
             WeaponCapability.builder()
@@ -725,6 +726,8 @@ public class AVWeaponCapabilityPresets {
             .weaponCombinationPredicator((patch) -> true);
 
     public static void register(WeaponCapabilityPresetRegistryEvent weaponcapabilitypresetregistryevent) {
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "ender_aegis"), AVWeaponCapabilityPresets.ENDER_AEGIS);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "ender_glaive"), AVWeaponCapabilityPresets.ENDER_GLAIVE);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "legendary_sword"), AVWeaponCapabilityPresets.LEGENDARY_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "axe"), AVWeaponCapabilityPresets.AXE);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "sword"), AVWeaponCapabilityPresets.SWORD);
@@ -740,8 +743,6 @@ public class AVWeaponCapabilityPresets {
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "hardgreatsword"), AVWeaponCapabilityPresets.HARD_GREAT_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "uchigatana"), AVWeaponCapabilityPresets.UCHIGATANA);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "greatsword"), AVWeaponCapabilityPresets.GREATSWORD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "ender_aegis"), AVWeaponCapabilityPresets.ENDER_AEGIS);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "agony_spear"), AVWeaponCapabilityPresets.AGONY_SPEAR);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "antitheus_spear"), AVWeaponCapabilityPresets.ANTITHEUS_SPEAR);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "shadow_obsidian_sword"), AVWeaponCapabilityPresets.SHADOW_OBSIDIAN_SWORD);
     }
