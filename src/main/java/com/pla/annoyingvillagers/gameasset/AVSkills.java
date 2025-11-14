@@ -12,14 +12,14 @@ import yesman.epicfight.skill.guard.GuardSkill;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
 
 @EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Bus.MOD)
-public class AVSkill {
+public class AVSkills {
     public static Skill CLASH;
     public static Skill ENDER_AEGIS;
 
     @SubscribeEvent
     public static void buildSkillEvent(SkillBuildEvent skillbuildevent) {
         SkillBuildEvent.ModRegistryWorker modRegistry = skillbuildevent.createRegistryWorker(AnnoyingVillagers.MODID);
-        AVSkill.CLASH = modRegistry.build("clash", ClashSkill::new, GuardSkill.createGuardBuilder());
-        AVSkill.ENDER_AEGIS = modRegistry.build("ender_aegis", EnderAegisSkill::new, WeaponInnateSkill.createWeaponInnateBuilder().setActivateType(Skill.ActivateType.DURATION));
+        AVSkills.CLASH = modRegistry.build("clash", ClashSkill::new, GuardSkill.createGuardBuilder());
+        AVSkills.ENDER_AEGIS = modRegistry.build("ender_aegis", EnderAegisSkill::new, WeaponInnateSkill.createWeaponInnateBuilder().setActivateType(Skill.ActivateType.DURATION));
     }
 }

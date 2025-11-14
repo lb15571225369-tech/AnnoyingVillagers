@@ -5,6 +5,7 @@ import java.util.Set;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -168,6 +169,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> EATING_ELITE_4;
     public static AnimationManager.AnimationAccessor<StaticAnimation> HEROBRINE_HEALING;
     public static AnimationManager.AnimationAccessor<StaticAnimation> HEROBRINE_SACRIFICING;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> BULL_CHARGE;
 
     @SubscribeEvent
     public static void registerAnimations(AnimationManager.AnimationRegistryEvent event) {
@@ -966,6 +968,77 @@ public class AVAnimations {
                         .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
                         .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true).addState(EntityState.CAN_SKILL_EXECUTION, false).addState(EntityState.CAN_BASIC_ATTACK, false).addState(EntityState.MOVEMENT_LOCKED, true).addState(EntityState.TURNING_LOCKED, false).addState(EntityState.LOCKON_ROTATE, false)
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
+        AVAnimations.BULL_CHARGE = builder.nextAccessor("biped/other/bull_charge",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.2F, accessor, humanoidarmature, new Phase[]{
+                        new Phase(0.0F, 0.2F, 0.25F, 0.29F, 0.29F,
+                                humanoidarmature.get().rootJoint, WOMWeaponColliders.SHOULDER_BUMP),
+                        new Phase(0.29F, 0.3F, 0.35F, 0.39F, 0.39F,
+                                humanoidarmature.get().rootJoint, WOMWeaponColliders.SHOULDER_BUMP),
+                        new Phase(0.39F, 0.4F, 0.45F, 0.49F, 0.49F,
+                                humanoidarmature.get().rootJoint, WOMWeaponColliders.SHOULDER_BUMP),
+                        new Phase(0.49F, 0.5F, 0.55F, 0.59F, 0.59F,
+                                humanoidarmature.get().rootJoint, WOMWeaponColliders.SHOULDER_BUMP),
+                        new Phase(0.59F, 0.6F, 0.65F, 0.69F, 0.69F,
+                                humanoidarmature.get().rootJoint, WOMWeaponColliders.SHOULDER_BUMP),
+                        new Phase(0.69F, 0.7F, 0.75F, 0.79F, 0.79F,
+                                humanoidarmature.get().rootJoint, WOMWeaponColliders.SHOULDER_BUMP),
+                        new Phase(0.79F, 0.8F, 0.85F, 0.89F, 0.89F,
+                                humanoidarmature.get().rootJoint, WOMWeaponColliders.SHOULDER_BUMP),
+                        new Phase(0.89F, 1.0F, 1.1F, 1.3F, Float.MAX_VALUE,
+                                humanoidarmature.get().rootJoint, WOMWeaponColliders.SHOULDER_BUMP)}))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(1.0F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(1.5F))
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10.0F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT.get())
+                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(1.0F), 1)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(1.5F), 1)
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10.0F), 1)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE, 1)
+                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT.get(), 1)
+                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT, 1)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(1.0F), 2)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(1.5F), 2)
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10.0F), 2)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE, 2)
+                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT.get(), 2)
+                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT, 2)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(1.0F), 3)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(1.5F), 3)
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10.0F), 3)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE, 3)
+                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT.get(), 3)
+                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT, 3)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(1.0F), 4)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(1.5F), 4)
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10.0F), 4)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE, 4)
+                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT.get(), 4)
+                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT, 4)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(1.0F), 5)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(1.5F), 5)
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10.0F), 5)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE, 5)
+                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT.get(), 5)
+                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT, 5)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(1.0F), 6)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(1.5F), 6)
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10.0F), 6)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE, 6)
+                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT.get(), 6)
+                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT, 6)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(2.0F), 7)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(3.0F), 7)
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10.0F), 7)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.FALL, 7)
+                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT_HARD.get(), 7)
+                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT, 7)
+                        .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
+                        .addProperty(AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.0F)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F)
+                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
+                        .addProperty(StaticAnimationProperty.POSE_MODIFIER, null));
     }
 
     private static class ReuseableEvents {
