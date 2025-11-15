@@ -2,14 +2,13 @@ package com.pla.annoyingvillagers.skill;
 
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.item.DemoniacVoltageReaverItem;
+import com.pla.annoyingvillagers.util.SnakeBladeHit;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import reascer.wom.gameasset.animations.weapons.AnimsAgony;
 import yesman.epicfight.skill.SkillBuilder;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
-import yesman.epicfight.world.entity.eventlistener.PlayerEventListener.EventType;
 
 import java.util.UUID;
 
@@ -22,16 +21,26 @@ public class DemoniacVoltageReaverSkill extends WeaponInnateSkill {
 
     @Override
     public void executeOnServer(SkillContainer skillContainer, FriendlyByteBuf friendlyByteBuf) {
-        if (!this.isActivated(skillContainer)) {
-            super.executeOnServer(skillContainer, friendlyByteBuf);
-            skillContainer.activate();
-            skillContainer.getExecutor().playAnimationSynchronized(AnimsAgony.AGONY_AUTO_1, 0.0F);
+        super.executeOnServer(skillContainer, friendlyByteBuf);
 
-            Player player = skillContainer.getExecutor().getOriginal();
-            ItemStack itemStack = player.getMainHandItem();
-            if (itemStack.getItem() instanceof DemoniacVoltageReaverItem) {
-            }
+        Player player = skillContainer.getExecutor().getOriginal();
+        ItemStack item = player.getMainHandItem();
+
+        if (SnakeBladeHit.process(item, player)) {
+            item.getOrCreateTag().putBoolean("SnakeAnimation", true);
         }
+    }
+
+    @Override
+    public boolean canExecute(SkillContainer container) {
+        Player player = container.getExecutor().getOriginal();
+        ItemStack stack = player.getMainHandItem();
+
+        boolean isCorrectItem = stack.getItem() instanceof DemoniacVoltageReaverItem;
+        boolean isSnaking = stack.hasTag() && stack.getTag() != null && stack.getTag().getBoolean("SnakeAnimation");
+        boolean isActivated = container.isActivated();
+
+        return isCorrectItem && !isSnaking && !isActivated && super.canExecute(container);
     }
 
     @Override
@@ -63,16 +72,5 @@ public class DemoniacVoltageReaverSkill extends WeaponInnateSkill {
                 itemStack.getItem() instanceof DemoniacVoltageReaverItem && itemStack.getTag().getBoolean("PlaySound")) {
             itemStack.getTag().remove("PlaySound");
         }
-    }
-
-    @Override
-    public void onInitiate(SkillContainer container) {
-        super.onInitiate(container);
-    }
-
-    @Override
-    public void onRemoved(SkillContainer container) {
-        container.getExecutor().getEventListener().removeListener(EventType.BASIC_ATTACK_EVENT, EVENT_UUID);
-        container.getExecutor().getEventListener().removeListener(EventType.DEAL_DAMAGE_EVENT_DAMAGE, EVENT_UUID);
     }
 }

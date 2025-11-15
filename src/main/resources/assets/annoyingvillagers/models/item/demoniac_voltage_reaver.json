@@ -12,10 +12,6 @@
     {
       "predicate": { "annoyingvillagers:snake_animation": 1.0 },
       "model": "annoyingvillagers:item/demoniac_voltage_reaver_snake"
-    },
-    {
-      "predicate": { "annoyingvillagers:snake_animation_ready": 1.0 },
-      "model": "annoyingvillagers:item/demoniac_voltage_reaver_snake_ready"
     }
   ]
 }

@@ -24,6 +24,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
@@ -91,20 +92,69 @@ public class SnakeBladeRenderer extends EntityRenderer<SnakeBladeEntity> {
             } else {
                 snakebladeFragmentConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(FRAGMENT_CHAIN_TEXTURE));
             }
-            double distanceLeft = from.distanceTo(to);
-            double buildUpTo = Math.max(0.0, distanceLeft - HEAD_CLEAR);
-            while (segmentCount < MAX_NECK_SEGMENTS && buildUpTo > 1.0e-3) {
-                double step = Math.min(buildUpTo, FRAG_LEN);
+            double L = from.distanceTo(to);
+            double buildUpTo = Math.max(0.0, L - HEAD_CLEAR);
 
-                Vec3 dir = to.subtract(currentNeckButt);
-                Vec3 next = dir.normalize().scale(step).add(currentNeckButt);
+            if (L > 1.0e-4) {
+                Vec3 fromW = new Vec3(x, y, z).add(from);
+                Vec3 toW   = new Vec3(x, y, z).add(to);
 
-                int neckLight = getLightColor(entity, next.add(x, y, z));
-                renderNeckCube(currentNeckButt, next, poseStack, snakebladeFragmentConsumer, neckLight, OverlayTexture.NO_OVERLAY, 0);
+                Vec3 fwd = toW.subtract(fromW).normalize();
+                Vec3 right = new Vec3(fwd.z, 0, -fwd.x);
+                if (right.lengthSqr() < 1.0e-6) right = new Vec3(1, 0, 0);
+                right = right.normalize();
 
-                currentNeckButt = next;
-                buildUpTo      -= step;
-                segmentCount++;
+                double ampSide = Mth.clamp(L * 0.18, 0.25, 2.0);
+                double ampUp   = Mth.clamp(L * 0.10, 0.00, 1.0);
+
+                int a = entity.getId();
+                int b = entity.getFromEntityID();
+                int c = entity.getToEntityID();
+                long seed = (((long)a) << 32) ^ (((long)b) << 16) ^ (long)c ^ 0x9E3779B97F4A7C15L; // mix a,b,c
+                RandomSource rand = RandomSource.create(seed);
+                double sideSign = rand.nextBoolean() ? 1.0 : -1.0;
+
+                Vec3 finalRight = right;
+                java.util.function.DoubleFunction<Vec3> wavePoint = (s) -> {
+                    double u = s / L;
+                    double sin = Math.sin(Math.PI * u);
+                    return fromW
+                            .add(fwd.scale(s))
+                            .add(finalRight.scale(ampSide * sideSign * sin))
+                            .add(0, ampUp * sin, 0);
+                };
+
+                double s = 0.0;
+                Vec3 prevW = wavePoint.apply(s);
+                while (segmentCount < MAX_NECK_SEGMENTS && buildUpTo > 1.0e-3) {
+                    double step = Math.min(buildUpTo, FRAG_LEN);
+                    s += step;
+                    Vec3 nextW = wavePoint.apply(Math.min(s, L - HEAD_CLEAR));
+
+                    Vec3 prevLocal = prevW.subtract(x, y, z);
+                    Vec3 nextLocal = nextW.subtract(x, y, z);
+
+                    int neckLight = getLightColor(entity, nextW);
+                    renderNeckCube(prevLocal, nextLocal, poseStack, snakebladeFragmentConsumer, neckLight, OverlayTexture.NO_OVERLAY, 0);
+
+                    prevW = nextW;
+                    buildUpTo -= step;
+                    segmentCount++;
+                }
+
+                currentNeckButt = prevW.subtract(x, y, z);
+            }
+            else {
+                while (segmentCount < MAX_NECK_SEGMENTS && buildUpTo > 1.0e-3) {
+                    double step = Math.min(buildUpTo, FRAG_LEN);
+                    Vec3 dir = to.subtract(currentNeckButt);
+                    Vec3 next = dir.normalize().scale(step).add(currentNeckButt);
+                    int neckLight = getLightColor(entity, next.add(x, y, z));
+                    renderNeckCube(currentNeckButt, next, poseStack, snakebladeFragmentConsumer, neckLight, OverlayTexture.NO_OVERLAY, 0);
+                    currentNeckButt = next;
+                    buildUpTo -= step;
+                    segmentCount++;
+                }
             }
             VertexConsumer snakeBladeComsumer;
             if (entity.isEnchanted()) {
