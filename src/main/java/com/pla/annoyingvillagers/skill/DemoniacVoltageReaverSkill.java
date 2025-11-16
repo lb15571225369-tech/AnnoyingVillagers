@@ -1,17 +1,12 @@
 package com.pla.annoyingvillagers.skill;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.item.DemoniacVoltageReaverItem;
 import com.pla.annoyingvillagers.util.SnakeBladeHit;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import yesman.epicfight.client.events.engine.ControlEngine;
-import yesman.epicfight.client.input.EpicFightKeyMappings;
-import yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerPatch;
 import yesman.epicfight.skill.Skill;
 import yesman.epicfight.skill.SkillBuilder;
 import yesman.epicfight.skill.SkillCategories;
@@ -116,7 +111,9 @@ public class DemoniacVoltageReaverSkill extends WeaponInnateSkill {
         Player player = container.getExecutor().getOriginal();
         ItemStack itemStack = player.getMainHandItem();
         if (container.getStack() == 1 && itemStack.getTag() != null &&
-                itemStack.getItem() instanceof DemoniacVoltageReaverItem && !itemStack.getTag().getBoolean("PlaySound")) {
+                itemStack.getItem() instanceof DemoniacVoltageReaverItem
+                && !itemStack.getTag().getBoolean("SnakeAnimation")
+                && !itemStack.getTag().getBoolean("PlaySound")) {
             container.getExecutor().playSound(AnnoyingVillagersModSounds.SECOND_FORM_RELEASE.get(), 0.0F, 0.0F);
             itemStack.getTag().putBoolean("PlaySound", true);
         } else if (container.getStack() < 1 && itemStack.getTag() != null &&
