@@ -36,11 +36,11 @@ public class HardGreatSwordSkillExecuteProcedure {
 
     private static void execute(@Nullable Event event, Entity entity, Entity entity1) {
         if (entity != null && entity1 != null) {
-            LivingEntityPatch livingentitypatch;
+            LivingEntityPatch<?> livingentitypatch;
             AssetAccessor<? extends DynamicAnimation> dynamicanimation;
 
             if (entity1.isAlive()) {
-                livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                livingentitypatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                 if (livingentitypatch != null) {
                     dynamicanimation = livingentitypatch.getAnimator().getPlayerFor( null).getAnimation();
                     boolean flag = false;
@@ -61,7 +61,7 @@ public class HardGreatSwordSkillExecuteProcedure {
                         }
 
                         entity.lookAt(Anchor.EYES, new Vec3(entity1.getX(), entity1.getY() + 1.0D, entity1.getZ()));
-                        LivingEntityPatch<?> livingentitypatch1 = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity1, LivingEntityPatch.class);
+                        LivingEntityPatch<?> livingentitypatch1 = EpicFightCapabilities.getEntityPatch(entity1, LivingEntityPatch.class);
 
                         if (livingentitypatch1 != null) {
                             AssetAccessor<? extends DynamicAnimation> dynamicanimation1 = livingentitypatch1.getAnimator().getPlayerFor(null).getAnimation();
@@ -84,7 +84,7 @@ public class HardGreatSwordSkillExecuteProcedure {
                     }
                 }
             } else {
-                livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                livingentitypatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                 if (livingentitypatch != null) {
                     dynamicanimation = livingentitypatch.getAnimator().getPlayerFor(null).getAnimation();
                     if (dynamicanimation == AVAnimations.HARD_GREAT_SWORD_GUARD_SKILL) {

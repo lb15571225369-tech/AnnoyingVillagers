@@ -217,7 +217,7 @@ public class SnakeBladeHit {
     }
 
     public static Vec3 getToolTipPos(Entity ent, float partialTicks, float handToTip) {
-        LivingEntityPatch patch = EpicFightCapabilities.getEntityPatch(ent, LivingEntityPatch.class);
+        LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(ent, LivingEntityPatch.class);
         if (patch == null) return null;
 
         OpenMatrix4f joint = patch.getArmature()

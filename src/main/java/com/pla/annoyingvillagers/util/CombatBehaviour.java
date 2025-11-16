@@ -70,7 +70,7 @@ public class CombatBehaviour {
         }
     }
 
-    private static boolean performEatingGoldenAppleAction(Entity entity, LevelAccessor levelaccessor, AssetAccessor<? extends DynamicAnimation> dynamicanimation, LivingEntityPatch livingEntityPatch) {
+    private static boolean performEatingGoldenAppleAction(Entity entity, LevelAccessor levelaccessor, AssetAccessor<? extends DynamicAnimation> dynamicanimation, LivingEntityPatch<?> livingEntityPatch) {
         if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
             if (!entity.level().isClientSide() && entity.getServer() != null) {
                 livingEntityPatch.playAnimationSynchronized(AVAnimations.EAT_OFFHAND, 0.0F);
@@ -98,7 +98,7 @@ public class CombatBehaviour {
         }
     }
 
-    private static boolean performDrinkingHealingPotionAction(Entity entity, LevelAccessor levelaccessor, AssetAccessor<? extends DynamicAnimation> dynamicanimation, LivingEntityPatch livingEntityPatch) {
+    private static boolean performDrinkingHealingPotionAction(Entity entity, LevelAccessor levelaccessor, AssetAccessor<? extends DynamicAnimation> dynamicanimation, LivingEntityPatch<?> livingEntityPatch) {
         if (!(dynamicanimation instanceof AttackAnimation) && !(dynamicanimation instanceof LongHitAnimation) && !(dynamicanimation instanceof HitAnimation)) {
             if (!entity.level().isClientSide() && entity.getServer() != null) {
                 livingEntityPatch.playAnimationSynchronized(AVAnimations.DRINK_OFFHAND, 0.0F);
@@ -119,7 +119,7 @@ public class CombatBehaviour {
     }
 
     public static void eatingGoldenApple(Entity entity, LevelAccessor levelaccessor, double amount) {
-        LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+        LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 
         if (livingEntityPatch != null) {
             final AssetAccessor<? extends DynamicAnimation> dynamicAnimation = livingEntityPatch.getAnimator().getPlayerFor(null).getAnimation();

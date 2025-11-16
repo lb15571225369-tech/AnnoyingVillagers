@@ -57,7 +57,7 @@ public class ParryProcedure {
 
     private static void execute(@Nullable Event event, LevelAccessor levelaccessor, final Entity entity, final Entity entity1) {
         if (entity != null && entity1 != null) {
-            LivingEntityPatch livingentitypatch;
+            LivingEntityPatch<?> livingentitypatch;
             AssetAccessor<? extends DynamicAnimation> dynamicanimation;
             AssetAccessor<? extends DynamicAnimation> dynamicanimation1;
 
@@ -75,13 +75,13 @@ public class ParryProcedure {
                         }
                     }
 
-                    livingentitypatch = (LivingEntityPatch)EpicFightCapabilities.getEntityPatch(entity1, LivingEntityPatch.class);
+                    livingentitypatch = EpicFightCapabilities.getEntityPatch(entity1, LivingEntityPatch.class);
                     if (livingentitypatch != null) {
                         dynamicanimation = livingentitypatch.getAnimator().getPlayerFor(null).getAnimation();
-                        HumanoidMobPatch<?> humanoidmobpatch = (HumanoidMobPatch)EpicFightCapabilities.getEntityPatch(entity, HumanoidMobPatch.class);
+                        HumanoidMobPatch<?> humanoidmobpatch = EpicFightCapabilities.getEntityPatch(entity, HumanoidMobPatch.class);
 
                         if (!(dynamicanimation instanceof KickAttackAnimation) && dynamicanimation != GuardAnimations.MOB_COUNTER_ATTACK && !(dynamicanimation instanceof HeavyAttackAnimation) && dynamicanimation != Animations.STEEL_WHIRLWIND && dynamicanimation != Animations.METEOR_SLAM && dynamicanimation != Animations.GREATSWORD_DASH && dynamicanimation != Animations.SWEEPING_EDGE && dynamicanimation != Animations.UCHIGATANA_SHEATHING_AUTO && dynamicanimation != Animations.UCHIGATANA_SHEATHING_DASH && dynamicanimation != Animations.THE_GUILLOTINE && dynamicanimation != Animations.BATTOJUTSU && dynamicanimation != Animations.BATTOJUTSU_DASH && dynamicanimation != Animations.BLADE_RUSH_COMBO3 && dynamicanimation != AVAnimations.HACKER_SWORD_SKILL && dynamicanimation != WOMAnimations.TORMENT_AUTO_3 && dynamicanimation != AnimsSolar.SOLAR_AUTO_3 && dynamicanimation != AnimsSolar.SOLAR_AUTO_4 && dynamicanimation != AVAnimations.LEGENDARY_SWORD_WAKE_UP_ATTACK && dynamicanimation != AVAnimations.DUAL_SWORD_AUTO5 && dynamicanimation != AnimsSolar.SOLAR_AUTO_2) {
-                            HumanoidMobPatch<?> humanoidmobpatch1 = (HumanoidMobPatch)EpicFightCapabilities.getEntityPatch(entity, HumanoidMobPatch.class);
+                            HumanoidMobPatch<?> humanoidmobpatch1 = EpicFightCapabilities.getEntityPatch(entity, HumanoidMobPatch.class);
 
                             if (humanoidmobpatch1 != null) {
                                 AssetAccessor<? extends DynamicAnimation> dynamicanimation2 = humanoidmobpatch1.getAnimator().getPlayerFor(null).getAnimation();
@@ -190,9 +190,9 @@ public class ParryProcedure {
                     }
                 }
             } else {
-                PlayerPatch<?> playerpatch = (PlayerPatch)EpicFightCapabilities.getEntityPatch(entity, PlayerPatch.class);
+                PlayerPatch<?> playerpatch = EpicFightCapabilities.getEntityPatch(entity, PlayerPatch.class);
 
-                livingentitypatch = (LivingEntityPatch)EpicFightCapabilities.getEntityPatch(entity1, LivingEntityPatch.class);
+                livingentitypatch = EpicFightCapabilities.getEntityPatch(entity1, LivingEntityPatch.class);
                 if (livingentitypatch != null) {
                     dynamicanimation = playerpatch.getAnimator().getPlayerFor(null).getAnimation();
                     dynamicanimation1 = livingentitypatch.getAnimator().getPlayerFor(null).getAnimation();

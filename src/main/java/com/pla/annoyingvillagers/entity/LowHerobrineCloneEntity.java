@@ -510,7 +510,7 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
     }
 
     private static Vec3 getArmPosition(Entity entity, Vec3f translation, Joint joint, float handToTip, double yOffset) {
-        LivingEntityPatch entitypatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+        LivingEntityPatch<?> entitypatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
         if (entitypatch == null) return null;
 
         float interpolation = 0.0F;
