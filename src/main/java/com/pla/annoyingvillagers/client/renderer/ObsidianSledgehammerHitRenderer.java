@@ -19,10 +19,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class ObsidianSledgehammerHitRenderer extends EntityRenderer<ObsidianSledgehammerHitEntity> {
-    private static final ResourceLocation SHADOW_OBSIDIAN_TEXTURE = ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID,"textures/entities/obsidian_sledgehammer.png");
+    private static final ResourceLocation SHADOW_OBSIDIAN_TEXTURE = ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID,"textures/entities/obsidian_sledgehammer_spike.png");
     private final ModelObsidianSledgehammerHit model;
     private final Random random = new Random();
 
@@ -35,8 +36,8 @@ public class ObsidianSledgehammerHitRenderer extends EntityRenderer<ObsidianSled
     public void render(ObsidianSledgehammerHitEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
         matrixStackIn.pushPose();
         matrixStackIn.mulPose(Axis.YP.rotationDegrees(90.0F - entityIn.getYRot()));
-        matrixStackIn.translate(0.0D, 3F, 0.0D);
-        matrixStackIn.scale(-2.0F, -2.0F, 2.0F);
+        matrixStackIn.translate(0.0D, 1.5F, 0.0D);
+        matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
         VertexConsumer vertexConsumer = bufferIn.getBuffer(RenderType.entityCutoutNoCull(SHADOW_OBSIDIAN_TEXTURE));
         model.setupAnim(entityIn, 0, 0, entityIn.tickCount + partialTicks, 0, 0);
         this.model.renderToBuffer(matrixStackIn, vertexConsumer, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
@@ -44,7 +45,7 @@ public class ObsidianSledgehammerHitRenderer extends EntityRenderer<ObsidianSled
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }
 
-    public Vec3 getRenderOffset(ObsidianSledgehammerHitEntity entityIn, float partialTicks) {
+    public @NotNull Vec3 getRenderOffset(ObsidianSledgehammerHitEntity entityIn, float partialTicks) {
         if (entityIn.activateProgress == 10) {
             return super.getRenderOffset(entityIn, partialTicks);
         } else {
@@ -53,10 +54,11 @@ public class ObsidianSledgehammerHitRenderer extends EntityRenderer<ObsidianSled
         }
     }
 
-    protected int getBlockLightLevel(ObsidianSledgehammerHitEntity entityIn, BlockPos pos) {
+    protected int getBlockLightLevel(@NotNull ObsidianSledgehammerHitEntity entityIn, @NotNull BlockPos pos) {
         return 15;
     }
-    public ResourceLocation getTextureLocation(ObsidianSledgehammerHitEntity entity) {
+
+    public @NotNull ResourceLocation getTextureLocation(@NotNull ObsidianSledgehammerHitEntity entity) {
         return SHADOW_OBSIDIAN_TEXTURE;
     }
 }

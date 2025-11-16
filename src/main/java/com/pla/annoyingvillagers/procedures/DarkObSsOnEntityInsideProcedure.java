@@ -59,60 +59,6 @@ public class DarkObSsOnEntityInsideProcedure {
                 }
             }
 
-            if (AnnoyingVillagersConfig.HEROBRINE_OBSIDIAN_BREAK_ARMOR.get()) {
-
-                LivingEntity livingentity1;
-                ItemStack itemstack;
-
-                if (entity instanceof LivingEntity) {
-                    livingentity1 = (LivingEntity) entity;
-                    itemstack = livingentity1.getItemBySlot(EquipmentSlot.FEET);
-                } else {
-                    itemstack = ItemStack.EMPTY;
-                }
-
-                if (itemstack.hurt((int) new Random().nextDouble(1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
-                    itemstack.shrink(1);
-                    itemstack.setDamageValue(0);
-                }
-
-                if (entity instanceof LivingEntity) {
-                    livingentity1 = (LivingEntity) entity;
-                    itemstack = livingentity1.getItemBySlot(EquipmentSlot.LEGS);
-                } else {
-                    itemstack = ItemStack.EMPTY;
-                }
-
-                if (itemstack.hurt((int) new Random().nextDouble(1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
-                    itemstack.shrink(1);
-                    itemstack.setDamageValue(0);
-                }
-
-                if (entity instanceof LivingEntity) {
-                    livingentity1 = (LivingEntity) entity;
-                    itemstack = livingentity1.getItemBySlot(EquipmentSlot.CHEST);
-                } else {
-                    itemstack = ItemStack.EMPTY;
-                }
-
-                if (itemstack.hurt((int) new Random().nextDouble(1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
-                    itemstack.shrink(1);
-                    itemstack.setDamageValue(0);
-                }
-
-                if (entity instanceof LivingEntity) {
-                    livingentity1 = (LivingEntity) entity;
-                    itemstack = livingentity1.getItemBySlot(EquipmentSlot.HEAD);
-                } else {
-                    itemstack = ItemStack.EMPTY;
-                }
-
-                if (itemstack.hurt((int) new Random().nextDouble(1.0D, 10.0D), RandomSource.create(), (ServerPlayer) null)) {
-                    itemstack.shrink(1);
-                    itemstack.setDamageValue(0);
-                }
-            }
-
             if (!entity.level().isClientSide() && entity.getServer() != null) {
                 LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                 if (livingEntityPatch != null) {

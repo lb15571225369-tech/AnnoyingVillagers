@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.init;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.blockentity.CryingObsidianSpikeBlockEntity;
 import com.pla.annoyingvillagers.blockentity.DarkObUpBlockEntity;
 import com.pla.annoyingvillagers.blockentity.ObsidianBlockEntity;
 import com.pla.annoyingvillagers.blockentity.ShadowObsidianBlockEntity;
@@ -32,6 +33,12 @@ public final class AnnoyingVillagersModBlockEntities {
                     () -> BlockEntityType.Builder.of(
                             ObsidianBlockEntity::new,
                             AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
+                    ).build(null));
+    public static final RegistryObject<BlockEntityType<CryingObsidianSpikeBlockEntity>> CRYING_OBSIDIAN_SPIKE_BLOCK =
+            REGISTRY.register("crying_obsidian_spike",
+                    () -> BlockEntityType.Builder.of(
+                            CryingObsidianSpikeBlockEntity::new,
+                            AnnoyingVillagersModBlocks.CRYING_OBSIDIAN_BLOCK.get()
                     ).build(null));
 
     public static void register(IEventBus modEventBus) {

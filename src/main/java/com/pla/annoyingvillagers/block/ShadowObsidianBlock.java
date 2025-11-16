@@ -5,10 +5,14 @@ import java.util.List;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.blockentity.ShadowObsidianBlockEntity;
+import com.pla.annoyingvillagers.procedures.DarkObSsOnTickProcedure;
+import com.pla.annoyingvillagers.procedures.ObsidianBlockOnTickProcedure;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -94,8 +98,16 @@ public class ShadowObsidianBlock extends Block implements EntityBlock {
         return !list.isEmpty() ? list : Collections.singletonList(new ItemStack(this, 1));
     }
 
+    @Override
+    public void tick(BlockState blockstate, ServerLevel serverlevel, BlockPos blockpos, RandomSource random) {
+        super.tick(blockstate, serverlevel, blockpos, random);
+        ObsidianBlockOnTickProcedure.execute(serverlevel, blockpos.getX(), blockpos.getY(), blockpos.getZ());
+        serverlevel.scheduleTick(blockpos, this, 25);
+    }
+
     public void onPlace(BlockState blockstate, Level level, BlockPos blockpos, BlockState blockstate1, boolean flag) {
         super.onPlace(blockstate, level, blockpos, blockstate1, flag);
+        level.scheduleTick(blockpos, this, 25);
         ShadowObsidianPlaceBlockProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ());
     }
 

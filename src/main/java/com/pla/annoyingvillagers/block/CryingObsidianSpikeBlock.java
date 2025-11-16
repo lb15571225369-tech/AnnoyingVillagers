@@ -1,6 +1,8 @@
 package com.pla.annoyingvillagers.block;
 
-import com.pla.annoyingvillagers.blockentity.DarkObUpBlockEntity;
+import com.pla.annoyingvillagers.blockentity.CryingObsidianSpikeBlockEntity;
+import com.pla.annoyingvillagers.blockentity.ObsidianBlockEntity;
+import com.pla.annoyingvillagers.procedures.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -18,27 +20,31 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import com.pla.annoyingvillagers.procedures.DarkObSsOnEntityInsideProcedure;
-import com.pla.annoyingvillagers.procedures.DarkObSsOnAttackProcedure;
-import com.pla.annoyingvillagers.procedures.DarkObSsOnTickProcedure;
-import com.pla.annoyingvillagers.procedures.DarkObSsOnPlaceProcedure;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class DarkObUpBlock extends Block implements EntityBlock {
+import java.util.Collections;
+import java.util.List;
+
+public class CryingObsidianSpikeBlock extends Block implements EntityBlock {
     public static final BooleanProperty FROM_PLAYER = BooleanProperty.create("from_player");
-    public DarkObUpBlock() {
+
+    public CryingObsidianSpikeBlock() {
         super(Properties.of()
-                .sound(SoundType.STONE)
                 .offsetType(OffsetType.XYZ)
+                .sound(SoundType.STONE)
                 .strength(3.0F, 50.0F)
                 .noOcclusion()
-                .hasPostProcess((blockstate, blockgetter, blockpos) -> true)
-                .emissiveRendering((blockstate, blockgetter, blockpos) -> true)
-                .isRedstoneConductor((blockstate, blockgetter, blockpos) -> false)
-                .dynamicShape());
+                .hasPostProcess((state, getter, pos) -> true)
+                .emissiveRendering((state, getter, pos) -> true)
+                .isRedstoneConductor((state, getter, pos) -> false)
+                .dynamicShape()
+        );
         this.registerDefaultState(this.stateDefinition.any().setValue(FROM_PLAYER, Boolean.FALSE));
     }
 
@@ -48,10 +54,21 @@ public class DarkObUpBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-        BlockState base = super.getStateForPlacement(ctx);
+    public BlockState getStateForPlacement(@NotNull BlockPlaceContext blockPlaceContext) {
+        BlockState base = super.getStateForPlacement(blockPlaceContext);
         if (base == null) base = this.defaultBlockState();
-        return base.setValue(FROM_PLAYER, ctx.getPlayer() != null);
+        return base.setValue(FROM_PLAYER, blockPlaceContext.getPlayer() != null);
+    }
+
+    @Override
+    public void tick(BlockState blockstate, ServerLevel serverlevel, BlockPos blockpos, RandomSource random) {
+        super.tick(blockstate, serverlevel, blockpos, random);
+        int i = blockpos.getX();
+        int j = blockpos.getY();
+        int k = blockpos.getZ();
+
+        DarkObSsOnTickProcedure.execute(serverlevel, (double) i, (double) j, (double) k);
+        serverlevel.scheduleTick(blockpos, this, 20);
     }
 
     public boolean propagatesSkylightDown(BlockState blockstate, BlockGetter blockgetter, BlockPos blockpos) {
@@ -67,30 +84,18 @@ public class DarkObUpBlock extends Block implements EntityBlock {
     }
 
     public VoxelShape getShape(BlockState blockstate, BlockGetter blockgetter, BlockPos blockpos, CollisionContext collisioncontext) {
-        return Shapes.or(box(6.0D, 0.0D, 12.0D, 10.0D, 16.0D, 16.0D), new VoxelShape[]{box(6.0D, 16.0D, 12.0D, 10.0D, 32.0D, 16.0D), box(6.0D, -16.0D, 12.0D, 10.0D, 0.0D, 16.0D)});
-    }
-
-    public void onPlace(BlockState blockstate, Level level, BlockPos blockpos, BlockState blockstate1, boolean flag) {
-        super.onPlace(blockstate, level, blockpos, blockstate1, flag);
-        level.scheduleTick(blockpos, this, 20);
-        DarkObSsOnPlaceProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ());
-    }
-
-    @Override
-    public void tick(BlockState blockstate, ServerLevel serverlevel, BlockPos blockpos, RandomSource random) {
-        super.tick(blockstate, serverlevel, blockpos, random);
-        DarkObSsOnTickProcedure.execute(serverlevel, blockpos.getX(), blockpos.getY(), blockpos.getZ());
-        serverlevel.scheduleTick(blockpos, this, 20);
-    }
-
-    public void attack(BlockState blockstate, Level level, BlockPos blockpos, Player player) {
-        super.attack(blockstate, level, blockpos, player);
-        DarkObSsOnAttackProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), player);
+        return box(5.0D, 6.0D, 0.0D, 9.0D, 10.0D, 16.0D);
     }
 
     public void entityInside(BlockState blockstate, Level level, BlockPos blockpos, Entity entity) {
         super.entityInside(blockstate, level, blockpos, entity);
-        DarkObSsOnEntityInsideProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), entity);
+        CryingObsidianSpikeWhenEntityInsideBlockOnCollisionProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), entity);
+    }
+
+    @Override
+    public void onPlace(BlockState pState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pIsMoving) {
+        pLevel.scheduleTick(pPos, this, 25);
+        super.onPlace(pState, pLevel, pPos, pOldState, pIsMoving);
     }
 
     @Override
@@ -98,8 +103,8 @@ public class DarkObUpBlock extends Block implements EntityBlock {
         super.setPlacedBy(level, pos, state, placer, stack);
         if (!level.isClientSide) {
             var blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof DarkObUpBlockEntity darkObUpBlockEntity) {
-                darkObUpBlockEntity.setOwner(placer instanceof Player ? ((Player) placer).getUUID() : null);
+            if (blockEntity instanceof CryingObsidianSpikeBlockEntity cryingObsidianSpikeBlockEntity) {
+                cryingObsidianSpikeBlockEntity.setOwner(placer instanceof Player ? ((Player) placer).getUUID() : null);
                 blockEntity.setChanged();
                 level.sendBlockUpdated(pos, state, state, 3);
             }
@@ -108,6 +113,6 @@ public class DarkObUpBlock extends Block implements EntityBlock {
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new DarkObUpBlockEntity(pPos, pState);
+        return new CryingObsidianSpikeBlockEntity(pPos, pState);
     }
 }

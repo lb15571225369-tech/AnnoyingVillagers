@@ -5,10 +5,14 @@
     import javax.annotation.Nullable;
 
     import com.mojang.brigadier.exceptions.CommandSyntaxException;
+    import com.pla.annoyingvillagers.block.CryingObsidianSpikeBlock;
     import com.pla.annoyingvillagers.gameasset.AVAnimations;
+    import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
     import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
     import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
+    import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
     import com.pla.annoyingvillagers.util.DelayedTask;
+    import net.minecraft.core.BlockPos;
     import net.minecraft.core.particles.BlockParticleOption;
     import net.minecraft.core.particles.ParticleTypes;
     import net.minecraft.nbt.CompoundTag;
@@ -21,12 +25,17 @@
     import net.minecraft.world.entity.Entity;
     import net.minecraft.world.entity.EntityType;
     import net.minecraft.world.entity.LivingEntity;
+    import net.minecraft.world.entity.player.Player;
+    import net.minecraft.world.item.ItemStack;
     import net.minecraft.world.level.Level;
     import net.minecraft.world.level.block.RenderShape;
     import net.minecraft.world.level.block.state.BlockState;
+    import net.minecraft.world.phys.AABB;
+    import net.minecraft.world.phys.Vec3;
     import net.minecraftforge.api.distmarker.Dist;
     import net.minecraftforge.api.distmarker.OnlyIn;
     import net.minecraftforge.network.NetworkHooks;
+    import reascer.wom.world.entity.mob.EnderHand;
     import yesman.epicfight.gameasset.Animations;
     import yesman.epicfight.world.capabilities.EpicFightCapabilities;
     import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
@@ -105,6 +114,39 @@
             compound.putFloat("damage", this.getDamage());
         }
 
+        private void tryPlaceCryingSpikeOnVictim() {
+            if (this.level() instanceof ServerLevel serverLevel) {
+                AABB box = this.getBoundingBox().inflate(0.2D, 0.0D, 0.2D);
+                LivingEntity caster = this.getCaster();
+                var victims = this.level().getEntitiesOfClass(LivingEntity.class, box,
+                        e -> e.isAlive() && e != caster);
+
+                if (victims.isEmpty()) return;
+
+                BlockPos base = BlockPos.containing(this.getX(), this.getY(), this.getZ());
+                BlockPos placePos = base;
+                if (!this.level().isEmptyBlock(placePos) && this.level().isEmptyBlock(base.above())) {
+                    placePos = base.above();
+                }
+
+                EnderHand enderHand = new EnderHand(serverLevel, new Vec3(placePos.getX(), placePos.getY(), placePos.getZ()), caster, victims.get(0));
+                serverLevel.addFreshEntity(enderHand);
+
+                boolean fromPlayer = caster instanceof Player;
+                BlockState state = AnnoyingVillagersModBlocks.CRYING_OBSIDIAN_SPIKE_BLOCK.get()
+                        .defaultBlockState()
+                        .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, fromPlayer);
+
+                if (this.level().setBlock(placePos, state, 3)) {
+                    if (fromPlayer) {
+                        Player player = (Player) caster;
+                        state.getBlock()
+                                .setPlacedBy(this.level(), placePos, state, player, ItemStack.EMPTY);
+                    }
+                }
+            }
+        }
+
         public void tick() {
             super.tick();
             prevactivateProgress = activateProgress;
@@ -113,38 +155,15 @@
                 this.activateProgress--;
             }
 
+            if (this.lifeTicks == 20) {
+                HerobrineWeaponEffectProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+            }
+
             if (this.level().isClientSide) {
                 if (this.clientSideAttackStarted) {
                     --this.lifeTicks;
                     if (!isActivate() && this.activateProgress < MAX_PROGRESS) {
                         this.activateProgress = Math.min(MAX_PROGRESS, this.activateProgress + RISE_SPEED);
-                    }
-                    if (this.lifeTicks == 33) {
-                        for(int i = 0; i < 80; ++i) {
-                            BlockState block = level().getBlockState(blockPosition().below());
-                            double d0 = this.getX() + (this.random.nextDouble() * 2.0D - 1.0D) * (double) this.getBbWidth() * 0.5D;
-                            double d1 = this.getY() + 0.03D;
-                            double d2 = this.getZ() + (this.random.nextDouble() * 2.0D - 1.0D) * (double) this.getBbWidth() * 0.5D;
-                            double d3 = (this.random.nextGaussian() * 0.07D);
-                            double d4 = (this.random.nextGaussian() * 0.07D);
-                            double d5 = (this.random.nextGaussian() * 0.07D);
-                            if (block.getRenderShape() != RenderShape.INVISIBLE) {
-                                this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), d0, d1, d2, d3, d4, d5);
-                            }
-                        }
-                    }
-
-                    if (this.lifeTicks == 14) {
-                        this.setActivate(true);
-                        for(int i = 0; i < 12; ++i) {
-                            double d0 = this.getX() + (this.random.nextDouble() * 2.0D - 1.0D) * (double)this.getBbWidth() * 0.5D;
-                            double d1 = this.getY() + 0.05D + this.random.nextDouble();
-                            double d2 = this.getZ() + (this.random.nextDouble() * 2.0D - 1.0D) * (double)this.getBbWidth() * 0.5D;
-                            double d3 = (this.random.nextDouble() * 2.0D - 1.0D) * 0.3D;
-                            double d4 = 0.3D + this.random.nextDouble() * 0.3D;
-                            double d5 = (this.random.nextDouble() * 2.0D - 1.0D) * 0.3D;
-                            this.level().addParticle(ParticleTypes.REVERSE_PORTAL, d0, d1, d2, d3, d4, d5);
-                        }
                     }
                 }
             } else if (--this.warmupDelayTicks < 0) {
@@ -166,6 +185,7 @@
                 }
 
                 if (--this.lifeTicks < 0) {
+                    tryPlaceCryingSpikeOnVictim();
                     this.discard();
                 }
             }
@@ -183,32 +203,27 @@
         private void damage(LivingEntity hitEntity) {
             LivingEntity livingentity = this.getCaster();
             if (hitEntity.isAlive() && !hitEntity.isInvulnerable() && hitEntity != livingentity) {
-                if (this.tickCount % 5 == 0) {
-                    try {
-                        this.getServer().getCommands().getDispatcher().execute(
-                                "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
-                                this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                    } catch (CommandSyntaxException e) {
+                hitEntity.setDeltaMovement(new Vec3(0.0D, 0.0D, 0.0D));
+                try {
+                    this.getServer().getCommands().getDispatcher().execute(
+                            "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
+                            this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
 
+                }
+                if (livingentity == null) {
+                    hitEntity.hurt(this.level().damageSources().magic(), this.getDamage());
+                } else {
+                    if (livingentity.isAlliedTo(hitEntity)) {
+                        return;
                     }
-                    if (livingentity == null) {
-                        hitEntity.hurt(this.level().damageSources().magic(), this.getDamage());
-                    } else {
-                        if (livingentity.isAlliedTo(hitEntity)) {
-                            return;
-                        }
-                        hitEntity.hurt(this.level().damageSources().indirectMagic(this, livingentity), this.getDamage());
+                    hitEntity.hurt(this.level().damageSources().indirectMagic(this, livingentity), this.getDamage());
+                }
+                if (!hitEntity.level().isClientSide() && hitEntity.getServer() != null) {
+                    LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(hitEntity, LivingEntityPatch.class);
+                    if (livingEntityPatch != null) {
+                        livingEntityPatch.playAnimationSynchronized(Animations.BIPED_HIT_LONG, 0.0F);
                     }
-                    if (!hitEntity.level().isClientSide() && hitEntity.getServer() != null) {
-                        LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(hitEntity, LivingEntityPatch.class);
-                        if (livingEntityPatch != null) {
-                            livingEntityPatch.playAnimationSynchronized(Animations.BIPED_COMMON_NEUTRALIZED, 0.0F);
-                        }
-                    }
-                    float strength = 3.0F;
-                    double dx = this.getX() - hitEntity.getX();
-                    double dz = this.getZ() - hitEntity.getZ();
-                    hitEntity.knockback(strength, dx, dz);
                 }
             }
         }

@@ -22,6 +22,7 @@ public class AnnoyingVillagersModBlocks {
     public static final RegistryObject<Block> SHADOW_OBSIDIAN_BLOCK = AnnoyingVillagersModBlocks.REGISTRY.register("shadow_obsidian", ShadowObsidianBlock::new);
     public static final RegistryObject<Block> OBSIDIAN_BLOCK = AnnoyingVillagersModBlocks.REGISTRY.register("obsidian", ObsidianBlock::new);
     public static final RegistryObject<Block> CRYING_OBSIDIAN_BLOCK = AnnoyingVillagersModBlocks.REGISTRY.register("crying_obsidian", CryingObsidianBlock::new);
+    public static final RegistryObject<Block> CRYING_OBSIDIAN_SPIKE_BLOCK = AnnoyingVillagersModBlocks.REGISTRY.register("crying_obsidian_spike", CryingObsidianSpikeBlock::new);
     public static final RegistryObject<EndFireBlock> END_FIRE = AnnoyingVillagersModBlocks.REGISTRY.register(
             "end_fire",
             () -> new EndFireBlock(

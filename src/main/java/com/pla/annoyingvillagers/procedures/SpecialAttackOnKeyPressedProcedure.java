@@ -1,7 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.hm.efn.gameasset.animations.EFNGreatSwordAnimations;
-import com.hm.efn.gameasset.animations.EFNTachiAnimations;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.capabilities.AVCategories;
@@ -11,10 +10,8 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.item.*;
 import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
 import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
-import com.pla.annoyingvillagers.skill.DemoniacVoltageReaverSkill;
 import com.pla.annoyingvillagers.skill.EnderGlaiveSkill;
 import com.pla.annoyingvillagers.util.DelayedTask;
-import com.pla.annoyingvillagers.util.SnakeBladeHit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -49,7 +46,6 @@ import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
 
-import java.util.List;
 import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -182,6 +178,13 @@ public class SpecialAttackOnKeyPressedProcedure {
                     player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
                 }
                 return;
+            }
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.OBSIDIAN_SLEDGEHAMMER.get())) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F);
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
+                    return;
+                }
             }
 
             // Check by categories
@@ -542,11 +545,7 @@ public class SpecialAttackOnKeyPressedProcedure {
                     if (entity.getPersistentData().getDouble("sword_a") < 1.0D) {
                         entity.getPersistentData().putDouble("sword_a", 1.5D);
                         if (!entity.level().isClientSide() && entity.getServer() != null) {
-                            if (itemStack.getItem() instanceof ObsidianSledgehammerItem) {
-                                livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F);
-                            } else {
-                                livingEntityPatch.playAnimationSynchronized(AVAnimations.GIANT_WHIRLWIND, 0.0F);
-                            }
+                            livingEntityPatch.playAnimationSynchronized(AVAnimations.GIANT_WHIRLWIND, 0.0F);
                         }
 
                         new DelayedTask(30) {
@@ -558,11 +557,7 @@ public class SpecialAttackOnKeyPressedProcedure {
                     } else if (entity.getPersistentData().getDouble("sword_a") == 2.0D) {
                         entity.getPersistentData().putDouble("sword_a", 2.5D);
                         if (!entity.level().isClientSide() && entity.getServer() != null) {
-                            if (itemStack.getItem() instanceof ObsidianSledgehammerItem) {
-                                livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F);
-                            } else {
-                                livingEntityPatch.playAnimationSynchronized(AVAnimations.GIANT_WHIRLWIND_2, 0.0F);
-                            }
+                            livingEntityPatch.playAnimationSynchronized(AVAnimations.GIANT_WHIRLWIND_2, 0.0F);
                         }
 
                         new DelayedTask(20) {

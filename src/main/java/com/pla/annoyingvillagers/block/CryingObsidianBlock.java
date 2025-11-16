@@ -2,15 +2,15 @@ package com.pla.annoyingvillagers.block;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.blockentity.ObsidianBlockEntity;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
+import com.pla.annoyingvillagers.procedures.ObsidianBlockOnTickProcedure;
 import com.pla.annoyingvillagers.procedures.ObsidianBlockPlaceBlockProcedure;
 import com.pla.annoyingvillagers.procedures.ObsidianWhenEntityInsideBlockOnCollisionProcedure;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -30,8 +30,6 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.ForgeSoundType;
 import org.jetbrains.annotations.Nullable;
 
@@ -99,8 +97,16 @@ public class CryingObsidianBlock extends Block implements EntityBlock {
         return !list.isEmpty() ? list : Collections.singletonList(new ItemStack(this, 1));
     }
 
+    @Override
+    public void tick(BlockState blockstate, ServerLevel serverlevel, BlockPos blockpos, RandomSource random) {
+        super.tick(blockstate, serverlevel, blockpos, random);
+        ObsidianBlockOnTickProcedure.execute(serverlevel, blockpos.getX(), blockpos.getY(), blockpos.getZ());
+        serverlevel.scheduleTick(blockpos, this, 25);
+    }
+
     public void onPlace(BlockState blockstate, Level level, BlockPos blockpos, BlockState blockstate1, boolean flag) {
         super.onPlace(blockstate, level, blockpos, blockstate1, flag);
+        level.scheduleTick(blockpos, this, 25);
         ObsidianBlockPlaceBlockProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ());
     }
 

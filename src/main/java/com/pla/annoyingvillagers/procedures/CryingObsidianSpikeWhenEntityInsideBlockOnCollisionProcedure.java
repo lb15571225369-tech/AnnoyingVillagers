@@ -2,24 +2,17 @@ package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.block.ObsidianBlock;
-import com.pla.annoyingvillagers.blockentity.ObsidianBlockEntity;
-import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
-import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.block.CryingObsidianSpikeBlock;
+import com.pla.annoyingvillagers.blockentity.CryingObsidianSpikeBlockEntity;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.util.ObsidianWeaponUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -30,26 +23,25 @@ import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 import java.util.Objects;
-import java.util.Random;
 
-public class ObsidianWhenEntityInsideBlockOnCollisionProcedure {
+public class CryingObsidianSpikeWhenEntityInsideBlockOnCollisionProcedure {
 
     public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) {
         if (entity != null) {
             BlockPos pos = BlockPos.containing(d0, d1, d2);
             BlockState state = levelaccessor.getBlockState(pos);
 
-            if (entity instanceof Player && levelaccessor.getBlockEntity(pos) instanceof ObsidianBlockEntity obsidianBlockEntity) {
-                var owner = obsidianBlockEntity.getOwner();
+            if (entity instanceof Player && levelaccessor.getBlockEntity(pos) instanceof CryingObsidianSpikeBlockEntity cryingObsidianSpikeBlockEntity) {
+                var owner = cryingObsidianSpikeBlockEntity.getOwner();
                 if (owner != null && owner.equals(((Player) entity).getUUID())) {
                     return;
                 }
             }
 
             boolean fromPlayer =
-                    state.getBlock() instanceof ObsidianBlock
-                            && state.hasProperty(ObsidianBlock.FROM_PLAYER)
-                            && state.getValue(ObsidianBlock.FROM_PLAYER);
+                    state.getBlock() instanceof CryingObsidianSpikeBlock
+                            && state.hasProperty(CryingObsidianSpikeBlock.FROM_PLAYER)
+                            && state.getValue(CryingObsidianSpikeBlock.FROM_PLAYER);
 
             if (!fromPlayer && ObsidianWeaponUtil.isHerobrineFaction(entity)) {
                 return;
@@ -81,38 +73,20 @@ public class ObsidianWhenEntityInsideBlockOnCollisionProcedure {
             }
 
             entity.hurt(entity.level().damageSources().generic(), 1.0F);
-            entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * -2.0D, 0.4D, entity.getLookAngle().z * -2.0D));
-            if (Math.random() <= 0.5D) {
-                new DelayedTask(1) {
-                    @Override
-                    public void run() {
-                        Entity entity1 = entity;
+            entity.setDeltaMovement(new Vec3(0.0D, 0.0D, 0.0D));
+            new DelayedTask(1) {
+                @Override
+                public void run() {
+                    Entity entity1 = entity;
 
-                        if (!entity1.level().isClientSide() && entity1.getServer() != null) {
-                            LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity1, LivingEntityPatch.class);
-                            if (livingEntityPatch != null) {
-                                livingEntityPatch.playAnimationSynchronized(Animations.BIPED_HIT_LONG, 0.0F);
-                            }
+                    if (!entity1.level().isClientSide() && entity1.getServer() != null) {
+                        LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity1, LivingEntityPatch.class);
+                        if (livingEntityPatch != null) {
+                            livingEntityPatch.playAnimationSynchronized(Animations.BIPED_HIT_LONG, 0.0F);
                         }
                     }
-                };
-
-                if (Math.random() <= 0.3D) {
-                    new DelayedTask(1) {
-                        @Override
-                        public void run() {
-                            Entity entity1 = entity;
-
-                            if (!entity1.level().isClientSide() && entity1.getServer() != null) {
-                                LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity1, LivingEntityPatch.class);
-                                if (livingEntityPatch != null) {
-                                    livingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN, 0.0F);
-                                }
-                            }
-                        }
-                    };
                 }
-            }
+            };
         }
     }
 }
