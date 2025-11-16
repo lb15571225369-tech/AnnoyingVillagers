@@ -3,20 +3,15 @@ package com.pla.annoyingvillagers.block;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootParams;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.procedures.NoneObWhenEntityCollidesWithBlockProcedure;
 import com.pla.annoyingvillagers.procedures.NoneObPlaceBlockProcedure;
 
@@ -47,12 +42,5 @@ public class NoneObBlock extends Block {
     public void entityInside(BlockState blockstate, Level level, BlockPos blockpos, Entity entity) {
         super.entityInside(blockstate, level, blockpos, entity);
         NoneObWhenEntityCollidesWithBlockProcedure.execute(level, entity);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public static void blockColorLoad(net.minecraftforge.client.event.RegisterColorHandlersEvent.Block net_minecraftforge_client_event_colorhandlerevent_block) {
-        net_minecraftforge_client_event_colorhandlerevent_block.getBlockColors().register((blockstate, blockandtintgetter, blockpos, i) -> {
-            return blockandtintgetter != null && blockpos != null ? BiomeColors.getAverageGrassColor(blockandtintgetter, blockpos) : GrassColor.get(0.5D, 1.0D);
-        }, new Block[]{(Block) AnnoyingVillagersModBlocks.NONEOB.get()});
     }
 }

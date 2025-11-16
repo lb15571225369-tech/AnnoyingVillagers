@@ -5,7 +5,6 @@ import java.util.Set;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -170,6 +169,8 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> HEROBRINE_HEALING;
     public static AnimationManager.AnimationAccessor<StaticAnimation> HEROBRINE_SACRIFICING;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> BULL_CHARGE;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> SNAKE_BLADE;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> IDLE_BREAK;
 
     @SubscribeEvent
     public static void registerAnimations(AnimationManager.AnimationRegistryEvent event) {
@@ -194,6 +195,10 @@ public class AVAnimations {
                 (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
         AVAnimations.EATING_ELITE_4 = builder.nextAccessor("biped/other/eating_elite_4",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
+        AVAnimations.SNAKE_BLADE = builder.nextAccessor("biped/other/snake_blade",
+                (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
+        AVAnimations.IDLE_BREAK = builder.nextAccessor("biped/other/idle_break",
+                (accessor) -> new StaticAnimation(false, accessor, humanoidarmature));
         AVAnimations.GLOWING_AGONY_GUARD = builder.nextAccessor("biped/skill/glowing_agony_guard",
                 (accessor) -> (new StaticAnimation(0.05F, true, accessor, humanoidarmature))
                 .addEvents(
@@ -969,9 +974,8 @@ public class AVAnimations {
                         .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true).addState(EntityState.CAN_SKILL_EXECUTION, false).addState(EntityState.CAN_BASIC_ATTACK, false).addState(EntityState.MOVEMENT_LOCKED, true).addState(EntityState.TURNING_LOCKED, false).addState(EntityState.LOCKON_ROTATE, false)
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
         AVAnimations.BULL_CHARGE = builder.nextAccessor("biped/other/bull_charge",
-                (accessor) -> (new BasicMultipleAttackAnimation(0.2F, accessor, humanoidarmature, new Phase[]{
-                        new Phase(0.0F, 0.2F, 0.25F, 0.29F, 0.29F,
-                                humanoidarmature.get().rootJoint, WOMWeaponColliders.SHOULDER_BUMP),
+                (accessor) -> (new BasicMultipleAttackAnimation(0.2F, accessor, humanoidarmature, new Phase(0.0F, 0.2F, 0.25F, 0.29F, 0.29F,
+                        humanoidarmature.get().rootJoint, WOMWeaponColliders.SHOULDER_BUMP),
                         new Phase(0.29F, 0.3F, 0.35F, 0.39F, 0.39F,
                                 humanoidarmature.get().rootJoint, WOMWeaponColliders.SHOULDER_BUMP),
                         new Phase(0.39F, 0.4F, 0.45F, 0.49F, 0.49F,
@@ -985,7 +989,7 @@ public class AVAnimations {
                         new Phase(0.79F, 0.8F, 0.85F, 0.89F, 0.89F,
                                 humanoidarmature.get().rootJoint, WOMWeaponColliders.SHOULDER_BUMP),
                         new Phase(0.89F, 1.0F, 1.1F, 1.3F, Float.MAX_VALUE,
-                                humanoidarmature.get().rootJoint, WOMWeaponColliders.SHOULDER_BUMP)}))
+                                humanoidarmature.get().rootJoint, WOMWeaponColliders.SHOULDER_BUMP)))
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(1.0F))
                         .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(1.5F))
                         .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10.0F))

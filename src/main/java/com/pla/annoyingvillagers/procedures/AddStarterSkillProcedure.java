@@ -80,13 +80,6 @@ public class AddStarterSkillProcedure {
                 }
             }
 
-            if (entity instanceof LivingEntity livingEntity) {
-                ItemStack stack = livingEntity.getMainHandItem();
-                if (stack.equals(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER)){
-                    stack.removeTagKey("SnakeAnimation");
-                }
-            }
-
             if (entity.getPersistentData().getBoolean("b_d_aim")) {
                 entity.getPersistentData().putBoolean("b_d_aim", false);
             }

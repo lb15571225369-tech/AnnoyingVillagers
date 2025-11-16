@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.hm.efn.gameasset.animations.EFNGreatSwordAnimations;
+import com.hm.efn.gameasset.animations.EFNTachiAnimations;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.capabilities.AVCategories;
@@ -10,8 +11,10 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.item.*;
 import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
 import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
+import com.pla.annoyingvillagers.skill.DemoniacVoltageReaverSkill;
 import com.pla.annoyingvillagers.skill.EnderGlaiveSkill;
 import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.util.SnakeBladeHit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -32,7 +35,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import reascer.wom.gameasset.WOMAnimations;
-import reascer.wom.gameasset.animations.weapons.AnimsHerrscher;
 import reascer.wom.gameasset.animations.weapons.AnimsNapoleon;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.LongHitAnimation;
@@ -47,6 +49,7 @@ import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
 
+import java.util.List;
 import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -80,8 +83,8 @@ public class SpecialAttackOnKeyPressedProcedure {
             return;
         }
 
-        AssetAccessor<? extends DynamicAnimation> dynamicanimation = patch.getAnimator().getPlayerFor(null).getAnimation();
-        if (dynamicanimation instanceof LongHitAnimation) return;
+        AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(patch.getAnimator().getPlayerFor(null)).getAnimation();
+        if (dynamicAnimation instanceof LongHitAnimation) return;
 
         if (entity instanceof Player player && !player.level().isClientSide() &&
                 !player.getMainHandItem().getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get()) &&
@@ -100,21 +103,20 @@ public class SpecialAttackOnKeyPressedProcedure {
                             player.getCooldowns().addCooldown(herobrineEnderEyeItem, 40);
                             stack.hurtAndBreak(5, player, p -> {
                             });
-                            player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
                             return true;
                         }
                         return false;
                     });
         }
 
-        PlayerPatch<?> playerpatch = (PlayerPatch) EpicFightCapabilities.getEntityPatch(entity, PlayerPatch.class);
-        LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+        PlayerPatch<?> playerpatch = EpicFightCapabilities.getEntityPatch(entity, PlayerPatch.class);
+        LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
         if (livingEntityPatch != null && entity instanceof Player player) {
             // Check by item
             ItemStack holdingItem = player.getMainHandItem();
             if (holdingItem.getItem().equals(AnnoyingVillagersModItems.ENDER_AEGIS.get())) {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
-                    if (holdingItem.getTag().getBoolean("SecondForm")) {
+                    if (holdingItem.getTag() != null && holdingItem.getTag().getBoolean("SecondForm")) {
                         livingEntityPatch.playAnimationSynchronized(WOMAnimations.RAVANGER_CHARGE, 0.0F);
                     } else {
                         livingEntityPatch.playAnimationSynchronized(EFNGreatSwordAnimations.NG_GREATSWORD_AIRSLASH, 0.0F);
@@ -174,15 +176,12 @@ public class SpecialAttackOnKeyPressedProcedure {
                 }
             }
             if (holdingItem.getItem().equals(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER.get())) {
-                if (!entity.level().isClientSide() && entity.getServer() != null) {
-                    if (holdingItem.getTag().getBoolean("SecondForm")) {
-                        livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_CHARGED_ATTACK_1, 0.0F);
-                    } else {
-                        livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_CHARGED_ATTACK_1, 0.0F);
-                    }
+                if (!entity.level().isClientSide() && entity.getServer() != null
+                        && holdingItem.getTag() != null && !holdingItem.getTag().getBoolean("SnakeAnimation")) {
+                    livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_CHARGED_ATTACK_1, 0.0F);
                     player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
-                    return;
                 }
+                return;
             }
 
             // Check by categories
@@ -268,7 +267,7 @@ public class SpecialAttackOnKeyPressedProcedure {
                             entity.getPersistentData().putDouble("axe_a", 0.0D);
                         }
 
-                        if (dynamicanimation == Animations.THE_GUILLOTINE) {
+                        if (dynamicAnimation == Animations.THE_GUILLOTINE) {
                             if (!entity.level().isClientSide() && entity.getServer() != null) {
                                 livingEntityPatch.playAnimationSynchronized(AVAnimations.AXE_FUN_SKILL, 0.0F);
                             }
@@ -470,7 +469,7 @@ public class SpecialAttackOnKeyPressedProcedure {
                     };
                 }
             } else {
-                if (dynamicanimation == Animations.DANCING_EDGE) {
+                if (dynamicAnimation == Animations.DANCING_EDGE) {
                     if (!entity.level().isClientSide() && entity.getServer() != null) {
                         livingEntityPatch.playAnimationSynchronized(AVAnimations.DUAL_SWORD_SKILL, 0.0F);
                     }

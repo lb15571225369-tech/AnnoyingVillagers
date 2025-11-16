@@ -18,10 +18,7 @@ import net.minecraft.world.item.Tiers;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSounds;
 import reascer.wom.gameasset.WOMAnimations;
-import reascer.wom.gameasset.animations.weapons.AnimsAgony;
-import reascer.wom.gameasset.animations.weapons.AnimsNapoleon;
-import reascer.wom.gameasset.animations.weapons.AnimsRuine;
-import reascer.wom.gameasset.animations.weapons.AnimsSolar;
+import reascer.wom.gameasset.animations.weapons.*;
 import reascer.wom.gameasset.colliders.WOMWeaponColliders;
 import yesman.epicfight.api.animation.LivingMotions;
 import yesman.epicfight.api.forgeevent.WeaponCapabilityPresetRegistryEvent;
@@ -101,7 +98,7 @@ public class AVWeaponCapabilityPresets {
                             WOMAnimations.TORMENT_BERSERK_AUTO_1,
                             EFNGreatSwordAnimations.NG_GREATSWORD_AUTO2,
                             WOMAnimations.TORMENT_AUTO_4,
-                            EFNGreatSwordAnimations.NG_GREATSWORD_AIRSLASH,
+                            EFNGreatSwordAnimations.NG_GREATSWORD_DASH,
                             AnimsRuine.RUINE_COMET
                     ).newStyleCombo(Styles.MOUNT,
                             Animations.SWORD_MOUNT_ATTACK)

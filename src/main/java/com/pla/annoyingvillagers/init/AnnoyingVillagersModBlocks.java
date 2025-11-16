@@ -3,17 +3,10 @@ package com.pla.annoyingvillagers.init;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.block.*;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SoulFireBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -40,17 +33,4 @@ public class AnnoyingVillagersModBlocks {
                             .pushReaction(PushReaction.DESTROY)
             )
     );
-
-    @EventBusSubscriber(bus = Bus.MOD, value = {Dist.CLIENT})
-    public static class ClientSideHandler {
-
-        @SubscribeEvent
-        public static void clientSetup(FMLClientSetupEvent fmlclientsetupevent) {
-        }
-
-        @SubscribeEvent
-        public static void blockColorLoad(net.minecraftforge.client.event.RegisterColorHandlersEvent.Block block) {
-            NoneObBlock.blockColorLoad(block);
-        }
-    }
 }

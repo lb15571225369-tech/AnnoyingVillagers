@@ -35,7 +35,7 @@ public class EnderGlaiveItem extends SwordItem {
             }
 
             public float getAttackDamageBonus() {
-                return 4.0F;
+                return 5.0F;
             }
 
             public int getLevel() {

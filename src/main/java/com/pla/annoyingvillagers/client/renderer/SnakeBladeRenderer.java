@@ -28,8 +28,12 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.function.DoubleFunction;
 
 public class SnakeBladeRenderer extends EntityRenderer<SnakeBladeEntity> {
     private static final ResourceLocation SNAKE_BLADE_TEXTURE =ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID,"textures/entities/snake_blade.png");
@@ -37,9 +41,13 @@ public class SnakeBladeRenderer extends EntityRenderer<SnakeBladeEntity> {
     private static ModelSnakeBlade snakeBladeModel;
     private static ModelSnakeBladeFragment tongueModel;
     public static final int MAX_NECK_SEGMENTS = 128;
-    private static final float FRAG_LEN     = 0.6F;
-    private static final float HEAD_CLEAR   = 0.35F;
+    private static final float FRAG_LEN = 0.45F;
+    private static final float HEAD_CLEAR = 0.35F;
+    private final EntityRendererProvider.Context context;
 
+    private static float tipClear(SnakeBladeEntity snakeBladeEntity) {
+        return (snakeBladeEntity.hasBlade() || snakeBladeEntity.isRetracting()) ? HEAD_CLEAR : 0.0F;
+    }
 
     public SnakeBladeRenderer(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn);
@@ -47,6 +55,7 @@ public class SnakeBladeRenderer extends EntityRenderer<SnakeBladeEntity> {
         this.tongueModel = new ModelSnakeBladeFragment<>(fragRoot);
         ModelPart bladeRoot = renderManagerIn.bakeLayer(ModelSnakeBlade.LAYER_LOCATION);
         this.snakeBladeModel = new ModelSnakeBlade<>(bladeRoot);
+        this.context = renderManagerIn;
     }
 
     @Override
@@ -56,7 +65,7 @@ public class SnakeBladeRenderer extends EntityRenderer<SnakeBladeEntity> {
     }
 
     @Override
-    public void render(SnakeBladeEntity entity, float pEntityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int light) {
+    public void render(@NotNull SnakeBladeEntity entity, float pEntityYaw, float partialTicks, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int light) {
         super.render(entity, pEntityYaw, partialTicks, poseStack, buffer, light);
         poseStack.pushPose();
         Entity fromEntity = entity.getFromEntity();
@@ -68,7 +77,12 @@ public class SnakeBladeRenderer extends EntityRenderer<SnakeBladeEntity> {
             float progress = (entity.prevProgress + (entity.getProgress() - entity.prevProgress) * partialTicks) / SnakeBladeEntity.MAX_EXTEND_TIME;
             Vec3 distVec;
 
-            float tipOffset = 1.8F;
+            float tipOffset;
+            if (entity.isGuard()) {
+                tipOffset = 1.8F;
+            } else {
+                tipOffset = 2.2F;
+            }
             Vec3 swordPos = SnakeBladeHit.getToolTipPos(fromEntity, partialTicks, tipOffset);
 
             if (swordPos != null) {
@@ -92,70 +106,121 @@ public class SnakeBladeRenderer extends EntityRenderer<SnakeBladeEntity> {
             } else {
                 snakebladeFragmentConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(FRAGMENT_CHAIN_TEXTURE));
             }
-            double L = from.distanceTo(to);
-            double buildUpTo = Math.max(0.0, L - HEAD_CLEAR);
 
-            if (L > 1.0e-4) {
-                Vec3 fromW = new Vec3(x, y, z).add(from);
-                Vec3 toW   = new Vec3(x, y, z).add(to);
-
-                Vec3 fwd = toW.subtract(fromW).normalize();
-                Vec3 right = new Vec3(fwd.z, 0, -fwd.x);
-                if (right.lengthSqr() < 1.0e-6) right = new Vec3(1, 0, 0);
-                right = right.normalize();
-
-                double ampSide = Mth.clamp(L * 0.18, 0.25, 2.0);
-                double ampUp   = Mth.clamp(L * 0.10, 0.00, 1.0);
-
-                int a = entity.getId();
-                int b = entity.getFromEntityID();
-                int c = entity.getToEntityID();
-                long seed = (((long)a) << 32) ^ (((long)b) << 16) ^ (long)c ^ 0x9E3779B97F4A7C15L; // mix a,b,c
-                RandomSource rand = RandomSource.create(seed);
-                double sideSign = rand.nextBoolean() ? 1.0 : -1.0;
-
-                Vec3 finalRight = right;
-                java.util.function.DoubleFunction<Vec3> wavePoint = (s) -> {
-                    double u = s / L;
-                    double sin = Math.sin(Math.PI * u);
-                    return fromW
-                            .add(fwd.scale(s))
-                            .add(finalRight.scale(ampSide * sideSign * sin))
-                            .add(0, ampUp * sin, 0);
-                };
-
-                double s = 0.0;
-                Vec3 prevW = wavePoint.apply(s);
+            if (entity.isGuard()) {
+                double distanceLeft = from.distanceTo(to);
+                double buildUpTo = Math.max(0.0, distanceLeft - tipClear(entity));
                 while (segmentCount < MAX_NECK_SEGMENTS && buildUpTo > 1.0e-3) {
                     double step = Math.min(buildUpTo, FRAG_LEN);
-                    s += step;
-                    Vec3 nextW = wavePoint.apply(Math.min(s, L - HEAD_CLEAR));
 
-                    Vec3 prevLocal = prevW.subtract(x, y, z);
-                    Vec3 nextLocal = nextW.subtract(x, y, z);
-
-                    int neckLight = getLightColor(entity, nextW);
-                    renderNeckCube(prevLocal, nextLocal, poseStack, snakebladeFragmentConsumer, neckLight, OverlayTexture.NO_OVERLAY, 0);
-
-                    prevW = nextW;
-                    buildUpTo -= step;
-                    segmentCount++;
-                }
-
-                currentNeckButt = prevW.subtract(x, y, z);
-            }
-            else {
-                while (segmentCount < MAX_NECK_SEGMENTS && buildUpTo > 1.0e-3) {
-                    double step = Math.min(buildUpTo, FRAG_LEN);
                     Vec3 dir = to.subtract(currentNeckButt);
                     Vec3 next = dir.normalize().scale(step).add(currentNeckButt);
+
                     int neckLight = getLightColor(entity, next.add(x, y, z));
                     renderNeckCube(currentNeckButt, next, poseStack, snakebladeFragmentConsumer, neckLight, OverlayTexture.NO_OVERLAY, 0);
+
                     currentNeckButt = next;
                     buildUpTo -= step;
                     segmentCount++;
                 }
+            } else {
+                double distanceLeft = from.distanceTo(to);
+                double buildUpTo = Math.max(0.0, distanceLeft - tipClear(entity));
+
+                if (distanceLeft > 1.0e-4) {
+                    Vec3 fromW = new Vec3(x, y, z).add(from);
+                    Vec3 toW = new Vec3(x, y, z).add(to);
+
+                    Vec3 fwd = toW.subtract(fromW).normalize();
+                    Vec3 right = new Vec3(fwd.z, 0, -fwd.x);
+                    if (right.lengthSqr() < 1.0e-6) right = new Vec3(1, 0, 0);
+                    right = right.normalize();
+
+                    double ampSide = Mth.clamp(distanceLeft * 0.18, 0.25, 2.0);
+                    double ampUp = Mth.clamp(distanceLeft * 0.10, 0.00, 1.0);
+
+                    int entityId = entity.getId();
+                    int fromEntityID = entity.getFromEntityID();
+                    int toEntityID = entity.getToEntityID();
+                    long seed = (((long) entityId) << 32) ^ (((long) fromEntityID) << 16) ^ (long) toEntityID ^ 0x9E3779B97F4A7C15L;
+                    RandomSource rand = RandomSource.create(seed);
+                    double sideSign = rand.nextBoolean() ? 1.0 : -1.0;
+
+                    double time = (double) entity.tickCount + (double) partialTicks;
+                    double phase1 = rand.nextDouble() * Math.PI * 2.0;
+                    double phase2 = rand.nextDouble() * Math.PI * 2.0;
+                    double phaseYaw = rand.nextDouble() * Math.PI * 2.0;
+
+                    double jitterSideBase = 0.05;
+                    double jitterUpBase = 0.03;
+
+                    Vec3 finalRight = right;
+
+                    DoubleFunction<Vec3> wavePoint = (s) -> {
+                        double u = s / distanceLeft;
+                        double sin = Math.sin(Math.PI * u);
+
+                        Vec3 base = fromW
+                                .add(fwd.scale(s))
+                                .add(finalRight.scale(ampSide * sideSign * sin))
+                                .add(0, ampUp * sin, 0);
+
+                        double w1 = 20.0;
+                        double w2 = 17.0;
+
+                        double headBias = Math.pow(sin, 0.8);
+                        double jitterSide = (jitterSideBase * (0.6 + 0.8 * headBias))
+                                * Math.sin(w1 * time + 28.0 * u + phase1);
+                        double jitterUp = (jitterUpBase * (0.5 + 0.7 * headBias))
+                                * Math.sin(w2 * time + 19.0 * u + phase2);
+
+                        return base
+                                .add(finalRight.scale(jitterSide))
+                                .add(0, jitterUp, 0);
+                    };
+
+                    double s = 0.0;
+                    Vec3 prevW = wavePoint.apply(s);
+                    while (segmentCount < MAX_NECK_SEGMENTS && buildUpTo > 1.0e-3) {
+                        double step = Math.min(buildUpTo, FRAG_LEN);
+                        s += step;
+                        Vec3 nextW = wavePoint.apply(Math.min(s, distanceLeft - HEAD_CLEAR));
+
+                        Vec3 prevLocal = prevW.subtract(x, y, z);
+                        Vec3 nextLocal = nextW.subtract(x, y, z);
+
+                        int neckLight = getLightColor(entity, nextW);
+
+                        float yawShake = (float) (
+                                4.0 * Math.sin(18.0 * time + 0.9 * segmentCount + phaseYaw)
+                        );
+
+                        renderNeckCube(prevLocal, nextLocal, poseStack, snakebladeFragmentConsumer, neckLight, OverlayTexture.NO_OVERLAY, yawShake);
+
+                        prevW = nextW;
+                        buildUpTo -= step;
+                        segmentCount++;
+                    }
+
+                    currentNeckButt = prevW.subtract(x, y, z);
+                } else {
+                    while (segmentCount < MAX_NECK_SEGMENTS && buildUpTo > 1.0e-3) {
+                        double step = Math.min(buildUpTo, FRAG_LEN);
+                        Vec3 dir = to.subtract(currentNeckButt);
+                        Vec3 next = dir.normalize().scale(step).add(currentNeckButt);
+                        int neckLight = getLightColor(entity, next.add(x, y, z));
+
+                        double time = (double) entity.tickCount + (double) partialTicks;
+                        float yawShake = (float) (3.0 * Math.sin(16.0 * time + 0.7 * segmentCount));
+
+                        renderNeckCube(currentNeckButt, next, poseStack, snakebladeFragmentConsumer, neckLight, OverlayTexture.NO_OVERLAY, yawShake);
+                        currentNeckButt = next;
+                        buildUpTo -= step;
+                        segmentCount++;
+                    }
+                }
             }
+
             VertexConsumer snakeBladeComsumer;
             if (entity.isEnchanted()) {
                 snakeBladeComsumer = ItemRenderer.getFoilBuffer(
@@ -174,8 +239,15 @@ public class SnakeBladeRenderer extends EntityRenderer<SnakeBladeEntity> {
                 Vec3 headDir = to.subtract(currentNeckButt);
                 float rotY = (float)(Mth.atan2(headDir.x, headDir.z) * 180F / Math.PI);
                 float rotX = (float)(-Mth.atan2(headDir.y, headDir.horizontalDistance()) * 180F / Math.PI);
+
                 poseStack.mulPose(Axis.YP.rotationDegrees(rotY));
                 poseStack.mulPose(Axis.XP.rotationDegrees(rotX));
+
+                double time = (double)entity.tickCount + (double)partialTicks;
+                float headYawWobble = (float)(1.6 * Math.sin(22.0 * time + 0.5));
+                float headPitchWobble = (float)(1.0 * Math.sin(27.0 * time + 1.2));
+                poseStack.mulPose(Axis.YP.rotationDegrees(headYawWobble));
+                poseStack.mulPose(Axis.XP.rotationDegrees(headPitchWobble));
 
                 snakeBladeModel.renderToBuffer(poseStack, snakeBladeComsumer,
                         getLightColor(entity, to.add(x, y, z)), OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);

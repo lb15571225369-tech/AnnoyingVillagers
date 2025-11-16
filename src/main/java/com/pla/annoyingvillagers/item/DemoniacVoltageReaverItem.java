@@ -71,7 +71,7 @@ public class DemoniacVoltageReaverItem extends SwordItem {
                 }
             }
         }
-        if (!flag && itemstack.getTag().getBoolean("SecondForm") && itemstack.getTag().getBoolean("SnakeAnimation")) {
+        if (!flag && itemstack.getTag().getBoolean("SnakeAnimation")) {
             itemstack.getTag().remove("SnakeAnimation");
         }
     }

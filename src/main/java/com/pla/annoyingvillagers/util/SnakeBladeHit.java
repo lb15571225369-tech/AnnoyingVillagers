@@ -5,6 +5,8 @@ import com.pla.annoyingvillagers.entity.SnakeBladeEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModCapabilities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -22,6 +24,7 @@ import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.api.utils.math.Vec3f;
 
 
+import java.util.Random;
 import java.util.UUID;
 
 public class SnakeBladeHit {
@@ -46,6 +49,24 @@ public class SnakeBladeHit {
                 }
             }
             return launchSnakeBladeAt(playerIn, closestValid, stack);
+        }
+        return false;
+    }
+
+    public static boolean processGuard(ItemStack stack, LivingEntity entityToGuard) {
+        if (!stack.is(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER.get())) return false;
+
+        Level worldIn = entityToGuard.level();
+        SnakeBladeCapability.ISnakeBladeCapability snakeBladeCapability =
+                AnnoyingVillagersModCapabilities.getCapability(entityToGuard, AnnoyingVillagersModCapabilities.SNAKE_BLADE_CAPABILITY);
+
+        if (snakeBladeCapability != null) {
+            if (canLaunchTentacles(worldIn, entityToGuard)) {
+                retractFarFragments(worldIn, entityToGuard);
+                if (!worldIn.isClientSide) {
+                    return launchSnakeBladeAt(entityToGuard, stack);
+                }
+            }
         }
         return false;
     }
@@ -76,6 +97,72 @@ public class SnakeBladeHit {
             }
         }
         return false;
+    }
+
+    public static boolean launchSnakeBladeAt(LivingEntity playerIn, ItemStack stack) {
+        Level worldIn = playerIn.level();
+        SnakeBladeEntity segment = AnnoyingVillagersModEntities.SNAKE_BLADE.get().create(worldIn);
+        if (segment == null) return false;
+
+        if (stack.hasFoil()) {
+            segment.setEnchanted(true);
+        }
+
+        segment.setCreatorEntityUUID(playerIn.getUUID());
+        segment.setFromEntityID(playerIn.getId());
+        segment.setToEntityID(-1);
+        segment.setProgress(0.0F);
+        segment.setGuardDirection("forward_left");
+
+        Vec3 spawn = guardTargetFor(playerIn, "forward_left");
+        segment.setPos(spawn.x, spawn.y, spawn.z);
+
+        worldIn.addFreshEntity(segment);
+        setLastFragment(playerIn, segment);
+        return true;
+    }
+
+    public final class LocalSpace {
+        private static final Vec3 UP = new Vec3(0, 1, 0);
+
+        public static Vec3 forward(LivingEntity e) {
+            float yawRad = e.yBodyRot * Mth.DEG_TO_RAD;
+            return new Vec3(-Mth.sin(yawRad), 0.0D, Mth.cos(yawRad)).normalize();
+        }
+
+        public static Vec3 right(LivingEntity e) {
+            Vec3 f = forward(e);
+            return UP.cross(f).normalize();
+        }
+
+        public static Vec3 left(LivingEntity e) {
+            return right(e).scale(-1.0D);
+        }
+
+        public static Vec3 back(LivingEntity e) {
+            return forward(e).scale(-1.0D);
+        }
+
+        public static Vec3 localOffsetPos(LivingEntity e, double leftU, double upU, double forwardU) {
+            Vec3 base = e.position();
+            Vec3 off = left(e).scale(leftU)
+                    .add(UP.scale(upU))
+                    .add(forward(e).scale(forwardU));
+            return base.add(off);
+        }
+    }
+
+    public static Vec3 guardTargetFor(LivingEntity ent, String direction) {
+        Random random = new Random();
+        if ("forward_left".equalsIgnoreCase(direction)) {
+            return LocalSpace.localOffsetPos(ent, 1, 0, -1);
+        } else if ("forward_right".equalsIgnoreCase(direction)) {
+            return LocalSpace.localOffsetPos(ent, 2, 1, 1);
+        } else if ("backward_right".equalsIgnoreCase(direction)) {
+            return LocalSpace.localOffsetPos(ent, -1, 0, 2);
+        } else {
+            return LocalSpace.localOffsetPos(ent, -1, 2, -1);
+        }
     }
 
     public static void setLastFragment(LivingEntity entity, SnakeBladeEntity tendon) {

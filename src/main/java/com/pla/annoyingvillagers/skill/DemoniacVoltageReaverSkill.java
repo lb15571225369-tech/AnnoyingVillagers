@@ -1,14 +1,24 @@
 package com.pla.annoyingvillagers.skill;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.item.DemoniacVoltageReaverItem;
 import com.pla.annoyingvillagers.util.SnakeBladeHit;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import yesman.epicfight.client.events.engine.ControlEngine;
+import yesman.epicfight.client.input.EpicFightKeyMappings;
+import yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerPatch;
+import yesman.epicfight.skill.Skill;
 import yesman.epicfight.skill.SkillBuilder;
+import yesman.epicfight.skill.SkillCategories;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
+import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
+import yesman.epicfight.world.entity.eventlistener.PlayerEventListener;
 
 import java.util.UUID;
 
@@ -26,6 +36,7 @@ public class DemoniacVoltageReaverSkill extends WeaponInnateSkill {
         Player player = skillContainer.getExecutor().getOriginal();
         ItemStack item = player.getMainHandItem();
 
+        skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.SNAKE_BLADE, 0.0F);
         if (SnakeBladeHit.process(item, player)) {
             item.getOrCreateTag().putBoolean("SnakeAnimation", true);
         }
@@ -41,6 +52,46 @@ public class DemoniacVoltageReaverSkill extends WeaponInnateSkill {
         boolean isActivated = container.isActivated();
 
         return isCorrectItem && !isSnaking && !isActivated && super.canExecute(container);
+    }
+
+    @Override
+    public void onInitiate(SkillContainer container) {
+        super.onInitiate(container);
+        container.getExecutor().getEventListener().addEventListener(
+                PlayerEventListener.EventType.SKILL_CAST_EVENT, EVENT_UUID, (event) -> {
+            Player player = container.getExecutor().getOriginal();
+            ItemStack item = player.getMainHandItem();
+            Skill skill = event.getSkillContainer().getSkill();
+
+            if (skill.getCategory() == SkillCategories.GUARD){
+                if (container.getExecutor() instanceof ServerPlayerPatch serverPlayerPatch
+                        && container.getStack() >= 1
+                        && item.getItem() instanceof DemoniacVoltageReaverItem
+                        && item.getTag() != null) {
+                    event.setCanceled(true);
+                    container.getExecutor().playAnimationSynchronized(AVAnimations.SNAKE_BLADE, 0.0F);
+                    if (!item.getTag().getBoolean("SnakeAnimation")) {
+                        this.getResourceType().consumer
+                                .consume(container, serverPlayerPatch, this.getDefaultConsumptionAmount(serverPlayerPatch));
+                        if (!container.getExecutor().isLogicalClient() && SnakeBladeHit.processGuard(item, player)) {
+                            item.getOrCreateTag().putBoolean("SnakeAnimation", true);
+                        }
+                    }
+                }
+            } else if ((skill.getCategory() == SkillCategories.BASIC_ATTACK
+                    || skill.getCategory() == SkillCategories.AIR_ATTACK
+                    || skill.getCategory() == SkillCategories.DODGE) &&
+                    (item.getItem() instanceof DemoniacVoltageReaverItem
+                            && item.getTag() != null
+                            && item.getTag().getBoolean("SnakeAnimation"))) {
+                event.setCanceled(true);
+            }
+        });
+    }
+
+    @Override
+    public void onRemoved(SkillContainer container) {
+        container.getExecutor().getEventListener().removeListener(PlayerEventListener.EventType.SKILL_CAST_EVENT, EVENT_UUID);
     }
 
     @Override

@@ -16,7 +16,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
-import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.animations.weapons.AnimsNapoleon;
 import yesman.epicfight.skill.SkillBuilder;
 import yesman.epicfight.skill.SkillContainer;
@@ -85,10 +84,7 @@ public class EnderAegisSkill extends WeaponInnateSkill {
                     SkillContainer skillContainer = event.getPlayerPatch().getSkill(this);
                     if (skillContainer == null) return;
                     if (skillContainer.isActivated()) {
-                        try {
-                            event.setCanceled(true);
-                        } catch (Throwable ignored) {
-                        }
+                        event.setCanceled(true);
                         skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.BULL_CHARGE, 0.0F);
                     }
                 }
