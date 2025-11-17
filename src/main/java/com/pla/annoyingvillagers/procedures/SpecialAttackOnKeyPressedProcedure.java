@@ -32,6 +32,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import reascer.wom.gameasset.WOMAnimations;
+import reascer.wom.gameasset.animations.weapons.AnimsMoonless;
 import reascer.wom.gameasset.animations.weapons.AnimsNapoleon;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.LongHitAnimation;
@@ -183,6 +184,22 @@ public class SpecialAttackOnKeyPressedProcedure {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
                     livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F);
                     player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
+                    return;
+                }
+            }
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.ENDER_SLAYER_SCYTHE.get())) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+                    if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
+                        SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.ENDER_SLAYER_SCYTHE);
+                        if (skillContainer != null && skillContainer.getStack() >= 1) {
+                            livingEntityPatch.playAnimationSynchronized(AVAnimations.ENDER_SLAYER_MOONLESS_LUNAR_FULLMOON, 0.0F);
+                        } else {
+                            livingEntityPatch.playAnimationSynchronized(AnimsNapoleon.NAPOLEON_AUTO_3, 0.0F);
+                        }
+                    } else {
+                        livingEntityPatch.playAnimationSynchronized(AnimsNapoleon.NAPOLEON_AUTO_3, 0.0F);
+                    }
                     return;
                 }
             }

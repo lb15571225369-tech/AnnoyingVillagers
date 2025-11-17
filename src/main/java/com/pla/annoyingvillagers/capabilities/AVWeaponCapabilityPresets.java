@@ -39,7 +39,7 @@ public class AVWeaponCapabilityPresets {
     public static final Function<Item, Builder> ENDER_AEGIS = (item) ->
             WeaponCapability.builder()
                     .category(WeaponCategories.SWORD)
-                    .styleProvider((patch) -> Styles.ONE_HAND)
+                    .styleProvider((livingEntityPatch) -> Styles.ONE_HAND)
                     .canBePlacedOffhand(false)
                     .collider(ColliderPreset.SWORD)
                     .swingSound(AVSounds.SWORD_WHOOSH.get())
@@ -87,7 +87,7 @@ public class AVWeaponCapabilityPresets {
             WeaponCapability.builder()
                     .category(WeaponCategories.GREATSWORD)
                     .styleProvider(
-                            (livingentitypatch) -> Styles.TWO_HAND)
+                            (livingEntityPatch) -> Styles.TWO_HAND)
                     .collider(ColliderPreset.GREATSWORD)
                     .swingSound(EpicFightSounds.WHOOSH_BIG.get())
                     .hitSound(EpicFightSounds.BLADE_HIT.get())
@@ -118,7 +118,7 @@ public class AVWeaponCapabilityPresets {
             WeaponCapability.builder()
                     .category(WeaponCategories.GREATSWORD)
                     .styleProvider(
-                            (livingentitypatch) -> Styles.TWO_HAND)
+                            (livingEntityPatch) -> Styles.TWO_HAND)
                     .collider(ColliderPreset.GREATSWORD)
                     .swingSound(EpicFightSounds.WHOOSH_BIG.get())
                     .hitSound(EpicFightSounds.BLADE_HIT.get())
@@ -144,6 +144,32 @@ public class AVWeaponCapabilityPresets {
                             (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE
                                     || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SWORD
                                     || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.DAGGER)));
+
+    public static final Function<Item, CapabilityItem.Builder> ENDER_SLAYER_SCYTHE = (item) ->
+            WeaponCapability.builder().category(WeaponCategories.SPEAR)
+                    .styleProvider((entityPatch) -> Styles.TWO_HAND)
+                    .collider(WOMWeaponColliders.ANTITHEUS)
+                    .hitSound(EpicFightSounds.BLADE_HIT.get())
+                    .swingSound(EpicFightSounds.WHOOSH.get())
+                    .canBePlacedOffhand(false)
+                    .newStyleCombo(Styles.TWO_HAND,
+                            AVAnimations.ENDER_SLAYER_ANTITHEUS_AUTO_2,
+                            AVAnimations.ENDER_SLAYER_ANTITHEUS_AUTO_3,
+                            AVAnimations.ENDER_SLAYER_ANTITHEUS_AUTO_4,
+                            AnimsNapoleon.NAPOLEON_WATERLOW,
+                            AVAnimations.ENDER_SLAYER_ANTITHEUS_AGRESSION,
+                            AnimsAgony.AGONY_CLAWSTRIKE,
+                            AVAnimations.ENDER_SLAYER_ANTITHEUS_GUILLOTINE)
+                    .newStyleCombo(Styles.MOUNT,
+                            Animations.SWORD_MOUNT_ATTACK)
+                    .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.ENDER_SLAYER_SCYTHE)
+                    .comboCancel((style) -> false)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_SPEAR)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, WOMAnimations.ANTITHEUS_WALK)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, EFNLanceAnimations.NF_MEEN_RUN)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, EFNLanceAnimations.NF_MEEN_RUN)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.SWIM, Animations.BIPED_HOLD_SPEAR)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AVAnimations.GLOWING_AGONY_GUARD);
 
     public static final Function<Item, Builder> LEGENDARY_SWORD = (item) ->
             WeaponCapability.builder()
@@ -637,7 +663,7 @@ public class AVWeaponCapabilityPresets {
                 .category(WeaponCategories.UCHIGATANA)
                 .styleProvider((livingentitypatch) -> {
                     if (livingentitypatch instanceof PlayerPatch playerPatch) {
-                        if (playerPatch.getSkill(SkillSlots.WEAPON_PASSIVE).getDataManager().hasData(SkillDataKeys.SHEATH.get()) && (Boolean) playerPatch.getSkill(SkillSlots.WEAPON_PASSIVE).getDataManager().getDataValue(SkillDataKeys.SHEATH.get())) {
+                        if (playerPatch.getSkill(SkillSlots.WEAPON_PASSIVE).getDataManager().hasData(SkillDataKeys.SHEATH.get()) && playerPatch.getSkill(SkillSlots.WEAPON_PASSIVE).getDataManager().getDataValue(SkillDataKeys.SHEATH.get())) {
                             return Styles.SHEATH;
                         }
                     }
@@ -707,31 +733,6 @@ public class AVWeaponCapabilityPresets {
             .livingMotionModifier(Styles.TWO_HAND, LivingMotions.SWIM, Animations.BIPED_HOLD_GREATSWORD)
             .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.GREATSWORD_GUARD);
 
-    public static final Function<Item, CapabilityItem.Builder> ANTITHEUS_SPEAR = (item) ->
-            WeaponCapability.builder().category(WeaponCategories.SPEAR)
-            .styleProvider((entitypatch) -> Styles.TWO_HAND)
-            .collider(WOMWeaponColliders.ANTITHEUS)
-            .hitSound((SoundEvent)EpicFightSounds.BLADE_HIT.get())
-            .swingSound((SoundEvent)EpicFightSounds.WHOOSH.get())
-            .canBePlacedOffhand(false)
-            .newStyleCombo(Styles.TWO_HAND,
-                    WOMAnimations.ANTITHEUS_AUTO_1,
-                    WOMAnimations.ANTITHEUS_AUTO_2,
-                    WOMAnimations.ANTITHEUS_AUTO_3,
-                    WOMAnimations.ANTITHEUS_AUTO_4,
-                    WOMAnimations.ANTITHEUS_AGRESSION,
-                    WOMAnimations.ANTITHEUS_GUILLOTINE)
-            .newStyleCombo(Styles.MOUNT,
-                    Animations.SWORD_MOUNT_ATTACK)
-            .innateSkill(Styles.TWO_HAND, (itemstack) -> EpicFightSkills.GRASPING_SPIRE)
-            .comboCancel((style) -> false)
-            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_SPEAR)
-            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, WOMAnimations.ANTITHEUS_WALK)
-            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, WOMAnimations.ANTITHEUS_RUN)
-            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, WOMAnimations.ANTITHEUS_RUN)
-            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.SWIM, Animations.BIPED_HOLD_SPEAR)
-            .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AVAnimations.GLOWING_AGONY_GUARD);
-
     public static final Function<Item, Builder> SHADOW_OBSIDIAN_SWORD = (item) ->
             WeaponCapability.builder()
             .category(WeaponCategories.SWORD)
@@ -760,6 +761,7 @@ public class AVWeaponCapabilityPresets {
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "ender_glaive"), AVWeaponCapabilityPresets.ENDER_GLAIVE);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "demoniac_voltage_reaver"), AVWeaponCapabilityPresets.DEMONIAC_VOLTAGE_REAVER);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "obsidian_sledgehammer"), AVWeaponCapabilityPresets.OBSIDIAN_SLEDGEHAMMER);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "ender_slayer_scythe"), AVWeaponCapabilityPresets.ENDER_SLAYER_SCYTHE);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "legendary_sword"), AVWeaponCapabilityPresets.LEGENDARY_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "axe"), AVWeaponCapabilityPresets.AXE);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "sword"), AVWeaponCapabilityPresets.SWORD);
@@ -774,7 +776,6 @@ public class AVWeaponCapabilityPresets {
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "hardgreatsword"), AVWeaponCapabilityPresets.HARD_GREAT_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "uchigatana"), AVWeaponCapabilityPresets.UCHIGATANA);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "greatsword"), AVWeaponCapabilityPresets.GREATSWORD);
-        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "antitheus_spear"), AVWeaponCapabilityPresets.ANTITHEUS_SPEAR);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath("epicfight", "shadow_obsidian_sword"), AVWeaponCapabilityPresets.SHADOW_OBSIDIAN_SWORD);
     }
 }

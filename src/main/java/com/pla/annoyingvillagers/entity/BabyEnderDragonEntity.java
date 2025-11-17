@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.item.EnderSlayerScythe;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -29,8 +30,6 @@ import java.util.UUID;
 public class BabyEnderDragonEntity extends FlyingMob {
     private UUID followTargetUUID;
     private Player followTarget;
-    private int breathCooldown = 0;
-    private int lifeLeft = 600;
 
     public final AnimationState idleAnimationState = new AnimationState();
     private int idleAnimationTimeout = 0;
@@ -72,7 +71,7 @@ public class BabyEnderDragonEntity extends FlyingMob {
 
     private void setupAnimationStates() {
         if (this.idleAnimationTimeout <= 0) {
-            this.idleAnimationTimeout = 40;
+            this.idleAnimationTimeout = 60;
             this.idleAnimationState.start(this.tickCount);
         } else {
             --this.idleAnimationTimeout;
@@ -182,6 +181,35 @@ public class BabyEnderDragonEntity extends FlyingMob {
         );
     }
 
+    public void breath() {
+        LivingEntity target;
+        target = followTarget.getLastHurtMob();
+        if (target == null || !target.isAlive()) {
+            target = followTarget.getLastHurtByMob();
+        }
+        if (target == null || !target.isAlive()) {
+            target = getNearestLivingEntity(followTarget.level(), followTarget, 30.0D);
+        }
+        if (target != null) {
+            Vec3 look = this.getLookAngle().normalize();
+            double dist = 0.5;
+            double sx = this.getX() + look.x * dist;
+            double sy = this.getEyeY();
+            double sz = this.getZ() + look.z * dist;
+
+            BabyDragonBeamEntity beam = new BabyDragonBeamEntity(
+                    AnnoyingVillagersModEntities.BABY_DRAGON_BEAM.get(),
+                    level(),
+                    this,
+                    target,
+                    sx, sy, sz,
+                    100, 2
+            );
+            level().addFreshEntity(beam);
+        } else {
+        }
+    }
+
     private void copyOwnerLook(Player owner) {
         float targetYaw   = owner.getYRot();
         float targetPitch = owner.getXRot() * 0.35F;
@@ -200,10 +228,6 @@ public class BabyEnderDragonEntity extends FlyingMob {
             this.setupAnimationStates();
         }
         if (!level().isClientSide) {
-            if (--lifeLeft <= 0) {
-                this.discard();
-                return;
-            }
             if (followTarget == null && followTargetUUID != null) {
                 if (!(this.level() instanceof ServerLevel serverLevel)) return;
                 var server = serverLevel.getServer();
@@ -219,6 +243,18 @@ public class BabyEnderDragonEntity extends FlyingMob {
                 this.discard();
             }
             if (followTarget != null && followTarget.isAlive()) {
+                if (followTarget.getPersistentData().contains("DragonUUID")
+                        && !this.getUUID().equals(followTarget.getPersistentData().getUUID("DragonUUID"))) {
+                    this.discard();
+                } else if (!followTarget.getPersistentData().contains("DragonUUID")) {
+                    this.discard();
+                }
+
+                if (!(followTarget.getMainHandItem().getItem() instanceof EnderSlayerScythe)) {
+                    followTarget.getPersistentData().remove("DragonUUID");
+                    this.discard();
+                }
+
                 double distanceSq = this.distanceToSqr(followTarget);
 
                 if (distanceSq > 4.0D) {
@@ -229,38 +265,7 @@ public class BabyEnderDragonEntity extends FlyingMob {
                             posBehind3D.z
                     );
                 }
-
-                if (breathCooldown <= 0) {
-                    LivingEntity target;
-                    target = followTarget.getLastHurtMob();
-                    if (target == null || !target.isAlive()) {
-                        target = followTarget.getLastHurtByMob();
-                    }
-                    if (target == null || !target.isAlive()) {
-                        target = getNearestLivingEntity(followTarget.level(), followTarget, 30.0D);
-                    }
-                    if (target != null) {
-                        Vec3 look = this.getLookAngle().normalize();
-                        double dist = 0.5;
-                        double sx = this.getX() + look.x * dist;
-                        double sy = this.getEyeY();
-                        double sz = this.getZ() + look.z * dist;
-
-                        BabyDragonBeamEntity beam = new BabyDragonBeamEntity(
-                                AnnoyingVillagersModEntities.BABY_DRAGON_BEAM.get(),
-                                level(),
-                                this,
-                                target,
-                                sx, sy, sz,
-                                100, 2
-                        );
-                        level().addFreshEntity(beam);
-                        breathCooldown = 120;
-                    } else {
-                    }
-                }
             }
-            if (breathCooldown > 0) breathCooldown--;
         }
     }
 
@@ -269,8 +274,6 @@ public class BabyEnderDragonEntity extends FlyingMob {
         super.addAdditionalSaveData(tag);
         if (followTargetUUID != null) {
             tag.putUUID("FollowTarget", followTargetUUID);
-            tag.putInt("BreathCooldown", breathCooldown);
-            tag.putInt("LifeLeft", lifeLeft);
         }
     }
 
@@ -280,8 +283,6 @@ public class BabyEnderDragonEntity extends FlyingMob {
         if (tag.hasUUID("FollowTarget")) {
             followTargetUUID = tag.getUUID("FollowTarget");
         }
-        breathCooldown = tag.getInt("BreathCooldown");
-        lifeLeft = tag.contains("LifeLeft") ? tag.getInt("LifeLeft") : 600;
     }
 
     public static AttributeSupplier.Builder createAttributes() {

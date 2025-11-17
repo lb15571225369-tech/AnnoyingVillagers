@@ -36,6 +36,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
+import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -390,9 +393,9 @@ public class BabyDragonBeamEntity extends Entity {
             if (!playSound) {
                 playSound = true;
                 if (!this.level().isClientSide()) {
-                    this.level().playSound((Player) null, new BlockPos((int) targetPos.x, (int) targetPos.y, (int) targetPos.z), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "dragon_breath"))), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.05D, 0.5D), (float) Mth.nextDouble(RandomSource.create(), 0.8D, 1.1D));
+                    this.level().playSound(null, new BlockPos((int) caster.getX(), (int) caster.getY(), (int) caster.getZ()), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "dragon_breath"))), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.05D, 0.5D), (float) Mth.nextDouble(RandomSource.create(), 0.8D, 1.1D));
                 } else {
-                    this.level().playLocalSound(targetPos.x, targetPos.y, targetPos.z, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "dragon_breath"))), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.05D, 0.5D), (float) Mth.nextDouble(RandomSource.create(), 0.8D, 1.1D), false);
+                    this.level().playLocalSound((int) caster.getX(), (int) caster.getY(), (int) caster.getZ(), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "dragon_breath"))), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.05D, 0.5D), (float) Mth.nextDouble(RandomSource.create(), 0.8D, 1.1D), false);
                 }
             }
             List<LivingEntity> hit = this.raytraceEntities(this.level(), new Vec3(this.getX(), this.getY(), this.getZ()), new Vec3(this.endPosX, this.endPosY, this.endPosZ), false, true, true).entities;
@@ -405,6 +408,10 @@ public class BabyDragonBeamEntity extends Entity {
                     target.hurt(damageSources().indirectMagic(this, this.caster), (float) this.power);
                     target.hurtMarked = true;
                     target.setDeltaMovement(0.0, 0.0, 0.0);
+                    LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(target, LivingEntityPatch.class);
+                    if (livingEntityPatch != null) {
+                        livingEntityPatch.playAnimationSynchronized(Animations.BIPED_HIT_SHORT, 0.0F);
+                    }
                     target.lerpMotion(0.0, 0.0, 0.0);
                 }
             }
