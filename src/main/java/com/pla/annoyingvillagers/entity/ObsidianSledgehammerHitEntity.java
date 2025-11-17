@@ -6,15 +6,13 @@
 
     import com.mojang.brigadier.exceptions.CommandSyntaxException;
     import com.pla.annoyingvillagers.block.CryingObsidianSpikeBlock;
-    import com.pla.annoyingvillagers.gameasset.AVAnimations;
+    import com.pla.annoyingvillagers.gameasset.AVSkills;
     import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
     import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
     import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
     import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
-    import com.pla.annoyingvillagers.util.DelayedTask;
+    import com.pla.annoyingvillagers.skill.ObsidianSledgeHammerSkill;
     import net.minecraft.core.BlockPos;
-    import net.minecraft.core.particles.BlockParticleOption;
-    import net.minecraft.core.particles.ParticleTypes;
     import net.minecraft.nbt.CompoundTag;
     import net.minecraft.network.protocol.Packet;
     import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -28,7 +26,6 @@
     import net.minecraft.world.entity.player.Player;
     import net.minecraft.world.item.ItemStack;
     import net.minecraft.world.level.Level;
-    import net.minecraft.world.level.block.RenderShape;
     import net.minecraft.world.level.block.state.BlockState;
     import net.minecraft.world.phys.AABB;
     import net.minecraft.world.phys.Vec3;
@@ -37,8 +34,11 @@
     import net.minecraftforge.network.NetworkHooks;
     import reascer.wom.world.entity.mob.EnderHand;
     import yesman.epicfight.gameasset.Animations;
+    import yesman.epicfight.skill.SkillContainer;
     import yesman.epicfight.world.capabilities.EpicFightCapabilities;
     import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+    import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
+    import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
     public class ObsidianSledgehammerHitEntity extends Entity {
         private int warmupDelayTicks;
@@ -115,7 +115,7 @@
         }
 
         private void tryPlaceCryingSpikeOnVictim() {
-            if (this.level() instanceof ServerLevel serverLevel) {
+            if (this.level() instanceof ServerLevel) {
                 AABB box = this.getBoundingBox().inflate(0.2D, 0.0D, 0.2D);
                 LivingEntity caster = this.getCaster();
                 var victims = this.level().getEntitiesOfClass(LivingEntity.class, box,
@@ -128,9 +128,6 @@
                 if (!this.level().isEmptyBlock(placePos) && this.level().isEmptyBlock(base.above())) {
                     placePos = base.above();
                 }
-
-                EnderHand enderHand = new EnderHand(serverLevel, new Vec3(placePos.getX(), placePos.getY(), placePos.getZ()), caster, victims.get(0));
-                serverLevel.addFreshEntity(enderHand);
 
                 boolean fromPlayer = caster instanceof Player;
                 BlockState state = AnnoyingVillagersModBlocks.CRYING_OBSIDIAN_SPIKE_BLOCK.get()
@@ -174,7 +171,14 @@
                 }
                 if (this.warmupDelayTicks < -10 && this.warmupDelayTicks > -30) {
                     for(LivingEntity livingentity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.2D, 0.0D, 0.2D))) {
+                        if (livingentity instanceof EnderHand) continue;
                         this.damage(livingentity);
+                        if (this.tickCount % 20 == 0 && this.level() instanceof ServerLevel serverLevel
+                        && livingentity != caster && !livingentity.isAlliedTo(caster)) {
+                            EnderHand enderHand = new EnderHand(serverLevel, new Vec3(this.getX(), this.getY(), this.getZ()), caster, livingentity);
+                            serverLevel.addFreshEntity(enderHand);
+                            increaseSkillPoint(caster, 2.0F);
+                        }
                     }
                 }
 
@@ -192,6 +196,22 @@
 
         }
 
+        public void increaseSkillPoint(Entity entity, float value) {
+            if (entity instanceof Player player) {
+                PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+                if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
+                    SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.OBSIDIAN_SLEDGEHAMMER);
+                    if (skillContainer == null) return;
+                    ObsidianSledgeHammerSkill obsidianSledgeHammerSkill = (ObsidianSledgeHammerSkill) skillContainer.getSkill();
+
+                    float currentResource = skillContainer.getResource();
+                    float neededResource = skillContainer.getNeededResource();
+                    float addResource = Math.min(value, neededResource);
+                    obsidianSledgeHammerSkill.setConsumptionSynchronize(skillContainer, currentResource + addResource);
+                }
+            }
+        }
+
         public boolean isActivate() {
             return this.entityData.get(ACTIVATE);
         }
@@ -202,7 +222,8 @@
 
         private void damage(LivingEntity hitEntity) {
             LivingEntity livingentity = this.getCaster();
-            if (hitEntity.isAlive() && !hitEntity.isInvulnerable() && hitEntity != livingentity) {
+            if (hitEntity.isAlive() && !hitEntity.isInvulnerable()
+                    && hitEntity != livingentity && !(hitEntity instanceof EnderHand)) {
                 hitEntity.setDeltaMovement(new Vec3(0.0D, 0.0D, 0.0D));
                 try {
                     this.getServer().getCommands().getDispatcher().execute(
@@ -220,7 +241,7 @@
                     hitEntity.hurt(this.level().damageSources().indirectMagic(this, livingentity), this.getDamage());
                 }
                 if (!hitEntity.level().isClientSide() && hitEntity.getServer() != null) {
-                    LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(hitEntity, LivingEntityPatch.class);
+                    LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(hitEntity, LivingEntityPatch.class);
                     if (livingEntityPatch != null) {
                         livingEntityPatch.playAnimationSynchronized(Animations.BIPED_HIT_LONG, 0.0F);
                     }

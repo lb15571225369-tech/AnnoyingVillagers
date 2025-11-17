@@ -129,11 +129,11 @@ public class AVWeaponCapabilityPresets {
                             WOMAnimations.TORMENT_AUTO_4,
                             AnimsSolar.SOLAR_AUTO_4,
                             AnimsSolar.SOLAR_AUTO_2,
-                            EFNGreatSwordAnimations.NG_GREATSWORD_AIRSLASH,
+                            AnimsSolar.SOLAR_OBSCURIDAD_AUTO_4,
                             AnimsEnderblaster.ENDERBLASTER_TWOHAND_TISHNAW
                     ).newStyleCombo(Styles.MOUNT,
                             Animations.SWORD_MOUNT_ATTACK)
-                    .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.DEMONIAC_VOLTAGE_REAVER)
+                    .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.OBSIDIAN_SLEDGEHAMMER)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, WOMAnimations.TORMENT_BERSERK_IDLE)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, EFNGreatSwordAnimations.NG_GREATSWOED_WALK)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, EFNGreatSwordAnimations.NG_GREATSWORD_RUN)

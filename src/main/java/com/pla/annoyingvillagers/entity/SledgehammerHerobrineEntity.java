@@ -4,13 +4,11 @@ import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
-import com.pla.annoyingvillagers.procedures.GroundSlamHitProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -208,7 +206,6 @@ public class SledgehammerHerobrineEntity extends HerobrineMob {
             }
         }
         if (!this.level().isClientSide()) {
-            GroundSlamHitProcedure.tickFor(this);
         }
     }
 

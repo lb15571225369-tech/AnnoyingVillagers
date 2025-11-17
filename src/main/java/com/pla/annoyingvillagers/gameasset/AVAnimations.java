@@ -3,8 +3,10 @@ import java.util.Random;
 import java.util.Set;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -20,8 +22,11 @@ import com.pla.annoyingvillagers.animations.types.HeavyAttackAnimation;
 import com.pla.annoyingvillagers.animations.types.KickAttackAnimation;
 import net.minecraftforge.fml.common.Mod;
 import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
+import reascer.wom.animation.attacks.SpecialAttackAnimation;
+import reascer.wom.gameasset.ReuseableEvents;
 import reascer.wom.gameasset.colliders.WOMWeaponColliders;
 import reascer.wom.particle.WOMParticles;
+import reascer.wom.world.damagesources.WOMExtraDamageInstance;
 import yesman.epicfight.api.animation.AnimationManager;
 import yesman.epicfight.api.animation.Joint;
 import yesman.epicfight.api.animation.property.AnimationEvent;
@@ -37,6 +42,7 @@ import yesman.epicfight.api.utils.LevelUtil;
 import yesman.epicfight.api.utils.TimePairList;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.api.utils.math.ValueModifier;
+import yesman.epicfight.api.utils.math.Vec2f;
 import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.gameasset.Animations.ReusableSources;
 import yesman.epicfight.gameasset.Armatures;
@@ -171,6 +177,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> BULL_CHARGE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> SNAKE_BLADE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> IDLE_BREAK;
+    public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> SLEDGE_HAMMER_INNATE_DASH;
 
     @SubscribeEvent
     public static void registerAnimations(AnimationManager.AnimationRegistryEvent event) {
@@ -1043,6 +1050,21 @@ public class AVAnimations {
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F)
                         .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
                         .addProperty(StaticAnimationProperty.POSE_MODIFIER, null));
+        AVAnimations.SLEDGE_HAMMER_INNATE_DASH = builder.nextAccessor("biped/other/sledge_hammer_innate_dash",
+                (accessor) -> (new SpecialAttackAnimation(0.05F, accessor, humanoidarmature,
+                        new Phase(0.0F, 0.35F, 0.39F, 0.4F, 0.4F, humanoidarmature.get().rootJoint, WOMWeaponColliders.ENDER_PISTOLERO),
+                        new Phase(0.4F, 0.45F, 0.49F, 0.5F, 0.5F, InteractionHand.OFF_HAND, humanoidarmature.get().rootJoint, WOMWeaponColliders.ENDER_PISTOLERO),
+                        new Phase(0.5F, 0.55F, 0.59F, 0.6F, 0.6F, humanoidarmature.get().rootJoint, WOMWeaponColliders.ENDER_PISTOLERO),
+                        new Phase(0.6F, 0.65F, 0.69F, 0.7F, 0.7F, InteractionHand.OFF_HAND, humanoidarmature.get().rootJoint, WOMWeaponColliders.ENDER_PISTOLERO),
+                        new Phase(0.7F, 0.75F, 0.79F, 0.8F, 0.8F, humanoidarmature.get().rootJoint, WOMWeaponColliders.ENDER_PISTOLERO),
+                        new Phase(0.8F, 0.85F, 0.9F, 1.5F, Float.MAX_VALUE, InteractionHand.OFF_HAND, humanoidarmature.get().rootJoint, WOMWeaponColliders.ENDER_PISTOLERO)))
+                        .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.8F)
+                        .addProperty(StaticAnimationProperty.POSE_MODIFIER, null)
+                        .addProperty(ActionAnimationProperty.MOVE_VERTICAL, true)
+                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, false)
+                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
+                        .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.0F, 1.5F)));
     }
 
     private static class ReuseableEvents {

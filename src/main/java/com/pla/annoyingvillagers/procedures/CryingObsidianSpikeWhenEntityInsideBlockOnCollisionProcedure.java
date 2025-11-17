@@ -18,6 +18,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
+import reascer.wom.world.entity.mob.EnderHand;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
@@ -46,6 +47,8 @@ public class CryingObsidianSpikeWhenEntityInsideBlockOnCollisionProcedure {
             if (!fromPlayer && ObsidianWeaponUtil.isHerobrineFaction(entity)) {
                 return;
             }
+
+            if (entity instanceof EnderHand) return;
 
             if (entity instanceof Player && fromPlayer && levelaccessor.getServer() != null && !levelaccessor.getServer().isPvpAllowed()) {
                 return;
