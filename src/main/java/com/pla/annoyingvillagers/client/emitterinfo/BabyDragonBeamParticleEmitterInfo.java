@@ -114,7 +114,7 @@ public class BabyDragonBeamParticleEmitterInfo extends ParticleEmitterInfo {
             // first frame
             Vec3 f0 = caster0.getLookAngle().normalize();
             double muzzle = 1.0;
-            Vec3 from0 = new Vec3(caster0.getX(), caster0.getEyeY(), caster0.getZ())
+            Vec3 from0 = new Vec3(caster0.getX(), caster0.getEyeY() + 0.3, caster0.getZ())
                     .add(f0.scale(muzzle));
 
             LivingEntity t0 = targetRef.get();
@@ -135,7 +135,7 @@ public class BabyDragonBeamParticleEmitterInfo extends ParticleEmitterInfo {
 
                 Vec3 fwd = c.getViewVector(partial).normalize();
                 double muzzle2 = 1.0;
-                Vec3 from = eyeLerped(c, partial).add(fwd.scale(muzzle2));
+                Vec3 from = eyeLerped(c, partial).add(0.0, 0.3, 0.0).add(fwd.scale(muzzle2));
 
                 LivingEntity t = targetRef.get();
                 Vec3 to = (t != null && t.isAlive()) ? eyeLerped(t, partial)

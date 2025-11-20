@@ -32,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.damagesource.StunType;
 
 @OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
 public class StealthAttackEntity extends AbstractArrow implements ItemSupplier {
@@ -79,7 +80,7 @@ public class StealthAttackEntity extends AbstractArrow implements ItemSupplier {
     }
 
     public static StealthAttackEntity shoot(Level level, LivingEntity livingentity, Random random, float f, double d0, int i) {
-        StealthAttackEntity stealthAttackEntity = new StealthAttackEntity((EntityType) AnnoyingVillagersModEntities.STEALTH_ATTACK_PROJECTILE.get(), livingentity, level);
+        StealthAttackEntity stealthAttackEntity = new StealthAttackEntity(AnnoyingVillagersModEntities.STEALTH_ATTACK_PROJECTILE.get(), livingentity, level);
 
         stealthAttackEntity.shoot(livingentity.getViewVector(1.0F).x, livingentity.getViewVector(1.0F).y, livingentity.getViewVector(1.0F).z, f * 2.0F, 0.0F);
         stealthAttackEntity.setSilent(true);
@@ -92,7 +93,7 @@ public class StealthAttackEntity extends AbstractArrow implements ItemSupplier {
     }
 
     public static StealthAttackEntity shoot(LivingEntity livingentity, LivingEntity livingentity1) {
-        StealthAttackEntity stealthAttackEntity = new StealthAttackEntity((EntityType) AnnoyingVillagersModEntities.STEALTH_ATTACK_PROJECTILE.get(), livingentity, livingentity.level());
+        StealthAttackEntity stealthAttackEntity = new StealthAttackEntity(AnnoyingVillagersModEntities.STEALTH_ATTACK_PROJECTILE.get(), livingentity, livingentity.level());
         double d0 = livingentity1.getX() - livingentity.getX();
         double d1 = livingentity1.getY() + (double) livingentity1.getEyeHeight() - 1.1D;
         double d2 = livingentity1.getZ() - livingentity.getZ();
@@ -126,7 +127,7 @@ public class StealthAttackEntity extends AbstractArrow implements ItemSupplier {
                 vicTim.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 5", vicTim.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(vicTim, LivingEntityPatch.class);
                 if (livingEntityPatch != null) {
-                    livingEntityPatch.playAnimationSynchronized(Animations.BIPED_HIT_LONG, 0.0F);
+                    livingEntityPatch.applyStun(StunType.LONG, 40.0F);
                 }
             } catch (CommandSyntaxException e) {
             }

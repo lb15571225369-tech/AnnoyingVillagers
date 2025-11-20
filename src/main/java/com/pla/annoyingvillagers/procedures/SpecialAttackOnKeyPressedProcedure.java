@@ -118,7 +118,7 @@ public class SpecialAttackOnKeyPressedProcedure {
                     } else {
                         livingEntityPatch.playAnimationSynchronized(EFNGreatSwordAnimations.NG_GREATSWORD_AIRSLASH, 0.0F);
                     }
-                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
                     return;
                 }
             }
@@ -168,7 +168,7 @@ public class SpecialAttackOnKeyPressedProcedure {
                             };
                         }
                     }
-                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
                     return;
                 }
             }
@@ -176,14 +176,14 @@ public class SpecialAttackOnKeyPressedProcedure {
                 if (!entity.level().isClientSide() && entity.getServer() != null
                         && holdingItem.getTag() != null && !holdingItem.getTag().getBoolean("SnakeAnimation")) {
                     livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_CHARGED_ATTACK_1, 0.0F);
-                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
                 }
                 return;
             }
             if (holdingItem.getItem().equals(AnnoyingVillagersModItems.OBSIDIAN_SLEDGEHAMMER.get())) {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
                     livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F);
-                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
                     return;
                 }
             }
@@ -200,6 +200,7 @@ public class SpecialAttackOnKeyPressedProcedure {
                     } else {
                         livingEntityPatch.playAnimationSynchronized(AnimsNapoleon.NAPOLEON_AUTO_3, 0.0F);
                     }
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
                     return;
                 }
             }

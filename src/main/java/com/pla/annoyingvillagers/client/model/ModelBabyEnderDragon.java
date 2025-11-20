@@ -203,6 +203,10 @@ public class ModelBabyEnderDragon<T extends BabyEnderDragonEntity> extends Hiera
     @Override
     public void setupAnim(BabyEnderDragonEntity pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
         root().getAllParts().forEach(ModelPart::resetPose);
-        animate(pEntity.idleAnimationState, BabyEnderDragonAnimations.BABY_ENDER_DRAGON_IDLE, pAgeInTicks);
+        if (pEntity.shootAnimationState.isStarted()) {
+            animate(pEntity.shootAnimationState, BabyEnderDragonAnimations.BABY_ENDER_DRAGON_SHOOT, pAgeInTicks);
+        } else {
+            animate(pEntity.idleAnimationState, BabyEnderDragonAnimations.BABY_ENDER_DRAGON_IDLE, pAgeInTicks);
+        }
     }
 }

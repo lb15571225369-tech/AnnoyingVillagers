@@ -39,6 +39,7 @@
     import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
     import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
     import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
+    import yesman.epicfight.world.damagesource.StunType;
 
     public class ObsidianSledgehammerHitEntity extends Entity {
         private int warmupDelayTicks;
@@ -243,7 +244,7 @@
                 if (!hitEntity.level().isClientSide() && hitEntity.getServer() != null) {
                     LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(hitEntity, LivingEntityPatch.class);
                     if (livingEntityPatch != null) {
-                        livingEntityPatch.playAnimationSynchronized(Animations.BIPED_HIT_LONG, 0.0F);
+                        livingEntityPatch.applyStun(StunType.LONG, 40.0F);
                     }
                 }
             }

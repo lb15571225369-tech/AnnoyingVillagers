@@ -14,7 +14,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -36,9 +36,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
-import yesman.epicfight.gameasset.Animations;
+import reascer.wom.world.entity.mob.EnderHand;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.damagesource.StunType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -193,7 +194,7 @@ public class BabyDragonBeamEntity extends Entity {
     }
 
     private void calculateEndPos() {
-        double radius = 30.0;
+        double radius = 7.5;
         double yaw = this.getYaw();
         double pitch = this.getPitch();
 
@@ -216,14 +217,36 @@ public class BabyDragonBeamEntity extends Entity {
             this.collidePosZ = hitVec.z;
             this.blockSide = result.blockHit.getDirection();
 
-            if (world.isClientSide) {
-                AAALevel.addParticle(world, false,
-                        new ParticleEmitterInfo(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "baby_dragon_beam_hit"))
-                                .clone()
-                                .position(hitBlock.getX(), hitBlock.getY(), hitBlock.getZ()));
-            }
-
             if (!world.isClientSide) {
+                boolean shouldBreak = true;
+
+                if (this.target != null && this.target.isAlive()) {
+                    double hitDist2    = from.distanceToSqr(hitVec);
+                    double targetDist2 = from.distanceToSqr(this.target.getEyePosition(1.0F));
+                    shouldBreak = hitDist2 + 1e-6 < targetDist2;
+
+                    BlockPos targetFeet = this.target.blockPosition();
+                    BlockPos targetEyes = BlockPos.containing(this.target.getEyePosition(1.0F));
+
+                    if (hitBlock.getY() >= targetFeet.getY() && hitBlock.getY() <= targetEyes.getY()) {
+                        shouldBreak = false;
+                    }
+                }
+
+                if (shouldBreak) {
+                    var hitState = world.getBlockState(hitBlock);
+                    if (!hitState.isAir()) {
+                        if (hitState.getDestroySpeed(world, hitBlock) > 0.0F) {
+                            world.destroyBlock(hitBlock, true, this.caster);
+                        }
+
+                        BlockPos above = hitBlock.above();
+                        if (world.getBlockState(above).isAir()) {
+                            world.setBlockAndUpdate(above, AnnoyingVillagersModBlocks.END_FIRE.get().defaultBlockState());
+                        }
+                    }
+                }
+
                 if (world.getBlockState(hitBlock.above()).isAir() && world.getBlockState(hitBlock).isSolidRender(world, hitBlock)) {
                     world.setBlockAndUpdate(hitBlock.above(), AnnoyingVillagersModBlocks.END_FIRE.get().defaultBlockState());
                 }
@@ -302,7 +325,10 @@ public class BabyDragonBeamEntity extends Entity {
         }
 
         if (this.caster != null) {
-            this.moveTo(caster.getX(), caster.getY() + caster.getBbHeight() * 0.6, caster.getZ());
+            Vec3 eye = caster.getEyePosition(1.0F);
+            Vec3 fwd = caster.getViewVector(1.0F).normalize();
+            double muzzle = 0.25;
+            this.moveTo(eye.x + fwd.x * muzzle, eye.y + fwd.y * muzzle, eye.z + fwd.z * muzzle);
         }
 
         if (this.target != null && this.target.isAlive()) {
@@ -383,36 +409,38 @@ public class BabyDragonBeamEntity extends Entity {
                     .add(fwd.scale(muzzle));
             Vec3 to = target.getEyePosition(1.0F);
 
-            new BabyDragonBeamParticleEmitterInfo(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "baby_dragon_beam"))
+            new BabyDragonBeamParticleEmitterInfo(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "baby_dragon_beam_short"))
                     .fromTo(from, to, BabyDragonBeamParticleEmitterInfo.ForwardAxis.PLUS_Z, 0f)
                     .follow(caster, target, 120, BabyDragonBeamParticleEmitterInfo.ForwardAxis.PLUS_Z, 0f)
                     .spawnInWorld(caster.level(), null);
         }
 
-        if (this.isRenderable() && this.tickCount >= 50) {
+        if (this.isRenderable() && this.tickCount >= 10) {
             if (!playSound) {
                 playSound = true;
                 if (!this.level().isClientSide()) {
-                    this.level().playSound(null, new BlockPos((int) caster.getX(), (int) caster.getY(), (int) caster.getZ()), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "dragon_breath"))), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.05D, 0.5D), (float) Mth.nextDouble(RandomSource.create(), 0.8D, 1.1D));
+                    this.level().playSound(null, new BlockPos((int) caster.getX(), (int) caster.getY(), (int) caster.getZ()), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_shot"))), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.05D, 0.5D), (float) Mth.nextDouble(RandomSource.create(), 0.8D, 1.1D));
                 } else {
-                    this.level().playLocalSound((int) caster.getX(), (int) caster.getY(), (int) caster.getZ(), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "dragon_breath"))), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.05D, 0.5D), (float) Mth.nextDouble(RandomSource.create(), 0.8D, 1.1D), false);
+                    this.level().playLocalSound((int) caster.getX(), (int) caster.getY(), (int) caster.getZ(), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_shot"))), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.05D, 0.5D), (float) Mth.nextDouble(RandomSource.create(), 0.8D, 1.1D), false);
                 }
             }
             List<LivingEntity> hit = this.raytraceEntities(this.level(), new Vec3(this.getX(), this.getY(), this.getZ()), new Vec3(this.endPosX, this.endPosY, this.endPosZ), false, true, true).entities;
-            if (!this.level().isClientSide) {
-
+            if (this.level() instanceof ServerLevel serverLevel) {
                 for (LivingEntity target : hit) {
                     if (target instanceof Player player && player.getUUID().equals(caster.getFollowTargetUUID())) {
                         break;
                     }
-                    target.hurt(damageSources().indirectMagic(this, this.caster), (float) this.power);
-                    target.hurtMarked = true;
-                    target.setDeltaMovement(0.0, 0.0, 0.0);
-                    LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(target, LivingEntityPatch.class);
-                    if (livingEntityPatch != null) {
-                        livingEntityPatch.playAnimationSynchronized(Animations.BIPED_HIT_SHORT, 0.0F);
+                    if (this.caster != null && this.caster.getFollowTarget() != null) {
+                        target.hurt(damageSources().indirectMagic(this, this.caster.getFollowTarget()), (float) this.power);
+                        target.hurtMarked = true;
                     }
-                    target.lerpMotion(0.0, 0.0, 0.0);
+                    target.setDeltaMovement(0.0, 0.0, 0.0);
+                    LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(target, LivingEntityPatch.class);
+                    if (livingEntityPatch != null) {
+                        livingEntityPatch.applyStun(StunType.LONG, 40.0F);
+                    }
+                    EnderHand enderHand = new EnderHand(serverLevel, new Vec3(target.getX(), target.getY(), target.getZ()), caster.getFollowTarget(), target);
+                    serverLevel.addFreshEntity(enderHand);
                 }
             }
         }

@@ -43,6 +43,7 @@ import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
+import yesman.epicfight.world.damagesource.StunType;
 
 public class SnakeBladeEntity extends Entity {
 
@@ -181,7 +182,7 @@ public class SnakeBladeEntity extends Entity {
                 if (!target.level().isClientSide() && target.getServer() != null) {
                     LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(target, LivingEntityPatch.class);
                     if (livingEntityPatch != null) {
-                        livingEntityPatch.playAnimationSynchronized(Animations.BIPED_HIT_LONG, 0.0F);
+                        livingEntityPatch.playAnimationSynchronized(Animations.BIPED_COMMON_NEUTRALIZED, 0.0F);
                     }
                 }
 
@@ -287,7 +288,7 @@ public class SnakeBladeEntity extends Entity {
                                     if (!current.level().isClientSide() && current.getServer() != null) {
                                         LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(current, LivingEntityPatch.class);
                                         if (livingEntityPatch != null) {
-                                            livingEntityPatch.playAnimationSynchronized(Animations.BIPED_HIT_LONG, 0.0F);
+                                            livingEntityPatch.playAnimationSynchronized(AVAnimations.GUARD_BREAK_ATTACK, 0.0F);
                                         }
                                     }
                                     if (current instanceof LivingEntity livingEntity) {

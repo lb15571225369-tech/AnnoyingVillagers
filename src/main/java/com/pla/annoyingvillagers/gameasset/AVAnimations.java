@@ -1159,7 +1159,8 @@ public class AVAnimations {
                 .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6F)
                 .addProperty(StaticAnimationProperty.POSE_MODIFIER, null));
         AVAnimations.ENDER_SLAYER_ANTITHEUS_AIMING = builder.nextAccessor("biped/other/ender_slayer_antitheus_aiming",
-                (accessor) -> new StaticAnimation(false, accessor, humanoidarmature));
+                (accessor) -> new StaticAnimation(false, accessor, humanoidarmature)
+                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, (self, entitypatch, speed, prevElapsedTime, elapsedTime) -> 2.0F));
     }
 
     private static class ReuseableEvents {

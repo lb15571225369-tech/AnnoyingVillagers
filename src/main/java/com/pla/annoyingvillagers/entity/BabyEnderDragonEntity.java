@@ -1,10 +1,14 @@
 package com.pla.annoyingvillagers.entity;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.item.EnderSlayerScythe;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -18,21 +22,27 @@ import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
+import reascer.wom.world.entity.mob.EnderHand;
 
 import java.util.UUID;
 
 public class BabyEnderDragonEntity extends FlyingMob {
     private UUID followTargetUUID;
     private Player followTarget;
+    private int lookAtTimer = 0;
+    private LivingEntity lookAtTarget = null;
 
     public final AnimationState idleAnimationState = new AnimationState();
     private int idleAnimationTimeout = 0;
+
+    public final AnimationState shootAnimationState = new AnimationState();
+    private static final EntityDataAccessor<Integer> SHOOT_TICKS =
+            SynchedEntityData.defineId(BabyEnderDragonEntity.class, EntityDataSerializers.INT);
 
     public void setFollowTarget(Player followTarget) {
         this.followTarget = followTarget;
@@ -44,6 +54,25 @@ public class BabyEnderDragonEntity extends FlyingMob {
 
     public UUID getFollowTargetUUID() {
         return followTargetUUID;
+    }
+
+    public Player getFollowTarget() {
+        return followTarget;
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(SHOOT_TICKS, 0);
+    }
+
+    public int getShootTicks() {
+        return this.entityData.get(SHOOT_TICKS);
+    }
+    public void startShoot(int ticks) {
+        if (!this.level().isClientSide) {
+            this.entityData.set(SHOOT_TICKS, ticks);
+        }
     }
 
     public BabyEnderDragonEntity(PlayMessages.SpawnEntity spawnentity, Level level) {
@@ -69,13 +98,21 @@ public class BabyEnderDragonEntity extends FlyingMob {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
-    private void setupAnimationStates() {
-        if (this.idleAnimationTimeout <= 0) {
-            this.idleAnimationTimeout = 40;
-            this.idleAnimationState.start(this.tickCount);
-        } else {
-            --this.idleAnimationTimeout;
-        }
+    private void lookAtEntity(LivingEntity target, float yawStep, float pitchStep) {
+        if (target == null) return;
+
+        Vec3 myEye = this.getEyePosition(1.0F);
+        Vec3 tgEye = target.getEyePosition(1.0F);
+        Vec3 to    = tgEye.subtract(myEye);
+
+        float desiredYaw   = (float)(Mth.atan2(to.z, to.x) * (180F / Math.PI)) - 90.0F;
+        float desiredPitch = (float)(-(Mth.atan2(to.y, Math.sqrt(to.x * to.x + to.z * to.z)) * (180F / Math.PI)));
+
+        this.setYRot(Mth.approachDegrees(this.getYRot(), desiredYaw,   yawStep));
+        this.setXRot(Mth.approachDegrees(this.getXRot(), desiredPitch, pitchStep));
+
+        this.yBodyRot = this.getYRot();
+        this.yHeadRot = this.getYRot();
     }
 
     @Override
@@ -91,8 +128,10 @@ public class BabyEnderDragonEntity extends FlyingMob {
             public void tick() {
                 if (followTarget != null && followTarget.isAlive()) {
                     copyOwnerLook(followTarget);
-                    Vec3 posBehind3D = posBehind3D(followTarget, 1.0D, 2.0D, 1.0D);
-                    getNavigation().moveTo(posBehind3D.x, posBehind3D.y, posBehind3D.z, 9999.0D);
+                    Vec3 target = posBehind3D(followTarget, 1.0D, 2.0D, 1.0D);
+                    Vec3 to = target.subtract(position());
+                    Vec3 vel = getDeltaMovement().scale(0.85).add(to.scale(0.15));
+                    setDeltaMovement(vel);
                 }
             }
 
@@ -105,20 +144,21 @@ public class BabyEnderDragonEntity extends FlyingMob {
 
     @Override
     public boolean hurt(DamageSource damagesource, float f) {
-        if (damagesource.getDirectEntity() instanceof AbstractArrow) return false;
-        if (damagesource.is(DamageTypes.PLAYER_ATTACK)) return false;
-        if (damagesource.is(DamageTypes.THROWN)) return false;
-        if (damagesource.is(DamageTypes.EXPLOSION)) return false;
-        if (damagesource.is(DamageTypes.DRAGON_BREATH)) return false;
-        if (damagesource.is(DamageTypes.FALL)) return false;
-        if (damagesource.is(DamageTypes.CACTUS)) return false;
-        if (damagesource.is(DamageTypes.DROWN)) return false;
-        if (damagesource.is(DamageTypes.LIGHTNING_BOLT)) return false;
-        if (damagesource.is(DamageTypes.WITHER)) return false;
-        if (damagesource.is(DamageTypes.TRIDENT)) return false;
-        if (damagesource.is(DamageTypes.WITHER_SKULL)) return false;
-        if (damagesource.is(DamageTypes.FALLING_ANVIL)) return false;
-        return super.hurt(damagesource, f);
+        if (!this.level().isClientSide()
+                && !damagesource.is(DamageTypes.IN_WALL)
+                && damagesource.getEntity() != followTarget
+                && !damagesource.is(DamageTypes.IN_FIRE)) {
+            try {
+                this.getServer().getCommands().getDispatcher().execute(
+                        "playsound epicfight:entity.hit.clash neutral @p",
+                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                this.getServer().getCommands().getDispatcher().execute(
+                        "execute at @s run particle epicfight:hit_blade ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
+                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+            } catch (CommandSyntaxException e) {
+            }
+        }
+        return false;
     }
 
     @Override
@@ -156,7 +196,6 @@ public class BabyEnderDragonEntity extends FlyingMob {
             @Override
             public void clientTick() {
                 BabyEnderDragonEntity self = BabyEnderDragonEntity.this;
-                self.yHeadRot = self.getYRot();
                 self.yBodyRot = self.getYRot();
             }
         };
@@ -174,7 +213,12 @@ public class BabyEnderDragonEntity extends FlyingMob {
         AABB searchBox = sourceEntity.getBoundingBox().inflate(range);
 
         return level.getNearestEntity(
-                level.getEntitiesOfClass(LivingEntity.class, searchBox, e -> e != sourceEntity && !(e instanceof BabyEnderDragonEntity) && e.isAlive()),
+                level.getEntitiesOfClass(LivingEntity.class, searchBox,
+                        e -> e != sourceEntity
+                                && !(e instanceof BabyEnderDragonEntity)
+                                && !(e instanceof EnderHand)
+                                && !e.isAlliedTo(sourceEntity)
+                                && e.isAlive()),
                 TargetingConditions.DEFAULT,
                 (LivingEntity) sourceEntity,
                 sourceEntity.getX(), sourceEntity.getY(), sourceEntity.getZ()
@@ -182,20 +226,16 @@ public class BabyEnderDragonEntity extends FlyingMob {
     }
 
     public void breath() {
-        LivingEntity target;
-        target = followTarget.getLastHurtMob();
-        if (target == null || !target.isAlive()) {
-            target = followTarget.getLastHurtByMob();
-        }
-        if (target == null || !target.isAlive()) {
-            target = getNearestLivingEntity(followTarget.level(), followTarget, 30.0D);
-        }
+        LivingEntity target = getNearestLivingEntity(followTarget.level(), followTarget, 6.0D);
         if (target != null) {
-            Vec3 look = this.getLookAngle().normalize();
-            double dist = 0.5;
-            double sx = this.getX() + look.x * dist;
-            double sy = this.getEyeY();
-            double sz = this.getZ() + look.z * dist;
+            this.startShoot(55);
+
+            Vec3 eye = this.getEyePosition(1.0F);
+            Vec3 fwd = this.getViewVector(1.0F).normalize();
+            double muzzle = 0.25;
+            double sx = eye.x + fwd.x * muzzle;
+            double sy = eye.y + fwd.y * muzzle;
+            double sz = eye.z + fwd.z * muzzle;
 
             BabyDragonBeamEntity beam = new BabyDragonBeamEntity(
                     AnnoyingVillagersModEntities.BABY_DRAGON_BEAM.get(),
@@ -203,10 +243,11 @@ public class BabyEnderDragonEntity extends FlyingMob {
                     this,
                     target,
                     sx, sy, sz,
-                    100, 2
+                    10, 6
             );
             level().addFreshEntity(beam);
-        } else {
+            this.lookAtTarget = target;
+            this.lookAtTimer  = 40;
         }
     }
 
@@ -225,9 +266,32 @@ public class BabyEnderDragonEntity extends FlyingMob {
     public void tick() {
         super.tick();
         if (level().isClientSide) {
-            this.setupAnimationStates();
+            boolean shooting = getShootTicks() > 10;
+
+            if (shooting) {
+                if (!this.shootAnimationState.isStarted()) {
+                    this.shootAnimationState.start(this.tickCount);
+                }
+                this.idleAnimationState.stop();
+            } else {
+                this.shootAnimationState.stop();
+                if (!this.idleAnimationState.isStarted()) {
+                    this.idleAnimationState.start(this.tickCount);
+                }
+            }
         }
         if (!level().isClientSide) {
+            if (getShootTicks() > 0) this.entityData.set(SHOOT_TICKS, getShootTicks() - 1);
+            if (this.followTarget != null && this.followTarget.isAlive()) {
+                if (this.lookAtTimer > 0 && this.lookAtTarget != null && this.lookAtTarget.isAlive()) {
+                    lookAtEntity(this.lookAtTarget, 999f, 999f);
+                    this.lookAtTimer--;
+                    if (this.lookAtTimer == 0) this.lookAtTarget = null;
+                } else {
+                    copyOwnerLook(this.followTarget);
+                }
+            }
+
             if (followTarget == null && followTargetUUID != null) {
                 if (!(this.level() instanceof ServerLevel serverLevel)) return;
                 var server = serverLevel.getServer();
