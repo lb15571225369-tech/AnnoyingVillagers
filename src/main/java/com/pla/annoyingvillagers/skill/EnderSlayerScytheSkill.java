@@ -42,7 +42,11 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
                 if (player.getPersistentData().contains("DragonUUID")) {
                     Entity entity = serverLevel.getEntity(player.getPersistentData().getUUID("DragonUUID"));
                     if (entity instanceof BabyEnderDragonEntity babyEnderDragonEntity) {
-                        babyEnderDragonEntity.breath();
+                        if (babyEnderDragonEntity.isShootingState()) {
+                            babyEnderDragonEntity.setShootingState(false);
+                        } else {
+                            babyEnderDragonEntity.setShootingState(true);
+                        }
                     }
                 }
             }

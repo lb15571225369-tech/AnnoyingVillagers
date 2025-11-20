@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.entity;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.item.EnderSlayerScythe;
+import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -38,7 +39,9 @@ public class BabyEnderDragonEntity extends FlyingMob {
     private LivingEntity lookAtTarget = null;
 
     public final AnimationState idleAnimationState = new AnimationState();
-    private int idleAnimationTimeout = 0;
+
+    private boolean shootingState = false;
+    private int breathCooldown = 0;
 
     public final AnimationState shootAnimationState = new AnimationState();
     private static final EntityDataAccessor<Integer> SHOOT_TICKS =
@@ -58,6 +61,14 @@ public class BabyEnderDragonEntity extends FlyingMob {
 
     public Player getFollowTarget() {
         return followTarget;
+    }
+
+    public boolean isShootingState() {
+        return shootingState;
+    }
+
+    public void setShootingState(boolean shootingState) {
+        this.shootingState = shootingState;
     }
 
     @Override
@@ -281,7 +292,22 @@ public class BabyEnderDragonEntity extends FlyingMob {
             }
         }
         if (!level().isClientSide) {
-            if (getShootTicks() > 0) this.entityData.set(SHOOT_TICKS, getShootTicks() - 1);
+            if (shootingState) {
+                if (breathCooldown > 0) {
+                    breathCooldown--;
+                } else {
+                    LivingEntity near = getNearestLivingEntity(followTarget.level(), followTarget, 6.0D);
+                    if (near != null) {
+                        breath();
+                        breathCooldown = 60;
+                    }
+                }
+            }
+
+            if (getShootTicks() > 0) {
+                this.entityData.set(SHOOT_TICKS, getShootTicks() - 1);
+                HerobrineWeaponEffectProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+            }
             if (this.followTarget != null && this.followTarget.isAlive()) {
                 if (this.lookAtTimer > 0 && this.lookAtTarget != null && this.lookAtTarget.isAlive()) {
                     lookAtEntity(this.lookAtTarget, 999f, 999f);
@@ -339,6 +365,8 @@ public class BabyEnderDragonEntity extends FlyingMob {
         if (followTargetUUID != null) {
             tag.putUUID("FollowTarget", followTargetUUID);
         }
+        tag.putBoolean("ShootingState", shootingState);
+        tag.putInt("BreathCooldown", breathCooldown);
     }
 
     @Override
@@ -347,6 +375,8 @@ public class BabyEnderDragonEntity extends FlyingMob {
         if (tag.hasUUID("FollowTarget")) {
             followTargetUUID = tag.getUUID("FollowTarget");
         }
+        shootingState = tag.getBoolean("ShootingState");
+        breathCooldown = tag.getInt("BreathCooldown");
     }
 
     public static AttributeSupplier.Builder createAttributes() {

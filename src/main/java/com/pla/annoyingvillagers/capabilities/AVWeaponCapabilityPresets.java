@@ -173,7 +173,7 @@ public class AVWeaponCapabilityPresets {
 
     public static final Function<Item, Builder> LEGENDARY_SWORD = (item) ->
             WeaponCapability.builder()
-                    .category(AVCategories.LEGENDARY_SWORD)
+                    .category(WeaponCategories.GREATSWORD)
                     .styleProvider(
                             (livingentitypatch) -> Styles.TWO_HAND
                     ).collider(ColliderPreset.GREATSWORD)
@@ -574,7 +574,7 @@ public class AVWeaponCapabilityPresets {
 
     public static final Function<Item, Builder> KNIFE = (item) ->
             WeaponCapability.builder()
-            .category(AVCategories.KNIFE)
+            .category(WeaponCategories.DAGGER)
                     .styleProvider(
                             (livingentitypatch) -> Styles.COMMON)
                     .hitSound(EpicFightSounds.BLADE_HIT.get())
@@ -631,7 +631,7 @@ public class AVWeaponCapabilityPresets {
 
     public static final Function<Item, Builder> HARD_GREAT_SWORD = (item) ->
             WeaponCapability.builder()
-            .category(AVCategories.HARD_GREAT_SWORD)
+            .category(WeaponCategories.SWORD)
             .styleProvider(
                     (livingentitypatch) -> Styles.TWO_HAND)
             .collider(ColliderPreset.TACHI)
