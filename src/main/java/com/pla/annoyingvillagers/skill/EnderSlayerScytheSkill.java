@@ -1,12 +1,11 @@
 package com.pla.annoyingvillagers.skill;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.hm.efn.gameasset.animations.EFNShortSwordAnimations;
 import com.pla.annoyingvillagers.entity.BabyEnderDragonEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
-import com.pla.annoyingvillagers.item.EnderSlayerScythe;
-import com.pla.annoyingvillagers.item.ObsidianSledgehammerItem;
+import com.pla.annoyingvillagers.item.EnderSlayerScytheItem;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -17,7 +16,9 @@ import net.minecraft.world.phys.Vec3;
 import yesman.epicfight.skill.SkillBuilder;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
+import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
+import yesman.epicfight.world.entity.eventlistener.SkillCastEvent;
 
 import java.util.UUID;
 
@@ -30,27 +31,31 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
     @Override
     public void executeOnServer(SkillContainer skillContainer, FriendlyByteBuf friendlyByteBuf) {
         if (!this.isActivated(skillContainer)) {
-            super.executeOnServer(skillContainer, friendlyByteBuf);
-            skillContainer.activate();
-
             ServerPlayerPatch serverPlayerPatch = skillContainer.getServerExecutor();
             Player player = serverPlayerPatch.getOriginal();
             ItemStack itemStack = player.getMainHandItem();
-            if (itemStack.getItem() instanceof EnderSlayerScythe && player.level() instanceof ServerLevel serverLevel) {
-                serverPlayerPatch.playAnimationSynchronized(AVAnimations.ENDER_SLAYER_ANTITHEUS_AIMING, 0.0F);
+            if (itemStack.getItem() instanceof EnderSlayerScytheItem && player.level() instanceof ServerLevel serverLevel) {
 //                AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] : executeOnServer implement dragon shoot calling");
                 if (player.getPersistentData().contains("DragonUUID")) {
                     Entity entity = serverLevel.getEntity(player.getPersistentData().getUUID("DragonUUID"));
                     if (entity instanceof BabyEnderDragonEntity babyEnderDragonEntity) {
                         if (babyEnderDragonEntity.isShootingState()) {
+                            serverPlayerPatch.playAnimationSynchronized(EFNShortSwordAnimations.NF_SHORTSWORD_SKILL, 0.0F);
                             babyEnderDragonEntity.setShootingState(false);
                         } else {
+                            serverPlayerPatch.playAnimationSynchronized(AVAnimations.ENDER_SLAYER_ANTITHEUS_AIMING, 0.0F);
                             babyEnderDragonEntity.setShootingState(true);
+                            skillContainer.getExecutor().playSound(AnnoyingVillagersModSounds.SECOND_FORM_RELEASE.get(), 0.0F, 0.0F);
                         }
                     }
                 }
             }
         }
+    }
+
+    @Override
+    public boolean resourcePredicate(PlayerPatch<?> playerpatch, SkillCastEvent event) {
+        return true;
     }
 
     @Override
@@ -74,15 +79,6 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
         super.updateContainer(container);
         Player player = container.getExecutor().getOriginal();
         ItemStack itemStack = player.getMainHandItem();
-        if (container.getStack() == 1 && itemStack.getTag() != null &&
-                itemStack.getItem() instanceof EnderSlayerScythe && !itemStack.getTag().getBoolean("PlaySound")) {
-            container.getExecutor().playSound(AnnoyingVillagersModSounds.SECOND_FORM_RELEASE.get(), 0.0F, 0.0F);
-            itemStack.getTag().putBoolean("PlaySound", true);
-        } else if (container.getStack() < 1 && itemStack.getTag() != null &&
-                itemStack.getItem() instanceof ObsidianSledgehammerItem && itemStack.getTag().getBoolean("PlaySound")) {
-            itemStack.getTag().remove("PlaySound");
-        }
-
         if (container.getExecutor().isLogicalClient()) return;
         ServerPlayerPatch serverPlayerPatch = container.getServerExecutor();
         SkillContainer skillContainer = serverPlayerPatch.getSkill(this);
@@ -96,7 +92,7 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
         }
 
         if (player.tickCount % 5 == 0 && player.level() instanceof ServerLevel serverLevel) {
-            if (itemStack.getItem() instanceof EnderSlayerScythe && player.level() instanceof ServerLevel && player.getPersistentData().contains("DragonUUID")) {
+            if (itemStack.getItem() instanceof EnderSlayerScytheItem && player.level() instanceof ServerLevel && player.getPersistentData().contains("DragonUUID")) {
 //                AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] : updateContainer dragon already spawned, check if dragon is not null");
                 Entity entity = serverLevel.getEntity(player.getPersistentData().getUUID("DragonUUID"));
                 if (!(entity instanceof BabyEnderDragonEntity)) {
@@ -105,13 +101,13 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
                         player.getPersistentData().putUUID("DragonUUID", babyEnderDragonEntity.getUUID());
                     }
                 }
-            } else if (itemStack.getItem() instanceof EnderSlayerScythe && !player.getPersistentData().contains("DragonUUID")) {
+            } else if (itemStack.getItem() instanceof EnderSlayerScytheItem && !player.getPersistentData().contains("DragonUUID")) {
 //                AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] : updateContainer should spawn dragon here");
                 BabyEnderDragonEntity babyEnderDragonEntity = spawnBabyEnderDragon(player, serverLevel);
                 if (babyEnderDragonEntity != null) {
                     player.getPersistentData().putUUID("DragonUUID", babyEnderDragonEntity.getUUID());
                 }
-            } else if (!(itemStack.getItem() instanceof EnderSlayerScythe) && player.getPersistentData().contains("DragonUUID")) {
+            } else if (!(itemStack.getItem() instanceof EnderSlayerScytheItem) && player.getPersistentData().contains("DragonUUID")) {
 //                AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] : updateContainer remove dragon tag and despawn here ?");
                 Entity entity = serverLevel.getEntity(player.getPersistentData().getUUID("DragonUUID"));
                 if (entity instanceof BabyEnderDragonEntity babyEnderDragonEntity) {

@@ -1,15 +1,21 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.client.emitterinfo.GroundPillarEmitterInfo;
+import com.pla.annoyingvillagers.client.emitterinfo.TopFollowEmitterInfo;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.item.EnderSlayerScythe;
+import com.pla.annoyingvillagers.item.EnderSlayerScytheItem;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
+import com.pla.annoyingvillagers.util.DelayedTask;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -30,6 +36,7 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
 import reascer.wom.world.entity.mob.EnderHand;
 
+import java.util.List;
 import java.util.UUID;
 
 public class BabyEnderDragonEntity extends FlyingMob {
@@ -262,6 +269,45 @@ public class BabyEnderDragonEntity extends FlyingMob {
         }
     }
 
+    public void summonBeam() {
+        if (!this.level().isClientSide()) {
+            new TopFollowEmitterInfo(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "magic_portal"))
+                    .follow(this, 80, 0.8f)
+                    .spawnInWorld(this.level(), null);
+        }
+
+        BabyEnderDragonEntity babyEnderDragonEntity = this;
+        new DelayedTask(15) {
+            @Override
+            public void run() {
+                final int radius = 20;
+
+                AABB box = new AABB(
+                        babyEnderDragonEntity.getX() - radius, babyEnderDragonEntity.getY() - radius, babyEnderDragonEntity.getZ() - radius,
+                        babyEnderDragonEntity.getX() + radius, babyEnderDragonEntity.getY() + radius, babyEnderDragonEntity.getZ() + radius
+                );
+
+                List<LivingEntity> livingEntities = babyEnderDragonEntity.level().getEntitiesOfClass(
+                        LivingEntity.class, box,
+                        e -> e.isAlive() && e != babyEnderDragonEntity && (babyEnderDragonEntity.followTarget != null && e != babyEnderDragonEntity.followTarget) &&
+                                !(e instanceof EnderHand) && !e.isAlliedTo(babyEnderDragonEntity.followTarget)
+                );
+
+                if (babyEnderDragonEntity.level() instanceof ServerLevel serverLevel) {
+                    for (LivingEntity entity : livingEntities) {
+                        BabyDragonBigBeamEntity beam = new BabyDragonBigBeamEntity(
+                                AnnoyingVillagersModEntities.BABY_DRAGON_BIG_BEAM.get(),
+                                serverLevel,
+                                babyEnderDragonEntity,
+                                entity
+                        );
+                        serverLevel.addFreshEntity(beam);
+                    }
+                }
+            }
+        };
+    }
+
     private void copyOwnerLook(Player owner) {
         float targetYaw   = owner.getYRot();
         float targetPitch = owner.getXRot() * 0.35F;
@@ -295,7 +341,7 @@ public class BabyEnderDragonEntity extends FlyingMob {
             if (shootingState) {
                 if (breathCooldown > 0) {
                     breathCooldown--;
-                } else {
+                } else if (this.followTarget != null) {
                     LivingEntity near = getNearestLivingEntity(followTarget.level(), followTarget, 6.0D);
                     if (near != null) {
                         breath();
@@ -308,6 +354,7 @@ public class BabyEnderDragonEntity extends FlyingMob {
                 this.entityData.set(SHOOT_TICKS, getShootTicks() - 1);
                 HerobrineWeaponEffectProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
             }
+
             if (this.followTarget != null && this.followTarget.isAlive()) {
                 if (this.lookAtTimer > 0 && this.lookAtTarget != null && this.lookAtTarget.isAlive()) {
                     lookAtEntity(this.lookAtTarget, 999f, 999f);
@@ -340,7 +387,7 @@ public class BabyEnderDragonEntity extends FlyingMob {
                     this.discard();
                 }
 
-                if (!(followTarget.getMainHandItem().getItem() instanceof EnderSlayerScythe)) {
+                if (!(followTarget.getMainHandItem().getItem() instanceof EnderSlayerScytheItem)) {
                     followTarget.getPersistentData().remove("DragonUUID");
                     this.discard();
                 }

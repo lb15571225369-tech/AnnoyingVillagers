@@ -1151,7 +1151,7 @@ public class AVAnimations {
                         .addProperty(AttackAnimationProperty.EXTRA_COLLIDERS, 2)
                         .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true));
         AVAnimations.ENDER_SLAYER_MOONLESS_LUNAR_FULLMOON = builder.nextAccessor("biped/other/ender_slayer_moonless_lunar_fullmoon", (accessor) -> (new SpecialAttackAnimation(0.05F, accessor, humanoidarmature,
-                new Phase(0.0F, 0.6F, 0.7F, 0.85F, Float.MAX_VALUE, humanoidarmature.get().rootJoint, WOMWeaponColliders.LUNAR_ECHO)))
+                new Phase(0.0F, 0.6F, 0.7F, 0.85F, Float.MAX_VALUE, humanoidarmature.get().rootJoint, null)))
                 .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(2.5F))
                 .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(20.0F))
                 .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.FALL)

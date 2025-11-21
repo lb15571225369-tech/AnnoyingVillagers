@@ -130,7 +130,7 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> NULL_HOE = AnnoyingVillagersModItems.REGISTRY.register("null_hoe", NullHoeItem::new);
     public static final RegistryObject<Item> SHADOW_OBSIDIAN_PILLAR = AnnoyingVillagersModItems.REGISTRY.register("shadow_obsidian_pillar", ShadowObsidianPillarItem::new);
     public static final RegistryObject<Item> ENDER_GLAIVE = AnnoyingVillagersModItems.REGISTRY.register("ender_glaive", EnderGlaiveItem::new);
-    public static final RegistryObject<Item> ENDER_SLAYER_SCYTHE = AnnoyingVillagersModItems.REGISTRY.register("ender_slayer_scythe", EnderSlayerScythe::new);
+    public static final RegistryObject<Item> ENDER_SLAYER_SCYTHE = AnnoyingVillagersModItems.REGISTRY.register("ender_slayer_scythe", EnderSlayerScytheItem::new);
     public static final RegistryObject<Item> DEMONIAC_VOLTAGE_REAVER = AnnoyingVillagersModItems.REGISTRY.register("demoniac_voltage_reaver", DemoniacVoltageReaverItem::new);
     public static final RegistryObject<Item> OBSIDIAN_SLEDGEHAMMER = AnnoyingVillagersModItems.REGISTRY.register("obsidian_sledgehammer", ObsidianSledgehammerItem::new);
     public static final RegistryObject<Item> ENDER_AEGIS = AnnoyingVillagersModItems.REGISTRY.register("ender_aegis", EnderAegisItem::new);

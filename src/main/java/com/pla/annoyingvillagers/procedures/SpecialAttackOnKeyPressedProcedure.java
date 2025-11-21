@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.procedures;
 import com.hm.efn.gameasset.animations.EFNGreatSwordAnimations;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.entity.BabyEnderDragonEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
@@ -187,14 +188,22 @@ public class SpecialAttackOnKeyPressedProcedure {
             }
             if (holdingItem.getItem().equals(AnnoyingVillagersModItems.ENDER_SLAYER_SCYTHE.get())) {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    boolean success = false;
                     PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
                     if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
                         SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.ENDER_SLAYER_SCYTHE);
-                        if (skillContainer != null && skillContainer.getStack() >= 1) {
-                            livingEntityPatch.playAnimationSynchronized(AVAnimations.ENDER_SLAYER_MOONLESS_LUNAR_FULLMOON, 0.0F);
-                        } else {
-                            livingEntityPatch.playAnimationSynchronized(AnimsNapoleon.NAPOLEON_AUTO_3, 0.0F);
+                        if (skillContainer != null && skillContainer.getStack() >= 1
+                                && entity.getPersistentData().contains("DragonUUID")
+                                && entity.level() instanceof ServerLevel serverLevel) {
+                            Entity dragon = serverLevel.getEntity(player.getPersistentData().getUUID("DragonUUID"));
+                            if (dragon instanceof BabyEnderDragonEntity babyEnderDragonEntity) {
+                                babyEnderDragonEntity.summonBeam();
+                                success = true;
+                            }
                         }
+                    }
+                    if (success) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.ENDER_SLAYER_MOONLESS_LUNAR_FULLMOON, 0.0F);
                     } else {
                         livingEntityPatch.playAnimationSynchronized(AnimsNapoleon.NAPOLEON_AUTO_3, 0.0F);
                     }
