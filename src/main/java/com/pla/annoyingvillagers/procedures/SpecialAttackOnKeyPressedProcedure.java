@@ -11,6 +11,7 @@ import com.pla.annoyingvillagers.item.*;
 import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
 import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
 import com.pla.annoyingvillagers.skill.EnderGlaiveSkill;
+import com.pla.annoyingvillagers.skill.EnderSlayerScytheSkill;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -39,6 +40,7 @@ import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.Armatures;
+import yesman.epicfight.skill.Skill;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
@@ -192,13 +194,19 @@ public class SpecialAttackOnKeyPressedProcedure {
                     PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
                     if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
                         SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.ENDER_SLAYER_SCYTHE);
-                        if (skillContainer != null && skillContainer.getStack() >= 1
+                        if (skillContainer != null && skillContainer.getStack() == 5
                                 && entity.getPersistentData().contains("DragonUUID")
-                                && entity.level() instanceof ServerLevel serverLevel) {
+                                && entity.level() instanceof ServerLevel serverLevel
+                                && skillContainer.getSkill() instanceof EnderSlayerScytheSkill) {
                             Entity dragon = serverLevel.getEntity(player.getPersistentData().getUUID("DragonUUID"));
                             if (dragon instanceof BabyEnderDragonEntity babyEnderDragonEntity) {
-                                babyEnderDragonEntity.summonBeam();
-                                success = true;
+                                LivingEntity near = BabyEnderDragonEntity.getNearestLivingEntity(entity.level(), entity, 15.0D);
+                                if (near != null) {
+                                    Skill.setSkillStackSynchronize(skillContainer, 0);
+                                    Skill.setSkillConsumptionSynchronize(skillContainer, 0.0F);
+                                    babyEnderDragonEntity.summonBeam();
+                                    success = true;
+                                }
                             }
                         }
                     }

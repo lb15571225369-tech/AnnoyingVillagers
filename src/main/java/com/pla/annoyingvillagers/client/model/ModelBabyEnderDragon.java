@@ -205,6 +205,8 @@ public class ModelBabyEnderDragon<T extends BabyEnderDragonEntity> extends Hiera
         root().getAllParts().forEach(ModelPart::resetPose);
         if (pEntity.shootAnimationState.isStarted()) {
             animate(pEntity.shootAnimationState, BabyEnderDragonAnimations.BABY_ENDER_DRAGON_SHOOT, pAgeInTicks);
+        } else if (pEntity.summonAnimationState.isStarted()) {
+            animate(pEntity.summonAnimationState, BabyEnderDragonAnimations.BABY_ENDER_DRAGON_SUMMON, pAgeInTicks);
         } else {
             animate(pEntity.idleAnimationState, BabyEnderDragonAnimations.BABY_ENDER_DRAGON_IDLE, pAgeInTicks);
         }

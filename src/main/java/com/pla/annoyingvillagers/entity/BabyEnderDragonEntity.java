@@ -4,9 +4,12 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.client.emitterinfo.GroundPillarEmitterInfo;
 import com.pla.annoyingvillagers.client.emitterinfo.TopFollowEmitterInfo;
+import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.item.EnderSlayerScytheItem;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
+import com.pla.annoyingvillagers.skill.EnderGlaiveSkill;
+import com.pla.annoyingvillagers.skill.EnderSlayerScytheSkill;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -35,6 +38,10 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
 import reascer.wom.world.entity.mob.EnderHand;
+import yesman.epicfight.skill.SkillContainer;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
+import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 import java.util.List;
 import java.util.UUID;
@@ -52,6 +59,9 @@ public class BabyEnderDragonEntity extends FlyingMob {
 
     public final AnimationState shootAnimationState = new AnimationState();
     private static final EntityDataAccessor<Integer> SHOOT_TICKS =
+            SynchedEntityData.defineId(BabyEnderDragonEntity.class, EntityDataSerializers.INT);
+    public final AnimationState summonAnimationState = new AnimationState();
+    private static final EntityDataAccessor<Integer> SUMMON_TICKS =
             SynchedEntityData.defineId(BabyEnderDragonEntity.class, EntityDataSerializers.INT);
 
     public void setFollowTarget(Player followTarget) {
@@ -82,14 +92,26 @@ public class BabyEnderDragonEntity extends FlyingMob {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(SHOOT_TICKS, 0);
+        this.entityData.define(SUMMON_TICKS, 0);
     }
 
     public int getShootTicks() {
         return this.entityData.get(SHOOT_TICKS);
     }
-    public void startShoot(int ticks) {
+
+    public void setShootTicks(int ticks) {
         if (!this.level().isClientSide) {
             this.entityData.set(SHOOT_TICKS, ticks);
+        }
+    }
+
+    public int getSummonTicks() {
+        return this.entityData.get(SUMMON_TICKS);
+    }
+
+    public void setSummonTicks(int ticks) {
+        if (!this.level().isClientSide) {
+            this.entityData.set(SUMMON_TICKS, ticks);
         }
     }
 
@@ -121,7 +143,7 @@ public class BabyEnderDragonEntity extends FlyingMob {
 
         Vec3 myEye = this.getEyePosition(1.0F);
         Vec3 tgEye = target.getEyePosition(1.0F);
-        Vec3 to    = tgEye.subtract(myEye);
+        Vec3 to = tgEye.subtract(myEye);
 
         float desiredYaw   = (float)(Mth.atan2(to.z, to.x) * (180F / Math.PI)) - 90.0F;
         float desiredPitch = (float)(-(Mth.atan2(to.y, Math.sqrt(to.x * to.x + to.z * to.z)) * (180F / Math.PI)));
@@ -165,7 +187,13 @@ public class BabyEnderDragonEntity extends FlyingMob {
         if (!this.level().isClientSide()
                 && !damagesource.is(DamageTypes.IN_WALL)
                 && damagesource.getEntity() != followTarget
-                && !damagesource.is(DamageTypes.IN_FIRE)) {
+                && !damagesource.is(DamageTypes.IN_FIRE)
+                && !damagesource.is(DamageTypes.ON_FIRE)
+                && !damagesource.is(DamageTypes.LAVA)
+                && !damagesource.is(DamageTypes.EXPLOSION)
+                && !damagesource.is(DamageTypes.WITHER)
+                && !damagesource.is(DamageTypes.DROWN)
+                && !damagesource.is(DamageTypes.CACTUS)) {
             try {
                 this.getServer().getCommands().getDispatcher().execute(
                         "playsound epicfight:entity.hit.clash neutral @p",
@@ -246,7 +274,8 @@ public class BabyEnderDragonEntity extends FlyingMob {
     public void breath() {
         LivingEntity target = getNearestLivingEntity(followTarget.level(), followTarget, 6.0D);
         if (target != null) {
-            this.startShoot(55);
+            this.setSummonTicks(0);
+            this.setShootTicks(55);
 
             Vec3 eye = this.getEyePosition(1.0F);
             Vec3 fwd = this.getViewVector(1.0F).normalize();
@@ -270,9 +299,11 @@ public class BabyEnderDragonEntity extends FlyingMob {
     }
 
     public void summonBeam() {
+        this.setShootTicks(0);
+        this.setSummonTicks(60);
         if (!this.level().isClientSide()) {
             new TopFollowEmitterInfo(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "magic_portal"))
-                    .follow(this, 80, 0.8f)
+                    .followHead(this, 80, 1.2f, 0.7f)
                     .spawnInWorld(this.level(), null);
         }
 
@@ -280,7 +311,7 @@ public class BabyEnderDragonEntity extends FlyingMob {
         new DelayedTask(15) {
             @Override
             public void run() {
-                final int radius = 20;
+                final int radius = 15;
 
                 AABB box = new AABB(
                         babyEnderDragonEntity.getX() - radius, babyEnderDragonEntity.getY() - radius, babyEnderDragonEntity.getZ() - radius,
@@ -309,7 +340,7 @@ public class BabyEnderDragonEntity extends FlyingMob {
     }
 
     private void copyOwnerLook(Player owner) {
-        float targetYaw   = owner.getYRot();
+        float targetYaw = owner.getYRot();
         float targetPitch = owner.getXRot() * 0.35F;
 
         this.setYRot(Mth.approachDegrees(this.getYRot(), targetYaw, 10.0F));
@@ -323,35 +354,54 @@ public class BabyEnderDragonEntity extends FlyingMob {
     public void tick() {
         super.tick();
         if (level().isClientSide) {
-            boolean shooting = getShootTicks() > 10;
-
-            if (shooting) {
+            if (getShootTicks() > 10) {
                 if (!this.shootAnimationState.isStarted()) {
                     this.shootAnimationState.start(this.tickCount);
                 }
+
                 this.idleAnimationState.stop();
-            } else {
+                this.summonAnimationState.stop();
+            } else if (getSummonTicks() > 10) {
+                if (!this.summonAnimationState.isStarted()) {
+                    this.summonAnimationState.start(this.tickCount);
+                }
+                this.idleAnimationState.stop();
                 this.shootAnimationState.stop();
+            } else {
                 if (!this.idleAnimationState.isStarted()) {
                     this.idleAnimationState.start(this.tickCount);
                 }
+                this.summonAnimationState.stop();
+                this.shootAnimationState.stop();
             }
         }
         if (!level().isClientSide) {
             if (shootingState) {
+                HerobrineWeaponEffectProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
                 if (breathCooldown > 0) {
                     breathCooldown--;
                 } else if (this.followTarget != null) {
-                    LivingEntity near = getNearestLivingEntity(followTarget.level(), followTarget, 6.0D);
-                    if (near != null) {
-                        breath();
-                        breathCooldown = 60;
+                    PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(this.followTarget, PlayerPatch.class);
+                    if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
+                        SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.ENDER_SLAYER_SCYTHE);
+                        LivingEntity near = getNearestLivingEntity(followTarget.level(), followTarget, 6.0D);
+                        if (skillContainer != null && skillContainer.getStack() >= 1 && near != null
+                                && skillContainer.getSkill() instanceof EnderSlayerScytheSkill enderSlayerScytheSkill) {
+                            enderSlayerScytheSkill.getResourceType().consumer
+                                    .consume(skillContainer, serverPlayerPatch, enderSlayerScytheSkill.getDefaultConsumptionAmount(serverPlayerPatch));
+                            breath();
+                            breathCooldown = 60;
+                        }
                     }
                 }
             }
 
             if (getShootTicks() > 0) {
                 this.entityData.set(SHOOT_TICKS, getShootTicks() - 1);
+            }
+
+            if (getSummonTicks() > 0) {
+                this.entityData.set(SUMMON_TICKS, getSummonTicks() - 1);
                 HerobrineWeaponEffectProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
             }
 

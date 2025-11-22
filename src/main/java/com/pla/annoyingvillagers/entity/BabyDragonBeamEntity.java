@@ -2,9 +2,9 @@ package com.pla.annoyingvillagers.entity;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.client.emitterinfo.BabyDragonBeamParticleEmitterInfo;
+import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
-import mod.chloeprime.aaaparticles.api.common.AAALevel;
-import mod.chloeprime.aaaparticles.api.common.ParticleEmitterInfo;
+import com.pla.annoyingvillagers.skill.EnderSlayerScytheSkill;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -37,8 +37,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 import reascer.wom.world.entity.mob.EnderHand;
+import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
+import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.damagesource.StunType;
 
 import java.util.ArrayList;
@@ -433,6 +436,7 @@ public class BabyDragonBeamEntity extends Entity {
                     if (this.caster != null && this.caster.getFollowTarget() != null) {
                         target.hurt(damageSources().indirectMagic(this, this.caster.getFollowTarget()), (float) this.power);
                         target.hurtMarked = true;
+                        increaseSkillPoint(this.caster.getFollowTarget(), 30.0F);
                     }
                     target.setDeltaMovement(0.0, 0.0, 0.0);
                     LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(target, LivingEntityPatch.class);
@@ -449,6 +453,22 @@ public class BabyDragonBeamEntity extends Entity {
             this.on = false;
         }
 
+    }
+
+    public void increaseSkillPoint(Entity entity, float value) {
+        if (entity instanceof Player player) {
+            PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+            if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
+                SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.ENDER_SLAYER_SCYTHE);
+                if (skillContainer == null) return;
+                EnderSlayerScytheSkill enderSlayerScytheSkill = (EnderSlayerScytheSkill) skillContainer.getSkill();
+
+                float currentResource = skillContainer.getResource();
+                float neededResource = skillContainer.getNeededResource();
+                float addResource = Math.min(value, neededResource);
+                enderSlayerScytheSkill.setConsumptionSynchronize(skillContainer, currentResource + addResource);
+            }
+        }
     }
 
     static {
