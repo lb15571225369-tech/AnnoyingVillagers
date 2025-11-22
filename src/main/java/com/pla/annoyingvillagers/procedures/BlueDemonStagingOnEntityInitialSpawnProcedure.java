@@ -549,15 +549,6 @@ public class BlueDemonStagingOnEntityInitialSpawnProcedure {
 
                                                                                         Entity entity2 = entity;
 
-                                                                                        if (!entity2.level().isClientSide() && entity2.getServer() != null) {
-                                                                                            try {
-                                                                                                entity2.getServer().getCommands().getDispatcher().execute("effect clear @e annoyingvillagers:block", entity2.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                                                            } catch (
-                                                                                                    CommandSyntaxException e) {
-                                                                                                
-                                                                                            }
-                                                                                        }
-
                                                                                         levelaccessor9 = levelaccessor;
                                                                                         Level level1;
 

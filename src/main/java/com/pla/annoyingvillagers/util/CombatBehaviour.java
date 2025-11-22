@@ -129,7 +129,6 @@ public class CombatBehaviour {
                 }
                 ItemStack oldItem = livingEntity.getOffhandItem();
                 livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, (int)(amount * 2.0D), 2, false, false));
-                livingEntity.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.BLEED.get(), (int)(amount * 1.5D), 0, false, false));
                 new DelayedTask(20) {
                     @Override
                     public void run() {
@@ -253,7 +252,6 @@ public class CombatBehaviour {
                     potionItem = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_HEALING);
                 }
                 livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, (int)(amount * 2.0D), 2, false, false));
-                livingEntity.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.BLEED.get(), (int)(amount * 1.5D), 0, false, false));
                 new DelayedTask(20) {
                     @Override
                     public void run() {

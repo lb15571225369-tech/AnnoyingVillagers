@@ -41,10 +41,6 @@ public class HardGreatSwordSkillRightClickInAirProcedure {
                 }
             }
 
-            if (entity instanceof LivingEntity living && !living.level().isClientSide()) {
-                living.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.EC_PLAYER.get(), 160, 0, false, false));
-            }
-
             new DelayedTask(4) {
                 @Override
                 public void run() {

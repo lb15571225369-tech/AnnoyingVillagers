@@ -36,7 +36,7 @@ public class HerobrineChrisOnTouchProcedure {
             if (livingentitypatch != null) {
                 AssetAccessor<? extends DynamicAnimation> dynamicanimation = livingentitypatch.getAnimator().getPlayerFor(null).getAnimation();
 
-                if (!(dynamicanimation instanceof LongHitAnimation) && !entity.getPersistentData().getBoolean("kick_x")) {
+                if (!(dynamicanimation instanceof LongHitAnimation)) {
                     Vec3 vec3 = new Vec3(d0, d1, d2);
                     List<Entity> list = (List)levelaccessor.getEntitiesOfClass(Entity.class, (new AABB(vec3, vec3)).inflate(2.0D), (entity1) -> {
                         return true;

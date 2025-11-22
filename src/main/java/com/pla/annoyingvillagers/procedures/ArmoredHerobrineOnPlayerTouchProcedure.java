@@ -51,7 +51,7 @@ public class ArmoredHerobrineOnPlayerTouchProcedure {
             if (livingentitypatch != null) {
                 AssetAccessor<? extends DynamicAnimation> dynamicanimation = Objects.requireNonNull(livingentitypatch.getAnimator().getPlayerFor(null)).getAnimation();
 
-                if (!(dynamicanimation instanceof LongHitAnimation) && !entity.getPersistentData().getBoolean("kick_x") && Math.random() <= 0.1D) {
+                if (!(dynamicanimation instanceof LongHitAnimation) && Math.random() <= 0.1D) {
                     Level level;
 
                     if (levelaccessor instanceof Level) {

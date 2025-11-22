@@ -10,7 +10,6 @@ import java.util.function.Function;
 import com.pla.annoyingvillagers.gameasset.AVCollider;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TieredItem;

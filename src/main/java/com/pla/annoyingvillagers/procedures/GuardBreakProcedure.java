@@ -156,40 +156,28 @@ public class GuardBreakProcedure {
 
             if (entity1.getPersistentData().getBoolean("s_g_suss")) {
                 entity.getPersistentData().putBoolean("s_g_suss", false);
-                boolean flag;
+                new DelayedTask(10) {
+                    @Override
+                    public void run() {
+                        if (entity1 instanceof LivingEntity) {
+                            LivingEntity livingentity4 = (LivingEntity) entity1;
 
-                if (entity1 instanceof LivingEntity) {
-                    livingentity = (LivingEntity)entity1;
-                    flag = livingentity.hasEffect((MobEffect)AnnoyingVillagersModMobEffects.EC.get());
-                } else {
-                    flag = false;
-                }
-
-                if (!flag) {
-                    new DelayedTask(10) {
-                        @Override
-                        public void run() {
-                            if (entity1 instanceof LivingEntity) {
-                                LivingEntity livingentity4 = (LivingEntity)entity1;
-
-                                if (!livingentity4.level().isClientSide()) {
-                                    livingentity4.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 20, 2, false, false));
-                                }
-                            }
-
-                            Entity entity2 = entity1;
-
-                            if (!entity2.level().isClientSide() && entity2.getServer() != null) {
-                                LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity2, LivingEntityPatch.class);
-                                if (livingEntityPatch != null) {
-                                    livingEntityPatch.playAnimationSynchronized(Animations.GRASPING_SPIRAL_SECOND, 0.0F);
-                                }
+                            if (!livingentity4.level().isClientSide()) {
+                                livingentity4.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 20, 2, false, false));
                             }
                         }
-                    };
-                }
-            }
 
+                        Entity entity2 = entity1;
+
+                        if (!entity2.level().isClientSide() && entity2.getServer() != null) {
+                            LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity2, LivingEntityPatch.class);
+                            if (livingEntityPatch != null) {
+                                livingEntityPatch.playAnimationSynchronized(Animations.GRASPING_SPIRAL_SECOND, 0.0F);
+                            }
+                        }
+                    }
+                };
+            }
         }
     }
 }

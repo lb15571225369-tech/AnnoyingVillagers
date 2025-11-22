@@ -151,69 +151,6 @@ public class SteveOnTickProcedure {
                 }
             }
 
-            if (!levelaccessor.getEntitiesOfClass(VillagerScoutEntity.class, AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D), (cunminzhenchabingentity) -> {
-                return true;
-            }).isEmpty() && entity instanceof LivingEntity) {
-                livingentity = (LivingEntity)entity;
-                if (!livingentity.level().isClientSide()) {
-                    livingentity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 10, 4, false, false));
-                }
-            }
-
-            if (!levelaccessor.getEntitiesOfClass(VillagerScoutCaptainEntity.class, AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D), (cczdzentity) -> {
-                return true;
-            }).isEmpty() && entity instanceof LivingEntity) {
-                livingentity = (LivingEntity)entity;
-                if (!livingentity.level().isClientSide()) {
-                    livingentity.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.BLOCK.get(), 10, 4, false, false));
-                }
-            }
-
-            if (!levelaccessor.getEntitiesOfClass(BlueVillagerGeneralEntity.class, AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D), (lancunqientity) -> {
-                return true;
-            }).isEmpty() && entity instanceof LivingEntity) {
-                livingentity = (LivingEntity)entity;
-                if (!livingentity.level().isClientSide()) {
-                    livingentity.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.BLOCK.get(), 10, 4, false, false));
-                }
-            }
-
-            if (!levelaccessor.getEntitiesOfClass(GreenVillagerGeneralEntity.class, AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D), (lucunqientity) -> {
-                return true;
-            }).isEmpty() && entity instanceof LivingEntity) {
-                livingentity = (LivingEntity)entity;
-                if (!livingentity.level().isClientSide()) {
-                    livingentity.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.BLOCK.get(), 10, 4, false, false));
-                }
-            }
-
-            if (!levelaccessor.getEntitiesOfClass(RedVillagerGeneralEntity.class, AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D), (lancunqientity) -> {
-                return true;
-            }).isEmpty() && entity instanceof LivingEntity) {
-                livingentity = (LivingEntity)entity;
-                if (!livingentity.level().isClientSide()) {
-                    livingentity.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.BLOCK.get(), 10, 4, false, false));
-                }
-            }
-
-            if (!levelaccessor.getEntitiesOfClass(PurpleVillagerGeneralEntity.class, AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D), (lucunqientity) -> {
-                return true;
-            }).isEmpty() && entity instanceof LivingEntity) {
-                livingentity = (LivingEntity)entity;
-                if (!livingentity.level().isClientSide()) {
-                    livingentity.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.BLOCK.get(), 10, 4, false, false));
-                }
-            }
-
-            if (!levelaccessor.getEntitiesOfClass(Monster.class, AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D), (monster) -> {
-                return true;
-            }).isEmpty() && Math.random() <= 0.02D && entity instanceof LivingEntity) {
-                livingentity = (LivingEntity)entity;
-                if (!livingentity.level().isClientSide()) {
-                    livingentity.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.BLOCK.get(), 10, 4, false, false));
-                }
-            }
-
             Vec3 vec3 = new Vec3(d0, d1, d2);
             List<Entity> list = (List)levelaccessor.getEntitiesOfClass(Entity.class, (new AABB(vec3, vec3)).inflate(30.0D), (entity1) -> {
                 return true;

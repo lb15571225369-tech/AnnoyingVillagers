@@ -21,15 +21,6 @@ public class BlueDemonSkillLightingEffectDuringDurationProcedure {
                 lightningbolt.setVisualOnly(false);
                 serverlevel.addFreshEntity(lightningbolt);
             }
-
-            if (!entity.level().isClientSide() && entity.getServer() != null) {
-                try {
-                    entity.getServer().getCommands().getDispatcher().execute("effect clear @s annoyingvillagers:block", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException e) {
-                    
-                }
-            }
-
         }
     }
 }

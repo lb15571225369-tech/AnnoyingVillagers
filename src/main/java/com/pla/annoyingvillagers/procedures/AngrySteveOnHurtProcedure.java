@@ -156,13 +156,6 @@ public class AngrySteveOnHurtProcedure {
 
                 entity.setEnderPearlCooldown();
             }
-
-            if (Math.random() <= 0.58D) {
-                if (!entity.level().isClientSide()) {
-                    entity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 2, 0, false, false));
-                }
-            }
-
         }
     }
 }

@@ -130,23 +130,6 @@ public class GlaiveHerobrineEntity extends HerobrineMob {
     }
 
     public boolean hurt(@NotNull DamageSource damagesource, float f) {
-        if (!this.getPersistentData().getBoolean("kick_x")) {
-            this.setSprinting(true);
-            GlaiveHerobrineEntity entity = this;
-            new DelayedTask(10) {
-                @Override
-                public void run() {
-                    entity.setSprinting(false);
-                }
-            };
-            if (Math.random() <= 0.5D && this instanceof LivingEntity) {
-                LivingEntity livingentity = (LivingEntity)this;
-
-                if (!livingentity.level().isClientSide()) {
-                    livingentity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 1, 1, false, false));
-                }
-            }
-        }
         if (damagesource.is(DamageTypes.FALL)) return false;
         if (damagesource.is(DamageTypes.CACTUS)) return false;
         if (damagesource.is(DamageTypes.WITHER)) return false;

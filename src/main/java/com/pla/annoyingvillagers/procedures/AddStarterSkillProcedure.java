@@ -83,8 +83,6 @@ public class AddStarterSkillProcedure {
             if (entity.getPersistentData().getBoolean("b_d_aim")) {
                 entity.getPersistentData().putBoolean("b_d_aim", false);
             }
-
-            entity.getPersistentData().putBoolean("kick_x", false);
             entity.getPersistentData().putBoolean("ender_pearl_used", false);
             entity.getPersistentData().putDouble("air_kick", 0.0D);
             entity.getPersistentData().putDouble("kick", 0.0D);

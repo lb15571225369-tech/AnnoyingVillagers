@@ -23,98 +23,78 @@ public class BlueDemonOnHurtProcedure {
     public static void execute(LevelAccessor world, double x, double y, double z, Entity entity, Entity entity1) {
         if (entity == null || entity1 == null || world == null) return;
 
-        if (!entity.getPersistentData().getBoolean("kick_x")) {
-            if (entity instanceof LivingEntity living) {
-                if (!living.level().isClientSide()) {
-                    living.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.NPC_KICK_EFFECT.get(), 11, 0, false, false));
-                }
-            }
-
-            if (entity instanceof Mob mob && mob.getTarget() == entity1) {
-                if (Math.random() <= 0.2 && !entity.level().isClientSide() && entity.getServer() != null) {
-                    try {
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                "effect give @s annoyingvillagers:block 1 0 true",
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-                        );
-                    } catch (CommandSyntaxException e) {
-                        
+        if (entity instanceof Mob mob && mob.getTarget() == entity1) {
+            if (Math.random() <= 0.01) {
+                new DelayedTask(20) {
+                    @Override
+                    public void run() {
+                        broadcast(world, "<" + entity.getDisplayName().getString() + "> You're way too predictable.");
+                        playSound(world, x, y, z, AnnoyingVillagers.MODID + ":bluedemonsayyc");
+                        applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 3);
+                        applyEffect(entity1, MobEffects.BLINDNESS, 80, 3);
+                        applyEffect(entity1, MobEffects.MOVEMENT_SLOWDOWN, 80, 2);
+                        runParticle(entity);
                     }
-                }
+                };
+            } else if (Math.random() <= 0.01) {
+                new DelayedTask(20) {
+                    @Override
+                    public void run() {
+                        applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 10);
+                        runParticle(entity);
+                    }
+                };
+            } else if (Math.random() <= 0.01) {
+                new DelayedTask(20) {
+                    @Override
+                    public void run() {
+                        broadcast(world, "<" + entity.getDisplayName().getString() + "> Don't be arrogant.");
 
-                if (Math.random() <= 0.01) {
-                    new DelayedTask(20) {
-                        @Override
-                        public void run() {
-                            broadcast(world, "<" + entity.getDisplayName().getString() + "> You're way too predictable.");
-                            playSound(world, x, y, z, AnnoyingVillagers.MODID + ":bluedemonsayyc");
-                            applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 3);
-                            applyEffect(entity1, MobEffects.BLINDNESS, 80, 3);
-                            applyEffect(entity1, MobEffects.MOVEMENT_SLOWDOWN, 80, 2);
-                            runParticle(entity);
-                        }
-                    };
-                } else if (Math.random() <= 0.01) {
-                    new DelayedTask(20) {
-                        @Override
-                        public void run() {
-                            applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 10);
-                            runParticle(entity);
-                        }
-                    };
-                } else if (Math.random() <= 0.01) {
-                    new DelayedTask(20) {
-                        @Override
-                        public void run() {
-                            broadcast(world, "<" + entity.getDisplayName().getString() + "> Don't be arrogant.");
+                        new DelayedTask(20) {
+                            @Override
+                            public void run() {
+                                applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 40);
+                                applyEffect(entity1, MobEffects.MOVEMENT_SLOWDOWN, 80, 2);
+                                runParticle(entity);
+                            }
+                        };
+                    }
+                };
+            } else if (Math.random() <= 0.01) {
+                new DelayedTask(20) {
+                    @Override
+                    public void run() {
+                        new DelayedTask(20) {
+                            @Override
+                            public void run() {
+                                broadcast(world, "<" + entity.getDisplayName().getString() + "> Looking down on us undead creatures only highlights how ignorant you are.");
+                                playSound(world, x, y, z, AnnoyingVillagers.MODID + ":bluedemon_say_you_no_know");
+                                applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 10);
+                                runParticle(entity);
+                            }
+                        };
+                    }
+                };
+            } else if (Math.random() <= 0.01) {
+                new DelayedTask(30) {
+                    @Override
+                    public void run() {
+                        new DelayedTask(20) {
+                            @Override
+                            public void run() {
+                                broadcast(world, "<" + entity.getDisplayName().getString() + "> How interesting. But I really want to know what is your motive?");
+                                playSound(world, x, y, z, AnnoyingVillagers.MODID + ":bluedemon_say_player_interesting");
+                                runParticle(entity);
+                                applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 5);
+                                applyEffect(entity1, MobEffects.MOVEMENT_SLOWDOWN, 80, 2);
 
-                            new DelayedTask(20) {
-                                @Override
-                                public void run() {
-                                    applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 40);
-                                    applyEffect(entity1, MobEffects.MOVEMENT_SLOWDOWN, 80, 2);
-                                    runParticle(entity);
+                                if (world instanceof Level level && !level.isClientSide()) {
+                                    level.explode(null, entity1.getX(), entity1.getY(), entity1.getZ(), 2.0F, Level.ExplosionInteraction.BLOCK);
                                 }
-                            };
-                        }
-                    };
-                } else if (Math.random() <= 0.01) {
-                    new DelayedTask(20) {
-                        @Override
-                        public void run() {
-                            new DelayedTask(20) {
-                                @Override
-                                public void run() {
-                                    broadcast(world, "<" + entity.getDisplayName().getString() + "> Looking down on us undead creatures only highlights how ignorant you are.");
-                                    playSound(world, x, y, z, AnnoyingVillagers.MODID + ":bluedemon_say_you_no_know");
-                                    applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 10);
-                                    runParticle(entity);
-                                    runCommand(entity1, "effect clear @s annoyingvillagers:block");
-                                }
-                            };
-                        }
-                    };
-                } else if (Math.random() <= 0.01) {
-                    new DelayedTask(30) {
-                        @Override
-                        public void run() {
-                            new DelayedTask(20) {
-                                @Override
-                                public void run() {
-                                    broadcast(world, "<" + entity.getDisplayName().getString() + "> How interesting. But I really want to know what is your motive?");
-                                    playSound(world, x, y, z, AnnoyingVillagers.MODID + ":bluedemon_say_player_interesting");
-                                    runParticle(entity);
-                                    applyEffect(entity1, AnnoyingVillagersModMobEffects.BLUE_DEMON_SKILL_LIGHTING_EFFECT.get(), 5);
-                                    applyEffect(entity1, MobEffects.MOVEMENT_SLOWDOWN, 80, 2);
-
-                                    if (world instanceof Level level && !level.isClientSide()) {
-                                        level.explode(null, entity1.getX(), entity1.getY(), entity1.getZ(), 2.0F, Level.ExplosionInteraction.BLOCK);
-                                    }
-                                }
-                            };
-                        }
-                    };
-                }
+                            }
+                        };
+                    }
+                };
             }
         }
     }

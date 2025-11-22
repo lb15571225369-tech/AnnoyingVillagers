@@ -34,30 +34,18 @@ public class LongHitProcedure {
     private static void execute(@Nullable Event event, Entity entity, double d0) {
         if (entity != null) {
             if (entity.isAlive()) {
-                boolean flag;
-
-                if (entity instanceof LivingEntity) {
-                    LivingEntity livingentity = (LivingEntity) entity;
-
-                    flag = livingentity.hasEffect((MobEffect) AnnoyingVillagersModMobEffects.EC.get());
-                } else {
-                    flag = false;
-                }
-
-                if (!flag) {
-                    if (d0 >= 35.0D) {
-                        if (!entity.level().isClientSide() && entity.getServer() != null) {
-                            LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
-                            if (livingEntityPatch != null) {
-                                livingEntityPatch.playAnimationSynchronized(AVAnimations.LONGEST_HIT, 0.0F);
-                            }
+                if (d0 >= 35.0D) {
+                    if (!entity.level().isClientSide() && entity.getServer() != null) {
+                        LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                        if (livingEntityPatch != null) {
+                            livingEntityPatch.playAnimationSynchronized(AVAnimations.LONGEST_HIT, 0.0F);
                         }
-                    } else if (d0 >= 30.0D && !entity.level().isClientSide() && entity.getServer() != null) {
-                        if (!entity.level().isClientSide() && entity.getServer() != null) {
-                            LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
-                            if (livingEntityPatch != null) {
-                                livingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN, 0.0F);
-                            }
+                    }
+                } else if (d0 >= 30.0D && !entity.level().isClientSide() && entity.getServer() != null) {
+                    if (!entity.level().isClientSide() && entity.getServer() != null) {
+                        LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                        if (livingEntityPatch != null) {
+                            livingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN, 0.0F);
                         }
                     }
                 }

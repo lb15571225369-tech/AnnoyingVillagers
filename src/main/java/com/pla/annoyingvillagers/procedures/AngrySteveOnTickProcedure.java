@@ -147,69 +147,6 @@ public class AngrySteveOnTickProcedure {
                 }
             }
 
-            if (!levelaccessor.getEntitiesOfClass(Monster.class, AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D), (monster) -> {
-                return true;
-            }).isEmpty() && entity instanceof LivingEntity) {
-                livingentity = (LivingEntity)entity;
-                if (!livingentity.level().isClientSide()) {
-                    livingentity.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.BLOCK.get(), 10, 4, false, false));
-                }
-            }
-
-            if (!levelaccessor.getEntitiesOfClass(VillagerScoutEntity.class, AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D), (cunminzhenchabingentity) -> {
-                return true;
-            }).isEmpty() && entity instanceof LivingEntity) {
-                livingentity = (LivingEntity)entity;
-                if (!livingentity.level().isClientSide()) {
-                    livingentity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.BLOCK.get(), 10, 4, false, false));
-                }
-            }
-
-            if (!levelaccessor.getEntitiesOfClass(VillagerScoutCaptainEntity.class, AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D), (cczdzentity) -> {
-                return true;
-            }).isEmpty() && entity instanceof LivingEntity) {
-                livingentity = (LivingEntity)entity;
-                if (!livingentity.level().isClientSide()) {
-                    livingentity.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.BLOCK.get(), 10, 4, false, false));
-                }
-            }
-
-            if (!levelaccessor.getEntitiesOfClass(RedVillagerGeneralEntity.class, AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D), (lancunqientity) -> {
-                return true;
-            }).isEmpty() && entity instanceof LivingEntity) {
-                livingentity = (LivingEntity)entity;
-                if (!livingentity.level().isClientSide()) {
-                    livingentity.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.BLOCK.get(), 10, 4, false, false));
-                }
-            }
-
-            if (!levelaccessor.getEntitiesOfClass(BlueVillagerGeneralEntity.class, AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D), (lucunqientity) -> {
-                return true;
-            }).isEmpty() && entity instanceof LivingEntity) {
-                livingentity = (LivingEntity)entity;
-                if (!livingentity.level().isClientSide()) {
-                    livingentity.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.BLOCK.get(), 10, 4, false, false));
-                }
-            }
-
-            if (!levelaccessor.getEntitiesOfClass(GreenVillagerGeneralEntity.class, AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D), (lucunqientity) -> {
-                return true;
-            }).isEmpty() && entity instanceof LivingEntity) {
-                livingentity = (LivingEntity)entity;
-                if (!livingentity.level().isClientSide()) {
-                    livingentity.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.BLOCK.get(), 10, 4, false, false));
-                }
-            }
-
-            if (!levelaccessor.getEntitiesOfClass(PurpleVillagerGeneralEntity.class, AABB.ofSize(new Vec3(d0, d1, d2), 4.0D, 4.0D, 4.0D), (lucunqientity) -> {
-                return true;
-            }).isEmpty() && entity instanceof LivingEntity) {
-                livingentity = (LivingEntity)entity;
-                if (!livingentity.level().isClientSide()) {
-                    livingentity.addEffect(new MobEffectInstance((MobEffect)AnnoyingVillagersModMobEffects.BLOCK.get(), 10, 4, false, false));
-                }
-            }
-
             Mob mob;
             LivingEntity livingentity1;
 
@@ -238,12 +175,6 @@ public class AngrySteveOnTickProcedure {
                     .orElse(null)
                     && Math.random() <= 0.2D
                     && entity instanceof LivingEntity) {
-
-                LivingEntity entity2 = (LivingEntity) entity;
-                if (!entity2.level().isClientSide()) {
-                    entity2.addEffect(new MobEffectInstance(
-                            AnnoyingVillagersModMobEffects.BLOCK.get(), 10, 4, false, false));
-                }
             }
 
             if (entity instanceof Mob) {
@@ -269,12 +200,6 @@ public class AngrySteveOnTickProcedure {
                     .orElse(null)
                     && Math.random() <= 0.26D
                     && entity instanceof LivingEntity) {
-
-                LivingEntity entity3 = (LivingEntity) entity;
-                if (!entity3.level().isClientSide()) {
-                    entity3.addEffect(new MobEffectInstance(
-                            AnnoyingVillagersModMobEffects.BLOCK.get(), 10, 4, false, false));
-                }
             }
 
             Vec3 vec3 = new Vec3(d0, d1, d2);

@@ -133,22 +133,6 @@ public class LegendarySwordMobItemOnUseProcedure {
                     }
                 }
 
-                LivingEntity livingentity2;
-
-                if (entity instanceof LivingEntity) {
-                    livingentity2 = (LivingEntity)entity;
-                    if (!livingentity2.level().isClientSide()) {
-                        livingentity2.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.ENDURANCE.get(), 50, 1, false, false));
-                    }
-                }
-
-                if (entity instanceof LivingEntity) {
-                    livingentity2 = (LivingEntity)entity;
-                    if (!livingentity2.level().isClientSide()) {
-                        livingentity2.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 50, 2, false, false));
-                    }
-                }
-
                 new DelayedTask(50) {
                     @Override
                     public void run() {

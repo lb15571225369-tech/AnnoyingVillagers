@@ -44,129 +44,120 @@ public class EnchantBedDeathProcedure {
             if (entity instanceof LivingEntity) {
                 livingentity = (LivingEntity)entity;
                 if (livingentity.hasEffect((MobEffect) AnnoyingVillagersModMobEffects.ENCHANT_BED_EFFECT.get())) {
+                    LivingEntity livingentity2;
                     if (entity instanceof LivingEntity) {
-                        livingentity1 = (LivingEntity)entity;
-                        flag = livingentity1.hasEffect((MobEffect)AnnoyingVillagersModMobEffects.EC.get());
-                    } else {
-                        flag = false;
+                        livingentity2 = (LivingEntity)entity;
+                        livingentity2.setHealth(20.0F);
                     }
 
-                    if (!flag) {
-                        LivingEntity livingentity2;
-                        if (entity instanceof LivingEntity) {
-                            livingentity2 = (LivingEntity)entity;
-                            livingentity2.setHealth(20.0F);
+                    if (event != null && event.isCancelable()) {
+                        event.setCanceled(true);
+                    }
+
+                    if (entity instanceof Player) {
+                        player = (Player)entity;
+                        player.closeContainer();
+                    }
+
+                    ServerPlayer serverplayer;
+                    double d0;
+                    label179: {
+                        if (entity instanceof ServerPlayer) {
+                            serverplayer = (ServerPlayer)entity;
+                            if (!serverplayer.level().isClientSide()) {
+                                d0 = (double)(serverplayer.getRespawnDimension().equals(serverplayer.level().dimension()) && serverplayer.getRespawnPosition() != null ? serverplayer.getRespawnPosition().getX() : serverplayer.level().getLevelData().getXSpawn());
+                                break label179;
+                            }
                         }
 
-                        if (event != null && event.isCancelable()) {
-                            event.setCanceled(true);
+                        d0 = 0.0D;
+                    }
+
+                    int i;
+                    label169: {
+                        if (entity instanceof ServerPlayer) {
+                            serverplayer = (ServerPlayer)entity;
+                            if (!serverplayer.level().isClientSide()) {
+                                i = serverplayer.getRespawnDimension().equals(serverplayer.level().dimension()) && serverplayer.getRespawnPosition() != null ? serverplayer.getRespawnPosition().getY() : serverplayer.level().getLevelData().getYSpawn();
+                                break label169;
+                            }
                         }
 
-                        if (entity instanceof Player) {
-                            player = (Player)entity;
-                            player.closeContainer();
+                        i = 0;
+                    }
+
+                    double d1;
+                    double d2;
+                    label160: {
+                        d1 = (double)(i + 1);
+                        if (entity instanceof ServerPlayer) {
+                            serverplayer = (ServerPlayer)entity;
+                            if (!serverplayer.level().isClientSide()) {
+                                d2 = (double)(serverplayer.getRespawnDimension().equals(serverplayer.level().dimension()) && serverplayer.getRespawnPosition() != null ? serverplayer.getRespawnPosition().getZ() : serverplayer.level().getLevelData().getZSpawn());
+                                break label160;
+                            }
                         }
 
-                        ServerPlayer serverplayer;
-                        double d0;
-                        label179: {
+                        d2 = 0.0D;
+                    }
+
+                    entity.teleportTo(d0, d1, d2);
+                    if (entity instanceof ServerPlayer) {
+                        ServerGamePacketListenerImpl servergamepacketlistenerimpl;
+                        label148: {
+                            serverplayer = (ServerPlayer)entity;
+                            servergamepacketlistenerimpl = serverplayer.connection;
                             if (entity instanceof ServerPlayer) {
-                                serverplayer = (ServerPlayer)entity;
-                                if (!serverplayer.level().isClientSide()) {
-                                    d0 = (double)(serverplayer.getRespawnDimension().equals(serverplayer.level().dimension()) && serverplayer.getRespawnPosition() != null ? serverplayer.getRespawnPosition().getX() : serverplayer.level().getLevelData().getXSpawn());
-                                    break label179;
+                                ServerPlayer serverplayer1 = (ServerPlayer)entity;
+
+                                if (!serverplayer1.level().isClientSide()) {
+                                    d0 = (double)(serverplayer1.getRespawnDimension().equals(serverplayer1.level().dimension()) && serverplayer1.getRespawnPosition() != null ? serverplayer1.getRespawnPosition().getX() : serverplayer1.level().getLevelData().getXSpawn());
+                                    break label148;
                                 }
                             }
 
                             d0 = 0.0D;
                         }
 
-                        int i;
-                        label169: {
+                        label138: {
                             if (entity instanceof ServerPlayer) {
-                                serverplayer = (ServerPlayer)entity;
-                                if (!serverplayer.level().isClientSide()) {
-                                    i = serverplayer.getRespawnDimension().equals(serverplayer.level().dimension()) && serverplayer.getRespawnPosition() != null ? serverplayer.getRespawnPosition().getY() : serverplayer.level().getLevelData().getYSpawn();
-                                    break label169;
+                                ServerPlayer serverplayer2 = (ServerPlayer)entity;
+
+                                if (!serverplayer2.level().isClientSide()) {
+                                    i = serverplayer2.getRespawnDimension().equals(serverplayer2.level().dimension()) && serverplayer2.getRespawnPosition() != null ? serverplayer2.getRespawnPosition().getY() : serverplayer2.level().getLevelData().getYSpawn();
+                                    break label138;
                                 }
                             }
 
                             i = 0;
                         }
 
-                        double d1;
-                        double d2;
-                        label160: {
+                        label129: {
                             d1 = (double)(i + 1);
                             if (entity instanceof ServerPlayer) {
-                                serverplayer = (ServerPlayer)entity;
-                                if (!serverplayer.level().isClientSide()) {
-                                    d2 = (double)(serverplayer.getRespawnDimension().equals(serverplayer.level().dimension()) && serverplayer.getRespawnPosition() != null ? serverplayer.getRespawnPosition().getZ() : serverplayer.level().getLevelData().getZSpawn());
-                                    break label160;
+                                ServerPlayer serverplayer3 = (ServerPlayer)entity;
+
+                                if (!serverplayer3.level().isClientSide()) {
+                                    d2 = (double)(serverplayer3.getRespawnDimension().equals(serverplayer3.level().dimension()) && serverplayer3.getRespawnPosition() != null ? serverplayer3.getRespawnPosition().getZ() : serverplayer3.level().getLevelData().getZSpawn());
+                                    break label129;
                                 }
                             }
 
                             d2 = 0.0D;
                         }
 
-                        entity.teleportTo(d0, d1, d2);
-                        if (entity instanceof ServerPlayer) {
-                            ServerGamePacketListenerImpl servergamepacketlistenerimpl;
-                            label148: {
-                                serverplayer = (ServerPlayer)entity;
-                                servergamepacketlistenerimpl = serverplayer.connection;
-                                if (entity instanceof ServerPlayer) {
-                                    ServerPlayer serverplayer1 = (ServerPlayer)entity;
+                        servergamepacketlistenerimpl.teleport(d0, d1, d2, entity.getYRot(), entity.getXRot());
+                    }
 
-                                    if (!serverplayer1.level().isClientSide()) {
-                                        d0 = (double)(serverplayer1.getRespawnDimension().equals(serverplayer1.level().dimension()) && serverplayer1.getRespawnPosition() != null ? serverplayer1.getRespawnPosition().getX() : serverplayer1.level().getLevelData().getXSpawn());
-                                        break label148;
-                                    }
-                                }
+                    if (entity instanceof LivingEntity) {
+                        livingentity2 = (LivingEntity)entity;
+                        livingentity2.removeEffect((MobEffect)AnnoyingVillagersModMobEffects.ENCHANT_BED_EFFECT.get());
+                    }
 
-                                d0 = 0.0D;
-                            }
-
-                            label138: {
-                                if (entity instanceof ServerPlayer) {
-                                    ServerPlayer serverplayer2 = (ServerPlayer)entity;
-
-                                    if (!serverplayer2.level().isClientSide()) {
-                                        i = serverplayer2.getRespawnDimension().equals(serverplayer2.level().dimension()) && serverplayer2.getRespawnPosition() != null ? serverplayer2.getRespawnPosition().getY() : serverplayer2.level().getLevelData().getYSpawn();
-                                        break label138;
-                                    }
-                                }
-
-                                i = 0;
-                            }
-
-                            label129: {
-                                d1 = (double)(i + 1);
-                                if (entity instanceof ServerPlayer) {
-                                    ServerPlayer serverplayer3 = (ServerPlayer)entity;
-
-                                    if (!serverplayer3.level().isClientSide()) {
-                                        d2 = (double)(serverplayer3.getRespawnDimension().equals(serverplayer3.level().dimension()) && serverplayer3.getRespawnPosition() != null ? serverplayer3.getRespawnPosition().getZ() : serverplayer3.level().getLevelData().getZSpawn());
-                                        break label129;
-                                    }
-                                }
-
-                                d2 = 0.0D;
-                            }
-
-                            servergamepacketlistenerimpl.teleport(d0, d1, d2, entity.getYRot(), entity.getXRot());
-                        }
-
-                        if (entity instanceof LivingEntity) {
-                            livingentity2 = (LivingEntity)entity;
-                            livingentity2.removeEffect((MobEffect)AnnoyingVillagersModMobEffects.ENCHANT_BED_EFFECT.get());
-                        }
-
-                        if (entity instanceof Player) {
-                            player = (Player)entity;
-                            if (!player.level().isClientSide()) {
-                                player.displayClientMessage(Component.literal("Your enchanted bed has saved you once. Right-click again to use it again!"), true);
-                            }
+                    if (entity instanceof Player) {
+                        player = (Player)entity;
+                        if (!player.level().isClientSide()) {
+                            player.displayClientMessage(Component.literal("Your enchanted bed has saved you once. Right-click again to use it again!"), true);
                         }
                     }
                 }
@@ -175,23 +166,14 @@ public class EnchantBedDeathProcedure {
             if (entity instanceof LivingEntity) {
                 livingentity = (LivingEntity)entity;
                 if (livingentity.isHolding(Items.TOTEM_OF_UNDYING)) {
-                    if (entity instanceof LivingEntity) {
-                        livingentity1 = (LivingEntity)entity;
-                        flag = livingentity1.hasEffect((MobEffect)AnnoyingVillagersModMobEffects.EC.get());
-                    } else {
-                        flag = false;
-                    }
+                    entity.kill();
+                    if (entity instanceof Player) {
+                        player = (Player)entity;
+                        ItemStack itemstack = new ItemStack(Items.TOTEM_OF_UNDYING);
 
-                    if (!flag) {
-                        entity.kill();
-                        if (entity instanceof Player) {
-                            player = (Player)entity;
-                            ItemStack itemstack = new ItemStack(Items.TOTEM_OF_UNDYING);
-
-                            player.getInventory().clearOrCountMatchingItems((itemstack1) -> {
-                                return itemstack.getItem() == itemstack1.getItem();
-                            }, 1, player.inventoryMenu.getCraftSlots());
-                        }
+                        player.getInventory().clearOrCountMatchingItems((itemstack1) -> {
+                            return itemstack.getItem() == itemstack1.getItem();
+                        }, 1, player.inventoryMenu.getCraftSlots());
                     }
                 }
             }

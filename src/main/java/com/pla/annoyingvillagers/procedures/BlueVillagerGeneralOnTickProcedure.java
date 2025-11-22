@@ -68,22 +68,6 @@ public class BlueVillagerGeneralOnTickProcedure {
                     .findFirst()
                     .orElse(null);
 
-            if (livingentity == nearestMob && Math.random() <= 0.01D && entity instanceof LivingEntity) {
-                LivingEntity livingentity1 = (LivingEntity) entity;
-
-                if (!livingentity1.level().isClientSide()) {
-                    livingentity1.addEffect(
-                            new MobEffectInstance(
-                                    AnnoyingVillagersModMobEffects.BLOCK.get(),
-                                    10,
-                                    1,
-                                    false,
-                                    false
-                            )
-                    );
-                }
-            }
-
 
             Vec3 vec3 = new Vec3(d0, d1, d2);
             Vec3 finalVec1 = vec3;
