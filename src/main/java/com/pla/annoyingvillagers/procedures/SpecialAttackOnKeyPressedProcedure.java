@@ -112,6 +112,7 @@ public class SpecialAttackOnKeyPressedProcedure {
         if (livingEntityPatch != null && entity instanceof Player player) {
             // Check by item
             ItemStack holdingItem = player.getMainHandItem();
+            ItemStack offHandItem = player.getOffhandItem();
             if (holdingItem.getItem().equals(AnnoyingVillagersModItems.ENDER_AEGIS.get())) {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
                     if (holdingItem.getTag() != null && holdingItem.getTag().getBoolean("SecondForm")) {
@@ -219,409 +220,139 @@ public class SpecialAttackOnKeyPressedProcedure {
                     return;
                 }
             }
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get())
+                    || offHandItem.getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get())) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    livingEntityPatch.playAnimationSynchronized(Animations.BIPED_LANDING, 0.0F);
+                    HerobrineEnderEyeItem.startShadowObsidianMachineGun((ServerLevel) player.level(), player);
+                    if (player.getMainHandItem().getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get())) {
+                        player.getMainHandItem().hurtAndBreak(10, player, p -> {
+                        });
+                    } else if (player.getOffhandItem().getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get())) {
+                        player.getOffhandItem().hurtAndBreak(10, player, p -> {
+                        });
+                    }
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
+                    return;
+                }
+            }
 
             // Check by categories
-            if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.SWORD && playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.TACHI && playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.LONGSWORD && playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.UCHIGATANA) {
-                if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.AXE) {
-                    if (playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE) {
-                        if (entity.isShiftKeyDown()) {
-                            if (!entity.level().isClientSide() && entity.getServer() != null) {
-                                livingEntityPatch.playAnimationSynchronized(Animations.VINDICATOR_SWING_AXE3, 0.0F);
-                            }
-                        } else {
-                            if (entity.getPersistentData().getDouble("axe_a") < 1.0D) {
-                                entity.getPersistentData().putDouble("axe_a", 1.5D);
-                                if (!entity.level().isClientSide() && entity.getServer() != null) {
-                                    livingEntityPatch.playAnimationSynchronized(Animations.VINDICATOR_SWING_AXE2, 0.0F);
-                                }
-
-                                new DelayedTask(8) {
-                                    @Override
-                                    public void run() {
-                                        entity.getPersistentData().putDouble("axe_a", 2.0D);
-                                    }
-                                };
-                            } else if (entity.getPersistentData().getDouble("axe_a") == 2.0D) {
-                                entity.getPersistentData().putDouble("axe_a", 2.5D);
-                                if (!entity.level().isClientSide() && entity.getServer() != null) {
-                                    livingEntityPatch.playAnimationSynchronized(Animations.VINDICATOR_SWING_AXE3, 0.0F);
-                                }
-
-                                new DelayedTask(8) {
-                                    @Override
-                                    public void run() {
-                                        entity.getPersistentData().putDouble("axe_a", 3.0D);
-                                    }
-                                };
-                            } else if (entity.getPersistentData().getDouble("axe_a") == 3.0D) {
-                                entity.getPersistentData().putDouble("axe_a", 3.5D);
-                                if (!entity.level().isClientSide() && entity.getServer() != null) {
-                                    livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_BERSERK_AUTO_1, 0.0F);
-                                }
-                                new DelayedTask(8) {
-                                    @Override
-                                    public void run() {
-                                        entity.getPersistentData().putDouble("axe_a", 4.0D);
-                                    }
-                                };
-
-                            } else if (entity.getPersistentData().getDouble("axe_a") == 4.0D) {
-                                entity.getPersistentData().putDouble("axe_a", 4.5D);
-                                if (!entity.level().isClientSide() && entity.getServer() != null) {
-                                    livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_BERSERK_AUTO_2, 0.0F);
-                                }
-                            } else if (entity.getPersistentData().getDouble("axe_a") == 5.0D) {
-                                entity.getPersistentData().putDouble("axe_a", 5.5D);
-                                if (!entity.level().isClientSide() && entity.getServer() != null) {
-                                    livingEntityPatch.playAnimationSynchronized(Animations.GREATSWORD_AIR_SLASH, 0.0F);
-                                }
-
-                                new DelayedTask(8) {
-                                    @Override
-                                    public void run() {
-                                        entity.getPersistentData().putDouble("axe_a", 6.0D);
-                                    }
-                                };
-
-                            } else if (entity.getPersistentData().getDouble("axe_a") == 6.0D) {
-                                entity.getPersistentData().putDouble("axe_a", 6.5D);
-                                if (!entity.level().isClientSide() && entity.getServer() != null) {
-                                    livingEntityPatch.playAnimationSynchronized(Animations.VINDICATOR_SWING_AXE3, 0.0F);
-                                }
-
-                                new DelayedTask(8) {
-                                    @Override
-                                    public void run() {
-                                        entity.getPersistentData().putDouble("axe_a", 0.0D);
-                                    }
-                                };
-
-                            }
-                        }
-                    } else {
-                        if (entity.getPersistentData().getDouble("axe_a") > 2.0D) {
-                            entity.getPersistentData().putDouble("axe_a", 0.0D);
-                        }
-
-                        if (dynamicAnimation == Animations.THE_GUILLOTINE) {
-                            if (!entity.level().isClientSide() && entity.getServer() != null) {
-                                livingEntityPatch.playAnimationSynchronized(AVAnimations.AXE_FUN_SKILL, 0.0F);
-                            }
-                        } else if (entity.getPersistentData().getDouble("axe_a") == 0.0D) {
-                            entity.getPersistentData().putDouble("axe_a", 1.5D);
-                            if (!entity.level().isClientSide() && entity.getServer() != null) {
-                                livingEntityPatch.playAnimationSynchronized(AVAnimations.AXE_HEAVY_AUTO_1, 0.0F);
-                            }
-
-                            new DelayedTask(10) {
-                                @Override
-                                public void run() {
-                                    entity.getPersistentData().putDouble("axe_a", 2.0D);
-                                }
-                            };
-                        } else if (entity.getPersistentData().getDouble("axe_a") == 2.0D) {
-                            entity.getPersistentData().putDouble("axe_a", 2.5D);
-                            if (!entity.level().isClientSide() && entity.getServer() != null) {
-                                livingEntityPatch.playAnimationSynchronized(AVAnimations.AXE_HEAVY_AUTO_2, 0.0F);
-                            }
-
-                            new DelayedTask(10) {
-                                @Override
-                                public void run() {
-                                    entity.getPersistentData().putDouble("axe_a", 0.0D);
-                                }
-                            };
-                        }
+            if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.AXE) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    if (!entity.getPersistentData().contains("AxeCombo")) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.AXE_HEAVY_AUTO_1, 0.0F);
+                        entity.getPersistentData().putDouble("AxeCombo", 1.0);
+                    } else if (entity.getPersistentData().getDouble("AxeCombo") == 1.0) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.AXE_HEAVY_AUTO_2, 0.0F);
+                        entity.getPersistentData().putDouble("AxeCombo", 2.0);
+                    } else if (entity.getPersistentData().getDouble("AxeCombo") == 2.0) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.AXE_FUN_SKILL, 0.0F);
+                        entity.getPersistentData().remove("AxeCombo");
                     }
-                } else if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.FIST && !entity.getPersistentData().getBoolean("fist_a")) {
-                    if (!player.level().isClientSide() &&
-                            (player.getMainHandItem().getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get()) ||
-                                    player.getOffhandItem().getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get()))) {
-                        livingEntityPatch.playAnimationSynchronized(Animations.BIPED_LANDING, 0.0F);
-                        HerobrineEnderEyeItem.startShadowObsidianMachineGun((ServerLevel) player.level(), player);
-                        if (player.getMainHandItem().getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get())) {
-                            player.getMainHandItem().hurtAndBreak(10, player, p -> {
-                            });
-                        } else if (player.getOffhandItem().getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get())) {
-                            player.getOffhandItem().hurtAndBreak(10, player, p -> {
-                            });
-                        }
-                        entity.getPersistentData().putBoolean("fist_a", true);
-                        
-                        new DelayedTask(60) {
-                            @Override
-                            public void run() {
-                                entity.getPersistentData().putBoolean("fist_a", false);
-                            }
-                        };
-                        return;
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
+                    return;
+                }
+            }
+
+            if ((playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.SWORD
+                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.LONGSWORD
+                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.TACHI
+                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.TACHI
+                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.DAGGER)
+                    && (playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SWORD
+                    || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.TACHI)) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    if (!entity.getPersistentData().contains("DualSwordCombo")) {
+                        livingEntityPatch.playAnimationSynchronized(Animations.DAGGER_DUAL_DASH, 0.0F);
+                        entity.getPersistentData().putDouble("DualSwordCombo", 1.0);
+                    } else if (entity.getPersistentData().getDouble("DualSwordCombo") == 1.0) {
+                        livingEntityPatch.playAnimationSynchronized(Animations.LONGSWORD_AUTO2, 0.0F);
+                        entity.getPersistentData().putDouble("DualSwordCombo", 2.0);
+                    } else if (entity.getPersistentData().getDouble("DualSwordCombo") == 2.0) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.DUAL_DANCING_EDGE, 0.0F);
+                        entity.getPersistentData().putDouble("DualSwordCombo", 3.0);
+                    } else if (entity.getPersistentData().getDouble("DualSwordCombo") == 3.0) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.DUAL_SWORD_DANCING_EDGE, 0.0F);
+                        entity.getPersistentData().remove("DualSwordCombo");
                     }
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
+                    return;
+                }
+            }
+
+            if ((playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.SWORD
+                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.LONGSWORD
+                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.TACHI
+                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.TACHI
+                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.DAGGER)
+                    && playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.SWORD
+                    && playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    if (!entity.getPersistentData().contains("SwordCombo")) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.SWORD_HEAVY_AUTO_1, 0.0F);
+                        entity.getPersistentData().putDouble("SwordCombo", 1.0);
+                    } else if (entity.getPersistentData().getDouble("SwordCombo") == 1.0) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.SWORD_HEAVY_AUTO_2, 0.0F);
+                        entity.getPersistentData().putDouble("SwordCombo", 2.0);
+                    } else if (entity.getPersistentData().getDouble("SwordCombo") == 2.0) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.SWORD_HEAVY_AUTO_3, 0.0F);
+                        entity.getPersistentData().remove("SwordCombo");
+                    }
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
+                    return;
+                }
+            }
+
+            if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.GREATSWORD) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    if (!entity.getPersistentData().contains("GreatSwordCombo")) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.GIANT_WHIRLWIND, 0.0F);
+                        entity.getPersistentData().putDouble("GreatSwordCombo", 1.0);
+                    } else if (entity.getPersistentData().getDouble("GreatSwordCombo") == 1.0) {
+                        livingEntityPatch.playAnimationSynchronized(Animations.METEOR_SLAM, 0.0F);
+                        entity.getPersistentData().remove("GreatSwordCombo");
+                    }
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
+                    return;
+                }
+            }
+
+            if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.FIST) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
                     if (entity.isSprinting()) {
                         if (entity.isShiftKeyDown()) {
                             if (!entity.level().isClientSide() && entity.getServer() != null) {
                                 livingEntityPatch.playAnimationSynchronized(AVAnimations.WHIRLWIND_KICK_LEFT, 0.0F);
                             }
-
-                            entity.getPersistentData().putBoolean("fist_a", true);
-                            
-                            new DelayedTask(20) {
-                                @Override
-                                public void run() {
-                                }
-                            };
-                            new DelayedTask(35) {
-                                @Override
-                                public void run() {
-                                    entity.getPersistentData().putBoolean("fist_a", false);
-                                }
-                            };
-                            new DelayedTask(9) {
-                                @Override
-                                public void run() {
-                                    entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * 0.25D, 0.0D, entity.getLookAngle().z * 0.25D));
-                                }
-                            };
                         } else {
                             if (!entity.level().isClientSide() && entity.getServer() != null) {
                                 livingEntityPatch.playAnimationSynchronized(AVAnimations.WHIRLWIND_KICK, 0.0F);
                             }
-
-                            entity.getPersistentData().putBoolean("fist_a", true);
-                            entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * 0.2D, entity.getLookAngle().y * 0.5D, entity.getLookAngle().z * 0.2D));
-                            new DelayedTask(40) {
-                                @Override
-                                public void run() {
-                                    entity.getPersistentData().putBoolean("fist_a", false);
-                                }
-                            };
                         }
-                    } else if (entity.isShiftKeyDown()) {
-                        if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    } else {
+                        if (!entity.getPersistentData().contains("FistCombo")) {
+                            livingEntityPatch.playAnimationSynchronized(AVAnimations.FIST_LEFT, 0.0F);
+                            entity.getPersistentData().putDouble("FistCombo", 1.0);
+                        } else if (entity.getPersistentData().getDouble("FistCombo") == 1.0) {
                             livingEntityPatch.playAnimationSynchronized(AVAnimations.FIST_UP, 0.0F);
-                        }
-                    } else if (playerpatch != null) {
-                        AssetAccessor<? extends DynamicAnimation> dynamicanimation1 = playerpatch.getAnimator().getPlayerFor(null).getAnimation();
-
-                        if (dynamicanimation1 == AVAnimations.FIST_UP) {
-                            if (!entity.level().isClientSide() && entity.getServer() != null) {
-                                livingEntityPatch.playAnimationSynchronized(AVAnimations.FIST_LEFT, 0.0F);
-                            }
-
-                            if (!entity.level().isClientSide() && entity.getServer() != null) {
-                                try {
-                                    entity.getServer().getCommands().getDispatcher().execute(
-                                            "effect give @s epicfight:stun_immunity 3 5 true",
-                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                } catch (CommandSyntaxException e) {
-
-                                }
-                            }
-
-                            entity.getPersistentData().putBoolean("fist_a", true);
-                            new DelayedTask(20) {
-                                @Override
-                                public void run() {
-                                    entity.getPersistentData().putBoolean("fist_a", false);
-                                }
-                            };
-                        } else {
-                            if (!entity.level().isClientSide() && entity.getServer() != null) {
-                                livingEntityPatch.playAnimationSynchronized(AVAnimations.FIST_DASH, 0.0F);
-                            }
-
-                            entity.getPersistentData().putBoolean("fist_a", true);
-                            new DelayedTask(40) {
-                                @Override
-                                public void run() {
-                                    entity.getPersistentData().putBoolean("fist_a", false);
-                                }
-                            };
+                            entity.getPersistentData().putDouble("FistCombo", 2.0);
+                        } else if (entity.getPersistentData().getDouble("FistCombo") == 2.0) {
+                            livingEntityPatch.playAnimationSynchronized(AVAnimations.FIST_DASH, 0.0F);
+                            entity.getPersistentData().remove("FistCombo");
                         }
                     }
-                    if (!(entity instanceof LivingEntity livingEntity) || !entity.isAlive()) {
-                        return;
-                    }
-                    ItemStack itemStack = livingEntity.getMainHandItem();
-                    if (itemStack.getItem() instanceof ObsidianWeaponItem obsidianWeaponItem) {
-                        obsidianWeaponItem.specialAttack(livingEntity);
-                    } else if (itemStack.getItem() instanceof ShadowObsidianWeaponItem shadowObsidianWeaponItem) {
-                        shadowObsidianWeaponItem.specialAttack(livingEntity);
-                    } else if (itemStack.getItem() instanceof ShadowObsidianPillarItem shadowObsidianPillarItem) {
-                        shadowObsidianPillarItem.specialAttack(livingEntity);
-                    }
-                }
-            } else if ((playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.SWORD || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.SWORD) && (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.TACHI || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI) && (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.TACHI || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.SWORD) && (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() != WeaponCategories.SWORD || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI)) {
-                if (!(entity instanceof LivingEntity livingEntity) || !entity.isAlive()) {
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
                     return;
                 }
-                ItemStack itemStack = livingEntity.getMainHandItem();
-                if (entity.getPersistentData().getDouble("sword_a") > 3.5D) {
-                    entity.getPersistentData().putDouble("sword_a", 0.0D);
-                } else if (entity.getPersistentData().getDouble("sword_a") == 0.0D) {
-                    entity.getPersistentData().putDouble("sword_a", 1.5D);
-                    if (!entity.level().isClientSide() && entity.getServer() != null) {
-                        if (itemStack.getItem() instanceof ShadowObsidianSwordItem) {
-                            livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F);
-                        } else {
-                            livingEntityPatch.playAnimationSynchronized(AVAnimations.SWORD_HEAVY_AUTO_1, 0.0F);
-                        }
-                    }
-                    new DelayedTask(10) {
-                        @Override
-                        public void run() {
-                            entity.getPersistentData().putDouble("sword_a", 2.0D);
-                        }
-                    };
-                } else if (entity.getPersistentData().getDouble("sword_a") == 2.0D) {
-                    entity.getPersistentData().putDouble("sword_a", 2.5D);
-                    if (!entity.level().isClientSide() && entity.getServer() != null) {
-                        if (itemStack.getItem() instanceof ShadowObsidianSwordItem) {
-                            livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F);
-                        } else {
-                            livingEntityPatch.playAnimationSynchronized(AVAnimations.SWORD_HEAVY_AUTO_2, 0.0F);
-                        }
-                    }
-                    new DelayedTask(10) {
-                        @Override
-                        public void run() {
-                            entity.getPersistentData().putDouble("sword_a", 3.0D);
-                        }
-                    };
-                } else if (entity.getPersistentData().getDouble("sword_a") == 3.0D) {
-                    entity.getPersistentData().putDouble("sword_a", 3.5D);
-                    if (!entity.level().isClientSide() && entity.getServer() != null) {
-                        if (itemStack.getItem() instanceof ShadowObsidianSwordItem) {
-                            livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F);
-                        } else {
-                            livingEntityPatch.playAnimationSynchronized(AVAnimations.SWORD_HEAVY_AUTO_3, 0.0F);
-                        }
-                    }
-
-                    new DelayedTask(10) {
-                        @Override
-                        public void run() {
-                            entity.getPersistentData().putDouble("sword_a", 0.0D);
-                        }
-                    };
-                }
-            } else {
-                if (dynamicAnimation == Animations.DANCING_EDGE) {
-                    if (!entity.level().isClientSide() && entity.getServer() != null) {
-                        livingEntityPatch.playAnimationSynchronized(AVAnimations.DUAL_SWORD_SKILL, 0.0F);
-                    }
-                } else {
-                    if (entity.getPersistentData().getDouble("sword_a") < 1.0D) {
-                        entity.getPersistentData().putDouble("sword_a", 1.0D);
-                    }
-
-                    if (entity.getPersistentData().getDouble("sword_a") == 1.0D) {
-                        entity.getPersistentData().putDouble("sword_a", 1.5D);
-                        if (!entity.level().isClientSide() && entity.getServer() != null) {
-                            livingEntityPatch.playAnimationSynchronized(Animations.DAGGER_DUAL_DASH, 0.0F);
-                        }
-
-                        new DelayedTask(10) {
-                            @Override
-                            public void run() {
-                                entity.getPersistentData().putDouble("sword_a", 2.0D);
-                            }
-                        };
-                    } else if (entity.getPersistentData().getDouble("sword_a") == 2.0D) {
-                        entity.getPersistentData().putDouble("sword_a", 2.5D);
-                        if (!entity.level().isClientSide() && entity.getServer() != null) {
-                            livingEntityPatch.playAnimationSynchronized(Animations.LONGSWORD_AUTO2, 0.0F);
-                        }
-
-                        new DelayedTask(10) {
-                            @Override
-                            public void run() {
-                                entity.getPersistentData().putDouble("sword_a", 3.0D);
-                            }
-                        };
-                    } else if (entity.getPersistentData().getDouble("sword_a") == 3.0D) {
-                        entity.getPersistentData().putDouble("sword_a", 3.5D);
-                        if (!entity.level().isClientSide() && entity.getServer() != null) {
-                            livingEntityPatch.playAnimationSynchronized(AVAnimations.DUAL_DANCING_EDGE, 0.0F);
-                        }
-
-                        new DelayedTask(20) {
-                            @Override
-                            public void run() {
-                                entity.getPersistentData().putDouble("sword_a", 4.0D);
-                            }
-                        };
-                    } else if (entity.getPersistentData().getDouble("sword_a") == 4.0D) {
-                        entity.getPersistentData().putDouble("sword_a", 4.5D);
-                        if (!entity.level().isClientSide() && entity.getServer() != null) {
-                            livingEntityPatch.playAnimationSynchronized(AVAnimations.DUAL_SWORD_DANCING_EDGE, 0.0F);
-                        }
-
-                        new DelayedTask(20) {
-                            @Override
-                            public void run() {
-                                entity.getPersistentData().putDouble("sword_a", 1.0D);
-                            }
-                        };
-                    }
-                }
             }
 
-            if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.GREATSWORD) {
-                LivingEntityPatch<?> livingentitypatch1 = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
-                AssetAccessor<? extends DynamicAnimation> dynamicanimation2 = livingentitypatch1.getAnimator().getPlayerFor(null).getAnimation();
-
-                if (dynamicanimation2 != Animations.STEEL_WHIRLWIND && dynamicanimation2 != Animations.STEEL_WHIRLWIND_CHARGING) {
-                    if (!(entity instanceof LivingEntity livingEntity) || !entity.isAlive()) {
-                        return;
-                    }
-                    ItemStack itemStack = livingEntity.getMainHandItem();
-                    if (entity.getPersistentData().getDouble("sword_a") < 1.0D) {
-                        entity.getPersistentData().putDouble("sword_a", 1.5D);
-                        if (!entity.level().isClientSide() && entity.getServer() != null) {
-                            livingEntityPatch.playAnimationSynchronized(AVAnimations.GIANT_WHIRLWIND, 0.0F);
-                        }
-
-                        new DelayedTask(30) {
-                            @Override
-                            public void run() {
-                                entity.getPersistentData().putDouble("sword_a", 2.0D);
-                            }
-                        };
-                    } else if (entity.getPersistentData().getDouble("sword_a") == 2.0D) {
-                        entity.getPersistentData().putDouble("sword_a", 2.5D);
-                        if (!entity.level().isClientSide() && entity.getServer() != null) {
-                            livingEntityPatch.playAnimationSynchronized(AVAnimations.GIANT_WHIRLWIND_2, 0.0F);
-                        }
-
-                        new DelayedTask(20) {
-                            @Override
-                            public void run() {
-                                entity.getPersistentData().putDouble("sword_a", 0.0D);
-                            }
-                        };
-                    } else {
-                        entity.getPersistentData().putDouble("sword_a", 0.0D);
-                    }
-                } else if (!entity.level().isClientSide() && entity.getServer() != null) {
-                    livingEntityPatch.playAnimationSynchronized(AVAnimations.GREATSWORD_SKILL, 0.0F);
-                }
-            }
-
-            if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.SPEAR) {
-                if (entity.getPersistentData().getDouble("sword_a") < 1.0D) {
-                    entity.getPersistentData().putDouble("sword_a", 1.5D);
-                    if (!entity.level().isClientSide() && entity.getServer() != null) {
-                        livingEntityPatch.playAnimationSynchronized(AVAnimations.SPEAR_THRUST, 0.0F);
-                    }
-
-                    new DelayedTask(30) {
-                        @Override
-                        public void run() {
-                            entity.getPersistentData().putDouble("sword_a", 0.0D);
-                        }
-                    };
-                } else {
-                    entity.getPersistentData().putDouble("sword_a", 0.0D);
+            if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.SPEAR
+                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.TRIDENT) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    livingEntityPatch.playAnimationSynchronized(AVAnimations.SPEAR_THRUST, 0.0F);
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
+                    return;
                 }
             }
         }

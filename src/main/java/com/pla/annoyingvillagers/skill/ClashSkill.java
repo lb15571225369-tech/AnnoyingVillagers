@@ -67,7 +67,7 @@ public class ClashSkill extends GuardSkill {
                 List<AnimationManager.AnimationAccessor<? extends AttackAnimation>> list = capabilityitem.getAutoAttackMotion(pre.getPlayerPatch());
                 LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 
-                if (flag && list.contains(dynamicanimation) || dynamicanimation == AVAnimations.GIANT_WHIRLWIND_2 || dynamicanimation == AVAnimations.DUAL_SWORD_DANCING_EDGE) {
+                if (flag && list.contains(dynamicanimation) || dynamicanimation == AVAnimations.DUAL_SWORD_DANCING_EDGE) {
                     pre.setCanceled(true);
                     pre.setResult(ResultType.BLOCKED);
                     playerpatch.playSound((SoundEvent) EpicFightSounds.CLASH.get(), -0.05F, 0.1F);

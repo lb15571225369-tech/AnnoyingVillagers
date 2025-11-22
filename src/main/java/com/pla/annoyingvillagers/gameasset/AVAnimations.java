@@ -149,7 +149,6 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<ActionAnimation> FISTING;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> GIANT_WHIRLWIND;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> DUAL_SWORD_DANCING_EDGE;
-    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> GIANT_WHIRLWIND_2;
     public static AnimationManager.AnimationAccessor<AttackAnimation> SPEAR_THRUST;
     public static AnimationManager.AnimationAccessor<StaticAnimation> DUAL_TACHI_GUARD;
     public static AnimationManager.AnimationAccessor<GuardAnimation> DUAL_TACHI_GUARD_HIT;
@@ -273,7 +272,7 @@ public class AVAnimations {
                         .addEvents(
                                 new AnimationEvent.InTimeEvent[]{
                                         AnimationEvent.InTimeEvent.create(0.1F, ReusableSources.PLAY_SOUND, Side.SERVER)
-                                .params(new Object[]{EpicFightSounds.WHOOSH.get()})})
+                                .params(EpicFightSounds.WHOOSH.get())})
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
         AVAnimations.LEGENDARY_SWORD_HEAVY_ATTACK = builder.nextAccessor("biped/combat/legendary_sword_heavy_attack",
                 (accessor) -> (new HeavyAttackAnimation(0.05F, 0.05F, 0.5F, 0.7F, 1.2F, WOMWeaponColliders.TORMENT_BERSERK_AIRSLAM, humanoidarmature.get().rootJoint, accessor, humanoidarmature))
@@ -743,7 +742,7 @@ public class AVAnimations {
                         .addState(EntityState.LOCKON_ROTATE, true)
                         .addEvents(
                                 new AnimationEvent.InTimeEvent[]{
-                                        AnimationEvent.InTimeEvent.create(0.15F, ReusableSources.PLAY_SOUND, Side.SERVER).params(new Object[]{EpicFightSounds.WHOOSH.get()})})
+                                        AnimationEvent.InTimeEvent.create(0.15F, ReusableSources.PLAY_SOUND, Side.SERVER).params(EpicFightSounds.WHOOSH.get())})
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
         AVAnimations.GIANT_WHIRLWIND = builder.nextAccessor("biped/combat/giant_whirlwind",
                 (accessor) -> (new BasicAttackAnimation(0.41F, accessor, humanoidarmature, new Phase(0.0F, 0.3F, 0.35F, 0.55F, 0.9F, 0.9F, humanoidarmature.get().toolL, null), new Phase(0.9F, 0.95F, 1.05F, 1.2F, 1.5F, 1.5F, humanoidarmature.get().toolL, null), (new Phase(1.5F, 1.65F, 1.75F, 1.95F, 2.5F, Float.MAX_VALUE, humanoidarmature.get().toolL, null))
@@ -758,13 +757,6 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG, 2)
                         .addProperty(ActionAnimationProperty.MOVE_VERTICAL, true)
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6F));
-        AVAnimations.GIANT_WHIRLWIND_2 = builder.nextAccessor("biped/combat/giant_whirlwind_2",
-                (accessor) -> (new BasicAttackAnimation(0.41F, accessor, humanoidarmature, (new Phase(0.0F, 0.3F, 0.35F, 0.55F, 0.9F, 0.9F, humanoidarmature.get().toolL, null))
-                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.2F)), new Phase(0.9F, 0.95F, 1.05F, 1.2F, 1.5F, 1.5F, humanoidarmature.get().toolL, null), (new Phase(1.5F, 1.65F, 1.75F, 1.95F, 2.5F, Float.MAX_VALUE, humanoidarmature.get().toolL, null))
-                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.6F))
-                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)))
-                        .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
-                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F));
         AVAnimations.SPEAR_THRUST = builder.nextAccessor("biped/combat/spear_thrust",
                 (accessor) -> (new AttackAnimation(0.11F, accessor, humanoidarmature, new Phase(0.0F, 0.3F, 0.36F, 0.5F, 0.5F, humanoidarmature.get().toolL, null), new Phase(0.5F, 0.5F, 0.56F, 0.75F, 0.75F, humanoidarmature.get().toolL, null), new Phase(0.75F, 0.75F, 0.81F, 1.05F, Float.MAX_VALUE, humanoidarmature.get().toolL, null)))
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.2F));
@@ -782,7 +774,7 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN)
                         .addEvents(
                                 new AnimationEvent.InTimeEvent[]{
-                                        AnimationEvent.InTimeEvent.create(0.23F, ReusableSources.PLAY_SOUND, Side.SERVER).params(new Object[]{EpicFightSounds.WHOOSH.get()})})
+                                        AnimationEvent.InTimeEvent.create(0.23F, ReusableSources.PLAY_SOUND, Side.SERVER).params(EpicFightSounds.WHOOSH.get())})
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
         AVAnimations.SUPER_PUNCH = builder.nextAccessor("biped/combat/super_punch",
                 (accessor) -> (new KickAttackAnimation(0.05F, 1.0F, 1.25F, 1.4F, Float.MAX_VALUE, ColliderPreset.BIPED_BODY_COLLIDER, humanoidarmature.get().toolR, accessor, humanoidarmature))
