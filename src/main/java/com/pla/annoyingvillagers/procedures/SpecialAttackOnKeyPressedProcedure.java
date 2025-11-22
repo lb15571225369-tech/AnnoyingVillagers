@@ -276,7 +276,7 @@ public class SpecialAttackOnKeyPressedProcedure {
                         livingEntityPatch.playAnimationSynchronized(AVAnimations.DUAL_SWORD_DANCING_EDGE, 0.0F);
                         entity.getPersistentData().remove("DualSwordCombo");
                     }
-                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
                     return;
                 }
             }
@@ -299,7 +299,7 @@ public class SpecialAttackOnKeyPressedProcedure {
                         livingEntityPatch.playAnimationSynchronized(AVAnimations.SWORD_HEAVY_AUTO_3, 0.0F);
                         entity.getPersistentData().remove("SwordCombo");
                     }
-                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 1);
                     return;
                 }
             }
@@ -313,7 +313,7 @@ public class SpecialAttackOnKeyPressedProcedure {
                         livingEntityPatch.playAnimationSynchronized(Animations.METEOR_SLAM, 0.0F);
                         entity.getPersistentData().remove("GreatSwordCombo");
                     }
-                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
                     return;
                 }
             }
@@ -342,7 +342,7 @@ public class SpecialAttackOnKeyPressedProcedure {
                             entity.getPersistentData().remove("FistCombo");
                         }
                     }
-                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 1);
                     return;
                 }
             }
@@ -351,7 +351,7 @@ public class SpecialAttackOnKeyPressedProcedure {
                     || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.TRIDENT) {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
                     livingEntityPatch.playAnimationSynchronized(AVAnimations.SPEAR_THRUST, 0.0F);
-                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
                     return;
                 }
             }
