@@ -230,11 +230,14 @@ public class AVWeaponCapabilityPresets {
                         (itemstack) -> EpicFightSkills.SWEEPING_EDGE)
                 .innateSkill(Styles.TWO_HAND,
                         (itemstack) -> EpicFightSkills.DANCING_EDGE)
+                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
                 .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
-                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, AVAnimations.RUN_HOLD)
-                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, AVAnimations.RUN_HOLD)
+                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD)
+                .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
+                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
                 .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD)
-                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD)
+                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.RUN_HOLD)
+                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
                 .weaponCombinationPredicator(
                         (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE
                                 || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SWORD
@@ -391,8 +394,8 @@ public class AVWeaponCapabilityPresets {
                     .newStyleCombo(Styles.TWO_HAND,
                             Animations.LONGSWORD_AUTO1,
                             Animations.LONGSWORD_AUTO2,
-                            EFNDualSwordAnimations.NF_DUAL_AUTO1,
-                            EFNDualSwordAnimations.NF_DUAL_AUTO2,
+                            EFNSwordAnimations.NF_SWORD_AUTO3,
+                            EFNSwordAnimations.NF_SWORD_AUTO4,
                             AVAnimations.DUAL_SWORD_AUTO1,
                             AVAnimations.DUAL_SWORD_AUTO2,
                             Animations.SWORD_DUAL_DASH,
@@ -406,11 +409,11 @@ public class AVWeaponCapabilityPresets {
                             AVAnimations.TACHI_DASH,
                             EFNTachiAnimations.NF_TACHI_DASH)
                     .innateSkill(Styles.ONE_HAND,
-                            (itemstack) -> EpicFightSkills.LIECHTENAUER)
+                            (itemstack) -> EpicFightSkills.SHARP_STAB)
                     .innateSkill(Styles.TWO_HAND,
-                            (itemstack) -> EpicFightSkills.DANCING_EDGE)
+                            (itemstack) -> EpicFightSkills.LIECHTENAUER)
                     .innateSkill(Styles.OCHS,
-                            (itemstack) -> EpicFightSkills.DANCING_EDGE)
+                            (itemstack) -> EpicFightSkills.LIECHTENAUER)
                     .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, EFNSwordAnimations.NF_SWORD_IDLE)
                     .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, EFNSwordAnimations.NF_SWORD_RUN)
                     .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, Animations.BIPED_RUN_LONGSWORD)
@@ -428,6 +431,7 @@ public class AVWeaponCapabilityPresets {
     public static final Function<Item, Builder> GREATSWORD = (item) ->
             WeaponCapability.builder()
                     .category(WeaponCategories.GREATSWORD)
+                    .styleProvider((livingentitypatch) -> Styles.TWO_HAND)
                     .collider(ColliderPreset.GREATSWORD)
                     .swingSound(EpicFightSounds.WHOOSH_BIG.get())
                     .hitSound(EpicFightSounds.BLADE_HIT.get())
