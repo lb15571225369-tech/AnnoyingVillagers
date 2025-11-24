@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.skill;
 
-import com.hm.efn.gameasset.animations.EFNShortSwordAnimations;
 import com.pla.annoyingvillagers.entity.BabyEnderDragonEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
@@ -40,7 +39,7 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
                     Entity entity = serverLevel.getEntity(player.getPersistentData().getUUID("DragonUUID"));
                     if (entity instanceof BabyEnderDragonEntity babyEnderDragonEntity) {
                         if (babyEnderDragonEntity.isShootingState()) {
-                            serverPlayerPatch.playAnimationSynchronized(EFNShortSwordAnimations.NF_SHORTSWORD_SKILL, 0.0F);
+                            serverPlayerPatch.playAnimationSynchronized(AVAnimations.SWORD_SKILL, 0.0F);
                             babyEnderDragonEntity.setShootingState(false);
                         } else {
                             serverPlayerPatch.playAnimationSynchronized(AVAnimations.ENDER_SLAYER_ANTITHEUS_AIMING, 0.0F);

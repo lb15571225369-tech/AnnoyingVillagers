@@ -190,6 +190,8 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_SLAYER_ANTITHEUS_GUILLOTINE;
     public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> ENDER_SLAYER_MOONLESS_LUNAR_FULLMOON;
     public static AnimationManager.AnimationAccessor<StaticAnimation> ENDER_SLAYER_ANTITHEUS_AIMING;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_AEGIS_MOONLESS_AUTO_1;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_AEGIS_MOONLESS_AUTO_2;
 
     @SubscribeEvent
     public static void registerAnimations(AnimationManager.AnimationRegistryEvent event) {
@@ -341,16 +343,16 @@ public class AVAnimations {
         AVAnimations.DUAL_SWORD1 = builder.nextAccessor("biped/combat/dual_auto1",
                 (accessor) -> (new BasicAttackAnimation(0.1F, accessor, humanoidarmature, new Phase(0.0F, 0.05F, 0.3F, 0.4F, 1.167F, 1.65F, InteractionHand.MAIN_HAND, humanoidarmature.get().toolL, null), new Phase(0.1F, 0.1F, 0.4F, 0.6F, 0.6F, humanoidarmature.get().toolR, null)))
                         .addProperty(AttackPhaseProperty.HIT_PRIORITY, Priority.TARGET)
-                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.5F)
                         .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true));
         AVAnimations.DUAL_SWORD2 = builder.nextAccessor("biped/combat/dual_auto2",
                 (accessor) -> (new BasicAttackAnimation(0.1F, accessor, humanoidarmature, new Phase(0.0F, 0.05F, 0.4F, 0.8F, 1.167F, 2.5F, InteractionHand.MAIN_HAND, humanoidarmature.get().toolR, null), new Phase(0.2F, 0.1F, 1.2F, 1.3F, 1.5F, humanoidarmature.get().toolR, null), new Phase(0.2F, 0.1F, 1.4F, 1.5F, 2.1F, humanoidarmature.get().toolL, null)))
                         .addProperty(AttackPhaseProperty.HIT_PRIORITY, Priority.TARGET)
-                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.5F));
         AVAnimations.DUAL_SWORD3 = builder.nextAccessor("biped/combat/dual_auto3",
                 (accessor) -> (new BasicAttackAnimation(0.1F, 0.0F, 0.0F, 0.06F, 0.3F, ColliderPreset.SWORD, humanoidarmature.get().rootJoint, accessor, humanoidarmature))
                         .addProperty(AttackPhaseProperty.HIT_PRIORITY, Priority.TARGET)
-                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.5F)
                         .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true));
         AVAnimations.DEATH_IDLE = builder.nextAccessor("biped/other/death_idle",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
@@ -1153,6 +1155,27 @@ public class AVAnimations {
         AVAnimations.ENDER_SLAYER_ANTITHEUS_AIMING = builder.nextAccessor("biped/other/ender_slayer_antitheus_aiming",
                 (accessor) -> new StaticAnimation(false, accessor, humanoidarmature)
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, (self, entitypatch, speed, prevElapsedTime, elapsedTime) -> 2.0F));
+        AVAnimations.ENDER_AEGIS_MOONLESS_AUTO_1 = builder.nextAccessor("biped/combat/ender_aegis_moonless_auto_1",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.05F, accessor, humanoidarmature,
+                        new Phase(0.0F, 0.25F, 0.45F, 0.5F, Float.MAX_VALUE, humanoidarmature.get().toolR, null)))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.2F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(0.8F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                        .addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH_SMALL.get())
+                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLADE_HIT.get())
+                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLADE)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.2F));
+        AVAnimations.ENDER_AEGIS_MOONLESS_AUTO_2 = builder.nextAccessor("biped/combat/ender_aegis_moonless_auto_2",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.05F, accessor, humanoidarmature,
+                        new Phase(0.0F, 0.8F, 1.0F, 1.0F, Float.MAX_VALUE, humanoidarmature.get().toolR, WOMWeaponColliders.MOONLESS_BYPASS)))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.5F))
+                        .addProperty(AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.setter(0.5F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(0.8F))
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10.0F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                        .addProperty(AttackPhaseProperty.PARTICLE, WOMParticles.SHARPCUT_ANGLED_DOWN_LEFT_SLASH)
+                        .addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH_SHARP.get())
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.4F));
     }
 
     private static class ReuseableEvents {

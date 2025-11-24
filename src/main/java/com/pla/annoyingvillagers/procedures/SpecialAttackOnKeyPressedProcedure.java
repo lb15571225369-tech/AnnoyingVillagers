@@ -1,7 +1,5 @@
 package com.pla.annoyingvillagers.procedures;
 
-import com.hm.efn.gameasset.animations.EFNGreatSwordAnimations;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.BabyEnderDragonEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
@@ -118,7 +116,7 @@ public class SpecialAttackOnKeyPressedProcedure {
                     if (holdingItem.getTag() != null && holdingItem.getTag().getBoolean("SecondForm")) {
                         livingEntityPatch.playAnimationSynchronized(WOMAnimations.RAVANGER_CHARGE, 0.0F);
                     } else {
-                        livingEntityPatch.playAnimationSynchronized(EFNGreatSwordAnimations.NG_GREATSWORD_AIRSLASH, 0.0F);
+                        livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_DASH, 0.0F);
                     }
                     player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
                     return;

@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.capabilities;
 
-import com.hm.efn.gameasset.animations.*;
 import com.mojang.datafixers.util.Pair;
 import java.util.function.Function;
 
@@ -40,15 +39,15 @@ public class AVWeaponCapabilityPresets {
                     .hitSound(EpicFightSounds.BLADE_HIT.get())
                     .newStyleCombo(Styles.ONE_HAND,
                             AnimsNapoleon.NAPOLEON_AUTO_1,
-                            EFNShortSwordAnimations.NF_SHORTSWORD_AUTO1,
-                            EFNShortSwordAnimations.NF_SHORTSWORD_AUTO2,
+                            AVAnimations.ENDER_AEGIS_MOONLESS_AUTO_1,
+                            AVAnimations.ENDER_AEGIS_MOONLESS_AUTO_2,
                             AnimsSolar.SOLAR_QUEMADURA,
                             AnimsSolar.SOLAR_OBSCURIDAD_IMPACTO,
                             AnimsSolar.SOLAR_HORNO)
                     .innateSkill(Styles.ONE_HAND, (stack) -> AVSkills.ENDER_AEGIS)
-                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, EFNSwordAnimations.NF_SWORD_IDLE)
-                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, EFNLanceAnimations.NF_MEEN_RUN)
-                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, EFNSwordAnimations.NF_SWORD_WALK)
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, Animations.BIPED_RUN)
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
                     .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.BIPED_BLOCK)
                     .weaponCombinationPredicator((patch) -> true);
 
@@ -61,8 +60,8 @@ public class AVWeaponCapabilityPresets {
                     .newStyleCombo(Styles.TWO_HAND,
                             AnimsNapoleon.NAPOLEON_AUTO_1,
                             AnimsAgony.AGONY_AUTO_4,
-                            EFNLanceAnimations.NF_MEEN_AUTO1,
-                            EFNLanceAnimations.NF_MEEN_AUTO2,
+                            WOMAnimations.STAFF_AUTO_2,
+                            WOMAnimations.STAFF_AUTO_3,
                             AnimsNapoleon.NAPOLEON_AUSTERLITZ,
                             AnimsAgony.AGONY_RIPPING_FANGS)
                     .newStyleCombo(Styles.MOUNT,
@@ -85,19 +84,19 @@ public class AVWeaponCapabilityPresets {
                     .hitSound(EpicFightSounds.BLADE_HIT.get())
                     .canBePlacedOffhand(false)
                     .newStyleCombo(Styles.TWO_HAND,
-                            EFNGreatSwordAnimations.NG_GREATSWORD_AUTO1,
+                            AnimsRuine.RUINE_AUTO_1,
                             WOMAnimations.TORMENT_BERSERK_AUTO_2,
                             WOMAnimations.TORMENT_BERSERK_AUTO_1,
-                            EFNGreatSwordAnimations.NG_GREATSWORD_AUTO2,
+                            AnimsRuine.RUINE_AUTO_2,
                             AnimsRuine.RUINE_AUTO_4,
-                            EFNGreatSwordAnimations.NG_GREATSWORD_DASH,
+                            WOMAnimations.TORMENT_CHARGED_ATTACK_2,
                             AnimsRuine.RUINE_COMET
                     ).newStyleCombo(Styles.MOUNT,
                             Animations.SWORD_MOUNT_ATTACK)
                     .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.DEMONIAC_VOLTAGE_REAVER)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, WOMAnimations.TORMENT_BERSERK_IDLE)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, EFNGreatSwordAnimations.NG_GREATSWOED_WALK)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, EFNGreatSwordAnimations.NG_GREATSWORD_RUN)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, WOMAnimations.TORMENT_BERSERK_WALK)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, WOMAnimations.TORMENT_BERSERK_RUN)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AnimsSolar.SOLAR_GUARD)
                     .weaponCombinationPredicator(
                             (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE
@@ -125,8 +124,8 @@ public class AVWeaponCapabilityPresets {
                             Animations.SWORD_MOUNT_ATTACK)
                     .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.OBSIDIAN_SLEDGEHAMMER)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, WOMAnimations.TORMENT_BERSERK_IDLE)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, EFNGreatSwordAnimations.NG_GREATSWOED_WALK)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, EFNGreatSwordAnimations.NG_GREATSWORD_RUN)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, WOMAnimations.TORMENT_BERSERK_WALK)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, WOMAnimations.TORMENT_BERSERK_RUN)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AnimsRuine.RUINE_GUARD)
                     .weaponCombinationPredicator(
                             (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE
@@ -154,7 +153,7 @@ public class AVWeaponCapabilityPresets {
                     .comboCancel((style) -> false)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_SPEAR)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, WOMAnimations.ANTITHEUS_WALK)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, EFNLanceAnimations.NF_MEEN_RUN)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, WOMAnimations.ANTITHEUS_RUN)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AVAnimations.GLOWING_AGONY_GUARD);
 
     public static final Function<Item, Builder> LEGENDARY_SWORD = (item) ->
@@ -205,20 +204,17 @@ public class AVWeaponCapabilityPresets {
                         Animations.SWORD_AUTO1,
                         Animations.SWORD_AUTO2,
                         Animations.SWORD_AUTO3,
-                        Animations.SWORD_AUTO2,
-                        EFNShortSwordAnimations.NF_SHORTSWORD_AUTO1,
-                        EFNShortSwordAnimations.NF_SHORTSWORD_AUTO2,
-                        EFNShortSwordAnimations.NF_SHORTSWORD_AUTO3,
+                        AnimsHerrscher.HERRSCHER_AUTO_1,
+                        AnimsHerrscher.HERRSCHER_AUTO_2,
                         AVAnimations.RUSH_SWORD,
-                        EFNSwordAnimations.NF_SWORD_AIRSLASH)
+                        Animations.SWORD_AIR_SLASH)
                 .newStyleCombo(Styles.TWO_HAND,
                         Animations.SWORD_DUAL_AUTO1,
                         Animations.SWORD_DUAL_AUTO2,
                         Animations.SWORD_DUAL_AUTO3,
-                        EFNShortSwordAnimations.NF_SHORTSWORD_AUTO3,
-                        AVAnimations.DUAL_SWORD_AUTO3,
-                        AVAnimations.DUAL_SWORD_AUTO4,
-                        Animations.DAGGER_AUTO2,
+                        AVAnimations.DUAL_SWORD1,
+                        AVAnimations.DUAL_SWORD2,
+                        AVAnimations.DUAL_SWORD3,
                         Animations.SWORD_DUAL_DASH,
                         Animations.SWORD_DUAL_AIR_SLASH)
                 .newStyleCombo(Styles.MOUNT,
@@ -266,7 +262,7 @@ public class AVWeaponCapabilityPresets {
                     Animations.AXE_AUTO2,
                     Animations.VINDICATOR_SWING_AXE3,
                     Animations.SWORD_DASH,
-                    EFNSwordAnimations.NF_SWORD_AIRSLASH
+                    Animations.AXE_AIRSLASH
             ).innateSkill(Styles.ONE_HAND,
                     (itemstack) -> EpicFightSkills.GUILLOTINE_AXE)
             .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
@@ -292,10 +288,9 @@ public class AVWeaponCapabilityPresets {
                     Animations.SPEAR_TWOHAND_AUTO1,
                     Animations.SPEAR_TWOHAND_AUTO2,
                     AnimsAgony.AGONY_AUTO_4,
-                    EFNLanceAnimations.NF_MEEN_AUTO1,
-                    EFNLanceAnimations.NF_MEEN_AUTO2,
-                    EFNLanceAnimations.NF_MEEN_AUTO4,
-                    EFNLanceAnimations.NF_MEEN_DASH,
+                    WOMAnimations.STAFF_AUTO_2,
+                    WOMAnimations.STAFF_AUTO_3,
+                    Animations.SPEAR_DASH,
                     Animations.SPEAR_TWOHAND_AIR_SLASH)
             .newStyleCombo(Styles.MOUNT,
                     Animations.SPEAR_MOUNT_ATTACK,
@@ -325,15 +320,14 @@ public class AVWeaponCapabilityPresets {
                                     && livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.AXE
                                     && livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.SWORD ? Styles.TWO_HAND : Styles.OCHS)
                     .newStyleCombo(Styles.TWO_HAND,
-                            EFNTachiAnimations.NF_TACHI_AUTO1,
-                            EFNTachiAnimations.NF_TACHI_AUTO2,
-                            EFNTachiAnimations.NF_TACHI_AUTO3,
+                            Animations.TACHI_AUTO1,
                             Animations.TACHI_AUTO2,
+                            AnimsRuine.RUINE_AUTO_1,
                             Animations.TACHI_AUTO3,
                             Animations.RUSHING_TEMPO1,
                             AnimsRuine.RUINE_CHATIMENT,
-                            EFNTachiAnimations.NF_TACHI_DASH,
-                            EFNTachiAnimations.NF_TACHI_AIRSLASH)
+                            AVAnimations.TACHI_DASH,
+                            Animations.LONGSWORD_AIR_SLASH)
                     .innateSkill(Styles.ONE_HAND,
                             (itemstack) -> EpicFightSkills.GRASPING_SPIRE)
                     .newStyleCombo(Styles.OCHS,
@@ -348,9 +342,9 @@ public class AVWeaponCapabilityPresets {
                             Animations.SWORD_MOUNT_ATTACK)
                     .innateSkill(Styles.TWO_HAND,
                             (itemstack) -> EpicFightSkills.RUSHING_TEMPO)
-                    .livingMotionModifier(Styles.COMMON, LivingMotions.IDLE, EFNTachiAnimations.NF_TACHI_IDLE)
-                    .livingMotionModifier(Styles.COMMON, LivingMotions.WALK, EFNTachiAnimations.NF_TACHI_WALK)
-                    .livingMotionModifier(Styles.COMMON, LivingMotions.RUN, EFNTachiAnimations.NF_TACHI_RUN)
+                    .livingMotionModifier(Styles.COMMON, LivingMotions.IDLE, Animations.BIPED_HOLD_TACHI)
+                    .livingMotionModifier(Styles.COMMON, LivingMotions.WALK, Animations.BIPED_HOLD_TACHI)
+                    .livingMotionModifier(Styles.COMMON, LivingMotions.RUN, Animations.BIPED_HOLD_TACHI)
                     .livingMotionModifier(Styles.COMMON, LivingMotions.BLOCK, AnimsRuine.RUINE_GUARD)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_TACHI)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_HOLD_TACHI)
@@ -384,42 +378,41 @@ public class AVWeaponCapabilityPresets {
                     .swingSound(AVSounds.SWORD_WHOOSH.get())
                     .canBePlacedOffhand(false)
                     .newStyleCombo(Styles.ONE_HAND,
-                            EFNSwordAnimations.NF_SWORD_AUTO1,
-                            EFNSwordAnimations.NF_SWORD_AUTO2,
                             AVAnimations.LONGSWORD_AUTO1,
+                            Animations.LONGSWORD_AUTO1,
                             Animations.LONGSWORD_AUTO2,
                             Animations.LONGSWORD_AUTO3,
                             Animations.LONGSWORD_DASH,
                             Animations.LONGSWORD_AIR_SLASH)
                     .newStyleCombo(Styles.TWO_HAND,
+                            AVAnimations.LONGSWORD_AUTO1,
                             Animations.LONGSWORD_AUTO1,
                             Animations.LONGSWORD_AUTO2,
-                            EFNSwordAnimations.NF_SWORD_AUTO3,
-                            EFNSwordAnimations.NF_SWORD_AUTO4,
+                            Animations.LONGSWORD_AUTO3,
                             AVAnimations.DUAL_SWORD_AUTO1,
                             AVAnimations.DUAL_SWORD_AUTO2,
                             Animations.SWORD_DUAL_DASH,
-                            EFNSwordAnimations.NF_SWORD_AIRSLASH)
+                            Animations.LONGSWORD_AIR_SLASH)
                     .newStyleCombo(Styles.OCHS,
-                            EFNTachiAnimations.NF_TACHI_AUTO1,
                             AnimsRuine.RUINE_AUTO_1,
                             AnimsRuine.RUINE_AUTO_2,
+                            AnimsRuine.RUINE_AUTO_3,
                             AnimsRuine.RUINE_CHATIMENT,
-                            EFNGreatSwordAnimations.NG_GREATSWORD_DASH,
+                            AVAnimations.RUSH_SWORD,
                             AVAnimations.TACHI_DASH,
-                            EFNTachiAnimations.NF_TACHI_DASH)
+                            Animations.LONGSWORD_AIR_SLASH)
                     .innateSkill(Styles.ONE_HAND,
                             (itemstack) -> EpicFightSkills.SHARP_STAB)
                     .innateSkill(Styles.TWO_HAND,
                             (itemstack) -> EpicFightSkills.LIECHTENAUER)
                     .innateSkill(Styles.OCHS,
                             (itemstack) -> EpicFightSkills.LIECHTENAUER)
-                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, EFNSwordAnimations.NF_SWORD_IDLE)
-                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, EFNSwordAnimations.NF_SWORD_RUN)
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_LONGSWORD)
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, Animations.BIPED_HOLD_LONGSWORD)
                     .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, Animations.BIPED_RUN_LONGSWORD)
                     .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.LONGSWORD_GUARD)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_DUAL_WEAPON)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, EFNSwordAnimations.NF_SWORD_WALK)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_HOLD_LONGSWORD)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.RUN_DUAL_BIG)
                     .livingMotionModifier(Styles.OCHS, LivingMotions.IDLE, AnimsRuine.RUINE_IDLE)
                     .livingMotionModifier(Styles.OCHS, LivingMotions.WALK, AnimsRuine.RUINE_WALK)
@@ -436,20 +429,19 @@ public class AVWeaponCapabilityPresets {
                     .swingSound(EpicFightSounds.WHOOSH_BIG.get())
                     .hitSound(EpicFightSounds.BLADE_HIT.get())
                     .newStyleCombo(Styles.TWO_HAND,
-                            EFNGreatSwordAnimations.NG_GREATSWORD_AUTO1,
-                            EFNGreatSwordAnimations.NG_GREATSWORD_AUTO2,
-                            EFNGreatSwordAnimations.NG_GREATSWORD_AUTO3,
+                            Animations.GREATSWORD_AUTO1,
+                            Animations.GREATSWORD_AUTO2,
+                            AnimsSolar.SOLAR_AUTO_3,
                             WOMAnimations.TORMENT_AUTO_3,
                             AnimsSolar.SOLAR_AUTO_1,
                             AnimsSolar.SOLAR_AUTO_2,
-                            EFNGreatSwordAnimations.NG_GREATSWORD_CHARG1MAX_SECOND,
                             AnimsSolar.SOLAR_HORNO,
                             WOMAnimations.TORMENT_DASH,
-                            EFNGreatSwordAnimations.NG_GREATSWORD_AIRSLASH)
+                            WOMAnimations.TORMENT_AIRSLAM)
                     .innateSkill(Styles.TWO_HAND, (itemstack) -> EpicFightSkills.STEEL_WHIRLWIND)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, EFNGreatSwordAnimations.NG_GREATSWORD_IDLE)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, EFNGreatSwordAnimations.NG_GREATSWOED_WALK)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, EFNGreatSwordAnimations.NG_GREATSWORD_RUN)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AnimsSolar.SOLAR_IDLE)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AnimsSolar.SOLAR_WALK)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AnimsSolar.SOLAR_RUN)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AnimsSolar.SOLAR_GUARD);
 
     public static final Function<Item, Builder> SHADOW_OBSIDIAN_SWORD = (item) ->
