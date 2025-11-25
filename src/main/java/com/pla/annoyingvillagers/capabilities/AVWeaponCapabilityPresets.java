@@ -255,13 +255,12 @@ public class AVWeaponCapabilityPresets {
             .collider(ColliderPreset.TOOLS)
             .hitSound(EpicFightSounds.BLADE_HIT.get())
             .newStyleCombo(Styles.ONE_HAND,
+                    Animations.AXE_AUTO1,
+                    Animations.AXE_AUTO2,
                     Animations.SWORD_AUTO1,
                     Animations.SWORD_AUTO2,
                     Animations.SWORD_AUTO3,
-                    Animations.AXE_AUTO1,
-                    Animations.AXE_AUTO2,
-                    Animations.VINDICATOR_SWING_AXE3,
-                    Animations.SWORD_DASH,
+                    Animations.AXE_DASH,
                     Animations.AXE_AIRSLASH
             ).innateSkill(Styles.ONE_HAND,
                     (itemstack) -> EpicFightSkills.GUILLOTINE_AXE)

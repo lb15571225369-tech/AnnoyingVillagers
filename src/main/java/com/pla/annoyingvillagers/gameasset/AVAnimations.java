@@ -590,31 +590,31 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.2F))
                         .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(2.5F))
-                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.5F));
         AVAnimations.AXE_HEAVY_AUTO_2 = builder.nextAccessor("biped/combat/axe_heavy_auto2",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.1F, 0.15F, 0.8F, 1.2F, 1.95F, null, humanoidarmature.get().toolR, accessor, humanoidarmature))
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.4F))
                         .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(2.5F))
-                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.8F));
         AVAnimations.SWORD_HEAVY_AUTO_1 = builder.nextAccessor("biped/combat/sword_heavy_auto1",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.1F, 0.11F, 0.27F, 0.5F, 0.95F, null, humanoidarmature.get().toolR, accessor, humanoidarmature))
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.4F))
                         .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(2.5F))
-                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.8F));
         AVAnimations.SWORD_HEAVY_AUTO_2 = builder.nextAccessor("biped/combat/sword_heavy_auto2",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.01F, 0.1F, 0.12F, 0.22F, 0.95F, null, humanoidarmature.get().toolR, accessor, humanoidarmature))
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.4F))
                         .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(2.5F))
-                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.5F));
         AVAnimations.SWORD_HEAVY_AUTO_3 = builder.nextAccessor("biped/combat/sword_heavy_auto3",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.01F, 0.1F, 0.21F, 0.32F, 1.2F, null, humanoidarmature.get().toolR, accessor, humanoidarmature))
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.6F))
                         .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(2.5F))
-                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.5F));
         AVAnimations.EXECUTE_COMBO = builder.nextAccessor("biped/combat/execute_combo",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.05F, accessor, humanoidarmature, new Phase(0.1F, 1.8F, 1.95F, 2.1F, 2.3F, humanoidarmature.get().toolR, null), new Phase(2.3F, 2.3F, 2.34F, 2.42F, 2.45F, humanoidarmature.get().toolR, null), new Phase(2.45F, 2.5F, 2.51F, 2.58F, 2.7F, humanoidarmature.get().toolR, null), new Phase(2.7F, 2.7F, 2.74F, 2.8F, 2.89F, humanoidarmature.get().toolR, null), new Phase(2.89F, 2.9F, 2.93F, 3.15F, 3.2F, humanoidarmature.get().toolR, null), new Phase(3.2F, 3.2F, 3.25F, 3.5F, Float.MAX_VALUE, humanoidarmature.get().toolR, null)))
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.1F))
