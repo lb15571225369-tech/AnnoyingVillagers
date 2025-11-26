@@ -602,13 +602,13 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.4F))
                         .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(2.5F))
-                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.8F));
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F));
         AVAnimations.SWORD_HEAVY_AUTO_2 = builder.nextAccessor("biped/combat/sword_heavy_auto2",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.01F, 0.1F, 0.12F, 0.22F, 0.95F, null, humanoidarmature.get().toolR, accessor, humanoidarmature))
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.4F))
                         .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(2.5F))
-                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.5F));
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F));
         AVAnimations.SWORD_HEAVY_AUTO_3 = builder.nextAccessor("biped/combat/sword_heavy_auto3",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.01F, 0.1F, 0.21F, 0.32F, 1.2F, null, humanoidarmature.get().toolR, accessor, humanoidarmature))
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)

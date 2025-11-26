@@ -56,5 +56,5 @@ public class HardGreatSwordRender extends RenderItemBase implements Function<Jso
         }
     }
 
-    @Override public RenderItemBase apply(JsonElement json) { return new RenderIncinerator(json); }
+    @Override public RenderItemBase apply(JsonElement json) { return new LegendarySwordRender(json); }
 }

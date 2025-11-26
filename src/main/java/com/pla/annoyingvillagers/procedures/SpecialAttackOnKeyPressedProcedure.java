@@ -72,15 +72,17 @@ public class SpecialAttackOnKeyPressedProcedure {
     public static void execute(LevelAccessor world, Entity entity) {
         if (entity == null) return;
 
-        LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
-        if (patch == null) return;
-
         if (entity.getPersistentData().getInt(NBT_SPECIAL_CD) > 0) {
             return;
         }
 
-        AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(patch.getAnimator().getPlayerFor(null)).getAnimation();
-        if (dynamicAnimation instanceof LongHitAnimation) return;
+
+        PlayerPatch<?> playerpatch = EpicFightCapabilities.getEntityPatch(entity, PlayerPatch.class);
+        LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+        AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
+        if (dynamicAnimation.get() instanceof LongHitAnimation) {
+            return;
+        }
 
         if (entity instanceof Player player && !player.level().isClientSide() &&
                 !player.getMainHandItem().getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get()) &&
@@ -105,8 +107,6 @@ public class SpecialAttackOnKeyPressedProcedure {
                     });
         }
 
-        PlayerPatch<?> playerpatch = EpicFightCapabilities.getEntityPatch(entity, PlayerPatch.class);
-        LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
         if (livingEntityPatch != null && entity instanceof Player player) {
             // Check by item
             ItemStack holdingItem = player.getMainHandItem();

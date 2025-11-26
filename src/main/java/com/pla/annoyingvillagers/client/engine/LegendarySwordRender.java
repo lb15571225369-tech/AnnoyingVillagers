@@ -25,8 +25,8 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import java.util.function.Function;
 
 @OnlyIn(Dist.CLIENT)
-public class RenderIncinerator extends RenderItemBase implements Function<JsonElement, RenderItemBase> {
-    public RenderIncinerator(JsonElement json) {
+public class LegendarySwordRender extends RenderItemBase implements Function<JsonElement, RenderItemBase> {
+    public LegendarySwordRender(JsonElement json) {
         super(json);
     }
 
@@ -64,5 +64,5 @@ public class RenderIncinerator extends RenderItemBase implements Function<JsonEl
         }
     }
 
-    @Override public RenderItemBase apply(JsonElement json) { return new RenderIncinerator(json); }
+    @Override public RenderItemBase apply(JsonElement json) { return new LegendarySwordRender(json); }
 }

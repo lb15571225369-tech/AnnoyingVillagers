@@ -11,7 +11,7 @@ import yesman.epicfight.api.client.forgeevent.PatchedRenderersEvent;
 public class RenderEngine {
     @SubscribeEvent
     public static void registerRenderer(PatchedRenderersEvent.RegisterItemRenderer add) {
-        add.addItemRenderer(AnnoyingVillagersModItems.LEGENDARY_SWORD.getId(), RenderIncinerator::new);
+        add.addItemRenderer(AnnoyingVillagersModItems.LEGENDARY_SWORD.getId(), LegendarySwordRender::new);
         add.addItemRenderer(AnnoyingVillagersModItems.HARD_GREAT_SWORD.getId(), HardGreatSwordRender::new);
     }
 }

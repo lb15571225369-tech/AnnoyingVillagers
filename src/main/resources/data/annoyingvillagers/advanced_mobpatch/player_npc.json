@@ -218,6 +218,25 @@
 								{
 									"predicate": "epicfight:within_distance",
 									"min": 0.0,
+									"max": 3.0
+								}
+							],
+							"animation": "epicfight:biped/combat/axe_airslash"
+						}
+					],
+					"cooldown": 200,
+					"weight": 10.5
+				},
+				{
+					"looping": 0,
+					"canBeInterrupted": 0,
+					"behaviors": [
+						{
+							"guard": 10,
+							"conditions": [
+								{
+									"predicate": "epicfight:within_distance",
+									"min": 0.0,
 									"max": 2.0
 								}
 							],
