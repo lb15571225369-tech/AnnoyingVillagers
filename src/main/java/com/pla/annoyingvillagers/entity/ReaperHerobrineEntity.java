@@ -311,7 +311,7 @@ public class ReaperHerobrineEntity extends HerobrineMob {
         builder = builder.add(Attributes.MAX_HEALTH, 230.0D);
         builder = builder.add(Attributes.ARMOR, 20.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 5.0D);
-        builder = builder.add(Attributes.FOLLOW_RANGE, 128.0D);
+        builder = builder.add(Attributes.FOLLOW_RANGE, 48.0D);
         return builder;
     }
 }

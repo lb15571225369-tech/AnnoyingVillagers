@@ -611,7 +611,7 @@ public class LowShadowHerobrineCloneEntity extends Monster {
         builder = builder.add(Attributes.MAX_HEALTH, 40.0D);
         builder = builder.add(Attributes.ARMOR, 25.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 10.0D);
-        builder = builder.add(Attributes.FOLLOW_RANGE, 128.0D);
+        builder = builder.add(Attributes.FOLLOW_RANGE, 24.0D);
         return builder;
     }
 }
