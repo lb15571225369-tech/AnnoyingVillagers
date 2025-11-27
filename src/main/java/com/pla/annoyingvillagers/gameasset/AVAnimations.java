@@ -5,12 +5,9 @@ import java.util.Set;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -24,23 +21,19 @@ import com.pla.annoyingvillagers.animations.types.KickAttackAnimation;
 import net.minecraftforge.fml.common.Mod;
 import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
 import reascer.wom.animation.attacks.SpecialAttackAnimation;
-import reascer.wom.gameasset.ReuseableEvents;
 import reascer.wom.gameasset.colliders.WOMWeaponColliders;
 import reascer.wom.particle.WOMParticles;
-import reascer.wom.skill.WOMSkillDataKeys;
 import reascer.wom.world.damagesources.WOMExtraDamageInstance;
 import yesman.epicfight.api.animation.AnimationManager;
 import yesman.epicfight.api.animation.Joint;
 import yesman.epicfight.api.animation.property.AnimationEvent;
 import yesman.epicfight.api.animation.property.AnimationEvent.Side;
-import yesman.epicfight.api.animation.property.AnimationProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.ActionAnimationProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.AttackAnimationProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.AttackPhaseProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.StaticAnimationProperty;
 import yesman.epicfight.api.animation.types.*;
 import yesman.epicfight.api.animation.types.AttackAnimation.Phase;
-import yesman.epicfight.api.collider.Collider;
 import yesman.epicfight.api.utils.HitEntityList.Priority;
 import yesman.epicfight.api.utils.LevelUtil;
 import yesman.epicfight.api.utils.TimePairList;
@@ -53,11 +46,8 @@ import yesman.epicfight.gameasset.ColliderPreset;
 import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.model.armature.HumanoidArmature;
 import yesman.epicfight.particle.EpicFightParticles;
-import yesman.epicfight.skill.SkillDataKey;
-import yesman.epicfight.skill.SkillSlots;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
-import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.damagesource.EpicFightDamageTypeTags;
 import yesman.epicfight.world.damagesource.ExtraDamageInstance;
 import yesman.epicfight.world.damagesource.StunType;
@@ -182,6 +172,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> BULL_CHARGE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> SNAKE_BLADE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> IDLE_BREAK;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> THROWING_ENDER_PEARL;
     public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> SLEDGE_HAMMER_INNATE_DASH;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_SLAYER_ANTITHEUS_AUTO_2;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_SLAYER_ANTITHEUS_AUTO_3;
@@ -219,6 +210,8 @@ public class AVAnimations {
         AVAnimations.SNAKE_BLADE = builder.nextAccessor("biped/other/snake_blade",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
         AVAnimations.IDLE_BREAK = builder.nextAccessor("biped/other/idle_break",
+                (accessor) -> new StaticAnimation(false, accessor, humanoidarmature));
+        AVAnimations.THROWING_ENDER_PEARL = builder.nextAccessor("biped/other/throwing_ender_pearl",
                 (accessor) -> new StaticAnimation(false, accessor, humanoidarmature));
         AVAnimations.GLOWING_AGONY_GUARD = builder.nextAccessor("biped/skill/glowing_agony_guard",
                 (accessor) -> (new StaticAnimation(0.05F, true, accessor, humanoidarmature))

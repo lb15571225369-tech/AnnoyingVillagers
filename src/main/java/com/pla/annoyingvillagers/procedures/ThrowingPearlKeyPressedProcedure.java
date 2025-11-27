@@ -1,10 +1,14 @@
 package com.pla.annoyingvillagers.procedures;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.EnchantedEnderPearlEntity;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -19,6 +23,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import yesman.epicfight.api.animation.Joint;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.animation.types.LongHitAnimation;
 import yesman.epicfight.api.animation.types.MovementAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
@@ -62,7 +67,7 @@ public class ThrowingPearlKeyPressedProcedure {
 
             LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
             AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
-            if (!(dynamicAnimation.get() instanceof StaticAnimation || dynamicAnimation.get() instanceof MovementAnimation)) {
+            if (dynamicAnimation.get() instanceof LongHitAnimation) {
                 return;
             }
 
@@ -73,28 +78,37 @@ public class ThrowingPearlKeyPressedProcedure {
                         .map(stack -> {
                             if (!entity.getPersistentData().getBoolean("ender_pearl_used")) {
                                 entity.getPersistentData().putBoolean("ender_pearl_used", true);
-
+                                livingEntityPatch.playAnimationSynchronized(AVAnimations.THROWING_ENDER_PEARL, 0.0F);
                                 Level level = entity.level();
                                 var projectile = new EnchantedEnderPearlEntity(
                                         AnnoyingVillagersModEntities.ENCHANTED_ENDER_PEARL_PROJECTILE.get(), level);
                                 projectile.setOwner(entity);
-                                projectile.setBaseDamage(0.0D);
-                                projectile.setKnockback(0);
-                                projectile.setSilent(true);
-                                projectile.setPos(entity.getX(), entity.getEyeY() - 0.1D, entity.getZ());
-                                projectile.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, 1.5F, 0.0F);
-                                level.addFreshEntity(projectile);
+                                Vec3 handPos = getJointWithTranslation(
+                                        entity,
+                                        new Vec3f(0.0F, 0.0F, 0.0F),
+                                        Armatures.BIPED.get().toolL
+                                );
 
-                                stack.hurtAndBreak(1, player, p -> {
-                                });
+                                if (handPos != null) {
+                                    projectile.setBaseDamage(0.0D);
+                                    projectile.setKnockback(0);
+                                    projectile.setSilent(true);
+                                    projectile.setPos(handPos.x, handPos.y, handPos.z);
+                                    projectile.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, 1.5F, 0.0F);
+                                    level.addFreshEntity(projectile);
+                                    entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (entity.level().getRandom().nextFloat() * 0.4F + 0.8F));
+                                    stack.hurtAndBreak(1, player, p -> {
+                                    });
 
-                                new DelayedTask(20) {
-                                    @Override
-                                    public void run() {
-                                        entity.getPersistentData().putBoolean("ender_pearl_used", false);
-                                    }
-                                };
-                                return true;
+                                    new DelayedTask(20) {
+                                        @Override
+                                        public void run() {
+                                            entity.getPersistentData().putBoolean("ender_pearl_used", false);
+                                        }
+                                    };
+                                    return true;
+                                }
+                                return false;
                             }
                             return false;
                         }).orElse(false);
@@ -112,14 +126,14 @@ public class ThrowingPearlKeyPressedProcedure {
 
                 if (player1.getInventory().contains(new ItemStack(Items.ENDER_PEARL)) && !entity.getPersistentData().getBoolean("ender_pearl_used")) {
                     entity.getPersistentData().putBoolean("ender_pearl_used", true);
-                    ((Player) entity).swing(InteractionHand.OFF_HAND, true);
+                    livingEntityPatch.playAnimationSynchronized(AVAnimations.THROWING_ENDER_PEARL, 0.0F);
                     level = entity.level();
                     projectile = new ThrownEnderpearl(EntityType.ENDER_PEARL, level);
                     projectile.setOwner(entity);
                     Vec3 handPos = getJointWithTranslation(
                             entity,
                             new Vec3f(0.0F, 0.0F, 0.0F),
-                            Armatures.BIPED.get().handL
+                            Armatures.BIPED.get().toolL
                     );
 
                     if (handPos != null) {
@@ -127,6 +141,8 @@ public class ThrowingPearlKeyPressedProcedure {
                         projectile.setPos(entity.getX(), entity.getEyeY() - 0.1D, entity.getZ());
                         projectile.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, 1.5F, 0.0F);
                         level.addFreshEntity(projectile);
+
+                        entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (entity.level().getRandom().nextFloat() * 0.4F + 0.8F));
 
                         new DelayedTask(15) {
                             @Override

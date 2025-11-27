@@ -7,8 +7,10 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -23,15 +25,21 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
+import yesman.epicfight.api.animation.Joint;
 import yesman.epicfight.api.animation.types.AttackAnimation;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.HitAnimation;
 import yesman.epicfight.api.animation.types.LongHitAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.api.utils.math.OpenMatrix4f;
+import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.effect.EpicFightMobEffects;
 
 import java.util.Objects;
 import java.util.Random;
@@ -45,6 +53,31 @@ public class CombatBehaviour {
         HOSTILE_HEALING_POTION.setCount(1);
         HEALING_POTION = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_HEALING);
         HEALING_POTION.setCount(1);
+    }
+
+    public static Vec3 getJointWithTranslation(Entity entity, Vec3f translation, Joint joint) {
+        LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+        if (livingEntityPatch == null) return null;
+
+        float interpolation = 0.0F;
+        OpenMatrix4f m = livingEntityPatch.getArmature()
+                .getBoundTransformFor(livingEntityPatch.getAnimator().getPose(interpolation), joint);
+
+        if (translation != null) {
+            OpenMatrix4f tLocal = new OpenMatrix4f().translate(translation);
+            OpenMatrix4f.mul(m, tLocal, m);
+        }
+
+        float yawRad = (float) -Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F);
+        OpenMatrix4f worldYaw = new OpenMatrix4f().rotate(yawRad, new Vec3f(0.0F, 1.0F, 0.0F));
+        OpenMatrix4f.mul(worldYaw, m, m);
+
+        LivingEntity base = livingEntityPatch.getOriginal();
+        return new Vec3(
+                m.m30 + base.getX(),
+                m.m31 + (base.getY() + (entity.getBbHeight() / 1.8) - 1.0),
+                m.m32 + base.getZ()
+        );
     }
 
     public static void throwEnderPearl(Entity entity, float xRot) {
@@ -61,12 +94,26 @@ public class CombatBehaviour {
         }
 
         Level level = entity.level();
-        if (!level.isClientSide()) {
-            Projectile projectile = new ThrownEnderpearl(EntityType.ENDER_PEARL, level);
-            projectile.setOwner(entity);
-            projectile.setPos(entity.getX(), entity.getEyeY() - 0.1D, entity.getZ());
-            projectile.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, new Random().nextBoolean() ? 1.0F : 2.0F, 0.0F);
-            level.addFreshEntity(projectile);
+        if (!level.isClientSide() && entity instanceof LivingEntity livingEntity) {
+            livingEntity.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 20, 3, false, false));
+            LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+            livingEntityPatch.playAnimationSynchronized(AVAnimations.THROWING_ENDER_PEARL, 0.0F);
+
+            Vec3 handPos = getJointWithTranslation(
+                    entity,
+                    new Vec3f(0.0F, 0.0F, 0.0F),
+                    Armatures.BIPED.get().toolL
+            );
+
+            if (handPos != null) {
+                Projectile projectile = new ThrownEnderpearl(EntityType.ENDER_PEARL, level);
+                projectile.setOwner(entity);
+                projectile.setPos(handPos.x, handPos.y, handPos.z);
+                projectile.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, new Random().nextBoolean() ? 1.0F : 2.0F, 0.0F);
+                level.addFreshEntity(projectile);
+                entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (entity.level().getRandom().nextFloat() * 0.4F + 0.8F));
+            }
+
         }
     }
 
