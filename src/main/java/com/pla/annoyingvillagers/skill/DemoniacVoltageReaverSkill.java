@@ -74,8 +74,7 @@ public class DemoniacVoltageReaverSkill extends WeaponInnateSkill {
                     }
                 }
             } else if ((skill.getCategory() == SkillCategories.BASIC_ATTACK
-                    || skill.getCategory() == SkillCategories.AIR_ATTACK
-                    || skill.getCategory() == SkillCategories.DODGE) &&
+                    || skill.getCategory() == SkillCategories.AIR_ATTACK) &&
                     (item.getItem() instanceof DemoniacVoltageReaverItem
                             && item.getTag() != null
                             && item.getTag().getBoolean("SnakeAnimation"))) {

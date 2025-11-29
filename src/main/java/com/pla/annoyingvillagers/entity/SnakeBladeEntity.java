@@ -85,7 +85,7 @@ public class SnakeBladeEntity extends Entity {
         this.entityData.define(TARGET_COUNT, 0);
         this.entityData.define(CURRENT_TARGET_ID, -1);
         this.entityData.define(PROGRESS, 0F);
-        this.entityData.define(DAMAGE, 3F);
+        this.entityData.define(DAMAGE, new Random().nextFloat(10.0F, 30.0F));
         this.entityData.define(RETRACTING, false);
         this.entityData.define(HAS_BLADE, true);
         this.entityData.define(ENCHANTED, false);
