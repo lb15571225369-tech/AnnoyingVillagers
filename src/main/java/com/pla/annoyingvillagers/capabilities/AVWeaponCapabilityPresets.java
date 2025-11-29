@@ -430,13 +430,11 @@ public class AVWeaponCapabilityPresets {
                     .newStyleCombo(Styles.TWO_HAND,
                             Animations.GREATSWORD_AUTO1,
                             Animations.GREATSWORD_AUTO2,
-                            AnimsSolar.SOLAR_AUTO_3,
+                            WOMAnimations.TORMENT_AUTO_2,
                             WOMAnimations.TORMENT_AUTO_3,
-                            AnimsSolar.SOLAR_AUTO_1,
-                            AnimsSolar.SOLAR_AUTO_2,
                             AnimsSolar.SOLAR_HORNO,
-                            WOMAnimations.TORMENT_DASH,
-                            WOMAnimations.TORMENT_AIRSLAM)
+                            Animations.GREATSWORD_DASH,
+                            Animations.GREATSWORD_AIR_SLASH)
                     .innateSkill(Styles.TWO_HAND, (itemstack) -> EpicFightSkills.STEEL_WHIRLWIND)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AnimsSolar.SOLAR_IDLE)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AnimsSolar.SOLAR_WALK)

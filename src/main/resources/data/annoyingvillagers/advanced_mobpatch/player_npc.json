@@ -24,6 +24,16 @@
 				"walk": "epicfight:biped/living/hold_longsword"
 			},
 			"style": "common"
+		},
+		{
+			"weapon_categories": [
+				"greatsword"
+			],
+			"livingmotions": {
+				"chase": "wom:biped/living/solar_run",
+				"walk": "wom:biped/living/solar_walk"
+			},
+			"style": "two_hand"
 		}
 	],
 	"custom_guard_motion": [
@@ -73,7 +83,7 @@
 			"weapon_categories": [
 				"greatsword"
 			],
-			"guard": "indestructible:guard/guard_greatsword",
+			"guard": "wom:biped/skill/solar_guard",
 			"style": "common",
 			"counter": "epicfight:biped/combat/greatsword_auto2",
 			"speed": 2
@@ -2217,104 +2227,46 @@
 			"behavior_series": [
 				{
 					"looping": 0,
-					"canBeInterrupted": 1,
-					"behaviors": [
-						{
-							"play_speed": 1.8,
-							"conditions": [
-								{
-									"predicate": "epicfight:within_distance",
-									"min": 3.8,
-									"max": 6.0
-								},
-								{
-									"predicate": "epicfight:within_angle_horizontal",
-									"min": 0.0,
-									"max": 30.0
-								}
-							],
-							"animation": "epicfight:biped/combat/uchigatana_dash",
-							"convert_time": 0.25
-						}
-					],
-					"cooldown": 100,
-					"weight": 90.0
-				},
-				{
-					"looping": 0,
 					"canBeInterrupted": 0,
 					"behaviors": [
 						{
-							"play_speed": 1.0,
+							"play_speed": 0.8,
 							"conditions": [
+								{
+									"predicate": "epicfight:within_eye_height"
+								},
 								{
 									"predicate": "epicfight:within_distance",
 									"min": 0.0,
-									"max": 3.5
-								},
-								{
-									"predicate": "epicfight:within_angle_horizontal",
-									"min": 0.0,
-									"max": 60.0
+									"max": 2.0
 								}
 							],
-							"animation": "epicfight:biped/combat/uchigatana_auto3",
-							"convert_time": 0.4
+							"animation": "epicfight:biped/combat/uchigatana_auto1"
 						},
 						{
-							"play_speed": 1.3,
+							"play_speed": 0.8,
 							"conditions": [
 								{
 									"predicate": "epicfight:within_distance",
 									"min": 0.0,
-									"max": 3.5
-								},
-								{
-									"predicate": "epicfight:within_angle_horizontal",
-									"min": 0.0,
-									"max": 60.0
+									"max": 2.0
 								}
 							],
-							"animation": "epicfight:biped/combat/uchigatana_auto2",
-							"convert_time": 0.3
+							"animation": "epicfight:biped/combat/uchigatana_auto2"
 						},
 						{
-							"play_speed": 1.0,
+							"play_speed": 0.8,
 							"conditions": [
 								{
 									"predicate": "epicfight:within_distance",
 									"min": 0.0,
-									"max": 3.5
-								},
-								{
-									"predicate": "epicfight:within_angle_horizontal",
-									"min": 0.0,
-									"max": 60.0
+									"max": 2.0
 								}
 							],
-							"animation": "epicfight:biped/combat/mob_uchigatana3",
-							"convert_time": 0.2
-						},
-						{
-							"play_speed": 1.6,
-							"conditions": [
-								{
-									"predicate": "epicfight:within_distance",
-									"min": 0.0,
-									"max": 3.5
-								},
-								{
-									"predicate": "epicfight:within_angle_horizontal",
-									"min": 0.0,
-									"max": 60.0
-								}
-							],
-							"animation": "epicfight:biped/combat/uchigatana_sheath_auto",
-							"convert_time": 0.0
+							"animation": "epicfight:biped/combat/uchigatana_auto3"
 						}
 					],
-					"cooldown": 100,
-					"weight": 100.0
+					"weight": 40.5
 				},
 				{
 					"looping": 0,
@@ -2324,147 +2276,131 @@
 							"play_speed": 1.4,
 							"conditions": [
 								{
-									"predicate": "epicfight:within_distance",
-									"min": 0.0,
-									"max": 3.5
+									"predicate": "epicfight:within_eye_height"
 								},
 								{
-									"predicate": "epicfight:within_angle_horizontal",
-									"min": 0.0,
-									"max": 60.0
-								}
-							],
-							"animation": "epicfight:biped/combat/mob_uchigatana1",
-							"convert_time": 0.4
-						},
-						{
-							"play_speed": 1.95,
-							"conditions": [
-								{
 									"predicate": "epicfight:within_distance",
-									"min": 0.0,
-									"max": 3.5
-								},
-								{
-									"predicate": "epicfight:within_angle_horizontal",
-									"min": 0.0,
-									"max": 60.0
+									"min": 1.0,
+									"max": 2.5
 								}
 							],
-							"animation": "epicfight:biped/combat/mob_uchigatana2",
-							"convert_time": 0.05
-						},
-						{
-							"play_speed": 1.75,
-							"conditions": [
-								{
-									"predicate": "epicfight:within_distance",
-									"min": 0.0,
-									"max": 4.5
-								},
-								{
-									"predicate": "epicfight:within_angle_horizontal",
-									"min": 0.0,
-									"max": 60.0
-								}
-							],
-							"animation": "epicfight:biped/combat/uchigatana_sheath_dash",
-							"convert_time": 0.1
+							"animation": "epicfight:biped/combat/uchigatana_dash"
 						}
 					],
-					"cooldown": 80,
-					"weight": 100.0
-				},
-				{
-					"looping": 0,
-					"canBeInterrupted": 1,
-					"behaviors": [
-						{
-							"play_speed": 1.7,
-							"conditions": [
-								{
-									"predicate": "epicfight:within_distance",
-									"min": 5.8,
-									"max": 8.6
-								},
-								{
-									"predicate": "epicfight:within_angle_horizontal",
-									"min": 0.0,
-									"max": 60.0
-								}
-							],
-							"animation": "epicfight:biped/skill/battojutsu_dash",
-							"convert_time": 0.4
-						},
-						{
-							"play_speed": 1.85,
-							"conditions": [
-								{
-									"predicate": "epicfight:within_distance",
-									"min": 0.0,
-									"max": 8.6
-								}
-							],
-							"animation": "epicfight:biped/skill/battojutsu_dash",
-							"convert_time": 0.3
-						},
-						{
-							"play_speed": 1.85,
-							"conditions": [
-								{
-									"predicate": "epicfight:within_distance",
-									"min": 0.0,
-									"max": 8.6
-								}
-							],
-							"animation": "epicfight:biped/skill/battojutsu_dash",
-							"convert_time": 0.3
-						}
-					],
-					"cooldown": 100,
-					"weight": 100.0
+					"cooldown": 200,
+					"weight": 10.5
 				},
 				{
 					"looping": 0,
 					"canBeInterrupted": 0,
 					"behaviors": [
 						{
-							"play_speed": 0.7,
+							"play_speed": 1.6,
 							"conditions": [
+								{
+									"predicate": "epicfight:within_eye_height"
+								},
 								{
 									"predicate": "epicfight:within_distance",
 									"min": 0.0,
-									"max": 3.0
-								},
-								{
-									"predicate": "epicfight:within_angle_horizontal",
-									"min": 0.0,
-									"max": 60.0
+									"max": 2.0
 								}
 							],
-							"animation": "epicfight:biped/skill/revelation_normal",
-							"convert_time": 0.4
-						},
-						{
-							"play_speed": 0.6,
-							"conditions": [
-								{
-									"predicate": "epicfight:within_distance",
-									"min": 0.0,
-									"max": 3.5
-								},
-								{
-									"predicate": "epicfight:within_angle_horizontal",
-									"min": 0.0,
-									"max": 60.0
-								}
-							],
-							"animation": "epicfight:biped/skill/battojutsu",
-							"convert_time": 0.4
+							"animation": "epicfight:biped/combat/uchigatana_airslash"
 						}
 					],
-					"cooldown": 80,
-					"weight": 80.0
+					"cooldown": 200,
+					"weight": 10.5
+				},
+				{
+					"looping": 0,
+					"canBeInterrupted": 0,
+					"behaviors": [
+						{
+							"play_speed": 1.6,
+							"conditions": [
+								{
+									"predicate": "epicfight:within_eye_height"
+								},
+								{
+									"predicate": "epicfight:within_distance",
+									"min": 0.0,
+									"max": 2.0
+								}
+							],
+							"animation": "epicfight:biped/skill/battojutsu"
+						},
+						{
+							"play_speed": 1.6,
+							"conditions": [
+								{
+									"predicate": "epicfight:within_eye_height"
+								},
+								{
+									"predicate": "epicfight:within_distance",
+									"min": 0.0,
+									"max": 2.0
+								}
+							],
+							"animation": "epicfight:biped/skill/battojutsu_dash"
+						}
+					],
+					"cooldown": 200,
+					"weight": 10.5
+				},
+				{
+					"looping": 0,
+					"canBeInterrupted": 0,
+					"behaviors": [
+						{
+							"conditions": [
+								{
+									"predicate": "epicfight:within_distance",
+									"min": 0.0,
+									"max": 2.0
+								}
+							],
+							"animation": "annoyingvillagers:biped/combat/sword_heavy_auto1"
+						}
+					],
+					"cooldown": 200,
+					"weight": 10.5
+				},
+				{
+					"looping": 0,
+					"canBeInterrupted": 0,
+					"behaviors": [
+						{
+							"conditions": [
+								{
+									"predicate": "epicfight:within_distance",
+									"min": 0.0,
+									"max": 2.0
+								}
+							],
+							"animation": "annoyingvillagers:biped/combat/sword_heavy_auto2"
+						}
+					],
+					"cooldown": 200,
+					"weight": 10.5
+				},
+				{
+					"looping": 0,
+					"canBeInterrupted": 0,
+					"behaviors": [
+						{
+							"conditions": [
+								{
+									"predicate": "epicfight:within_distance",
+									"min": 0.0,
+									"max": 2.0
+								}
+							],
+							"animation": "annoyingvillagers:biped/combat/sword_heavy_auto3"
+						}
+					],
+					"cooldown": 200,
+					"weight": 10.5
 				},
 				{
 					"looping": 0,
@@ -2704,15 +2640,18 @@
 					"canBeInterrupted": 0,
 					"behaviors": [
 						{
-							"play_speed": 1.14,
+							"play_speed": 0.8,
 							"conditions": [
+								{
+									"predicate": "epicfight:within_eye_height"
+								},
 								{
 									"predicate": "epicfight:within_distance",
 									"min": 0.0,
-									"max": 3.0
+									"max": 2.0
 								}
 							],
-							"animation": "epicfight:biped/combat/greatsword_airslash"
+							"animation": "epicfight:biped/combat/greatsword_auto1"
 						},
 						{
 							"play_speed": 0.8,
@@ -2720,98 +2659,21 @@
 								{
 									"predicate": "epicfight:within_distance",
 									"min": 0.0,
-									"max": 4.0
-								}
-							],
-							"animation": "epicfight:biped/combat/greatsword_dash"
-						},
-						{
-							"play_speed": 1.2,
-							"conditions": [
-								{
-									"predicate": "epicfight:within_distance",
-									"min": 0.0,
-									"max": 4.0
-								}
-							],
-							"animation": "epicfight:biped/combat/greatsword_auto1"
-						},
-						{
-							"play_speed": 1.2,
-							"conditions": [
-								{
-									"predicate": "epicfight:within_distance",
-									"min": 0.0,
-									"max": 4.5
+									"max": 2.0
 								}
 							],
 							"animation": "epicfight:biped/combat/greatsword_auto2"
 						},
 						{
-							"play_speed": 1.3,
+							"play_speed": 0.8,
 							"conditions": [
 								{
 									"predicate": "epicfight:within_distance",
 									"min": 0.0,
-									"max": 3.5
+									"max": 2.0
 								}
 							],
-							"animation": "epicfight:biped/combat/greatsword_auto1"
-						},
-						{
-							"play_speed": 1.2,
-							"conditions": [
-								{
-									"predicate": "epicfight:within_distance",
-									"min": 0.0,
-									"max": 4.0
-								}
-							],
-							"animation": "epicfight:biped/combat/greatsword_auto1"
-						},
-						{
-							"play_speed": 1.2,
-							"conditions": [
-								{
-									"predicate": "epicfight:within_distance",
-									"min": 0.0,
-									"max": 4.5
-								}
-							],
-							"animation": "wom:biped/combat/torment_charged_attack_2"
-						},
-						{
-							"play_speed": 1.2,
-							"conditions": [
-								{
-									"predicate": "epicfight:within_distance",
-									"min": 0.0,
-									"max": 4.5
-								}
-							],
-							"animation": "wom:biped/combat/ruine_chatiment"
-						},
-						{
-							"play_speed": 1.2,
-							"conditions": [
-								{
-									"predicate": "epicfight:within_distance",
-									"min": 0.0,
-									"max": 4.5
-								}
-							],
-							"animation": "wom:biped/combat/ruine_auto_1"
-						},
-						{
-							"play_speed": 1.2,
-							"conditions": [
-								{
-									"predicate": "epicfight:within_distance",
-									"min": 0.0,
-									"max": 4.5
-								}
-							],
-							"animation": "wom:biped/combat/ruine_auto_2"
+							"animation": "wom:biped/combat/torment_auto_2"
 						},
 						{
 							"play_speed": 0.8,
@@ -2819,32 +2681,21 @@
 								{
 									"predicate": "epicfight:within_distance",
 									"min": 0.0,
-									"max": 4.0
+									"max": 2.0
 								}
 							],
-							"animation": "epicfight:biped/combat/greatsword_dash"
+							"animation": "wom:biped/combat/torment_auto_3"
 						},
 						{
-							"play_speed": 1.2,
+							"play_speed": 0.8,
 							"conditions": [
 								{
 									"predicate": "epicfight:within_distance",
 									"min": 0.0,
-									"max": 4.5
+									"max": 2.0
 								}
 							],
-							"animation": "wom:biped/combat/ruine_chatiment"
-						},
-						{
-							"play_speed": 1.0,
-							"conditions": [
-								{
-									"predicate": "epicfight:within_distance",
-									"min": 0.0,
-									"max": 7.0
-								}
-							],
-							"animation": "epicfight:biped/skill/steel_whirlwind"
+							"animation": "wom:biped/combat/solar_horno"
 						}
 					],
 					"weight": 40.5
@@ -2854,18 +2705,98 @@
 					"canBeInterrupted": 0,
 					"behaviors": [
 						{
-							"play_speed": 2.3,
+							"play_speed": 1.4,
 							"conditions": [
 								{
+									"predicate": "epicfight:within_eye_height"
+								},
+								{
 									"predicate": "epicfight:within_distance",
-									"min": 0.0,
-									"max": 4.5
+									"min": 1.0,
+									"max": 2.5
 								}
 							],
 							"animation": "epicfight:biped/combat/greatsword_dash"
 						}
 					],
-					"weight": 0.5
+					"cooldown": 200,
+					"weight": 10.5
+				},
+				{
+					"looping": 0,
+					"canBeInterrupted": 0,
+					"behaviors": [
+						{
+							"play_speed": 1.6,
+							"conditions": [
+								{
+									"predicate": "epicfight:within_eye_height"
+								},
+								{
+									"predicate": "epicfight:within_distance",
+									"min": 0.0,
+									"max": 2.0
+								}
+							],
+							"animation": "epicfight:biped/combat/greatsword_airslash"
+						}
+					],
+					"cooldown": 200,
+					"weight": 10.5
+				},
+				{
+					"looping": 0,
+					"canBeInterrupted": 0,
+					"behaviors": [
+						{
+							"play_speed": 1.6,
+							"conditions": [
+								{
+									"predicate": "epicfight:within_eye_height"
+								},
+								{
+									"predicate": "epicfight:within_distance",
+									"min": 0.0,
+									"max": 2.0
+								}
+							],
+							"animation": "epicfight:biped/skill/steel_whirlwind_charging"
+						},
+						{
+							"play_speed": 1.6,
+							"conditions": [
+								{
+									"predicate": "epicfight:within_eye_height"
+								},
+								{
+									"predicate": "epicfight:within_distance",
+									"min": 0.0,
+									"max": 2.0
+								}
+							],
+							"animation": "epicfight:biped/skill/steel_whirlwind"
+						}
+					],
+					"cooldown": 200,
+					"weight": 10.5
+				},
+				{
+					"looping": 0,
+					"canBeInterrupted": 0,
+					"behaviors": [
+						{
+							"conditions": [
+								{
+									"predicate": "epicfight:within_distance",
+									"min": 0.0,
+									"max": 2.0
+								}
+							],
+							"animation": "annoyingvillagers:biped/combat/giant_whirlwind"
+						}
+					],
+					"cooldown": 200,
+					"weight": 10.5
 				},
 				{
 					"looping": 0,
@@ -3096,7 +3027,7 @@
 			"weapon_categories": [
 				"greatsword"
 			],
-			"style": "common"
+			"style": "two_hand"
 		},
 		{
 			"behavior_series": [
