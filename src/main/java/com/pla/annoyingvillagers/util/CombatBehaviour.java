@@ -105,14 +105,19 @@ public class CombatBehaviour {
                     Armatures.BIPED.get().toolL
             );
 
-            if (handPos != null) {
-                Projectile projectile = new ThrownEnderpearl(EntityType.ENDER_PEARL, level);
-                projectile.setOwner(entity);
-                projectile.setPos(handPos.x, handPos.y, handPos.z);
-                projectile.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, new Random().nextBoolean() ? 1.0F : 2.0F, 0.0F);
-                level.addFreshEntity(projectile);
-                entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (entity.level().getRandom().nextFloat() * 0.4F + 0.8F));
-            }
+            new DelayedTask(5) {
+                @Override
+                public void run() {
+                    if (handPos != null) {
+                        Projectile projectile = new ThrownEnderpearl(EntityType.ENDER_PEARL, level);
+                        projectile.setOwner(entity);
+                        projectile.setPos(handPos.x, handPos.y, handPos.z);
+                        projectile.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, new Random().nextBoolean() ? 1.0F : 2.0F, 0.0F);
+                        level.addFreshEntity(projectile);
+                        entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (entity.level().getRandom().nextFloat() * 0.4F + 0.8F));
+                    }
+                }
+            };
 
         }
     }
