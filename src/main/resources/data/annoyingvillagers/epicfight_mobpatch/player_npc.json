@@ -1,0 +1,186 @@
+{
+	"renderer": "player",
+	"humanoid_weapon_motions": [
+		{
+			"weapon_categories": [
+				"axe",
+				"hoe",
+				"pickaxe",
+				"shovel",
+				"sword"
+			],
+			"livingmotions": {
+				"chase": "annoyingvillagers:biped/other/run_hold",
+				"walk": "epicfight:biped/living/walk"
+			},
+			"style": "common"
+		},
+		{
+			"weapon_categories": [
+				"longsword"
+			],
+			"livingmotions": {
+				"chase": "epicfight:biped/living/hold_longsword",
+				"walk": "epicfight:biped/living/hold_longsword"
+			},
+			"style": "common"
+		},
+		{
+			"weapon_categories": [
+				"greatsword"
+			],
+			"livingmotions": {
+				"chase": "wom:biped/living/solar_run",
+				"walk": "wom:biped/living/solar_walk"
+			},
+			"style": "two_hand"
+		}
+	],
+	"faction": "undead",
+	"stun_animations": {
+		"knockdown": "epicfight:biped/combat/knockdown",
+		"fall": "epicfight:biped/living/landing",
+		"short": "epicfight:biped/combat/hit_short",
+		"long": "epicfight:biped/combat/hit_long"
+	},
+	"model": "epicfight:entity/biped",
+	"attributes": {
+		"block_stamina": 150.0,
+		"stamina_cost_multiply": 1.0,
+		"counter_cost": 1.0,
+		"can_block_projectile": 1,
+		"chasing_speed": 1.9,
+		"impact": 0.0,
+		"max_strikes": 5,
+		"scale": 1.0,
+		"counter_chance": 0.5,
+		"armor_negation": 0.0
+	},
+	"default_livingmotions": {
+		"death": "epicfight:biped/living/death",
+		"idle": "epicfight:biped/living/idle",
+		"chase": "epicfight:biped/living/run",
+		"walk": "epicfight:biped/living/walk"
+	},
+	"armature": "epicfight:entity/biped",
+	"combat_behavior": [
+        {
+          "behavior_series": [
+            {
+              "looping": 0,
+              "canBeInterrupted": 0,
+              "behaviors": [
+                {
+                  "play_speed": 0.8,
+                  "conditions": [
+                    {
+                      "predicate": "epicfight:within_eye_height"
+                    },
+                    {
+                      "predicate": "epicfight:within_distance",
+                      "min": 0.0,
+                      "max": 2.0
+                    }
+                  ],
+                  "animation": "epicfight:biped/combat/fist_auto1"
+                },
+                {
+                  "play_speed": 0.8,
+                  "conditions": [
+                    {
+                      "predicate": "epicfight:within_distance",
+                      "min": 0.0,
+                      "max": 2.0
+                    }
+                  ],
+                  "animation": "epicfight:biped/combat/fist_auto2"
+                },
+                {
+                  "play_speed": 0.8,
+                  "conditions": [
+                    {
+                      "predicate": "epicfight:within_distance",
+                      "min": 0.0,
+                      "max": 2.0
+                    }
+                  ],
+                  "animation": "epicfight:biped/combat/fist_auto3"
+                }
+              ],
+              "weight": 40.5
+            },
+            {
+              "looping": 0,
+              "canBeInterrupted": 0,
+              "behaviors": [
+                {
+                  "play_speed": 1.4,
+                  "conditions": [
+                    {
+                      "predicate": "epicfight:within_eye_height"
+                    },
+                    {
+                      "predicate": "epicfight:within_distance",
+                      "min": 1.0,
+                      "max": 2.5
+                    }
+                  ],
+                  "animation": "epicfight:biped/combat/fist_dash"
+                }
+              ],
+              "cooldown": 200,
+              "weight": 10.5
+            },
+            {
+              "looping": 0,
+              "canBeInterrupted": 0,
+              "behaviors": [
+                {
+                  "play_speed": 1.6,
+                  "conditions": [
+                    {
+                      "predicate": "epicfight:within_eye_height"
+                    },
+                    {
+                      "predicate": "epicfight:within_distance",
+                      "min": 0.0,
+                      "max": 2.0
+                    }
+                  ],
+                  "animation": "epicfight:biped/combat/fist_airslash"
+                }
+              ],
+              "cooldown": 200,
+              "weight": 10.5
+            },
+            {
+              "looping": 0,
+              "canBeInterrupted": 0,
+              "behaviors": [
+                {
+                  "play_speed": 1.6,
+                  "conditions": [
+                    {
+                      "predicate": "epicfight:within_eye_height"
+                    },
+                    {
+                      "predicate": "epicfight:within_distance",
+                      "min": 0.0,
+                      "max": 2.0
+                    }
+                  ],
+                  "animation": "epicfight:biped/skill/relentless_combo"
+                }
+              ],
+              "cooldown": 200,
+              "weight": 10.5
+            }
+          ],
+          "weapon_categories": [
+            "fist"
+          ],
+          "style": "common"
+        }
+	],
+	"isHumanoid": true
+}

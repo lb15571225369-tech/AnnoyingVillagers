@@ -11,7 +11,6 @@
     "SkeletonMixin",
     "ZombieMixin",
     "EnderDragonMixin",
-    "IndestructibleMixin",
     "GuardSkillMixin",
     "ItemCooldownsMixin",
     "ExplosionMixin",
@@ -22,7 +21,8 @@
     "RenderBuffersMixin",
     "VillagerMixin",
     "VindicatorMixin",
-    "IllagerMixin"
+    "IllagerMixin",
+    "IndestructibleMobGuardMixin"
   ],
   "client": [
   ],
