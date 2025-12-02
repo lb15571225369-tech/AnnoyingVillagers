@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -36,6 +37,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.pla.annoyingvillagers.capabilities.AVWeaponCapabilityPresets;
 import com.pla.annoyingvillagers.gameasset.AVSounds;
+import yesman.epicfight.gameasset.Armatures;
 
 @Mod(AnnoyingVillagers.MODID)
 public class AnnoyingVillagers {
@@ -98,10 +100,11 @@ public class AnnoyingVillagers {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
+        event.enqueueWork(AnnoyingVillagers::registerArmatures);
     }
 
-    @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event) {
+    public static void registerArmatures() {
+        Armatures.registerEntityTypeArmature(AnnoyingVillagersModEntities.PLAYER_NPC.get(), Armatures.BIPED);
     }
 
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)

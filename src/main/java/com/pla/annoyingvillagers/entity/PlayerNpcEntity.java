@@ -20,6 +20,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -38,12 +39,14 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
 import javax.annotation.Nullable;
@@ -77,7 +80,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     }
 
     public PlayerNpcEntity(PlayMessages.SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.PLAYER_NPC.get(), level);
+        this(AnnoyingVillagersModEntities.PLAYER_NPC.get(), level);
     }
 
     public PlayerNpcEntity(EntityType<? extends PlayerNpcEntity> entitytype, Level level) {
@@ -87,10 +90,11 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         this.setNoAi(false);
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
+        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_AXE));
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
+    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.put("Inventory", this.inventory.createTag());
         tag.putInt("GapCooldown", this.gapCooldown);
@@ -98,7 +102,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
+    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.contains("Inventory", Tag.TAG_COMPOUND)) {
             this.inventory.fromTag(tag.getList("Inventory", Tag.TAG_COMPOUND));
@@ -108,7 +112,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     }
 
     @Override
-    protected void dropCustomDeathLoot(DamageSource source, int looting, boolean recentlyHit) {
+    protected void dropCustomDeathLoot(@NotNull DamageSource source, int looting, boolean recentlyHit) {
         super.dropCustomDeathLoot(source, looting, recentlyHit);
 
         for (int i = 0; i < this.inventory.getContainerSize(); i++) {
@@ -119,7 +123,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         }
     }
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -221,7 +225,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         }
     }
 
-    public MobType getMobType() {
+    public @NotNull MobType getMobType() {
         return MobType.UNDEFINED;
     }
 
@@ -233,11 +237,11 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         return -0.35D;
     }
 
-    public SoundEvent getHurtSound(DamageSource damagesource) {
+    public @NotNull SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
         return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.hurt")));
     }
 
-    public SoundEvent getDeathSound() {
+    public @NotNull SoundEvent getDeathSound() {
         return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.death")));
     }
 
@@ -246,8 +250,8 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         return super.hurt(damagesource, f);
     }
 
-    public void die(DamageSource damagesource) {
-        super.die(damagesource);
+    public void die(@NotNull DamageSource damageSource) {
+        super.die(damageSource);
         if (this.level() instanceof ServerLevel levelaccessor) {
             if (this.getPersistentData().getBoolean("die_by_possess")) {
                 this.remove(Entity.RemovalReason.KILLED);
@@ -264,10 +268,10 @@ public class PlayerNpcEntity extends PlayerMobEntity {
                     @Override
                     public void run() {
                         try {
-                            corpse.getServer().getCommands().getDispatcher().execute(
+                            Objects.requireNonNull(corpse.getServer()).getCommands().getDispatcher().execute(
                                     "kill @s",
                                     corpse.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                        } catch (CommandSyntaxException e) {
+                        } catch (CommandSyntaxException ignored) {
                         }
                     }
                 };
@@ -333,7 +337,11 @@ public class PlayerNpcEntity extends PlayerMobEntity {
             new DelayedTask(5) {
                 @Override
                 public void run() {
-                    if (!entity.isAlive() || entity.isRemoved() || entity.level() == null) return;
+                    if (!entity.isAlive() || entity.isRemoved()) {
+                        return;
+                    } else {
+                        entity.level();
+                    }
                     itemEntity.discard();
                     entity.level().playSound(null, entity.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.HOSTILE, 0.2F, 1.0F);
                 }
@@ -360,12 +368,12 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         pickupNearbyItems();
     }
 
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
-        SpawnGroupData returnSpawnGroupData = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverLevelAccessor, @NotNull DifficultyInstance difficultyInstance, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
+        SpawnGroupData returnSpawnGroupData = super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawngroupdata, compoundtag);
 
-        ServerLevel serverLevel = serverlevelaccessor.getLevel();
+        ServerLevel serverLevel = serverLevelAccessor.getLevel();
 
-        if ((mobspawntype == MobSpawnType.CHUNK_GENERATION || mobspawntype == MobSpawnType.NATURAL) && serverLevel.isDay() && Math.random() <= 0.8D) {
+        if ((mobSpawnType == MobSpawnType.CHUNK_GENERATION || mobSpawnType == MobSpawnType.NATURAL) && serverLevel.isDay() && Math.random() <= 0.8D) {
             BlockPos blockPos = this.getOnPos();
             int surfaceY = serverLevel.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, blockPos).getY();
             BlockPos spawnPos = new BlockPos(blockPos.getX(), surfaceY, blockPos.getZ());
@@ -374,44 +382,44 @@ public class PlayerNpcEntity extends PlayerMobEntity {
             }
         }
 
-        List<String> commands = EquipmentDataLoader.getEquipCommands(0.85f, this);
-        for (String cmd : commands) {
-            try {
-                this.getServer().getCommands().getDispatcher().execute(
-                        cmd,
-                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-                );
-            } catch (CommandSyntaxException e) {
-
-            }
-        }
+//        List<String> commands = EquipmentDataLoader.getEquipCommands(0.85f, this);
+//        for (String cmd : commands) {
+//            try {
+//                this.getServer().getCommands().getDispatcher().execute(
+//                        cmd,
+//                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+//                );
+//            } catch (CommandSyntaxException e) {
+//
+//            }
+//        }
 
         try {
-            this.getServer().getCommands().getDispatcher().execute(
+            Objects.requireNonNull(this.getServer()).getCommands().getDispatcher().execute(
                     "tellraw @a {\"text\":\"" + this.getDisplayName().getString() + " has joined the game\",\"color\":\"yellow\"}",
                     this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-        } catch (CommandSyntaxException e) {
+        } catch (CommandSyntaxException ignored) {
         }
 
         try {
-            this.getServer().getCommands().getDispatcher().execute(
+            Objects.requireNonNull(this.getServer()).getCommands().getDispatcher().execute(
                     "data merge entity @s {CanPickUpLoot: 1b}",
                     this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-        } catch (CommandSyntaxException e) {
+        } catch (CommandSyntaxException ignored) {
         }
 
         if (Math.random() <= 0.05D) {
             try {
-                this.getServer().getCommands().getDispatcher().execute(
+                Objects.requireNonNull(this.getServer()).getCommands().getDispatcher().execute(
                         "team add player",
                         this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
+            } catch (CommandSyntaxException ignored) {
             }
             try {
-                this.getServer().getCommands().getDispatcher().execute(
+                Objects.requireNonNull(this.getServer()).getCommands().getDispatcher().execute(
                         "team join player @s",
                         this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
+            } catch (CommandSyntaxException ignored) {
             }
         }
 
@@ -422,8 +430,8 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         return returnSpawnGroupData;
     }
 
-    public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
-        super.awardKillScore(entity, i, damagesource);
+    public void awardKillScore(@NotNull Entity entity, int i, @NotNull DamageSource damageSource) {
+        super.awardKillScore(entity, i, damageSource);
     }
 
     public void baseTick() {
@@ -433,7 +441,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     public static boolean canSpawn(EntityType<PlayerNpcEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
         ServerLevel serverLevel = level.getLevel();
         if (serverLevel.isNight()) {
-            // Nerft Player NPC spawn at night
+            // Nerf Player NPC spawn at night
             return false;
         }
         return Monster.checkAnyLightMonsterSpawnRules(entityType, level, spawnType, position, random);
@@ -442,7 +450,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     public static AttributeSupplier.Builder createAttributes() {
         AttributeSupplier.Builder builder = Mob.createMobAttributes();
 
-        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.26D);
+        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.45D);
         builder = builder.add(Attributes.MAX_HEALTH, 30.0D);
         builder = builder.add(Attributes.ARMOR, 0.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0D);

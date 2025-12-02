@@ -32,9 +32,9 @@ description='''${mod_description}'''
     ordering="NONE"
     side="BOTH"
 [[dependencies.annoyingvillagers]]
-    modId="indestructible"
+    modId="combat_evolution"
     mandatory=true
-    versionRange="[20.13, )"
+    versionRange="[1.0.3, )"
     ordering="NONE"
     side="BOTH"
 [[dependencies.annoyingvillagers]]

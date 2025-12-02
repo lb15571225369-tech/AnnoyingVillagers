@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.init;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.*;
+import com.pla.annoyingvillagers.mobpatch.PlayerNpcPatch;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityType.Builder;
@@ -16,6 +17,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import yesman.epicfight.api.forgeevent.EntityPatchRegistryEvent;
 
 @EventBusSubscriber(bus = Bus.MOD)
 public class AnnoyingVillagersModEntities {
@@ -242,6 +244,11 @@ public class AnnoyingVillagersModEntities {
                 PurpleVillagerGeneralEntity::canSpawn,
                 SpawnPlacementRegisterEvent.Operation.REPLACE
         );
+    }
+
+    @SubscribeEvent
+    public static void setPatch(EntityPatchRegistryEvent entitypatchregistryevent) {
+        entitypatchregistryevent.getTypeEntry().put(AnnoyingVillagersModEntities.PLAYER_NPC.get(), (entity) -> PlayerNpcPatch::new);
     }
 
     @SubscribeEvent

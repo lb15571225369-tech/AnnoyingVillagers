@@ -1,15 +1,16 @@
 package com.pla.annoyingvillagers.init;
 
 import com.pla.annoyingvillagers.client.renderer.*;
-import com.pla.annoyingvillagers.entity.*;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
-import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent.RegisterRenderers;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import se.gory_moon.player_mobs.client.render.PlayerMobRenderer;
+import yesman.epicfight.api.client.forgeevent.PatchedRenderersEvent;
+import yesman.epicfight.api.client.model.Meshes;
+import yesman.epicfight.client.renderer.patched.entity.PHumanoidRenderer;
 
 @EventBusSubscriber(bus = Bus.MOD, value = {Dist.CLIENT})
 public class AnnoyingVillagersModEntityRenderers {
@@ -88,5 +89,12 @@ public class AnnoyingVillagersModEntityRenderers {
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.HEROBRINE_GREG.get(), HerobrineGregRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.PLAYER_NPC.get(), PlayerMobRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.HEROBRINE_WARDEN.get(), HerobrineWardenRenderer::new);
+    }
+
+    @SubscribeEvent
+    public static void onPatchedRenderer(PatchedRenderersEvent.Add add) {
+        add.addPatchedEntityRenderer(AnnoyingVillagersModEntities.PLAYER_NPC.get(),
+                (entitytype) -> (new PHumanoidRenderer<>(Meshes.BIPED, add.getContext(), entitytype))
+                        .initLayerLast(add.getContext(), entitytype));
     }
 }

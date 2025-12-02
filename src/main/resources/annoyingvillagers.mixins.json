@@ -21,8 +21,7 @@
     "RenderBuffersMixin",
     "VillagerMixin",
     "VindicatorMixin",
-    "IllagerMixin",
-    "IndestructibleMobGuardMixin"
+    "IllagerMixin"
   ],
   "client": [
   ],
