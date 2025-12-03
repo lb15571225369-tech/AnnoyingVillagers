@@ -395,6 +395,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
 
         this.target = PlayerNpcTarget.values()[new Random().nextInt(PlayerNpcTarget.values().length)];
         this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(EpicFightItems.DIAMOND_DAGGER.get()));
+        this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(EpicFightItems.DIAMOND_DAGGER.get()));
         this.mainWeaponItem = this.getMainHandItem().copy();
 
 //        List<String> commands = EquipmentDataLoader.getEquipCommands(0.85f, this);
