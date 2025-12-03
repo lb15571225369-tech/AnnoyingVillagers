@@ -83,6 +83,14 @@ public class KickOnKeyPressedProcedure {
                                     if (!entity.level().isClientSide() && entity.getServer() != null) {
                                         LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                                         if (livingEntityPatch != null) {
+                                            livingEntityPatch.playAnimationSynchronized(AVAnimations.KICK_4, 0.0F);
+                                        }
+                                        entity.getPersistentData().putDouble("KickCombo", 4);
+                                    }
+                                } else if (entity.getPersistentData().getDouble("KickCombo") == 4) {
+                                    if (!entity.level().isClientSide() && entity.getServer() != null) {
+                                        LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                                        if (livingEntityPatch != null) {
                                             livingEntityPatch.playAnimationSynchronized(AVAnimations.KICK_C, 0.0F);
                                         }
                                         entity.getPersistentData().remove("KickCombo");

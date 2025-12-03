@@ -78,7 +78,7 @@ public class ThrowingPearlKeyPressedProcedure {
                         .map(stack -> {
                             if (!entity.getPersistentData().getBoolean("ender_pearl_used")) {
                                 entity.getPersistentData().putBoolean("ender_pearl_used", true);
-                                livingEntityPatch.playAnimationSynchronized(AVAnimations.THROWING_ENDER_PEARL, 0.0F);
+                                livingEntityPatch.playAnimationSynchronized(AVAnimations.THROWING_ENDER_PEARL_OFFHAND, 0.0F);
                                 Level level = entity.level();
                                 var projectile = new EnchantedEnderPearlEntity(
                                         AnnoyingVillagersModEntities.ENCHANTED_ENDER_PEARL_PROJECTILE.get(), level);
@@ -126,7 +126,7 @@ public class ThrowingPearlKeyPressedProcedure {
 
                 if (player1.getInventory().contains(new ItemStack(Items.ENDER_PEARL)) && !entity.getPersistentData().getBoolean("ender_pearl_used")) {
                     entity.getPersistentData().putBoolean("ender_pearl_used", true);
-                    livingEntityPatch.playAnimationSynchronized(AVAnimations.THROWING_ENDER_PEARL, 0.0F);
+                    livingEntityPatch.playAnimationSynchronized(AVAnimations.THROWING_ENDER_PEARL_OFFHAND, 0.0F);
                     level = entity.level();
                     projectile = new ThrownEnderpearl(EntityType.ENDER_PEARL, level);
                     projectile.setOwner(entity);

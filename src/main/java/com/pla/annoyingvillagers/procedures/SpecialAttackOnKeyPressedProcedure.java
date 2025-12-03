@@ -311,7 +311,9 @@ public class SpecialAttackOnKeyPressedProcedure {
                 }
             }
 
-            if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.FIST) {
+            if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.FIST
+            || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.NOT_WEAPON
+            || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.RANGED) {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
                     if (entity.isSprinting()) {
                         if (entity.isShiftKeyDown()) {

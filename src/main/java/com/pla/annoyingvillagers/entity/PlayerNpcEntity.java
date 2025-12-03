@@ -1,13 +1,12 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.clazz.PlayerNpcTarget;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.procedures.PlayerNpcOnHurtProcedure;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.util.DelayedTask;
-import com.pla.annoyingvillagers.util.EquipmentDataLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -30,8 +29,6 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -58,6 +55,17 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     private final SimpleContainer inventory = new SimpleContainer(27);
     private int gapCooldown;
     private int enderPearlCooldown;
+    private PlayerNpcTarget target;
+    private ItemStack mainWeaponItem = ItemStack.EMPTY;
+    private boolean healing = false;
+
+    public boolean isHealing() {
+        return healing;
+    }
+
+    public void setHealing(boolean healing) {
+        this.healing = healing;
+    }
 
     public int getGapCooldown() {
         return gapCooldown;
@@ -68,11 +76,11 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     }
 
     public void setGapCooldown() {
-        this.gapCooldown = random.nextInt(60, 200);
+        this.gapCooldown = random.nextInt(100, 300);
     }
 
     public void setEnderPearlCooldown() {
-        this.enderPearlCooldown = random.nextInt(60, 200);
+        this.enderPearlCooldown = random.nextInt(100, 300);
     }
 
     public SimpleContainer getInventory() {
@@ -83,6 +91,10 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         this(AnnoyingVillagersModEntities.PLAYER_NPC.get(), level);
     }
 
+    public ItemStack getMainWeaponItem() {
+        return mainWeaponItem;
+    }
+
     public PlayerNpcEntity(EntityType<? extends PlayerNpcEntity> entitytype, Level level) {
         super(entitytype, level);
         this.setMaxUpStep(2.6F);
@@ -90,7 +102,6 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         this.setNoAi(false);
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
-        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_AXE));
     }
 
     @Override
@@ -99,6 +110,14 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         tag.put("Inventory", this.inventory.createTag());
         tag.putInt("GapCooldown", this.gapCooldown);
         tag.putInt("EnderPearlCooldown", this.enderPearlCooldown);
+        if (this.target != null) {
+            tag.putString("PlayerNpcTarget", this.target.name());
+        }
+        if (!this.mainWeaponItem.isEmpty()) {
+            CompoundTag itemTag = new CompoundTag();
+            this.mainWeaponItem.save(itemTag);
+            tag.put("MainHandItem", itemTag);
+        }
     }
 
     @Override
@@ -109,6 +128,19 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         }
         this.gapCooldown = tag.getInt("GapCooldown");
         this.enderPearlCooldown = tag.getInt("EnderPearlCooldown");
+        if (tag.contains("PlayerNpcTarget", Tag.TAG_STRING)) {
+            String name = tag.getString("PlayerNpcTarget");
+            try {
+                this.target = PlayerNpcTarget.valueOf(name);
+            } catch (IllegalArgumentException e) {
+                this.target = PlayerNpcTarget.MOSNTER_HUNTER;
+            }
+        }
+        if (tag.contains("MainHandItem", Tag.TAG_COMPOUND)) {
+            this.mainWeaponItem = ItemStack.of(tag.getCompound("MainHandItem"));
+        } else {
+            this.mainWeaponItem = ItemStack.EMPTY;
+        }
     }
 
     @Override
@@ -136,8 +168,12 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     }
     private void villagerHunterPlayerMob() {
         CommonGoals.runAwayFromHerobrineGoals(this, 20.0F);
-        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, PlayerMobEntity.class, 12.0F, 1.2D, 1.8D));
-        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Player.class, 12.0F, 1.2D, 1.8D));
+        if (!(this.getTarget() instanceof PlayerNpcEntity)) {
+            this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, PlayerNpcEntity.class, 12.0F, 1.2D, 1.8D));
+        }
+        if (!(this.getTarget() instanceof Player)) {
+            this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Player.class, 12.0F, 1.2D, 1.8D));
+        }
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Villager.class, true));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, JevEntity.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
@@ -159,8 +195,13 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         CommonGoals.runAwayFromHerobrineGoals(this, 20.0F);
         CommonGoals.runAwayFromVillagerArmyGoals(this);
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Animal.class, true));
-        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, PlayerNpcEntity.class, 12.0F, 1.2D, 1.8D));
-        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Player.class, 12.0F, 1.2D, 1.8D));
+        if (!(this.getTarget() instanceof PlayerNpcEntity)) {
+            this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, PlayerNpcEntity.class, 12.0F, 1.2D,
+                    1.8D));
+        }
+        if (!(this.getTarget() instanceof Player)) {
+            this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Player.class, 12.0F, 1.2D, 1.8D));
+        }
     }
 
     protected void registerGoals() {
@@ -169,57 +210,24 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         this.goalSelector.addGoal(3, new OpenDoorGoal(this, true));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         ((GroundPathNavigation) this.getNavigation()).setCanOpenDoors(true);
-
-        CompoundTag data = this.getPersistentData();
-        String role;
-
-        if (!data.contains("behavior")) {
-            List<String> roles = List.of(
-                    "monster_hunter",
-                    "player_hunter",
-                    "hostile_hunt",
-                    "passive_hunt",
-                    "animal_hunter"
-            );
-            role = roles.get(this.getRandom().nextInt(roles.size()));
-            data.putString("behavior", role);
-        } else {
-            role = data.getString("behavior");
-        }
-
-        switch (role) {
-            case "hostile_hunter" -> {
-                hostileHunterPlayerMob();
-            }
-            case "village_hunter" -> {
-                villagerHunterPlayerMob();
-            }
-            case "monster_hunter" -> {
-                monsterHunterPlayerMob();
-            }
-            case "player_hunter" -> {
-                playerHunterPlayerMob();
-            }
-            case "animal_hunter" -> {
-                animalHunterPlayerMob();
-            }
-            default -> {
-                Random random = new Random();
-                if (random.nextFloat() < 0.2) {
-                    data.putString("behavior", "hostile_hunter");
+        if (this.target != null) {
+            switch (this.target) {
+                case HOSTILE_HUNTER -> {
                     hostileHunterPlayerMob();
-                } else if (random.nextFloat() < 0.4) {
-                    data.putString("behavior", "village_hunter");
+                }
+                case VILLAGER_HUNTER -> {
                     villagerHunterPlayerMob();
-                } else if (random.nextFloat() < 0.6) {
-                    data.putString("behavior", "monster_hunter");
+                }
+                case MOSNTER_HUNTER -> {
                     monsterHunterPlayerMob();
-                } else if (random.nextFloat() < 0.8) {
-                    data.putString("behavior", "player_hunter");
+                }
+                case PLAYER_HUNTER -> {
                     playerHunterPlayerMob();
-                } else {
-                    data.putString("behavior", "animal_hunter");
+                }
+                case ANIMAL_HUNTER -> {
                     animalHunterPlayerMob();
+                }
+                default -> {
                 }
             }
         }
@@ -238,31 +246,31 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     }
 
     public @NotNull SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
-        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.hurt")));
+        return Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.hurt")));
     }
 
     public @NotNull SoundEvent getDeathSound() {
-        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.death")));
+        return Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.death")));
     }
 
     public boolean hurt(DamageSource damagesource, float f) {
-        PlayerNpcOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity(), f);
+        PlayerNpcOnHurtProcedure.execute(this, damagesource.getEntity());
         return super.hurt(damagesource, f);
     }
 
     public void die(@NotNull DamageSource damageSource) {
         super.die(damageSource);
-        if (this.level() instanceof ServerLevel levelaccessor) {
+        if (this.level() instanceof ServerLevel serverLevel) {
             if (this.getPersistentData().getBoolean("die_by_possess")) {
                 this.remove(Entity.RemovalReason.KILLED);
             } else if (AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-                PlayerMobDeadEntity corpse = new PlayerMobDeadEntity(AnnoyingVillagersModEntities.PLAYER_MOB_DEAD.get(), levelaccessor);
+                PlayerMobDeadEntity corpse = new PlayerMobDeadEntity(AnnoyingVillagersModEntities.PLAYER_MOB_DEAD.get(), serverLevel);
                 corpse.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
                 corpse.setUsername(this.getUsername());
                 corpse.setProfile(this.getProfile());
                 corpse.setInvisible(true);
-                corpse.finalizeSpawn(levelaccessor, levelaccessor.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
-                levelaccessor.addFreshEntity(corpse);
+                corpse.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
+                serverLevel.addFreshEntity(corpse);
                 this.remove(Entity.RemovalReason.KILLED);
                 new DelayedTask(3) {
                     @Override
@@ -381,6 +389,10 @@ public class PlayerNpcEntity extends PlayerMobEntity {
                 this.moveTo(spawnPos, this.getYRot(), this.getXRot());
             }
         }
+
+        this.target = PlayerNpcTarget.values()[new Random().nextInt(PlayerNpcTarget.values().length)];
+        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_AXE));
+        this.mainWeaponItem = this.getMainHandItem().copy();
 
 //        List<String> commands = EquipmentDataLoader.getEquipCommands(0.85f, this);
 //        for (String cmd : commands) {

@@ -5,24 +5,21 @@ import com.mojang.datafixers.util.Pair;
 import java.util.List;
 import java.util.Set;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.combatbehaviour.PlayerNpcCombatBehaviour;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
+import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
+import net.shelmarow.combat_evolution.iml.CustomExecuteEntity;
 import yesman.epicfight.api.animation.AnimationManager.AnimationAccessor;
 import yesman.epicfight.api.animation.Animator;
-import yesman.epicfight.api.animation.Joint;
 import yesman.epicfight.api.animation.LivingMotions;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.utils.AttackResult;
 import yesman.epicfight.api.utils.AttackResult.ResultType;
-import yesman.epicfight.api.utils.math.OpenMatrix4f;
-import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.world.capabilities.entitypatch.Factions;
@@ -32,7 +29,7 @@ import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
 import yesman.epicfight.world.damagesource.EpicFightDamageSource;
 import yesman.epicfight.world.damagesource.StunType;
 
-public class PlayerNpcPatch extends CEHumanoidPatch {
+public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEntity {
     public PlayerNpcPatch() {
         super(Factions.NEUTRAL);
     }
@@ -49,6 +46,48 @@ public class PlayerNpcPatch extends CEHumanoidPatch {
 
     protected void setWeaponMotions() {
         this.weaponLivingMotions
+                .put(WeaponCategories.NOT_WEAPON,
+                        ImmutableMap.of(Styles.ONE_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
+                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_RUN),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )));
+        this.weaponAttackMotions
+                .put(WeaponCategories.NOT_WEAPON,
+                        ImmutableMap.of(Styles.ONE_HAND, PlayerNpcCombatBehaviour.FIST));
+
+        this.weaponLivingMotions
+                .put(WeaponCategories.RANGED,
+                        ImmutableMap.of(Styles.ONE_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
+                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_RUN),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )));
+        this.weaponAttackMotions
+                .put(WeaponCategories.RANGED,
+                        ImmutableMap.of(Styles.ONE_HAND, PlayerNpcCombatBehaviour.FIST));
+
+        this.weaponLivingMotions
+                .put(WeaponCategories.FIST,
+                        ImmutableMap.of(Styles.ONE_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
+                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_RUN),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )));
+        this.weaponAttackMotions
+                .put(WeaponCategories.FIST,
+                        ImmutableMap.of(Styles.ONE_HAND, PlayerNpcCombatBehaviour.FIST));
+
+        this.weaponLivingMotions
                 .put(WeaponCategories.AXE,
                         ImmutableMap.of(Styles.ONE_HAND,
                                 Set.of(
@@ -63,8 +102,6 @@ public class PlayerNpcPatch extends CEHumanoidPatch {
                 .put(WeaponCategories.AXE,
                         ImmutableMap.of(Styles.ONE_HAND,
                                 List.of(
-                                        Animations.LONGSWORD_GUARD_ACTIVE_HIT1,
-                                        Animations.LONGSWORD_GUARD_ACTIVE_HIT2,
                                         Animations.SWORD_GUARD_ACTIVE_HIT1,
                                         Animations.SWORD_GUARD_ACTIVE_HIT2,
                                         Animations.SWORD_GUARD_ACTIVE_HIT3)
@@ -72,6 +109,29 @@ public class PlayerNpcPatch extends CEHumanoidPatch {
         this.weaponAttackMotions
                 .put(WeaponCategories.AXE,
                         ImmutableMap.of(Styles.ONE_HAND, PlayerNpcCombatBehaviour.AXE));
+
+//        this.weaponLivingMotions
+//                .put(WeaponCategories.SWORD,
+//                        ImmutableMap.of(Styles.ONE_HAND,
+//                                Set.of(
+//                                        Pair.of(LivingMotions.BLOCK, Animations.SWORD_GUARD),
+//                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
+//                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
+//                                        Pair.of(LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD),
+//                                        Pair.of(LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD),
+//                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+//                                )));
+//        this.guardHitMotions
+//                .put(WeaponCategories.SWORD,
+//                        ImmutableMap.of(Styles.ONE_HAND,
+//                                List.of(
+//                                        Animations.SWORD_GUARD_ACTIVE_HIT1,
+//                                        Animations.SWORD_GUARD_ACTIVE_HIT2,
+//                                        Animations.SWORD_GUARD_ACTIVE_HIT3)
+//                        ));
+//        this.weaponAttackMotions
+//                .put(WeaponCategories.SWORD,
+//                        ImmutableMap.of(Styles.ONE_HAND, PlayerNpcCombatBehaviour.SWORD));
     }
 
     public void playGuardBreakSound() {
@@ -104,6 +164,12 @@ public class PlayerNpcPatch extends CEHumanoidPatch {
         // More logic when player parry success
     }
 
+    @Override
+    public void onGuardHit(DamageSource damageSource) {
+        super.onGuardHit(damageSource);
+        // More logic when blocking damage success
+    }
+
     public AnimationAccessor<? extends StaticAnimation> getHitAnimation(StunType stuntype) {
         return switch (stuntype) {
             case LONG -> Animations.BIPED_HIT_LONG;
@@ -115,5 +181,15 @@ public class PlayerNpcPatch extends CEHumanoidPatch {
             case FALL -> Animations.BIPED_LANDING;
             default -> null;
         };
+    }
+
+    @Override
+    public boolean canBeExecuted(LivingEntityPatch<?> livingEntityPatch) {
+        return false;
+    }
+
+    @Override
+    public ExecutionTypeManager.Type getExecutionType() {
+        return null;
     }
 }
