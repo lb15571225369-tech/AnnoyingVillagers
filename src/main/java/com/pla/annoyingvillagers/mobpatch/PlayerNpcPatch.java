@@ -156,6 +156,50 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
         this.weaponAttackMotions
                 .put(WeaponCategories.SWORD,
                         ImmutableMap.of(Styles.TWO_HAND, PlayerNpcCombatBehaviour.DUAL_SWORD));
+
+        this.weaponLivingMotions
+                .put(WeaponCategories.DAGGER,
+                        ImmutableMap.of(Styles.ONE_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
+                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_RUN),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )));
+        this.guardHitMotions
+                .put(WeaponCategories.DAGGER,
+                        ImmutableMap.of(Styles.ONE_HAND,
+                                List.of(
+                                        Animations.SWORD_GUARD_ACTIVE_HIT1,
+                                        Animations.SWORD_GUARD_ACTIVE_HIT2,
+                                        Animations.SWORD_GUARD_ACTIVE_HIT3)
+                        ));
+        this.weaponAttackMotions
+                .put(WeaponCategories.DAGGER,
+                        ImmutableMap.of(Styles.ONE_HAND, PlayerNpcCombatBehaviour.DAGGER));
+
+        this.weaponLivingMotions
+                .put(WeaponCategories.DAGGER,
+                        ImmutableMap.of(Styles.TWO_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_DUAL_WEAPON),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_HOLD_DUAL_WEAPON),
+                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN_DUAL),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_HOLD_DUAL_WEAPON),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_HOLD_DUAL_WEAPON)
+                                )));
+        this.guardHitMotions
+                .put(WeaponCategories.DAGGER,
+                        ImmutableMap.of(Styles.TWO_HAND,
+                                List.of(
+                                        Animations.SWORD_GUARD_ACTIVE_HIT1,
+                                        Animations.SWORD_GUARD_ACTIVE_HIT2,
+                                        Animations.SWORD_GUARD_ACTIVE_HIT3)
+                        ));
+        this.weaponAttackMotions
+                .put(WeaponCategories.DAGGER,
+                        ImmutableMap.of(Styles.TWO_HAND, PlayerNpcCombatBehaviour.DUAL_DAGGER));
     }
 
     public void playGuardBreakSound() {
