@@ -8,7 +8,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.LevelAccessor;
 
 public class PlayerNpcOnHurtProcedure {
     public static void execute(final PlayerNpcEntity entity, Entity attacker) {
@@ -45,11 +44,7 @@ public class PlayerNpcOnHurtProcedure {
                                 @Override
                                 public void run() {
                                     CombatBehaviour.throwEnderPearl(entity, 0.0F);
-                                    if (entity.getMainWeaponItem() != ItemStack.EMPTY) {
-                                        entity.setItemInHand(InteractionHand.MAIN_HAND, entity.getMainWeaponItem().copy());
-                                    } else {
-                                        entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_SWORD));
-                                    }
+                                    entity.setItemInHand(InteractionHand.MAIN_HAND, entity.getMainWeaponItem().copy());
                                 }
                             };
                         }

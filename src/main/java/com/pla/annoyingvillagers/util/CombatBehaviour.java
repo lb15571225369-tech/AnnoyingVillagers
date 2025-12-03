@@ -220,7 +220,6 @@ public class CombatBehaviour {
                             playerNpcEntity.setHealing(true);
                         }
                     }
-                    livingEntity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.GOLDEN_APPLE));
                     Runnable bite = () -> performEatingGoldenAppleActionMainHand(entity, levelaccessor, patch);
                     int biteDelay = 4;
                     int totalBites = 7;

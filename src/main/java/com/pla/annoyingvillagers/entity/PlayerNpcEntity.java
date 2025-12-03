@@ -35,8 +35,10 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -391,7 +393,8 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         }
 
         this.target = PlayerNpcTarget.values()[new Random().nextInt(PlayerNpcTarget.values().length)];
-        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_AXE));
+        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_SWORD));
+        this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.DIAMOND_SWORD));
         this.mainWeaponItem = this.getMainHandItem().copy();
 
 //        List<String> commands = EquipmentDataLoader.getEquipCommands(0.85f, this);
@@ -444,6 +447,15 @@ public class PlayerNpcEntity extends PlayerMobEntity {
 
     public void awardKillScore(@NotNull Entity entity, int i, @NotNull DamageSource damageSource) {
         super.awardKillScore(entity, i, damageSource);
+    }
+
+    @Override
+    public void onEquipItem(@NotNull EquipmentSlot pSlot, @NotNull ItemStack pOldItem, @NotNull ItemStack pNewItem) {
+        if (pSlot == EquipmentSlot.MAINHAND &&
+                (pNewItem.getItem() instanceof SwordItem || pNewItem.getItem() instanceof AxeItem)) {
+            this.mainWeaponItem = pNewItem.copy();
+        }
+        super.onEquipItem(pSlot, pOldItem, pNewItem);
     }
 
     public void baseTick() {

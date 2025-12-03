@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.pla.annoyingvillagers.combatbehaviour.PlayerNpcCombatBehaviour;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -110,28 +111,51 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
                 .put(WeaponCategories.AXE,
                         ImmutableMap.of(Styles.ONE_HAND, PlayerNpcCombatBehaviour.AXE));
 
-//        this.weaponLivingMotions
-//                .put(WeaponCategories.SWORD,
-//                        ImmutableMap.of(Styles.ONE_HAND,
-//                                Set.of(
-//                                        Pair.of(LivingMotions.BLOCK, Animations.SWORD_GUARD),
-//                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
-//                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
-//                                        Pair.of(LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD),
-//                                        Pair.of(LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD),
-//                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
-//                                )));
-//        this.guardHitMotions
-//                .put(WeaponCategories.SWORD,
-//                        ImmutableMap.of(Styles.ONE_HAND,
-//                                List.of(
-//                                        Animations.SWORD_GUARD_ACTIVE_HIT1,
-//                                        Animations.SWORD_GUARD_ACTIVE_HIT2,
-//                                        Animations.SWORD_GUARD_ACTIVE_HIT3)
-//                        ));
-//        this.weaponAttackMotions
-//                .put(WeaponCategories.SWORD,
-//                        ImmutableMap.of(Styles.ONE_HAND, PlayerNpcCombatBehaviour.SWORD));
+        this.weaponLivingMotions
+                .put(WeaponCategories.SWORD,
+                        ImmutableMap.of(Styles.ONE_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, Animations.SWORD_GUARD),
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
+                                        Pair.of(LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD),
+                                        Pair.of(LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )));
+        this.guardHitMotions
+                .put(WeaponCategories.SWORD,
+                        ImmutableMap.of(Styles.ONE_HAND,
+                                List.of(
+                                        Animations.SWORD_GUARD_ACTIVE_HIT1,
+                                        Animations.SWORD_GUARD_ACTIVE_HIT2,
+                                        Animations.SWORD_GUARD_ACTIVE_HIT3)
+                        ));
+        this.weaponAttackMotions
+                .put(WeaponCategories.SWORD,
+                        ImmutableMap.of(Styles.ONE_HAND, PlayerNpcCombatBehaviour.SWORD));
+
+        this.weaponLivingMotions
+                .put(WeaponCategories.SWORD,
+                        ImmutableMap.of(Styles.TWO_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD),
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
+                                        Pair.of(LivingMotions.RUN, AVAnimations.RUN_HOLD),
+                                        Pair.of(LivingMotions.CHASE, AVAnimations.RUN_HOLD),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )));
+        this.guardHitMotions
+                .put(WeaponCategories.SWORD,
+                        ImmutableMap.of(Styles.TWO_HAND,
+                                List.of(
+                                        Animations.SWORD_GUARD_ACTIVE_HIT1,
+                                        Animations.SWORD_GUARD_ACTIVE_HIT2,
+                                        Animations.SWORD_GUARD_ACTIVE_HIT3)
+                        ));
+        this.weaponAttackMotions
+                .put(WeaponCategories.SWORD,
+                        ImmutableMap.of(Styles.TWO_HAND, PlayerNpcCombatBehaviour.DUAL_SWORD));
     }
 
     public void playGuardBreakSound() {

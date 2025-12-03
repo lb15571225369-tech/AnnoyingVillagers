@@ -206,7 +206,7 @@ public class AVWeaponCapabilityPresets {
                         Animations.SWORD_AUTO3,
                         AnimsHerrscher.HERRSCHER_AUTO_1,
                         AnimsHerrscher.HERRSCHER_AUTO_2,
-                        AVAnimations.RUSH_SWORD,
+                        Animations.SWORD_DASH,
                         Animations.SWORD_AIR_SLASH)
                 .newStyleCombo(Styles.TWO_HAND,
                         Animations.SWORD_DUAL_AUTO1,
