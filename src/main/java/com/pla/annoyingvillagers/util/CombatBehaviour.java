@@ -92,11 +92,7 @@ public class CombatBehaviour {
         }
 
         Level level = entity.level();
-        if (!level.isClientSide() && entity instanceof LivingEntity livingEntity) {
-            livingEntity.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 20, 3, false, false));
-            LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
-            livingEntityPatch.playAnimationSynchronized(AVAnimations.THROWING_ENDER_PEARL_OFFHAND, 0.0F);
-
+        if (!level.isClientSide()) {
             Vec3 handPos = getJointWithTranslation(
                     entity,
                     new Vec3f(0.0F, 0.0F, 0.0F),

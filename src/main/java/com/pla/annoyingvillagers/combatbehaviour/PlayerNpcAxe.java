@@ -33,6 +33,7 @@ public class PlayerNpcAxe {
                                     Behavior.builder()
                                             .custom(PlayerNpcCommon::canThrowEnderPearl)
                                             .withinDistance(7.0D, 20.0D)
+                                            .animationBehavior(AVAnimations.THROWING_ENDER_PEARL_OFFHAND, 0.0F)
                                             .addExBehavior(PlayerNpcCommon::performEnderPearlToTarget)
                             )
             )
