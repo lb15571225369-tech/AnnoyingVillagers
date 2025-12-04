@@ -6,8 +6,10 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import yesman.epicfight.api.forgeevent.SkillBuildEvent;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.skill.Skill;
 import yesman.epicfight.skill.guard.GuardSkill;
+import yesman.epicfight.skill.weaponinnate.SimpleWeaponInnateSkill;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
 
 @EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Bus.MOD)
@@ -18,6 +20,7 @@ public class AVSkills {
     public static Skill DEMONIAC_VOLTAGE_REAVER;
     public static Skill OBSIDIAN_SLEDGEHAMMER;
     public static Skill ENDER_SLAYER_SCYTHE;
+    public static Skill BOW;
 
     @SubscribeEvent
     public static void buildSkillEvent(SkillBuildEvent skillbuildevent) {
@@ -28,5 +31,6 @@ public class AVSkills {
         AVSkills.DEMONIAC_VOLTAGE_REAVER = modRegistry.build("demoniac_voltage_reaver", DemoniacVoltageReaverSkill::new, WeaponInnateSkill.createWeaponInnateBuilder().setActivateType(Skill.ActivateType.ONE_SHOT).setResource(Skill.Resource.WEAPON_CHARGE));
         AVSkills.OBSIDIAN_SLEDGEHAMMER = modRegistry.build("obsidian_sledgehammer", ObsidianSledgeHammerSkill::new, WeaponInnateSkill.createWeaponInnateBuilder().setActivateType(Skill.ActivateType.ONE_SHOT).setResource(Skill.Resource.WEAPON_CHARGE));
         AVSkills.ENDER_SLAYER_SCYTHE = modRegistry.build("ender_slayer_scythe", EnderSlayerScytheSkill::new, WeaponInnateSkill.createWeaponInnateBuilder().setActivateType(Skill.ActivateType.ONE_SHOT).setResource(Skill.Resource.WEAPON_CHARGE));
+        AVSkills.BOW = modRegistry.build("bow", AlwaysReadyInnateSkill::new, AlwaysReadyInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.BOW_AUTO_4).setActivateType(Skill.ActivateType.ONE_SHOT).setResource(Skill.Resource.NONE)).newProperty();
     }
 }

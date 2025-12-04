@@ -6,20 +6,16 @@ import java.util.function.Supplier;
 
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.*;
-import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
-import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
-import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
-import com.pla.annoyingvillagers.network.TextboxSetMessage;
+import com.pla.annoyingvillagers.network.*;
 import com.pla.annoyingvillagers.procedures.NpcGearLoadProcedure;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.server.ServerStartingEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -29,10 +25,10 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.network.NetworkEvent.Context;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.pla.annoyingvillagers.capabilities.AVWeaponCapabilityPresets;
@@ -77,7 +73,11 @@ public class AnnoyingVillagers {
     public static class initer {
         @SubscribeEvent
         public static void init(FMLCommonSetupEvent fmlcommonsetupevent) {
-            AnnoyingVillagers.addNetworkMessage(TextboxSetMessage.class, TextboxSetMessage::buffer, TextboxSetMessage::new, TextboxSetMessage::handler);
+            AnnoyingVillagers.addNetworkMessage(
+                    TextboxSetMessage.class,
+                    TextboxSetMessage::buffer,
+                    TextboxSetMessage::new,
+                    TextboxSetMessage::handler);
             AnnoyingVillagers.addNetworkMessage(
                     ClientboundGlaiveExplosionFx.class,
                     ClientboundGlaiveExplosionFx::encode,
@@ -152,6 +152,40 @@ public class AnnoyingVillagers {
                             return 0.0F;
                         }
                 );
+                for (Item item : ForgeRegistries.ITEMS.getValues()) {
+                    if (item instanceof BowItem) {
+                        ItemProperties.register(
+                                item,
+                                ResourceLocation.fromNamespaceAndPath("minecraft", "pulling"),
+                                (stack, level, entity, seed) -> {
+                                    if (stack.hasTag() && stack.getTag() != null && stack.getTag().contains("Pulling")) {
+                                        return 1.0F;
+                                    }
+                                    if (entity == null) {
+                                        return 0.0F;
+                                    }
+                                    return entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F;
+                                }
+                        );
+                        ItemProperties.register(
+                                item,
+                                ResourceLocation.fromNamespaceAndPath("minecraft", "pull"),
+                                (stack, level, entity, seed) -> {
+                                    if (stack.hasTag() && stack.getTag() != null && stack.getTag().contains("Pulling")) {
+                                        return stack.getTag().getFloat("Pulling");
+                                    }
+                                    if (entity == null) {
+                                        return 0.0F;
+                                    }
+                                    if (entity.getUseItem() != stack) {
+                                        return 0.0F;
+                                    }
+                                    float used = (float)(stack.getUseDuration() - entity.getUseItemRemainingTicks());
+                                    return used / 20.0F;
+                                }
+                        );
+                    }
+                }
             });
         }
     }

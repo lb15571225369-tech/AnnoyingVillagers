@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.animations.types;
+package com.pla.annoyingvillagers.animations;
 
 import java.util.HashSet;
 import java.util.Locale;

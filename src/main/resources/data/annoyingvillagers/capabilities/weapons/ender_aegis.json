@@ -1,5 +1,5 @@
 {
-	"type": "epicfight:ender_aegis",
+	"type": "annoyingvillagers:ender_aegis",
 	"attributes": {
 		"common": {
 			"armor_negation": 5.0,

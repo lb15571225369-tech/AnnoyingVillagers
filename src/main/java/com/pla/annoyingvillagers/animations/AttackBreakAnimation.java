@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.animations.types;
+package com.pla.annoyingvillagers.animations;
 
 import yesman.epicfight.api.animation.AnimationManager;
 import yesman.epicfight.api.animation.property.AnimationProperty.ActionAnimationProperty;

@@ -21,6 +21,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -231,6 +232,13 @@ public class SpecialAttackOnKeyPressedProcedure {
                         });
                     }
                     player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
+                    return;
+                }
+            }
+            if (holdingItem.getItem() instanceof BowItem) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    livingEntityPatch.playAnimationSynchronized(AVAnimations.BOW_AUTO_2, 0.0F);
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
                     return;
                 }
             }

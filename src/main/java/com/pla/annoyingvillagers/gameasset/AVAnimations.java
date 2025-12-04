@@ -3,6 +3,8 @@ import java.util.Random;
 import java.util.Set;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.animations.BowAttackAnimation;
+import com.pla.annoyingvillagers.util.BowFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.sounds.SoundEvents;
@@ -15,9 +17,9 @@ import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import com.pla.annoyingvillagers.animations.types.AttackBreakAnimation;
-import com.pla.annoyingvillagers.animations.types.HeavyAttackAnimation;
-import com.pla.annoyingvillagers.animations.types.KickAttackAnimation;
+import com.pla.annoyingvillagers.animations.AttackBreakAnimation;
+import com.pla.annoyingvillagers.animations.HeavyAttackAnimation;
+import com.pla.annoyingvillagers.animations.KickAttackAnimation;
 import net.minecraftforge.fml.common.Mod;
 import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
 import reascer.wom.animation.attacks.SpecialAttackAnimation;
@@ -28,6 +30,7 @@ import yesman.epicfight.api.animation.AnimationManager;
 import yesman.epicfight.api.animation.Joint;
 import yesman.epicfight.api.animation.property.AnimationEvent;
 import yesman.epicfight.api.animation.property.AnimationEvent.Side;
+import yesman.epicfight.api.animation.property.AnimationProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.ActionAnimationProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.AttackAnimationProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.AttackPhaseProperty;
@@ -184,6 +187,11 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> ENDER_SLAYER_ANTITHEUS_AIMING;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_AEGIS_MOONLESS_AUTO_1;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_AEGIS_MOONLESS_AUTO_2;
+    public static AnimationManager.AnimationAccessor<BowAttackAnimation> BOW_AUTO_1;
+    public static AnimationManager.AnimationAccessor<BowAttackAnimation> BOW_AUTO_2;
+    public static AnimationManager.AnimationAccessor<BowAttackAnimation> BOW_AUTO_3;
+    public static AnimationManager.AnimationAccessor<BowAttackAnimation> BOW_AUTO_4;
+    public static AnimationManager.AnimationAccessor<BowAttackAnimation> BOW_AUTO_5;
 
     @SubscribeEvent
     public static void registerAnimations(AnimationManager.AnimationRegistryEvent event) {
@@ -495,7 +503,8 @@ public class AVAnimations {
                         .addState(EntityState.LOCKON_ROTATE, true)
                         .addState(EntityState.CAN_SKILL_EXECUTION, false).addState(EntityState.CAN_BASIC_ATTACK, false));
         AVAnimations.EXECUTED_WEAPON_HIT = builder.nextAccessor("biped/combat/executed_weapon_hit",
-                (accessor) -> (new LongHitAnimation(0.01F, accessor, humanoidarmature)).addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
+                (accessor) -> (new LongHitAnimation(0.01F, accessor, humanoidarmature))
+                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
                         .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true)
                         .addProperty(ActionAnimationProperty.MOVE_VERTICAL, false)
                         .addState(EntityState.MOVEMENT_LOCKED, true)
@@ -561,7 +570,8 @@ public class AVAnimations {
                         .addState(EntityState.CAN_BASIC_ATTACK, false)
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
         AVAnimations.KNOCKDOWN_RIGHT = builder.nextAccessor("biped/combat/knockdown_forward",
-                (accessor) -> (new LongHitAnimation(0.1F, accessor, humanoidarmature)).addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
+                (accessor) -> (new LongHitAnimation(0.1F, accessor, humanoidarmature))
+                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
                         .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true)
                         .addProperty(ActionAnimationProperty.MOVE_VERTICAL, false)
                         .addState(EntityState.MOVEMENT_LOCKED, true)
@@ -1172,6 +1182,41 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.PARTICLE, WOMParticles.SHARPCUT_ANGLED_DOWN_LEFT_SLASH)
                         .addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH_SHARP.get())
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.4F));
+
+        AVAnimations.BOW_AUTO_1 = builder.nextAccessor( "biped/combat/bow_auto1" ,
+                (accessor) -> new BowAttackAnimation(0.1F, 0.0F,0.62F, 0.8333F, 1.2F, InteractionHand.MAIN_HAND, null, humanoidarmature.get().rootJoint, accessor, humanoidarmature)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.4F, (livingEntityPatch, assetAccessor, objects) -> BowFunction.bowShoot(livingEntityPatch), AnimationEvent.Side.BOTH)
+                        )
+                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (anim,entity,a,b,c) -> 3.0F));
+
+        AVAnimations.BOW_AUTO_2 = builder.nextAccessor( "biped/combat/bow_auto2" ,
+                (accessor) ->new BowAttackAnimation(0.1F, 0.0F,0.7F, 0.98F, 1.2F, InteractionHand.MAIN_HAND, null, humanoidarmature.get().rootJoint, accessor, humanoidarmature)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.6F, (livingEntityPatch, assetAccessor, objects) -> BowFunction.bowShoot(livingEntityPatch), AnimationEvent.Side.BOTH)
+                        )
+                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (anim,entity,a,b,c) -> 3.0F));
+
+        AVAnimations.BOW_AUTO_3 = builder.nextAccessor( "biped/combat/bow_auto3" ,
+                (accessor) ->new BowAttackAnimation(0.1F, 0.0F,0.88F, 1.03F, 1.3F, InteractionHand.MAIN_HAND, null, humanoidarmature.get().rootJoint, accessor, humanoidarmature)
+                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (anim,entity,a,b,c) -> 3.0F)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.84F, (livingEntityPatch, assetAccessor, objects) -> BowFunction.bowShoot(livingEntityPatch), AnimationEvent.Side.BOTH)
+                        ));
+
+        AVAnimations.BOW_AUTO_4 = builder.nextAccessor( "biped/combat/bow_auto4" ,
+                (accessor) ->new BowAttackAnimation(0.05F, 0,2.12F, 2.733F, 1.2F, InteractionHand.MAIN_HAND, null, humanoidarmature.get().rootJoint, accessor, humanoidarmature)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(1.2083F, (livingEntityPatch, assetAccessor, objects) -> BowFunction.bowShoot(livingEntityPatch), AnimationEvent.Side.BOTH),
+                                AnimationEvent.InTimeEvent.create(1.7916F, (livingEntityPatch, assetAccessor, objects) -> BowFunction.bowShoot(livingEntityPatch), AnimationEvent.Side.BOTH),
+                                AnimationEvent.InTimeEvent.create(2.0416F, (livingEntityPatch, assetAccessor, objects) -> BowFunction.bowShoot(livingEntityPatch), AnimationEvent.Side.BOTH))
+                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (anim,entity,a,b,c) -> 3.0F));
+
+        AVAnimations.BOW_AUTO_5 = builder.nextAccessor( "biped/combat/bow_auto5" ,
+                (accessor) ->new BowAttackAnimation(0.02F, 0,0.2F, 1.51F, 1.2F, InteractionHand.MAIN_HAND, null, humanoidarmature.get().rootJoint, accessor, humanoidarmature)
+                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (anim,entity,a,b,c) -> 3.0F)
+                        .addEvents(AnimationEvent.InTimeEvent.create(0.7083F, (livingEntityPatch, assetAccessor, objects) -> BowFunction.bowShoot(livingEntityPatch), AnimationEvent.Side.BOTH)
+                        ));
     }
 
     private static class ReuseableEvents {
