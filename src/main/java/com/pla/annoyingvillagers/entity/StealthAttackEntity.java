@@ -62,7 +62,7 @@ public class StealthAttackEntity extends AbstractArrow implements ItemSupplier {
         return new ItemStack(Blocks.AIR);
     }
 
-    protected ItemStack getPickupItem() {
+    public ItemStack getPickupItem() {
         return ItemStack.EMPTY;
     }
 

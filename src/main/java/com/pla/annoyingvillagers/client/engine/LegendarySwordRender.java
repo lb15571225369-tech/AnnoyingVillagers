@@ -2,13 +2,13 @@ package com.pla.annoyingvillagers.client.engine;
 
 import com.google.gson.JsonElement;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
@@ -22,6 +22,7 @@ import yesman.epicfight.client.renderer.patched.item.RenderItemBase;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
+import java.util.Objects;
 import java.util.function.Function;
 
 @OnlyIn(Dist.CLIENT)
@@ -30,38 +31,64 @@ public class LegendarySwordRender extends RenderItemBase implements Function<Jso
         super(json);
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
-    public void renderItemInHand(ItemStack stack, LivingEntityPatch<?> entitypatch, InteractionHand hand, OpenMatrix4f[] poses, MultiBufferSource buffer, PoseStack poseStack, int packedLight, float partialTicks) {
-        if (entitypatch instanceof LivingEntityPatch) {
-            OpenMatrix4f openmatrix4f = new OpenMatrix4f(this.getCorrectionMatrix(entitypatch, hand, poses));
+    public void renderItemInHand(ItemStack stack,
+                                 LivingEntityPatch<?> livingEntityPatch,
+                                 InteractionHand hand,
+                                 OpenMatrix4f[] poses,
+                                 MultiBufferSource buffer,
+                                 PoseStack poseStack,
+                                 int packedLight,
+                                 float partialTicks) {
+        if (livingEntityPatch == null) return;
+        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG LegendarySwordRender] renderItemInHand is called");
 
-            openmatrix4f.mulFront(poses[Armatures.BIPED.get().toolR.getId()]);
-            AssetAccessor<? extends DynamicAnimation> dynamicanimation = entitypatch.getAnimator().getPlayerFor(null).getAnimation();
-            ItemStack itemstack1;
+        OpenMatrix4f mat = new OpenMatrix4f(this.getCorrectionMatrix(livingEntityPatch, hand, poses));
+        mat.mulFront(poses[Armatures.BIPED.get().toolR.getId()]);
 
-            if (dynamicanimation != AVAnimations.LEGENDARY_SWORD_HEAVY_ATTACK && dynamicanimation != AnimsSolar.SOLAR_AUTO_2) {
-                if (dynamicanimation == AVAnimations.LEGENDARY_SWORD_WAKE_UP_ATTACK) {
-                    itemstack1 = new ItemStack((ItemLike) AnnoyingVillagersModItems.WAKE_UP_LEGENDARY_SWORD.get());
-                    poseStack.pushPose();
-                    MathUtils.mulStack(poseStack, openmatrix4f);
-                    Minecraft.getInstance().getItemRenderer().renderStatic(itemstack1, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, entitypatch.getOriginal().level(), 0);
-                    poseStack.popPose();
-                } else {
-                    itemstack1 = new ItemStack((ItemLike) AnnoyingVillagersModItems.LEGENDARY_SWORD.get());
-                    poseStack.pushPose();
-                    MathUtils.mulStack(poseStack, openmatrix4f);
-                    Minecraft.getInstance().getItemRenderer().renderStatic(itemstack1, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, entitypatch.getOriginal().level(), 0);
-                    poseStack.popPose();
-                }
-            } else {
-                itemstack1 = new ItemStack((ItemLike) AnnoyingVillagersModItems.HEAVY_ATTACK_LEGENDARY_SWORD.get());
-                poseStack.pushPose();
-                MathUtils.mulStack(poseStack, openmatrix4f);
-                Minecraft.getInstance().getItemRenderer().renderStatic(itemstack1, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, entitypatch.getOriginal().level(), 0);
-                poseStack.popPose();
-            }
+        AssetAccessor<? extends DynamicAnimation> currentAnim =
+                Objects.requireNonNull(livingEntityPatch.getClientAnimator().getPlayerFor(null)).getAnimation();
+
+        ItemStack itemstack;
+
+        boolean isHeavy =
+                currentAnim != null && (
+                        currentAnim.get().equals(AVAnimations.LEGENDARY_SWORD_HEAVY_ATTACK)
+                                || currentAnim.get().equals(AnimsSolar.SOLAR_AUTO_2)
+                );
+
+        boolean isWakeUp =
+                currentAnim != null && currentAnim.get().equals(AVAnimations.LEGENDARY_SWORD_WAKE_UP_ATTACK);
+
+        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG LegendarySwordRender]" +
+                "\n  currentAnim = " + (currentAnim == null ? "null" : currentAnim +
+                "\n  equals(LEGENDARY_SWORD_HEAVY_ATTACK) = " +
+                currentAnim.equals(AVAnimations.LEGENDARY_SWORD_HEAVY_ATTACK) +
+                "\n  equals(SOLAR_AUTO_2)                  = " +
+                currentAnim.equals(AnimsSolar.SOLAR_AUTO_2)) +
+                "\n  equals(LEGENDARY_SWORD_WAKE_UP)       = " + isWakeUp);
+
+        if (isHeavy) {
+            itemstack = new ItemStack(AnnoyingVillagersModItems.HEAVY_ATTACK_LEGENDARY_SWORD.get());
+        } else if (isWakeUp) {
+            itemstack = new ItemStack(AnnoyingVillagersModItems.WAKE_UP_LEGENDARY_SWORD.get());
+        } else {
+            itemstack = new ItemStack(AnnoyingVillagersModItems.LEGENDARY_SWORD.get());
         }
+
+        poseStack.pushPose();
+        MathUtils.mulStack(poseStack, mat);
+        Minecraft.getInstance().getItemRenderer().renderStatic(
+                itemstack,
+                ItemDisplayContext.THIRD_PERSON_RIGHT_HAND,
+                packedLight,
+                OverlayTexture.NO_OVERLAY,
+                poseStack,
+                buffer,
+                livingEntityPatch.getOriginal().level(),
+                0
+        );
+        poseStack.popPose();
     }
 
     @Override public RenderItemBase apply(JsonElement json) { return new LegendarySwordRender(json); }

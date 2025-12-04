@@ -59,7 +59,7 @@ public class EnchantedEnderPearlEntity extends AbstractArrow implements ItemSupp
         return new ItemStack((ItemLike) AnnoyingVillagersModItems.ENCHANTED_ENDER_PEARL.get());
     }
 
-    protected ItemStack getPickupItem() {
+    public ItemStack getPickupItem() {
         return ItemStack.EMPTY;
     }
 

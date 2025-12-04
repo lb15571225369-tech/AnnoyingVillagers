@@ -24,7 +24,7 @@ public class AlwaysReadyInnateSkill extends SimpleWeaponInnateSkill {
     public void updateContainer(SkillContainer container) {
         super.updateContainer(container);
 
-        if (!container.getExecutor().isLogicalClient() && container.getStack() < 1) {
+        if (container.getStack() < 1) {
             container.setStack(1);
         }
     }

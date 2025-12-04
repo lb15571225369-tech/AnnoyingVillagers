@@ -4,6 +4,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import com.pla.annoyingvillagers.client.engine.SpriteArrowsCommonEntrypoint;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.*;
 import com.pla.annoyingvillagers.network.*;
@@ -16,6 +17,7 @@ import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -25,6 +27,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.network.NetworkEvent.Context;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
@@ -62,6 +65,16 @@ public class AnnoyingVillagers {
         AVSounds.SOUNDS.register(modEventBus);
         MinecraftForge.EVENT_BUS.register(new NpcGearLoadProcedure());
         context.registerConfig(ModConfig.Type.COMMON, AnnoyingVillagersConfig.SPEC, "annoyingvillagers-server.toml");
+
+        if (FMLEnvironment.dist.isClient()) {
+            modEventBus.addListener(EventPriority.LOWEST, ClassLoadingProtection::listen);
+        }
+    }
+
+    private static class ClassLoadingProtection {
+        private static void listen(FMLClientSetupEvent event) {
+            event.enqueueWork(SpriteArrowsCommonEntrypoint::replace);
+        }
     }
 
     public static <T> void addNetworkMessage(Class<T> oclass, BiConsumer<T, FriendlyByteBuf> biconsumer, Function<FriendlyByteBuf, T> function, BiConsumer<T, Supplier<Context>> biconsumer1) {

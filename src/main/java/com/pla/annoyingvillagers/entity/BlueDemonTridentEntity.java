@@ -57,7 +57,7 @@ public class BlueDemonTridentEntity extends AbstractArrow implements ItemSupplie
         return new ItemStack((ItemLike) AnnoyingVillagersModItems.BLUEDEMONTRIDENT.get());
     }
 
-    protected ItemStack getPickupItem() {
+    public ItemStack getPickupItem() {
         return ItemStack.EMPTY;
     }
 

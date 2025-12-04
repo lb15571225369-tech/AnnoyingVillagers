@@ -55,7 +55,7 @@ public class DarkOBFarEntity extends AbstractArrow implements ItemSupplier {
         return new ItemStack((ItemLike) AnnoyingVillagersModBlocks.DARK_OB_UP.get());
     }
 
-    protected ItemStack getPickupItem() {
+    public ItemStack getPickupItem() {
         return ItemStack.EMPTY;
     }
 

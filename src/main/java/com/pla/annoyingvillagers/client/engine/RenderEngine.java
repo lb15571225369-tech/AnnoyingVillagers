@@ -1,9 +1,9 @@
 package com.pla.annoyingvillagers.client.engine;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import net.minecraftforge.fml.common.Mod;
 import yesman.epicfight.api.client.forgeevent.PatchedRenderersEvent;
 
@@ -11,7 +11,7 @@ import yesman.epicfight.api.client.forgeevent.PatchedRenderersEvent;
 public class RenderEngine {
     @SubscribeEvent
     public static void registerRenderer(PatchedRenderersEvent.RegisterItemRenderer add) {
-        add.addItemRenderer(AnnoyingVillagersModItems.LEGENDARY_SWORD.getId(), LegendarySwordRender::new);
-        add.addItemRenderer(AnnoyingVillagersModItems.HARD_GREAT_SWORD.getId(), HardGreatSwordRender::new);
+        add.addItemRenderer(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "legendary_sword"), LegendarySwordRender::new);
+        add.addItemRenderer(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "hard_great_sword"), HardGreatSwordRender::new);
     }
 }
