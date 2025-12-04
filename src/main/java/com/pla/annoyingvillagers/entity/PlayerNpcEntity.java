@@ -394,8 +394,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         }
 
         this.target = PlayerNpcTarget.values()[new Random().nextInt(PlayerNpcTarget.values().length)];
-        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(EpicFightItems.DIAMOND_DAGGER.get()));
-        this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(EpicFightItems.DIAMOND_DAGGER.get()));
+        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_SWORD));
         this.mainWeaponItem = this.getMainHandItem().copy();
 
 //        List<String> commands = EquipmentDataLoader.getEquipCommands(0.85f, this);
@@ -479,7 +478,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         builder = builder.add(Attributes.MAX_HEALTH, 30.0D);
         builder = builder.add(Attributes.ARMOR, 0.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0D);
-        builder = builder.add(Attributes.FOLLOW_RANGE, 24.0D);
+        builder = builder.add(Attributes.FOLLOW_RANGE, 48.0D);
         return builder;
     }
 }

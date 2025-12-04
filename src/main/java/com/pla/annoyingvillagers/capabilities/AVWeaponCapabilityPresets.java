@@ -22,12 +22,10 @@ import yesman.epicfight.gameasset.*;
 import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.skill.SkillSlots;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
-import yesman.epicfight.world.capabilities.item.BowCapability;
 import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.Builder;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.Styles;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
-import yesman.epicfight.world.capabilities.item.RangedWeaponCapability;
 import yesman.epicfight.world.capabilities.item.WeaponCapability;
 import yesman.epicfight.world.entity.ai.attribute.EpicFightAttributes;
 
@@ -35,7 +33,7 @@ public class AVWeaponCapabilityPresets {
 
     public static final Function<Item, Builder> ENDER_AEGIS = (item) ->
             WeaponCapability.builder()
-                    .category(WeaponCategories.SWORD)
+                    .category(AVCategories.ENDER_AEGIS)
                     .styleProvider((livingEntityPatch) -> Styles.ONE_HAND)
                     .canBePlacedOffhand(false)
                     .collider(ColliderPreset.SWORD)
@@ -56,7 +54,7 @@ public class AVWeaponCapabilityPresets {
                     .weaponCombinationPredicator((patch) -> true);
 
     public static final Function<Item, CapabilityItem.Builder> ENDER_GLAIVE = (item) ->
-            WeaponCapability.builder().category(WeaponCategories.SPEAR)
+            WeaponCapability.builder().category(AVCategories.ENDER_GLAIVE)
                     .styleProvider((livingEntityPatch) -> Styles.TWO_HAND)
                     .collider(WOMWeaponColliders.AGONY)
                     .hitSound(EpicFightSounds.BLADE_HIT.get())
@@ -80,7 +78,7 @@ public class AVWeaponCapabilityPresets {
 
     public static final Function<Item, Builder> DEMONIAC_VOLTAGE_REAVER = (item) ->
             WeaponCapability.builder()
-                    .category(WeaponCategories.GREATSWORD)
+                    .category(AVCategories.DEMONIAC_VOLTAGE_REAVER)
                     .styleProvider(
                             (livingEntityPatch) -> Styles.TWO_HAND)
                     .collider(ColliderPreset.GREATSWORD)
@@ -109,7 +107,7 @@ public class AVWeaponCapabilityPresets {
 
     public static final Function<Item, Builder> OBSIDIAN_SLEDGEHAMMER = (item) ->
             WeaponCapability.builder()
-                    .category(WeaponCategories.GREATSWORD)
+                    .category(AVCategories.OBSIDIAN_SLEDGEHAMMER)
                     .styleProvider(
                             (livingEntityPatch) -> Styles.TWO_HAND)
                     .collider(ColliderPreset.GREATSWORD)
@@ -137,7 +135,7 @@ public class AVWeaponCapabilityPresets {
                                     || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.DAGGER)));
 
     public static final Function<Item, CapabilityItem.Builder> ENDER_SLAYER_SCYTHE = (item) ->
-            WeaponCapability.builder().category(WeaponCategories.SPEAR)
+            WeaponCapability.builder().category(AVCategories.ENDER_SLAYER_SCYTHE)
                     .styleProvider((entityPatch) -> Styles.TWO_HAND)
                     .collider(WOMWeaponColliders.ANTITHEUS)
                     .hitSound(EpicFightSounds.BLADE_HIT.get())
@@ -225,7 +223,7 @@ public class AVWeaponCapabilityPresets {
 
     public static final Function<Item, Builder> SWORD = (item) -> {
         WeaponCapability.Builder builder = WeaponCapability.builder()
-                .category(WeaponCategories.SWORD)
+                .category(AVCategories.AV_SWORD)
                 .swingSound(AVSounds.SWORD_WHOOSH.get())
                 .styleProvider(
                         (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND)
@@ -284,7 +282,7 @@ public class AVWeaponCapabilityPresets {
 
     public static final Function<Item, Builder> AXE = (item) ->
             WeaponCapability.builder()
-            .category(WeaponCategories.AXE)
+            .category(AVCategories.AV_AXE)
             .collider(ColliderPreset.TOOLS)
             .hitSound(EpicFightSounds.BLADE_HIT.get())
             .newStyleCombo(Styles.ONE_HAND,
@@ -304,7 +302,7 @@ public class AVWeaponCapabilityPresets {
             .collider(ColliderPreset.TOOLS);
 
     public static final Function<Item, Builder> SPEAR = (item) -> WeaponCapability.builder()
-            .category(WeaponCategories.SPEAR)
+            .category(AVCategories.AV_SPEAR)
             .styleProvider(
                     (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory()
                             == WeaponCategories.SHIELD ? Styles.ONE_HAND : Styles.TWO_HAND).collider(ColliderPreset.SPEAR)
@@ -340,7 +338,7 @@ public class AVWeaponCapabilityPresets {
 
     public static final Function<Item, Builder> TACHI = (item) ->
             WeaponCapability.builder()
-                    .category(WeaponCategories.TACHI)
+                    .category(AVCategories.AV_TACHI)
                     .styleProvider(
                             (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI
                                     && livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.SWORD ? Styles.TWO_HAND : Styles.OCHS)
@@ -394,7 +392,7 @@ public class AVWeaponCapabilityPresets {
 
     public static final Function<Item, Builder> LONGSWORD = (item) ->
             WeaponCapability.builder()
-                    .category(WeaponCategories.LONGSWORD)
+                    .category(AVCategories.AV_LONGSWORD)
                     .styleProvider(
                         (livingentitypatch) -> {
                             if (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SHIELD) {
@@ -455,7 +453,7 @@ public class AVWeaponCapabilityPresets {
 
     public static final Function<Item, Builder> GREATSWORD = (item) ->
             WeaponCapability.builder()
-                    .category(WeaponCategories.GREATSWORD)
+                    .category(AVCategories.AV_GREATSWORD)
                     .styleProvider((livingentitypatch) -> Styles.TWO_HAND)
                     .collider(ColliderPreset.GREATSWORD)
                     .swingSound(EpicFightSounds.WHOOSH_BIG.get())
@@ -496,7 +494,7 @@ public class AVWeaponCapabilityPresets {
 
     public static final Function<Item, Builder> SHADOW_OBSIDIAN_SWORD = (item) ->
             WeaponCapability.builder()
-            .category(WeaponCategories.SWORD)
+            .category(AVCategories.AV_SWORD)
             .styleProvider((patch) -> Styles.ONE_HAND)
             .canBePlacedOffhand(false)
             .collider(ColliderPreset.SWORD)

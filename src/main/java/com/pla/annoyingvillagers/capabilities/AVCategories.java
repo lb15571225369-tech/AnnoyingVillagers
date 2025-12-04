@@ -7,7 +7,7 @@ import yesman.epicfight.world.capabilities.item.WeaponCategory;
 
 public enum AVCategories implements WeaponCategory, Function<Item, Builder> {
 
-    LEGENDARY_SWORD, HARD_GREATSWORD ;
+    ENDER_AEGIS, ENDER_GLAIVE, DEMONIAC_VOLTAGE_REAVER, OBSIDIAN_SLEDGEHAMMER, ENDER_SLAYER_SCYTHE, LEGENDARY_SWORD, HARD_GREATSWORD, AV_SWORD, AV_AXE, AV_SPEAR, AV_TACHI, AV_LONGSWORD, AV_GREATSWORD;
 
     final int id;
 

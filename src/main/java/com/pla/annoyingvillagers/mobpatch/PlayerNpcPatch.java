@@ -5,6 +5,7 @@ import com.mojang.datafixers.util.Pair;
 import java.util.List;
 import java.util.Set;
 
+import com.pla.annoyingvillagers.capabilities.AVCategories;
 import com.pla.annoyingvillagers.combatbehaviour.PlayerNpcAxe;
 import com.pla.annoyingvillagers.combatbehaviour.PlayerNpcDagger;
 import com.pla.annoyingvillagers.combatbehaviour.PlayerNpcFist;
@@ -115,6 +116,29 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
                         ImmutableMap.of(Styles.ONE_HAND, PlayerNpcAxe.AXE));
 
         this.weaponLivingMotions
+                .put(AVCategories.AV_AXE,
+                        ImmutableMap.of(Styles.ONE_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, Animations.BIPED_BLOCK),
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
+                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_RUN),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )));
+        this.guardHitMotions
+                .put(AVCategories.AV_AXE,
+                        ImmutableMap.of(Styles.ONE_HAND,
+                                List.of(
+                                        Animations.SWORD_GUARD_ACTIVE_HIT1,
+                                        Animations.SWORD_GUARD_ACTIVE_HIT2,
+                                        Animations.SWORD_GUARD_ACTIVE_HIT3)
+                        ));
+        this.weaponAttackMotions
+                .put(AVCategories.AV_AXE,
+                        ImmutableMap.of(Styles.ONE_HAND, PlayerNpcAxe.AV_AXE));
+
+        this.weaponLivingMotions
                 .put(WeaponCategories.SWORD,
                         ImmutableMap.of(
                                 Styles.ONE_HAND,
@@ -155,6 +179,49 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
                         ImmutableMap.of(
                                 Styles.ONE_HAND, PlayerNpcSword.SWORD,
                                 Styles.TWO_HAND, PlayerNpcSword.DUAL_SWORD
+                        ));
+
+        this.weaponLivingMotions
+                .put(AVCategories.AV_SWORD,
+                        ImmutableMap.of(
+                                Styles.ONE_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, Animations.SWORD_GUARD),
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
+                                        Pair.of(LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD),
+                                        Pair.of(LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                ),
+                                Styles.TWO_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD),
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
+                                        Pair.of(LivingMotions.RUN, AVAnimations.RUN_HOLD),
+                                        Pair.of(LivingMotions.CHASE, AVAnimations.RUN_HOLD),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )
+                        ));
+        this.guardHitMotions
+                .put(AVCategories.AV_SWORD,
+                        ImmutableMap.of(
+                                Styles.ONE_HAND,
+                                List.of(
+                                        Animations.SWORD_GUARD_ACTIVE_HIT1,
+                                        Animations.SWORD_GUARD_ACTIVE_HIT2,
+                                        Animations.SWORD_GUARD_ACTIVE_HIT3),
+                                Styles.TWO_HAND,
+                                List.of(
+                                        Animations.SWORD_GUARD_ACTIVE_HIT1,
+                                        Animations.SWORD_GUARD_ACTIVE_HIT2,
+                                        Animations.SWORD_GUARD_ACTIVE_HIT3)
+                        ));
+        this.weaponAttackMotions
+                .put(AVCategories.AV_SWORD,
+                        ImmutableMap.of(
+                                Styles.ONE_HAND, PlayerNpcSword.AV_SWORD,
+                                Styles.TWO_HAND, PlayerNpcSword.AV_DUAL_SWORD
                         ));
 
         this.weaponAttackMotions
