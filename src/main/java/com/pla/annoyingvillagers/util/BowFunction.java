@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.util;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -25,7 +26,7 @@ public class BowFunction {
             return;
         }
 
-        if (!BowFunction.hasArrowOrInfinity(shooter, bowStack)) {
+        if (shooter instanceof Player && !BowFunction.hasArrowOrInfinity(shooter, bowStack)) {
             return;
         }
 
@@ -40,6 +41,9 @@ public class BowFunction {
             arrowStack = player.getProjectile(bowStack);
             creativeOrInfinity = player.getAbilities().instabuild ||
                     EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, bowStack) > 0;
+        } else {
+            arrowStack = new ItemStack(Items.ARROW);
+            creativeOrInfinity = true;
         }
 
         if (arrowStack.isEmpty() && !creativeOrInfinity) {
@@ -60,8 +64,35 @@ public class BowFunction {
         AbstractArrow abstractArrow = arrowItem.createArrow(level, arrowStack, shooter);
         abstractArrow = bowItem.customArrow(abstractArrow);
 
-        float xRot = shooter.getXRot();
-        float yRot = shooter.getYRot();
+        float xRot;
+        float yRot;
+
+        if (!(shooter instanceof Player)) {
+            LivingEntity target = livingEntityPatch.getTarget();
+
+            if (target != null && target.isAlive()) {
+                double dx = target.getX() - shooter.getX();
+                double dz = target.getZ() - shooter.getZ();
+                double dy = target.getEyeY() - shooter.getEyeY();
+                double horiz = Math.sqrt(dx * dx + dz * dz);
+
+                yRot = (float) (Mth.atan2(dz, dx) * (180F / Math.PI)) - 90.0F;
+                xRot = (float) (-(Mth.atan2(dy, horiz) * (180F / Math.PI)));
+
+                xRot = Mth.clamp(xRot, -89.9F, 89.9F);
+
+                shooter.setYRot(yRot);
+                shooter.setXRot(xRot);
+                shooter.setYBodyRot(yRot);
+                shooter.setYHeadRot(yRot);
+            } else {
+                xRot = shooter.getXRot();
+                yRot = shooter.getYRot();
+            }
+        } else {
+            xRot = shooter.getXRot();
+            yRot = shooter.getYRot();
+        }
         abstractArrow.shootFromRotation(shooter, xRot, yRot, 0.0F, power * 3.0F, 1.0F);
 
         if (!bowStack.isEmpty() && bowStack.getTag() != null) {

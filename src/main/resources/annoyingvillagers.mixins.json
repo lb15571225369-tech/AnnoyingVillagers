@@ -6,6 +6,7 @@
   "mixins": [
     "AttributeInstanceMixin",
     "PlayerMobMixin",
+    "PlayerMobMixin2",
     "MobMixin",
     "EntityMixin",
     "SkeletonMixin",

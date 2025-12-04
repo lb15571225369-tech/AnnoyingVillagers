@@ -27,7 +27,27 @@ public class PlayerNpcDagger {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(2.0D)
-                            .weight(200.0D)
+                            .weight(100.0D)
+                            .maxCooldown (120)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(PlayerNpcCommon::canSwapToBow)
+                                            .withinDistance(7.0D, 14.0D)
+                                            .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
+                                            .addExBehavior(PlayerNpcCommon::swapToBow)
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(PlayerNpcCommon::canSwapToBow)
+                                            .withinDistance(7.0D, 14.0D)
+                                            .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
+                                            .addExBehavior(PlayerNpcCommon::swapToBow)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(2.0D)
+                            .weight(80.0D)
                             .maxCooldown (120)
                             .addFirstBehavior(
                                     Behavior.builder()
@@ -119,6 +139,19 @@ public class PlayerNpcDagger {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
+                            .weight(10.0D)
+                            .maxCooldown(200)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .withinDistance(0.0D, 2.0D)
+                                            .custom(PlayerNpcCommon::canThrowEnderPearl)
+                                            .animationBehavior(AVAnimations.THROWING_ENDER_PEARL_OFFHAND, 0.0F)
+                                            .addExBehavior(PlayerNpcCommon::performEnderPearlAway)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
                             .weight(2.0D)
                             .maxCooldown(200)
                             .addFirstBehavior(
@@ -193,7 +226,27 @@ public class PlayerNpcDagger {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(2.0D)
-                            .weight(200.0D)
+                            .weight(100.0D)
+                            .maxCooldown (120)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(PlayerNpcCommon::canSwapToBow)
+                                            .withinDistance(7.0D, 14.0D)
+                                            .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
+                                            .addExBehavior(PlayerNpcCommon::swapToBow)
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(PlayerNpcCommon::canSwapToBow)
+                                            .withinDistance(7.0D, 14.0D)
+                                            .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
+                                            .addExBehavior(PlayerNpcCommon::swapToBow)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(2.0D)
+                            .weight(80.0D)
                             .maxCooldown(120)
                             .addFirstBehavior(
                                     Behavior.builder()
@@ -283,6 +336,19 @@ public class PlayerNpcDagger {
                                                                             .animationBehavior(Animations.BLADE_RUSH_COMBO3, 0.0F)
                                                             )
                                             )
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                            .weight(10.0D)
+                            .maxCooldown(200)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .withinDistance(0.0D, 2.0D)
+                                            .custom(PlayerNpcCommon::canThrowEnderPearl)
+                                            .animationBehavior(AVAnimations.THROWING_ENDER_PEARL_OFFHAND, 0.0F)
+                                            .addExBehavior(PlayerNpcCommon::performEnderPearlAway)
                             )
             )
             .newBehaviorRoot(

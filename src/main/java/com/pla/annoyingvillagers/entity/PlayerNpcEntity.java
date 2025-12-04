@@ -35,10 +35,9 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -47,7 +46,6 @@ import net.minecraftforge.network.PlayMessages;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
-import yesman.epicfight.world.item.EpicFightItems;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -56,10 +54,12 @@ import java.util.Random;
 
 public class PlayerNpcEntity extends PlayerMobEntity {
     private final SimpleContainer inventory = new SimpleContainer(27);
-    private int gapCooldown;
-    private int enderPearlCooldown;
+    private int gapCooldown = 0;
+    private int enderPearlCooldown = 0;
+    private int swapToBowCooldown = 0;
     private PlayerNpcTarget target;
     private ItemStack mainWeaponItem = ItemStack.EMPTY;
+    private ItemStack offWeaponItem = ItemStack.EMPTY;
     private boolean healing = false;
 
     public boolean isHealing() {
@@ -78,12 +78,20 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         return enderPearlCooldown;
     }
 
+    public int getSwapToBowCooldown() {
+        return swapToBowCooldown;
+    }
+
     public void setGapCooldown() {
         this.gapCooldown = random.nextInt(100, 300);
     }
 
     public void setEnderPearlCooldown() {
         this.enderPearlCooldown = random.nextInt(100, 300);
+    }
+
+    public void setSwapToBowCooldown() {
+        this.swapToBowCooldown = random.nextInt(100, 300);
     }
 
     public SimpleContainer getInventory() {
@@ -96,6 +104,10 @@ public class PlayerNpcEntity extends PlayerMobEntity {
 
     public ItemStack getMainWeaponItem() {
         return mainWeaponItem;
+    }
+
+    public ItemStack getOffWeaponItem() {
+        return offWeaponItem;
     }
 
     public PlayerNpcEntity(EntityType<? extends PlayerNpcEntity> entitytype, Level level) {
@@ -113,6 +125,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         tag.put("Inventory", this.inventory.createTag());
         tag.putInt("GapCooldown", this.gapCooldown);
         tag.putInt("EnderPearlCooldown", this.enderPearlCooldown);
+        tag.putInt("SwapToBowCooldown", this.swapToBowCooldown);
         if (this.target != null) {
             tag.putString("PlayerNpcTarget", this.target.name());
         }
@@ -120,6 +133,11 @@ public class PlayerNpcEntity extends PlayerMobEntity {
             CompoundTag itemTag = new CompoundTag();
             this.mainWeaponItem.save(itemTag);
             tag.put("MainHandItem", itemTag);
+        }
+        if (!this.offWeaponItem.isEmpty()) {
+            CompoundTag itemTag = new CompoundTag();
+            this.offWeaponItem.save(itemTag);
+            tag.put("OffHandItem", itemTag);
         }
     }
 
@@ -131,6 +149,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         }
         this.gapCooldown = tag.getInt("GapCooldown");
         this.enderPearlCooldown = tag.getInt("EnderPearlCooldown");
+        this.swapToBowCooldown = tag.getInt("SwapToBowCooldown");
         if (tag.contains("PlayerNpcTarget", Tag.TAG_STRING)) {
             String name = tag.getString("PlayerNpcTarget");
             try {
@@ -143,6 +162,11 @@ public class PlayerNpcEntity extends PlayerMobEntity {
             this.mainWeaponItem = ItemStack.of(tag.getCompound("MainHandItem"));
         } else {
             this.mainWeaponItem = ItemStack.EMPTY;
+        }
+        if (tag.contains("OffHandItem", Tag.TAG_COMPOUND)) {
+            this.offWeaponItem = ItemStack.of(tag.getCompound("OffHandItem"));
+        } else {
+            this.offWeaponItem = ItemStack.EMPTY;
         }
     }
 
@@ -212,6 +236,9 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new OpenDoorGoal(this, true));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        if (this.getMainHandItem().getItem() instanceof BowItem) {
+            this.goalSelector.addGoal(4, new RangedBowAttackGoal<>(this, 1.0D, 20, 48.0F));
+        }
         ((GroundPathNavigation) this.getNavigation()).setCanOpenDoors(true);
         if (this.target != null) {
             switch (this.target) {
@@ -259,6 +286,43 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     public boolean hurt(DamageSource damagesource, float f) {
         PlayerNpcOnHurtProcedure.execute(this, damagesource.getEntity());
         return super.hurt(damagesource, f);
+    }
+
+    @Override
+    public boolean canFireProjectileWeapon(ProjectileWeaponItem item) {
+        return item instanceof BowItem;
+    }
+
+    public boolean canFireProjectileWeapon(Item item) {
+        boolean var10000;
+        if (item instanceof ProjectileWeaponItem weaponItem) {
+            if (this.canFireProjectileWeapon(weaponItem)) {
+                var10000 = true;
+                return var10000;
+            }
+        }
+
+        var10000 = false;
+        return var10000;
+    }
+
+    @Override
+    public void performRangedAttack(LivingEntity pTarget, float pVelocity) {
+        ItemStack weaponStack = this.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this, this::canFireProjectileWeapon));
+        ItemStack itemstack = this.getProjectile(weaponStack);
+        AbstractArrow mobArrow = ProjectileUtil.getMobArrow(this, itemstack, pVelocity);
+        if (this.getMainHandItem().getItem() instanceof BowItem) {
+            mobArrow = ((BowItem)this.getMainHandItem().getItem()).customArrow(mobArrow);
+        }
+
+        double x = pTarget.getX() - this.getX();
+        double y = pTarget.getY(0.3333333333333333) - mobArrow.getY();
+        double z = pTarget.getZ() - this.getZ();
+        double d3 = Math.sqrt(x * x + z * z);
+        mobArrow.setOwner(this);
+        mobArrow.shoot(x, y + d3 * (double)0.2F, z, 1.6F, (float)(14 - this.level().getDifficulty().getId() * 4));
+        this.playSound(SoundEvents.ARROW_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+        this.level().addFreshEntity(mobArrow);
     }
 
     public void die(@NotNull DamageSource damageSource) {
@@ -369,6 +433,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
 
         if (gapCooldown > 0) gapCooldown--;
         if (enderPearlCooldown > 0) enderPearlCooldown--;
+        if (swapToBowCooldown > 0) swapToBowCooldown--;
 
         if ((tickCount + getId()) % 20 != 0) {
             return;
@@ -395,7 +460,13 @@ public class PlayerNpcEntity extends PlayerMobEntity {
 
         this.target = PlayerNpcTarget.values()[new Random().nextInt(PlayerNpcTarget.values().length)];
         this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_SWORD));
+        this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.DIAMOND_SWORD));
+        this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.DIAMOND_HELMET));
+        this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.DIAMOND_CHESTPLATE));
+        this.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.DIAMOND_LEGGINGS));
+        this.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.DIAMOND_BOOTS));
         this.mainWeaponItem = this.getMainHandItem().copy();
+        this.offWeaponItem = this.getOffWeaponItem().copy();
 
 //        List<String> commands = EquipmentDataLoader.getEquipCommands(0.85f, this);
 //        for (String cmd : commands) {
@@ -454,6 +525,10 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         if (pSlot == EquipmentSlot.MAINHAND &&
                 (pNewItem.getItem() instanceof SwordItem || pNewItem.getItem() instanceof AxeItem)) {
             this.mainWeaponItem = pNewItem.copy();
+        }
+        if (pSlot == EquipmentSlot.OFFHAND &&
+                (pNewItem.getItem() instanceof SwordItem || pNewItem.getItem() instanceof AxeItem)) {
+            this.offWeaponItem = pNewItem.copy();
         }
         super.onEquipItem(pSlot, pOldItem, pNewItem);
     }

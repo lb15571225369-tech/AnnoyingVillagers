@@ -6,10 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.pla.annoyingvillagers.capabilities.AVCategories;
-import com.pla.annoyingvillagers.combatbehaviour.PlayerNpcAxe;
-import com.pla.annoyingvillagers.combatbehaviour.PlayerNpcDagger;
-import com.pla.annoyingvillagers.combatbehaviour.PlayerNpcFist;
-import com.pla.annoyingvillagers.combatbehaviour.PlayerNpcSword;
+import com.pla.annoyingvillagers.combatbehaviour.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -62,20 +59,6 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
                                 )));
         this.weaponAttackMotions
                 .put(WeaponCategories.NOT_WEAPON,
-                        ImmutableMap.of(Styles.ONE_HAND, PlayerNpcFist.FIST));
-
-        this.weaponLivingMotions
-                .put(WeaponCategories.RANGED,
-                        ImmutableMap.of(Styles.ONE_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
-                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN),
-                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_RUN),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
-                                )));
-        this.weaponAttackMotions
-                .put(WeaponCategories.RANGED,
                         ImmutableMap.of(Styles.ONE_HAND, PlayerNpcFist.FIST));
 
         this.weaponLivingMotions
@@ -238,7 +221,25 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
                                         Pair.of(LivingMotions.WALK, Animations.BIPED_HOLD_DUAL_WEAPON),
                                         Pair.of(LivingMotions.RUN, Animations.BIPED_RUN_DUAL),
                                         Pair.of(LivingMotions.CHASE, Animations.BIPED_HOLD_DUAL_WEAPON),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_HOLD_DUAL_WEAPON)
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )));
+
+        this.weaponAttackMotions
+                .put(WeaponCategories.RANGED,
+                        ImmutableMap.of(
+                                Styles.ONE_HAND, PlayerNpcBow.BOW
+                        ));
+        this.weaponLivingMotions
+                .put(WeaponCategories.RANGED,
+                        ImmutableMap.of(Styles.ONE_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
+                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_RUN),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH),
+                                        Pair.of(LivingMotions.AIM, Animations.BIPED_BOW_AIM),
+                                        Pair.of(LivingMotions.SHOT, Animations.BIPED_BOW_SHOT)
                                 )));
     }
 
