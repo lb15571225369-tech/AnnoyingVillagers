@@ -37,7 +37,7 @@ public class HardGreatSwordSkillRightClickInAirProcedure {
             if (!entity.level().isClientSide() && entity.getServer() != null) {
                 LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                 if (livingEntityPatch != null) {
-                    livingEntityPatch.playAnimationSynchronized(AVAnimations.HARD_GREAT_SWORD_GUARD_SKILL, 0.0F);
+                    livingEntityPatch.playAnimationSynchronized(AVAnimations.HARD_GREATSWORD_GUARD_SKILL, 0.0F);
                 }
             }
 
@@ -56,7 +56,7 @@ public class HardGreatSwordSkillRightClickInAirProcedure {
                     }
 
                     if (world instanceof Level level) {
-                        SoundEvent sound = ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "hard_great_sword_skill"));
+                        SoundEvent sound = ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "hard_greatsword_skill"));
                         if (!level.isClientSide()) {
                             level.playSound(null, new BlockPos((int) x, (int) y, (int) z), sound, SoundSource.NEUTRAL, 1.0F, 1.0F);
                         } else {

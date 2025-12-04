@@ -162,7 +162,7 @@ public class AVWeaponCapabilityPresets {
 
     public static final Function<Item, Builder> LEGENDARY_SWORD = (item) ->
             WeaponCapability.builder()
-                    .category(WeaponCategories.GREATSWORD)
+                    .category(AVCategories.LEGENDARY_SWORD)
                     .styleProvider(
                             (livingentitypatch) -> Styles.TWO_HAND
                     ).collider(ColliderPreset.GREATSWORD)
@@ -193,6 +193,35 @@ public class AVWeaponCapabilityPresets {
                             (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE
                             || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SWORD
                             || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.DAGGER)));
+
+    public static final Function<Item, Builder> HARD_GREATSWORD = (item) ->
+            WeaponCapability.builder()
+                    .category(AVCategories.HARD_GREATSWORD)
+                    .styleProvider(
+                            (livingentitypatch) -> Styles.TWO_HAND)
+                    .collider(ColliderPreset.TACHI)
+                    .hitSound(EpicFightSounds.BLADE_HIT.get())
+                    .swingSound(AVSounds.SWORD_WHOOSH.get())
+                    .newStyleCombo(Styles.TWO_HAND,
+                            Animations.LONGSWORD_AUTO1,
+                            Animations.LONGSWORD_AUTO2,
+                            Animations.LONGSWORD_AUTO3,
+                            AVAnimations.TACHI_DASH,
+                            Animations.LONGSWORD_AIR_SLASH)
+                    .newStyleCombo(Styles.MOUNT,
+                            Animations.SWORD_MOUNT_ATTACK)
+                    .innateSkill(Styles.TWO_HAND,
+                            (itemstack) -> EpicFightSkills.DANCING_EDGE)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_TACHI)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.KNEEL, Animations.BIPED_HOLD_TACHI)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_HOLD_TACHI)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, Animations.BIPED_HOLD_TACHI)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, Animations.BIPED_HOLD_TACHI)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.SNEAK, Animations.BIPED_HOLD_TACHI)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.SWIM, Animations.BIPED_HOLD_TACHI)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.FLOAT, Animations.BIPED_HOLD_TACHI)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.FALL, Animations.BIPED_HOLD_TACHI)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AVAnimations.HARD_GREATSWORD_GUARD);
 
     public static final Function<Item, Builder> SWORD = (item) -> {
         WeaponCapability.Builder builder = WeaponCapability.builder()
@@ -495,6 +524,7 @@ public class AVWeaponCapabilityPresets {
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "obsidian_sledgehammer"), AVWeaponCapabilityPresets.OBSIDIAN_SLEDGEHAMMER);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_slayer_scythe"), AVWeaponCapabilityPresets.ENDER_SLAYER_SCYTHE);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "legendary_sword"), AVWeaponCapabilityPresets.LEGENDARY_SWORD);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "hard_greatsword"), AVWeaponCapabilityPresets.HARD_GREATSWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "shadow_obsidian_sword"), AVWeaponCapabilityPresets.SHADOW_OBSIDIAN_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "sword"), AVWeaponCapabilityPresets.SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "axe"), AVWeaponCapabilityPresets.AXE);

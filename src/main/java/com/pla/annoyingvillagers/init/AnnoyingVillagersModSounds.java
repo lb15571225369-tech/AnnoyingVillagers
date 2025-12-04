@@ -33,7 +33,7 @@ public class AnnoyingVillagersModSounds {
     public static final RegistryObject<SoundEvent> HEAVY_ATTACK_START = register("heavy_attack_start");
     public static final RegistryObject<SoundEvent> MUSIC_BOX = register("music_box");
     public static final RegistryObject<SoundEvent> MUSIC_BOX_WIN = register("music_box_win");
-    public static final RegistryObject<SoundEvent> HARD_GREAT_SWORD_SKILL = register("hard_great_sword_skill");
+    public static final RegistryObject<SoundEvent> HARD_GREATSWORD_SKILL = register("hard_greatsword_skill");
     public static final RegistryObject<SoundEvent> FIGHT_MUSIC = register("fight_music");
     public static final RegistryObject<SoundEvent> LOST = register("lost");
     public static final RegistryObject<SoundEvent> SILENT = register("silent");

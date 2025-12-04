@@ -23,12 +23,13 @@ import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 import java.util.Objects;
-import java.util.function.Function;
 
 @OnlyIn(Dist.CLIENT)
-public class LegendarySwordRender extends RenderItemBase implements Function<JsonElement, RenderItemBase> {
-    public LegendarySwordRender(JsonElement json) {
+public class RenderLegendarySword extends RenderItemBase {
+
+    public RenderLegendarySword(JsonElement json) {
         super(json);
+        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG LegendarySwordRender] constructor called. json = {}", json);
     }
 
     @Override
@@ -53,12 +54,12 @@ public class LegendarySwordRender extends RenderItemBase implements Function<Jso
 
         boolean isHeavy =
                 currentAnim != null && (
-                        currentAnim.get().equals(AVAnimations.LEGENDARY_SWORD_HEAVY_ATTACK)
-                                || currentAnim.get().equals(AnimsSolar.SOLAR_AUTO_2)
+                        currentAnim.equals(AVAnimations.LEGENDARY_SWORD_HEAVY_ATTACK)
+                                || currentAnim.equals(AnimsSolar.SOLAR_AUTO_2)
                 );
 
         boolean isWakeUp =
-                currentAnim != null && currentAnim.get().equals(AVAnimations.LEGENDARY_SWORD_WAKE_UP_ATTACK);
+                currentAnim != null && currentAnim.equals(AVAnimations.LEGENDARY_SWORD_WAKE_UP_ATTACK);
 
         AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG LegendarySwordRender]" +
                 "\n  currentAnim = " + (currentAnim == null ? "null" : currentAnim +
@@ -90,6 +91,4 @@ public class LegendarySwordRender extends RenderItemBase implements Function<Jso
         );
         poseStack.popPose();
     }
-
-    @Override public RenderItemBase apply(JsonElement json) { return new LegendarySwordRender(json); }
 }

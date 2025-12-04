@@ -56,7 +56,7 @@ public class HardGreatSwordSkillItem extends SwordItem {
         if (entity != null) {
             if (entity instanceof Player) {
                 Player player = (Player) entity;
-                ItemStack item = new ItemStack((ItemLike) AnnoyingVillagersModItems.HARD_GREAT_SWORD_SKILL.get());
+                ItemStack item = new ItemStack((ItemLike) AnnoyingVillagersModItems.HARD_GREATSWORD_SKILL.get());
 
                 player.getInventory().clearOrCountMatchingItems((it) -> {
                     return item.getItem() == it.getItem();

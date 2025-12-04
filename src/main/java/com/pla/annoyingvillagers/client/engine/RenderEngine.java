@@ -11,7 +11,8 @@ import yesman.epicfight.api.client.forgeevent.PatchedRenderersEvent;
 public class RenderEngine {
     @SubscribeEvent
     public static void registerRenderer(PatchedRenderersEvent.RegisterItemRenderer add) {
-        add.addItemRenderer(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "legendary_sword"), LegendarySwordRender::new);
-        add.addItemRenderer(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "hard_great_sword"), HardGreatSwordRender::new);
+        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] PatchedRenderersEvent.RegisterItemRenderer fired");
+        add.addItemRenderer(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "legendary_sword"), RenderLegendarySword::new);
+        add.addItemRenderer(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "hard_greatsword"), RenderHardGreatSword::new);
     }
 }

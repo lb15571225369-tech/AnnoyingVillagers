@@ -130,9 +130,9 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<MovementAnimation> RUN_DUAL_BIG;
     public static AnimationManager.AnimationAccessor<MovementAnimation> RUN_HOLD;
     public static AnimationManager.AnimationAccessor<LongHitAnimation> LONGEST_HIT;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> HARD_GREAT_SWORD_GUARD;
-    public static AnimationManager.AnimationAccessor<GuardAnimation> HARD_GREAT_SWORD_GUARD_HIT;
-    public static AnimationManager.AnimationAccessor<ActionAnimation> HARD_GREAT_SWORD_GUARD_SKILL;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> HARD_GREATSWORD_GUARD;
+    public static AnimationManager.AnimationAccessor<GuardAnimation> HARD_GREATSWORD_GUARD_HIT;
+    public static AnimationManager.AnimationAccessor<ActionAnimation> HARD_GREATSWORD_GUARD_SKILL;
     public static AnimationManager.AnimationAccessor<ActionAnimation> HIT_LEFT;
     public static AnimationManager.AnimationAccessor<ActionAnimation> HIT_RIGHT;
     public static AnimationManager.AnimationAccessor<ActionAnimation> SHAKE_HAND_TRY;
@@ -690,11 +690,11 @@ public class AVAnimations {
                         .addState(EntityState.CAN_SKILL_EXECUTION, false)
                         .addState(EntityState.CAN_BASIC_ATTACK, false)
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
-        AVAnimations.HARD_GREAT_SWORD_GUARD = builder.nextAccessor("biped/combat/hard_great_sword",
+        AVAnimations.HARD_GREATSWORD_GUARD = builder.nextAccessor("biped/combat/hard_greatsword",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
-        AVAnimations.HARD_GREAT_SWORD_GUARD_HIT = builder.nextAccessor("biped/combat/hard_great_sword_hit",
+        AVAnimations.HARD_GREATSWORD_GUARD_HIT = builder.nextAccessor("biped/combat/hard_greatsword_hit",
                 (accessor) -> new GuardAnimation(0.05F, accessor, humanoidarmature));
-        AVAnimations.HARD_GREAT_SWORD_GUARD_SKILL = builder.nextAccessor("biped/combat/hard_great_sword_skill",
+        AVAnimations.HARD_GREATSWORD_GUARD_SKILL = builder.nextAccessor("biped/combat/hard_greatsword_skill",
                 (accessor) -> (new ActionAnimation(0.05F, Float.MAX_VALUE, accessor, humanoidarmature))
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
         AVAnimations.HIT_LEFT = builder.nextAccessor("biped/combat/hit_left",

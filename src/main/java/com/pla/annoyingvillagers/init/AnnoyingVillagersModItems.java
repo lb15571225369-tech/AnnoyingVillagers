@@ -80,7 +80,7 @@ public class AnnoyingVillagersModItems {
 
     // Weapon
     public static final RegistryObject<Item> LEGENDARY_SWORD = AnnoyingVillagersModItems.REGISTRY.register("legendary_sword", LegendarySwordItem::new);
-    public static final RegistryObject<Item> HARD_GREAT_SWORD = AnnoyingVillagersModItems.REGISTRY.register("hard_great_sword", HardGreatSwordItem::new);
+    public static final RegistryObject<Item> HARD_GREATSWORD = AnnoyingVillagersModItems.REGISTRY.register("hard_greatsword", HardGreatSwordItem::new);
     public static final RegistryObject<Item> SHADOW_OBSIDIAN_WEAPON = AnnoyingVillagersModItems.REGISTRY.register("shadow_obsidian_weapon", ShadowObsidianWeaponItem::new);
     public static final RegistryObject<Item> OBSIDIAN_WEAPON = AnnoyingVillagersModItems.REGISTRY.register("obsidian_weapon", ObsidianWeaponItem::new);
     public static final RegistryObject<Item> BEDROCK_WEAPON = AnnoyingVillagersModItems.REGISTRY.register("bedrock_weapon", BedrockWeaponItem::new);
@@ -151,7 +151,7 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> DARK_OB_FAR = AnnoyingVillagersModItems.REGISTRY.register("dark_ob_far", DarkOBFarItem::new);
     public static final RegistryObject<Item> HEAVY_ATTACK_LEGENDARY_SWORD = AnnoyingVillagersModItems.REGISTRY.register("heavy_attack_legendary_sword", HeavyAttackLegendarySwordItem::new);
 
-    public static final RegistryObject<Item> HARD_GREAT_SWORD_SKILL = AnnoyingVillagersModItems.REGISTRY.register("hard_great_sword_skill", HardGreatSwordSkillItem::new);
+    public static final RegistryObject<Item> HARD_GREATSWORD_SKILL = AnnoyingVillagersModItems.REGISTRY.register("hard_greatsword_skill", HardGreatSwordSkillItem::new);
     public static final RegistryObject<Item> WAKE_UP_LEGENDARY_SWORD = AnnoyingVillagersModItems.REGISTRY.register("wake_up_legendary_sword", WakeUpLegendarySwordItem::new);
 
     public static final RegistryObject<Item> SHADOW_OBSIDIAN_ITEM = block(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK, (CreativeModeTab) null);

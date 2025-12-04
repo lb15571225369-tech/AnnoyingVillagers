@@ -55,7 +55,7 @@ public class HardGreatSwordSkillExecuteProcedure {
                         }
                     }
 
-                    if (flag && dynamicanimation == AVAnimations.HARD_GREAT_SWORD_GUARD_SKILL) {
+                    if (flag && dynamicanimation == AVAnimations.HARD_GREATSWORD_GUARD_SKILL) {
                         if (event != null && event.isCancelable()) {
                             event.setCanceled(true);
                         }
@@ -87,7 +87,7 @@ public class HardGreatSwordSkillExecuteProcedure {
                 livingentitypatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                 if (livingentitypatch != null) {
                     dynamicanimation = livingentitypatch.getAnimator().getPlayerFor(null).getAnimation();
-                    if (dynamicanimation == AVAnimations.HARD_GREAT_SWORD_GUARD_SKILL) {
+                    if (dynamicanimation == AVAnimations.HARD_GREATSWORD_GUARD_SKILL) {
                         if (event != null && event.isCancelable()) {
                             event.setCanceled(true);
                         }

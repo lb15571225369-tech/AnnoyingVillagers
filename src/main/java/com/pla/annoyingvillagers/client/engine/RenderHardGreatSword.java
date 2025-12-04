@@ -23,12 +23,12 @@ import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 import java.util.Objects;
-import java.util.function.Function;
 
 @OnlyIn(Dist.CLIENT)
-public class HardGreatSwordRender extends RenderItemBase implements Function<JsonElement, RenderItemBase> {
-    public HardGreatSwordRender(JsonElement json) {
+public class RenderHardGreatSword extends RenderItemBase {
+    public RenderHardGreatSword(JsonElement json) {
         super(json);
+        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG HardGreatSwordRender] constructor called. json = {}", json);
     }
 
     @Override
@@ -50,18 +50,18 @@ public class HardGreatSwordRender extends RenderItemBase implements Function<Jso
                 Objects.requireNonNull(livingEntityPatch.getClientAnimator().getPlayerFor(null)).getAnimation();
 
         ItemStack itemstack;
-        boolean isGuardSkill = currentAnim != null && currentAnim.equals(AVAnimations.HARD_GREAT_SWORD_GUARD_SKILL);
-        boolean isGuard = currentAnim != null && currentAnim.equals(AVAnimations.HARD_GREAT_SWORD_GUARD);
+        boolean isGuardSkill = currentAnim != null && currentAnim.equals(AVAnimations.HARD_GREATSWORD_GUARD_SKILL);
+        boolean isGuard = currentAnim != null && currentAnim.equals(AVAnimations.HARD_GREATSWORD_GUARD);
 
         AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG HardGreatSwordRender]" +
                 "\n  currentAnim = " + (currentAnim == null ? "null" : currentAnim +
-                "\n  equals(HARD_GREAT_SWORD_GUARD_SKILL) = " + isGuardSkill +
-                "\n  equals(HARD_GREAT_SWORD_GUARD)       = " + isGuard));
+                "\n  equals(HARD_GREATSWORD_GUARD_SKILL) = " + isGuardSkill +
+                "\n  equals(HARD_GREATSWORD_GUARD)       = " + isGuard));
 
         if (isGuardSkill || isGuard) {
-            itemstack = new ItemStack(AnnoyingVillagersModItems.HARD_GREAT_SWORD_SKILL.get());
+            itemstack = new ItemStack(AnnoyingVillagersModItems.HARD_GREATSWORD_SKILL.get());
         } else {
-            itemstack = new ItemStack(AnnoyingVillagersModItems.HARD_GREAT_SWORD.get());
+            itemstack = new ItemStack(AnnoyingVillagersModItems.HARD_GREATSWORD.get());
         }
 
         poseStack.pushPose();
@@ -78,6 +78,4 @@ public class HardGreatSwordRender extends RenderItemBase implements Function<Jso
         );
         poseStack.popPose();
     }
-
-    @Override public RenderItemBase apply(JsonElement json) { return new HardGreatSwordRender(json); }
 }
