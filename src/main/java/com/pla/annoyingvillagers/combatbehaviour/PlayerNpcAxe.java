@@ -32,7 +32,7 @@ public class PlayerNpcAxe {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(PlayerNpcCommon::canThrowEnderPearl)
-                                            .withinDistance(7.0D, 20.0D)
+                                            .withinDistance(7.0D, 48.0D)
                                             .animationBehavior(AVAnimations.THROWING_ENDER_PEARL_OFFHAND, 0.0F)
                                             .addExBehavior(PlayerNpcCommon::performEnderPearlToTarget)
                             )
@@ -187,7 +187,7 @@ public class PlayerNpcAxe {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(PlayerNpcCommon::canThrowEnderPearl)
-                                            .withinDistance(7.0D, 20.0D)
+                                            .withinDistance(7.0D, 48.0D)
                                             .animationBehavior(AVAnimations.THROWING_ENDER_PEARL_OFFHAND, 0.0F)
                                             .addExBehavior(PlayerNpcCommon::performEnderPearlToTarget)
                             )
