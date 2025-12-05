@@ -108,9 +108,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         return mainWeaponItem;
     }
 
-    public ItemStack getOffWeaponItem() {
-        return offWeaponItem;
-    }
+    public ItemStack getOffWeaponItem() { return offWeaponItem; }
 
     public PlayerNpcEntity(EntityType<? extends PlayerNpcEntity> entitytype, Level level) {
         super(entitytype, level);
@@ -461,8 +459,9 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         }
 
         this.target = PlayerNpcTarget.values()[new Random().nextInt(PlayerNpcTarget.values().length)];
-        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.DIAMOND_SPEAR.get()));
-        this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.SHIELD));
+//        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.DIAMOND_SPEAR.get()));
+        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.DIAMOND_LONG_SWORD.get()));
+//        this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.SHIELD));
         this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.DIAMOND_HELMET));
         this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.DIAMOND_CHESTPLATE));
         this.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.DIAMOND_LEGGINGS));
@@ -521,11 +520,11 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     @Override
     public void onEquipItem(@NotNull EquipmentSlot pSlot, @NotNull ItemStack pOldItem, @NotNull ItemStack pNewItem) {
         if (pSlot == EquipmentSlot.MAINHAND &&
-                (pNewItem.getItem() instanceof SwordItem || pNewItem.getItem() instanceof AxeItem)) {
+                (pNewItem.getItem() instanceof SwordItem || pNewItem.getItem() instanceof AxeItem || pNewItem.getItem() instanceof ShieldItem)) {
             this.mainWeaponItem = pNewItem.copy();
         }
         if (pSlot == EquipmentSlot.OFFHAND &&
-                (pNewItem.getItem() instanceof SwordItem || pNewItem.getItem() instanceof AxeItem)) {
+                (pNewItem.getItem() instanceof SwordItem || pNewItem.getItem() instanceof AxeItem || pNewItem.getItem() instanceof ShieldItem)) {
             this.offWeaponItem = pNewItem.copy();
         }
         super.onEquipItem(pSlot, pOldItem, pNewItem);

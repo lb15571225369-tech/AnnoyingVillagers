@@ -23,7 +23,6 @@ import com.pla.annoyingvillagers.animations.KickAttackAnimation;
 import net.minecraftforge.fml.common.Mod;
 import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
 import reascer.wom.animation.attacks.SpecialAttackAnimation;
-import reascer.wom.gameasset.ReuseableEvents;
 import reascer.wom.gameasset.colliders.WOMWeaponColliders;
 import reascer.wom.particle.WOMParticles;
 import reascer.wom.world.damagesources.WOMExtraDamageInstance;
@@ -60,7 +59,8 @@ import yesman.epicfight.world.damagesource.StunType;
 public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> EAT_OFFHAND;
     public static AnimationManager.AnimationAccessor<StaticAnimation> DRINK_OFFHAND;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> BLOCK_MAINHAND;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> SHIELD_MAINHAND;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> SHIELD_OFFHAND;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> COUNTER;
     public static AnimationManager.AnimationAccessor<StaticAnimation> FIST_GUARD;
     public static AnimationManager.AnimationAccessor<KickAttackAnimation> FIST_DASH;
@@ -239,7 +239,9 @@ public class AVAnimations {
                 (accessor) -> new StaticAnimation(0.35F, true, accessor, humanoidarmature));
         AVAnimations.DRINK_OFFHAND = builder.nextAccessor("biped/living/drink_offhand",
                 (accessor) -> new StaticAnimation(0.35F, true, accessor, humanoidarmature));
-        AVAnimations.BLOCK_MAINHAND = builder.nextAccessor("biped/living/block_mainhand",
+        AVAnimations.SHIELD_MAINHAND = builder.nextAccessor("biped/living/shield_mainhand",
+                (accessor) -> new StaticAnimation(0.35F, true, accessor, humanoidarmature));
+        AVAnimations.SHIELD_OFFHAND = builder.nextAccessor("biped/living/shield_offhand",
                 (accessor) -> new StaticAnimation(0.35F, true, accessor, humanoidarmature));
         AVAnimations.COUNTER = builder.nextAccessor("biped/guard/counter",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.3F, 0.08F, 0.1F, 0.15F, 0.525F, ColliderPreset.FIST, humanoidarmature.get().legR, accessor, humanoidarmature))
@@ -673,7 +675,7 @@ public class AVAnimations {
         AVAnimations.LONGSWORD_AUTO1 = builder.nextAccessor("biped/combat/tachi_auto1",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.1F, 0.15F, 0.2F, 0.3F, 0.75F, null, humanoidarmature.get().toolR, accessor, humanoidarmature))
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)
-                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F)
                         .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true));
         AVAnimations.RUN_HOLD = builder.nextAccessor("biped/other/run_hold",
                 (accessor) -> new MovementAnimation(true, accessor, humanoidarmature));

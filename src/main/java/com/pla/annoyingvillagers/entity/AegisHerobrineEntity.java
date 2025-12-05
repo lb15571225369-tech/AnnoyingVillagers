@@ -110,7 +110,7 @@ public class AegisHerobrineEntity extends HerobrineMob {
             if (this.tickCount == 5 && this.getPersistentData().getBoolean("init_animation")) {
                 final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
                 if (livingentitypatch != null) {
-                    livingentitypatch.playAnimationSynchronized(AVAnimations.BLOCK_MAINHAND, 0.0F);
+                    livingentitypatch.playAnimationSynchronized(AVAnimations.SHIELD_MAINHAND, 0.0F);
                 }
             }
 

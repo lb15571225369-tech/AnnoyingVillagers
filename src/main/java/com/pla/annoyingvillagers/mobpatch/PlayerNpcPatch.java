@@ -259,6 +259,7 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
                         ImmutableMap.of(
                                 Styles.ONE_HAND,
                                 Set.of(
+                                        Pair.of(LivingMotions.BLOCK, AVAnimations.SHIELD_OFFHAND),
                                         Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
                                         Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
                                         Pair.of(LivingMotions.RUN, Animations.BIPED_RUN_SPEAR),
@@ -287,6 +288,7 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
                         ImmutableMap.of(
                                 Styles.ONE_HAND,
                                 Set.of(
+                                        Pair.of(LivingMotions.BLOCK, AVAnimations.SHIELD_OFFHAND),
                                         Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
                                         Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
                                         Pair.of(LivingMotions.RUN, Animations.BIPED_RUN_SPEAR),
@@ -300,6 +302,64 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
                                         Pair.of(LivingMotions.WALK, Animations.BIPED_WALK_SPEAR),
                                         Pair.of(LivingMotions.RUN, Animations.BIPED_RUN_SPEAR),
                                         Pair.of(LivingMotions.CHASE, Animations.BIPED_WALK_SPEAR),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )
+                        ));
+
+        this.weaponAttackMotions
+                .put(WeaponCategories.LONGSWORD,
+                        ImmutableMap.of(
+                                Styles.ONE_HAND, PlayerNpcLongsword.LONGSWORD_SHIELD,
+                                Styles.TWO_HAND, PlayerNpcLongsword.LONGSWORD
+                        ));
+        this.weaponLivingMotions
+                .put(WeaponCategories.LONGSWORD,
+                        ImmutableMap.of(
+                                Styles.ONE_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, AVAnimations.SHIELD_OFFHAND),
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_LONGSWORD),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK_LONGSWORD),
+                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN_LONGSWORD),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_WALK_LONGSWORD),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                ),
+                                Styles.TWO_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, Animations.LONGSWORD_GUARD),
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_LONGSWORD),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK_LONGSWORD),
+                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN_LONGSWORD),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_WALK_LONGSWORD),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )
+                        ));
+
+        this.weaponAttackMotions
+                .put(AVCategories.AV_LONGSWORD,
+                        ImmutableMap.of(
+                                Styles.ONE_HAND, PlayerNpcLongsword.AV_LONGSWORD_SHIELD,
+                                Styles.TWO_HAND, PlayerNpcLongsword.AV_LONGSWORD
+                        ));
+        this.weaponLivingMotions
+                .put(AVCategories.AV_LONGSWORD,
+                        ImmutableMap.of(
+                                Styles.ONE_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, AVAnimations.SHIELD_OFFHAND),
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_LONGSWORD),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK_LONGSWORD),
+                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN_LONGSWORD),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_WALK_LONGSWORD),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                ),
+                                Styles.TWO_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, Animations.LONGSWORD_GUARD),
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_DUAL_WEAPON),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK_LONGSWORD),
+                                        Pair.of(LivingMotions.RUN, AVAnimations.RUN_DUAL_BIG),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_WALK_LONGSWORD),
                                         Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
                                 )
                         ));

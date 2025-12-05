@@ -409,7 +409,6 @@ public class AVWeaponCapabilityPresets {
                     .swingSound(AVSounds.SWORD_WHOOSH.get())
                     .canBePlacedOffhand(false)
                     .newStyleCombo(Styles.ONE_HAND,
-                            AVAnimations.LONGSWORD_AUTO1,
                             Animations.LONGSWORD_AUTO1,
                             Animations.LONGSWORD_AUTO2,
                             Animations.LONGSWORD_AUTO3,
@@ -422,7 +421,7 @@ public class AVWeaponCapabilityPresets {
                             Animations.LONGSWORD_AUTO3,
                             AVAnimations.DUAL_SWORD_AUTO1,
                             AVAnimations.DUAL_SWORD_AUTO2,
-                            Animations.SWORD_DUAL_DASH,
+                            Animations.LONGSWORD_DASH,
                             Animations.LONGSWORD_AIR_SLASH)
                     .newStyleCombo(Styles.OCHS,
                             AnimsRuine.RUINE_AUTO_1,
@@ -430,7 +429,7 @@ public class AVWeaponCapabilityPresets {
                             AnimsRuine.RUINE_AUTO_3,
                             AnimsRuine.RUINE_CHATIMENT,
                             AVAnimations.RUSH_SWORD,
-                            AVAnimations.TACHI_DASH,
+                            Animations.LONGSWORD_DASH,
                             Animations.LONGSWORD_AIR_SLASH)
                     .innateSkill(Styles.ONE_HAND,
                             (itemstack) -> EpicFightSkills.SHARP_STAB)
