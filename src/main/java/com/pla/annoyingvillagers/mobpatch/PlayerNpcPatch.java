@@ -363,6 +363,54 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
                                         Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
                                 )
                         ));
+
+        this.weaponAttackMotions
+                .put(WeaponCategories.TACHI,
+                        ImmutableMap.of(
+                                Styles.TWO_HAND, PlayerNpcTachi.TACHI
+                        ));
+        this.weaponLivingMotions
+                .put(WeaponCategories.TACHI,
+                        ImmutableMap.of(
+                                Styles.TWO_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, Animations.LONGSWORD_GUARD),
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_TACHI),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_HOLD_TACHI),
+                                        Pair.of(LivingMotions.RUN, Animations.BIPED_HOLD_TACHI),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_HOLD_TACHI),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )
+                        ));
+
+        this.weaponAttackMotions
+                .put(AVCategories.AV_TACHI,
+                        ImmutableMap.of(
+                                Styles.TWO_HAND, PlayerNpcTachi.AV_TACHI,
+                                Styles.OCHS, PlayerNpcTachi.AV_DUAL_TACHI
+                        ));
+        this.weaponLivingMotions
+                .put(AVCategories.AV_TACHI,
+                        ImmutableMap.of(
+                                Styles.TWO_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, Animations.LONGSWORD_GUARD),
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_TACHI),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_HOLD_TACHI),
+                                        Pair.of(LivingMotions.RUN, Animations.BIPED_HOLD_TACHI),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_HOLD_TACHI),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                ),
+                                Styles.OCHS,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, AVAnimations.DUAL_TACHI_GUARD),
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_TACHI),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_HOLD_TACHI),
+                                        Pair.of(LivingMotions.RUN, AVAnimations.RUN_DUAL_BIG),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_HOLD_TACHI),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )
+                        ));
     }
 
     public void playGuardBreakSound() {
