@@ -140,7 +140,7 @@ public class PlayerNpcDagger {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(10.0D)
-                            .maxCooldown(200)
+                            .maxCooldown(40)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 2.0D)
@@ -213,13 +213,20 @@ public class PlayerNpcDagger {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(2.0D)
-                            .weight(1000.0D)
+                            .weight(70.0D)
                             .maxCooldown(0)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
                                             .custom(PlayerNpcCommon::canPerformEating)
-                                            .animationBehavior(Animations.BIPED_EAT, 0.0F)
+                                            .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
+                                            .addExBehavior(PlayerNpcCommon::performEatingAnimation)
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
+                                            .custom(PlayerNpcCommon::canPerformEating)
+                                            .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
                                             .addExBehavior(PlayerNpcCommon::performEatingAnimation)
                             )
             )
@@ -342,7 +349,7 @@ public class PlayerNpcDagger {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(10.0D)
-                            .maxCooldown(200)
+                            .maxCooldown(40)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 2.0D)

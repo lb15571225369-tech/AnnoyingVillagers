@@ -14,7 +14,6 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ThrownEnderpearl;
 import net.minecraft.world.item.ItemStack;
@@ -37,7 +36,6 @@ import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
-import yesman.epicfight.world.effect.EpicFightMobEffects;
 
 import java.util.Objects;
 import java.util.Random;
@@ -195,6 +193,13 @@ public class CombatBehaviour {
             livingEntity.addEffect(
                     new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, (int) (amount * 2.0D), 2, false, false)
             );
+            if (entity instanceof PlayerNpcEntity playerNpcEntity) {
+                if (playerNpcEntity.isHealing()) {
+                    return;
+                } else {
+                    playerNpcEntity.setHealing(true);
+                }
+            }
             new DelayedTask(20) {
                 @Override
                 public void run() {
@@ -207,14 +212,6 @@ public class CombatBehaviour {
                             currentAnim instanceof LongHitAnimation ||
                             currentAnim instanceof HitAnimation) {
                         return;
-                    }
-
-                    if (entity instanceof PlayerNpcEntity playerNpcEntity) {
-                        if (playerNpcEntity.isHealing()) {
-                            return;
-                        } else {
-                            playerNpcEntity.setHealing(true);
-                        }
                     }
                     Runnable bite = () -> performEatingGoldenAppleActionMainHand(entity, levelaccessor, patch);
                     int biteDelay = 4;
@@ -258,7 +255,7 @@ public class CombatBehaviour {
                             }
                         }
                     };
-                    new DelayedTask(4 + totalBites * biteDelay + 20) {
+                    new DelayedTask(4 + totalBites * biteDelay) {
                         @Override
                         public void run() {
                             if (!entity.isAlive()) return;
@@ -272,9 +269,9 @@ public class CombatBehaviour {
                                 livingEntity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 0));
                             }
 
-                            LivingEntityPatch<?> patch2 = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
-                            if (patch2 != null) {
-                                patch2.playAnimationSynchronized(Animations.BIPED_IDLE, 0.0F);
+                            LivingEntityPatch<?> livingEntityPatch1 = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                            if (!entity.level().isClientSide() && entity.getServer() != null) {
+                                livingEntityPatch1.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
                             }
 
                             if (entity instanceof PlayerNpcEntity playerNpcEntity) {

@@ -86,14 +86,6 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
                                         Pair.of(LivingMotions.CHASE, Animations.BIPED_RUN),
                                         Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
                                 )));
-        this.guardHitMotions
-                .put(WeaponCategories.AXE,
-                        ImmutableMap.of(Styles.ONE_HAND,
-                                List.of(
-                                        Animations.SWORD_GUARD_ACTIVE_HIT1,
-                                        Animations.SWORD_GUARD_ACTIVE_HIT2,
-                                        Animations.SWORD_GUARD_ACTIVE_HIT3)
-                        ));
         this.weaponAttackMotions
                 .put(WeaponCategories.AXE,
                         ImmutableMap.of(Styles.ONE_HAND, PlayerNpcAxe.AXE));
@@ -109,14 +101,6 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
                                         Pair.of(LivingMotions.CHASE, Animations.BIPED_RUN),
                                         Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
                                 )));
-        this.guardHitMotions
-                .put(AVCategories.AV_AXE,
-                        ImmutableMap.of(Styles.ONE_HAND,
-                                List.of(
-                                        Animations.SWORD_GUARD_ACTIVE_HIT1,
-                                        Animations.SWORD_GUARD_ACTIVE_HIT2,
-                                        Animations.SWORD_GUARD_ACTIVE_HIT3)
-                        ));
         this.weaponAttackMotions
                 .put(AVCategories.AV_AXE,
                         ImmutableMap.of(Styles.ONE_HAND, PlayerNpcAxe.AV_AXE));
@@ -129,8 +113,8 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
                                         Pair.of(LivingMotions.BLOCK, Animations.SWORD_GUARD),
                                         Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
                                         Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
-                                        Pair.of(LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD),
-                                        Pair.of(LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD),
+                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_RUN),
                                         Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
                                 ),
                                 Styles.TWO_HAND,
@@ -138,24 +122,10 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
                                         Pair.of(LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD),
                                         Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
                                         Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
-                                        Pair.of(LivingMotions.RUN, AVAnimations.RUN_HOLD),
-                                        Pair.of(LivingMotions.CHASE, AVAnimations.RUN_HOLD),
+                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_RUN),
                                         Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
                                 )
-                        ));
-        this.guardHitMotions
-                .put(WeaponCategories.SWORD,
-                        ImmutableMap.of(
-                                Styles.ONE_HAND,
-                                List.of(
-                                        Animations.SWORD_GUARD_ACTIVE_HIT1,
-                                        Animations.SWORD_GUARD_ACTIVE_HIT2,
-                                        Animations.SWORD_GUARD_ACTIVE_HIT3),
-                                Styles.TWO_HAND,
-                                List.of(
-                                        Animations.SWORD_GUARD_ACTIVE_HIT1,
-                                        Animations.SWORD_GUARD_ACTIVE_HIT2,
-                                        Animations.SWORD_GUARD_ACTIVE_HIT3)
                         ));
         this.weaponAttackMotions
                 .put(WeaponCategories.SWORD,
@@ -185,20 +155,6 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
                                         Pair.of(LivingMotions.CHASE, AVAnimations.RUN_HOLD),
                                         Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
                                 )
-                        ));
-        this.guardHitMotions
-                .put(AVCategories.AV_SWORD,
-                        ImmutableMap.of(
-                                Styles.ONE_HAND,
-                                List.of(
-                                        Animations.SWORD_GUARD_ACTIVE_HIT1,
-                                        Animations.SWORD_GUARD_ACTIVE_HIT2,
-                                        Animations.SWORD_GUARD_ACTIVE_HIT3),
-                                Styles.TWO_HAND,
-                                List.of(
-                                        Animations.SWORD_GUARD_ACTIVE_HIT1,
-                                        Animations.SWORD_GUARD_ACTIVE_HIT2,
-                                        Animations.SWORD_GUARD_ACTIVE_HIT3)
                         ));
         this.weaponAttackMotions
                 .put(AVCategories.AV_SWORD,
@@ -241,6 +197,26 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
                                         Pair.of(LivingMotions.AIM, Animations.BIPED_BOW_AIM),
                                         Pair.of(LivingMotions.SHOT, Animations.BIPED_BOW_SHOT)
                                 )));
+
+        this.weaponLivingMotions
+                .put(WeaponCategories.UCHIGATANA,
+                        ImmutableMap.of(
+                                Styles.TWO_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, Animations.UCHIGATANA_GUARD),
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_UCHIGATANA),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK_UCHIGATANA),
+                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN_UCHIGATANA),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_WALK_UCHIGATANA),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )
+                        ));
+        this.weaponAttackMotions
+                .put(WeaponCategories.UCHIGATANA,
+                        ImmutableMap.of(
+                                Styles.TWO_HAND, PlayerNpcUchigatana.UCHIGATANA
+                        ));
+
     }
 
     public void playGuardBreakSound() {

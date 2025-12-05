@@ -31,6 +31,6 @@ public class AVSkills {
         AVSkills.DEMONIAC_VOLTAGE_REAVER = modRegistry.build("demoniac_voltage_reaver", DemoniacVoltageReaverSkill::new, WeaponInnateSkill.createWeaponInnateBuilder().setActivateType(Skill.ActivateType.ONE_SHOT).setResource(Skill.Resource.WEAPON_CHARGE));
         AVSkills.OBSIDIAN_SLEDGEHAMMER = modRegistry.build("obsidian_sledgehammer", ObsidianSledgeHammerSkill::new, WeaponInnateSkill.createWeaponInnateBuilder().setActivateType(Skill.ActivateType.ONE_SHOT).setResource(Skill.Resource.WEAPON_CHARGE));
         AVSkills.ENDER_SLAYER_SCYTHE = modRegistry.build("ender_slayer_scythe", EnderSlayerScytheSkill::new, WeaponInnateSkill.createWeaponInnateBuilder().setActivateType(Skill.ActivateType.ONE_SHOT).setResource(Skill.Resource.WEAPON_CHARGE));
-        AVSkills.BOW = modRegistry.build("bow", AlwaysReadyInnateSkill::new, AlwaysReadyInnateSkill.createSimpleWeaponInnateBuilder().setAnimations(AVAnimations.BOW_AUTO_4).setActivateType(Skill.ActivateType.ONE_SHOT).setResource(Skill.Resource.NONE)).newProperty();
+        AVSkills.BOW = modRegistry.build("bow", BowSkill::new, WeaponInnateSkill.createWeaponInnateBuilder().setActivateType(Skill.ActivateType.ONE_SHOT).setResource(Skill.Resource.NONE));
     }
 }

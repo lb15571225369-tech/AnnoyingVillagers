@@ -46,6 +46,7 @@ import net.minecraftforge.network.PlayMessages;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
+import yesman.epicfight.world.item.EpicFightItems;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -87,7 +88,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     }
 
     public void setEnderPearlCooldown() {
-        this.enderPearlCooldown = random.nextInt(100, 300);
+        this.enderPearlCooldown = random.nextInt(60, 200);
     }
 
     public void setSwapToBowCooldown() {
@@ -459,12 +460,11 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         }
 
         this.target = PlayerNpcTarget.values()[new Random().nextInt(PlayerNpcTarget.values().length)];
-        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_SWORD));
-        this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.DIAMOND_SWORD));
-        this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.DIAMOND_HELMET));
-        this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.DIAMOND_CHESTPLATE));
-        this.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.DIAMOND_LEGGINGS));
-        this.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.DIAMOND_BOOTS));
+        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(EpicFightItems.UCHIGATANA.get()));
+//        this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.DIAMOND_HELMET));
+//        this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.DIAMOND_CHESTPLATE));
+//        this.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.DIAMOND_LEGGINGS));
+//        this.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.DIAMOND_BOOTS));
         this.mainWeaponItem = this.getMainHandItem().copy();
         this.offWeaponItem = this.getOffWeaponItem().copy();
 

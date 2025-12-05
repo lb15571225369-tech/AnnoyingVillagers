@@ -9,8 +9,8 @@ import net.shelmarow.combat_evolution.ai.efcondition.HealthCheck;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 
-public class PlayerNpcFist {
-    public static final Builder<MobPatch<?>> FIST = CECombatBehaviors.builder()
+public class PlayerNpcUchigatana {
+    public static final Builder<MobPatch<?>> UCHIGATANA = CECombatBehaviors.builder()
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(2.0D)
@@ -39,7 +39,6 @@ public class PlayerNpcFist {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(PlayerNpcCommon::canSwapToBow)
-                                            .custom(PlayerNpcCommon::canAttackWhileNotHealing)
                                             .withinDistance(7.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
                                             .addExBehavior(PlayerNpcCommon::swapToBow)
@@ -47,7 +46,6 @@ public class PlayerNpcFist {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(PlayerNpcCommon::canSwapToBow)
-                                            .custom(PlayerNpcCommon::canAttackWhileNotHealing)
                                             .withinDistance(7.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
                                             .addExBehavior(PlayerNpcCommon::swapToBow)
@@ -61,7 +59,6 @@ public class PlayerNpcFist {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(PlayerNpcCommon::canThrowEnderPearl)
-                                            .custom(PlayerNpcCommon::canAttackWhileNotHealing)
                                             .withinDistance(7.0D, 48.0D)
                                             .animationBehavior(AVAnimations.THROWING_ENDER_PEARL_OFFHAND, 0.0F)
                                             .addExBehavior(PlayerNpcCommon::performEnderPearlToTarget)
@@ -73,19 +70,16 @@ public class PlayerNpcFist {
                             .weight(40.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(PlayerNpcCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 2.0D)
-                                            .animationBehavior(Animations.FIST_AUTO1, 0.0F)
+                                            .animationBehavior(Animations.UCHIGATANA_AUTO1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
-                                                            .custom(PlayerNpcCommon::canAttackWhileNotHealing)
                                                             .withinDistance(0.0D, 2.0D)
-                                                            .animationBehavior(Animations.FIST_AUTO2, 0.0F)
+                                                            .animationBehavior(Animations.UCHIGATANA_AUTO2, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
-                                                                            .custom(PlayerNpcCommon::canAttackWhileNotHealing)
                                                                             .withinDistance(0.0D, 2.0D)
-                                                                            .animationBehavior(Animations.FIST_AUTO3, 0.0F)
+                                                                            .animationBehavior(Animations.UCHIGATANA_AUTO3, 0.0F)
                                                             )
                                             )
                             )
@@ -97,21 +91,23 @@ public class PlayerNpcFist {
                             .maxCooldown (200)
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(PlayerNpcCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 2.0D)
-                                            .animationBehavior(AVAnimations.FIST_LEFT, 0.0F)
+                                            .animationBehavior(AVAnimations.SWORD_HEAVY_AUTO_1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
-                                                            .custom(PlayerNpcCommon::canAttackWhileNotHealing)
                                                             .withinDistance(0.0D, 2.0D)
-                                                            .animationBehavior(AVAnimations.FIST_UP, 0.0F)
+                                                            .animationBehavior(AVAnimations.SWORD_HEAVY_AUTO_2, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
-                                                                            .custom(PlayerNpcCommon::canAttackWhileNotHealing)
                                                                             .withinDistance(0.0D, 2.0D)
-                                                                            .animationBehavior(AVAnimations.FIST_DASH, 0.0F)
+                                                                            .animationBehavior(AVAnimations.SWORD_HEAVY_AUTO_3, 0.0F)
                                                             )
                                             )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .withinDistance(0.0D, 2.0D)
+                                            .animationBehavior(Animations.UCHIGATANA_SHEATHING_AUTO, 0.0F)
                             )
             )
             .newBehaviorRoot(
@@ -121,33 +117,33 @@ public class PlayerNpcFist {
                             .maxCooldown (200)
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(PlayerNpcCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 2.0D)
-                                            .animationBehavior(AVAnimations.WHIRLWIND_KICK_LEFT, 0.0F)
+                                            .animationBehavior(Animations.UCHIGATANA_DASH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(PlayerNpcCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 2.0D)
-                                            .animationBehavior(AVAnimations.WHIRLWIND_KICK, 0.0F)
+                                            .animationBehavior(Animations.UCHIGATANA_AIR_SLASH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(PlayerNpcCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 2.0D)
-                                            .animationBehavior(Animations.FIST_DASH, 0.0F)
+                                            .animationBehavior(Animations.UCHIGATANA_SHEATHING_DASH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(PlayerNpcCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 2.0D)
-                                            .animationBehavior(Animations.FIST_AIR_SLASH, 0.0F)
+                                            .animationBehavior(Animations.UCHIGATANA_AIR_SLASH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(PlayerNpcCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 2.0D)
-                                            .animationBehavior(Animations.RELENTLESS_COMBO, 0.0F)
+                                            .animationBehavior(Animations.BATTOJUTSU, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .withinDistance(0.0D, 2.0D)
+                                                            .animationBehavior(Animations.BATTOJUTSU_DASH, 0.0F)
+                                            )
                             )
             )
             .newBehaviorRoot(
@@ -159,7 +155,6 @@ public class PlayerNpcFist {
                                     Behavior.builder()
                                             .withinDistance(0.0D, 2.0D)
                                             .custom(PlayerNpcCommon::canThrowEnderPearl)
-                                            .custom(PlayerNpcCommon::canAttackWhileNotHealing)
                                             .animationBehavior(AVAnimations.THROWING_ENDER_PEARL_OFFHAND, 0.0F)
                                             .addExBehavior(PlayerNpcCommon::performEnderPearlAway)
                             )
@@ -172,62 +167,64 @@ public class PlayerNpcFist {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 2.0D)
-                                            .custom(PlayerNpcCommon::canAttackWhileNotHealing)
                                             .animationBehavior(AVAnimations.KICK_1, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 2.0D)
-                                            .custom(PlayerNpcCommon::canAttackWhileNotHealing)
                                             .animationBehavior(AVAnimations.KICK_2, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 2.0D)
-                                            .custom(PlayerNpcCommon::canAttackWhileNotHealing)
                                             .animationBehavior(AVAnimations.KICK_3, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 2.0D)
-                                            .custom(PlayerNpcCommon::canAttackWhileNotHealing)
                                             .animationBehavior(AVAnimations.KICK_4, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .canInterruptParent(true)
-                                            .custom(PlayerNpcCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 2.0D)
                                             .animationBehavior(AVAnimations.KICK_C, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .canInterruptParent(true)
-                                            .custom(PlayerNpcCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 2.0D)
                                             .animationBehavior(AVAnimations.KICK_RUSH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .canInterruptParent(true)
-                                            .custom(PlayerNpcCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 2.0D)
-                                            .animationBehavior(AVAnimations.KICK_COMBO, 0.0F)
+                                            .animationBehavior(AVAnimations.KICK_H, 0.0F)
                             )
             )
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
-                            .weight(10.0D)
+                            .weight(30.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(PlayerNpcCommon::canAttackWhileNotHealing)
+                                            .withinDistance(0.5D, 2.0D)
+                                            .custom(PlayerNpcCommon::canPerformGuarding)
+                                            .guard(40)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                        .weight(10.0D)
+                            .addFirstBehavior(
+                                    Behavior.builder()
                                             .withinDistance(0.0D, 2.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(PlayerNpcCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 2.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
                             )
