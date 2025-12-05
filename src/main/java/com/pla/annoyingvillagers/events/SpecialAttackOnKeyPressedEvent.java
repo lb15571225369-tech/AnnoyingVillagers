@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.procedures;
+package com.pla.annoyingvillagers.events;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.capabilities.AVCategories;
@@ -51,7 +51,7 @@ import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
 import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class SpecialAttackOnKeyPressedProcedure {
+public class SpecialAttackOnKeyPressedEvent {
     private static final String NBT_SPECIAL_CD = "SpecialAttackCooldown";
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {

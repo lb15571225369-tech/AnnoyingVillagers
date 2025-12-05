@@ -261,10 +261,10 @@ public class AVWeaponCapabilityPresets {
                 .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.SWORD_GUARD)
                 .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD)
                 .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
-                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
+                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_DUAL_WEAPON)
                 .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD)
                 .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.RUN_HOLD)
-                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
+                .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_HOLD_DUAL_WEAPON)
                 .weaponCombinationPredicator(
                         (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE
                                 || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SWORD
@@ -358,7 +358,7 @@ public class AVWeaponCapabilityPresets {
                             AnimsRuine.RUINE_CHATIMENT,
                             AVAnimations.TACHI_DASH,
                             Animations.LONGSWORD_AIR_SLASH)
-                    .innateSkill(Styles.ONE_HAND,
+                    .innateSkill(Styles.TWO_HAND,
                             (itemstack) -> EpicFightSkills.GRASPING_SPIRE)
                     .newStyleCombo(Styles.OCHS,
                             Animations.SWORD_DUAL_AUTO1,
@@ -370,7 +370,7 @@ public class AVWeaponCapabilityPresets {
                             Animations.SWORD_DUAL_AIR_SLASH)
                     .newStyleCombo(Styles.MOUNT,
                             Animations.SWORD_MOUNT_ATTACK)
-                    .innateSkill(Styles.TWO_HAND,
+                    .innateSkill(Styles.OCHS,
                             (itemstack) -> EpicFightSkills.RUSHING_TEMPO)
                     .livingMotionModifier(Styles.COMMON, LivingMotions.IDLE, Animations.BIPED_HOLD_TACHI)
                     .livingMotionModifier(Styles.COMMON, LivingMotions.WALK, Animations.BIPED_HOLD_TACHI)
@@ -467,9 +467,9 @@ public class AVWeaponCapabilityPresets {
                             Animations.GREATSWORD_DASH,
                             Animations.GREATSWORD_AIR_SLASH)
                     .innateSkill(Styles.TWO_HAND, (itemstack) -> EpicFightSkills.STEEL_WHIRLWIND)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AnimsSolar.SOLAR_IDLE)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AnimsSolar.SOLAR_WALK)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AnimsSolar.SOLAR_RUN)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_GREATSWORD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_WALK_GREATSWORD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, Animations.BIPED_RUN_GREATSWORD)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AnimsSolar.SOLAR_GUARD);
 
     public static final Function<Item, CapabilityItem.Builder> BOW = (item) ->

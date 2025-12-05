@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.procedures;
+package com.pla.annoyingvillagers.events;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.*;
@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.Random;
 
 @Mod.EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class NullWeaponPlayerProcedure {
+public class NullWeaponPlayerEvent {
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         Player player = event.player;

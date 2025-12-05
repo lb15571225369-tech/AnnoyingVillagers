@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.procedures;
+package com.pla.annoyingvillagers.events;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class FishingHookGrappleProcedure {
+public class FishingHookGrappleEvent {
     private static final String KEY_LATCHED = "avLatched";
     private static final String KEY_AX = "avAX";
     private static final String KEY_AY = "avAY";

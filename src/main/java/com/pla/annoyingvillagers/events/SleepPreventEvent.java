@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.procedures;
+package com.pla.annoyingvillagers.events;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.HerobrineGregEntity;
@@ -18,7 +18,7 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class SleepPreventProcedure {
+public class SleepPreventEvent {
     @SubscribeEvent
     public static void onPlayerSleep(PlayerSleepInBedEvent event) {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();

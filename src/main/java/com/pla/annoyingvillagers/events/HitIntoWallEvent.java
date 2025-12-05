@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.procedures;
+package com.pla.annoyingvillagers.events;
 
 import javax.annotation.Nullable;
 
@@ -16,7 +16,7 @@ import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 @EventBusSubscriber
-public class HitWallProcedure {
+public class HitIntoWallEvent {
 
     @SubscribeEvent
     public static void onEntityAttacked(LivingHurtEvent livinghurtevent) {

@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.procedures;
+package com.pla.annoyingvillagers.events;
 
 import com.pla.annoyingvillagers.util.CombatBehaviour;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import java.util.Random;
 
 @EventBusSubscriber
-public class MonsterHealingProcedure {
+public class MonsterHealingEvent {
     @SubscribeEvent
     public static void onMonsterAttacked(LivingHurtEvent livingHurtEvent) {
         if (livingHurtEvent != null && livingHurtEvent.getEntity() != null) {

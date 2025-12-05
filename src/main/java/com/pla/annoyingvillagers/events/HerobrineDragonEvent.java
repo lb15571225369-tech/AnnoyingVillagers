@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.procedures;
+package com.pla.annoyingvillagers.events;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
@@ -8,7 +8,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = AnnoyingVillagers.MODID)
-public class HerobrineDragonProcedure {
+public class HerobrineDragonEvent {
     @SubscribeEvent
     public static void onMobGriefing(EntityMobGriefingEvent event) {
         if (event.getEntity() instanceof EnderDragon dragon && dragon.getTags().contains("av_dragon")) {

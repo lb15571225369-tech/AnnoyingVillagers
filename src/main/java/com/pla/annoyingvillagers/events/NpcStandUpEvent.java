@@ -1,8 +1,7 @@
-package com.pla.annoyingvillagers.procedures;
+package com.pla.annoyingvillagers.events;
 
 import javax.annotation.Nullable;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.world.entity.Entity;
@@ -11,7 +10,6 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.registries.ForgeRegistries;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.KnockdownAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
@@ -20,7 +18,7 @@ import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 @EventBusSubscriber
-public class NpcStandUpProcedure {
+public class NpcStandUpEvent {
 
     @SubscribeEvent
     public static void onEntityAttacked(LivingAttackEvent livingattackevent) {
@@ -36,7 +34,7 @@ public class NpcStandUpProcedure {
 
     private static void execute(@Nullable Event event, LevelAccessor levelaccessor, final Entity entity) {
         if (entity != null) {
-            if (entity instanceof PlayerNpcEntity && entity.getPersistentData().getDouble("npc_level") != 0.0D) {
+            if (entity instanceof PlayerNpcEntity) {
                 LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch)EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 
                 if (livingentitypatch != null) {

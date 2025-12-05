@@ -460,7 +460,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         }
 
         this.target = PlayerNpcTarget.values()[new Random().nextInt(PlayerNpcTarget.values().length)];
-        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(EpicFightItems.UCHIGATANA.get()));
+        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(EpicFightItems.NETHERITE_GREATSWORD.get()));
 //        this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.DIAMOND_HELMET));
 //        this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.DIAMOND_CHESTPLATE));
 //        this.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.DIAMOND_LEGGINGS));
@@ -507,10 +507,6 @@ public class PlayerNpcEntity extends PlayerMobEntity {
                         this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
             } catch (CommandSyntaxException ignored) {
             }
-        }
-
-        if (Math.random() <= 0.15D) {
-            this.getPersistentData().putDouble("npc_level", 3.0D);
         }
 
         return returnSpawnGroupData;

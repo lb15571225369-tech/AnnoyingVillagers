@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.procedures;
+package com.pla.annoyingvillagers.events;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Random;
 
 @Mod.EventBusSubscriber
-public class IdleHandlerProcedure {
+public class IdleHandlerEvent {
     static Random RANDOM = new Random();
     public enum IdleAction {
         BURN_ITEM,

@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.network.NetworkEvent.Context;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.procedures.SpecialAttackOnKeyPressedProcedure;
+import com.pla.annoyingvillagers.events.SpecialAttackOnKeyPressedEvent;
 
 @EventBusSubscriber(bus = Bus.MOD)
 public class WeaponsMoreAttackMessage {
@@ -51,7 +51,7 @@ public class WeaponsMoreAttackMessage {
 
         if (level.hasChunkAt(player.blockPosition())) {
             if (i == 0) {
-                SpecialAttackOnKeyPressedProcedure.execute(level, player);
+                SpecialAttackOnKeyPressedEvent.execute(level, player);
             }
 
         }

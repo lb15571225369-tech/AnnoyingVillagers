@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.procedures;
+package com.pla.annoyingvillagers.events;
 
 import javax.annotation.Nullable;
 
@@ -24,7 +24,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.registries.ForgeRegistries;
 
 @EventBusSubscriber
-public class VillagersAssistanceProcedure {
+public class VillagersAssistanceEvent {
 
     @SubscribeEvent
     public static void onEntityAttacked(LivingHurtEvent livinghurtevent) {

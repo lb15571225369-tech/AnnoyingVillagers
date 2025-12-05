@@ -8,7 +8,7 @@ import com.pla.annoyingvillagers.client.engine.SpriteArrowsCommonEntrypoint;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.*;
 import com.pla.annoyingvillagers.network.*;
-import com.pla.annoyingvillagers.procedures.NpcGearLoadProcedure;
+import com.pla.annoyingvillagers.events.NpcGearLoadEvent;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -63,7 +63,7 @@ public class AnnoyingVillagers {
         AnnoyingVillagersModCreativeTabs.register(modEventBus);
         AnnoyingVillagersModSounds.register(modEventBus);
         AVSounds.SOUNDS.register(modEventBus);
-        MinecraftForge.EVENT_BUS.register(new NpcGearLoadProcedure());
+        MinecraftForge.EVENT_BUS.register(new NpcGearLoadEvent());
         context.registerConfig(ModConfig.Type.COMMON, AnnoyingVillagersConfig.SPEC, "annoyingvillagers-server.toml");
 
         if (FMLEnvironment.dist.isClient()) {

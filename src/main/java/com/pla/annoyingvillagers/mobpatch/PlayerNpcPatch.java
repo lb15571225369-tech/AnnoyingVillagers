@@ -16,6 +16,7 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
 import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
 import net.shelmarow.combat_evolution.iml.CustomExecuteEntity;
+import reascer.wom.gameasset.animations.weapons.AnimsSolar;
 import yesman.epicfight.api.animation.AnimationManager.AnimationAccessor;
 import yesman.epicfight.api.animation.Animator;
 import yesman.epicfight.api.animation.LivingMotions;
@@ -120,10 +121,10 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
                                 Styles.TWO_HAND,
                                 Set.of(
                                         Pair.of(LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD),
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
-                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN),
-                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_RUN),
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_DUAL_WEAPON),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_HOLD_DUAL_WEAPON),
+                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN_DUAL),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_HOLD_DUAL_WEAPON),
                                         Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
                                 )
                         ));
@@ -149,10 +150,10 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
                                 Styles.TWO_HAND,
                                 Set.of(
                                         Pair.of(LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD),
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_DUAL_WEAPON),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_HOLD_DUAL_WEAPON),
                                         Pair.of(LivingMotions.RUN, AVAnimations.RUN_HOLD),
-                                        Pair.of(LivingMotions.CHASE, AVAnimations.RUN_HOLD),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_HOLD_DUAL_WEAPON),
                                         Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
                                 )
                         ));
@@ -217,6 +218,35 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
                                 Styles.TWO_HAND, PlayerNpcUchigatana.UCHIGATANA
                         ));
 
+        this.weaponLivingMotions
+                .put(WeaponCategories.GREATSWORD,
+                        ImmutableMap.of(Styles.TWO_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, Animations.GREATSWORD_GUARD),
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_GREATSWORD),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK_GREATSWORD),
+                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN_GREATSWORD),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_WALK_GREATSWORD),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )));
+        this.weaponAttackMotions
+                .put(WeaponCategories.GREATSWORD,
+                        ImmutableMap.of(Styles.TWO_HAND, PlayerNpcGreatsword.GREATSWORD));
+
+        this.weaponLivingMotions
+                .put(AVCategories.AV_GREATSWORD,
+                        ImmutableMap.of(Styles.TWO_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, AnimsSolar.SOLAR_GUARD),
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_GREATSWORD),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK_GREATSWORD),
+                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN_GREATSWORD),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_WALK_GREATSWORD),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )));
+        this.weaponAttackMotions
+                .put(AVCategories.AV_GREATSWORD,
+                        ImmutableMap.of(Styles.TWO_HAND, PlayerNpcGreatsword.AV_GREATSWORD));
     }
 
     public void playGuardBreakSound() {
