@@ -4,6 +4,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.clazz.PlayerNpcTarget;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.PlayerNpcOnHurtProcedure;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.util.DelayedTask;
@@ -460,11 +461,12 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         }
 
         this.target = PlayerNpcTarget.values()[new Random().nextInt(PlayerNpcTarget.values().length)];
-        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(EpicFightItems.NETHERITE_GREATSWORD.get()));
-//        this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.DIAMOND_HELMET));
-//        this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.DIAMOND_CHESTPLATE));
-//        this.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.DIAMOND_LEGGINGS));
-//        this.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.DIAMOND_BOOTS));
+        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.DIAMOND_SPEAR.get()));
+        this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.SHIELD));
+        this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.DIAMOND_HELMET));
+        this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.DIAMOND_CHESTPLATE));
+        this.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.DIAMOND_LEGGINGS));
+        this.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.DIAMOND_BOOTS));
         this.mainWeaponItem = this.getMainHandItem().copy();
         this.offWeaponItem = this.getOffWeaponItem().copy();
 

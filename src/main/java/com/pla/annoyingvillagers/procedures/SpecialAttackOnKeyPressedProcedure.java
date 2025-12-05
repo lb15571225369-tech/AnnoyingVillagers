@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.events;
+package com.pla.annoyingvillagers.procedures;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.capabilities.AVCategories;
@@ -13,7 +13,6 @@ import com.pla.annoyingvillagers.skill.EnderGlaiveSkill;
 import com.pla.annoyingvillagers.skill.EnderSlayerScytheSkill;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -27,9 +26,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import reascer.wom.gameasset.WOMAnimations;
@@ -50,26 +46,8 @@ import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
 
 import java.util.Objects;
 
-@Mod.EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class SpecialAttackOnKeyPressedEvent {
+public class SpecialAttackOnKeyPressedProcedure {
     private static final String NBT_SPECIAL_CD = "SpecialAttackCooldown";
-    @SubscribeEvent
-    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        Player player = event.player;
-        if (event.phase != TickEvent.Phase.END) return;
-        if (player.level().isClientSide()) return;
-
-        CompoundTag data = player.getPersistentData();
-
-        if (player.tickCount % 20 == 0 && data.contains(NBT_SPECIAL_CD)) {
-            int coolDownValue = data.getInt(NBT_SPECIAL_CD);
-            if (coolDownValue > 0) {
-                data.putInt(NBT_SPECIAL_CD, coolDownValue - 1);
-            } else {
-                data.remove(NBT_SPECIAL_CD);
-            }
-        }
-    }
 
     public static void execute(LevelAccessor world, Entity entity) {
         if (entity == null) return;

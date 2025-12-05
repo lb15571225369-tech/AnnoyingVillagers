@@ -247,6 +247,62 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
         this.weaponAttackMotions
                 .put(AVCategories.AV_GREATSWORD,
                         ImmutableMap.of(Styles.TWO_HAND, PlayerNpcGreatsword.AV_GREATSWORD));
+
+        this.weaponAttackMotions
+                .put(WeaponCategories.SPEAR,
+                        ImmutableMap.of(
+                                Styles.ONE_HAND, PlayerNpcSpear.SPEAR_SHIELD,
+                                Styles.TWO_HAND, PlayerNpcSpear.SPEAR
+                        ));
+        this.weaponLivingMotions
+                .put(WeaponCategories.SPEAR,
+                        ImmutableMap.of(
+                                Styles.ONE_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
+                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN_SPEAR),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_WALK),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                ),
+                                Styles.TWO_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, Animations.SPEAR_GUARD),
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_SPEAR),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK_SPEAR),
+                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN_SPEAR),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_WALK_SPEAR),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )
+                        ));
+
+        this.weaponAttackMotions
+                .put(AVCategories.AV_SPEAR,
+                        ImmutableMap.of(
+                                Styles.ONE_HAND, PlayerNpcSpear.AV_SPEAR_SHIELD,
+                                Styles.TWO_HAND, PlayerNpcSpear.AV_SPEAR
+                        ));
+        this.weaponLivingMotions
+                .put(AVCategories.AV_SPEAR,
+                        ImmutableMap.of(
+                                Styles.ONE_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
+                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN_SPEAR),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_WALK),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                ),
+                                Styles.TWO_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, AVAnimations.GLOWING_AGONY_GUARD),
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_SPEAR),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK_SPEAR),
+                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN_SPEAR),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_WALK_SPEAR),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )
+                        ));
     }
 
     public void playGuardBreakSound() {
