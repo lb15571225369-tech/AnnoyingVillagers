@@ -1,3 +1,20 @@
+/*
+ * Colored enchantment rendering adapted from Quark.
+ *
+ * Original work: Quark by Vazkii and contributors
+ * https://github.com/VazkiiMods/Quark
+ *
+ * Quark is licensed under the Creative Commons
+ * Attribution-NonCommercial-ShareAlike 3.0 Unported License (CC BY-NC-SA 3.0):
+ * https://creativecommons.org/licenses/by-nc-sa/3.0/
+ *
+ * This file contains a modified version of Quark's colored enchantment code,
+ * adapted for use in the <your-mod-id> mod. In accordance with the original
+ * license, this derivative work is also licensed under CC BY-NC-SA 3.0.
+ *
+ * Please give proper credit to Quark / Vazkii if you reuse this code.
+ */
+
 package com.pla.annoyingvillagers.mixin;
 
 import com.mojang.blaze3d.vertex.BufferBuilder;

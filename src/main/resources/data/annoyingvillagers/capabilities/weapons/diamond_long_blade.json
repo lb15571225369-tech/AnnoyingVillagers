@@ -1,10 +1,9 @@
 {
-	"type": "annoyingvillagers:tachi",
+	"type": "annoyingvillagers:av_tachi",
 	"attributes": {
 		"common": {
   			"impact": 6.7,
-			"max_strikes": 0,
-                  "speed_bonus": 0.95
+			"max_strikes": 0
 		}
 	}
 }

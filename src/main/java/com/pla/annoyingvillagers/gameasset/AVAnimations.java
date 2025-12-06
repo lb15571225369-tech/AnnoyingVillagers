@@ -1,3 +1,12 @@
+/*
+ * Parts of this file are adapted from the EpicACG mod
+ * and are licensed under the GNU General Public License v3 (GPL-3.0).
+ * Copyright (C) the original EpicACG authors.
+ *
+ * See the included GPL-3.0 license file or https://www.gnu.org/licenses/gpl-3.0.html
+ * for details.
+ */
+
 package com.pla.annoyingvillagers.gameasset;
 import java.util.Random;
 import java.util.Set;
