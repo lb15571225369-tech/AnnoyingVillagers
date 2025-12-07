@@ -19,16 +19,16 @@ public class PlayerNpcUchigatana {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
-                                            .custom(PlayerNpcCommon::canPerformEating)
+                                            .custom(CombatCommon::canPerformEating)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
-                                            .addExBehavior(PlayerNpcCommon::performEatingAnimation)
+                                            .addExBehavior(CombatCommon::performEatingAnimation)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
-                                            .custom(PlayerNpcCommon::canPerformEating)
+                                            .custom(CombatCommon::canPerformEating)
                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
-                                            .addExBehavior(PlayerNpcCommon::performEatingAnimation)
+                                            .addExBehavior(CombatCommon::performEatingAnimation)
                             )
             )
             .newBehaviorRoot(
@@ -38,17 +38,17 @@ public class PlayerNpcUchigatana {
                             .maxCooldown (120)
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(PlayerNpcCommon::canSwapToBow)
+                                            .custom(CombatCommon::canSwapToBow)
                                             .withinDistance(7.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
-                                            .addExBehavior(PlayerNpcCommon::swapToBow)
+                                            .addExBehavior(CombatCommon::swapToBow)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(PlayerNpcCommon::canSwapToBow)
+                                            .custom(CombatCommon::canSwapToBow)
                                             .withinDistance(7.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
-                                            .addExBehavior(PlayerNpcCommon::swapToBow)
+                                            .addExBehavior(CombatCommon::swapToBow)
                             )
             )
             .newBehaviorRoot(
@@ -58,10 +58,10 @@ public class PlayerNpcUchigatana {
                             .maxCooldown (120)
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(PlayerNpcCommon::canThrowEnderPearl)
+                                            .custom(CombatCommon::canThrowEnderPearl)
                                             .withinDistance(7.0D, 48.0D)
                                             .animationBehavior(AVAnimations.THROWING_ENDER_PEARL_OFFHAND, 0.0F)
-                                            .addExBehavior(PlayerNpcCommon::performEnderPearlToTarget)
+                                            .addExBehavior(CombatCommon::performEnderPearlToTarget)
                             )
             )
             .newBehaviorRoot(
@@ -154,9 +154,9 @@ public class PlayerNpcUchigatana {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 2.0D)
-                                            .custom(PlayerNpcCommon::canThrowEnderPearl)
+                                            .custom(CombatCommon::canThrowEnderPearl)
                                             .animationBehavior(AVAnimations.THROWING_ENDER_PEARL_OFFHAND, 0.0F)
-                                            .addExBehavior(PlayerNpcCommon::performEnderPearlAway)
+                                            .addExBehavior(CombatCommon::performEnderPearlAway)
                             )
             )
             .newBehaviorRoot(
@@ -210,7 +210,7 @@ public class PlayerNpcUchigatana {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.5D, 2.0D)
-                                            .custom(PlayerNpcCommon::canPerformGuarding)
+                                            .custom(CombatCommon::canPerformGuarding)
                                             .guard(40)
                             )
             )

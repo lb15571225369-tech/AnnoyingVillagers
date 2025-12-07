@@ -2,7 +2,7 @@ package com.pla.annoyingvillagers.mobpatch;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
-import java.util.List;
+
 import java.util.Set;
 
 import com.pla.annoyingvillagers.capabilities.AVCategories;

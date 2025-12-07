@@ -9,7 +9,7 @@ import net.shelmarow.combat_evolution.ai.efcondition.HealthCheck;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 
-public class PlayerNpcBow {
+public class NpcBow {
     public static final Builder<MobPatch<?>> BOW = CECombatBehaviors.builder()
             .newBehaviorRoot(
                     BehaviorRoot.builder()
@@ -20,14 +20,28 @@ public class PlayerNpcBow {
                                     Behavior.builder()
                                             .withinDistance(0.0D, 5.0D)
                                             .custom(CombatCommon::canAttackWhileNotHealing)
-                                            .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
+                                            .animationBehavior(Animations.BIPED_STEP_FORWARD, 0.0F)
                                             .addExBehavior(CombatCommon::swapToMelee)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 5.0D)
                                             .custom(CombatCommon::canAttackWhileNotHealing)
-                                            .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
+                                            .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
+                                            .addExBehavior(CombatCommon::swapToMelee)
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .withinDistance(0.0D, 5.0D)
+                                            .custom(CombatCommon::canAttackWhileNotHealing)
+                                            .animationBehavior(Animations.BIPED_STEP_RIGHT, 0.0F)
+                                            .addExBehavior(CombatCommon::swapToMelee)
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .withinDistance(0.0D, 5.0D)
+                                            .custom(CombatCommon::canAttackWhileNotHealing)
+                                            .animationBehavior(Animations.BIPED_STEP_LEFT, 0.0F)
                                             .addExBehavior(CombatCommon::swapToMelee)
                             )
             )
@@ -40,14 +54,28 @@ public class PlayerNpcBow {
                                     Behavior.builder()
                                             .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
                                             .custom(CombatCommon::canPerformEating)
-                                            .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
+                                            .animationBehavior(Animations.BIPED_STEP_RIGHT, 0.0F)
                                             .addExBehavior(CombatCommon::performEatingAnimation)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
                                             .custom(CombatCommon::canPerformEating)
-                                            .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
+                                            .animationBehavior(Animations.BIPED_STEP_LEFT, 0.0F)
+                                            .addExBehavior(CombatCommon::performEatingAnimation)
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
+                                            .custom(CombatCommon::canPerformEating)
+                                            .animationBehavior(Animations.BIPED_STEP_FORWARD, 0.0F)
+                                            .addExBehavior(CombatCommon::performEatingAnimation)
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
+                                            .custom(CombatCommon::canPerformEating)
+                                            .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
                                             .addExBehavior(CombatCommon::performEatingAnimation)
                             )
             )
@@ -110,12 +138,22 @@ public class PlayerNpcBow {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(7.0D, 14.0D)
-                                            .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
+                                            .animationBehavior(Animations.BIPED_STEP_FORWARD, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(7.0D, 14.0D)
-                                            .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
+                                            .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .withinDistance(7.0D, 14.0D)
+                                            .animationBehavior(Animations.BIPED_STEP_LEFT, 0.0F)
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .withinDistance(7.0D, 14.0D)
+                                            .animationBehavior(Animations.BIPED_STEP_RIGHT, 0.0F)
                             )
             )
             .newBehaviorRoot(

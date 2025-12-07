@@ -5,7 +5,7 @@ import com.pla.annoyingvillagers.clazz.PlayerNpcTarget;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.procedures.PlayerNpcOnHurtProcedure;
+import com.pla.annoyingvillagers.util.CombatBehaviour;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
@@ -47,7 +47,6 @@ import net.minecraftforge.network.PlayMessages;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
-import yesman.epicfight.world.item.EpicFightItems;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -193,6 +192,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         CommonGoals.attackAllMonstersGoals(this);
         CommonGoals.attackAllNpcGoals(this);
     }
+
     private void villagerHunterPlayerMob() {
         CommonGoals.runAwayFromHerobrineGoals(this, 20.0F);
         if (!(this.getTarget() instanceof PlayerNpcEntity)) {
@@ -207,10 +207,12 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         CommonGoals.attackAllVillagerArmyGoal(this);
         this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.2D, false));
     }
+
     private void monsterHunterPlayerMob() {
         CommonGoals.attackAllMonstersGoals(this);
         CommonGoals.runAwayFromVillagerArmyGoals(this);
     }
+
     private void playerHunterPlayerMob() {
         CommonGoals.runAwayFromHerobrineGoals(this, 20.0F);
         CommonGoals.runAwayFromVillagerArmyGoals(this);
@@ -218,6 +220,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerNpcEntity.class, true));
         CommonGoals.attackAllNpcGoals(this);
     }
+
     private void animalHunterPlayerMob() {
         CommonGoals.runAwayFromHerobrineGoals(this, 20.0F);
         CommonGoals.runAwayFromVillagerArmyGoals(this);
@@ -283,9 +286,25 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         return Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.death")));
     }
 
-    public boolean hurt(DamageSource damagesource, float f) {
-        PlayerNpcOnHurtProcedure.execute(this, damagesource.getEntity());
-        return super.hurt(damagesource, f);
+    public boolean hurt(@NotNull DamageSource damageSource, float f) {
+        if (damageSource.getEntity() != null && this.getEnderPearlCooldown() == 0) {
+            CombatBehaviour.throwEnderPearl(this, 180.0F);
+            Entity entity = this;
+
+            if (Math.random() <= 0.5D) {
+                new DelayedTask(20) {
+                    @Override
+                    public void run() {
+                        if (entity.isAlive()) {
+                            CombatBehaviour.throwEnderPearl(entity, 90.0F);
+                        }
+                    }
+                };
+            }
+
+            this.setEnderPearlCooldown();
+        }
+        return super.hurt(damageSource, f);
     }
 
     @Override
@@ -459,9 +478,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         }
 
         this.target = PlayerNpcTarget.values()[new Random().nextInt(PlayerNpcTarget.values().length)];
-//        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.DIAMOND_SPEAR.get()));
-        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.DIAMOND_LONG_BLADE.get()));
-        this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(AnnoyingVillagersModItems.DIAMOND_LONG_BLADE.get()));
+        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.DIAMOND_SPEAR.get()));
 //        this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.DIAMOND_SWORD));
         this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.DIAMOND_HELMET));
         this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.DIAMOND_CHESTPLATE));

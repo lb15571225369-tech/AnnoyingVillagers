@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.util;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
 import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import net.minecraft.core.BlockPos;
@@ -187,6 +188,9 @@ public class CombatBehaviour {
             if (entity instanceof PlayerNpcEntity playerNpcEntity && playerNpcEntity.isHealing()) {
                 return;
             }
+            if (entity instanceof PathfinderMobInventory pathfinderMobInventory && pathfinderMobInventory.isHealing()) {
+                return;
+            }
             if (entity.isPassenger()) {
                 entity.stopRiding();
             }
@@ -198,6 +202,13 @@ public class CombatBehaviour {
                     return;
                 } else {
                     playerNpcEntity.setHealing(true);
+                }
+            }
+            if (entity instanceof PathfinderMobInventory pathfinderMobInventory) {
+                if (pathfinderMobInventory.isHealing()) {
+                    return;
+                } else {
+                    pathfinderMobInventory.setHealing(true);
                 }
             }
             new DelayedTask(20) {
@@ -263,6 +274,9 @@ public class CombatBehaviour {
                             if (entity instanceof PlayerNpcEntity playerNpcEntity) {
                                 livingEntity.setItemInHand(InteractionHand.MAIN_HAND, playerNpcEntity.getMainWeaponItem());
                             }
+                            if (entity instanceof PathfinderMobInventory pathfinderMobInventory) {
+                                livingEntity.setItemInHand(InteractionHand.MAIN_HAND, pathfinderMobInventory.getMainWeaponItem());
+                            }
 
                             if (!livingEntity.level().isClientSide()) {
                                 livingEntity.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 2400, 1));
@@ -276,6 +290,9 @@ public class CombatBehaviour {
 
                             if (entity instanceof PlayerNpcEntity playerNpcEntity) {
                                 playerNpcEntity.setHealing(false);
+                            }
+                            if (entity instanceof PathfinderMobInventory pathfinderMobInventory) {
+                                pathfinderMobInventory.setHealing(false);
                             }
                         }
                     };

@@ -7,10 +7,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.RangedBowAttackGoal;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -19,6 +16,7 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -26,6 +24,26 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
     private final SimpleContainer inventory = new SimpleContainer(27);
     private int gapCooldown;
     private int enderPearlCooldown;
+    private int swapToBowCooldown = 0;
+    private ItemStack mainWeaponItem = ItemStack.EMPTY;
+    private ItemStack offWeaponItem = ItemStack.EMPTY;
+    private boolean healing = false;
+
+    public boolean isHealing() {
+        return healing;
+    }
+
+    public void setHealing(boolean healing) {
+        this.healing = healing;
+    }
+
+    public int getSwapToBowCooldown() {
+        return swapToBowCooldown;
+    }
+
+    public void setSwapToBowCooldown() {
+        this.swapToBowCooldown = random.nextInt(100, 300);
+    }
 
     public int getGapCooldown() {
         return gapCooldown;
@@ -43,6 +61,20 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
         this.enderPearlCooldown = random.nextInt(60, 200);
     }
 
+    public ItemStack getMainWeaponItem() {
+        return mainWeaponItem;
+    }
+
+    public void setMainWeaponItem(ItemStack mainWeaponItem) {
+        this.mainWeaponItem = mainWeaponItem;
+    }
+
+    public ItemStack getOffWeaponItem() { return offWeaponItem; }
+
+    public void setOffWeaponItem(ItemStack offWeaponItem) {
+        this.offWeaponItem = offWeaponItem;
+    }
+
     public SimpleContainer getInventory() {
         return inventory;
     }
@@ -57,6 +89,30 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
         tag.put("Inventory", this.inventory.createTag());
         tag.putInt("GapCooldown", this.gapCooldown);
         tag.putInt("EnderPearlCooldown", this.enderPearlCooldown);
+        tag.putInt("SwapToBowCooldown", this.swapToBowCooldown);
+        if (!this.mainWeaponItem.isEmpty()) {
+            CompoundTag itemTag = new CompoundTag();
+            this.mainWeaponItem.save(itemTag);
+            tag.put("MainHandItem", itemTag);
+        }
+        if (!this.offWeaponItem.isEmpty()) {
+            CompoundTag itemTag = new CompoundTag();
+            this.offWeaponItem.save(itemTag);
+            tag.put("OffHandItem", itemTag);
+        }
+    }
+
+    @Override
+    public void onEquipItem(@NotNull EquipmentSlot pSlot, @NotNull ItemStack pOldItem, @NotNull ItemStack pNewItem) {
+        if (pSlot == EquipmentSlot.MAINHAND &&
+                (pNewItem.getItem() instanceof SwordItem || pNewItem.getItem() instanceof AxeItem || pNewItem.getItem() instanceof ShieldItem)) {
+            this.mainWeaponItem = pNewItem.copy();
+        }
+        if (pSlot == EquipmentSlot.OFFHAND &&
+                (pNewItem.getItem() instanceof SwordItem || pNewItem.getItem() instanceof AxeItem || pNewItem.getItem() instanceof ShieldItem)) {
+            this.offWeaponItem = pNewItem.copy();
+        }
+        super.onEquipItem(pSlot, pOldItem, pNewItem);
     }
 
     @Override
@@ -67,6 +123,17 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
         }
         this.gapCooldown = tag.getInt("GapCooldown");
         this.enderPearlCooldown = tag.getInt("EnderPearlCooldown");
+        this.swapToBowCooldown = tag.getInt("SwapToBowCooldown");
+        if (tag.contains("MainHandItem", Tag.TAG_COMPOUND)) {
+            this.mainWeaponItem = ItemStack.of(tag.getCompound("MainHandItem"));
+        } else {
+            this.mainWeaponItem = ItemStack.EMPTY;
+        }
+        if (tag.contains("OffHandItem", Tag.TAG_COMPOUND)) {
+            this.offWeaponItem = ItemStack.of(tag.getCompound("OffHandItem"));
+        } else {
+            this.offWeaponItem = ItemStack.EMPTY;
+        }
     }
 
     @Override
@@ -202,6 +269,7 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
 
         if (gapCooldown > 0) gapCooldown--;
         if (enderPearlCooldown > 0) enderPearlCooldown--;
+        if (swapToBowCooldown > 0) swapToBowCooldown--;
 
         if ((tickCount + getId()) % 20 != 0) {
             return;

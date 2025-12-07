@@ -14,7 +14,6 @@ import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
 
 @EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Bus.MOD)
 public class AVSkills {
-    public static Skill CLASH;
     public static Skill ENDER_AEGIS;
     public static Skill ENDER_GLAIVE;
     public static Skill DEMONIAC_VOLTAGE_REAVER;

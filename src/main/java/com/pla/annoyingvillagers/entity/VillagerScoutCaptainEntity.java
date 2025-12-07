@@ -1,40 +1,44 @@
 package com.pla.annoyingvillagers.entity;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.*;
+import com.pla.annoyingvillagers.util.CombatBehaviour;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
+import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.util.TeamUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nullable;
+import java.util.Random;
 
 
 public class VillagerScoutCaptainEntity extends PathfinderMobInventory {
-    public VillagerScoutCaptainEntity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.VILLAGER_SCOUT_CAPTAIN.get(), level);
+    public VillagerScoutCaptainEntity(SpawnEntity spawnEntity, Level level) {
+        this(AnnoyingVillagersModEntities.VILLAGER_SCOUT_CAPTAIN.get(), level);
     }
 
     public VillagerScoutCaptainEntity(EntityType<VillagerScoutCaptainEntity> entitytype, Level level) {
@@ -45,15 +49,9 @@ public class VillagerScoutCaptainEntity extends PathfinderMobInventory {
         this.setCustomName(this.getDisplayName());
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
-        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.DIAMOND_SWORD));
-        this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.ENDER_PEARL));
-        this.setItemSlot(EquipmentSlot.HEAD, new ItemStack((ItemLike) AnnoyingVillagersModItems.VILLAGER_SCOUT_HELMET_FIX.get()));
-        this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.DIAMOND_CHESTPLATE));
-        this.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.DIAMOND_LEGGINGS));
-        this.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.DIAMOND_BOOTS));
     }
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -62,7 +60,7 @@ public class VillagerScoutCaptainEntity extends PathfinderMobInventory {
         CommonGoals.registerGoalForVillagerKnightNpc(this);
     }
 
-    public MobType getMobType() {
+    public @NotNull MobType getMobType() {
         return MobType.UNDEFINED;
     }
 
@@ -75,68 +73,82 @@ public class VillagerScoutCaptainEntity extends PathfinderMobInventory {
     }
 
     public SoundEvent getAmbientSound() {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.villager.ambient"));
+        return ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.villager.ambient"));
     }
 
-    public SoundEvent getHurtSound(DamageSource damagesource) {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.villager.hurt"));
+    public SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
+        return ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.villager.hurt"));
     }
 
     public SoundEvent getDeathSound() {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.villager.death"));
+        return ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.villager.death"));
     }
 
-    public boolean hurt(DamageSource damagesource, float f) {
-        VillagerScoutOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity(), (double) f);
-        if (damagesource.is(DamageTypes.FALL)) return false;
-        if (damagesource.is(DamageTypes.CACTUS)) return false;
-        return super.hurt(damagesource, f);
-    }
+    public boolean hurt(DamageSource damageSource, float f) {
+        if (damageSource.getEntity() != null && this.getEnderPearlCooldown() == 0) {
+            CombatBehaviour.throwEnderPearl(this, (float) new Random().nextDouble(90.0D, 180.0D));
+            LivingEntity entity = this;
 
-    public void die(DamageSource damagesource) {
-        super.die(damagesource);
-        VillagerScoutCaptainOnEntityDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
-        if (this.level() instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-            ServerLevel serverlevel = levelaccessor;
-            VillagerScoutDeadEntity deadEntity = new VillagerScoutDeadEntity((EntityType) AnnoyingVillagersModEntities.VILLAGER_SCOUT_DEAD.get(), serverlevel);
-            deadEntity.moveTo(this.getX(), this.getY(), this.getZ(), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-            if (deadEntity instanceof Mob) {
-                Mob mob = (Mob) deadEntity;
-                mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
+            if (Math.random() <= 0.5D) {
+                if (entity.isAlive()) {
+                    CombatBehaviour.throwEnderPearl(entity, 180.0F);
+                }
             }
-            this.remove(Entity.RemovalReason.KILLED);
-            levelaccessor.addFreshEntity(deadEntity);
-            try {
-                deadEntity.getServer().getCommands().getDispatcher().execute(
-                        "kill @s",
-                        deadEntity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
+
+            this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.DIAMOND_SWORD));
+            new DelayedTask(120) {
+                public void run() {
+                    if (entity.isAlive()) {
+                        entity.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.ENDER_PEARL));
+                    }
+                }
+            };
+
+            if (Math.random() <= 0.3D) {
+                new DelayedTask(20) {
+                    public void run() {
+                        if (entity.isAlive()) {
+                            CombatBehaviour.throwEnderPearl(entity, 90.0F);
+                        }
+                    }
+                };
             }
+            this.setEnderPearlCooldown();
         }
+        return super.hurt(damageSource, f);
     }
 
-//    public InteractionResult mobInteract(Player player, InteractionHand interactionhand) {
-//        player.getItemInHand(interactionhand);
-//        InteractionResult interactionresult = InteractionResult.sidedSuccess(this.level().isClientSide());
-//
-//        super.mobInteract(player, interactionhand);
-//        double d0 = this.getX();
-//        double d1 = this.getY();
-//        double d2 = this.getZ();
-//        Level level = this.level();
-//
-//        VillagerScoutOnInteractProcedure.execute(level, d0, d1, d2, this);
-//        return interactionresult;
-//    }
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverLevelAccessor, @NotNull DifficultyInstance difficultyInstance, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
+        SpawnGroupData returnSpawnGroupData = super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
 
-    public void baseTick() {
-        super.baseTick();
-        VillagerScoutSmartSkillProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        TeamUtil.addOrJoinTeam(this, "villagers");
+
+        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.DIAMOND_SWORD));
+        if (new Random().nextBoolean()) {
+            this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.ENDER_PEARL));
+        }
+
+        this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(AnnoyingVillagersModItems.VILLAGER_SCOUT_HELMET_FIX.get()));
+        this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.DIAMOND_CHESTPLATE));
+        this.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.DIAMOND_LEGGINGS));
+        this.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.DIAMOND_BOOTS));
+        this.setMainWeaponItem(this.getMainHandItem().copy());
+        this.setOffWeaponItem(this.getOffWeaponItem().copy());
+
+        return returnSpawnGroupData;
     }
 
-    public void playerTouch(Player player) {
-        super.playerTouch(player);
-        VillagerScoutCaptainOnPlayerTouchProcedure.execute(this.level(), this);
+    public void die(@NotNull DamageSource damageSource) {
+        super.die(damageSource);
+        VillagerScoutCaptainOnEntityDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        if (this.level() instanceof ServerLevel serverLevel && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
+            VillagerScoutDeadEntity deadEntity = new VillagerScoutDeadEntity(AnnoyingVillagersModEntities.VILLAGER_SCOUT_DEAD.get(), serverLevel);
+            deadEntity.moveTo(this.getX(), this.getY(), this.getZ(), serverLevel.getRandom().nextFloat() * 360.0F, 0.0F);
+            deadEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+            this.remove(Entity.RemovalReason.KILLED);
+            serverLevel.addFreshEntity(deadEntity);
+            deadEntity.kill();
+        }
     }
 
     public static boolean canSpawn(EntityType<VillagerScoutCaptainEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
@@ -146,11 +158,11 @@ public class VillagerScoutCaptainEntity extends PathfinderMobInventory {
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();
 
-        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.26D);
+        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.45D);
         builder = builder.add(Attributes.MAX_HEALTH, 20.0D);
         builder = builder.add(Attributes.ARMOR, 6.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 1.0D);
-        builder = builder.add(Attributes.FOLLOW_RANGE, 24.0D);
+        builder = builder.add(Attributes.FOLLOW_RANGE, 48.0D);
         return builder;
     }
 }
