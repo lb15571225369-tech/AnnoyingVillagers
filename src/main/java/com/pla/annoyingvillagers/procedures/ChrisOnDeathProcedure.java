@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.procedures;
 
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModEnchantments;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.util.EquipmentDataLoader;
 import net.minecraft.network.chat.Component;
@@ -561,7 +560,6 @@ public class ChrisOnDeathProcedure {
                         ItemStack sword = new ItemStack(Items.DIAMOND_SWORD);
                         sword.enchant(Enchantments.KNOCKBACK, 5);
                         sword.enchant(Enchantments.UNBREAKING, 5);
-                        sword.enchant(AnnoyingVillagersModEnchantments.BREAK_ARMOR.get(), 5);
                         sword.setDamageValue(EquipmentDataLoader.getRandomDamage(sword));
                         itementity = new ItemEntity(level, d0, d1 + 1.0D, d2, new ItemStack(Items.DIAMOND_SWORD));
                         itementity.setPickUpDelay(10);

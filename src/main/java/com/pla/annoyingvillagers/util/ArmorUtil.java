@@ -1,6 +1,8 @@
 package com.pla.annoyingvillagers.util;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -20,6 +22,32 @@ public class ArmorUtil {
             p.getInventory().setChanged();
             if (!p.level().isClientSide()) {
                 p.displayClientMessage(Component.literal("§eThe " + preventArmor + " rejects this piece!"), true);
+            }
+        }
+    }
+
+    public static void damageArmor(LivingEntity target,
+                             LivingEntity attacker,
+                             int durabilityDamagePerPiece) {
+        RandomSource random = target.getRandom();
+        ServerPlayer serverAttacker = attacker instanceof ServerPlayer serverPlayer ? serverPlayer : null;
+
+        for (EquipmentSlot slot : new EquipmentSlot[]{
+                EquipmentSlot.FEET,
+                EquipmentSlot.LEGS,
+                EquipmentSlot.CHEST,
+                EquipmentSlot.HEAD
+        }) {
+            ItemStack armor = target.getItemBySlot(slot);
+
+            if (armor.isEmpty() || !armor.isDamageableItem()) {
+                continue;
+            }
+
+            if (armor.hurt(durabilityDamagePerPiece, random, serverAttacker)) {
+                armor.shrink(1);
+                armor.setDamageValue(0);
+                target.setItemSlot(slot, ItemStack.EMPTY);
             }
         }
     }

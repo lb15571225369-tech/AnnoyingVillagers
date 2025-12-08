@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.item;
 
+import com.pla.annoyingvillagers.util.ArmorUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -11,9 +12,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import com.pla.annoyingvillagers.procedures.LegendarySwordWhenInInventoryProcedure;
-import com.pla.annoyingvillagers.procedures.LegendarySwordOnEntityHitProcedure;
-import com.pla.annoyingvillagers.procedures.LegendarySwordUseProcedure;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class LegendarySwordItem extends SwordItem {
     public LegendarySwordItem() {
         super(new Tier() {
             public int getUses() {
-                return 9999;
+                return 1561;
             }
 
             public float getSpeed() {
@@ -30,7 +29,7 @@ public class LegendarySwordItem extends SwordItem {
             }
 
             public float getAttackDamageBonus() {
-                return 14.0F;
+                return 4.0F;
             }
 
             public int getLevel() {
@@ -41,42 +40,31 @@ public class LegendarySwordItem extends SwordItem {
                 return 2;
             }
 
-            public Ingredient getRepairIngredient() {
-                return Ingredient.of(new ItemStack[]{new ItemStack(Items.DIAMOND)});
+            public @NotNull Ingredient getRepairIngredient() {
+                return Ingredient.of();
             }
         }, 3, -2.32F, (new Properties()).fireResistant());
     }
 
-    public boolean hurtEnemy(ItemStack itemstack, LivingEntity livingentity, LivingEntity livingentity1) {
-        boolean flag = super.hurtEnemy(itemstack, livingentity, livingentity1);
-
-        LegendarySwordOnEntityHitProcedure.execute(livingentity, itemstack);
-        return flag;
+    @Override
+    public boolean hurtEnemy(@NotNull ItemStack pStack, @NotNull LivingEntity pTarget, @NotNull LivingEntity pAttacker) {
+        if (!pAttacker.level().isClientSide()) {
+            ArmorUtil.damageArmor(pTarget, pAttacker, 15);
+        }
+        return super.hurtEnemy(pStack, pTarget, pAttacker);
     }
 
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {
-        InteractionResultHolder<ItemStack> interactionresultholder = super.use(level, player, interactionhand);
-
-        LegendarySwordUseProcedure.execute(level, player, (ItemStack) interactionresultholder.getObject());
-        return interactionresultholder;
-    }
-
-    public boolean isRepairable(ItemStack itemstack) {
+    public boolean isRepairable(@NotNull ItemStack itemStack) {
         return false;
     }
 
-    public void inventoryTick(ItemStack itemstack, Level level, Entity entity, int i, boolean flag) {
-        super.inventoryTick(itemstack, level, entity, i, flag);
-        LegendarySwordWhenInInventoryProcedure.execute(entity, itemstack);
-    }
-
-    public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
-        super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.translatable("tooltip.annoyingvillagers.legendary_sword"));
+    public void appendHoverText(@NotNull ItemStack itemStack, Level level, @NotNull List<Component> componentList, @NotNull TooltipFlag tooltipFlag) {
+        super.appendHoverText(itemStack, level, componentList, tooltipFlag);
+        componentList.add(Component.translatable("tooltip.annoyingvillagers.legendary_sword"));
     }
 
     @OnlyIn(Dist.CLIENT)
-    public boolean isFoil(ItemStack itemstack) {
+    public boolean isFoil(@NotNull ItemStack itemStack) {
         return true;
     }
 }

@@ -1,4 +1,5 @@
 {
+	"renderer": "annoyingvillagers:legendary_sword",
     "trail": {
     	"color": [51, 235, 203],
     	"begin_pos": [0.0, 0.0, -0.4],

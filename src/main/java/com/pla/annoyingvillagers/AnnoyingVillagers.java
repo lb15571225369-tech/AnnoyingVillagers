@@ -55,7 +55,6 @@ public class AnnoyingVillagers {
         AnnoyingVillagersModItems.REGISTRY.register(modEventBus);
         modEventBus.addListener(AVWeaponCapabilityPresets::register);
         AnnoyingVillagersModEntities.REGISTRY.register(modEventBus);
-        AnnoyingVillagersModEnchantments.REGISTRY.register(modEventBus);
         AnnoyingVillagersModMobEffects.REGISTRY.register(modEventBus);
         AnnoyingVillagersModParticleTypes.REGISTRY.register(modEventBus);
         MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, AnnoyingVillagersModCapabilities::attachEntityCapability);

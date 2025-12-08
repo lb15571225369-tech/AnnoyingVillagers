@@ -28,7 +28,6 @@ import java.util.Objects;
 public class RenderHardGreatSword extends RenderItemBase {
     public RenderHardGreatSword(JsonElement json) {
         super(json);
-        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG HardGreatSwordRender] constructor called. json = {}", json);
     }
 
     @Override
@@ -40,42 +39,24 @@ public class RenderHardGreatSword extends RenderItemBase {
                                  PoseStack poseStack,
                                  int packedLight,
                                  float partialTicks) {
-        if (livingEntityPatch == null) return;
-        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG HardGreatSwordRender] renderItemInHand is called");
+        if (livingEntityPatch != null) {
+            OpenMatrix4f openmatrix4f = new OpenMatrix4f(this.getCorrectionMatrix(livingEntityPatch, InteractionHand.MAIN_HAND, poses));
+            AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
+            ItemStack itemstack;
 
-        OpenMatrix4f mat = new OpenMatrix4f(this.getCorrectionMatrix(livingEntityPatch, hand, poses));
-        mat.mulFront(poses[Armatures.BIPED.get().toolR.getId()]);
-
-        AssetAccessor<? extends DynamicAnimation> currentAnim =
-                Objects.requireNonNull(livingEntityPatch.getClientAnimator().getPlayerFor(null)).getAnimation();
-
-        ItemStack itemstack;
-        boolean isGuardSkill = currentAnim != null && currentAnim.equals(AVAnimations.HARD_GREATSWORD_GUARD_SKILL);
-        boolean isGuard = currentAnim != null && currentAnim.equals(AVAnimations.HARD_GREATSWORD_GUARD);
-
-        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG HardGreatSwordRender]" +
-                "\n  currentAnim = " + (currentAnim == null ? "null" : currentAnim +
-                "\n  equals(HARD_GREATSWORD_GUARD_SKILL) = " + isGuardSkill +
-                "\n  equals(HARD_GREATSWORD_GUARD)       = " + isGuard));
-
-        if (isGuardSkill || isGuard) {
-            itemstack = new ItemStack(AnnoyingVillagersModItems.HARD_GREATSWORD_SKILL.get());
-        } else {
-            itemstack = new ItemStack(AnnoyingVillagersModItems.HARD_GREATSWORD.get());
+            if (dynamicAnimation != AVAnimations.HARD_GREATSWORD_GUARD_SKILL && !dynamicAnimation.equals(AVAnimations.HARD_GREATSWORD_GUARD)) {
+                itemstack = new ItemStack(AnnoyingVillagersModItems.HARD_GREATSWORD.get());
+                poseStack.pushPose();
+                MathUtils.mulStack(poseStack, openmatrix4f);
+                Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, livingEntityPatch.getOriginal().level(), 0);
+                poseStack.popPose();
+            } else {
+                itemstack = new ItemStack(AnnoyingVillagersModItems.HARD_GREATSWORD_SKILL.get());
+                poseStack.pushPose();
+                MathUtils.mulStack(poseStack, openmatrix4f);
+                Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, livingEntityPatch.getOriginal().level(), 0);
+                poseStack.popPose();
+            }
         }
-
-        poseStack.pushPose();
-        MathUtils.mulStack(poseStack, mat);
-        Minecraft.getInstance().getItemRenderer().renderStatic(
-                itemstack,
-                ItemDisplayContext.THIRD_PERSON_RIGHT_HAND,
-                packedLight,
-                OverlayTexture.NO_OVERLAY,
-                poseStack,
-                buffer,
-                livingEntityPatch.getOriginal().level(),
-                0
-        );
-        poseStack.popPose();
     }
 }
