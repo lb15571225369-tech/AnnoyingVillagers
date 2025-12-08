@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.clazz;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.SimpleContainer;
@@ -28,6 +29,7 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
     private ItemStack mainWeaponItem = ItemStack.EMPTY;
     private ItemStack offWeaponItem = ItemStack.EMPTY;
     private boolean healing = false;
+    private boolean initialSpawn = false;
 
     public boolean isHealing() {
         return healing;
@@ -90,6 +92,7 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
         tag.putInt("GapCooldown", this.gapCooldown);
         tag.putInt("EnderPearlCooldown", this.enderPearlCooldown);
         tag.putInt("SwapToBowCooldown", this.swapToBowCooldown);
+        tag.putBoolean("InitialSpawn", this.initialSpawn);
         if (!this.mainWeaponItem.isEmpty()) {
             CompoundTag itemTag = new CompoundTag();
             this.mainWeaponItem.save(itemTag);
@@ -124,6 +127,7 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
         this.gapCooldown = tag.getInt("GapCooldown");
         this.enderPearlCooldown = tag.getInt("EnderPearlCooldown");
         this.swapToBowCooldown = tag.getInt("SwapToBowCooldown");
+        this.initialSpawn = tag.getBoolean("InitialSpawn");
         if (tag.contains("MainHandItem", Tag.TAG_COMPOUND)) {
             this.mainWeaponItem = ItemStack.of(tag.getCompound("MainHandItem"));
         } else {
@@ -262,10 +266,17 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
         }
     }
 
+    protected void implementFirstTick(ServerLevel serverLevel) {}
+
     @Override
     public void tick() {
         super.tick();
         if (level().isClientSide) return;
+
+        if (this.tickCount == 1 && !this.initialSpawn) {
+            implementFirstTick((ServerLevel) this.level());
+            this.initialSpawn = true;
+        }
 
         if (gapCooldown > 0) gapCooldown--;
         if (enderPearlCooldown > 0) enderPearlCooldown--;

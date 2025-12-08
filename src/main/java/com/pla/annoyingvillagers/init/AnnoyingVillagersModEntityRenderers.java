@@ -102,5 +102,17 @@ public class AnnoyingVillagersModEntityRenderers {
         add.addPatchedEntityRenderer(AnnoyingVillagersModEntities.VILLAGER_SCOUT_CAPTAIN.get(),
                 (entitytype) -> (new PHumanoidRenderer<>(Meshes.BIPED, add.getContext(), entitytype))
                         .initLayerLast(add.getContext(), entitytype));
+        add.addPatchedEntityRenderer(AnnoyingVillagersModEntities.RED_VILLAGER_GENERAL.get(),
+                (entitytype) -> (new PHumanoidRenderer<>(Meshes.BIPED, add.getContext(), entitytype))
+                        .initLayerLast(add.getContext(), entitytype));
+        add.addPatchedEntityRenderer(AnnoyingVillagersModEntities.BLUE_VILLAGER_GENERAL.get(),
+                (entitytype) -> (new PHumanoidRenderer<>(Meshes.BIPED, add.getContext(), entitytype))
+                        .initLayerLast(add.getContext(), entitytype));
+        add.addPatchedEntityRenderer(AnnoyingVillagersModEntities.GREEN_VILLAGER_GENERAL.get(),
+                (entitytype) -> (new PHumanoidRenderer<>(Meshes.BIPED, add.getContext(), entitytype))
+                        .initLayerLast(add.getContext(), entitytype));
+        add.addPatchedEntityRenderer(AnnoyingVillagersModEntities.PURPLE_VILLAGER_GENERAL.get(),
+                (entitytype) -> (new PHumanoidRenderer<>(Meshes.BIPED, add.getContext(), entitytype))
+                        .initLayerLast(add.getContext(), entitytype));
     }
 }

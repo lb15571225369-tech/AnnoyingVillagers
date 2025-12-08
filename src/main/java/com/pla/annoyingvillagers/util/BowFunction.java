@@ -34,8 +34,8 @@ public class BowFunction {
             bowStack.getTag().putFloat("Pulling", 0.65F);
         }
 
-        ItemStack arrowStack = ItemStack.EMPTY;
-        boolean creativeOrInfinity = false;
+        ItemStack arrowStack;
+        boolean creativeOrInfinity;
 
         if (shooter instanceof Player player) {
             arrowStack = player.getProjectile(bowStack);
@@ -93,6 +93,8 @@ public class BowFunction {
             xRot = shooter.getXRot();
             yRot = shooter.getYRot();
         }
+
+        abstractArrow.setOwner(shooter);
         abstractArrow.shootFromRotation(shooter, xRot, yRot, 0.0F, power * 3.0F, 1.0F);
 
         if (!bowStack.isEmpty() && bowStack.getTag() != null) {

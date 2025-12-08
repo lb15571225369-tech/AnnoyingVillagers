@@ -3,6 +3,8 @@ package com.pla.annoyingvillagers.init;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.mobpatch.PlayerNpcPatch;
+import com.pla.annoyingvillagers.mobpatch.VillagerGeneralPatch;
+import com.pla.annoyingvillagers.mobpatch.VillagerScoutCaptainPatch;
 import com.pla.annoyingvillagers.mobpatch.VillagerScoutPatch;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -251,7 +253,11 @@ public class AnnoyingVillagersModEntities {
     public static void setPatch(EntityPatchRegistryEvent entityPatchRegistryEvent) {
         entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.PLAYER_NPC.get(), (entity) -> PlayerNpcPatch::new);
         entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.VILLAGER_SCOUT.get(), (entity) -> VillagerScoutPatch::new);
-        entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.VILLAGER_SCOUT_CAPTAIN.get(), (entity) -> VillagerScoutPatch::new);
+        entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.VILLAGER_SCOUT_CAPTAIN.get(), (entity) -> VillagerScoutCaptainPatch::new);
+        entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.RED_VILLAGER_GENERAL.get(), (entity) -> VillagerGeneralPatch::new);
+        entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.BLUE_VILLAGER_GENERAL.get(), (entity) -> VillagerGeneralPatch::new);
+        entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.GREEN_VILLAGER_GENERAL.get(), (entity) -> VillagerGeneralPatch::new);
+        entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.PURPLE_VILLAGER_GENERAL.get(), (entity) -> VillagerGeneralPatch::new);
     }
 
     @SubscribeEvent

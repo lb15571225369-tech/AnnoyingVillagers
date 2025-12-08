@@ -1,8 +1,7 @@
 package com.pla.annoyingvillagers.combatbehaviour;
 
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
-import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
-import com.pla.annoyingvillagers.entity.VillagerScoutEntity;
+import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.util.CombatBehaviour;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.network.chat.Component;
@@ -215,6 +214,25 @@ public class CombatCommon {
         LivingEntity entity = mobpatch.getOriginal();
         BehaviorUtils.stopCurrentBehavior(entity);
         ItemStack bow = new ItemStack(Items.BOW);
+
+        if (entity instanceof VillagerScoutCaptainEntity) {
+            bow.enchant(Enchantments.POWER_ARROWS, 1);
+            bow.enchant(Enchantments.PUNCH_ARROWS, 1);
+        }
+        if (entity instanceof RedVillagerGeneralEntity) {
+            bow.enchant(Enchantments.FLAMING_ARROWS, 2);
+        }
+        if (entity instanceof BlueVillagerGeneralEntity) {
+            bow.enchant(Enchantments.POWER_ARROWS, 2);
+        }
+        if (entity instanceof GreenVillagerGeneralEntity) {
+            bow.enchant(Enchantments.POWER_ARROWS, 1);
+            bow.enchant(Enchantments.FLAMING_ARROWS, 1);
+        }
+        if (entity instanceof PurpleVillagerGeneralEntity) {
+            bow.enchant(Enchantments.PUNCH_ARROWS, 2);
+        }
+
         entity.setItemInHand(InteractionHand.MAIN_HAND, bow.copy());
         entity.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
 

@@ -120,6 +120,10 @@ public class AnnoyingVillagers {
         Armatures.registerEntityTypeArmature(AnnoyingVillagersModEntities.PLAYER_NPC.get(), Armatures.BIPED);
         Armatures.registerEntityTypeArmature(AnnoyingVillagersModEntities.VILLAGER_SCOUT.get(), Armatures.BIPED);
         Armatures.registerEntityTypeArmature(AnnoyingVillagersModEntities.VILLAGER_SCOUT_CAPTAIN.get(), Armatures.BIPED);
+        Armatures.registerEntityTypeArmature(AnnoyingVillagersModEntities.RED_VILLAGER_GENERAL.get(), Armatures.BIPED);
+        Armatures.registerEntityTypeArmature(AnnoyingVillagersModEntities.BLUE_VILLAGER_GENERAL.get(), Armatures.BIPED);
+        Armatures.registerEntityTypeArmature(AnnoyingVillagersModEntities.GREEN_VILLAGER_GENERAL.get(), Armatures.BIPED);
+        Armatures.registerEntityTypeArmature(AnnoyingVillagersModEntities.PURPLE_VILLAGER_GENERAL.get(), Armatures.BIPED);
     }
 
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)

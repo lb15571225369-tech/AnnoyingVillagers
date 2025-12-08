@@ -6,11 +6,8 @@ import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.*;
-import com.pla.annoyingvillagers.util.CombatBehaviour;
-import com.pla.annoyingvillagers.util.CommonGoals;
+import com.pla.annoyingvillagers.util.*;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
-import com.pla.annoyingvillagers.util.DelayedTask;
-import com.pla.annoyingvillagers.util.TeamUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -153,6 +150,14 @@ public class VillagerScoutEntity extends PathfinderMobInventory{
         this.setOffWeaponItem(this.getOffWeaponItem().copy());
 
         return returnSpawnGroupData;
+    }
+
+    @Override
+    protected void implementFirstTick(ServerLevel serverLevel) {
+        super.implementFirstTick(serverLevel);
+        if (new Random().nextInt() <= 0.3D) {
+            RidingUtil.rideRandomAnimal(serverLevel, this);
+        }
     }
 
     public static boolean canSpawn(EntityType<VillagerScoutEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {

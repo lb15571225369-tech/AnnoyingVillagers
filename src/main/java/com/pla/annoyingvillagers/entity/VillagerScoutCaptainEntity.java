@@ -20,9 +20,12 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -136,6 +139,31 @@ public class VillagerScoutCaptainEntity extends PathfinderMobInventory {
         this.setOffWeaponItem(this.getOffWeaponItem().copy());
 
         return returnSpawnGroupData;
+    }
+
+    @Override
+    protected void implementFirstTick(ServerLevel serverLevel) {
+        super.implementFirstTick(serverLevel);
+
+        if (new Random().nextInt() <= 0.3D) {
+            Sheep sheep = EntityType.SHEEP.create(serverLevel);
+            if (sheep != null) {
+                sheep.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
+                sheep.setPersistenceRequired();
+                sheep.finalizeSpawn(
+                        serverLevel,
+                        serverLevel.getCurrentDifficultyAt(this.blockPosition()),
+                        MobSpawnType.MOB_SUMMONED,
+                        null,
+                        null
+                );
+                serverLevel.addFreshEntity(sheep);
+                this.startRiding(sheep);
+                sheep.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 99999, 1, false, false));
+                sheep.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 99999, 1, false, false));
+                sheep.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 99999, 9, false, false));
+            }
+        }
     }
 
     public void die(@NotNull DamageSource damageSource) {
