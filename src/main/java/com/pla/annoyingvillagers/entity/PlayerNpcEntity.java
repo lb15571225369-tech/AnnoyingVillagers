@@ -8,6 +8,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.util.CombatBehaviour;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.util.TeamUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -62,6 +63,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     private ItemStack mainWeaponItem = ItemStack.EMPTY;
     private ItemStack offWeaponItem = ItemStack.EMPTY;
     private boolean healing = false;
+    private boolean useBow = true;
 
     public boolean isHealing() {
         return healing;
@@ -109,6 +111,14 @@ public class PlayerNpcEntity extends PlayerMobEntity {
 
     public ItemStack getOffWeaponItem() { return offWeaponItem; }
 
+    public void setUseBow(boolean useBow) {
+        this.useBow = useBow;
+    }
+
+    public boolean isUseBow() {
+        return useBow;
+    }
+
     public PlayerNpcEntity(EntityType<? extends PlayerNpcEntity> entitytype, Level level) {
         super(entitytype, level);
         this.setMaxUpStep(2.6F);
@@ -125,6 +135,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         tag.putInt("GapCooldown", this.gapCooldown);
         tag.putInt("EnderPearlCooldown", this.enderPearlCooldown);
         tag.putInt("SwapToBowCooldown", this.swapToBowCooldown);
+        tag.putBoolean("UseBow", this.useBow);
         if (this.target != null) {
             tag.putString("PlayerNpcTarget", this.target.name());
         }
@@ -149,6 +160,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         this.gapCooldown = tag.getInt("GapCooldown");
         this.enderPearlCooldown = tag.getInt("EnderPearlCooldown");
         this.swapToBowCooldown = tag.getInt("SwapToBowCooldown");
+        this.useBow = tag.getBoolean("UseBow");
         if (tag.contains("PlayerNpcTarget", Tag.TAG_STRING)) {
             String name = tag.getString("PlayerNpcTarget");
             try {
@@ -358,17 +370,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
                 corpse.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
                 serverLevel.addFreshEntity(corpse);
                 this.remove(Entity.RemovalReason.KILLED);
-                new DelayedTask(3) {
-                    @Override
-                    public void run() {
-                        try {
-                            Objects.requireNonNull(corpse.getServer()).getCommands().getDispatcher().execute(
-                                    "kill @s",
-                                    corpse.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                        } catch (CommandSyntaxException ignored) {
-                        }
-                    }
-                };
+                corpse.kill();
             }
         }
     }
@@ -514,18 +516,11 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         }
 
         if (Math.random() <= 0.05D) {
-            try {
-                Objects.requireNonNull(this.getServer()).getCommands().getDispatcher().execute(
-                        "team add player",
-                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException ignored) {
-            }
-            try {
-                Objects.requireNonNull(this.getServer()).getCommands().getDispatcher().execute(
-                        "team join player @s",
-                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException ignored) {
-            }
+            TeamUtil.addOrJoinTeam(this, "player");
+        }
+
+        if (new Random().nextBoolean()) {
+            this.setUseBow(false);
         }
 
         return returnSpawnGroupData;

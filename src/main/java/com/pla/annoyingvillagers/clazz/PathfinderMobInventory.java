@@ -30,6 +30,7 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
     private ItemStack offWeaponItem = ItemStack.EMPTY;
     private boolean healing = false;
     private boolean initialSpawn = false;
+    private boolean useBow = true;
 
     public boolean isHealing() {
         return healing;
@@ -81,6 +82,14 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
         return inventory;
     }
 
+    public void setUseBow(boolean useBow) {
+        this.useBow = useBow;
+    }
+
+    public boolean isUseBow() {
+        return useBow;
+    }
+
     protected PathfinderMobInventory(EntityType<? extends PathfinderMob> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
@@ -93,6 +102,7 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
         tag.putInt("EnderPearlCooldown", this.enderPearlCooldown);
         tag.putInt("SwapToBowCooldown", this.swapToBowCooldown);
         tag.putBoolean("InitialSpawn", this.initialSpawn);
+        tag.putBoolean("UseBow", this.useBow);
         if (!this.mainWeaponItem.isEmpty()) {
             CompoundTag itemTag = new CompoundTag();
             this.mainWeaponItem.save(itemTag);
@@ -128,6 +138,7 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
         this.enderPearlCooldown = tag.getInt("EnderPearlCooldown");
         this.swapToBowCooldown = tag.getInt("SwapToBowCooldown");
         this.initialSpawn = tag.getBoolean("InitialSpawn");
+        this.useBow = tag.getBoolean("UseBow");
         if (tag.contains("MainHandItem", Tag.TAG_COMPOUND)) {
             this.mainWeaponItem = ItemStack.of(tag.getCompound("MainHandItem"));
         } else {

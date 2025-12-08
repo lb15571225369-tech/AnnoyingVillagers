@@ -84,11 +84,11 @@ public class CombatCommon {
         }
 
         if (mobpatch.getOriginal() instanceof PlayerNpcEntity playerNpcEntity) {
-            return playerNpcEntity.getSwapToBowCooldown() == 0;
+            return playerNpcEntity.isUseBow() && playerNpcEntity.getSwapToBowCooldown() == 0;
         }
 
         if (mobpatch.getOriginal() instanceof PathfinderMobInventory pathfinderMobInventory) {
-            return pathfinderMobInventory.getSwapToBowCooldown() == 0;
+            return pathfinderMobInventory.isUseBow() && pathfinderMobInventory.getSwapToBowCooldown() == 0;
         }
 
         return false;

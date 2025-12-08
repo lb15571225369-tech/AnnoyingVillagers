@@ -138,6 +138,10 @@ public class VillagerScoutCaptainEntity extends PathfinderMobInventory {
         this.setMainWeaponItem(this.getMainHandItem().copy());
         this.setOffWeaponItem(this.getOffWeaponItem().copy());
 
+        if (new Random().nextBoolean()) {
+            this.setUseBow(false);
+        }
+
         return returnSpawnGroupData;
     }
 

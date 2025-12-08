@@ -140,6 +140,9 @@ public class VillagerScoutEntity extends PathfinderMobInventory{
             } else {
                 this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.ENDER_PEARL));
             }
+            if (new Random().nextBoolean()) {
+                this.setUseBow(false);
+            }
         }
 
         this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(AnnoyingVillagersModItems.VILLAGER_SCOUT_HELMET_FIX.get()));
