@@ -203,7 +203,7 @@ public class AngrySteveOnTickProcedure {
             }
 
             Vec3 vec3 = new Vec3(d0, d1, d2);
-            List<Entity> list = (List)levelaccessor.getEntitiesOfClass(Entity.class, (new AABB(vec3, vec3)).inflate(30.0D), (entity1) -> {
+            List<Entity> list = levelaccessor.getEntitiesOfClass(Entity.class, (new AABB(vec3, vec3)).inflate(30.0D), (entity1) -> {
                 return true;
             }).stream().sorted(Comparator.comparingDouble((entity1) -> {
                 return entity1.distanceToSqr(vec3);
@@ -214,8 +214,7 @@ public class AngrySteveOnTickProcedure {
                 Entity entity1 = (Entity)iterator.next();
                 LivingEntity livingentity3;
 
-                if (entity instanceof Mob) {
-                    Mob mob1 = (Mob)entity;
+                if (entity instanceof Mob mob1) {
 
                     livingentity3 = mob1.getTarget();
                 } else {
@@ -223,8 +222,7 @@ public class AngrySteveOnTickProcedure {
                 }
 
                 if (entity1 == livingentity3) {
-                    if (entity instanceof Mob) {
-                        Mob mob2 = (Mob)entity;
+                    if (entity instanceof Mob mob2) {
 
                         livingentity1 = mob2.getTarget();
                     } else {
@@ -235,7 +233,7 @@ public class AngrySteveOnTickProcedure {
                     ItemStack itemstack;
 
                     if (livingentity4 instanceof LivingEntity) {
-                        LivingEntity livingentity5 = (LivingEntity)livingentity4;
+                        LivingEntity livingentity5 = livingentity4;
 
                         itemstack = livingentity5.getMainHandItem();
                     } else {
@@ -249,8 +247,7 @@ public class AngrySteveOnTickProcedure {
 
                             itemstack1.setCount(1);
                             livingentity4.setItemInHand(InteractionHand.MAIN_HAND, itemstack1);
-                            if (livingentity4 instanceof Player) {
-                                Player player = (Player)livingentity4;
+                            if (livingentity4 instanceof Player player) {
 
                                 player.getInventory().setChanged();
                             }
@@ -316,27 +313,24 @@ public class AngrySteveOnTickProcedure {
 
                                     LevelAccessor levelaccessor1 = levelaccessor;
 
-                                    if (levelaccessor1 instanceof Level) {
-                                        Level level1 = (Level)levelaccessor1;
+                                    if (levelaccessor1 instanceof Level level1) {
 
                                         if (!level1.isClientSide()) {
-                                            level1.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.arrow.shoot"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                            level1.playSound(null, new BlockPos((int) d0, (int) d1, (int) d2), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.arrow.shoot"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                         } else {
-                                            level1.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.arrow.shoot"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                            level1.playLocalSound(d0, d1, d2, Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.arrow.shoot"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                         }
                                     }
                                 }
                             };
                             new DelayedTask(20) {
                                 public void run() {
-                                    if (entity instanceof LivingEntity) {
-                                        LivingEntity livingentity9 = (LivingEntity)entity;
-                                        ItemStack itemstack2 = new ItemStack((ItemLike) AnnoyingVillagersModItems.LEGENDARY_SWORD_MOB.get());
+                                    if (entity instanceof LivingEntity livingentity9) {
+                                        ItemStack itemstack2 = new ItemStack(AnnoyingVillagersModItems.LEGENDARY_SWORD.get());
 
                                         itemstack2.setCount(1);
                                         livingentity9.setItemInHand(InteractionHand.MAIN_HAND, itemstack2);
-                                        if (livingentity9 instanceof Player) {
-                                            Player player1 = (Player)livingentity9;
+                                        if (livingentity9 instanceof Player player1) {
 
                                             player1.getInventory().setChanged();
                                         }

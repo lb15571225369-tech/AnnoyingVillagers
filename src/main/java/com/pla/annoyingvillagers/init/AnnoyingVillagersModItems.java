@@ -141,25 +141,21 @@ public class AnnoyingVillagersModItems {
 
 
     // Item not shown in creative tab
-    public static final RegistryObject<Item> ENCHANT_BED = block(AnnoyingVillagersModBlocks.ENCHANT_BED, (CreativeModeTab) null);
-    public static final RegistryObject<Item> DARK_OB_SS = block(AnnoyingVillagersModBlocks.DARK_OB_SS, (CreativeModeTab) null);
-    public static final RegistryObject<Item> NONEOB = block(AnnoyingVillagersModBlocks.NONEOB, (CreativeModeTab) null);
-    public static final RegistryObject<Item> DARKOB = block(AnnoyingVillagersModBlocks.DARKOB, (CreativeModeTab) null);
+    public static final RegistryObject<Item> ENCHANT_BED = block(AnnoyingVillagersModBlocks.ENCHANT_BED, null);
+    public static final RegistryObject<Item> DARK_OB_SS = block(AnnoyingVillagersModBlocks.DARK_OB_SS, null);
+    public static final RegistryObject<Item> NONEOB = block(AnnoyingVillagersModBlocks.NONEOB, null);
+    public static final RegistryObject<Item> DARKOB = block(AnnoyingVillagersModBlocks.DARKOB, null);
     public static final RegistryObject<Item> DARKOBITEM = AnnoyingVillagersModItems.REGISTRY.register("darkobitem", DarkOBItem::new);
     public static final RegistryObject<Item> DARKITEMLONG = AnnoyingVillagersModItems.REGISTRY.register("darkitemlong", DarkOBLongItem::new);
-    public static final RegistryObject<Item> DARK_OB_UP = block(AnnoyingVillagersModBlocks.DARK_OB_UP, (CreativeModeTab) null);
+    public static final RegistryObject<Item> DARK_OB_UP = block(AnnoyingVillagersModBlocks.DARK_OB_UP, null);
     public static final RegistryObject<Item> DARK_OB_FAR = AnnoyingVillagersModItems.REGISTRY.register("dark_ob_far", DarkOBFarItem::new);
     public static final RegistryObject<Item> HEAVY_ATTACK_LEGENDARY_SWORD = AnnoyingVillagersModItems.REGISTRY.register("heavy_attack_legendary_sword", HeavyAttackLegendarySwordItem::new);
 
     public static final RegistryObject<Item> HARD_GREATSWORD_SKILL = AnnoyingVillagersModItems.REGISTRY.register("hard_greatsword_skill", HardGreatSwordSkillItem::new);
 
-    public static final RegistryObject<Item> SHADOW_OBSIDIAN_ITEM = block(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK, (CreativeModeTab) null);
-    public static final RegistryObject<Item> OBSIDIAN_ITEM = block(AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK, (CreativeModeTab) null);
+    public static final RegistryObject<Item> SHADOW_OBSIDIAN_ITEM = block(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK, null);
+    public static final RegistryObject<Item> OBSIDIAN_ITEM = block(AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK, null);
     public static final RegistryObject<Item> BLUEDEMONTRIDENT = AnnoyingVillagersModItems.REGISTRY.register("bluedemontrident", BlueDemonTridentItem::new);
-    public static final RegistryObject<Item> LEGENDARY_SWORD_MOB = AnnoyingVillagersModItems.REGISTRY.register("legendary_sword_mob", LegendarySwordMobItem::new);
-    public static final RegistryObject<Item> HEAVY_ATTACK_LEGENDARY_SWORD_MOB = AnnoyingVillagersModItems.REGISTRY.register("heavy_attack_legendary_sword_mob", HeavyAttackLegendarySwordMobItem::new);
-    public static final RegistryObject<Item> AXE_ATTACK_LEGENDARY_SWORD_MOB_AWAKENED = AnnoyingVillagersModItems.REGISTRY.register("axe_attack_legendary_sword_mob_awakened", AxeAttackLegendarySwordMobAwakenedItem::new);
-    public static final RegistryObject<Item> HEAVY_ATTACK_LEGENDARY_SWORD_MOB_AWAKENED = AnnoyingVillagersModItems.REGISTRY.register("heavy_attack_legendary_sword_mob_awakened", HeavyAttackLegendarySwordMobAwakendedItem::new);
     // ------------------------------
 
     // Armor
@@ -202,6 +198,6 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> BROKEN_DIAMOND_BOOTS = AnnoyingVillagersModItems.REGISTRY.register("broken_diamond_boots", BrokenDiamondArmorItem.Boots::new);
 
     private static RegistryObject<Item> block(RegistryObject<Block> registryobject, CreativeModeTab creativemodetab) {
-        return AnnoyingVillagersModItems.REGISTRY.register(registryobject.getId().getPath(), () -> new BlockItem((Block) registryobject.get(), (new Properties())));
+        return AnnoyingVillagersModItems.REGISTRY.register(registryobject.getId().getPath(), () -> new BlockItem(registryobject.get(), (new Properties())));
     }
 }

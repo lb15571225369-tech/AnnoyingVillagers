@@ -7,11 +7,14 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import reascer.wom.gameasset.animations.weapons.AnimsAgony;
 import yesman.epicfight.skill.SkillBuilder;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
+import yesman.epicfight.world.effect.EpicFightMobEffects;
 
 public class LegendarySwordSkill extends WeaponInnateSkill {
     public LegendarySwordSkill(SkillBuilder<? extends WeaponInnateSkill> builder) {
@@ -22,10 +25,11 @@ public class LegendarySwordSkill extends WeaponInnateSkill {
     public void executeOnServer(SkillContainer skillContainer, FriendlyByteBuf friendlyByteBuf) {
         super.executeOnServer(skillContainer, friendlyByteBuf);
 
-        Entity entity = skillContainer.getExecutor().getOriginal();
+        LivingEntity entity = skillContainer.getExecutor().getOriginal();
         ServerLevel serverLevel = (ServerLevel) entity.level();
 
         skillContainer.getExecutor().playAnimationSynchronized(AnimsAgony.AGONY_RISING_EAGLE, 0.0F);
+        entity.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 60, 2));
         new DelayedTask(10) {
             @Override
             public void run() {

@@ -51,7 +51,7 @@ public class SteveOnHurtProcedure {
                                     new DelayedTask(40) {
                                         public void run() {
                                             if (entity.isAlive()) {
-                                                entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.LEGENDARY_SWORD_MOB.get()));
+                                                entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.LEGENDARY_SWORD.get()));
                                                 entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.SMITE, 4);
                                                 entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.SWEEPING_EDGE, 4);
                                                 entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.SHARPNESS, 4);
@@ -261,7 +261,7 @@ public class SteveOnHurtProcedure {
                                 }
                             }
                         };
-                        entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.HEAVY_ATTACK_LEGENDARY_SWORD_MOB.get()));
+                        entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.HEAVY_ATTACK_LEGENDARY_SWORD.get()));
 
                         if (!entity.level().isClientSide() && entity.getServer() != null) {
                             try {
@@ -289,7 +289,7 @@ public class SteveOnHurtProcedure {
                         new DelayedTask(8) {
                             public void run() {
                                 if (entity.isAlive()) {
-                                    entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.AXE_ATTACK_LEGENDARY_SWORD_MOB_AWAKENED.get()));
+                                    entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.HEAVY_ATTACK_LEGENDARY_SWORD.get()));
                                 }
 
                                 if (levelaccessor instanceof Level level) {
@@ -343,7 +343,7 @@ public class SteveOnHurtProcedure {
                                 new DelayedTask(25) {
                                     public void run() {
                                         if (entity.isAlive()) {
-                                            entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.HEAVY_ATTACK_LEGENDARY_SWORD_MOB.get()));
+                                            entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.HEAVY_ATTACK_LEGENDARY_SWORD.get()));
                                             new DelayedTask(20) {
                                                 public void run() {
                                                     if (entity.isAlive()) {

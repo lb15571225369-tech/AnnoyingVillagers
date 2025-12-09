@@ -30,7 +30,7 @@ public class Steve2OnSpawnProcedure {
 
             if (entity instanceof LivingEntity) {
                 livingentity = (LivingEntity)entity;
-                ItemStack itemstack = new ItemStack((ItemLike) AnnoyingVillagersModItems.LEGENDARY_SWORD_MOB.get());
+                ItemStack itemstack = new ItemStack((ItemLike) AnnoyingVillagersModItems.LEGENDARY_SWORD.get());
 
                 itemstack.setCount(1);
                 livingentity.setItemInHand(InteractionHand.MAIN_HAND, itemstack);
