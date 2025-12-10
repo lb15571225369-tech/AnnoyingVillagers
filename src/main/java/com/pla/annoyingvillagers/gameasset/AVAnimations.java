@@ -12,11 +12,13 @@ import java.util.Random;
 import java.util.Set;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.animations.BowAttackAnimation;
+import com.pla.annoyingvillagers.animations.*;
 import com.pla.annoyingvillagers.util.BowFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -28,9 +30,6 @@ import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import com.pla.annoyingvillagers.animations.AttackBreakAnimation;
-import com.pla.annoyingvillagers.animations.HeavyAttackAnimation;
-import com.pla.annoyingvillagers.animations.KickAttackAnimation;
 import net.minecraftforge.fml.common.Mod;
 import reascer.wom.animation.WomAnimationProperty;
 import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
@@ -98,7 +97,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<KickAttackAnimation> KICK_4;
     public static AnimationManager.AnimationAccessor<KickAttackAnimation> KICK_RUSH;
     public static AnimationManager.AnimationAccessor<KickAttackAnimation> FIST_UP;
-    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> RUSH_SWORD;
+    public static AnimationManager.AnimationAccessor<RushSwordAnimation> RUSH_SWORD;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> DUAL_DANCING_EDGE;
     public static AnimationManager.AnimationAccessor<KnockdownAnimation> LEFT_KNOCKDOWN;
     public static AnimationManager.AnimationAccessor<AttackAnimation> SWEEPING_EDGE;
@@ -182,7 +181,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> EATING_ELITE_4;
     public static AnimationManager.AnimationAccessor<StaticAnimation> HEROBRINE_HEALING;
     public static AnimationManager.AnimationAccessor<StaticAnimation> HEROBRINE_SACRIFICING;
-    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> BULL_CHARGE;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_AEGIS_BULL_CHARGE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> SNAKE_BLADE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> IDLE_BREAK;
     public static AnimationManager.AnimationAccessor<StaticAnimation> THROWING_ENDER_PEARL_OFFHAND;
@@ -430,7 +429,9 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(2.5F))
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
         AVAnimations.RUSH_SWORD = builder.nextAccessor("biped/combat/rush_sword",
-                (accessor) -> (new BasicMultipleAttackAnimation(0.15F, 0.0F, 0.1F, 0.26F, 0.75F, ColliderPreset.SWORD, humanoidarmature.get().toolR, accessor, humanoidarmature))
+                (accessor) -> (new RushSwordAnimation(
+                        0.15F, 0.0F, 0.1F, 0.26F, 0.75F,
+                        ColliderPreset.SWORD, humanoidarmature.get().toolR, accessor, humanoidarmature))
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)
                         .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.BLADE_RUSH_SKILL)
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE)
@@ -962,7 +963,7 @@ public class AVAnimations {
                         .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
                         .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true).addState(EntityState.CAN_SKILL_EXECUTION, false).addState(EntityState.CAN_BASIC_ATTACK, false).addState(EntityState.MOVEMENT_LOCKED, true).addState(EntityState.TURNING_LOCKED, false).addState(EntityState.LOCKON_ROTATE, false)
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
-        AVAnimations.BULL_CHARGE = builder.nextAccessor("biped/other/bull_charge",
+        AVAnimations.ENDER_AEGIS_BULL_CHARGE = builder.nextAccessor("biped/skill/ender_aegis_bull_charge",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.2F, accessor, humanoidarmature, new Phase(0.0F, 0.2F, 0.25F, 0.29F, 0.29F,
                         humanoidarmature.get().rootJoint, WOMWeaponColliders.SHOULDER_BUMP),
                         new Phase(0.29F, 0.3F, 0.35F, 0.39F, 0.39F,

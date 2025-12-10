@@ -22,7 +22,7 @@ public class ChrisOnHurtProcedure {
                     sword.enchant(Enchantments.UNBREAKING, 5);
                     entity.setItemInHand(InteractionHand.MAIN_HAND, sword);
                 } else if (Math.random() <= 0.3D) {
-                    ItemStack sword = new ItemStack((ItemLike) AnnoyingVillagersModItems.ENCHANTED_WOODEN_DOOR.get());
+                    ItemStack sword = new ItemStack((ItemLike) AnnoyingVillagersModItems.WOODEN_DOOR.get());
                     sword.enchant(Enchantments.SMITE, 4);
                     sword.enchant(Enchantments.SHARPNESS, 4);
                     sword.enchant(Enchantments.SWEEPING_EDGE, 4);

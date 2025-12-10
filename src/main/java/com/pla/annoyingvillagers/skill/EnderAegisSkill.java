@@ -52,8 +52,9 @@ public class EnderAegisSkill extends WeaponInnateSkill {
     public void executeOnServer(SkillContainer skillContainer, FriendlyByteBuf friendlyByteBuf) {
         skillContainer.getExecutor().playAnimationSynchronized(AnimsNapoleon.NAPOLEON_RELOAD_1, 0.0F);
         skillContainer.getExecutor().playSound(AnnoyingVillagersModSounds.SECOND_FORM_RELEASE.get(), 0.0F, 0.0F);
-        if (this.isActivated(skillContainer)) {
+        if (skillContainer.isActivated()) {
             this.cancelOnServer(skillContainer, friendlyByteBuf);
+            skillContainer.deactivate();
         } else {
             super.executeOnServer(skillContainer, friendlyByteBuf);
             skillContainer.activate();
@@ -61,9 +62,9 @@ public class EnderAegisSkill extends WeaponInnateSkill {
     }
 
     @Override
-    public void cancelOnServer(SkillContainer skillContainer, FriendlyByteBuf friendlyByteBuf) {
-        skillContainer.deactivate();
-        super.cancelOnServer(skillContainer, friendlyByteBuf);
+    public boolean canExecute(SkillContainer container) {
+        if (container.isActivated()) return true;
+        return super.canExecute(container);
     }
 
     public void executeOnClient(SkillContainer container, FriendlyByteBuf args) {
@@ -85,7 +86,7 @@ public class EnderAegisSkill extends WeaponInnateSkill {
                     if (skillContainer == null) return;
                     if (skillContainer.isActivated()) {
                         event.setCanceled(true);
-                        skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.BULL_CHARGE, 0.0F);
+                        skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.ENDER_AEGIS_BULL_CHARGE, 0.0F);
                     }
                 }
         );

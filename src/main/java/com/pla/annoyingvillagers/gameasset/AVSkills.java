@@ -21,6 +21,8 @@ public class AVSkills {
     public static Skill ENDER_SLAYER_SCYTHE;
     public static Skill BOW;
     public static Skill LEGENDARY_SWORD;
+    public static Skill WOOPIE_THE_SWORD;
+    public static Skill HARD_GREAT_SWORD;
 
     @SubscribeEvent
     public static void buildSkillEvent(SkillBuildEvent skillbuildevent) {
@@ -32,5 +34,7 @@ public class AVSkills {
         AVSkills.ENDER_SLAYER_SCYTHE = modRegistry.build("ender_slayer_scythe", EnderSlayerScytheSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
         AVSkills.BOW = modRegistry.build("bow", BowSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
         AVSkills.LEGENDARY_SWORD = modRegistry.build("legendary_sword", LegendarySwordSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
+        AVSkills.WOOPIE_THE_SWORD = modRegistry.build("woopie_the_sword", WoopieTheSwordSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
+        AVSkills.HARD_GREAT_SWORD = modRegistry.build("hard_greatsword", HardGreatSwordSkill::new, WeaponInnateSkill.createWeaponInnateBuilder().setActivateType(Skill.ActivateType.DURATION));
     }
 }

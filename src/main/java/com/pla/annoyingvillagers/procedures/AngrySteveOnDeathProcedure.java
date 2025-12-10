@@ -371,7 +371,7 @@ public class AngrySteveOnDeathProcedure {
                     if (levelaccessor1 instanceof Level) {
                         level1 = (Level)levelaccessor1;
                         if (!level1.isClientSide()) {
-                            ItemStack itemStack = new ItemStack((ItemLike)AnnoyingVillagersModItems.ENCHANTED_WOODEN_DOOR.get());
+                            ItemStack itemStack = new ItemStack((ItemLike)AnnoyingVillagersModItems.WOODEN_DOOR.get());
                             itemStack.setDamageValue(EquipmentDataLoader.getRandomDamage(itemStack));
                             itementity = new ItemEntity(level1, d0, d1 + 1.0D, d2, itemStack);
                             itementity.setPickUpDelay(10);

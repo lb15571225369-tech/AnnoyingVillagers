@@ -23,8 +23,6 @@ public class LegendarySwordSkill extends WeaponInnateSkill {
 
     @Override
     public void executeOnServer(SkillContainer skillContainer, FriendlyByteBuf friendlyByteBuf) {
-        super.executeOnServer(skillContainer, friendlyByteBuf);
-
         LivingEntity entity = skillContainer.getExecutor().getOriginal();
         ServerLevel serverLevel = (ServerLevel) entity.level();
 

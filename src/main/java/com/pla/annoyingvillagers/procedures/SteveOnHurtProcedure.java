@@ -96,7 +96,7 @@ public class SteveOnHurtProcedure {
                                     new DelayedTask(40) {
                                         public void run() {
                                             if (entity.isAlive()) {
-                                                entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.ENCHANTED_WOODEN_DOOR.get()));
+                                                entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.WOODEN_DOOR.get()));
                                                 entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.SMITE, 4);
                                                 entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.SWEEPING_EDGE, 4);
                                                 entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.SHARPNESS, 4);

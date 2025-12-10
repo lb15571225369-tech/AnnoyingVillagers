@@ -96,6 +96,25 @@ public class VillagerGeneralPatch extends CEHumanoidPatch implements CustomExecu
                         ));
 
         this.weaponLivingMotions
+                .put(AVCategories.WOOPIE_THE_SWORD,
+                        ImmutableMap.of(
+                                Styles.ONE_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, Animations.SWORD_GUARD),
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
+                                        Pair.of(LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD),
+                                        Pair.of(LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )
+                        ));
+        this.weaponAttackMotions
+                .put(AVCategories.WOOPIE_THE_SWORD,
+                        ImmutableMap.of(
+                                Styles.ONE_HAND, VillagerCommonSword.AV_SWORD
+                        ));
+
+        this.weaponLivingMotions
                 .put(WeaponCategories.SWORD,
                         ImmutableMap.of(
                                 Styles.ONE_HAND,

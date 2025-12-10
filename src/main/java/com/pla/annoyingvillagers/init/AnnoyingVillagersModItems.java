@@ -88,7 +88,6 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> DIAMOND_LONG_SWORD = AnnoyingVillagersModItems.REGISTRY.register("diamond_long_sword", DiamondLongSwordItem::new);
     public static final RegistryObject<Item> DIAMOND_GREAT_SWORD = AnnoyingVillagersModItems.REGISTRY.register("diamond_great_sword", DiamondGreatSwordItem::new);
     public static final RegistryObject<Item> CRAFTING_TABLE = AnnoyingVillagersModItems.REGISTRY.register("crafting_table", CraftingTableItem::new);
-    public static final RegistryObject<Item> ENCHANTED_WOODEN_DOOR = AnnoyingVillagersModItems.REGISTRY.register("enchanted_wooden_door", EnchantedWoodenDoorItem::new);
     public static final RegistryObject<Item> WOODEN_DOOR = AnnoyingVillagersModItems.REGISTRY.register("wooden_door", WoodenDoorItem::new);
     public static final RegistryObject<Item> DIAMOND_BLADE = AnnoyingVillagersModItems.REGISTRY.register("diamond_blade", DiamondBladeItem::new);
     public static final RegistryObject<Item> DIAMOND_DAGGER = AnnoyingVillagersModItems.REGISTRY.register("diamond_dagger", DiamondDaggerItem::new);

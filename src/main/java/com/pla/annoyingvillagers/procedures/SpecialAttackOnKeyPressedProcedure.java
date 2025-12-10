@@ -29,7 +29,9 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import reascer.wom.gameasset.WOMAnimations;
+import reascer.wom.gameasset.animations.weapons.AnimsHerrscher;
 import reascer.wom.gameasset.animations.weapons.AnimsNapoleon;
+import reascer.wom.gameasset.animations.weapons.AnimsRuine;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.LongHitAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
@@ -224,6 +226,20 @@ public class SpecialAttackOnKeyPressedProcedure {
             if (holdingItem.getItem().equals(AnnoyingVillagersModItems.LEGENDARY_SWORD.get())) {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
                     livingEntityPatch.playAnimationSynchronized(AnimsNapoleon.NAPOLEON_WATERLOW_SHOOT, 0.0F);
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
+                    return;
+                }
+            }
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get())) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    livingEntityPatch.playAnimationSynchronized(AnimsRuine.RUINE_AUTO_4, 0.0F);
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
+                    return;
+                }
+            }
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.HARD_GREATSWORD.get())) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    livingEntityPatch.playAnimationSynchronized(AnimsHerrscher.HERRSCHER_AUTO_2, 0.0F);
                     player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
                     return;
                 }

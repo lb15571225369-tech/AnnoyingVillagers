@@ -58,7 +58,6 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.POISON_EGG_ITEM.get());
                         pOutput.accept(AnnoyingVillagersModItems.ENCHANTED_ENDER_PEARL.get());
                         pOutput.accept(AnnoyingVillagersModItems.CRAFTING_TABLE.get());
-                        pOutput.accept(AnnoyingVillagersModItems.ENCHANTED_WOODEN_DOOR.get());
                         pOutput.accept(AnnoyingVillagersModItems.WOODEN_DOOR.get());
                         pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get());
                         pOutput.accept(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get());
