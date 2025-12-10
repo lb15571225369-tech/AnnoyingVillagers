@@ -1,7 +1,7 @@
 {
   "parent": "annoyingvillagers:custom/iron_spear",
   "textures": {
-    "0": "annoyingvillagers:block/iron_spear",
+    "0": "annoyingvillagers:item/iron_spear",
     "particle": "annoyingvillagers:item/iron_spear"
   }
 }

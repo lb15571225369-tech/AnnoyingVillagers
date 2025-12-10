@@ -42,6 +42,12 @@ public class GuardRegisterEvent {
                     .addGuardMotion(AVCategories.ENDER_GLAIVE, (item, player) -> AVAnimations.SPEAR_GUARD_HIT)
                     .addGuardMotion(AVCategories.ENDER_SLAYER_SCYTHE, (item, player) -> AVAnimations.SPEAR_GUARD_HIT)
                     .addGuardMotion(AVCategories.LEGENDARY_SWORD, (item, player) -> AVAnimations.LEGENDARY_SWORD_GUARD_HIT)
+                    .addGuardMotion(AVCategories.HARD_GREATSWORD, (item, player) -> AVAnimations.HARD_GREATSWORD_GUARD_HIT)
+                    .addGuardMotion(AVCategories.WOOPIE_THE_SWORD, (item, player) -> AVAnimations.HARD_GREATSWORD_GUARD_HIT)
+                    .addGuardMotion(AVCategories.WOODEN_DOOR, (item, player) -> Animations.GREATSWORD_GUARD_HIT)
+                    .addGuardMotion(AVCategories.TRAPDOOR, (item, player) -> Animations.GREATSWORD_GUARD_HIT)
+                    .addGuardMotion(AVCategories.LADDER, (item, player) -> Animations.GREATSWORD_GUARD_HIT)
+                    .addGuardMotion(AVCategories.CRAFTING_TABLE, (item, player) -> Animations.GREATSWORD_GUARD_HIT)
                     .addGuardBreakMotion(AVCategories.AV_SWORD, (item, player) -> Animations.BIPED_COMMON_NEUTRALIZED)
                     .addGuardBreakMotion(AVCategories.AV_AXE, (item, player) -> Animations.BIPED_COMMON_NEUTRALIZED)
                     .addGuardBreakMotion(AVCategories.AV_GREATSWORD, (item, player) -> Animations.GREATSWORD_GUARD_BREAK)
@@ -53,7 +59,13 @@ public class GuardRegisterEvent {
                     .addGuardBreakMotion(AVCategories.OBSIDIAN_SLEDGEHAMMER, (item, player) -> Animations.GREATSWORD_GUARD_BREAK)
                     .addGuardBreakMotion(AVCategories.ENDER_GLAIVE, (item, player) -> Animations.BIPED_COMMON_NEUTRALIZED)
                     .addGuardBreakMotion(AVCategories.ENDER_SLAYER_SCYTHE, (item, player) -> Animations.BIPED_COMMON_NEUTRALIZED)
-                    .addGuardBreakMotion(AVCategories.LEGENDARY_SWORD, (item, player) -> Animations.BIPED_COMMON_NEUTRALIZED);
+                    .addGuardBreakMotion(AVCategories.LEGENDARY_SWORD, (item, player) -> Animations.BIPED_COMMON_NEUTRALIZED)
+                    .addGuardBreakMotion(AVCategories.HARD_GREATSWORD, (item, player) -> Animations.GREATSWORD_GUARD_BREAK)
+                    .addGuardBreakMotion(AVCategories.WOOPIE_THE_SWORD, (item, player) -> Animations.GREATSWORD_GUARD_BREAK)
+                    .addGuardBreakMotion(AVCategories.WOODEN_DOOR, (item, player) -> Animations.GREATSWORD_GUARD_BREAK)
+                    .addGuardBreakMotion(AVCategories.TRAPDOOR, (item, player) -> Animations.BIPED_COMMON_NEUTRALIZED)
+                    .addGuardBreakMotion(AVCategories.LADDER, (item, player) -> Animations.BIPED_COMMON_NEUTRALIZED)
+                    .addGuardBreakMotion(AVCategories.CRAFTING_TABLE, (item, player) -> Animations.BIPED_COMMON_NEUTRALIZED);
         }
     }
 
@@ -75,6 +87,11 @@ public class GuardRegisterEvent {
                     .addGuardMotion(AVCategories.ENDER_SLAYER_SCYTHE, (item, player) -> AVAnimations.SPEAR_GUARD_HIT)
                     .addGuardMotion(AVCategories.LEGENDARY_SWORD, (item, player) -> AVAnimations.LEGENDARY_SWORD_GUARD_HIT)
                     .addGuardMotion(AVCategories.HARD_GREATSWORD, (item, player) -> AVAnimations.HARD_GREATSWORD_GUARD_HIT)
+                    .addGuardMotion(AVCategories.WOOPIE_THE_SWORD, (item, player) -> AVAnimations.HARD_GREATSWORD_GUARD_HIT)
+                    .addGuardMotion(AVCategories.WOODEN_DOOR, (item, player) -> Animations.GREATSWORD_GUARD_HIT)
+                    .addGuardMotion(AVCategories.TRAPDOOR, (item, player) -> Animations.GREATSWORD_GUARD_HIT)
+                    .addGuardMotion(AVCategories.LADDER, (item, player) -> Animations.GREATSWORD_GUARD_HIT)
+                    .addGuardMotion(AVCategories.CRAFTING_TABLE, (item, player) -> Animations.GREATSWORD_GUARD_HIT)
                     .addGuardBreakMotion(AVCategories.AV_SWORD, (item, player) -> Animations.BIPED_COMMON_NEUTRALIZED)
                     .addGuardBreakMotion(AVCategories.AV_AXE, (item, player) -> Animations.BIPED_COMMON_NEUTRALIZED)
                     .addGuardBreakMotion(AVCategories.AV_GREATSWORD, (item, player) -> Animations.GREATSWORD_GUARD_BREAK)
@@ -87,7 +104,12 @@ public class GuardRegisterEvent {
                     .addGuardBreakMotion(AVCategories.ENDER_GLAIVE, (item, player) -> Animations.BIPED_COMMON_NEUTRALIZED)
                     .addGuardBreakMotion(AVCategories.ENDER_SLAYER_SCYTHE, (item, player) -> Animations.BIPED_COMMON_NEUTRALIZED)
                     .addGuardBreakMotion(AVCategories.LEGENDARY_SWORD, (item, player) -> Animations.BIPED_COMMON_NEUTRALIZED)
-                    .addGuardBreakMotion(AVCategories.HARD_GREATSWORD, (item, player) -> Animations.GREATSWORD_GUARD_BREAK);
+                    .addGuardBreakMotion(AVCategories.HARD_GREATSWORD, (item, player) -> Animations.GREATSWORD_GUARD_BREAK)
+                    .addGuardBreakMotion(AVCategories.WOOPIE_THE_SWORD, (item, player) -> Animations.GREATSWORD_GUARD_BREAK)
+                    .addGuardBreakMotion(AVCategories.WOODEN_DOOR, (item, player) -> Animations.GREATSWORD_GUARD_BREAK)
+                    .addGuardBreakMotion(AVCategories.TRAPDOOR, (item, player) -> Animations.BIPED_COMMON_NEUTRALIZED)
+                    .addGuardBreakMotion(AVCategories.LADDER, (item, player) -> Animations.BIPED_COMMON_NEUTRALIZED)
+                    .addGuardBreakMotion(AVCategories.CRAFTING_TABLE, (item, player) -> Animations.BIPED_COMMON_NEUTRALIZED);;
         }
     }
 
@@ -108,7 +130,12 @@ public class GuardRegisterEvent {
                     .addAvailableWeaponCategory(AVCategories.ENDER_SLAYER_SCYTHE)
                     .addAvailableWeaponCategory(AVCategories.OBSIDIAN_SLEDGEHAMMER)
                     .addAvailableWeaponCategory(AVCategories.LEGENDARY_SWORD)
-                    .addAvailableWeaponCategory(AVCategories.HARD_GREATSWORD);
+                    .addAvailableWeaponCategory(AVCategories.HARD_GREATSWORD)
+                    .addAvailableWeaponCategory(AVCategories.WOOPIE_THE_SWORD)
+                    .addAvailableWeaponCategory(AVCategories.WOODEN_DOOR)
+                    .addAvailableWeaponCategory(AVCategories.TRAPDOOR)
+                    .addAvailableWeaponCategory(AVCategories.CRAFTING_TABLE)
+                    .addAvailableWeaponCategory(AVCategories.LADDER);
         }
     }
 
@@ -120,7 +147,8 @@ public class GuardRegisterEvent {
                     .addAvailableWeaponCategory(AVCategories.AV_SWORD)
                     .addAvailableWeaponCategory(AVCategories.AV_LONGSWORD)
                     .addAvailableWeaponCategory(AVCategories.AV_TACHI)
-                    .addAvailableWeaponCategory(AVCategories.HARD_GREATSWORD);
+                    .addAvailableWeaponCategory(AVCategories.HARD_GREATSWORD)
+                    .addAvailableWeaponCategory(AVCategories.WOOPIE_THE_SWORD);
         }
     }
 
@@ -129,7 +157,7 @@ public class GuardRegisterEvent {
     public static void onIconCreate(WeaponCategoryIconRegisterEvent icon){
         icon.registerCategory(AVCategories.AV_AXE, new ItemStack(AnnoyingVillagersModItems.DIAMOND_DOUBLE_BIT_AXE.get()));
         icon.registerCategory(AVCategories.AV_GREATSWORD, new ItemStack(AnnoyingVillagersModItems.DIAMOND_GREAT_SWORD.get()));
-        icon.registerCategory(AVCategories.AV_SWORD, new ItemStack(AnnoyingVillagersModItems.EMERALD_SWORD.get()));
+        icon.registerCategory(AVCategories.AV_SWORD, new ItemStack(AnnoyingVillagersModItems.DIAMOND_SWORD.get()));
         icon.registerCategory(AVCategories.AV_LONGSWORD, new ItemStack(AnnoyingVillagersModItems.DIAMOND_LONG_SWORD.get()));
         icon.registerCategory(AVCategories.AV_SPEAR, new ItemStack(AnnoyingVillagersModItems.DIAMOND_SPEAR.get()));
         icon.registerCategory(AVCategories.AV_TACHI, new ItemStack(AnnoyingVillagersModItems.DIAMOND_LONG_BLADE.get()));
@@ -140,5 +168,10 @@ public class GuardRegisterEvent {
         icon.registerCategory(AVCategories.OBSIDIAN_SLEDGEHAMMER, new ItemStack(AnnoyingVillagersModItems.OBSIDIAN_SLEDGEHAMMER.get()));
         icon.registerCategory(AVCategories.LEGENDARY_SWORD, new ItemStack(AnnoyingVillagersModItems.LEGENDARY_SWORD.get()));
         icon.registerCategory(AVCategories.HARD_GREATSWORD, new ItemStack(AnnoyingVillagersModItems.HARD_GREATSWORD.get()));
+        icon.registerCategory(AVCategories.WOOPIE_THE_SWORD, new ItemStack(AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get()));
+        icon.registerCategory(AVCategories.WOODEN_DOOR, new ItemStack(AnnoyingVillagersModItems.WOODEN_DOOR.get()));
+        icon.registerCategory(AVCategories.CRAFTING_TABLE, new ItemStack(AnnoyingVillagersModItems.CRAFTING_TABLE.get()));
+        icon.registerCategory(AVCategories.LADDER, new ItemStack(AnnoyingVillagersModItems.LADDER.get()));
+        icon.registerCategory(AVCategories.TRAPDOOR, new ItemStack(AnnoyingVillagersModItems.TRAPDOOR.get()));
     }
 }

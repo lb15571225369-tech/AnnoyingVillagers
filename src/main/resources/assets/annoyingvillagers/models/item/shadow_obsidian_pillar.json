@@ -2,6 +2,6 @@
   "parent": "annoyingvillagers:custom/shadow_obsidian_pillar",
   "textures": {
     "0": "annoyingvillagers:block/shadow_obsidian_pillar",
-    "particle": "annoyingvillagers:item/shadow_obsidian_pillar"
+    "particle": "annoyingvillagers:block/shadow_obsidian_pillar"
   }
 }

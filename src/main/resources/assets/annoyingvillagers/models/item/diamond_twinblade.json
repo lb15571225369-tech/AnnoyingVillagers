@@ -1,7 +1,7 @@
 {
   "parent": "annoyingvillagers:custom/diamond_twinblade",
   "textures": {
-    "0": "annoyingvillagers:block/diamond_twinblade",
+    "0": "annoyingvillagers:item/diamond_twinblade",
     "particle": "annoyingvillagers:item/diamond_twinblade"
   }
 }

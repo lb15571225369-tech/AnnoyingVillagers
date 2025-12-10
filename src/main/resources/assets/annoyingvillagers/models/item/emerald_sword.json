@@ -1,7 +1,7 @@
 {
   "parent": "annoyingvillagers:custom/emerald_sword",
   "textures": {
-    "0": "annoyingvillagers:block/emerald_sword",
+    "0": "annoyingvillagers:item/emerald_sword",
     "particle": "annoyingvillagers:item/emerald_sword"
   }
 }

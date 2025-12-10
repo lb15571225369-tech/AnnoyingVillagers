@@ -89,6 +89,8 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> DIAMOND_GREAT_SWORD = AnnoyingVillagersModItems.REGISTRY.register("diamond_great_sword", DiamondGreatSwordItem::new);
     public static final RegistryObject<Item> CRAFTING_TABLE = AnnoyingVillagersModItems.REGISTRY.register("crafting_table", CraftingTableItem::new);
     public static final RegistryObject<Item> WOODEN_DOOR = AnnoyingVillagersModItems.REGISTRY.register("wooden_door", WoodenDoorItem::new);
+    public static final RegistryObject<Item> LADDER = AnnoyingVillagersModItems.REGISTRY.register("ladder", LadderItem::new);
+    public static final RegistryObject<Item> TRAPDOOR = AnnoyingVillagersModItems.REGISTRY.register("trapdoor", TrapdoorItem::new);
     public static final RegistryObject<Item> DIAMOND_BLADE = AnnoyingVillagersModItems.REGISTRY.register("diamond_blade", DiamondBladeItem::new);
     public static final RegistryObject<Item> DIAMOND_DAGGER = AnnoyingVillagersModItems.REGISTRY.register("diamond_dagger", DiamondDaggerItem::new);
     public static final RegistryObject<Item> DIAMOND_SWORD = AnnoyingVillagersModItems.REGISTRY.register("diamond_sword", DiamondSwordItem::new);
@@ -119,7 +121,7 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> EMERALD_DOUBLE_BIT_AXE = AnnoyingVillagersModItems.REGISTRY.register("emerald_double_bit_axe", EmeraldDoubleBitAxeItem::new);
     public static final RegistryObject<Item> EMERALD_SWORD = AnnoyingVillagersModItems.REGISTRY.register("emerald_sword", EmeraldSwordItem::new);
     public static final RegistryObject<Item> RUBY_SWORD = AnnoyingVillagersModItems.REGISTRY.register("ruby_sword", RubySwordItem::new);
-    public static final RegistryObject<Item> RUBY_GREAT_SWORD = AnnoyingVillagersModItems.REGISTRY.register("ruby_great_sword", RubyGreatSwordItem::new);
+    public static final RegistryObject<Item> RUBY_GREATSWORD = AnnoyingVillagersModItems.REGISTRY.register("ruby_greatsword", RubyGreatSwordItem::new);
     public static final RegistryObject<Item> RED_DIAMOND_SWORD = AnnoyingVillagersModItems.REGISTRY.register("red_diamond_sword", RedDiamondSwordItem::new);
     public static final RegistryObject<Item> PURPLE_GEM_LONG_SWORD = AnnoyingVillagersModItems.REGISTRY.register("purple_gem_long_sword", PurpleGemLongSwordItem::new);
     public static final RegistryObject<Item> NULL_SWORD = AnnoyingVillagersModItems.REGISTRY.register("null_sword", NullSwordItem::new);

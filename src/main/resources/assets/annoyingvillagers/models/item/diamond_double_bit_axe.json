@@ -1,7 +1,7 @@
 {
   "parent": "annoyingvillagers:custom/diamond_double_bit_axe",
   "textures": {
-    "layer0": "annoyingvillagers:block/diamond_double_bit_axe",
+    "layer0": "annoyingvillagers:item/diamond_double_bit_axe",
     "particle": "annoyingvillagers:item/diamond_double_bit_axe"
   }
 }

@@ -1,7 +1,7 @@
 {
   "parent": "annoyingvillagers:custom/ender_slayer_scythe",
   "textures": {
-    "0": "annoyingvillagers:block/ender_slayer_scythe",
+    "0": "annoyingvillagers:item/ender_slayer_scythe",
     "particle": "annoyingvillagers:item/ender_slayer_scythe"
   }
 }

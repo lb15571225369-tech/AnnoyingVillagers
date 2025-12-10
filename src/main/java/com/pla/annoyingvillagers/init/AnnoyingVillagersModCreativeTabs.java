@@ -59,6 +59,8 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.ENCHANTED_ENDER_PEARL.get());
                         pOutput.accept(AnnoyingVillagersModItems.CRAFTING_TABLE.get());
                         pOutput.accept(AnnoyingVillagersModItems.WOODEN_DOOR.get());
+                        pOutput.accept(AnnoyingVillagersModItems.TRAPDOOR.get());
+                        pOutput.accept(AnnoyingVillagersModItems.LADDER.get());
                         pOutput.accept(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get());
                         pOutput.accept(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get());
                         pOutput.accept(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get());
@@ -112,7 +114,7 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.EMERALD_DOUBLE_BIT_AXE.get());
                         pOutput.accept(AnnoyingVillagersModItems.EMERALD_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.RUBY_SWORD.get());
-                        pOutput.accept(AnnoyingVillagersModItems.RUBY_GREAT_SWORD.get());
+                        pOutput.accept(AnnoyingVillagersModItems.RUBY_GREATSWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.RED_DIAMOND_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.PURPLE_GEM_LONG_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get());

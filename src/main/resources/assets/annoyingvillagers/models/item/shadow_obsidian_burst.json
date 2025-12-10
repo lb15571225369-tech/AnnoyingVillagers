@@ -2,6 +2,6 @@
   "parent": "annoyingvillagers:custom/shadow_obsidian_burst",
   "textures": {
     "0": "annoyingvillagers:block/dark_obsidian",
-    "particle": "annoyingvillagers:item/dark_obsidian"
+    "particle": "annoyingvillagers:block/dark_obsidian"
   }
 }

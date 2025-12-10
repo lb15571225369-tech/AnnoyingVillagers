@@ -1,7 +1,7 @@
 {
   "parent": "annoyingvillagers:custom/ender_aegis",
   "textures": {
-    "0": "annoyingvillagers:block/ender_aegis",
+    "0": "annoyingvillagers:item/ender_aegis",
     "particle": "annoyingvillagers:item/ender_aegis"
   },
   "overrides": [
