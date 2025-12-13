@@ -64,6 +64,8 @@ public class AVWeaponCapabilityPresets {
                             AnimsAgony.AGONY_AUTO_4,
                             WOMAnimations.STAFF_AUTO_2,
                             WOMAnimations.STAFF_AUTO_3,
+                            AnimsOrbit.ORBIT_ATTACK_2,
+                            AnimsOrbit.ORBIT_ATTACK_3,
                             AnimsNapoleon.NAPOLEON_AUSTERLITZ,
                             AnimsAgony.AGONY_RIPPING_FANGS)
                     .newStyleCombo(Styles.MOUNT,

@@ -2,6 +2,8 @@ package com.pla.annoyingvillagers.item;
 
 import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
+import com.pla.annoyingvillagers.skill.EnderGlaiveSkill;
+import com.pla.annoyingvillagers.skill.EnderSlayerScytheSkill;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -80,6 +82,24 @@ public class EnderGlaiveItem extends SwordItem {
                 m.m31 + (base.getY() + (entity.getBbHeight() / 1.8) - 1.0) + yOffset,
                 m.m32 + base.getZ()
         );
+    }
+
+    @Override
+    public boolean hurtEnemy(@NotNull ItemStack pStack, @NotNull LivingEntity pTarget, @NotNull LivingEntity pAttacker) {
+        if (pAttacker instanceof Player player) {
+            PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+            if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
+                SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.ENDER_GLAIVE);
+                if (skillContainer == null) return super.hurtEnemy(pStack, pTarget, pAttacker);
+                EnderGlaiveSkill enderGlaiveSkill = (EnderGlaiveSkill) skillContainer.getSkill();
+
+                float currentResource = skillContainer.getResource();
+                float neededResource = skillContainer.getNeededResource();
+                float addResource = Math.min(5.0F, neededResource);
+                enderGlaiveSkill.setConsumptionSynchronize(skillContainer, currentResource + addResource);
+            }
+        }
+        return super.hurtEnemy(pStack, pTarget, pAttacker);
     }
 
     public void inventoryTick(ItemStack itemstack, Level level, Entity entity, int i, boolean flag) {

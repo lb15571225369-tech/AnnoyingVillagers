@@ -18,6 +18,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -45,6 +46,7 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
+import yesman.epicfight.world.effect.EpicFightMobEffects;
 
 import java.util.Objects;
 
@@ -106,6 +108,7 @@ public class SpecialAttackOnKeyPressedProcedure {
             }
             if (holdingItem.getItem().equals(AnnoyingVillagersModItems.ENDER_GLAIVE.get())) {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    livingEntityPatch.getOriginal().addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 40, 3));
                     livingEntityPatch.playAnimationSynchronized(AnimsNapoleon.NAPOLEON_SHOOT_3, 0.0F);
                     PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
                     if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {

@@ -11,6 +11,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -23,6 +24,7 @@ import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.skill.SkillBuilder;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
+import yesman.epicfight.world.effect.EpicFightMobEffects;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -39,6 +41,7 @@ public class EnderGlaiveSkill extends WeaponInnateSkill {
         if (!this.isActivated(skillContainer)) {
             super.executeOnServer(skillContainer, friendlyByteBuf);
             skillContainer.activate();
+            skillContainer.getExecutor().getOriginal().addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 40, 3));
             skillContainer.getExecutor().playAnimationSynchronized(AnimsAgony.AGONY_AUTO_1, 0.0F);
 
             Player player = skillContainer.getExecutor().getOriginal();
