@@ -1,10 +1,12 @@
 package com.pla.annoyingvillagers.client.engine;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
 import com.pla.annoyingvillagers.client.emitterinfo.EnderGlaiveExplosionParticleEmitterInfo;
+import com.pla.annoyingvillagers.network.ClientboundWoopieSwordWindFx;
 import mod.chloeprime.aaaparticles.api.common.AAALevel;
 import mod.chloeprime.aaaparticles.api.common.ParticleEmitterInfo;
 import com.pla.annoyingvillagers.util.ExplosionFxMute;
@@ -17,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
+import yesman.epicfight.gameasset.EpicFightSounds;
 
 @OnlyIn(Dist.CLIENT)
 public final class ClientPacketHandlers {
@@ -32,12 +35,8 @@ public final class ClientPacketHandlers {
                         EnderGlaiveExplosionParticleEmitterInfo.ForwardAxis.PLUS_Z, 0f, true)
                 .spawnInWorld(level, null);
 
-        SoundEvent se = ForgeRegistries.SOUND_EVENTS.getValue(
-                ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_shot"));
-        if (se != null) {
-            level.playLocalSound(msg.from.x, msg.from.y, msg.from.z, se,
-                    SoundSource.NEUTRAL, 1.0F, 1.0F, false);
-        }
+        level.playLocalSound(msg.from.x, msg.from.y, msg.from.z, AnnoyingVillagersModSounds.ENDER_SHOT.get(),
+                SoundSource.NEUTRAL, 1.0F, 1.0F, false);
     }
 
     public static void handleMuteExplosionAtPos(ClientboundMuteExplosionAtPos msg) {
@@ -54,5 +53,18 @@ public final class ClientPacketHandlers {
                 new ParticleEmitterInfo(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "herobrine_portal"))
                         .clone()
                         .position(msg.from.x, msg.from.y, msg.from.z));
+    }
+
+    public static void handleWoopieSwordWind(ClientboundWoopieSwordWindFx msg) {
+        Level level = Minecraft.getInstance().level;
+        if (level == null) return;
+
+        AAALevel.addParticle(level, false,
+                new ParticleEmitterInfo(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "woopie_sword_wind"))
+                        .clone()
+                        .position(msg.from.x, msg.from.y, msg.from.z));
+
+        level.playLocalSound(msg.from.x, msg.from.y, msg.from.z, AnnoyingVillagersModSounds.WOOPIE_WIND.get(),
+                SoundSource.NEUTRAL, 1.0F, 1.0F, false);
     }
 }

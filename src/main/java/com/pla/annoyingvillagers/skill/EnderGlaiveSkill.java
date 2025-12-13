@@ -1,11 +1,13 @@
 package com.pla.annoyingvillagers.skill;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.item.EnderGlaiveItem;
 import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
 import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
 import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -19,12 +21,20 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import reascer.wom.gameasset.animations.weapons.AnimsAgony;
+import reascer.wom.gameasset.animations.weapons.AnimsHerrscher;
+import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.skill.SkillBuilder;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.effect.EpicFightMobEffects;
+import yesman.epicfight.world.entity.eventlistener.DealDamageEvent;
+import yesman.epicfight.world.entity.eventlistener.PlayerEventListener;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -50,7 +60,7 @@ public class EnderGlaiveSkill extends WeaponInnateSkill {
                 new DelayedTask(6) {
                     @Override
                     public void run() {
-                        Vec3 tipPos = EnderGlaiveItem.getJointWithTranslation(
+                        Vec3 tipPos = EpicfightUtil.getJointWithTranslation(
                                 player,
                                 new Vec3f(0.0F, 0.0F, 0.0F),
                                 Armatures.BIPED.get().toolR,
@@ -65,16 +75,16 @@ public class EnderGlaiveSkill extends WeaponInnateSkill {
                             );
                             player.level().explode(player, tipPos.x, tipPos.y, tipPos.z,
                                     2.0F, true, Level.ExplosionInteraction.TNT);
-                            Vec3 glaivePos = EnderGlaiveItem.getJointWithTranslation(player, new Vec3f(0, 0, 0),
+                            Vec3 glaivePos = EpicfightUtil.getJointWithTranslation(player, new Vec3f(0, 0, 0),
                                     Armatures.BIPED.get().toolR, 1.3F, 2.3F);
-                            Vec3 explosionPos = EnderGlaiveItem.getJointWithTranslation(player, new Vec3f(0, 0, 0),
+                            Vec3 explosionPos = EpicfightUtil.getJointWithTranslation(player, new Vec3f(0, 0, 0),
                                     Armatures.BIPED.get().toolR, 10.3F, 2.3F);
                             AnnoyingVillagers.PACKET_HANDLER.send(
                                     PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player),
                                     new ClientboundGlaiveExplosionFx(glaivePos, explosionPos)
                             );
                             if (explosionPos != null) {
-                                player.level().playSound((Player) null, new BlockPos((int) explosionPos.x, (int) explosionPos.y, (int) explosionPos.z), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_shot"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                player.level().playSound(null, new BlockPos((int) explosionPos.x, (int) explosionPos.y, (int) explosionPos.z), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_shot"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                             }
                         }
                     }

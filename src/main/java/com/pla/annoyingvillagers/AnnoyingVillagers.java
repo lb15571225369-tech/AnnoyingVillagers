@@ -108,6 +108,12 @@ public class AnnoyingVillagers {
                     ClientboundHerobrinePortalFx::decode,
                     ClientboundHerobrinePortalFx::handle
             );
+            AnnoyingVillagers.addNetworkMessage(
+                    ClientboundWoopieSwordWindFx.class,
+                    ClientboundWoopieSwordWindFx::encode,
+                    ClientboundWoopieSwordWindFx::decode,
+                    ClientboundWoopieSwordWindFx::handle
+            );
         }
     }
 

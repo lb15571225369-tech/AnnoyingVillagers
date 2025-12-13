@@ -43,7 +43,6 @@ import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
-import yesman.epicfight.world.damagesource.StunType;
 
 public class SnakeBladeEntity extends Entity {
 
@@ -205,9 +204,7 @@ public class SnakeBladeEntity extends Entity {
 
                 double dx = this.getX() - target.getX();
                 double dz = this.getZ() - target.getZ();
-                if (dx*dx + dz*dz > 1.0E-6) {
-                    target.knockback(knockBackStrength, dx, dz);
-                }
+                target.knockback(knockBackStrength, dx, dz);
 
                 if (new Random().nextBoolean()) {
                     if (!target.level().isClientSide() && target.getServer() != null) {

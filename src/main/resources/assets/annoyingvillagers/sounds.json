@@ -622,5 +622,13 @@
         "stream": false
       }
     ]
+  },
+"woopie_wind": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:woopie_wind",
+        "stream": false
+      }
+    ]
   }
 }

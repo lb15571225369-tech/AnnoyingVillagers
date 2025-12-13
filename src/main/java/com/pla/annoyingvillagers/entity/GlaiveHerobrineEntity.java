@@ -11,6 +11,7 @@ import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
+import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -156,7 +157,7 @@ public class GlaiveHerobrineEntity extends HerobrineMob {
                     @Override
                     public void run() {
                         if (!glaiveHerobrineEntity.level().isClientSide()) {
-                            Vec3 tipPos = enderGlaiveItem.getJointWithTranslation(
+                            Vec3 tipPos = EpicfightUtil.getJointWithTranslation(
                                     glaiveHerobrineEntity,
                                     new Vec3f(0.0F, 0.0F, 0.0F),
                                     Armatures.BIPED.get().toolR,
@@ -170,9 +171,9 @@ public class GlaiveHerobrineEntity extends HerobrineMob {
                             );
                             glaiveHerobrineEntity.level().explode(glaiveHerobrineEntity, tipPos.x, tipPos.y, tipPos.z,
                                     2.0F, true, Level.ExplosionInteraction.TNT);
-                            Vec3 glaivePos = enderGlaiveItem.getJointWithTranslation(glaiveHerobrineEntity, new Vec3f(0,0,0),
+                            Vec3 glaivePos = EpicfightUtil.getJointWithTranslation(glaiveHerobrineEntity, new Vec3f(0,0,0),
                                     Armatures.BIPED.get().toolR, 1.3F, 2.3F);
-                            Vec3 explosionPos = enderGlaiveItem.getJointWithTranslation(glaiveHerobrineEntity, new Vec3f(0,0,0),
+                            Vec3 explosionPos = EpicfightUtil.getJointWithTranslation(glaiveHerobrineEntity, new Vec3f(0,0,0),
                                     Armatures.BIPED.get().toolR, 10.3F, 2.3F);
                             AnnoyingVillagers.PACKET_HANDLER.send(
                                     PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> glaiveHerobrineEntity),

@@ -11,7 +11,9 @@ import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
 import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
 import com.pla.annoyingvillagers.skill.EnderGlaiveSkill;
 import com.pla.annoyingvillagers.skill.EnderSlayerScytheSkill;
+import com.pla.annoyingvillagers.skill.WoopieTheSwordSkill;
 import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -121,7 +123,7 @@ public class SpecialAttackOnKeyPressedProcedure {
                                 new DelayedTask(10) {
                                     @Override
                                     public void run() {
-                                        Vec3 tipPos = EnderGlaiveItem.getJointWithTranslation(
+                                        Vec3 tipPos = EpicfightUtil.getJointWithTranslation(
                                                 player,
                                                 new Vec3f(0.0F, 0.0F, 0.0F),
                                                 Armatures.BIPED.get().toolR,
@@ -136,9 +138,9 @@ public class SpecialAttackOnKeyPressedProcedure {
                                             );
                                             player.level().explode(player, tipPos.x, tipPos.y, tipPos.z,
                                                     2.0F, true, Level.ExplosionInteraction.TNT);
-                                            Vec3 glaivePos = EnderGlaiveItem.getJointWithTranslation(player, new Vec3f(0, 0, 0),
+                                            Vec3 glaivePos = EpicfightUtil.getJointWithTranslation(player, new Vec3f(0, 0, 0),
                                                     Armatures.BIPED.get().toolR, 1.3F, 2.3F);
-                                            Vec3 explosionPos = EnderGlaiveItem.getJointWithTranslation(player, new Vec3f(0, 0, 0),
+                                            Vec3 explosionPos = EpicfightUtil.getJointWithTranslation(player, new Vec3f(0, 0, 0),
                                                     Armatures.BIPED.get().toolR, 10.3F, 2.3F);
                                             AnnoyingVillagers.PACKET_HANDLER.send(
                                                     PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player),
@@ -235,8 +237,24 @@ public class SpecialAttackOnKeyPressedProcedure {
             }
             if (holdingItem.getItem().equals(AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get())) {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
-                    livingEntityPatch.playAnimationSynchronized(AnimsRuine.RUINE_AUTO_4, 0.0F);
-                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
+                    boolean success = false;
+                    PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+                    if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
+                        SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.WOOPIE_THE_SWORD);
+                        if (skillContainer != null && skillContainer.getStack() == 1
+                                && entity.level() instanceof ServerLevel
+                                && skillContainer.getSkill() instanceof WoopieTheSwordSkill woopieTheSwordSkill) {
+                            success = true;
+                            woopieTheSwordSkill.getResourceType().consumer
+                                    .consume(skillContainer, serverPlayerPatch, woopieTheSwordSkill.getDefaultConsumptionAmount(serverPlayerPatch));
+                        }
+                    }
+                    if (success) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.RUSH_SWORD, 0.0F);
+                    } else {
+                        livingEntityPatch.playAnimationSynchronized(AnimsRuine.RUINE_AUTO_4, 0.0F);
+                    }
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
                     return;
                 }
             }
