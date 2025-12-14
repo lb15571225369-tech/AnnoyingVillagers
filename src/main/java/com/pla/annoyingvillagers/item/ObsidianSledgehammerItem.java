@@ -61,7 +61,7 @@ public class ObsidianSledgehammerItem extends AxeItem {
         }, 1.0F, -2.6F, (new Properties()).fireResistant());
     }
 
-    private static void spawnObsidianSpike(double x, double z, double minY, double maxY, float rotation, int delay, Entity entity) {
+    public static void spawnObsidianSpike(double x, double z, double minY, double maxY, float rotation, int delay, Entity entity) {
         BlockPos blockpos = BlockPos.containing(x, maxY, z);
         boolean found = false;
         double topOffset = 0.0D;

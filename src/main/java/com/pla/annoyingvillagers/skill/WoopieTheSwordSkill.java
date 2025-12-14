@@ -71,7 +71,7 @@ public class WoopieTheSwordSkill extends WeaponInnateSkill {
                                 new ClientboundMuteExplosionAtPos(mutePos, 4)
                         );
                         player.level().explode(player, windPos.x, windPos.y, windPos.z,
-                                2.0F, false, Level.ExplosionInteraction.TNT);
+                                2.0F, false, Level.ExplosionInteraction.NONE);
                         AnnoyingVillagers.PACKET_HANDLER.send(
                                 PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player),
                                 new ClientboundWoopieSwordWindFx(windPos)

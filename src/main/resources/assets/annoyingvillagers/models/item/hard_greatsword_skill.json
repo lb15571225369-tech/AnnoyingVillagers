@@ -2,7 +2,7 @@
   "parent": "annoyingvillagers:custom/hard_greatsword_skill",
   "textures": {
     "1": "annoyingvillagers:item/hard_greatsword",
-    "2": "annoyingvillagers:item/hard_greatsword_skill",
+    "2": "annoyingvillagers:item/hard_skill",
     "particle": "annoyingvillagers:item/hard_greatsword"
   }
 }
