@@ -2,11 +2,11 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "minecraft:crafting_table"
+      "item": "minecraft:oak_trapdoor"
     }
   ],
   "result": {
-    "item": "annoyingvillagers:crafting_table",
+    "item": "annoyingvillagers:trapdoor",
     "count": 1
   }
 }

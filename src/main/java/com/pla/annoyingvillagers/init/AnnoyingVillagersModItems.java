@@ -138,6 +138,7 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> HEROBRINE_ENDER_EYE = AnnoyingVillagersModItems.REGISTRY.register("herobrine_ender_eye", HerobrineEnderEyeItem::new);
     public static final RegistryObject<Item> SHADOW_OBSIDIAN_SWORD = AnnoyingVillagersModItems.REGISTRY.register("shadow_obsidian_sword", ShadowObsidianSwordItem::new);
     public static final RegistryObject<Item> DIAMOND_SHEAR = AnnoyingVillagersModItems.REGISTRY.register("diamond_shear", DiamondShearItem::new);
+    public static final RegistryObject<Item> JESSICA_THE_DARK_SHIELD = AnnoyingVillagersModItems.REGISTRY.register("jessica_the_dark_shield", JessicaTheDarkShieldItem::new);
     // ------------------------------
 
 

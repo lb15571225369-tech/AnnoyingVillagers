@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.events;
 
-import com.pla.annoyingvillagers.entity.BlockProjectileEntity;
 import com.pla.annoyingvillagers.entity.ObsidianSledgehammerHitEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
@@ -26,7 +25,6 @@ import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
-import yesman.epicfight.world.damagesource.StunType;
 
 import java.util.Objects;
 import java.util.Random;

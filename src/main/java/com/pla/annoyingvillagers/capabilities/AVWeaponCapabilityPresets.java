@@ -542,45 +542,83 @@ public class AVWeaponCapabilityPresets {
 
     public static final Function<Item, Builder> WOODEN_DOOR = (item) ->
             WeaponCapability.builder()
-                    .category(AVCategories.AV_GREATSWORD)
+                    .category(AVCategories.WOODEN_DOOR)
                     .styleProvider((livingentitypatch) -> Styles.TWO_HAND)
                     .collider(ColliderPreset.GREATSWORD)
-                    .swingSound(EpicFightSounds.WHOOSH_BIG.get())
-                    .hitSound(EpicFightSounds.BLADE_HIT.get())
+                    .swingSound(SoundEvents.WOODEN_DOOR_OPEN)
+                    .hitSound(SoundEvents.WOODEN_DOOR_CLOSE)
                     .newStyleCombo(Styles.TWO_HAND,
                             Animations.GREATSWORD_AUTO1,
                             Animations.GREATSWORD_AUTO2,
                             WOMAnimations.TORMENT_AUTO_2,
                             WOMAnimations.TORMENT_AUTO_3,
-                            AnimsSolar.SOLAR_HORNO,
                             Animations.GREATSWORD_DASH,
-                            Animations.GREATSWORD_AIR_SLASH)
-                    .innateSkill(Styles.TWO_HAND, (itemstack) -> EpicFightSkills.STEEL_WHIRLWIND)
+                            WOMAnimations.TORMENT_AIRSLAM)
+                    .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.WOODEN_DOOR)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_GREATSWORD)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_WALK_GREATSWORD)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, Animations.BIPED_RUN_GREATSWORD)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AnimsSolar.SOLAR_GUARD);
 
+    public static final Function<Item, Builder> TRAPDOOR = (item) ->
+            WeaponCapability.builder()
+                    .category(AVCategories.TRAPDOOR)
+                    .styleProvider((livingentitypatch) -> Styles.TWO_HAND)
+                    .collider(ColliderPreset.SWORD)
+                    .swingSound(SoundEvents.WOODEN_TRAPDOOR_OPEN)
+                    .hitSound(SoundEvents.WOODEN_TRAPDOOR_CLOSE)
+                    .newStyleCombo(Styles.TWO_HAND,
+                            Animations.SWORD_AUTO1,
+                            Animations.SWORD_AUTO3,
+                            Animations.SWORD_AUTO2,
+                            AnimsHerrscher.HERRSCHER_AUTO_3,
+                            AnimsHerrscher.HERRSCHER_VERDAMMNIS,
+                            Animations.SWORD_AIR_SLASH)
+                    .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.TRAPDOOR)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AVAnimations.SHIELD_MAINHAND);
+
     public static final Function<Item, Builder> CRAFTING_TABLE = (item) ->
             WeaponCapability.builder()
-                    .category(AVCategories.AV_GREATSWORD)
+                    .category(AVCategories.CRAFTING_TABLE)
                     .styleProvider((livingentitypatch) -> Styles.TWO_HAND)
                     .collider(ColliderPreset.GREATSWORD)
                     .swingSound(EpicFightSounds.WHOOSH_BIG.get())
                     .hitSound(EpicFightSounds.BLADE_HIT.get())
                     .newStyleCombo(Styles.TWO_HAND,
-                            Animations.GREATSWORD_AUTO1,
-                            Animations.GREATSWORD_AUTO2,
-                            WOMAnimations.TORMENT_AUTO_2,
-                            WOMAnimations.TORMENT_AUTO_3,
-                            AnimsSolar.SOLAR_HORNO,
-                            Animations.GREATSWORD_DASH,
-                            Animations.GREATSWORD_AIR_SLASH)
-                    .innateSkill(Styles.TWO_HAND, (itemstack) -> EpicFightSkills.STEEL_WHIRLWIND)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_GREATSWORD)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_WALK_GREATSWORD)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, Animations.BIPED_RUN_GREATSWORD)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AnimsSolar.SOLAR_GUARD);
+                            Animations.TACHI_AUTO2,
+                            Animations.TACHI_AUTO3,
+                            AnimsRuine.RUINE_AUTO_1,
+                            AnimsRuine.RUINE_AUTO_2,
+                            AnimsRuine.RUINE_CHATIMENT,
+                            Animations.LONGSWORD_AIR_SLASH)
+                    .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.CRAFTING_TABLE)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AVAnimations.CARRY)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AVAnimations.CARRY)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.CARRY)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AVAnimations.CARRY);
+
+    public static final Function<Item, Builder> LADDER = (item) ->
+            WeaponCapability.builder()
+                    .category(AVCategories.LADDER)
+                    .styleProvider((livingentitypatch) -> Styles.TWO_HAND)
+                    .collider(ColliderPreset.SWORD)
+                    .swingSound(SoundEvents.LADDER_STEP)
+                    .hitSound(SoundEvents.LADDER_HIT)
+                    .newStyleCombo(Styles.TWO_HAND,
+                            Animations.SWORD_AUTO1,
+                            Animations.SWORD_AUTO3,
+                            AVAnimations.SWORD_HEAVY_AUTO_1,
+                            Animations.TACHI_AUTO3,
+                            Animations.SWORD_DASH,
+                            Animations.SWORD_AIR_SLASH)
+                    .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.LADDER)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, Animations.BIPED_RUN)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AnimsMoonless.MOONLESS_GUARD);
 
     public static final Function<Item, CapabilityItem.Builder> BOW = (item) ->
             WeaponCapability.builder()
@@ -642,5 +680,9 @@ public class AVWeaponCapabilityPresets {
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "av_longsword"), AVWeaponCapabilityPresets.AV_LONGSWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "av_greatsword"), AVWeaponCapabilityPresets.AV_GREATSWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "av_bow"), AVWeaponCapabilityPresets.BOW);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "wooden_door"), AVWeaponCapabilityPresets.WOODEN_DOOR);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "crafting_table"), AVWeaponCapabilityPresets.CRAFTING_TABLE);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "trapdoor"), AVWeaponCapabilityPresets.TRAPDOOR);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ladder"), AVWeaponCapabilityPresets.LADDER);
     }
 }

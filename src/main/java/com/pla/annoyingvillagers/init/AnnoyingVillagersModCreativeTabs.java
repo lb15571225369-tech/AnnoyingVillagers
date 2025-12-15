@@ -117,6 +117,7 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.RUBY_GREATSWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.RED_DIAMOND_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.PURPLE_GEM_LONG_SWORD.get());
+                        pOutput.accept(AnnoyingVillagersModItems.JESSICA_THE_DARK_SHIELD.get());
                         pOutput.accept(AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get());
                         pOutput.accept(AnnoyingVillagersModItems.RUBY.get());
                         pOutput.accept(AnnoyingVillagersModItems.PURPLE_GEM.get());

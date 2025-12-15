@@ -7,7 +7,5 @@
 			"max_strikes":9
 		}
 	},
-	"hit_particle":"blunt",
-	"hit_sound":"entity.hit.blunt",
-	"type":"epicfight:greatsword"
+	"type":"annoyingvillagers:crafting_table"
 }

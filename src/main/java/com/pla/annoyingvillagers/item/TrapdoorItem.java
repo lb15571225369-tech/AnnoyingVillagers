@@ -25,7 +25,7 @@ public class TrapdoorItem extends SwordItem {
             }
 
             public float getAttackDamageBonus() {
-                return 2.5F;
+                return 0.5F;
             }
 
             public int getLevel() {
@@ -39,7 +39,7 @@ public class TrapdoorItem extends SwordItem {
             public @NotNull Ingredient getRepairIngredient() {
                 return Ingredient.of(new ItemStack(Blocks.OAK_DOOR));
             }
-        }, 3, -1.5F, (new Properties()));
+        }, 3, -2.5F, (new Properties()));
     }
 
     public void appendHoverText(@NotNull ItemStack itemstack, Level level, @NotNull List<Component> list, @NotNull TooltipFlag tooltipflag) {
