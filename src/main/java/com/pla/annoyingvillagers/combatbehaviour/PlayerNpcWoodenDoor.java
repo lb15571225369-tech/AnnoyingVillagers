@@ -84,10 +84,7 @@ public class PlayerNpcWoodenDoor {
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
                                                                                             .withinDistance(0.0D, 2.0D)
-                                                                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_3, 0.0F).addNextBehavior(
-                                                                                                    Behavior.builder()
-                                                                                                            .withinDistance(0.0D, 2.0D)
-                                                                                            )
+                                                                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_3, 0.0F)
                                                                             )
                                                             )
                                             )
@@ -207,6 +204,19 @@ public class PlayerNpcWoodenDoor {
                                     Behavior.builder()
                                             .withinDistance(0.0D, 2.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                            .weight(40.0D)
+                            .maxCooldown(60)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canJump)
+                                            .withinDistance(1.0D, 14.0D)
+                                            .animationBehavior(Animations.BIPED_JUMP, 0.0F)
+                                            .addExBehavior(CombatCommon::jump)
                             )
             );
 }

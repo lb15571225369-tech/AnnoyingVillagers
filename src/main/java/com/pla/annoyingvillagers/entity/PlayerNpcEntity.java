@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.clazz.PlayerNpcTarget;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
@@ -15,6 +16,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.SimpleContainer;
@@ -38,6 +40,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -250,27 +253,6 @@ public class PlayerNpcEntity extends PlayerMobEntity {
             this.goalSelector.addGoal(4, new RangedBowAttackGoal<>(this, 1.0D, 20, 48.0F));
         }
         ((GroundPathNavigation) this.getNavigation()).setCanOpenDoors(true);
-        if (this.target != null) {
-            switch (this.target) {
-                case HOSTILE_HUNTER -> {
-                    hostileHunterPlayerMob();
-                }
-                case VILLAGER_HUNTER -> {
-                    villagerHunterPlayerMob();
-                }
-                case MOSNTER_HUNTER -> {
-                    monsterHunterPlayerMob();
-                }
-                case PLAYER_HUNTER -> {
-                    playerHunterPlayerMob();
-                }
-                case ANIMAL_HUNTER -> {
-                    animalHunterPlayerMob();
-                }
-                default -> {
-                }
-            }
-        }
     }
 
     public @NotNull MobType getMobType() {
@@ -291,6 +273,19 @@ public class PlayerNpcEntity extends PlayerMobEntity {
 
     public @NotNull SoundEvent getDeathSound() {
         return Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.death")));
+    }
+
+    public void jump() {
+        this.jumpFromGround();
+        Vec3 motion = this.getDeltaMovement();
+        Vec3 forward = this.getForward();
+        double strength = new Random().nextDouble(0.2, 0.4);
+        this.setDeltaMovement(
+                motion.x + forward.x * strength,
+                motion.y,
+                motion.z + forward.z * strength
+        );
+        this.hasImpulse = true;
     }
 
     public boolean hurt(@NotNull DamageSource damageSource, float f) {
@@ -475,6 +470,27 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         }
 
         this.target = PlayerNpcTarget.values()[new Random().nextInt(PlayerNpcTarget.values().length)];
+        if (this.target != null) {
+            switch (this.target) {
+                case HOSTILE_HUNTER -> {
+                    hostileHunterPlayerMob();
+                }
+                case VILLAGER_HUNTER -> {
+                    villagerHunterPlayerMob();
+                }
+                case MOSNTER_HUNTER -> {
+                    monsterHunterPlayerMob();
+                }
+                case PLAYER_HUNTER -> {
+                    playerHunterPlayerMob();
+                }
+                case ANIMAL_HUNTER -> {
+                    animalHunterPlayerMob();
+                }
+                default -> {
+                }
+            }
+        }
 //        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.DIAMOND_SPEAR.get()));
 //        this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.DIAMOND_SWORD));
 //        this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.DIAMOND_HELMET));
@@ -537,10 +553,6 @@ public class PlayerNpcEntity extends PlayerMobEntity {
             this.offWeaponItem = pNewItem.copy();
         }
         super.onEquipItem(pSlot, pOldItem, pNewItem);
-    }
-
-    public void baseTick() {
-        super.baseTick();
     }
 
     public static boolean canSpawn(EntityType<PlayerNpcEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {

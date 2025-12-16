@@ -9,6 +9,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -20,6 +21,10 @@ import java.util.Objects;
 import java.util.Random;
 
 public class CombatCommon {
+    public static boolean canJump(MobPatch<?> mobpatch) {
+        return mobpatch.getOriginal().onGround() && !mobpatch.getOriginal().isPassenger();
+    }
+
     public static boolean canAttackWhileNotHealing(MobPatch<?> mobpatch) {
         if (mobpatch.getOriginal() instanceof PlayerNpcEntity playerNpcEntity) {
             return !playerNpcEntity.isHealing();
@@ -271,6 +276,16 @@ public class CombatCommon {
                 pathfinderMobInventory.setItemInHand(InteractionHand.OFF_HAND, offWeaponItem.copy());
             }
             pathfinderMobInventory.setSwapToBowCooldown();
+        }
+    }
+
+    public static void jump(MobPatch<?> mobpatch) {
+        Entity entity = mobpatch.getOriginal();
+        if (entity instanceof PlayerNpcEntity playerNpcEntity) {
+            playerNpcEntity.jump();
+        }
+        if (entity instanceof PathfinderMobInventory pathfinderMobInventory) {
+            pathfinderMobInventory.jump();
         }
     }
 }

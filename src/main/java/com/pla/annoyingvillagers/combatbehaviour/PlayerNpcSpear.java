@@ -190,6 +190,19 @@ public class PlayerNpcSpear {
                                             .withinDistance(0.0D, 2.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
                             )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                            .weight(40.0D)
+                            .maxCooldown(60)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canJump)
+                                            .withinDistance(1.0D, 14.0D)
+                                            .animationBehavior(Animations.BIPED_JUMP, 0.0F)
+                                            .addExBehavior(CombatCommon::jump)
+                            )
             );
 
     public static final Builder<MobPatch<?>> SPEAR = CECombatBehaviors.builder()
@@ -380,6 +393,19 @@ public class PlayerNpcSpear {
                                             .withinDistance(0.0D, 2.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
                             )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                            .weight(40.0D)
+                            .maxCooldown(60)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canJump)
+                                            .withinDistance(1.0D, 14.0D)
+                                            .animationBehavior(Animations.BIPED_JUMP, 0.0F)
+                                            .addExBehavior(CombatCommon::jump)
+                            )
             );
 
     public static final Builder<MobPatch<?>> AV_SPEAR_SHIELD = CECombatBehaviors.builder()
@@ -564,6 +590,19 @@ public class PlayerNpcSpear {
                                     Behavior.builder()
                                             .withinDistance(0.0D, 2.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                            .weight(40.0D)
+                            .maxCooldown(60)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canJump)
+                                            .withinDistance(1.0D, 14.0D)
+                                            .animationBehavior(Animations.BIPED_JUMP, 0.0F)
+                                            .addExBehavior(CombatCommon::jump)
                             )
             );
 
@@ -769,6 +808,19 @@ public class PlayerNpcSpear {
                                     Behavior.builder()
                                             .withinDistance(0.0D, 2.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                            .weight(40.0D)
+                            .maxCooldown(60)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canJump)
+                                            .withinDistance(1.0D, 14.0D)
+                                            .animationBehavior(Animations.BIPED_JUMP, 0.0F)
+                                            .addExBehavior(CombatCommon::jump)
                             )
             );
 }

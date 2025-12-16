@@ -6,6 +6,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -17,9 +18,11 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Random;
 
 public class PathfinderMobInventory extends PathfinderMob implements RangedAttackMob {
     private final SimpleContainer inventory = new SimpleContainer(27);
@@ -279,6 +282,19 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
 
     protected void implementFirstTick(ServerLevel serverLevel) {}
 
+    public void jump() {
+        this.jumpFromGround();
+        Vec3 motion = this.getDeltaMovement();
+        Vec3 forward = this.getForward();
+        double strength = new Random().nextDouble(0.2, 0.4);
+        this.setDeltaMovement(
+                motion.x + forward.x * strength,
+                motion.y,
+                motion.z + forward.z * strength
+        );
+        this.hasImpulse = true;
+    }
+
     @Override
     public void tick() {
         super.tick();
@@ -293,12 +309,10 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
         if (enderPearlCooldown > 0) enderPearlCooldown--;
         if (swapToBowCooldown > 0) swapToBowCooldown--;
 
-        if ((tickCount + getId()) % 20 != 0) {
-            return;
+        if ((tickCount + getId()) % 20 == 0) {
+            if (!isInventoryFull()) {
+                pickupNearbyItems();
+            }
         }
-
-        if (isInventoryFull()) return;
-
-        pickupNearbyItems();
     }
 }

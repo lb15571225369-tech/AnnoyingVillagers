@@ -86,10 +86,7 @@ public class PlayerNpcCraftingTable {
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
                                                                                             .withinDistance(0.0D, 2.0D)
-                                                                                            .animationBehavior(AnimsRuine.RUINE_AUTO_2, 0.0F).addNextBehavior(
-                                                                                                    Behavior.builder()
-                                                                                                            .withinDistance(0.0D, 2.0D)
-                                                                                            )
+                                                                                            .animationBehavior(AnimsRuine.RUINE_AUTO_2, 0.0F)
                                                                             )
                                                             )
                                             )
@@ -209,6 +206,19 @@ public class PlayerNpcCraftingTable {
                                     Behavior.builder()
                                             .withinDistance(0.0D, 2.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                            .weight(40.0D)
+                            .maxCooldown(60)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canJump)
+                                            .withinDistance(1.0D, 14.0D)
+                                            .animationBehavior(Animations.BIPED_JUMP, 0.0F)
+                                            .addExBehavior(CombatCommon::jump)
                             )
             );
 }
