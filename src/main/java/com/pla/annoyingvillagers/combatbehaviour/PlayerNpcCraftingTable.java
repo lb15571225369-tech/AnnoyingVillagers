@@ -212,7 +212,7 @@ public class PlayerNpcCraftingTable {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(40.0D)
-                            .maxCooldown(60)
+                            .maxCooldown(160)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canJump)
