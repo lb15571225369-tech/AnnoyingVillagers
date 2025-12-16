@@ -89,14 +89,6 @@ public class AngrySteveOnHurtProcedure {
 
                                 if (levelaccessor instanceof Level level) {
                                     if (!level.isClientSide()) {
-                                        level.playSound(null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "l_g_w_u"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
-                                    } else {
-                                        level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "l_g_w_u"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
-                                    }
-                                }
-
-                                if (levelaccessor instanceof Level level) {
-                                    if (!level.isClientSide()) {
                                         level.playSound(null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "zhanshenzhirenjuexing"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                     } else {
                                         level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "zhanshenzhirenjuexing"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);

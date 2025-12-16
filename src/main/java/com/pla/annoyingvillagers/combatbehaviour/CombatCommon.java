@@ -57,6 +57,8 @@ public class CombatCommon {
     }
 
     public static boolean canThrowEnderPearl(MobPatch<?> mobpatch) {
+        if (mobpatch.getOriginal().isPassenger()) return false;
+
         LivingEntity target = mobpatch.getOriginal().getTarget();
         if (target == null || !target.isAlive()) {
             return false;

@@ -15,6 +15,7 @@ public class AnnoyingVillagersConfig {
     public static ForgeConfigSpec.ConfigValue<Integer> HEROBRINE_HEALING_MIN_COOLDOWN;
     public static ForgeConfigSpec.ConfigValue<Integer> HEROBRINE_HEALING_MAX_COOLDOWN;
     public static ForgeConfigSpec.ConfigValue<Integer> HEROBRINE_HEALING_HEALTH_TRIGGER;
+    public static ForgeConfigSpec.ConfigValue<Double> STEVE_ANGRY_RATE;
 
     static {
         HEROBRINE_POSSESS_RATE = BUILDER.comment(
@@ -53,6 +54,9 @@ public class AnnoyingVillagersConfig {
                                 "If the calculated value (percentage × max health) is less than 10, the threshold will default to 10 instead. " +
                                 "This ensures healing works correctly for low-health Herobrine (herobrine_clone, shadow_herobrine_clone, ...).")
                 .defineInRange("herobrineHealingHealthTrigger", 30, 5, 80);
+        STEVE_ANGRY_RATE = BUILDER.comment(
+                        "Chance for Steve to be angry")
+                .defineInRange("steveAngryRate", 0.3, 0, 1);
         SPEC = BUILDER.build();
     }
 }

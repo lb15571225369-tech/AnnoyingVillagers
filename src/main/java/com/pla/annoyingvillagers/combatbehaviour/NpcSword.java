@@ -10,7 +10,7 @@ import reascer.wom.gameasset.animations.weapons.AnimsHerrscher;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 
-public class VillagerCommonSword {
+public class NpcSword {
     public static final Builder<MobPatch<?>> SWORD = CECombatBehaviors.builder()
             .newBehaviorRoot(
                     BehaviorRoot.builder()

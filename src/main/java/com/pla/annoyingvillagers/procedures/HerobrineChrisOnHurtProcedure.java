@@ -651,9 +651,9 @@ public class HerobrineChrisOnHurtProcedure {
                                 Level level1 = (Level)levelaccessor1;
 
                                 if (!level1.isClientSide()) {
-                                    level1.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "youareweak")), SoundSource.NEUTRAL, 2.0F, 1.0F);
+                                    level1.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "herobrine_youareweak")), SoundSource.NEUTRAL, 2.0F, 1.0F);
                                 } else {
-                                    level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "youareweak")), SoundSource.NEUTRAL, 2.0F, 1.0F, false);
+                                    level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "herobrine_youareweak")), SoundSource.NEUTRAL, 2.0F, 1.0F, false);
                                 }
                             }
                         }
@@ -718,9 +718,9 @@ public class HerobrineChrisOnHurtProcedure {
                                 Level level1 = (Level)levelaccessor1;
 
                                 if (!level1.isClientSide()) {
-                                    level1.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "himsayenough")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                                    level1.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "herobrine_enough")), SoundSource.BLOCKS, 1.0F, 1.0F);
                                 } else {
-                                    level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "himsayenough")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                                    level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "herobrine_enough")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                                 }
                             }
                         }
@@ -742,9 +742,9 @@ public class HerobrineChrisOnHurtProcedure {
                                 Level level1 = (Level)levelaccessor1;
 
                                 if (!level1.isClientSide()) {
-                                    level1.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "himsaytaiyuchunle")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                                    level1.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "herobrine_howfoolish")), SoundSource.BLOCKS, 1.0F, 1.0F);
                                 } else {
-                                    level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "himsaytaiyuchunle")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                                    level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "herobrine_howfoolish")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                                 }
                             }
                         }
@@ -761,9 +761,9 @@ public class HerobrineChrisOnHurtProcedure {
                                 Level level1 = (Level)levelaccessor1;
 
                                 if (!level1.isClientSide()) {
-                                    level1.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "himattack2")), SoundSource.BLOCKS, 1.0F, 1.0F);
+                                    level1.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "herobrine_attack_2")), SoundSource.BLOCKS, 1.0F, 1.0F);
                                 } else {
-                                    level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "himattack2")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                                    level1.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "herobrine_attack_2")), SoundSource.BLOCKS, 1.0F, 1.0F, false);
                                 }
                             }
                         }

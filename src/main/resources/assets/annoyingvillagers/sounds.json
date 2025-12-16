@@ -291,22 +291,6 @@
       }
     ]
   },
-  "l_g_w_u": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:l_g_wake_up",
-        "stream": false
-      }
-    ]
-  },
-  "legendary_sword_awakening": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:legendary_sword_awakening",
-        "stream": false
-      }
-    ]
-  },
   "whoosh": {
     "sounds": [
       {
@@ -383,74 +367,74 @@
       }
     ]
   },
-  "himsayenough": {
-    "subtitle": "subtitles.himsayenough",
+  "herobrine_enough": {
+    "subtitle": "subtitles.herobrine_enough",
     "sounds": [
       {
-        "name": "annoyingvillagers:himgoule",
+        "name": "annoyingvillagers:herobrine_enough",
         "stream": false
       }
     ]
   },
-  "himattack": {
+  "herobrine_attack_1": {
     "sounds": [
       {
-        "name": "annoyingvillagers:attack",
+        "name": "annoyingvillagers:herobrine_attack_1",
         "stream": false
       }
     ]
   },
-  "himattack2": {
+  "herobrine_attack_2": {
     "sounds": [
       {
-        "name": "annoyingvillagers:himattack",
+        "name": "annoyingvillagers:herobrine_attack_2",
         "stream": false
       }
     ]
   },
-  "youareweak": {
+  "herobrine_youareweak": {
     "sounds": [
       {
-        "name": "annoyingvillagers:youareweak",
+        "name": "annoyingvillagers:herobrine_youareweak",
         "stream": false
       }
     ]
   },
-  "himsaytaiyuchunle": {
-    "subtitle": "subtitles.himsaytaiyuchunle",
+  "herobrine_howfoolish": {
+    "subtitle": "subtitles.herobrine_howfoolish",
     "sounds": [
       {
-        "name": "annoyingvillagers:himsaytaiyuchunle",
+        "name": "annoyingvillagers:herobrine_howfoolish",
         "stream": false
       }
     ]
   },
-  "areyoutalkingaboutme": {
-    "subtitle": "subtitles.areyoutalkingaboutme",
+  "herobrine_areyoutalkingaboutme": {
+    "subtitle": "subtitles.herobrine_areyoutalkingaboutme",
     "sounds": [
       {
-        "name": "annoyingvillagers:are_you_talking_about_me",
+        "name": "annoyingvillagers:herobrine_areyoutalkingaboutme",
         "stream": false
       }
     ]
   },
-  "stevesaywhyfighting": {
+  "steve_whykeepfighting": {
     "sounds": [
       {
-        "name": "annoyingvillagers:whykeepfighting",
+        "name": "annoyingvillagers:steve_whykeepfighting",
         "stream": false
       }
     ]
   },
-  "stevechuanqi": {
+  "steave_breath": {
     "sounds": [
       {
-        "name": "annoyingvillagers:stevechuanqi2",
+        "name": "annoyingvillagers:steave_breath",
         "stream": false
       }
     ]
   },
-  "steveattack": {
+  "steve_attack": {
     "sounds": [
       {
         "name": "annoyingvillagers:steve_attack",
@@ -458,79 +442,71 @@
       }
     ]
   },
-  "zhanshenzhirenjuexing": {
-    "sounds": [
-      {
-        "name": "annoyingvillagers:zhanshenzhurenjuexing",
-        "stream": false
-      }
-    ]
-  },
   "heavy_attack_start": {
     "sounds": [
       {
-        "name": "annoyingvillagers:heavy_attack_l_g",
+        "name": "annoyingvillagers:heavy_attack_start",
         "stream": false
       }
     ]
   },
-  "stevesayno": {
+  "steve_no": {
     "sounds": [
       {
-        "name": "annoyingvillagers:no",
+        "name": "annoyingvillagers:steve_no",
         "stream": false
       }
     ]
   },
-  "stevesayiwanttuseuthere": {
+  "steve_legendarysword": {
     "sounds": [
       {
-        "name": "annoyingvillagers:stevechuanqi4",
+        "name": "annoyingvillagers:steve_legendarysword",
         "stream": false
       }
     ]
   },
-  "stevesaywhy": {
+  "steve_why": {
     "sounds": [
       {
-        "name": "annoyingvillagers:why",
+        "name": "annoyingvillagers:steve_why",
         "stream": false
       }
     ]
   },
-  "stevespawn": {
+  "steve_spawn": {
     "sounds": [
       {
-        "name": "annoyingvillagers:stevespeak4",
+        "name": "annoyingvillagers:steve_spawn",
         "stream": false
       }
     ]
   },
-  "stevewin": {
+  "steve_win": {
     "sounds": [
       {
-        "name": "annoyingvillagers:stevewin",
+        "name": "annoyingvillagers:steve_win_1",
         "stream": false
       },
       {
-        "name": "annoyingvillagers:stevespeak3",
+        "name": "annoyingvillagers:steve_win_2",
         "stream": false
       }
     ]
   },
-  "steve2": {
-    "subtitle": "subtitles.steve2",
+  "steve_angry": {
+    "subtitle": "subtitles.steve_angry",
     "sounds": [
       {
-        "name": "annoyingvillagers:steve2",
+        "name": "annoyingvillagers:steve_angry",
         "stream": false
       }
     ]
   },
-  "himsaydzlsddds": {
+  "herobrine_whoevergetinmyway": {
     "sounds": [
       {
-        "name": "annoyingvillagers:himspeak",
+        "name": "annoyingvillagers:herobrine_whoevergetinmyway",
         "stream": false
       }
     ]
@@ -567,7 +543,7 @@
       }
     ]
   },
-  "end_sr": {
+  "dragon_breath_finale": {
     "sounds": [
       {
         "name": "annoyingvillagers:dragon_breath_finale",

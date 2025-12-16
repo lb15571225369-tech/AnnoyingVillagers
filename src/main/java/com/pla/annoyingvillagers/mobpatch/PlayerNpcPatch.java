@@ -16,6 +16,7 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
 import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
 import net.shelmarow.combat_evolution.iml.CustomExecuteEntity;
+import reascer.wom.gameasset.animations.weapons.AnimsMoonless;
 import reascer.wom.gameasset.animations.weapons.AnimsSolar;
 import yesman.epicfight.api.animation.AnimationManager.AnimationAccessor;
 import yesman.epicfight.api.animation.Animator;
@@ -410,6 +411,82 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
                                         Pair.of(LivingMotions.CHASE, Animations.BIPED_HOLD_TACHI),
                                         Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
                                 )
+                        ));
+
+        this.weaponLivingMotions
+                .put(AVCategories.WOODEN_DOOR,
+                        ImmutableMap.of(
+                                Styles.TWO_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, AnimsSolar.SOLAR_GUARD),
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_GREATSWORD),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK_GREATSWORD),
+                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN_GREATSWORD),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_WALK_GREATSWORD),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )
+                        ));
+        this.weaponAttackMotions
+                .put(AVCategories.WOODEN_DOOR,
+                        ImmutableMap.of(
+                                Styles.TWO_HAND, PlayerNpcWoodenDoor.WOODEN_DOOR
+                        ));
+
+        this.weaponLivingMotions
+                .put(AVCategories.CRAFTING_TABLE,
+                        ImmutableMap.of(
+                                Styles.TWO_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, AVAnimations.CARRY),
+                                        Pair.of(LivingMotions.IDLE, AVAnimations.CARRY),
+                                        Pair.of(LivingMotions.WALK, AVAnimations.CARRY),
+                                        Pair.of(LivingMotions.RUN, AVAnimations.CARRY),
+                                        Pair.of(LivingMotions.CHASE, AVAnimations.CARRY),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )
+                        ));
+        this.weaponAttackMotions
+                .put(AVCategories.CRAFTING_TABLE,
+                        ImmutableMap.of(
+                                Styles.TWO_HAND, PlayerNpcCraftingTable.CRAFTING_TABLE
+                        ));
+
+        this.weaponLivingMotions
+                .put(AVCategories.LADDER,
+                        ImmutableMap.of(
+                                Styles.TWO_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, AnimsMoonless.MOONLESS_GUARD),
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
+                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_WALK),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )
+                        ));
+        this.weaponAttackMotions
+                .put(AVCategories.LADDER,
+                        ImmutableMap.of(
+                                Styles.TWO_HAND, PlayerNpcLadder.LADDER
+                        ));
+
+        this.weaponLivingMotions
+                .put(AVCategories.TRAPDOOR,
+                        ImmutableMap.of(
+                                Styles.TWO_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, AVAnimations.SHIELD_MAINHAND),
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
+                                        Pair.of(LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_WALK),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )
+                        ));
+        this.weaponAttackMotions
+                .put(AVCategories.TRAPDOOR,
+                        ImmutableMap.of(
+                                Styles.TWO_HAND, PlayerNpcTrapdoor.TRAPDOOR
                         ));
     }
 

@@ -57,12 +57,9 @@ public class Steve2OnDeathProcedure {
                     AngrySteveEntity angrySteveEntity = new AngrySteveEntity((EntityType) AnnoyingVillagersModEntities.ANGRY_STEVE.get(), serverLevel);
 
                     angrySteveEntity.moveTo(d0, d1, d2, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-                    InventoryUtils.transferInventory(((Steve2Entity) entity).getInventory(), angrySteveEntity.getInventory());
-
 
                     entity.discard();
                     SteveData steveData = SteveData.get(serverLevel);
-                    steveData.forceClaim(serverLevel, angrySteveEntity.getUUID());
 
                     angrySteveEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(angrySteveEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
                     levelaccessor.addFreshEntity(angrySteveEntity);
@@ -72,9 +69,9 @@ public class Steve2OnDeathProcedure {
                     Level level = (Level)levelaccessor;
 
                     if (!level.isClientSide()) {
-                        level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "stevesayno")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "steve_no")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "stevesayno")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "steve_no")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                     }
                 }
 

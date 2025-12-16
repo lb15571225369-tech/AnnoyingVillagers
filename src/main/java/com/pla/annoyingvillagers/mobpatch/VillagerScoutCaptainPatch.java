@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import com.pla.annoyingvillagers.combatbehaviour.NpcBow;
 import com.pla.annoyingvillagers.combatbehaviour.NpcFist;
-import com.pla.annoyingvillagers.combatbehaviour.VillagerCommonSword;
+import com.pla.annoyingvillagers.combatbehaviour.NpcSword;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -100,8 +100,8 @@ public class VillagerScoutCaptainPatch extends CEHumanoidPatch implements Custom
         this.weaponAttackMotions
                 .put(WeaponCategories.SWORD,
                         ImmutableMap.of(
-                                Styles.ONE_HAND, VillagerCommonSword.AV_SWORD,
-                                Styles.TWO_HAND, VillagerCommonSword.AV_DUAL_SWORD
+                                Styles.ONE_HAND, NpcSword.AV_SWORD,
+                                Styles.TWO_HAND, NpcSword.AV_DUAL_SWORD
                         ));
 
         this.weaponAttackMotions

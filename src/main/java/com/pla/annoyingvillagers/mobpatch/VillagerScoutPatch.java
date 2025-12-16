@@ -97,8 +97,8 @@ public class VillagerScoutPatch extends CEHumanoidPatch implements CustomExecute
         this.weaponAttackMotions
                 .put(WeaponCategories.SWORD,
                         ImmutableMap.of(
-                                Styles.ONE_HAND, VillagerCommonSword.SWORD,
-                                Styles.TWO_HAND, VillagerCommonSword.DUAL_SWORD
+                                Styles.ONE_HAND, NpcSword.SWORD,
+                                Styles.TWO_HAND, NpcSword.DUAL_SWORD
                         ));
 
         this.weaponAttackMotions

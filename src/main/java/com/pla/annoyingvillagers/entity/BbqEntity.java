@@ -106,32 +106,31 @@ public class BbqEntity extends PathfinderMob implements RangedAttackMob {
                 return followTarget != null && followTarget.isAlive() && distanceTo(followTarget) > 10.0D;
             }
         });
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, HerobrineCloneEntity.class, false, false));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, ShadowHerobrineCloneEntity.class, false, false));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, LowHerobrineCloneEntity.class, false, false));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, HerobrineChrisEntity.class, false, false));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, HerobrineCloneEntity.class, false, false));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, ShadowHerobrineCloneEntity.class, false, false));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LowHerobrineCloneEntity.class, false, false));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, HerobrineChrisEntity.class, false, false));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, (target) -> followTarget != null
                 && followTarget.isAlive()
                 && target != null
                 && target.getLastHurtMob() == followTarget));
-        this.targetSelector.addGoal(5, new NearestAttackableTargetGoal(this, VillagerScoutEntity.class, false, false));
-        this.targetSelector.addGoal(6, new NearestAttackableTargetGoal(this, RedVillagerGeneralEntity.class, false, false));
-        this.targetSelector.addGoal(7, new NearestAttackableTargetGoal(this, BlueVillagerGeneralEntity.class, false, false));
-        this.targetSelector.addGoal(8, new NearestAttackableTargetGoal(this, GreenVillagerGeneralEntity.class, false, false));
-        this.targetSelector.addGoal(9, new NearestAttackableTargetGoal(this, PurpleVillagerGeneralEntity.class, false, false));
-        this.targetSelector.addGoal(10, new NearestAttackableTargetGoal(this, VillagerScoutCaptainEntity.class, false, false));
-        this.targetSelector.addGoal(11, new NearestAttackableTargetGoal(this, Player.class, false, false));
-        this.targetSelector.addGoal(14, new NearestAttackableTargetGoal(this, SteveEntity.class, false, false));
-        this.targetSelector.addGoal(19, new NearestAttackableTargetGoal(this, Monster.class, false, (target) -> !((target instanceof BlueDemonEntity) || (target instanceof BlueDemon2Entity))));
-        this.targetSelector.addGoal(20, new NearestAttackableTargetGoal(this, Steve2Entity.class, false, false));
+        this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, VillagerScoutEntity.class, false, false));
+        this.targetSelector.addGoal(6, new NearestAttackableTargetGoal<>(this, RedVillagerGeneralEntity.class, false, false));
+        this.targetSelector.addGoal(7, new NearestAttackableTargetGoal<>(this, BlueVillagerGeneralEntity.class, false, false));
+        this.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(this, GreenVillagerGeneralEntity.class, false, false));
+        this.targetSelector.addGoal(9, new NearestAttackableTargetGoal<>(this, PurpleVillagerGeneralEntity.class, false, false));
+        this.targetSelector.addGoal(10, new NearestAttackableTargetGoal<>(this, VillagerScoutCaptainEntity.class, false, false));
+        this.targetSelector.addGoal(11, new NearestAttackableTargetGoal<>(this, Player.class, false, false));
+        this.targetSelector.addGoal(14, new NearestAttackableTargetGoal<>(this, SteveEntity.class, false, false));
+        this.targetSelector.addGoal(19, new NearestAttackableTargetGoal<>(this, Monster.class, false, (target) -> !((target instanceof BlueDemonEntity) || (target instanceof BlueDemon2Entity))));
         this.goalSelector.addGoal(23, new RangedAttackGoal(this, 1.25D, 20, 15.0F));
         this.goalSelector.addGoal(24, new MeleeAttackGoal(this, 1.5D, false) {
             protected double getAttackReachSqr(LivingEntity livingentity) {
                 return (double) (this.mob.getBbWidth() * this.mob.getBbWidth() + livingentity.getBbWidth());
             }
         });
-        this.targetSelector.addGoal(25, new NearestAttackableTargetGoal(this, HerobrineChrisEntity.class, false, false));
-        this.targetSelector.addGoal(26, new NearestAttackableTargetGoal(this, LowShadowHerobrineCloneEntity.class, false, false));
+        this.targetSelector.addGoal(25, new NearestAttackableTargetGoal<>(this, HerobrineChrisEntity.class, false, false));
+        this.targetSelector.addGoal(26, new NearestAttackableTargetGoal<>(this, LowShadowHerobrineCloneEntity.class, false, false));
         this.goalSelector.addGoal(27, new RandomStrollGoal(this, 1.0D));
         this.targetSelector.addGoal(28, new HurtByTargetGoal(this, new Class[0]));
         this.goalSelector.addGoal(29, new RandomLookAroundGoal(this));

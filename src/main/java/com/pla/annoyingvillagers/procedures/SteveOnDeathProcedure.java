@@ -1,7 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.entity.Steve2Entity;
 import com.pla.annoyingvillagers.entity.SteveEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.spawnhandler.SteveData;
@@ -41,19 +40,6 @@ public class SteveOnDeathProcedure {
                 } else {
                     level.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.totem.use")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                 }
-            }
-            if (levelaccessor instanceof ServerLevel serverLevel) {
-                Steve2Entity steve2Entity = new Steve2Entity((EntityType) AnnoyingVillagersModEntities.STEVE_2.get(), serverLevel);
-                steve2Entity.moveTo(d0, d1, d2, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-
-                InventoryUtils.transferInventory(((SteveEntity) entity).getInventory(), steve2Entity.getInventory());
-
-                entity.discard();
-                SteveData steveData = SteveData.get(serverLevel);
-                steveData.forceClaim(serverLevel, steve2Entity.getUUID());
-
-                steve2Entity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(steve2Entity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                levelaccessor.addFreshEntity(steve2Entity);
             }
         }
     }

@@ -82,9 +82,9 @@ public class HerobrineOnInitialSpawnProcedure {
                     Level level = (Level) levelaccessor;
 
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "areyoutalkingaboutme")), SoundSource.BLOCKS, 5.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "herobrine_areyoutalkingaboutme")), SoundSource.BLOCKS, 5.0F, 1.0F);
                     } else {
-                        level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "areyoutalkingaboutme")), SoundSource.BLOCKS, 5.0F, 1.0F, false);
+                        level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "herobrine_areyoutalkingaboutme")), SoundSource.BLOCKS, 5.0F, 1.0F, false);
                     }
                 }
             }
@@ -98,9 +98,9 @@ public class HerobrineOnInitialSpawnProcedure {
                     Level level = (Level) levelaccessor;
 
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "himsaydzlsddds")), SoundSource.BLOCKS, 5.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "herobrine_whoevergetinmyway")), SoundSource.BLOCKS, 5.0F, 1.0F);
                     } else {
-                        level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "himsaydzlsddds")), SoundSource.BLOCKS, 5.0F, 1.0F, false);
+                        level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "herobrine_whoevergetinmyway")), SoundSource.BLOCKS, 5.0F, 1.0F, false);
                     }
                 }
             }

@@ -277,9 +277,9 @@ public class Herobrine7OnHurtProcedure {
                                 Level level2 = (Level)levelaccessor1;
 
                                 if (!level2.isClientSide()) {
-                                    level2.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "himattack")), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                    level2.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "herobrine_attack_1")), SoundSource.NEUTRAL, 1.0F, 1.0F);
                                 } else {
-                                    level2.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "himattack")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                    level2.playLocalSound(d0, d1, d2, (SoundEvent)ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "herobrine_attack_1")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                                 }
                             }
                         }

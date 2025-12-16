@@ -8,7 +8,6 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.procedures.ChrisOnDeathProcedure;
 import com.pla.annoyingvillagers.procedures.ChrisOnHurtProcedure;
 import com.pla.annoyingvillagers.procedures.ChrisOnSpawnProcedure;
-import com.pla.annoyingvillagers.procedures.SteveOnTickProcedure;
 import com.pla.annoyingvillagers.spawnhandler.ChrisData;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
@@ -137,11 +136,6 @@ public class ChrisEntity extends PathfinderMobInventory {
 
     public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
         super.awardKillScore(entity, i, damagesource);
-    }
-
-    public void baseTick() {
-        super.baseTick();
-        SteveOnTickProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
     }
 
     public static boolean canSpawn(EntityType<ChrisEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {

@@ -1,10 +1,8 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.entity.Steve2Entity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.util.CombatBehaviour;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
@@ -17,7 +15,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -143,9 +140,9 @@ public class SteveOnHurtProcedure {
 
                                         if (levelaccessor instanceof Level level) {
                                             if (!level.isClientSide()) {
-                                                level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "stevechuanqi"))), SoundSource.NEUTRAL, 0.4F, 1.0F);
+                                                level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "steave_breath"))), SoundSource.NEUTRAL, 0.4F, 1.0F);
                                             } else {
-                                                level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "stevechuanqi"))), SoundSource.NEUTRAL, 0.4F, 1.0F, false);
+                                                level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "steave_breath"))), SoundSource.NEUTRAL, 0.4F, 1.0F, false);
                                             }
                                         }
                                     }
@@ -155,15 +152,15 @@ public class SteveOnHurtProcedure {
                     };
                 } else if (Math.random() <= 0.2D && levelaccessor instanceof Level level) {
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "steveattack"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "steve_attack"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "steveattack"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "steve_attack"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                     }
                 } else if (Math.random() <= 0.1D && levelaccessor instanceof Level level) {
                     if (!level.isClientSide()) {
-                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "stevechuanqi"))), SoundSource.NEUTRAL, 0.4F, 1.0F);
+                        level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "steave_breath"))), SoundSource.NEUTRAL, 0.4F, 1.0F);
                     } else {
-                        level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "stevechuanqi"))), SoundSource.NEUTRAL, 0.4F, 1.0F, false);
+                        level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "steave_breath"))), SoundSource.NEUTRAL, 0.4F, 1.0F, false);
                     }
                 } else if (Math.random() <= 0.1D) {
                     if (!levelaccessor.isClientSide() && levelaccessor.getServer() != null) {
@@ -172,9 +169,9 @@ public class SteveOnHurtProcedure {
 
                     if (levelaccessor instanceof Level level) {
                         if (!level.isClientSide()) {
-                            level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "stevesaywhyfighting"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                            level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "steve_whykeepfighting"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                         } else {
-                            level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "stevesaywhyfighting"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                            level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "steve_whykeepfighting"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                         }
                     }
                 } else if (Math.random() <= 0.1D) {
@@ -184,35 +181,11 @@ public class SteveOnHurtProcedure {
 
                     if (levelaccessor instanceof Level level) {
                         if (!level.isClientSide()) {
-                            level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "stevesaywhy"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                            level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "steve_why"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                         } else {
-                            level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "stevesaywhy"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                            level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "steve_why"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                         }
                     }
-                }
-
-                if (Math.random() <= 0.2D) {
-                    new DelayedTask(20) {
-                        public void run() {
-                            CombatBehaviour.throwEnderPearl(entity, 180.0F);
-
-                            entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BOW));
-                            if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
-                                entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.POWER_ARROWS, 5);
-                                entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.PUNCH_ARROWS, 5);
-                            }
-                            new DelayedTask(80) {
-                                @Override
-                                public void run() {
-                                    CombatBehaviour.throwEnderPearl(entity, 0.0F);
-                                    entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get()));
-                                    entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.KNOCKBACK, 2);
-                                    entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.SMITE, 5);
-                                    entity.getItemInHand(InteractionHand.MAIN_HAND).enchant(Enchantments.SHARPNESS, 5);
-                                }
-                            };
-                        }
-                    };
                 }
 
                 if (entity.getItemBySlot(EquipmentSlot.HEAD).isEmpty()) {
@@ -250,7 +223,7 @@ public class SteveOnHurtProcedure {
                     }
                 };
 
-                if (entity instanceof Steve2Entity && attacker != null && attacker.isAlive()) {
+                if (attacker != null && attacker.isAlive()) {
                     if (Math.random() <= 0.2D && !entity.getPersistentData().getBoolean("steve_l_g_h_a")) {
                         entity.getPersistentData().putBoolean("steve_l_g_h_a", true);
                         new DelayedTask(2) {
@@ -281,23 +254,15 @@ public class SteveOnHurtProcedure {
 
                         if (levelaccessor instanceof Level level) {
                             if (!level.isClientSide()) {
-                                level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "steveattack"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                level.playSound((Player)null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "steve_attack"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
                             } else {
-                                level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "steveattack"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                                level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "steve_attack"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
                             }
                         }
                         new DelayedTask(8) {
                             public void run() {
                                 if (entity.isAlive()) {
                                     entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.HEAVY_ATTACK_LEGENDARY_SWORD.get()));
-                                }
-
-                                if (levelaccessor instanceof Level level) {
-                                    if (!level.isClientSide()) {
-                                        level.playSound((Player)null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "l_g_w_u"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
-                                    } else {
-                                        level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "l_g_w_u"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
-                                    }
                                 }
 
                                 if (levelaccessor instanceof Level level) {
