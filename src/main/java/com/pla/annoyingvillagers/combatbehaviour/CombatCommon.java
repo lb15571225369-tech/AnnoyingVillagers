@@ -95,6 +95,9 @@ public class CombatCommon {
         }
 
         if (mobpatch.getOriginal() instanceof PathfinderMobInventory pathfinderMobInventory) {
+            if (pathfinderMobInventory instanceof SteveEntity steveEntity) {
+                if (steveEntity.getItemInHand(InteractionHand.OFF_HAND).getItem().equals(Items.TOTEM_OF_UNDYING)) return false;
+            }
             return pathfinderMobInventory.isUseBow() && pathfinderMobInventory.getSwapToBowCooldown() == 0;
         }
 

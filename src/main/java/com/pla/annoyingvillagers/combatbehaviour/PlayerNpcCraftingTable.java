@@ -216,7 +216,7 @@ public class PlayerNpcCraftingTable {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canJump)
-                                            .withinDistance(1.0D, 14.0D)
+                                            .withinDistance(5.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_JUMP, 0.0F)
                                             .addExBehavior(CombatCommon::jump)
                             )

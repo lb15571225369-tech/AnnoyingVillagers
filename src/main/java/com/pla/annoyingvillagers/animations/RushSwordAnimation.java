@@ -1,8 +1,11 @@
 package com.pla.annoyingvillagers.animations;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
 import yesman.epicfight.api.animation.AnimationManager;
@@ -28,12 +31,23 @@ public class RushSwordAnimation extends BasicMultipleAttackAnimation {
     public void begin(LivingEntityPatch<?> entitypatch) {
         super.begin(entitypatch);
         LivingEntity livingEntity = entitypatch.getOriginal();
-        Vec3 dash = livingEntity.getLookAngle().normalize().scale(2.2D);
+        Vec3 dashDir = livingEntity.getLookAngle();
+
+        if (livingEntity instanceof Mob mob) {
+            LivingEntity target = mob.getTarget();
+            if (target != null && target.isAlive()) {
+                Vec3 toTarget = target.position().subtract(mob.position());
+                dashDir = new Vec3(toTarget.x, 0.0, toTarget.z);
+            }
+        }
+
+        Vec3 dash = dashDir.normalize().scale(2.2D);
         livingEntity.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 60, 2, false, false));
         new DelayedTask(1) {
             @Override public void run() {
                 Vec3 cur = livingEntity.getDeltaMovement();
                 livingEntity.setDeltaMovement(cur.x + dash.x, cur.y + dash.y, cur.z + dash.z);
+                livingEntity.hasImpulse = true;
             }
         };
     }

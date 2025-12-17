@@ -193,6 +193,29 @@ public class SteveWoopieSword {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
+                            .weight(40.0D)
+                            .maxCooldown (40)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .withinDistance(2.0D, 14.0D)
+                                            .animationBehavior(AVAnimations.RUSH_SWORD, 0.0F)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                            .weight(30.0D)
+                            .maxCooldown (40)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .withinDistance(0.0D, 2.0D)
+                                            .animationBehavior(AnimsHerrscher.HERRSCHER_AUTO_2, 0.0F)
+                                            .addExBehavior(SteveWoopieSword::woopieWindup)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
                             .weight(10.0D)
                             .maxCooldown (200)
                             .addFirstBehavior(
@@ -204,17 +227,6 @@ public class SteveWoopieSword {
                                     Behavior.builder()
                                             .withinDistance(0.0D, 2.0D)
                                             .animationBehavior(AnimsSatsujin.SATSUJIN_TSUKUYOMI, 0.0F)
-                            )
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .withinDistance(0.0D, 2.0D)
-                                            .animationBehavior(AVAnimations.RUSH_SWORD, 0.0F)
-                            )
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .withinDistance(0.0D, 2.0D)
-                                            .animationBehavior(AnimsHerrscher.HERRSCHER_AUTO_2, 0.0F)
-                                            .addExBehavior(SteveWoopieSword::woopieWindup)
                             )
             )
             .newBehaviorRoot(
@@ -319,7 +331,7 @@ public class SteveWoopieSword {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canJump)
-                                            .withinDistance(1.0D, 14.0D)
+                                            .withinDistance(5.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_JUMP, 0.0F)
                                             .addExBehavior(CombatCommon::jump)
                             )

@@ -141,59 +141,74 @@ public class SteveEntity extends PathfinderMobInventory {
         boolean setWeapon = false;
         if (this.state == 1) {
             chance = new Random().nextInt();
-            if (chance <= 0.3) {
-                ItemStack woopieTheSword = new ItemStack(AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get());
-                woopieTheSword.enchant(Enchantments.SHARPNESS, 5);
-                woopieTheSword.enchant(Enchantments.SMITE, 5);
-                woopieTheSword.enchant(Enchantments.SWEEPING_EDGE, 5);
-                this.setItemInHand(InteractionHand.MAIN_HAND, woopieTheSword);
+            if (this.getHealth() > this.getMaxHealth() / 2) {
+                if (chance <= 0.6) {
+                    ItemStack woopieTheSword = new ItemStack(AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get());
+                    woopieTheSword.enchant(Enchantments.SHARPNESS, 5);
+                    woopieTheSword.enchant(Enchantments.SMITE, 5);
+                    woopieTheSword.enchant(Enchantments.SWEEPING_EDGE, 5);
+                    this.setItemInHand(InteractionHand.MAIN_HAND, woopieTheSword);
 
-                this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(AnnoyingVillagersModItems.JESSICA_THE_DARK_SHIELD.get()));
-                this.setOffWeaponItem(this.getOffWeaponItem().copy());
-                setWeapon = true;
-            } else if (chance <= 0.6) {
-                ItemStack legendarySword = new ItemStack(AnnoyingVillagersModItems.LEGENDARY_SWORD.get());
-                legendarySword.enchant(Enchantments.SHARPNESS, 5);
-                legendarySword.enchant(Enchantments.SMITE, 5);
-                legendarySword.enchant(Enchantments.SWEEPING_EDGE, 5);
-                this.setItemInHand(InteractionHand.MAIN_HAND, legendarySword);
-                setWeapon = true;
+                    this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(AnnoyingVillagersModItems.JESSICA_THE_DARK_SHIELD.get()));
+                    this.setOffWeaponItem(this.getOffWeaponItem().copy());
+                    setWeapon = true;
+                }
+            } else {
+                if (chance <= 0.3) {
+                    ItemStack woopieTheSword = new ItemStack(AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get());
+                    woopieTheSword.enchant(Enchantments.SHARPNESS, 5);
+                    woopieTheSword.enchant(Enchantments.SMITE, 5);
+                    woopieTheSword.enchant(Enchantments.SWEEPING_EDGE, 5);
+                    this.setItemInHand(InteractionHand.MAIN_HAND, woopieTheSword);
+
+                    this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(AnnoyingVillagersModItems.JESSICA_THE_DARK_SHIELD.get()));
+                    this.setOffWeaponItem(this.getOffWeaponItem().copy());
+                    setWeapon = true;
+                } else if (chance <= 0.8) {
+                    ItemStack legendarySword = new ItemStack(AnnoyingVillagersModItems.LEGENDARY_SWORD.get());
+                    legendarySword.enchant(Enchantments.SHARPNESS, 5);
+                    legendarySword.enchant(Enchantments.SMITE, 5);
+                    legendarySword.enchant(Enchantments.SWEEPING_EDGE, 5);
+                    this.setItemInHand(InteractionHand.MAIN_HAND, legendarySword);
+                    setWeapon = true;
+                }
             }
+        } else if (this.state == 0 && this.getHealth() <= 20) {
+            ItemStack diamondSword = new ItemStack(Items.DIAMOND_SWORD);
+            diamondSword.enchant(Enchantments.SHARPNESS, 5);
+            diamondSword.enchant(Enchantments.SMITE, 5);
+            this.setItemInHand(InteractionHand.MAIN_HAND, diamondSword);
+            this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.TOTEM_OF_UNDYING));
         }
 
         if (!setWeapon) {
-            ItemStack craftingTable = new ItemStack(AnnoyingVillagersModItems.CRAFTING_TABLE.get());
-            craftingTable.enchant(Enchantments.SMITE, 5);
-            craftingTable.enchant(Enchantments.KNOCKBACK, 3);
-            this.setItemInHand(InteractionHand.MAIN_HAND, craftingTable);
-
-//            chance = new Random().nextInt();
-//            if (chance <= 0.2) {
-//                ItemStack diamondSword = new ItemStack(Items.DIAMOND_SWORD);
-//                diamondSword.enchant(Enchantments.SHARPNESS, 5);
-//                diamondSword.enchant(Enchantments.SMITE, 5);
-//                this.setItemInHand(InteractionHand.MAIN_HAND, diamondSword);
-//            } else if (chance <= 0.4) {
-//                ItemStack woodenDoor = new ItemStack(AnnoyingVillagersModItems.WOODEN_DOOR.get());
-//                woodenDoor.enchant(Enchantments.SHARPNESS, 5);
-//                woodenDoor.enchant(Enchantments.KNOCKBACK, 3);
-//                this.setItemInHand(InteractionHand.MAIN_HAND, woodenDoor);
-//            } else if (chance <= 0.6) {
-//                ItemStack craftingTable = new ItemStack(AnnoyingVillagersModItems.CRAFTING_TABLE.get());
-//                craftingTable.enchant(Enchantments.SMITE, 5);
-//                craftingTable.enchant(Enchantments.KNOCKBACK, 3);
-//                this.setItemInHand(InteractionHand.MAIN_HAND, craftingTable);
-//            } else if (chance <= 0.8) {
-//                ItemStack ladder = new ItemStack(AnnoyingVillagersModItems.LADDER.get());
-//                ladder.enchant(Enchantments.SMITE, 5);
-//                ladder.enchant(Enchantments.SWEEPING_EDGE, 3);
-//                this.setItemInHand(InteractionHand.MAIN_HAND, ladder);
-//            } else {
-//                ItemStack trapDoor = new ItemStack(AnnoyingVillagersModItems.TRAPDOOR.get());
-//                trapDoor.enchant(Enchantments.KNOCKBACK, 5);
-//                trapDoor.enchant(Enchantments.SWEEPING_EDGE, 3);
-//                this.setItemInHand(InteractionHand.MAIN_HAND, trapDoor);
-//            }
+            chance = new Random().nextInt();
+            if (chance <= 0.2) {
+                ItemStack diamondSword = new ItemStack(Items.DIAMOND_SWORD);
+                diamondSword.enchant(Enchantments.SHARPNESS, 5);
+                diamondSword.enchant(Enchantments.SMITE, 5);
+                this.setItemInHand(InteractionHand.MAIN_HAND, diamondSword);
+            } else if (chance <= 0.4) {
+                ItemStack woodenDoor = new ItemStack(AnnoyingVillagersModItems.WOODEN_DOOR.get());
+                woodenDoor.enchant(Enchantments.SHARPNESS, 5);
+                woodenDoor.enchant(Enchantments.KNOCKBACK, 3);
+                this.setItemInHand(InteractionHand.MAIN_HAND, woodenDoor);
+            } else if (chance <= 0.6) {
+                ItemStack craftingTable = new ItemStack(AnnoyingVillagersModItems.CRAFTING_TABLE.get());
+                craftingTable.enchant(Enchantments.SMITE, 5);
+                craftingTable.enchant(Enchantments.KNOCKBACK, 3);
+                this.setItemInHand(InteractionHand.MAIN_HAND, craftingTable);
+            } else if (chance <= 0.8) {
+                ItemStack ladder = new ItemStack(AnnoyingVillagersModItems.LADDER.get());
+                ladder.enchant(Enchantments.SMITE, 5);
+                ladder.enchant(Enchantments.SWEEPING_EDGE, 3);
+                this.setItemInHand(InteractionHand.MAIN_HAND, ladder);
+            } else {
+                ItemStack trapDoor = new ItemStack(AnnoyingVillagersModItems.TRAPDOOR.get());
+                trapDoor.enchant(Enchantments.KNOCKBACK, 5);
+                trapDoor.enchant(Enchantments.SWEEPING_EDGE, 3);
+                this.setItemInHand(InteractionHand.MAIN_HAND, trapDoor);
+            }
         }
         this.setMainWeaponItem(this.getMainHandItem().copy());
         this.swapWeaponCooldown = new Random().nextInt(200, 400);
@@ -209,6 +224,11 @@ public class SteveEntity extends PathfinderMobInventory {
             if (this.getTarget() == null && !this.getMainHandItem().isEmpty()) {
                 this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
                 this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+            }
+            if (this.getTarget() != null && this.state == 0
+                    && this.getHealth() <= 20
+                    && !this.getItemInHand(InteractionHand.OFF_HAND).getItem().equals(Items.TOTEM_OF_UNDYING)) {
+                rollItem();
             }
 
             if (swapWeaponCooldown > 0) swapWeaponCooldown--;
