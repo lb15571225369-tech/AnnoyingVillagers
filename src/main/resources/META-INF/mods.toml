@@ -44,6 +44,12 @@ description='''${mod_description}'''
     ordering="AFTER"
     side="BOTH"
 [[dependencies.annoyingvillagers]]
+    modId="efclash_blade"
+    mandatory=true
+    versionRange="[1.0, )"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.annoyingvillagers]]
     modId="aaa_particles"
     mandatory=true
     versionRange="[1.4.11, )"

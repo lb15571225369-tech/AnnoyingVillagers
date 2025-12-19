@@ -62,6 +62,7 @@ public class ThrowingPearlKeyPressedProcedure {
             if (!(entity.level() instanceof ServerLevel)) return;
 
             LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+            if (livingEntityPatch == null) return;
             AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
             if (dynamicAnimation.get() instanceof LongHitAnimation) {
                 return;
@@ -117,10 +118,9 @@ public class ThrowingPearlKeyPressedProcedure {
             Level level;
             Projectile projectile;
 
-            if (entity instanceof Player) {
-                Player player1 = (Player)entity;
+            if (entity instanceof Player player) {
 
-                if (player1.getInventory().contains(new ItemStack(Items.ENDER_PEARL)) && !entity.getPersistentData().getBoolean("ender_pearl_used")) {
+                if (player.getInventory().contains(new ItemStack(Items.ENDER_PEARL)) && !entity.getPersistentData().getBoolean("ender_pearl_used")) {
                     entity.getPersistentData().putBoolean("ender_pearl_used", true);
                     livingEntityPatch.playAnimationSynchronized(AVAnimations.THROWING_ENDER_PEARL_OFFHAND, 0.0F);
                     level = entity.level();

@@ -16,7 +16,7 @@ import javax.annotation.Nullable;
 
 @Mod.EventBusSubscriber
 public class AddStarterSkillEvent {
-    private static final String KEY = AnnoyingVillagers.MODID + ":has_joined_before";
+    private static final String KEY = AnnoyingVillagers.MODID + ":has_joined_before_1.4";
     @SubscribeEvent
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent playerloggedinevent) {
         execute(playerloggedinevent, playerloggedinevent.getEntity().level(), playerloggedinevent.getEntity().getX(), playerloggedinevent.getEntity().getY(), playerloggedinevent.getEntity().getZ(), playerloggedinevent.getEntity());
@@ -63,7 +63,11 @@ public class AddStarterSkillEvent {
                             .withPermission(4);
                     try {
                         entity.getServer().getCommands().getDispatcher().execute(
-                                "epicfight skill add @s guard annoyingvillagers:clash",
+                                "epicfight skill add @s passive efclash_blade:clash_blade",
+                                source
+                        );
+                        entity.getServer().getCommands().getDispatcher().execute(
+                                "epicfight skill add @s guard epicfight:guard",
                                 source
                         );
                         entity.getServer().getCommands().getDispatcher().execute(

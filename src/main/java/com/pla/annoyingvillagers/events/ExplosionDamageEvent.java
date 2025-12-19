@@ -38,6 +38,7 @@ public class ExplosionDamageEvent {
 
         if (livingEntity != null && livingEntity.isAlive()) {
             LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(livingEntity, LivingEntityPatch.class);
+            if (livingEntityPatch == null) return;
             AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
             if (livingEntity.getMainHandItem().getItem() instanceof EnderGlaiveItem && dynamicAnimation == AnimsAgony.AGONY_AUTO_1) {
                 SkillContainer skillContainer = null;
