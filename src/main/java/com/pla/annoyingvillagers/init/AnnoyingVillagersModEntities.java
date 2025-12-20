@@ -254,6 +254,8 @@ public class AnnoyingVillagersModEntities {
         entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.GREEN_VILLAGER_GENERAL.get(), (entity) -> VillagerGeneralPatch::new);
         entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.PURPLE_VILLAGER_GENERAL.get(), (entity) -> VillagerGeneralPatch::new);
         entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.STEVE.get(), (entity) -> StevePatch::new);
+        entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.ALEX.get(), (entity) -> AlexPatch::new);
+        entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.JEV.get(), (entity) -> JevPatch::new);
     }
 
     @SubscribeEvent

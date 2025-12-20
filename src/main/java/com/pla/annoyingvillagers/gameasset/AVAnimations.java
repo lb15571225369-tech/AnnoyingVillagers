@@ -31,6 +31,7 @@ import net.minecraftforge.fml.common.Mod;
 import reascer.wom.animation.WomAnimationProperty;
 import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
 import reascer.wom.animation.attacks.SpecialAttackAnimation;
+import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.colliders.WOMWeaponColliders;
 import reascer.wom.particle.WOMParticles;
 import reascer.wom.world.damagesources.WOMExtraDamageInstance;
@@ -1221,7 +1222,14 @@ public class AVAnimations {
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.15F)
                         .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
                         .addProperty(ActionAnimationProperty.MOVE_VERTICAL, true)
-                        .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(1.2F, 2.25F)).addStateRemoveOld(EntityState.CAN_SKILL_EXECUTION, true).newTimePair(0.0F, 0.85F).addState(EntityState.CAN_SKILL_EXECUTION, false));
+                        .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(1.2F, 2.25F)).addStateRemoveOld(EntityState.CAN_SKILL_EXECUTION, true).newTimePair(0.0F, 0.85F).addState(EntityState.CAN_SKILL_EXECUTION, false)
+                        .addEvents(new AnimationEvent[]{
+                                AnimationEvent.InTimeEvent.create(1.0F, (livingEntityPatch, self, p) -> {
+                                    if (!livingEntityPatch.isLogicalClient()) {
+                                        livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_CHARGED_ATTACK_2, 0.0F);
+                                    }
+                                }, Side.SERVER)
+                        }));
         AVAnimations.YELLOW_NAPOLEON_AUTO_4 = builder.nextAccessor("biped/combat/yellow_napoleon_auto_4",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.1F, accessor, humanoidarmature,
                         new Phase(0.0F, 0.6F, 1.0F, 1.9F, Float.MAX_VALUE, humanoidarmature.get().toolR, null)))
@@ -1248,11 +1256,18 @@ public class AVAnimations {
                         .addProperty(StaticAnimationProperty.POSE_MODIFIER, null)
                         .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
                         .addProperty(WomAnimationProperty.ANTI_STUN_MULTIPLYER, 1.0F)
-                        .addEvents(new AnimationEvent[]{AnimationEvent.InPeriodEvent.create(0.0F, 0.4F, (entitypatch, self, params) -> {
-                            Level level = entitypatch.getOriginal().level();
-                            LivingEntity entity = entitypatch.getOriginal();
+                        .addEvents(new AnimationEvent[]{
+                                AnimationEvent.InPeriodEvent.create(0.0F, 0.4F, (entityPatch, self, params) -> {
+                            Level level = entityPatch.getOriginal().level();
+                            LivingEntity entity = entityPatch.getOriginal();
                             level.addParticle(EpicFightParticles.WHITE_AFTERIMAGE.get(), entity.getX(), entity.getY(), entity.getZ(), Double.longBitsToDouble(entity.getId()), 0.0F, 0.0F);
-                        }, Side.CLIENT)})
+                        }, Side.CLIENT),
+                                AnimationEvent.InTimeEvent.create(0.5F, (livingEntityPatch, self, p) -> {
+                                    if (!livingEntityPatch.isLogicalClient()) {
+                                        livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_DASH, 0.0F);
+                                    }
+                                }, Side.SERVER)
+                        })
         );
     }
 

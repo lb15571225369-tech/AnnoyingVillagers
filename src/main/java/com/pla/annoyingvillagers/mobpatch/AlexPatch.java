@@ -2,7 +2,6 @@ package com.pla.annoyingvillagers.mobpatch;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
-import com.pla.annoyingvillagers.capabilities.AVCategories;
 import com.pla.annoyingvillagers.combatbehaviour.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import net.minecraft.world.InteractionHand;
@@ -13,9 +12,6 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
 import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
 import net.shelmarow.combat_evolution.iml.CustomExecuteEntity;
-import reascer.wom.gameasset.WOMAnimations;
-import reascer.wom.gameasset.animations.weapons.AnimsMoonless;
-import reascer.wom.gameasset.animations.weapons.AnimsSolar;
 import yesman.epicfight.api.animation.AnimationManager.AnimationAccessor;
 import yesman.epicfight.api.animation.Animator;
 import yesman.epicfight.api.animation.LivingMotions;
@@ -33,8 +29,8 @@ import yesman.epicfight.world.damagesource.StunType;
 
 import java.util.Set;
 
-public class StevePatch extends CEHumanoidPatch implements CustomExecuteEntity {
-    public StevePatch() {
+public class AlexPatch extends CEHumanoidPatch implements CustomExecuteEntity {
+    public AlexPatch() {
         super(Factions.NEUTRAL);
     }
 
@@ -61,7 +57,7 @@ public class StevePatch extends CEHumanoidPatch implements CustomExecuteEntity {
                                 )));
         this.weaponAttackMotions
                 .put(WeaponCategories.NOT_WEAPON,
-                        ImmutableMap.of(Styles.ONE_HAND, PlayerNpcFist.FIST));
+                        ImmutableMap.of(Styles.ONE_HAND, NpcFist.FIST));
 
         this.weaponLivingMotions
                 .put(WeaponCategories.FIST,
@@ -75,12 +71,12 @@ public class StevePatch extends CEHumanoidPatch implements CustomExecuteEntity {
                                 )));
         this.weaponAttackMotions
                 .put(WeaponCategories.FIST,
-                        ImmutableMap.of(Styles.ONE_HAND, PlayerNpcFist.FIST));
+                        ImmutableMap.of(Styles.ONE_HAND, NpcFist.FIST));
 
         this.weaponAttackMotions
                 .put(WeaponCategories.RANGED,
                         ImmutableMap.of(
-                                Styles.ONE_HAND, PlayerNpcBow.BOW
+                                Styles.ONE_HAND, NpcBow.BOW
                         ));
         this.weaponLivingMotions
                 .put(WeaponCategories.RANGED,
@@ -120,122 +116,8 @@ public class StevePatch extends CEHumanoidPatch implements CustomExecuteEntity {
         this.weaponAttackMotions
                 .put(WeaponCategories.SWORD,
                         ImmutableMap.of(
-                                Styles.ONE_HAND, SteveSword.AV_SWORD,
-                                Styles.TWO_HAND, SteveSword.AV_DUAL_SWORD
-                        ));
-
-        this.weaponLivingMotions
-                .put(AVCategories.WOOPIE_THE_SWORD,
-                        ImmutableMap.of(
-                                Styles.ONE_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.BLOCK, AVAnimations.SHIELD_OFFHAND),
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
-                                        Pair.of(LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD),
-                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_RUN),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
-                                )
-                        ));
-        this.weaponAttackMotions
-                .put(AVCategories.WOOPIE_THE_SWORD,
-                        ImmutableMap.of(
-                                Styles.ONE_HAND, SteveWoopieSword.WOOPIE_THE_SWORD
-                        ));
-
-        this.weaponLivingMotions
-                .put(AVCategories.WOODEN_DOOR,
-                        ImmutableMap.of(
-                                Styles.TWO_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.BLOCK, AnimsSolar.SOLAR_GUARD),
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_GREATSWORD),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK_GREATSWORD),
-                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN_GREATSWORD),
-                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_WALK_GREATSWORD),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
-                                )
-                        ));
-        this.weaponAttackMotions
-                .put(AVCategories.WOODEN_DOOR,
-                        ImmutableMap.of(
-                                Styles.TWO_HAND, SteveWoodenDoor.WOODEN_DOOR
-                        ));
-
-        this.weaponLivingMotions
-                .put(AVCategories.CRAFTING_TABLE,
-                        ImmutableMap.of(
-                                Styles.TWO_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.BLOCK, AVAnimations.CARRY),
-                                        Pair.of(LivingMotions.IDLE, AVAnimations.CARRY),
-                                        Pair.of(LivingMotions.WALK, AVAnimations.CARRY),
-                                        Pair.of(LivingMotions.RUN, AVAnimations.CARRY),
-                                        Pair.of(LivingMotions.CHASE, AVAnimations.CARRY),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
-                                )
-                        ));
-        this.weaponAttackMotions
-                .put(AVCategories.CRAFTING_TABLE,
-                        ImmutableMap.of(
-                                Styles.TWO_HAND, SteveCraftingTable.CRAFTING_TABLE
-                        ));
-
-        this.weaponLivingMotions
-                .put(AVCategories.LADDER,
-                        ImmutableMap.of(
-                                Styles.TWO_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.BLOCK, AnimsMoonless.MOONLESS_GUARD),
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
-                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN),
-                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_WALK),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
-                                )
-                        ));
-        this.weaponAttackMotions
-                .put(AVCategories.LADDER,
-                        ImmutableMap.of(
-                                Styles.TWO_HAND, SteveLadder.LADDER
-                        ));
-
-        this.weaponLivingMotions
-                .put(AVCategories.TRAPDOOR,
-                        ImmutableMap.of(
-                                Styles.TWO_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.BLOCK, AVAnimations.SHIELD_MAINHAND),
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
-                                        Pair.of(LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD),
-                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_WALK),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
-                                )
-                        ));
-        this.weaponAttackMotions
-                .put(AVCategories.TRAPDOOR,
-                        ImmutableMap.of(
-                                Styles.TWO_HAND, SteveTrapdoor.TRAPDOOR
-                        ));
-
-        this.weaponLivingMotions
-                .put(AVCategories.LEGENDARY_SWORD,
-                        ImmutableMap.of(
-                                Styles.TWO_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.BLOCK, AVAnimations.LEGENDARY_SWORD_GUARD),
-                                        Pair.of(LivingMotions.IDLE, WOMAnimations.TORMENT_BERSERK_IDLE),
-                                        Pair.of(LivingMotions.WALK, WOMAnimations.TORMENT_BERSERK_WALK),
-                                        Pair.of(LivingMotions.RUN, AVAnimations.RUN_DUAL_BIG),
-                                        Pair.of(LivingMotions.CHASE, WOMAnimations.TORMENT_BERSERK_WALK),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
-                                )
-                        ));
-        this.weaponAttackMotions
-                .put(AVCategories.LEGENDARY_SWORD,
-                        ImmutableMap.of(
-                                Styles.TWO_HAND, SteveLegendarySword.LEGENDARY_SWORD
+                                Styles.ONE_HAND, NpcSword.AV_SWORD,
+                                Styles.TWO_HAND, NpcSword.AV_DUAL_SWORD
                         ));
     }
 

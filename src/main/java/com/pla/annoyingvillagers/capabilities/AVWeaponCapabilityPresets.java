@@ -172,11 +172,11 @@ public class AVWeaponCapabilityPresets {
                     .newStyleCombo(Styles.TWO_HAND,
                             WOMAnimations.TORMENT_AUTO_1,
                             WOMAnimations.TORMENT_AUTO_2,
-                            AVAnimations.YELLOW_NAPOLEON_AUTO_3,
                             AVAnimations.YELLOW_SOLAR_AUTO_2,
                             AVAnimations.LEGENDARY_SWORD_WAKE_UP_ATTACK,
+                            AVAnimations.YELLOW_NAPOLEON_AUTO_3,
                             AVAnimations.YELLOW_NAPOLEON_AUSTERLITZ_SHOOT,
-                            AVAnimations.YELLOW_NAPOLEON_AUTO_4
+                            WOMAnimations.TORMENT_BERSERK_DASH
                     ).newStyleCombo(Styles.MOUNT, Animations.SWORD_MOUNT_ATTACK)
                     .innateSkill(Styles.TWO_HAND,
                             (itemstack) -> AVSkills.LEGENDARY_SWORD)

@@ -1,11 +1,11 @@
 package com.pla.annoyingvillagers.entity;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.util.CombatBehaviour;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
+import com.pla.annoyingvillagers.util.TeamUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -22,12 +22,12 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -45,8 +45,8 @@ public class JevEntity extends PathfinderMobInventory {
         this.followTargetUUID = followTargetUUID;
     }
 
-    public JevEntity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.JEV.get(), level);
+    public JevEntity(SpawnEntity spawnEntity, Level level) {
+        this(AnnoyingVillagersModEntities.JEV.get(), level);
     }
 
     public JevEntity(EntityType<JevEntity> entitytype, Level level) {
@@ -56,12 +56,12 @@ public class JevEntity extends PathfinderMobInventory {
         this.setNoAi(false);
         this.setCustomName(this.getDisplayName());
         this.setPersistenceRequired();
-        this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.JEV_BOOK.get()));
-        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.JEV_PENCIL.get()));
-        this.setItemSlot(EquipmentSlot.HEAD, new ItemStack((ItemLike) AnnoyingVillagersModItems.JEV_GLASSES.get()));
+        this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(AnnoyingVillagersModItems.JEV_BOOK.get()));
+        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(AnnoyingVillagersModItems.JEV_PENCIL.get()));
+        this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(AnnoyingVillagersModItems.JEV_GLASSES.get()));
     }
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -94,53 +94,23 @@ public class JevEntity extends PathfinderMobInventory {
     }
 
     @Override
-    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
-        SpawnGroupData spawngroupdata1 = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
-        if (!this.level().isClientSide() && this.getServer() != null) {
-            try {
-                this.getServer().getCommands().getDispatcher().execute(
-                        "team add alex",
-                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
-            }
-        }
-        if (!this.level().isClientSide() && this.getServer() != null) {
-            try {
-                this.getServer().getCommands().getDispatcher().execute(
-                        "team modify alex friendlyFire false",
-                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
-            }
-        }
-        if (!this.level().isClientSide() && this.getServer() != null) {
-            try {
-                this.getServer().getCommands().getDispatcher().execute(
-                        "team join alex @s",
-                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
-            }
-        }
-        return spawngroupdata1;
+    public @Nullable SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor pLevel, @NotNull DifficultyInstance pDifficulty, @NotNull MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
+        SpawnGroupData returnSpawnGroupData = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+        TeamUtil.addOrJoinTeam(this, "alex");
+        return returnSpawnGroupData;
     }
 
     @Override
-    public void die(DamageSource pDamageSource) {
+    public void die(@NotNull DamageSource pDamageSource) {
         super.die(pDamageSource);
-        if (this.level() instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-            ServerLevel serverlevel = levelaccessor;
-            JevDeadEntity jevDeadEntity = new JevDeadEntity((EntityType) AnnoyingVillagersModEntities.JEV_DEAD.get(), serverlevel);
-            jevDeadEntity.moveTo(this.getX(), this.getY(), this.getZ(), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-            if (jevDeadEntity instanceof Mob) {
-                Mob mob = (Mob)jevDeadEntity;
-                mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(jevDeadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-            }
-            this.remove(RemovalReason.KILLED);
-            levelaccessor.addFreshEntity(jevDeadEntity);
-            try {
-                jevDeadEntity.getServer().getCommands().getDispatcher().execute(
-                        "kill @s",
-                        jevDeadEntity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
+        if (this.level() instanceof ServerLevel serverLevel) {
+            if (AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
+                JevDeadEntity jevDeadEntity = new JevDeadEntity(AnnoyingVillagersModEntities.JEV_DEAD.get(), serverLevel);
+                jevDeadEntity.moveTo(this.getX(), this.getY(), this.getZ(), serverLevel.getRandom().nextFloat() * 360.0F, 0.0F);
+                jevDeadEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(jevDeadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+                this.remove(RemovalReason.KILLED);
+                serverLevel.addFreshEntity(jevDeadEntity);
+                jevDeadEntity.kill();
             }
         }
     }
@@ -191,7 +161,7 @@ public class JevEntity extends PathfinderMobInventory {
         }
     }
 
-    public MobType getMobType() {
+    public @NotNull MobType getMobType() {
         return MobType.UNDEFINED;
     }
 
@@ -222,38 +192,33 @@ public class JevEntity extends PathfinderMobInventory {
     }
 
     public SoundEvent getAmbientSound() {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.villager.ambient"));
+        return ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.villager.ambient"));
     }
 
     public SoundEvent getHurtSound(DamageSource damagesource) {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.villager.hurt"));
+        return ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.villager.hurt"));
     }
 
     public SoundEvent getDeathSound() {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.villager.death"));
+        return ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.villager.death"));
     }
 
-    public boolean hurt(DamageSource damagesource, float f) {
+    public boolean hurt(@NotNull DamageSource damageSource, float f) {
         if (this.getGapCooldown() == 0 && this.getHealth() <= ((float) 2/3 * this.getMaxHealth())) {
             CombatBehaviour.drinkingHealingPotion(this, this.level(), false, f);
             this.setGapCooldown();
         }
-        if (damagesource.is(DamageTypes.THROWN)) return false;
-        if (damagesource.is(DamageTypes.FALL)) return false;
-        if (damagesource.is(DamageTypes.CACTUS)) return false;
-        if (damagesource.is(DamageTypes.DROWN)) return false;
-        if (damagesource.is(DamageTypes.FALLING_ANVIL)) return false;
-        return super.hurt(damagesource, f);
+        return super.hurt(damageSource, f);
     }
 
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();
 
-        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3D);
+        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.45D);
         builder = builder.add(Attributes.MAX_HEALTH, 50.0D);
-        builder = builder.add(Attributes.ARMOR, 1.0D);
+        builder = builder.add(Attributes.ARMOR, 20.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0D);
-        builder = builder.add(Attributes.FOLLOW_RANGE, 24.0D);
+        builder = builder.add(Attributes.FOLLOW_RANGE, 48.0D);
         builder = builder.add(Attributes.KNOCKBACK_RESISTANCE, 5.0D);
         return builder;
     }

@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.events;
 
+import com.pla.annoyingvillagers.entity.AlexEntity;
 import com.pla.annoyingvillagers.entity.SteveEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
@@ -88,6 +89,27 @@ public class TotemUsingEvent {
                         compressedDiamondChestplate.enchant(Enchantments.FIRE_PROTECTION, 5);
                         compressedDiamondChestplate.enchant(Enchantments.BLAST_PROTECTION, 5);
                         steveEntity.setItemSlot(EquipmentSlot.CHEST, compressedDiamondChestplate);
+                    }
+                };
+            }
+
+            if (entity instanceof AlexEntity alexEntity && entity.level() instanceof ServerLevel) {
+                new DelayedTask(1) {
+                    @Override
+                    public void run() {
+                        alexEntity.setHealth(alexEntity.getMaxHealth());
+                        ItemStack diamondSword = new ItemStack(Items.DIAMOND_SWORD);
+                        diamondSword.enchant(Enchantments.SHARPNESS, 5);
+                        diamondSword.enchant(Enchantments.FIRE_ASPECT, 2);
+                        diamondSword.enchant(Enchantments.KNOCKBACK, 2);
+                        diamondSword.enchant(Enchantments.UNBREAKING, 5);
+                        alexEntity.setItemInHand(InteractionHand.OFF_HAND, diamondSword);
+                        alexEntity.setOffWeaponItem(diamondSword);
+                        alexEntity.setState(1);
+                        LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                        if (!entity.level().isClientSide() && entity.getServer() != null && livingEntityPatch != null) {
+                            livingEntityPatch.playAnimationSynchronized(AVAnimations.GUARD_BREAK_ATTACK, 0.0F);
+                        }
                     }
                 };
             }

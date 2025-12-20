@@ -12,6 +12,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.animations.weapons.AnimsNapoleon;
 import reascer.wom.gameasset.animations.weapons.AnimsSolar;
 import yesman.epicfight.api.animation.types.DynamicAnimation;

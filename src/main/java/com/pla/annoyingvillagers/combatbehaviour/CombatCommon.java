@@ -11,6 +11,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.shelmarow.combat_evolution.ai.BehaviorUtils;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
@@ -235,6 +237,23 @@ public class CombatCommon {
         );
     }
 
+    public static void performDrinkingAnimation(MobPatch<?> mobpatch) {
+        LivingEntity entity = mobpatch.getOriginal();
+
+        BehaviorUtils.stopCurrentBehavior(entity);
+        entity.setItemInHand(InteractionHand.MAIN_HAND, PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_HEALING));
+        if (entity instanceof PathfinderMobInventory pathfinderMobInventory) {
+            pathfinderMobInventory.setGapCooldown();
+        }
+
+        CombatBehaviour.drinkingHealingPotion(
+                entity,
+                entity.level(),
+                false,
+                20.0D
+        );
+    }
+
     public static void swapToBow(MobPatch<?> mobpatch) {
         LivingEntity entity = mobpatch.getOriginal();
         BehaviorUtils.stopCurrentBehavior(entity);
@@ -260,7 +279,6 @@ public class CombatCommon {
         if (entity instanceof SteveEntity steveEntity && steveEntity.getState() == 1) {
             bow.enchant(Enchantments.POWER_ARROWS, 5);
             bow.enchant(Enchantments.PUNCH_ARROWS, 5);
-            bow.enchant(Enchantments.FLAMING_ARROWS, 2);
         }
 
         entity.setItemInHand(InteractionHand.MAIN_HAND, bow.copy());

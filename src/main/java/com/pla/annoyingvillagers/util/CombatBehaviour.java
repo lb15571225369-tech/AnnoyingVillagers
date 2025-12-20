@@ -122,10 +122,10 @@ public class CombatBehaviour {
     private static void performEatingGoldenAppleActionMainHand(Entity entity,
                                                                LevelAccessor levelaccessor,
                                                                LivingEntityPatch<?> livingEntityPatch) {
-        var currentAnim = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
-        if (currentAnim instanceof AttackAnimation ||
-                currentAnim instanceof LongHitAnimation ||
-                currentAnim instanceof HitAnimation) {
+        AssetAccessor<? extends DynamicAnimation> currentAnim = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
+        if (currentAnim.get() instanceof AttackAnimation ||
+                currentAnim.get() instanceof LongHitAnimation ||
+                currentAnim.get() instanceof HitAnimation) {
             return;
         }
 
@@ -162,26 +162,50 @@ public class CombatBehaviour {
                 );
             } catch (CommandSyntaxException ignored) {}
         }
-
     }
 
-    private static boolean performDrinkingHealingPotionAction(Entity entity, LevelAccessor levelaccessor, AssetAccessor<? extends DynamicAnimation> dynamicAnimation, LivingEntityPatch<?> livingEntityPatch) {
-        if (!(dynamicAnimation instanceof AttackAnimation) && !(dynamicAnimation instanceof LongHitAnimation) && !(dynamicAnimation instanceof HitAnimation)) {
-            if (!entity.level().isClientSide() && entity.getServer() != null) {
-                livingEntityPatch.playAnimationSynchronized(AVAnimations.DRINK_OFFHAND, 0.0F);
-            }
+    private static void performDrinkingHealingPotionActionMainhand(Entity entity,
+                                                                   LevelAccessor levelaccessor,
+                                                                   LivingEntityPatch<?> livingEntityPatch) {
+        AssetAccessor<? extends DynamicAnimation> currentAnim = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
+        if (currentAnim.get() instanceof AttackAnimation ||
+                currentAnim.get() instanceof LongHitAnimation ||
+                currentAnim.get() instanceof HitAnimation) {
+            return;
+        }
 
-            if (levelaccessor instanceof Level level) {
+        if (!entity.level().isClientSide() && entity.getServer() != null && entity instanceof LivingEntity livingEntity) {
+            livingEntityPatch.playAnimationSynchronized(Animations.BIPED_DRINK, 0.0F);
+        }
+
+        if (levelaccessor instanceof Level level) {
+            SoundEvent eat = ForgeRegistries.SOUND_EVENTS.getValue(
+                    ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink")
+            );
+            if (eat != null) {
                 if (!level.isClientSide()) {
-                    level.playSound(null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                    level.playSound(null,
+                            entity.blockPosition(),
+                            eat,
+                            SoundSource.NEUTRAL,
+                            1.0F, 1.0F);
                 } else {
-                    level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                    level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(),
+                            eat,
+                            SoundSource.NEUTRAL,
+                            1.0F, 1.0F,
+                            false);
                 }
             }
+        }
 
-            return true;
-        } else {
-            return false;
+        if (!entity.level().isClientSide() && entity.getServer() != null) {
+            try {
+                entity.getServer().getCommands().getDispatcher().execute(
+                        "execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10",
+                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
+                );
+            } catch (CommandSyntaxException ignored) {}
         }
     }
 
@@ -194,9 +218,6 @@ public class CombatBehaviour {
             }
             if (entity instanceof PathfinderMobInventory pathfinderMobInventory && pathfinderMobInventory.isHealing()) {
                 return;
-            }
-            if (entity.isPassenger()) {
-                entity.stopRiding();
             }
             livingEntity.addEffect(
                     new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, (int) (amount * 2.0D), 2, false, false)
@@ -222,10 +243,10 @@ public class CombatBehaviour {
 
                     LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                     if (patch == null) return;
-                    var currentAnim = Objects.requireNonNull(patch.getAnimator().getPlayerFor(null)).getAnimation();
-                    if (currentAnim instanceof AttackAnimation ||
-                            currentAnim instanceof LongHitAnimation ||
-                            currentAnim instanceof HitAnimation) {
+                    AssetAccessor<? extends DynamicAnimation> currentAnim = Objects.requireNonNull(patch.getAnimator().getPlayerFor(null)).getAnimation();
+                    if (currentAnim.get() instanceof AttackAnimation ||
+                            currentAnim.get() instanceof LongHitAnimation ||
+                            currentAnim.get() instanceof HitAnimation) {
                         return;
                     }
                     Runnable bite = () -> performEatingGoldenAppleActionMainHand(entity, levelaccessor, patch);
@@ -310,129 +331,126 @@ public class CombatBehaviour {
     }
 
     public static void drinkingHealingPotion(Entity entity, LevelAccessor levelaccessor, boolean isHostile, double amount) {
-        LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
-        if (livingEntityPatch != null) {
-            final AssetAccessor<? extends DynamicAnimation> dynamicAnimation = livingEntityPatch.getAnimator().getPlayerFor(null).getAnimation();
-            if (entity instanceof LivingEntity livingEntity) {
-                if (entity.isPassenger()) {
-                    entity.stopRiding();
-                }
-                ItemStack oldItem = livingEntity.getOffhandItem();
-                ItemStack potionItem;
-                if (isHostile) {
-                    potionItem = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.HARMING);
+        LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+
+        if (livingEntityPatch != null && entity instanceof LivingEntity livingEntity) {
+            if (entity instanceof PlayerNpcEntity playerNpcEntity && playerNpcEntity.isHealing()) {
+                return;
+            }
+            if (entity instanceof PathfinderMobInventory pathfinderMobInventory && pathfinderMobInventory.isHealing()) {
+                return;
+            }
+            livingEntity.addEffect(
+                    new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, (int) (amount * 2.0D), 2, false, false)
+            );
+            if (entity instanceof PlayerNpcEntity playerNpcEntity) {
+                if (playerNpcEntity.isHealing()) {
+                    return;
                 } else {
-                    potionItem = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_HEALING);
+                    playerNpcEntity.setHealing(true);
                 }
-                livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, (int)(amount * 2.0D), 2, false, false));
-                new DelayedTask(20) {
-                    @Override
-                    public void run() {
-                        if (entity.isAlive()) {
-                            if (!(dynamicAnimation instanceof AttackAnimation) && !(dynamicAnimation instanceof LongHitAnimation) && !(dynamicAnimation instanceof HitAnimation)) {
-                                if (!entity.getPersistentData().getBoolean("av_healing")) {
-                                    entity.getPersistentData().putBoolean("av_healing", true);
-                                    ItemStack offhand = livingEntity.getOffhandItem();
-                                    if (offhand.getItem() != potionItem.getItem()) {
-                                        livingEntity.setItemInHand(InteractionHand.OFF_HAND, potionItem);
-                                    }
-                                    if (performDrinkingHealingPotionAction(entity, levelaccessor, dynamicAnimation, livingEntityPatch)) {
-                                        new DelayedTask(4) {
-                                            @Override
-                                            public void run() {
-                                                if (entity.isAlive()) {
-                                                    if (performDrinkingHealingPotionAction(entity, levelaccessor, dynamicAnimation, livingEntityPatch)) {
-                                                        new DelayedTask(4) {
-                                                            public void run() {
-                                                                if (entity.isAlive()) {
-                                                                    if (performDrinkingHealingPotionAction(entity, levelaccessor, dynamicAnimation, livingEntityPatch)) {
-                                                                        new DelayedTask(4) {
-                                                                            public void run() {
-                                                                                if (entity.isAlive()) {
-                                                                                    if (performDrinkingHealingPotionAction(entity, levelaccessor, dynamicAnimation, livingEntityPatch)) {
-                                                                                        new DelayedTask(4) {
-                                                                                            public void run() {
-                                                                                                if (entity.isAlive()) {
-                                                                                                    if (performDrinkingHealingPotionAction(entity, levelaccessor, dynamicAnimation, livingEntityPatch)) {
-                                                                                                        new DelayedTask(4) {
-                                                                                                            public void run() {
-                                                                                                                if (entity.isAlive()) {
-                                                                                                                    if (performDrinkingHealingPotionAction(entity, levelaccessor, dynamicAnimation, livingEntityPatch)) {
-                                                                                                                        new DelayedTask(4) {
-                                                                                                                            public void run() {
-                                                                                                                                if (entity.isAlive()) {
-                                                                                                                                    if (performDrinkingHealingPotionAction(entity, levelaccessor, dynamicAnimation, livingEntityPatch)) {
-                                                                                                                                        new DelayedTask(4) {
-                                                                                                                                            public void run() {
-                                                                                                                                                if (entity.isAlive()) {
-                                                                                                                                                    if (performDrinkingHealingPotionAction(entity, levelaccessor, dynamicAnimation, livingEntityPatch)) {
-                                                                                                                                                        new DelayedTask(3) {
-                                                                                                                                                            public void run() {
-                                                                                                                                                                if (entity.isAlive()) {
-                                                                                                                                                                    if (levelaccessor instanceof Level level) {
-                                                                                                                                                                        if (!level.isClientSide()) {
-                                                                                                                                                                            level.playSound(null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.player.burp"))), SoundSource.NEUTRAL, 1.5F, 1.0F);
-                                                                                                                                                                        } else {
-                                                                                                                                                                            level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.player.burp"))), SoundSource.NEUTRAL, 1.5F, 1.0F, false);
-                                                                                                                                                                        }
-                                                                                                                                                                    }
-                                                                                                                                                                }
-                                                                                                                                                            }
-                                                                                                                                                        };
-                                                                                                                                                        new DelayedTask(20) {
-                                                                                                                                                            public void run() {
-                                                                                                                                                                if (entity.isAlive()) {
-                                                                                                                                                                    livingEntity.setItemInHand(InteractionHand.OFF_HAND, oldItem);
-                                                                                                                                                                    if (!livingEntity.level().isClientSide()) {
-                                                                                                                                                                        if (isHostile) {
-                                                                                                                                                                            livingEntity.addEffect(new MobEffectInstance(MobEffects.HARM, 40, 0));
-                                                                                                                                                                        } else {
-                                                                                                                                                                            livingEntity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 1));
-                                                                                                                                                                        }
-                                                                                                                                                                    }
-                                                                                                                                                                    if (!livingEntity.level().isClientSide()) {
-                                                                                                                                                                        livingEntity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 1));
-                                                                                                                                                                    }
-                                                                                                                                                                    livingEntityPatch.playAnimationSynchronized(Animations.BIPED_IDLE, 0.0F);
-                                                                                                                                                                    entity.getPersistentData().putBoolean("av_healing", false);
-                                                                                                                                                                }
-                                                                                                                                                            }
-                                                                                                                                                        };
-                                                                                                                                                    }
-                                                                                                                                                }
-                                                                                                                                            }
-                                                                                                                                        };
-                                                                                                                                    }
-                                                                                                                                }
-                                                                                                                            }
-                                                                                                                        };
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            }
-                                                                                                        };
-                                                                                                    }
-                                                                                                }
-                                                                                            }
-                                                                                        };
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        };
-                                                                    }
-                                                                }
-                                                            }
-                                                        };
-                                                    }
-                                                }
-                                            }
-                                        };
+            }
+            if (entity instanceof PathfinderMobInventory pathfinderMobInventory) {
+                if (pathfinderMobInventory.isHealing()) {
+                    return;
+                } else {
+                    pathfinderMobInventory.setHealing(true);
+                }
+            }
+            new DelayedTask(20) {
+                @Override
+                public void run() {
+                    if (!entity.isAlive()) return;
+
+                    LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                    if (patch == null) return;
+                    AssetAccessor<? extends DynamicAnimation> currentAnim = Objects.requireNonNull(patch.getAnimator().getPlayerFor(null)).getAnimation();
+                    if (currentAnim.get() instanceof AttackAnimation ||
+                            currentAnim.get() instanceof LongHitAnimation ||
+                            currentAnim.get() instanceof HitAnimation) {
+                        return;
+                    }
+                    Runnable bite = () -> performDrinkingHealingPotionActionMainhand(entity, levelaccessor, patch);
+                    int biteDelay = 4;
+                    int totalBites = 7;
+
+                    for (int i = 0; i < totalBites; i++) {
+                        int delay = 4 + i * biteDelay;
+                        new DelayedTask(delay) {
+                            @Override
+                            public void run() {
+                                if (entity.isAlive()) {
+                                    bite.run();
+                                }
+                            }
+                        };
+                    }
+
+                    new DelayedTask(4 + totalBites * biteDelay - 1) {
+                        @Override
+                        public void run() {
+                            if (!entity.isAlive()) return;
+                            if (levelaccessor instanceof Level level) {
+                                SoundEvent burp = ForgeRegistries.SOUND_EVENTS.getValue(
+                                        ResourceLocation.fromNamespaceAndPath("minecraft", "entity.player.burp")
+                                );
+                                if (burp != null) {
+                                    if (!level.isClientSide()) {
+                                        level.playSound(null,
+                                                entity.blockPosition(),
+                                                burp,
+                                                SoundSource.NEUTRAL,
+                                                1.5F, 1.0F);
+                                    } else {
+                                        level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(),
+                                                burp,
+                                                SoundSource.NEUTRAL,
+                                                1.5F, 1.0F,
+                                                false);
                                     }
                                 }
                             }
                         }
-                    }
-                };
-            }
+                    };
+                    new DelayedTask(4 + totalBites * biteDelay) {
+                        @Override
+                        public void run() {
+                            if (!entity.isAlive()) return;
+
+                            LivingEntityPatch<?> livingEntityPatch1 = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                            if (!entity.level().isClientSide() && entity.getServer() != null && livingEntityPatch1 != null) {
+                                livingEntityPatch1.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
+                            }
+
+                            if (entity instanceof PlayerNpcEntity playerNpcEntity) {
+                                livingEntity.setItemInHand(InteractionHand.MAIN_HAND, playerNpcEntity.getMainWeaponItem());
+                            }
+                            if (entity instanceof PathfinderMobInventory pathfinderMobInventory && livingEntityPatch1 != null) {
+                                if (pathfinderMobInventory instanceof SteveEntity && CombatCommon.canSwitchWeapon((MobPatch<?>) livingEntityPatch1)) {
+                                    CombatCommon.switchWeapon((MobPatch<?>) livingEntityPatch1);
+                                } else {
+                                    livingEntity.setItemInHand(InteractionHand.MAIN_HAND, pathfinderMobInventory.getMainWeaponItem());
+                                }
+                            }
+
+                            if (!livingEntity.level().isClientSide()) {
+                                if (isHostile) {
+                                    livingEntity.addEffect(new MobEffectInstance(MobEffects.HARM, 40, 0));
+                                } else {
+                                    livingEntity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 1));
+                                }
+                            }
+
+                            if (entity instanceof PlayerNpcEntity playerNpcEntity) {
+                                playerNpcEntity.setHealing(false);
+                            }
+                            if (entity instanceof PathfinderMobInventory pathfinderMobInventory) {
+                                pathfinderMobInventory.setHealing(false);
+                            }
+                        }
+                    };
+                }
+            };
         }
     }
 }

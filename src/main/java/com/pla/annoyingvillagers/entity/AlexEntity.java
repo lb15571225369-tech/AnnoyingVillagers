@@ -2,12 +2,12 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.procedures.*;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.spawnhandler.AlexData;
-import com.pla.annoyingvillagers.util.CommonGoals;
+import com.pla.annoyingvillagers.util.*;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -17,14 +17,19 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -33,9 +38,12 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
+import java.util.function.Consumer;
 
 
 public class AlexEntity extends PathfinderMobInventory {
@@ -43,6 +51,7 @@ public class AlexEntity extends PathfinderMobInventory {
     private UUID jevUUID;
     private boolean jevDeathMessageSent = false;
     private boolean spawnJev = false;
+    private int state = 0;
 
     public void setProtectingJev(JevEntity jev) {
         this.jevToProtect = jev;
@@ -52,8 +61,8 @@ public class AlexEntity extends PathfinderMobInventory {
         this.jevUUID = jevUUID;
     }
 
-    public AlexEntity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.ALEX.get(), level);
+    public AlexEntity(SpawnEntity spawnEntity, Level level) {
+        this(AnnoyingVillagersModEntities.ALEX.get(), level);
     }
 
     public AlexEntity(EntityType<AlexEntity> entitytype, Level level) {
@@ -64,16 +73,9 @@ public class AlexEntity extends PathfinderMobInventory {
         this.setCustomName(Component.translatable(this.getType().getDescriptionId()));
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
-        ItemStack sword = new ItemStack(Items.DIAMOND_SWORD);
-        sword.enchant(Enchantments.SHARPNESS, 5);
-        sword.enchant(Enchantments.FIRE_ASPECT, 2);
-        sword.enchant(Enchantments.KNOCKBACK, 2);
-        sword.enchant(Enchantments.UNBREAKING, 5);
-        this.setItemSlot(EquipmentSlot.MAINHAND, sword);
-        this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.ENDER_PEARL));
     }
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -86,12 +88,17 @@ public class AlexEntity extends PathfinderMobInventory {
         CommonGoals.registerGoalForNeutralNpc(this);
     }
 
+    public void setState(int state) {
+        this.state = state;
+    }
+
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         if (jevUUID != null) {
             tag.putUUID("JevUUID", jevUUID);
         }
+        tag.putInt("State", this.state);
         tag.putBoolean("JevDeathMessageSent", jevDeathMessageSent);
         tag.putBoolean("SpawnJev", spawnJev);
     }
@@ -102,12 +109,13 @@ public class AlexEntity extends PathfinderMobInventory {
         if (tag.hasUUID("JevUUID")) {
             jevUUID = tag.getUUID("JevUUID");
         }
+        state = tag.getInt("State");
         jevDeathMessageSent = tag.getBoolean("JevDeathMessageSent");
         spawnJev = tag.getBoolean("SpawnJev");
     }
 
 
-    public MobType getMobType() {
+    public @NotNull MobType getMobType() {
         return MobType.UNDEFINED;
     }
 
@@ -119,66 +127,133 @@ public class AlexEntity extends PathfinderMobInventory {
         return -0.35D;
     }
 
-    public SoundEvent getHurtSound(DamageSource damagesource) {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.hurt"));
+    public SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
+        return ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.hurt"));
     }
 
     public SoundEvent getDeathSound() {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.death"));
+        return ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.death"));
     }
 
-    public boolean hurt(DamageSource damagesource, float f) {
-        AlexOnHurtProcedure.execute(this.level(), this, damagesource.getEntity(), f);
-        if (damagesource.is(DamageTypes.FALL)) return false;
-        if (damagesource.is(DamageTypes.CACTUS)) return false;
-        if (damagesource.is(DamageTypes.DROWN)) return false;
-        if (damagesource.is(DamageTypes.FALLING_ANVIL)) return false;
-        return super.hurt(damagesource, f);
-    }
-
-    public void die(DamageSource damagesource) {
-        super.die(damagesource);
-        AlexOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
-        if (this.level() instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-            ServerLevel serverlevel = (ServerLevel)levelaccessor;
-            AlexDeadEntity alexdeadentity = new AlexDeadEntity((EntityType) AnnoyingVillagersModEntities.ALEX_DEAD.get(), serverlevel);
-
-            alexdeadentity.moveTo(this.getX(), this.getY(), this.getZ(), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-            if (alexdeadentity instanceof Mob) {
-                Mob mob = (Mob)alexdeadentity;
-
-                mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(alexdeadentity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+    public boolean hurt(@NotNull DamageSource damageSource, float f) {
+        if (this.getEnderPearlCooldown() == 0) {
+            if (Math.random() <= 0.2D && !this.level().isClientSide() && this.getServer() != null) {
+                this.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getDisplayName().getString() + "> Are you being serious ?"), false);
             }
-            this.remove(RemovalReason.KILLED);
-            levelaccessor.addFreshEntity(alexdeadentity);
-            try {
-                alexdeadentity.getServer().getCommands().getDispatcher().execute(
-                        "kill @s",
-                        alexdeadentity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
+            CombatBehaviour.throwEnderPearl(this, 180.0F);
+            Entity entity = this;
+            if (Math.random() <= 0.2D) {
+                new DelayedTask(20) {
+                    @Override
+                    public void run() {
+                        if (entity.isAlive()) {
+                            CombatBehaviour.throwEnderPearl(entity, 90.0F);
+                        }
+                    }
+                };
+            }
+            this.setEnderPearlCooldown();
+        }
+        if (this.level() instanceof ServerLevel && !damageSource.is(DamageTypes.FELL_OUT_OF_WORLD)) {
+            float health = this.getHealth();
+            if (health - f <= 0.0F) {
+                if (this.state == 0 && !this.getOffhandItem().getItem().equals(Items.TOTEM_OF_UNDYING)) {
+                    this.setHealth(1.0F);
+                }
+            }
+        }
+        return super.hurt(damageSource, f);
+    }
+
+    public void die(@NotNull DamageSource damageSource) {
+        super.die(damageSource);
+        if (this.level() instanceof ServerLevel serverLevel) {
+            if (this.getServer() != null) {
+                this.getServer().getPlayerList().broadcastSystemMessage(
+                        Component.literal("<" + this.getDisplayName().getString() + "> Damn it !"),
+                        false
+                );
+            }
+
+            final double x = this.getX();
+            final double y = this.getY() + 1.0D;
+            final double z = this.getZ();
+
+            Consumer<ItemStack> dropStack = (stack) -> {
+                ItemEntity drop = new ItemEntity(serverLevel, x, y, z, stack);
+                drop.setPickUpDelay(10);
+                serverLevel.addFreshEntity(drop);
+            };
+
+            List<ItemStack> damagedStacks = new ArrayList<>();
+
+            ItemStack sword = new ItemStack(Items.DIAMOND_SWORD);
+            sword.enchant(Enchantments.SHARPNESS, 5);
+            sword.enchant(Enchantments.FIRE_ASPECT, 2);
+            sword.enchant(Enchantments.KNOCKBACK, 2);
+            sword.enchant(Enchantments.UNBREAKING, 5);
+            damagedStacks.add(sword);
+
+            for (ItemStack stack : damagedStacks) {
+                stack.setDamageValue(EquipmentDataLoader.getRandomDamage(stack));
+                dropStack.accept(stack);
+            }
+
+            ItemStack[] simpleDrops = new ItemStack[] {
+                    new ItemStack(Items.BREAD),
+                    new ItemStack(Items.GOLDEN_APPLE),
+                    new ItemStack(Items.WHEAT),
+                    new ItemStack(Items.POISONOUS_POTATO),
+                    new ItemStack(Items.GOLD_INGOT),
+
+                    new ItemStack(Items.IRON_INGOT),
+                    new ItemStack(Items.DIAMOND),
+                    new ItemStack(Items.DIAMOND),
+
+                    new ItemStack(Items.IRON_INGOT),
+                    new ItemStack(Items.IRON_INGOT),
+                    new ItemStack(Items.IRON_INGOT),
+                    new ItemStack(Items.IRON_INGOT),
+                    new ItemStack(Items.IRON_INGOT),
+                    new ItemStack(Items.ENCHANTED_GOLDEN_APPLE),
+                    new ItemStack(Items.GOLDEN_APPLE),
+                    new ItemStack(Items.WHITE_BED),
+                    new ItemStack(Items.CAKE)
+            };
+
+            for (ItemStack stack : simpleDrops) {
+                dropStack.accept(stack);
+            }
+
+            if (AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
+                AlexDeadEntity alexDeadEntity = new AlexDeadEntity(AnnoyingVillagersModEntities.ALEX_DEAD.get(), serverLevel);
+
+                alexDeadEntity.moveTo(this.getX(), this.getY(), this.getZ(), serverLevel.getRandom().nextFloat() * 360.0F, 0.0F);
+                alexDeadEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(alexDeadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+                this.remove(RemovalReason.KILLED);
+                serverLevel.addFreshEntity(alexDeadEntity);
+                alexDeadEntity.kill();
             }
         }
     }
 
     private void spawnJev() {
-        if (this.level() instanceof ServerLevel levelaccessor) {
-            ServerLevel serverlevel = (ServerLevel) levelaccessor;
-
-            JevEntity jevEntity = new JevEntity((EntityType) AnnoyingVillagersModEntities.JEV.get(), serverlevel);
-            jevEntity.moveTo(this.getX() + new Random().nextDouble(1.0D, 10.0D), this.getY() + new Random().nextDouble(1.0D, 10.0D), this.getZ() + new Random().nextDouble(1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+        if (this.level() instanceof ServerLevel serverLevel) {
+            JevEntity jevEntity = new JevEntity(AnnoyingVillagersModEntities.JEV.get(), serverLevel);
+            jevEntity.moveTo(this.getX() + new Random().nextDouble(1.0D, 10.0D), this.getY() + new Random().nextDouble(1.0D, 10.0D), this.getZ() + new Random().nextDouble(1.0D, 10.0D), serverLevel.getRandom().nextFloat() * 360.0F, 0.0F);
             jevEntity.setFollowTarget(this);
             jevEntity.setFollowTargetUUID(this.getUUID());
-            jevEntity.finalizeSpawn(levelaccessor, levelaccessor.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
-            levelaccessor.addFreshEntity(jevEntity);
+            jevEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+            serverLevel.addFreshEntity(jevEntity);
 
             this.setJevUUID(jevEntity.getUUID());
             this.setProtectingJev(jevEntity);
         }
     }
 
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
-        if (mobspawntype == MobSpawnType.NATURAL || mobspawntype == MobSpawnType.CHUNK_GENERATION) {
-            ServerLevel serverLevel = serverlevelaccessor.getLevel();
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverLevelAccessor, @NotNull DifficultyInstance difficultyInstance, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
+        if (mobSpawnType == MobSpawnType.NATURAL || mobSpawnType == MobSpawnType.CHUNK_GENERATION) {
+            ServerLevel serverLevel = serverLevelAccessor.getLevel();
             AlexData alexData = AlexData.get(serverLevel);
 
             if (!alexData.tryClaim(serverLevel, this.getUUID())) {
@@ -187,23 +262,25 @@ public class AlexEntity extends PathfinderMobInventory {
             }
         }
 
-        SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
-        AlexOnSpawnProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
-        return spawngroupdata1;
+        SpawnGroupData returnSpawnGroupData = super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawngroupdata, compoundtag);
+        TeamUtil.addOrJoinTeam(this, "alex");
+
+        ItemStack sword = new ItemStack(Items.DIAMOND_SWORD);
+        sword.enchant(Enchantments.SHARPNESS, 5);
+        sword.enchant(Enchantments.FIRE_ASPECT, 2);
+        sword.enchant(Enchantments.KNOCKBACK, 2);
+        sword.enchant(Enchantments.UNBREAKING, 5);
+        this.setItemSlot(EquipmentSlot.MAINHAND, sword);
+        this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.ENDER_PEARL));
+        this.setMainWeaponItem(sword);
+        this.setOffWeaponItem(new ItemStack(Items.ENDER_PEARL));
+        return returnSpawnGroupData;
     }
 
-    public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
-        super.awardKillScore(entity, i, damagesource);
-        if (entity != null) {
-            if (Math.random() < 0.2D && !entity.level().isClientSide() && entity.getServer() != null) {
-                entity.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getDisplayName().getString() + "> " + "Hah, a loser beneath me"), false);
-            }
-        }
-    }
-
-    public void baseTick() {
-        super.baseTick();
-        AlexOnTickProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+    @Override
+    protected void implementFirstTick(ServerLevel serverLevel) {
+        super.implementFirstTick(serverLevel);
+        Objects.requireNonNull(this.getServer()).getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getDisplayName().getString() + "> " + "Hah, a loser beneath me"), false);
     }
 
     @Override
@@ -245,6 +322,15 @@ public class AlexEntity extends PathfinderMobInventory {
                 jevToProtect = null;
                 jevUUID = null;
             }
+            if (this.tickCount % 20 == 0 && this.jevToProtect != null) {
+                this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 30, 1));
+                this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 30, 0));
+            }
+            if ((this.state == 0 || this.state == 1)
+                    && this.getHealth() <= 20
+                    && !this.getItemInHand(InteractionHand.OFF_HAND).getItem().equals(Items.TOTEM_OF_UNDYING)) {
+                this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.TOTEM_OF_UNDYING));
+            }
         }
     }
 
@@ -257,7 +343,7 @@ public class AlexEntity extends PathfinderMobInventory {
     }
 
     @Override
-    public void remove(RemovalReason reason) {
+    public void remove(@NotNull RemovalReason reason) {
         super.remove(reason);
         if (!level().isClientSide && level() instanceof ServerLevel serverLevel &&
                 (reason == RemovalReason.KILLED || reason == RemovalReason.DISCARDED)) {
@@ -268,7 +354,7 @@ public class AlexEntity extends PathfinderMobInventory {
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();
 
-        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3D);
+        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.45D);
         builder = builder.add(Attributes.MAX_HEALTH, 50.0D);
         builder = builder.add(Attributes.ARMOR, 20.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0D);

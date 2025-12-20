@@ -11,6 +11,7 @@ import se.gory_moon.player_mobs.client.render.PlayerMobRenderer;
 import yesman.epicfight.api.client.forgeevent.PatchedRenderersEvent;
 import yesman.epicfight.api.client.model.Meshes;
 import yesman.epicfight.client.renderer.patched.entity.PHumanoidRenderer;
+import yesman.epicfight.client.renderer.patched.entity.PIllagerRenderer;
 
 @EventBusSubscriber(bus = Bus.MOD, value = {Dist.CLIENT})
 public class AnnoyingVillagersModEntityRenderers {
@@ -114,6 +115,12 @@ public class AnnoyingVillagersModEntityRenderers {
                         .initLayerLast(add.getContext(), entitytype));
         add.addPatchedEntityRenderer(AnnoyingVillagersModEntities.STEVE.get(),
                 (entitytype) -> (new PHumanoidRenderer<>(Meshes.BIPED, add.getContext(), entitytype))
+                        .initLayerLast(add.getContext(), entitytype));
+        add.addPatchedEntityRenderer(AnnoyingVillagersModEntities.ALEX.get(),
+                (entitytype) -> (new PHumanoidRenderer<>(Meshes.BIPED, add.getContext(), entitytype))
+                        .initLayerLast(add.getContext(), entitytype));
+        add.addPatchedEntityRenderer(AnnoyingVillagersModEntities.JEV.get(),
+                (entitytype) -> (new PIllagerRenderer<>(add.getContext(), entitytype))
                         .initLayerLast(add.getContext(), entitytype));
     }
 }
