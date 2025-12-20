@@ -40,7 +40,6 @@ public class AnnoyingVillagersModEntities {
     public static final RegistryObject<EntityType<BbqEntity>> BBQ = register("bbq", Builder.<BbqEntity>of(BbqEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(BbqEntity::new).fireImmune().sized(0.4F, 0.7F));
     public static final RegistryObject<EntityType<ChrisEntity>> CHRIS = register("chris", Builder.<ChrisEntity>of(ChrisEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(ChrisEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<SteveEntity>> STEVE = register("steve", Builder.<SteveEntity>of(SteveEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(SteveEntity::new).fireImmune().sized(0.6F, 1.8F));
-    public static final RegistryObject<EntityType<AngrySteveEntity>> ANGRY_STEVE = register("angry_steve", Builder.<AngrySteveEntity>of(AngrySteveEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(AngrySteveEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<PlayerNpcEntity>> PLAYER_NPC = register("player_npc", Builder.<PlayerNpcEntity>of(PlayerNpcEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(PlayerNpcEntity::new).fireImmune().sized(0.6F, 1.8F));
 
     public static final RegistryObject<EntityType<InfectedTheMostMoistBurrit0Entity>> INFECTED_THEMOSTMOISTBURRIT0 = register("infected_the_moi_moist_burrit0", Builder.<InfectedTheMostMoistBurrit0Entity>of(InfectedTheMostMoistBurrit0Entity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(InfectedTheMostMoistBurrit0Entity::new).sized(0.6F, 1.8F));
@@ -283,18 +282,17 @@ public class AnnoyingVillagersModEntities {
         entityattributecreationevent.put(AnnoyingVillagersModEntities.ARMORED_HEROBRINE.get(), ArmoredHerobrineEntity.createAttributes().build());
         entityattributecreationevent.put(AnnoyingVillagersModEntities.STEVE_DEAD.get(), SteveDeadEntity.createAttributes().build());
         entityattributecreationevent.put(AnnoyingVillagersModEntities.STEVE.get(), SteveEntity.createAttributes().build());
-        entityattributecreationevent.put(AnnoyingVillagersModEntities.ANGRY_STEVE.get(), AngrySteveEntity.createAttributes().build());
-        entityattributecreationevent.put(AnnoyingVillagersModEntities.CHRIS_DEAD.get(), AngrySteveEntity.createAttributes().build());
-        entityattributecreationevent.put(AnnoyingVillagersModEntities.INFECTED_CHRIS_DEAD.get(), AngrySteveEntity.createAttributes().build());
-        entityattributecreationevent.put(AnnoyingVillagersModEntities.VILLAGER_SCOUT_DEAD.get(), AngrySteveEntity.createAttributes().build());
-        entityattributecreationevent.put(AnnoyingVillagersModEntities.JEV_DEAD.get(), AngrySteveEntity.createAttributes().build());
-        entityattributecreationevent.put(AnnoyingVillagersModEntities.RED_VILLAGER_GENERAL_DEAD.get(), AngrySteveEntity.createAttributes().build());
-        entityattributecreationevent.put(AnnoyingVillagersModEntities.GREEN_VILLAGER_GENERAL_DEAD.get(), AngrySteveEntity.createAttributes().build());
-        entityattributecreationevent.put(AnnoyingVillagersModEntities.BLUE_VILLAGER_GENERAL_DEAD.get(), AngrySteveEntity.createAttributes().build());
-        entityattributecreationevent.put(AnnoyingVillagersModEntities.PURPLE_VILLAGER_GENERAL_DEAD.get(), AngrySteveEntity.createAttributes().build());
-        entityattributecreationevent.put(AnnoyingVillagersModEntities.BLUE_DEMON_DEAD.get(), AngrySteveEntity.createAttributes().build());
-        entityattributecreationevent.put(AnnoyingVillagersModEntities.HEROBRINE_DEAD.get(), AngrySteveEntity.createAttributes().build());
-        entityattributecreationevent.put(AnnoyingVillagersModEntities.SHADOW_HEROBRINE_DEAD.get(), AngrySteveEntity.createAttributes().build());
+        entityattributecreationevent.put(AnnoyingVillagersModEntities.CHRIS_DEAD.get(), SteveDeadEntity.createAttributes().build());
+        entityattributecreationevent.put(AnnoyingVillagersModEntities.INFECTED_CHRIS_DEAD.get(), SteveDeadEntity.createAttributes().build());
+        entityattributecreationevent.put(AnnoyingVillagersModEntities.VILLAGER_SCOUT_DEAD.get(), SteveDeadEntity.createAttributes().build());
+        entityattributecreationevent.put(AnnoyingVillagersModEntities.JEV_DEAD.get(), SteveDeadEntity.createAttributes().build());
+        entityattributecreationevent.put(AnnoyingVillagersModEntities.RED_VILLAGER_GENERAL_DEAD.get(), SteveDeadEntity.createAttributes().build());
+        entityattributecreationevent.put(AnnoyingVillagersModEntities.GREEN_VILLAGER_GENERAL_DEAD.get(), SteveDeadEntity.createAttributes().build());
+        entityattributecreationevent.put(AnnoyingVillagersModEntities.BLUE_VILLAGER_GENERAL_DEAD.get(), SteveDeadEntity.createAttributes().build());
+        entityattributecreationevent.put(AnnoyingVillagersModEntities.PURPLE_VILLAGER_GENERAL_DEAD.get(), SteveDeadEntity.createAttributes().build());
+        entityattributecreationevent.put(AnnoyingVillagersModEntities.BLUE_DEMON_DEAD.get(), SteveDeadEntity.createAttributes().build());
+        entityattributecreationevent.put(AnnoyingVillagersModEntities.HEROBRINE_DEAD.get(), SteveDeadEntity.createAttributes().build());
+        entityattributecreationevent.put(AnnoyingVillagersModEntities.SHADOW_HEROBRINE_DEAD.get(), SteveDeadEntity.createAttributes().build());
         entityattributecreationevent.put(AnnoyingVillagersModEntities.PLAYER_MOB_DEAD.get(), PlayerMobDeadEntity.createAttributes().build());
         entityattributecreationevent.put(AnnoyingVillagersModEntities.INFECTED_THEMOSTMOISTBURRIT0.get(), InfectedTheMostMoistBurrit0Entity.createAttributes().build());
         entityattributecreationevent.put(AnnoyingVillagersModEntities.INFECTED_THEMOSTMOISTBURRIT0_DEAD.get(), InfectedTheMostMoistBurrit0DeadEntity.createAttributes().build());

@@ -60,11 +60,11 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
     }
 
     public void setGapCooldown() {
-        this.gapCooldown = random.nextInt(60, 200);
+        this.gapCooldown = random.nextInt(100, 300);
     }
 
     public void setEnderPearlCooldown() {
-        this.enderPearlCooldown = random.nextInt(60, 200);
+        this.enderPearlCooldown = random.nextInt(100, 300);
     }
 
     public ItemStack getMainWeaponItem() {

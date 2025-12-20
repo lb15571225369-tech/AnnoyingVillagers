@@ -1,80 +1,88 @@
 package com.pla.annoyingvillagers.combatbehaviour;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.SteveEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
-import com.pla.annoyingvillagers.item.WoopieTheSwordItem;
-import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
-import com.pla.annoyingvillagers.network.ClientboundWoopieSwordWindFx;
+import com.pla.annoyingvillagers.item.LegendarySwordItem;
 import com.pla.annoyingvillagers.util.DelayedTask;
-import com.pla.annoyingvillagers.util.EpicfightUtil;
-import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.PacketDistributor;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors.Behavior;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors.BehaviorRoot;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors.Builder;
 import net.shelmarow.combat_evolution.ai.efcondition.HealthCheck;
-import reascer.wom.gameasset.animations.weapons.AnimsHerrscher;
-import reascer.wom.gameasset.animations.weapons.AnimsSatsujin;
-import yesman.epicfight.api.utils.math.Vec3f;
+import reascer.wom.gameasset.WOMAnimations;
+import reascer.wom.gameasset.animations.weapons.AnimsAgony;
+import reascer.wom.gameasset.animations.weapons.AnimsNapoleon;
 import yesman.epicfight.gameasset.Animations;
-import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 import yesman.epicfight.world.effect.EpicFightMobEffects;
 
-public class SteveWoopieSword {
-    static void woopieWindup(MobPatch<?> mobpatch) {
+public class SteveLegendarySword {
+    static void legendarySwordHeavyAttack(MobPatch<?> mobpatch) {
         SteveEntity steveEntity = (SteveEntity) mobpatch.getOriginal();
         ItemStack itemStack = steveEntity.getMainHandItem();
-        steveEntity.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 60, 2));
-        if (itemStack.getItem() instanceof WoopieTheSwordItem && steveEntity.level() instanceof ServerLevel serverLevel) {
-            if (!steveEntity.isSayWhyKeepFighting()) {
-                serverLevel.playSound(
-                        null,
-                        steveEntity.getX(), steveEntity.getY(), steveEntity.getZ(),
-                        AnnoyingVillagersModSounds.STEVE_WHY_KEEP_FIGHTING.get(),
-                        SoundSource.NEUTRAL,
-                        1.0F, 1.0F
-                );
-                steveEntity.setSayWhyKeepFighting(true);
-            }
-            new DelayedTask(6) {
+        if (itemStack.getItem() instanceof LegendarySwordItem && steveEntity.level() instanceof ServerLevel serverLevel) {
+            steveEntity.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 60, 2));
+            serverLevel.playSound(
+                    null,
+                    steveEntity.getX(), steveEntity.getY(), steveEntity.getZ(),
+                    AnnoyingVillagersModSounds.STEVE_ATTACK.get(),
+                    SoundSource.NEUTRAL,
+                    1.0F, 1.0F
+            );
+            new DelayedTask(10) {
                 @Override
                 public void run() {
-                    Vec3 windPos = EpicfightUtil.getJointWithTranslation(
-                            steveEntity,
-                            new Vec3f(0.0F, 0.0F, 0.0F),
-                            Armatures.BIPED.get().toolR,
-                            5.3F,
-                            0.5F
+                    serverLevel.playSound(
+                            null,
+                            steveEntity.getX(), steveEntity.getY(), steveEntity.getZ(),
+                            AnnoyingVillagersModSounds.HEAVY_ATTACK_START.get(),
+                            SoundSource.NEUTRAL,
+                            1.0F, 1.0F
                     );
-                    if (windPos != null) {
-                        BlockPos mutePos = BlockPos.containing(windPos);
-                        AnnoyingVillagers.PACKET_HANDLER.send(
-                                PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> steveEntity),
-                                new ClientboundMuteExplosionAtPos(mutePos, 4)
-                        );
-                        steveEntity.level().explode(steveEntity, windPos.x, windPos.y, windPos.z,
-                                2.0F, false, Level.ExplosionInteraction.NONE);
-                        AnnoyingVillagers.PACKET_HANDLER.send(
-                                PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> steveEntity),
-                                new ClientboundWoopieSwordWindFx(windPos)
-                        );
-                    }
+
+                    serverLevel.playSound(
+                            null,
+                            steveEntity.getX(), steveEntity.getY(), steveEntity.getZ(),
+                            AnnoyingVillagersModSounds.HEAVY_ATTACK_LEGENDARY_SWORD.get(),
+                            SoundSource.NEUTRAL,
+                            1.0F, 1.0F
+                    );
+
+                    serverLevel.playSound(
+                            null,
+                            steveEntity.getX(), steveEntity.getY(), steveEntity.getZ(),
+                            AnnoyingVillagersModSounds.HEAVY_ATTACK_LEGENDARY_SWORD_2.get(),
+                            SoundSource.NEUTRAL,
+                            1.0F, 1.0F
+                    );
+
+                    serverLevel.sendParticles(
+                            ParticleTypes.TOTEM_OF_UNDYING,
+                            steveEntity.getX(), steveEntity.getY(), steveEntity.getZ(),
+                            15,
+                            0.0D, 0.0D, 0.0D,
+                            0.2D);
+
+                    serverLevel.sendParticles(
+                            ParticleTypes.TOTEM_OF_UNDYING,
+                            steveEntity.getX(), steveEntity.getEyeY(), steveEntity.getZ(),
+                            100,
+                            0.0D, 0.0D, 0.0D,
+                            0.5D
+                    );
+                    mobpatch.playAnimationSynchronized(AVAnimations.LEGENDARY_SWORD_HEAVY_ATTACK, 0.0F);
                 }
             };
         }
     }
 
-    public static final Builder<MobPatch<?>> WOOPIE_THE_SWORD = CECombatBehaviors.builder()
+    public static final Builder<MobPatch<?>> LEGENDARY_SWORD = CECombatBehaviors.builder()
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(3.0D)
@@ -83,14 +91,12 @@ public class SteveWoopieSword {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canSwitchWeapon)
-                                            .withinDistance(1.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_STEP_FORWARD, 0.0F)
                                             .addExBehavior(CombatCommon::switchWeapon)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canSwitchWeapon)
-                                            .withinDistance(1.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
                                             .addExBehavior(CombatCommon::switchWeapon)
                             )
@@ -197,45 +203,24 @@ public class SteveWoopieSword {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 2.0D)
-                                            .animationBehavior(Animations.SWORD_AUTO1, 0.0F)
+                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
                                                             .withinDistance(0.0D, 2.0D)
-                                                            .animationBehavior(Animations.SWORD_AUTO2, 0.0F)
+                                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_2, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
                                                                             .withinDistance(0.0D, 2.0D)
-                                                                            .animationBehavior(Animations.SWORD_AUTO3, 0.0F)
+                                                                            .animationBehavior(AVAnimations.YELLOW_NAPOLEON_AUTO_3, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
                                                                                             .withinDistance(0.0D, 2.0D)
-                                                                                            .animationBehavior(AnimsSatsujin.SATSUJIN_AUTO_1, 0.0F).addNextBehavior(
+                                                                                            .animationBehavior(AVAnimations.YELLOW_SOLAR_AUTO_2, 0.0F).addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .withinDistance(0.0D, 2.0D)
-                                                                                                            .animationBehavior(AnimsSatsujin.SATSUJIN_AUTO_2, 0.0F)
+                                                                                                            .animationBehavior(AVAnimations.LEGENDARY_SWORD_WAKE_UP_ATTACK, 0.0F)
                                                                                             )
                                                                             )
-                                                            )
-                                            )
-                            )
-            )
-            .newBehaviorRoot(
-                    BehaviorRoot.builder()
-                            .priority(1.0D)
-                            .weight(20.0D)
-                            .maxCooldown (200)
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .withinDistance(0.0D, 2.0D)
-                                            .animationBehavior(AVAnimations.SWORD_HEAVY_AUTO_1, 0.0F)
-                                            .addNextBehavior(
-                                                    Behavior.builder()
-                                                            .withinDistance(0.0D, 2.0D)
-                                                            .animationBehavior(AVAnimations.SWORD_HEAVY_AUTO_2, 0.0F)
-                                                            .addNextBehavior(
-                                                                    Behavior.builder()
-                                                                            .withinDistance(0.0D, 2.0D)
-                                                                            .animationBehavior(AVAnimations.SWORD_HEAVY_AUTO_3, 0.0F)
                                                             )
                                             )
                             )
@@ -247,8 +232,9 @@ public class SteveWoopieSword {
                             .maxCooldown (40)
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .withinDistance(2.0D, 14.0D)
-                                            .animationBehavior(AVAnimations.RUSH_SWORD, 0.0F)
+                                            .withinDistance(0.0D, 2.0D)
+                                            .animationBehavior(AnimsAgony.AGONY_RISING_EAGLE, 0.0F)
+                                            .addExBehavior(SteveLegendarySword::legendarySwordHeavyAttack)
                             )
             )
             .newBehaviorRoot(
@@ -258,9 +244,8 @@ public class SteveWoopieSword {
                             .maxCooldown (40)
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .withinDistance(0.0D, 2.0D)
-                                            .animationBehavior(AnimsHerrscher.HERRSCHER_AUTO_2, 0.0F)
-                                            .addExBehavior(SteveWoopieSword::woopieWindup)
+                                            .withinDistance(0.0D, 6.0D)
+                                            .animationBehavior(AVAnimations.YELLOW_NAPOLEON_AUSTERLITZ_SHOOT, 0.0F)
                             )
             )
             .newBehaviorRoot(
@@ -271,12 +256,12 @@ public class SteveWoopieSword {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 2.0D)
-                                            .animationBehavior(AnimsHerrscher.HERRSCHER_VERDAMMNIS, 0.0F)
+                                            .animationBehavior(AVAnimations.YELLOW_NAPOLEON_AUTO_4, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 2.0D)
-                                            .animationBehavior(AnimsSatsujin.SATSUJIN_TSUKUYOMI, 0.0F)
+                                            .animationBehavior(AnimsNapoleon.NAPOLEON_WATERLOW_SHOOT, 0.0F)
                             )
             )
             .newBehaviorRoot(

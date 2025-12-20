@@ -14,19 +14,17 @@ public class PlayerNpcBow {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(2.0D)
-                            .weight(250.0D)
+                            .weight(100.0D)
                             .maxCooldown(0)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 5.0D)
-                                            .custom(CombatCommon::canAttackWhileNotHealing)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
                                             .addExBehavior(CombatCommon::swapToMelee)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 5.0D)
-                                            .custom(CombatCommon::canAttackWhileNotHealing)
                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
                                             .addExBehavior(CombatCommon::swapToMelee)
                             )

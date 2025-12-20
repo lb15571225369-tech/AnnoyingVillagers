@@ -1,7 +1,7 @@
 package com.pla.annoyingvillagers.events;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.SteveEntity;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.util.DelayedTask;
@@ -17,6 +17,8 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.event.entity.living.LivingUseTotemEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 @Mod.EventBusSubscriber
 public class TotemUsingEvent {
@@ -27,9 +29,29 @@ public class TotemUsingEvent {
 
         if (totem.is(Items.TOTEM_OF_UNDYING)) {
             if (entity instanceof SteveEntity steveEntity && entity.level() instanceof ServerLevel serverLevel) {
-                steveEntity.setHealth(steveEntity.getMaxHealth());
-                steveEntity.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
-                steveEntity.setState(1);
+                new DelayedTask(1) {
+                    @Override
+                    public void run() {
+                        serverLevel.playSound(
+                                null,
+                                steveEntity.getX(), steveEntity.getY(), steveEntity.getZ(),
+                                AnnoyingVillagersModSounds.STEVE_BREATH.get(),
+                                SoundSource.NEUTRAL,
+                                1.0F, 1.0F
+                        );
+                        steveEntity.setHealth(steveEntity.getMaxHealth());
+                        ItemStack diamondSword = new ItemStack(Items.DIAMOND_SWORD);
+                        diamondSword.enchant(Enchantments.SHARPNESS, 5);
+                        diamondSword.enchant(Enchantments.SMITE, 5);
+                        steveEntity.setItemInHand(InteractionHand.OFF_HAND, diamondSword);
+                        steveEntity.setOffWeaponItem(diamondSword);
+                        steveEntity.setState(1);
+                        LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                        if (!entity.level().isClientSide() && entity.getServer() != null && livingEntityPatch != null) {
+                            livingEntityPatch.playAnimationSynchronized(AVAnimations.GUARD_BREAK_ATTACK, 0.0F);
+                        }
+                    }
+                };
 
                 new DelayedTask(10) {
                     @Override

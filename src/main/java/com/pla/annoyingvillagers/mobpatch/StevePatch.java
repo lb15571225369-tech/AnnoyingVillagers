@@ -13,6 +13,7 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
 import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
 import net.shelmarow.combat_evolution.iml.CustomExecuteEntity;
+import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.animations.weapons.AnimsMoonless;
 import reascer.wom.gameasset.animations.weapons.AnimsSolar;
 import yesman.epicfight.api.animation.AnimationManager.AnimationAccessor;
@@ -60,7 +61,7 @@ public class StevePatch extends CEHumanoidPatch implements CustomExecuteEntity {
                                 )));
         this.weaponAttackMotions
                 .put(WeaponCategories.NOT_WEAPON,
-                        ImmutableMap.of(Styles.ONE_HAND, NpcFist.FIST));
+                        ImmutableMap.of(Styles.ONE_HAND, PlayerNpcFist.FIST));
 
         this.weaponLivingMotions
                 .put(WeaponCategories.FIST,
@@ -74,12 +75,12 @@ public class StevePatch extends CEHumanoidPatch implements CustomExecuteEntity {
                                 )));
         this.weaponAttackMotions
                 .put(WeaponCategories.FIST,
-                        ImmutableMap.of(Styles.ONE_HAND, NpcFist.FIST));
+                        ImmutableMap.of(Styles.ONE_HAND, PlayerNpcFist.FIST));
 
         this.weaponAttackMotions
                 .put(WeaponCategories.RANGED,
                         ImmutableMap.of(
-                                Styles.ONE_HAND, NpcBow.BOW
+                                Styles.ONE_HAND, PlayerNpcBow.BOW
                         ));
         this.weaponLivingMotions
                 .put(WeaponCategories.RANGED,
@@ -102,15 +103,25 @@ public class StevePatch extends CEHumanoidPatch implements CustomExecuteEntity {
                                         Pair.of(LivingMotions.BLOCK, Animations.SWORD_GUARD),
                                         Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
                                         Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
-                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN),
-                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_RUN),
+                                        Pair.of(LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD),
+                                        Pair.of(LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                ),
+                                Styles.TWO_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD),
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_DUAL_WEAPON),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_HOLD_DUAL_WEAPON),
+                                        Pair.of(LivingMotions.RUN, AVAnimations.RUN_HOLD),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_HOLD_DUAL_WEAPON),
                                         Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
                                 )
                         ));
         this.weaponAttackMotions
                 .put(WeaponCategories.SWORD,
                         ImmutableMap.of(
-                                Styles.ONE_HAND, PlayerNpcSword.AV_SWORD
+                                Styles.ONE_HAND, PlayerNpcSword.AV_SWORD,
+                                Styles.TWO_HAND, PlayerNpcSword.AV_DUAL_SWORD
                         ));
 
         this.weaponLivingMotions
@@ -148,7 +159,7 @@ public class StevePatch extends CEHumanoidPatch implements CustomExecuteEntity {
         this.weaponAttackMotions
                 .put(AVCategories.WOODEN_DOOR,
                         ImmutableMap.of(
-                                Styles.TWO_HAND, PlayerNpcWoodenDoor.WOODEN_DOOR
+                                Styles.TWO_HAND, SteveWoodenDoor.WOODEN_DOOR
                         ));
 
         this.weaponLivingMotions
@@ -167,7 +178,7 @@ public class StevePatch extends CEHumanoidPatch implements CustomExecuteEntity {
         this.weaponAttackMotions
                 .put(AVCategories.CRAFTING_TABLE,
                         ImmutableMap.of(
-                                Styles.TWO_HAND, PlayerNpcCraftingTable.CRAFTING_TABLE
+                                Styles.TWO_HAND, SteveCraftingTable.CRAFTING_TABLE
                         ));
 
         this.weaponLivingMotions
@@ -186,7 +197,7 @@ public class StevePatch extends CEHumanoidPatch implements CustomExecuteEntity {
         this.weaponAttackMotions
                 .put(AVCategories.LADDER,
                         ImmutableMap.of(
-                                Styles.TWO_HAND, PlayerNpcLadder.LADDER
+                                Styles.TWO_HAND, SteveLadder.LADDER
                         ));
 
         this.weaponLivingMotions
@@ -205,7 +216,26 @@ public class StevePatch extends CEHumanoidPatch implements CustomExecuteEntity {
         this.weaponAttackMotions
                 .put(AVCategories.TRAPDOOR,
                         ImmutableMap.of(
-                                Styles.TWO_HAND, PlayerNpcTrapdoor.TRAPDOOR
+                                Styles.TWO_HAND, SteveTrapdoor.TRAPDOOR
+                        ));
+
+        this.weaponLivingMotions
+                .put(AVCategories.LEGENDARY_SWORD,
+                        ImmutableMap.of(
+                                Styles.TWO_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, AVAnimations.LEGENDARY_SWORD_GUARD),
+                                        Pair.of(LivingMotions.IDLE, WOMAnimations.TORMENT_BERSERK_IDLE),
+                                        Pair.of(LivingMotions.WALK, WOMAnimations.TORMENT_BERSERK_WALK),
+                                        Pair.of(LivingMotions.RUN, AVAnimations.RUN_DUAL_BIG),
+                                        Pair.of(LivingMotions.CHASE, WOMAnimations.TORMENT_BERSERK_WALK),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )
+                        ));
+        this.weaponAttackMotions
+                .put(AVCategories.LEGENDARY_SWORD,
+                        ImmutableMap.of(
+                                Styles.TWO_HAND, SteveLegendarySword.LEGENDARY_SWORD
                         ));
     }
 

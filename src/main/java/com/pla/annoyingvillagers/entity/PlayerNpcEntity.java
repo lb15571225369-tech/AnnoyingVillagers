@@ -88,7 +88,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     }
 
     public void setEnderPearlCooldown() {
-        this.enderPearlCooldown = random.nextInt(60, 200);
+        this.enderPearlCooldown = random.nextInt(100, 300);
     }
 
     public void setSwapToBowCooldown() {

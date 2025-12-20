@@ -429,7 +429,7 @@
   "steave_breath": {
     "sounds": [
       {
-        "name": "annoyingvillagers:steave_breath",
+        "name": "annoyingvillagers:steve_breath",
         "stream": false
       }
     ]

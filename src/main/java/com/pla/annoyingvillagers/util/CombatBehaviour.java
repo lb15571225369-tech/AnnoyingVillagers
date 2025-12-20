@@ -1,8 +1,11 @@
 package com.pla.annoyingvillagers.util;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
+import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
 import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
+import com.pla.annoyingvillagers.entity.SteveEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -37,6 +40,7 @@ import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 
 import java.util.Objects;
 import java.util.Random;
@@ -271,21 +275,25 @@ public class CombatBehaviour {
                         public void run() {
                             if (!entity.isAlive()) return;
 
+                            LivingEntityPatch<?> livingEntityPatch1 = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                            if (!entity.level().isClientSide() && entity.getServer() != null && livingEntityPatch1 != null) {
+                                livingEntityPatch1.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
+                            }
+
                             if (entity instanceof PlayerNpcEntity playerNpcEntity) {
                                 livingEntity.setItemInHand(InteractionHand.MAIN_HAND, playerNpcEntity.getMainWeaponItem());
                             }
-                            if (entity instanceof PathfinderMobInventory pathfinderMobInventory) {
-                                livingEntity.setItemInHand(InteractionHand.MAIN_HAND, pathfinderMobInventory.getMainWeaponItem());
+                            if (entity instanceof PathfinderMobInventory pathfinderMobInventory && livingEntityPatch1 != null) {
+                                if (pathfinderMobInventory instanceof SteveEntity && CombatCommon.canSwitchWeapon((MobPatch<?>) livingEntityPatch1)) {
+                                    CombatCommon.switchWeapon((MobPatch<?>) livingEntityPatch1);
+                                } else {
+                                    livingEntity.setItemInHand(InteractionHand.MAIN_HAND, pathfinderMobInventory.getMainWeaponItem());
+                                }
                             }
 
                             if (!livingEntity.level().isClientSide()) {
                                 livingEntity.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 2400, 1));
                                 livingEntity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 0));
-                            }
-
-                            LivingEntityPatch<?> livingEntityPatch1 = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
-                            if (!entity.level().isClientSide() && entity.getServer() != null) {
-                                livingEntityPatch1.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
                             }
 
                             if (entity instanceof PlayerNpcEntity playerNpcEntity) {
