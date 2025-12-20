@@ -26,14 +26,13 @@ public class DemoniacVoltageReaverSkill extends WeaponInnateSkill {
 
     @Override
     public void executeOnServer(SkillContainer skillContainer, FriendlyByteBuf friendlyByteBuf) {
-        super.executeOnServer(skillContainer, friendlyByteBuf);
-
         Player player = skillContainer.getExecutor().getOriginal();
         ItemStack item = player.getMainHandItem();
 
-        skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.SNAKE_BLADE, 0.0F);
         if (SnakeBladeHit.process(item, player)) {
+            skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.SNAKE_BLADE, 0.0F);
             item.getOrCreateTag().putBoolean("SnakeAnimation", true);
+            super.executeOnServer(skillContainer, friendlyByteBuf);
         }
     }
 

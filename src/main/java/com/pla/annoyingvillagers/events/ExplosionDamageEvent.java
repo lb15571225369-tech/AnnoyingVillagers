@@ -46,7 +46,7 @@ public class ExplosionDamageEvent {
                     skillContainer = serverPlayerPatch.getSkill(AVSkills.ENDER_GLAIVE);
                 }
                 for (Entity entity : detonate.getAffectedEntities()) {
-                    if (entity != detonate.getExplosion().getIndirectSourceEntity()
+                    if (entity.isAlive() && entity != detonate.getExplosion().getIndirectSourceEntity()
                             && !(entity instanceof Projectile) && !(entity instanceof ObsidianSledgehammerHitEntity)) {
                         LivingEntityPatch<?> explodedPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                         if (explodedPatch != null) {
@@ -78,7 +78,7 @@ public class ExplosionDamageEvent {
                     skillContainer = serverPlayerPatch.getSkill(AVSkills.WOOPIE_THE_SWORD);
                 }
                 for (Entity entity : detonate.getAffectedEntities()) {
-                    if (entity != detonate.getExplosion().getIndirectSourceEntity()
+                    if (entity.isAlive() && entity != detonate.getExplosion().getIndirectSourceEntity()
                             && !(entity instanceof Projectile) && !(entity instanceof ObsidianSledgehammerHitEntity)) {
                         LivingEntityPatch<?> explodedPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                         if (explodedPatch != null) {

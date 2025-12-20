@@ -172,7 +172,7 @@
                 }
                 if (this.warmupDelayTicks < -10 && this.warmupDelayTicks > -30) {
                     for(LivingEntity livingentity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.2D, 0.0D, 0.2D))) {
-                        if (livingentity instanceof EnderHand) continue;
+                        if (livingentity instanceof EnderHand || !livingentity.isAlive()) continue;
                         this.damage(livingentity);
                         if (this.tickCount % 20 == 0 && this.level() instanceof ServerLevel serverLevel
                         && livingentity != caster && !livingentity.isAlliedTo(caster)) {

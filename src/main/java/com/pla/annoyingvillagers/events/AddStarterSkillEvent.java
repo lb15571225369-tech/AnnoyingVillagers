@@ -1,9 +1,9 @@
 package com.pla.annoyingvillagers.events;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import net.minecraft.commands.CommandSourceStack;
+import com.pla.efclash_blade.gameasset.EFClashBladeSkills;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LevelAccessor;
@@ -11,12 +11,19 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import yesman.epicfight.gameasset.EpicFightSkills;
+import yesman.epicfight.network.EpicFightNetworkManager;
+import yesman.epicfight.skill.Skill;
+import yesman.epicfight.skill.SkillContainer;
+import yesman.epicfight.skill.SkillSlots;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 import javax.annotation.Nullable;
 
 @Mod.EventBusSubscriber
 public class AddStarterSkillEvent {
-    private static final String KEY = AnnoyingVillagers.MODID + ":has_joined_before_1.4";
+    private static final String KEY = AnnoyingVillagers.MODID + ":av_has_joined_before";
     @SubscribeEvent
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent playerloggedinevent) {
         execute(playerloggedinevent, playerloggedinevent.getEntity().level(), playerloggedinevent.getEntity().getX(), playerloggedinevent.getEntity().getY(), playerloggedinevent.getEntity().getZ(), playerloggedinevent.getEntity());
@@ -38,7 +45,7 @@ public class AddStarterSkillEvent {
     }
 
     public static void execute(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) {
-        execute((Event) null, levelaccessor, d0, d1, d2, entity);
+        execute(null, levelaccessor, d0, d1, d2, entity);
     }
 
     private static CompoundTag persisted(Player p) {
@@ -54,42 +61,37 @@ public class AddStarterSkillEvent {
         persisted(p).putBoolean(KEY, true);
     }
 
+    private static void giveSkill(ServerPlayer player, ServerPlayerPatch patch, SkillSlots slot, Skill skill) {
+        if (skill == null) return;
+
+        SkillContainer container = patch.getSkillCapability().getSkillContainerFor(slot);
+        if (container == null) return;
+
+        if (container.setSkill(skill)) {
+            if (skill.getCategory().learnable()) {
+                patch.getSkillCapability().addLearnedSkill(skill);
+            }
+
+            EpicFightNetworkManager.sendToPlayer(container.createSyncPacketToLocalPlayer(), player);
+            EpicFightNetworkManager.sendToAllPlayerTrackingThisEntity(container.createSyncPacketToRemotePlayer(), player);
+        }
+    }
+
     private static void execute(@Nullable Event event, LevelAccessor levelaccessor, double d0, double d1, double d2, final Entity entity) {
         if (entity != null) {
-            if (entity instanceof Player player && !hasJoinedBefore(player)) {
+            if (entity instanceof ServerPlayer serverPlayer && !hasJoinedBefore(serverPlayer)) {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
-                    CommandSourceStack source = entity.createCommandSourceStack()
-                            .withSuppressedOutput()
-                            .withPermission(4);
-                    try {
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                "epicfight skill add @s passive efclash_blade:clash_blade",
-                                source
-                        );
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                "epicfight skill add @s guard epicfight:guard",
-                                source
-                        );
-                        entity.getServer().getCommands().getDispatcher().execute(
-                                "epicfight skill add @s dodge epicfight:roll",
-                                source
-                        );
-                    } catch (CommandSyntaxException e) {
-                    }
+                    ServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(serverPlayer, ServerPlayerPatch.class);
+                    if (playerPatch == null) return;
+
+                    giveSkill(serverPlayer, playerPatch, SkillSlots.PASSIVE1, EFClashBladeSkills.CLASH_BLADE);
+                    giveSkill(serverPlayer, playerPatch, SkillSlots.GUARD, EpicFightSkills.GUARD);
+                    giveSkill(serverPlayer, playerPatch, SkillSlots.DODGE, EpicFightSkills.ROLL);
+
                     markJoined((Player) entity);
                 }
             }
-
-            if (entity.getPersistentData().getBoolean("b_d_aim")) {
-                entity.getPersistentData().putBoolean("b_d_aim", false);
-            }
             entity.getPersistentData().putBoolean("ender_pearl_used", false);
-            entity.getPersistentData().putDouble("air_kick", 0.0D);
-            entity.getPersistentData().putDouble("kick", 0.0D);
-            entity.getPersistentData().putDouble("axe_a", 0.0D);
-            entity.getPersistentData().putDouble("sword_a", 0.0D);
-            entity.getPersistentData().putDouble("fist_a", 0.0D);
-            entity.getPersistentData().putDouble("dash_auto", 0.0D);
         }
     }
 }
