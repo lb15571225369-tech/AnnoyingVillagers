@@ -526,7 +526,7 @@ public class NullEntity extends HerobrineMob {
         return -0.35D;
     }
 
-    public @NotNull SoundEvent getHurtSound(DamageSource damagesource) {
+    public @NotNull SoundEvent getHurtSound(@NotNull DamageSource damagesource) {
         return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.hurt")));
     }
 
@@ -651,7 +651,7 @@ public class NullEntity extends HerobrineMob {
     }
 
     @Override
-    public void remove(RemovalReason pReason) {
+    public void remove(@NotNull RemovalReason pReason) {
         if (this.level() instanceof ServerLevel serverLevel && pReason.equals(RemovalReason.DISCARDED)) {
             if (this.nullSwordEntity != null) {
                 this.nullSwordEntity.remove(RemovalReason.DISCARDED);

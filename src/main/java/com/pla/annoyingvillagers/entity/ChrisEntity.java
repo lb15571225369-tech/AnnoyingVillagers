@@ -127,7 +127,7 @@ public class ChrisEntity extends PathfinderMobInventory {
         }
         if (this.level() instanceof ServerLevel && !damageSource.is(DamageTypes.FELL_OUT_OF_WORLD)) {
             float health = this.getHealth();
-            if (health - f <= 0.0F) {
+            if (health - f <= 10.0F) {
                 if (this.state == 0 && !this.getOffhandItem().getItem().equals(Items.TOTEM_OF_UNDYING)) {
                     this.setHealth(1.0F);
                     return super.hurt(damageSource, 1.0F);

@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.combatbehaviour;
 
+import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.util.CombatBehaviour;
@@ -98,6 +99,11 @@ public class CombatCommon {
         }
 
         if (mobpatch.getOriginal() instanceof PathfinderMobInventory pathfinderMobInventory) {
+            if ((pathfinderMobInventory instanceof SteveEntity
+                    || pathfinderMobInventory instanceof AlexEntity || pathfinderMobInventory instanceof ChrisEntity)
+                    && pathfinderMobInventory.getTarget() instanceof HerobrineMob) {
+                return false;
+            }
             if (pathfinderMobInventory instanceof SteveEntity steveEntity) {
                 if (steveEntity.getItemInHand(InteractionHand.OFF_HAND).getItem().equals(Items.TOTEM_OF_UNDYING) || steveEntity.getState() == 2) return false;
             }

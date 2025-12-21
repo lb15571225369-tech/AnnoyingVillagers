@@ -178,6 +178,8 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> EATING_ELITE_4;
     public static AnimationManager.AnimationAccessor<StaticAnimation> HEROBRINE_HEALING;
     public static AnimationManager.AnimationAccessor<StaticAnimation> HEROBRINE_SACRIFICING;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> HEROBRINE_ASSISTANCE;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> HEROBRINE_STAGE_CHANGE;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_AEGIS_BULL_CHARGE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> SNAKE_BLADE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> IDLE_BREAK;
@@ -202,6 +204,8 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> YELLOW_NAPOLEON_AUTO_3;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> YELLOW_NAPOLEON_AUTO_4;
     public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> YELLOW_NAPOLEON_AUSTERLITZ_SHOOT;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> MOB_RAVANGER_CHARGE;
+    public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> MOB_NAPOLEON_RELOAD_1;
 
     @SubscribeEvent
     public static void registerAnimations(AnimationManager.AnimationRegistryEvent event) {
@@ -215,6 +219,10 @@ public class AVAnimations {
         AVAnimations.HEROBRINE_HEALING = builder.nextAccessor("biped/other/herobrine_healing",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
         AVAnimations.HEROBRINE_SACRIFICING = builder.nextAccessor("biped/other/herobrine_sacrificing",
+                (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
+        AVAnimations.HEROBRINE_ASSISTANCE = builder.nextAccessor("biped/other/herobrine_assistance",
+                (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
+        AVAnimations.HEROBRINE_STAGE_CHANGE = builder.nextAccessor("biped/other/herobrine_stage_change",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
         AVAnimations.KNOCKED_ELITE = builder.nextAccessor("biped/other/knocked_elite",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
@@ -1269,6 +1277,45 @@ public class AVAnimations {
                                 }, Side.SERVER)
                         })
         );
+        AVAnimations.MOB_RAVANGER_CHARGE = builder.nextAccessor("biped/skill/mob_ravanger_charge",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.25F, accessor, humanoidarmature,
+                        new Phase(0.0F, 0.15F, 0.45F, 0.85F, Float.MAX_VALUE, humanoidarmature.get().rootJoint, WOMWeaponColliders.SHOULDER_BUMP)))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(1.0F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(1.5F))
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10.0F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                        .addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH_BIG.get())
+                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT_HARD.get())
+                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.AIR_BURST)
+                        .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
+                        .addProperty(AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.0F)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F)
+                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
+                        .addProperty(StaticAnimationProperty.POSE_MODIFIER, null));
+        AVAnimations.MOB_NAPOLEON_RELOAD_1 = builder.nextAccessor("biped/skill/mob_napoleon_reload_1",
+                (accessor) -> (new SpecialAttackAnimation(0.15F, accessor, humanoidarmature,
+                        new Phase(0.0F, 0.15F, 0.25F, 0.3F, 0.3F, humanoidarmature.get().toolR, null),
+                        new Phase(0.3F, 0.35F, 0.45F, 0.5F, 0.5F, humanoidarmature.get().toolR, null),
+                        new Phase(0.5F, 0.55F, 0.65F, 0.7F, 0.7F, humanoidarmature.get().toolR, null),
+                        new Phase(0.7F, 0.75F, 0.95F, 1.0F, 1.0F, humanoidarmature.get().toolR, null),
+                        new Phase(1.0F, 1.05F, 1.2F, 1.25F, Float.MAX_VALUE, humanoidarmature.get().toolR, null)))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.2F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.0F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.2F), 1)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.0F), 1)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD, 1)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.2F), 2)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.0F), 2)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD, 2)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.3F), 3)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.0F), 3)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD, 3)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.3F), 4)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.0F), 4)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD, 4)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F)
+                        .addProperty(WomAnimationProperty.ANTI_STUN_MULTIPLYER, 1.0F));
     }
 
     private static class ReuseableEvents {

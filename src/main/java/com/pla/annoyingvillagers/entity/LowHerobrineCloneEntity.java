@@ -6,9 +6,9 @@ import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.procedures.HerobrinePortalProcedure;
-import com.pla.annoyingvillagers.procedures.LowHerobrineCloneOnHurtProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineOnInitialSpawnProcedure;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.util.DelayedTask;
@@ -20,12 +20,12 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -34,7 +34,6 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -42,6 +41,7 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.PlayMessages;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 import yesman.epicfight.api.animation.Joint;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
@@ -65,7 +65,7 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
     private UUID possessedByUuid;
     private boolean bound = false;
     private boolean sacrificing = false;
-    private final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
+    private final LivingEntityPatch<?> livingentitypatch = EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
     private EliteHerobrineKnockedEntity protectEntity;
     private UUID protectUUID;
     boolean renderPortal = false;
@@ -116,35 +116,108 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
     }
 
     public LowHerobrineCloneEntity(PlayMessages.SpawnEntity spawnEntity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.LOW_HEROBRINE_CLONE.get(), level);
+        this(AnnoyingVillagersModEntities.LOW_HEROBRINE_CLONE.get(), level);
     }
 
-    public boolean hurt(DamageSource damagesource, float f) {
+    public boolean hurt(@NotNull DamageSource damageSource, float f) {
         if (sacrificing) {
             if (new Random().nextBoolean()) {
                 try {
-                    this.getServer().getCommands().getDispatcher().execute(
+                    Objects.requireNonNull(this.getServer()).getCommands().getDispatcher().execute(
                             "playsound epicfight:entity.hit.clash neutral @p",
                             this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                     this.getServer().getCommands().getDispatcher().execute(
                             "execute at @s run particle epicfight:hit_blade ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
                             this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException e) {
+                } catch (CommandSyntaxException ignored) {
                 }
                 return false;
             } else {
-                return super.hurt(damagesource, f/2.0F);
+                return super.hurt(damageSource, f/2.0F);
             }
         } else {
-            LowHerobrineCloneOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), damagesource.getEntity());
+            if (Math.random() <= 0.5D) {
+                if (this.level() instanceof ServerLevel serverLevel) {
+                    serverLevel.playSound(null, this.blockPosition(), AnnoyingVillagersModSounds.OBSIDIAN_PLACE.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                    Entity entity = this;
+                    try {
+                        Objects.requireNonNull(entity.getServer()).getCommands().getDispatcher().execute(
+                                "execute as @s at @s anchored eyes run setblock ^ ^-1 ^1 annoyingvillagers:obsidian",
+                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        new DelayedTask(1) {
+                            @Override
+                            public void run() {
+                                try {
+                                    entity.getServer().getCommands().getDispatcher().execute(
+                                            "execute as @s at @s anchored eyes run setblock ^ ^ ^1 annoyingvillagers:obsidian",
+                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                } catch (CommandSyntaxException ignored) {
+                                }
+                                new DelayedTask(1) {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            entity.getServer().getCommands().getDispatcher().execute(
+                                                    "execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:obsidian",
+                                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                        } catch (CommandSyntaxException ignored) {
+                                        }
+                                        new DelayedTask(1) {
+                                            public void run() {
+                                                try {
+                                                    entity.getServer().getCommands().getDispatcher().execute(
+                                                            "execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:obsidian",
+                                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                } catch (CommandSyntaxException ignored) {
+                                                }
+                                                new DelayedTask(1) {
+                                                    public void run() {
+                                                        try {
+                                                            entity.getServer().getCommands().getDispatcher().execute(
+                                                                    "execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:obsidian",
+                                                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                        } catch (CommandSyntaxException ignored) {
+                                                        }
+                                                        new DelayedTask(1) {
+                                                            public void run() {
+                                                                try {
+                                                                    entity.getServer().getCommands().getDispatcher().execute(
+                                                                            "execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:obsidian",
+                                                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                } catch (CommandSyntaxException ignored) {
+                                                                }
+                                                                new DelayedTask(1) {
+                                                                    public void run() {
+                                                                        try {
+                                                                            entity.getServer().getCommands().getDispatcher().execute(
+                                                                                    "execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:obsidian",
+                                                                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                                                                        } catch (CommandSyntaxException ignored) {
+                                                                        }
+                                                                    }
+                                                                };
+                                                            }
+                                                        };
+                                                    }
+                                                };
+                                            }
+                                        };
+                                    }
+                                };
+                            }
+                        };
+                    } catch (CommandSyntaxException ignored) {
+                    }
+                }
+            }
         }
-        if (damagesource.is(DamageTypes.FALL)) return false;
-        if (damagesource.is(DamageTypes.CACTUS)) return false;
-        if (damagesource.is(DamageTypes.WITHER)) return false;
-        if (damagesource.is(DamageTypes.DROWN)) return false;
-        if (damagesource.is(DamageTypes.WITHER_SKULL)) return false;
-        if (damagesource.is(DamageTypes.DRAGON_BREATH)) return false;
-        return super.hurt(damagesource, f);
+        if (damageSource.is(DamageTypes.FALL)) return false;
+        if (damageSource.is(DamageTypes.CACTUS)) return false;
+        if (damageSource.is(DamageTypes.WITHER)) return false;
+        if (damageSource.is(DamageTypes.DROWN)) return false;
+        if (damageSource.is(DamageTypes.WITHER_SKULL)) return false;
+        if (damageSource.is(DamageTypes.DRAGON_BREATH)) return false;
+        return super.hurt(damageSource, f);
     }
 
     @Override
@@ -153,11 +226,11 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
     }
 
     @Override
-    public Component getDisplayName() {
+    public @NotNull Component getDisplayName() {
         return Component.literal("§5Low Herobrine Clone§r");
     }
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -219,7 +292,7 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
         CommonGoals.registerGoalForHostileNpc(this);
     }
 
-    public MobType getMobType() {
+    public @NotNull MobType getMobType() {
         return MobType.UNDEAD;
     }
 
@@ -231,19 +304,19 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
         return -0.35D;
     }
 
-    public SoundEvent getHurtSound(DamageSource damagesource) {
-        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.generic.hurt")));
+    public @NotNull SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
+        return Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.generic.hurt")));
     }
 
-    public SoundEvent getDeathSound() {
-        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.generic.death")));
+    public @NotNull SoundEvent getDeathSound() {
+        return Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.generic.death")));
     }
 
     @Override
-    public void die(DamageSource damagesource) {
-        super.die(damagesource);
-        if (!autoKill) {
-            if (this.level() instanceof ServerLevel serverLevel) {
+    public void die(@NotNull DamageSource damageSource) {
+        super.die(damageSource);
+        if (this.level() instanceof ServerLevel serverLevel) {
+            if (!autoKill) {
                 InfectedPlayerMobEntity corpse = new InfectedPlayerMobEntity(AnnoyingVillagersModEntities.INFECTED_PLAYER_MOB.get(), serverLevel);
                 corpse.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
                 String killedName = this.getCustomName().getString();
@@ -259,60 +332,47 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
                 corpse.setItemSlot(EquipmentSlot.LEGS, this.getItemBySlot(EquipmentSlot.LEGS).copy());
                 corpse.setItemSlot(EquipmentSlot.FEET, this.getItemBySlot(EquipmentSlot.FEET).copy());
                 serverLevel.addFreshEntity(corpse);
-            }
-        } else if (this.level() instanceof ServerLevel serverLevel && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-            PlayerMobDeadEntity corpse =  new PlayerMobDeadEntity(AnnoyingVillagersModEntities.PLAYER_MOB_DEAD.get(), serverLevel);
-            corpse.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
-            corpse.setUsername(this.getUsername());
-            corpse.setProfile(this.getProfile());
-            corpse.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
-            this.setInvisible(true);
-            this.remove(Entity.RemovalReason.KILLED);
-            serverLevel.addFreshEntity(corpse);
-            new DelayedTask(3) {
-                @Override
-                public void run() {
-                    try {
-                        corpse.getServer().getCommands().getDispatcher().execute(
-                                "kill @s",
-                                corpse.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                    } catch (CommandSyntaxException e) {
-                    }
+            } else {
+                if (AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
+                    PlayerMobDeadEntity corpse = new PlayerMobDeadEntity(AnnoyingVillagersModEntities.PLAYER_MOB_DEAD.get(), serverLevel);
+                    corpse.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
+                    corpse.setUsername(this.getUsername());
+                    corpse.setProfile(this.getProfile());
+                    corpse.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+                    this.setInvisible(true);
+                    this.remove(Entity.RemovalReason.KILLED);
+                    serverLevel.addFreshEntity(corpse);
+                    new DelayedTask(3) {
+                        @Override
+                        public void run() {
+                            corpse.kill();
+                        }
+                    };
                 }
-            };
-        }
-        LevelAccessor levelaccessor1 = this.level();
-        ItemEntity itementity;
-        LivingEntity livingentity = (LivingEntity)this;
-        ItemStack itemstack;
-
-        if (levelaccessor1 instanceof Level level) {
-            if (!level.isClientSide()) {
-                itemstack = livingentity.getMainHandItem();
-                itementity = new ItemEntity(level, this.getX(), this.getY() + 1.0D, this.getZ(), itemstack);
-                itementity.setPickUpDelay(10);
-                level.addFreshEntity(itementity);
             }
-        }
+            ItemEntity itemEntity;
+            ItemStack itemstack;
 
-        if (levelaccessor1 instanceof Level level) {
-            if (!level.isClientSide()) {
-                itemstack = livingentity.getOffhandItem();
-                itementity = new ItemEntity(level, this.getX(), this.getY() + 1.0D, this.getZ(), itemstack);
-                itementity.setPickUpDelay(10);
-                level.addFreshEntity(itementity);
-            }
+            itemstack = this.getMainHandItem();
+            itemEntity = new ItemEntity(serverLevel, this.getX(), this.getY() + 1.0D, this.getZ(), itemstack);
+            itemEntity.setPickUpDelay(10);
+            serverLevel.addFreshEntity(itemEntity);
+
+            itemstack = this.getOffhandItem();
+            itemEntity = new ItemEntity(serverLevel, this.getX(), this.getY() + 1.0D, this.getZ(), itemstack);
+            itemEntity.setPickUpDelay(10);
+            serverLevel.addFreshEntity(itemEntity);
         }
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
-        HerobrineOnInitialSpawnProcedure.execute(serverlevelaccessor, this, 0, mobspawntype);
-        return spawngroupdata;
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverLevelAccessor, @NotNull DifficultyInstance difficultyInstance, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
+        HerobrineOnInitialSpawnProcedure.execute(serverLevelAccessor, this, 0, mobSpawnType);
+        return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag pCompound) {
+    public void readAdditionalSaveData(@NotNull CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         summoned = pCompound.getBoolean("Summoned");
         renderPortal = pCompound.getBoolean("RenderPortal");
@@ -329,7 +389,7 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag pCompound) {
+    public void addAdditionalSaveData(@NotNull CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putBoolean("Summoned", summoned);
         pCompound.putBoolean("InitialSpawn", initialSpawn);
@@ -361,7 +421,7 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
                     if (this.summoned) {
                         this.setNoAi(true);
                     }
-                    final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
+                    final LivingEntityPatch<?> livingentitypatch = EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
                     if (livingentitypatch != null && !this.level().isClientSide()) {
                         livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_ANIMATE, 0.0F);
                     }
@@ -392,7 +452,10 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
                     possessedByEntity = null;
                 }
             }
-            if (!bound && possessedByEntity != null && possessedByEntity.isAlive() && !possessedByEntity.isHealing()) {
+            if (!bound && possessedByEntity != null
+                    && possessedByEntity.isAlive()
+                    && !possessedByEntity.isHealing()
+                    && possessedByEntity.getHealingAnimationCooldown() == 0) {
                 if (possessedByEntity.isAvailableSlot()) {
                     if (possessedByEntity.boundPossessed(this)) {
                         this.bound = true;
@@ -428,17 +491,12 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
                     autoKill = true;
                     this.kill();
                 }
-                this.addEffect(new MobEffectInstance((MobEffect) EpicFightMobEffects.STUN_IMMUNITY.get(), 1, 3, false, false));
+                this.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 1, 3, false, false));
                 if (this.livingentitypatch != null) {
-                    this.livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_SACRIFICING, 0.0F);
+                    this.livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_ASSISTANCE, 0.0F);
                 }
                 if (this.tickCount % 140 == 0 && this.possessedByEntity.getHealth() < this.possessedByEntity.getMaxHealth() * 0.8) {
-                    try {
-                        this.getServer().getCommands().getDispatcher().execute(
-                                "playsound annoyingvillagers:herobrine_understood voice @a ~ ~ ~",
-                                this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                    } catch (CommandSyntaxException e) {
-                    }
+                    this.playSound(AnnoyingVillagersModSounds.HEROBRINE_UNDERSTOOD.get(), 1.0F, 1.0F);
                 }
                 if (this.tickCount % 20 == 0 && this.possessedByEntity != null) {
                     if (this.possessedByEntity.getMaxHealth() == this.possessedByEntity.getHealth()) {
@@ -457,7 +515,7 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
                 }
                 if (this.possessedByEntity != null) {
                     ServerLevel server = (ServerLevel)this.level();
-                    Vec3 from = getArmPosition(this, new Vec3f(0,0,0), Armatures.BIPED.get().toolR, 1.2F, 0.0F);
+                    Vec3 from = getArmPosition(this, new Vec3f(0,0,0), Armatures.BIPED.get().toolR);
                     if (from == null) {
                         return;
                     }
@@ -509,29 +567,29 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
         }
     }
 
-    private static Vec3 getArmPosition(Entity entity, Vec3f translation, Joint joint, float handToTip, double yOffset) {
-        LivingEntityPatch<?> entitypatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
-        if (entitypatch == null) return null;
+    private static Vec3 getArmPosition(Entity entity, Vec3f translation, Joint joint) {
+        float handToTip = 1.2F;
+        float yOffset = 0.0F;
+        LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+        if (livingEntityPatch == null) return null;
 
         float interpolation = 0.0F;
-        OpenMatrix4f m = entitypatch.getArmature()
-                .getBoundTransformFor(entitypatch.getAnimator().getPose(interpolation), joint);
+        OpenMatrix4f m = livingEntityPatch.getArmature()
+                .getBoundTransformFor(livingEntityPatch.getAnimator().getPose(interpolation), joint);
 
         if (translation != null) {
             OpenMatrix4f tLocal = new OpenMatrix4f().translate(translation);
             OpenMatrix4f.mul(m, tLocal, m);
         }
 
-        if (handToTip != 0.0f) {
-            OpenMatrix4f tipOffset = new OpenMatrix4f().translate(new Vec3f(0.0F, 0.0F, -handToTip));
-            OpenMatrix4f.mul(m, tipOffset, m);
-        }
+        OpenMatrix4f tipOffset = new OpenMatrix4f().translate(new Vec3f(0.0F, 0.0F, -handToTip));
+        OpenMatrix4f.mul(m, tipOffset, m);
 
-        float yawRad = (float) -Math.toRadians(((LivingEntity) entitypatch.getOriginal()).yBodyRotO + 180.0F);
+        float yawRad = (float) -Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F);
         OpenMatrix4f worldYaw = new OpenMatrix4f().rotate(yawRad, new Vec3f(0.0F, 1.0F, 0.0F));
         OpenMatrix4f.mul(worldYaw, m, m);
 
-        LivingEntity base = (LivingEntity) entitypatch.getOriginal();
+        LivingEntity base = livingEntityPatch.getOriginal();
         return new Vec3(
                 m.m30 + base.getX(),
                 m.m31 + (base.getY() + (entity.getBbHeight() / 1.8) - 1.0) + yOffset,
@@ -542,11 +600,11 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
     public static AttributeSupplier.Builder createAttributes() {
         AttributeSupplier.Builder builder = Mob.createMobAttributes();
 
-        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3D);
+        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.45D);
         builder = builder.add(Attributes.MAX_HEALTH, 40.0D);
         builder = builder.add(Attributes.ARMOR, 25.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 10.0D);
-        builder = builder.add(Attributes.FOLLOW_RANGE, 24.0D);
+        builder = builder.add(Attributes.FOLLOW_RANGE, 48.0D);
         return builder;
     }
 }

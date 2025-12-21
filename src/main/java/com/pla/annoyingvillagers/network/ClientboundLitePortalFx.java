@@ -9,23 +9,23 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public record ClientboundHerobrinePortalFx(Vec3 from) {
+public record ClientboundLitePortalFx(Vec3 from) {
 
-    public static void encode(ClientboundHerobrinePortalFx msg, FriendlyByteBuf buf) {
+    public static void encode(ClientboundLitePortalFx msg, FriendlyByteBuf buf) {
         buf.writeDouble(msg.from.x);
         buf.writeDouble(msg.from.y);
         buf.writeDouble(msg.from.z);
     }
 
-    public static ClientboundHerobrinePortalFx decode(FriendlyByteBuf buf) {
+    public static ClientboundLitePortalFx decode(FriendlyByteBuf buf) {
         Vec3 f = new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble());
-        return new ClientboundHerobrinePortalFx(f);
+        return new ClientboundLitePortalFx(f);
     }
 
-    public static void handle(ClientboundHerobrinePortalFx msg, Supplier<NetworkEvent.Context> ctx) {
+    public static void handle(ClientboundLitePortalFx msg, Supplier<NetworkEvent.Context> ctx) {
         NetworkEvent.Context c = ctx.get();
         c.enqueueWork(() -> {
-            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientPacketHandlers.handleHerobrinePortalFx(msg));
+            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientPacketHandlers.handleLitePortalFx(msg));
         });
         c.setPacketHandled(true);
     }

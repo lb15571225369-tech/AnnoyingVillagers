@@ -9,16 +9,15 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Supplier;
 
-public class ClientboundGlaiveExplosionFx {
-    public final Vec3 from, to;
-
-    public ClientboundGlaiveExplosionFx(Vec3 from, Vec3 to) {
-        this.from = from; this.to = to;
-    }
+public record ClientboundGlaiveExplosionFx(Vec3 from, Vec3 to) {
 
     public static void encode(ClientboundGlaiveExplosionFx msg, FriendlyByteBuf buf) {
-        buf.writeDouble(msg.from.x); buf.writeDouble(msg.from.y); buf.writeDouble(msg.from.z);
-        buf.writeDouble(msg.to.x);   buf.writeDouble(msg.to.y);   buf.writeDouble(msg.to.z);
+        buf.writeDouble(msg.from.x);
+        buf.writeDouble(msg.from.y);
+        buf.writeDouble(msg.from.z);
+        buf.writeDouble(msg.to.x);
+        buf.writeDouble(msg.to.y);
+        buf.writeDouble(msg.to.z);
     }
 
     public static ClientboundGlaiveExplosionFx decode(FriendlyByteBuf buf) {

@@ -125,5 +125,14 @@ public class AnnoyingVillagersModEntityRenderers {
         add.addPatchedEntityRenderer(AnnoyingVillagersModEntities.CHRIS.get(),
                 (entitytype) -> (new PHumanoidRenderer<>(Meshes.BIPED, add.getContext(), entitytype))
                         .initLayerLast(add.getContext(), entitytype));
+        add.addPatchedEntityRenderer(AnnoyingVillagersModEntities.LOW_HEROBRINE_CLONE.get(),
+                (entitytype) -> (new PHumanoidRenderer<>(Meshes.BIPED, add.getContext(), entitytype))
+                        .initLayerLast(add.getContext(), entitytype));
+        add.addPatchedEntityRenderer(AnnoyingVillagersModEntities.LOW_SHADOW_HEROBRINE_CLONE.get(),
+                (entitytype) -> (new PHumanoidRenderer<>(Meshes.BIPED, add.getContext(), entitytype))
+                        .initLayerLast(add.getContext(), entitytype));
+        add.addPatchedEntityRenderer(AnnoyingVillagersModEntities.AEGIS_HEROBRINE.get(),
+                (entitytype) -> (new PHumanoidRenderer<>(Meshes.BIPED, add.getContext(), entitytype))
+                        .initLayerLast(add.getContext(), entitytype));
     }
 }

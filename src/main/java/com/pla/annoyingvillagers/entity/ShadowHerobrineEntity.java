@@ -82,7 +82,7 @@ public class ShadowHerobrineEntity extends HerobrineMob {
         return -0.35D;
     }
 
-    public @NotNull SoundEvent getHurtSound(DamageSource damagesource) {
+    public @NotNull SoundEvent getHurtSound(@NotNull DamageSource damagesource) {
         return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.hurt")));
     }
 
@@ -451,7 +451,7 @@ public class ShadowHerobrineEntity extends HerobrineMob {
     }
 
     @Override
-    public void remove(RemovalReason reason) {
+    public void remove(@NotNull RemovalReason reason) {
         super.remove(reason);
         if (this.darkObUp != null) {
             this.darkObUp.discard();

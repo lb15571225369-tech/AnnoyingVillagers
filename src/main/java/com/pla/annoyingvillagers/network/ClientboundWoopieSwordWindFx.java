@@ -9,15 +9,12 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class ClientboundWoopieSwordWindFx {
-    public final Vec3 from;
-
-    public ClientboundWoopieSwordWindFx(Vec3 from) {
-        this.from = from;
-    }
+public record ClientboundWoopieSwordWindFx(Vec3 from) {
 
     public static void encode(ClientboundWoopieSwordWindFx msg, FriendlyByteBuf buf) {
-        buf.writeDouble(msg.from.x); buf.writeDouble(msg.from.y); buf.writeDouble(msg.from.z);
+        buf.writeDouble(msg.from.x);
+        buf.writeDouble(msg.from.y);
+        buf.writeDouble(msg.from.z);
     }
 
     public static ClientboundWoopieSwordWindFx decode(FriendlyByteBuf buf) {

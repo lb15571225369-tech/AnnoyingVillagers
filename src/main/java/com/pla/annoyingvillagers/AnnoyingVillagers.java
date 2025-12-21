@@ -114,6 +114,12 @@ public class AnnoyingVillagers {
                     ClientboundWoopieSwordWindFx::decode,
                     ClientboundWoopieSwordWindFx::handle
             );
+            AnnoyingVillagers.addNetworkMessage(
+                    ClientboundLitePortalFx.class,
+                    ClientboundLitePortalFx::encode,
+                    ClientboundLitePortalFx::decode,
+                    ClientboundLitePortalFx::handle
+            );
         }
     }
 
@@ -133,6 +139,9 @@ public class AnnoyingVillagers {
         Armatures.registerEntityTypeArmature(AnnoyingVillagersModEntities.ALEX.get(), Armatures.BIPED);
         Armatures.registerEntityTypeArmature(AnnoyingVillagersModEntities.JEV.get(), Armatures.BIPED);
         Armatures.registerEntityTypeArmature(AnnoyingVillagersModEntities.CHRIS.get(), Armatures.BIPED);
+        Armatures.registerEntityTypeArmature(AnnoyingVillagersModEntities.LOW_HEROBRINE_CLONE.get(), Armatures.BIPED);
+        Armatures.registerEntityTypeArmature(AnnoyingVillagersModEntities.LOW_SHADOW_HEROBRINE_CLONE.get(), Armatures.BIPED);
+        Armatures.registerEntityTypeArmature(AnnoyingVillagersModEntities.AEGIS_HEROBRINE.get(), Armatures.BIPED);
     }
 
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)

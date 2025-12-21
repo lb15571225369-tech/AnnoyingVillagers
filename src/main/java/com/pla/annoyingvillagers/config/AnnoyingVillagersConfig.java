@@ -12,9 +12,6 @@ public class AnnoyingVillagersConfig {
     public static ForgeConfigSpec.ConfigValue<Boolean> EXECUTION_NPC;
     public static ForgeConfigSpec.ConfigValue<Integer> HEROBRINE_RECALL_MIN_TIME;
     public static ForgeConfigSpec.ConfigValue<Integer> HEROBRINE_RECALL_MAX_TIME;
-    public static ForgeConfigSpec.ConfigValue<Integer> HEROBRINE_HEALING_MIN_COOLDOWN;
-    public static ForgeConfigSpec.ConfigValue<Integer> HEROBRINE_HEALING_MAX_COOLDOWN;
-    public static ForgeConfigSpec.ConfigValue<Integer> HEROBRINE_HEALING_HEALTH_TRIGGER;
 
     static {
         HEROBRINE_POSSESS_RATE = BUILDER.comment(
@@ -39,20 +36,6 @@ public class AnnoyingVillagersConfig {
                         "The maximum value (in minutes) for Herobrine's random recall time. This value should be greater than or equal to the minimum. " +
                                 "After a random time between min and max, Herobrine will vanish and return to the Herobrine dimension.")
                 .defineInRange("herobrineRecallMaxTime", 300, 1, 10080);
-        HEROBRINE_HEALING_MIN_COOLDOWN = BUILDER.comment(
-                        "The minimum value (in minutes) for Herobrine's healing cooldown time. This value should be lower than or equal the maximum. " +
-                                "After a random time between min and max, Herobrine will heal again.")
-                .defineInRange("herobrineHealingCooldownMinTime", 5, 1, 10080);
-        HEROBRINE_HEALING_MAX_COOLDOWN = BUILDER.comment(
-                        "The maximum value (in minutes) for Herobrine's healing cooldown time. This value should be greater than or equal to the minimum. " +
-                                "After a random time between min and max, Herobrine will heal again.")
-                .defineInRange("herobrineHealingCooldownMaxTime", 5, 1, 10080);
-        HEROBRINE_HEALING_HEALTH_TRIGGER = BUILDER.comment(
-                        "The threshold (in percent) that determines when Herobrine starts healing. " +
-                                "If Herobrine's current health is less than or equal to this percentage of his max health, he will begin healing. " +
-                                "If the calculated value (percentage × max health) is less than 10, the threshold will default to 10 instead. " +
-                                "This ensures healing works correctly for low-health Herobrine (herobrine_clone, shadow_herobrine_clone, ...).")
-                .defineInRange("herobrineHealingHealthTrigger", 30, 5, 80);
         SPEC = BUILDER.build();
     }
 }

@@ -73,7 +73,7 @@ public class ShadowHerobrineCloneEntity extends HerobrineMob {
         this.spawnAtLocation(new ItemStack(Blocks.OBSIDIAN));
     }
 
-    public @NotNull SoundEvent getHurtSound(DamageSource damagesource) {
+    public @NotNull SoundEvent getHurtSound(@NotNull DamageSource damagesource) {
         return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.hurt")));
     }
 

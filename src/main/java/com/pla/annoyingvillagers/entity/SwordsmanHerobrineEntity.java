@@ -116,7 +116,7 @@ public class SwordsmanHerobrineEntity extends HerobrineMob {
         return -0.35D;
     }
 
-    public @NotNull SoundEvent getHurtSound(DamageSource damagesource) {
+    public @NotNull SoundEvent getHurtSound(@NotNull DamageSource damagesource) {
         return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.hurt")));
     }
 

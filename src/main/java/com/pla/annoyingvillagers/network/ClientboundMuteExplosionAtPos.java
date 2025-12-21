@@ -9,14 +9,7 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class ClientboundMuteExplosionAtPos {
-    public final BlockPos pos;
-    public final int lifetimeTicks;
-
-    public ClientboundMuteExplosionAtPos(BlockPos pos, int lifetimeTicks) {
-        this.pos = pos;
-        this.lifetimeTicks = lifetimeTicks;
-    }
+public record ClientboundMuteExplosionAtPos(BlockPos pos, int lifetimeTicks) {
 
     public static void encode(ClientboundMuteExplosionAtPos msg, FriendlyByteBuf buf) {
         buf.writeBlockPos(msg.pos);

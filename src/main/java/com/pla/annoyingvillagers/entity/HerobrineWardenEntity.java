@@ -1,7 +1,6 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -31,8 +30,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 
@@ -70,15 +71,11 @@ public class HerobrineWardenEntity extends Warden {
         this.eatingUUID = eatingUUID;
     }
 
-    public void setEatingHerobrine(EliteHerobrineKnockedEntity eatingHerobrine) {
-        this.eatingHerobrine = eatingHerobrine;
-    }
-
     public HerobrineWardenEntity(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -154,8 +151,8 @@ public class HerobrineWardenEntity extends Warden {
         brain.eraseMemory(MemoryModuleType.RECENT_PROJECTILE);
 
         WardenAi.updateActivity(this);
-        var memTarget = brain.getMemory(MemoryModuleType.ATTACK_TARGET).orElse(null);
-        var angryAt = this.getEntityAngryAt().map(Entity::getUUID).orElse(null);
+        brain.getMemory(MemoryModuleType.ATTACK_TARGET);
+        this.getEntityAngryAt().map(Entity::getUUID);
     }
 
     @Override
@@ -166,8 +163,8 @@ public class HerobrineWardenEntity extends Warden {
     }
 
     @Override
-    public void setAttackTarget(LivingEntity target) {
-        if (eatingUUID != null && target != null && !eatingUUID.equals(target.getUUID())) {
+    public void setAttackTarget(@NotNull LivingEntity target) {
+        if (eatingUUID != null && !eatingUUID.equals(target.getUUID())) {
             return;
         }
         super.setAttackTarget(target);
@@ -218,7 +215,7 @@ public class HerobrineWardenEntity extends Warden {
     }
 
     @Override
-    public boolean doHurtTarget(Entity pEntity) {
+    public boolean doHurtTarget(@NotNull Entity pEntity) {
         if (!level().isClientSide() && !isBoneOpen()) {
             setBoneOpen(true);
         }
@@ -226,7 +223,7 @@ public class HerobrineWardenEntity extends Warden {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
+    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         if (eatingUUID != null) {
             tag.putUUID("EatingUUID", eatingUUID);
@@ -237,7 +234,7 @@ public class HerobrineWardenEntity extends Warden {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
+    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.hasUUID("EatingUUID")) {
             eatingUUID = tag.getUUID("EatingUUID");
@@ -248,7 +245,7 @@ public class HerobrineWardenEntity extends Warden {
     }
 
     @Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+    public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
         if (DATA_POSE.equals(key)) {
             if (this.hasPose(Pose.DIGGING)) {
@@ -267,33 +264,33 @@ public class HerobrineWardenEntity extends Warden {
     }
 
     @Override
-    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
+    public @Nullable SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor pLevel, @NotNull DifficultyInstance pDifficulty, @NotNull MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
         SpawnGroupData returnSpawnGroupData = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
         this.getBrain().setMemoryWithExpiry(MemoryModuleType.DIG_COOLDOWN, Unit.INSTANCE, 1200L);
 
         this.setPose(Pose.EMERGING);
-        this.getBrain().setMemoryWithExpiry(MemoryModuleType.IS_EMERGING, Unit.INSTANCE, (long) WardenAi.EMERGE_DURATION);
+        this.getBrain().setMemoryWithExpiry(MemoryModuleType.IS_EMERGING, Unit.INSTANCE, WardenAi.EMERGE_DURATION);
 
         return returnSpawnGroupData;
     }
 
     @Override
-    public boolean hurt(DamageSource pSource, float pAmount) {
+    public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
         if (!this.level().isClientSide() && !pSource.is(DamageTypes.IN_WALL)) {
             try {
-                this.getServer().getCommands().getDispatcher().execute(
+                Objects.requireNonNull(this.getServer()).getCommands().getDispatcher().execute(
                         "playsound epicfight:entity.hit.clash neutral @p",
                         this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 this.getServer().getCommands().getDispatcher().execute(
                         "execute at @s run particle epicfight:hit_blade ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
                         this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
+            } catch (CommandSyntaxException ignored) {
             }
         }
         return false;
     }
 
-    public static AttributeSupplier.Builder createAttributes() {
+    public static AttributeSupplier.@NotNull Builder createAttributes() {
         AttributeSupplier.Builder builder = Mob.createMobAttributes();
 
         builder = builder.add(Attributes.MOVEMENT_SPEED, 0.26D);
