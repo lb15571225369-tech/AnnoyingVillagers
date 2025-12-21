@@ -1,9 +1,9 @@
 package com.pla.annoyingvillagers.entity;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.util.CombatBehaviour;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
@@ -11,6 +11,7 @@ import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.util.TeamUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -26,17 +27,21 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 import java.util.Random;
+import java.util.function.Consumer;
 
 
 public class VillagerScoutCaptainEntity extends PathfinderMobInventory {
@@ -172,14 +177,144 @@ public class VillagerScoutCaptainEntity extends PathfinderMobInventory {
 
     public void die(@NotNull DamageSource damageSource) {
         super.die(damageSource);
-        VillagerScoutCaptainOnEntityDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
-        if (this.level() instanceof ServerLevel serverLevel && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-            VillagerScoutDeadEntity deadEntity = new VillagerScoutDeadEntity(AnnoyingVillagersModEntities.VILLAGER_SCOUT_DEAD.get(), serverLevel);
-            deadEntity.moveTo(this.getX(), this.getY(), this.getZ(), serverLevel.getRandom().nextFloat() * 360.0F, 0.0F);
-            deadEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
-            this.remove(Entity.RemovalReason.KILLED);
-            serverLevel.addFreshEntity(deadEntity);
-            deadEntity.kill();
+        if (this.level() instanceof ServerLevel serverLevel) {
+            final double x = this.getX();
+            final double y = this.getY() + 1.0D;
+            final double z = this.getZ();
+
+            Consumer<ItemStack> dropStack = (stack) -> {
+                ItemEntity drop = new ItemEntity(serverLevel, x, y, z, stack);
+                drop.setPickUpDelay(10);
+                serverLevel.addFreshEntity(drop);
+            };
+
+            ItemStack[] drops = new ItemStack[] {
+                    new ItemStack(Blocks.OAK_PLANKS),
+
+                    new ItemStack(Blocks.DIRT),
+                    new ItemStack(Blocks.DIRT),
+
+                    new ItemStack(Items.BREAD),
+                    new ItemStack(Items.BREAD),
+                    new ItemStack(Items.BREAD),
+
+                    new ItemStack(Items.GOLD_INGOT),
+                    new ItemStack(Items.GOLD_INGOT),
+                    new ItemStack(Items.GOLD_INGOT),
+
+                    new ItemStack(Items.IRON_INGOT),
+
+                    new ItemStack(Items.EMERALD),
+                    new ItemStack(Items.EMERALD),
+                    new ItemStack(Items.EMERALD),
+
+                    new ItemStack(Blocks.WHEAT),
+                    new ItemStack(Blocks.WHEAT),
+
+                    new ItemStack(Items.ENDER_PEARL),
+                    new ItemStack(Items.ENDER_PEARL),
+                    new ItemStack(Items.ENDER_PEARL),
+
+                    new ItemStack(Items.ENCHANTED_GOLDEN_APPLE),
+
+                    new ItemStack(Items.ENDER_PEARL),
+
+                    new ItemStack(Items.GOLDEN_APPLE),
+                    new ItemStack(Items.GOLDEN_APPLE),
+
+                    new ItemStack(Items.IRON_PICKAXE),
+                    new ItemStack(Items.IRON_INGOT),
+
+                    new ItemStack(Items.ARROW),
+
+                    new ItemStack(Items.APPLE),
+                    new ItemStack(Items.APPLE),
+
+                    new ItemStack(Items.ARROW),
+                    new ItemStack(Items.ARROW),
+                    new ItemStack(Items.ARROW),
+                    new ItemStack(Items.ARROW),
+
+                    new ItemStack(Items.APPLE),
+                    new ItemStack(Items.APPLE)
+            };
+
+            for (ItemStack stack : drops) {
+                dropStack.accept(stack);
+            }
+
+            if (Math.random() <= 0.3D) {
+                Entity entity = this;
+
+                try {
+                    Objects.requireNonNull(this.getServer()).getCommands().getDispatcher().execute(
+                            "summon firework_rocket ~ ~10 ~ {LifeTime:10,FireworksItem:{id:firework_rocket,Count:1,tag:{Fireworks:{Explosions:[{Type:3,Colors:[0],Flicker:1}]}},display:{Name:\"Black Creeper Firework\"}}}",
+                            this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException ignored) {
+                }
+
+                serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + entity.getDisplayName().getString() + "> We've encountered a skilled enemy, requesting support!"), false);
+
+                new DelayedTask(400) {
+                    public void run() {
+                        serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + Component.translatable("entity.annoyingvillagers.villager_scout").getString() + "> Reinforcements have arrived!"), false);
+
+                        try {
+                            Objects.requireNonNull(entity.getServer()).getCommands().getDispatcher().execute(
+                                    "summon annoyingvillagers:villager_scout ^ ^ ^10",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException ignored) {
+                        }
+
+                        try {
+                            Objects.requireNonNull(entity.getServer()).getCommands().getDispatcher().execute(
+                                    "summon annoyingvillagers:villager_scout ^ ^ ^15",
+                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                        } catch (CommandSyntaxException ignored) {
+                        }
+
+                        double chance = new Random().nextDouble(0.0, 1.0);
+                        if (chance < 0.2) {
+                            try {
+                                Objects.requireNonNull(entity.getServer()).getCommands().getDispatcher().execute(
+                                        "summon annoyingvillagers:red_villager_general ^10 ^ ^20",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException ignored) {
+                            }
+                        } else if (chance < 0.4) {
+                            try {
+                                Objects.requireNonNull(entity.getServer()).getCommands().getDispatcher().execute(
+                                        "summon annoyingvillagers:blue_villager_general ^10 ^ ^20",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException ignored) {
+                            }
+                        } else if (chance < 0.6) {
+                            try {
+                                Objects.requireNonNull(entity.getServer()).getCommands().getDispatcher().execute(
+                                        "summon annoyingvillagers:green_villager_general ^10 ^ ^20",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException ignored) {
+                            }
+                        } else if (chance < 0.8) {
+                            try {
+                                Objects.requireNonNull(entity.getServer()).getCommands().getDispatcher().execute(
+                                        "summon annoyingvillagers:purple_villager_general ^10 ^ ^20",
+                                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                            } catch (CommandSyntaxException ignored) {
+                            }
+                        }
+                    }
+                };
+            }
+
+            if (AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
+                VillagerScoutDeadEntity deadEntity = new VillagerScoutDeadEntity(AnnoyingVillagersModEntities.VILLAGER_SCOUT_DEAD.get(), serverLevel);
+                deadEntity.moveTo(this.getX(), this.getY(), this.getZ(), serverLevel.getRandom().nextFloat() * 360.0F, 0.0F);
+                deadEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+                this.remove(Entity.RemovalReason.KILLED);
+                serverLevel.addFreshEntity(deadEntity);
+                deadEntity.kill();
+            }
         }
     }
 

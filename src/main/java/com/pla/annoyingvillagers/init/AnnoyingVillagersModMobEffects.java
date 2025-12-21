@@ -15,6 +15,5 @@ public class AnnoyingVillagersModMobEffects {
     public static final RegistryObject<MobEffect> BLUE_DEMON_SKILL_LIGHTING_EFFECT = AnnoyingVillagersModMobEffects.REGISTRY.register("blue_demon_skill_lighting_effect", BlueDemonSkillLightingEffectMobEffect::new);
     public static final RegistryObject<MobEffect> ELECTIFY = AnnoyingVillagersModMobEffects.REGISTRY.register("electify", ElectifyMobEffect::new);
     public static final RegistryObject<MobEffect> CAPTIVE = AnnoyingVillagersModMobEffects.REGISTRY.register("captive", CaptiveMobEffect::new);
-    public static final RegistryObject<MobEffect> WANTED = AnnoyingVillagersModMobEffects.REGISTRY.register("wanted", WantedMobEffect::new);
     public static final RegistryObject<MobEffect> HEROBRINE = AnnoyingVillagersModMobEffects.REGISTRY.register("herobrine", HerobrineMobEffect::new);
 }

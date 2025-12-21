@@ -2,14 +2,15 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.util.*;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -22,16 +23,20 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
 import java.util.Random;
+import java.util.function.Consumer;
 
 
 public class RedVillagerGeneralEntity extends PathfinderMobInventory {
@@ -120,14 +125,97 @@ public class RedVillagerGeneralEntity extends PathfinderMobInventory {
 
     public void die(@NotNull DamageSource damageSource) {
         super.die(damageSource);
-        RedVillageGeneralOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
-        if (this.level() instanceof ServerLevel serverLevel && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-            RedVillagerGeneralDeadEntity deadEntity = new RedVillagerGeneralDeadEntity(AnnoyingVillagersModEntities.RED_VILLAGER_GENERAL_DEAD.get(), serverLevel);
-            deadEntity.moveTo(this.getX(), this.getY(), this.getZ(), serverLevel.getRandom().nextFloat() * 360.0F, 0.0F);
-            deadEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
-            this.remove(RemovalReason.KILLED);
-            serverLevel.addFreshEntity(deadEntity);
-            deadEntity.kill();
+        if (this.level() instanceof ServerLevel serverLevel) {
+            final double x = this.getX();
+            final double y = this.getY() + 1.0D;
+            final double z = this.getZ();
+
+            Consumer<ItemStack> dropStack = (stack) -> {
+                ItemEntity drop = new ItemEntity(serverLevel, x, y, z, stack);
+                drop.setPickUpDelay(10);
+                serverLevel.addFreshEntity(drop);
+            };
+
+            ItemStack[] drops = new ItemStack[] {
+                    new ItemStack(AnnoyingVillagersModItems.HOOKED_DIAMOND_SWORD.get()),
+
+                    new ItemStack(Items.DIAMOND),
+                    new ItemStack(Items.DIAMOND),
+                    new ItemStack(Items.DIAMOND),
+                    new ItemStack(Items.DIAMOND),
+
+                    new ItemStack(Items.BREAD),
+                    new ItemStack(Items.BREAD),
+
+                    new ItemStack(Items.ENCHANTED_GOLDEN_APPLE),
+                    new ItemStack(Items.ENCHANTED_GOLDEN_APPLE),
+                    new ItemStack(Items.ENCHANTED_GOLDEN_APPLE),
+                    new ItemStack(Items.ENCHANTED_GOLDEN_APPLE),
+
+                    new ItemStack(Items.WHEAT),
+                    new ItemStack(Items.WHEAT),
+
+                    new ItemStack(AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get()),
+
+                    new ItemStack(Blocks.OAK_PLANKS),
+                    new ItemStack(Blocks.OAK_PLANKS),
+
+                    new ItemStack(Items.ENDER_PEARL),
+                    new ItemStack(Items.ENDER_PEARL),
+                    new ItemStack(Items.ENDER_PEARL),
+                    new ItemStack(Items.ENDER_PEARL),
+                    new ItemStack(Items.ENDER_PEARL),
+
+                    new ItemStack(Items.ARROW),
+                    new ItemStack(Items.ARROW),
+                    new ItemStack(Items.ARROW),
+                    new ItemStack(Items.ARROW),
+                    new ItemStack(Items.ARROW),
+                    new ItemStack(Items.ARROW),
+                    new ItemStack(Items.ARROW),
+
+                    new ItemStack(Items.IRON_PICKAXE),
+
+                    new ItemStack(Items.APPLE),
+                    new ItemStack(Items.APPLE),
+
+                    new ItemStack(Items.GOLD_INGOT),
+                    new ItemStack(Items.GOLD_INGOT),
+                    new ItemStack(Items.GOLD_INGOT),
+
+                    new ItemStack(Items.STICK),
+                    new ItemStack(Items.STICK),
+
+                    new ItemStack(Items.FIREWORK_ROCKET),
+                    new ItemStack(Items.FIREWORK_ROCKET),
+
+                    new ItemStack(Items.POISONOUS_POTATO),
+
+                    new ItemStack(Items.EMERALD),
+                    new ItemStack(Items.EMERALD),
+                    new ItemStack(Items.EMERALD),
+                    new ItemStack(Items.EMERALD)
+            };
+
+            for (ItemStack stack : drops) {
+                dropStack.accept(stack);
+            }
+
+            if (Math.random() <= 0.3D) {
+                serverLevel.getServer().getPlayerList().broadcastSystemMessage(
+                        Component.literal("<" + this.getDisplayName().getString() + "> I swear to serve the Villager King to the death..."),
+                        false
+                );
+            }
+
+            if (AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
+                RedVillagerGeneralDeadEntity deadEntity = new RedVillagerGeneralDeadEntity(AnnoyingVillagersModEntities.RED_VILLAGER_GENERAL_DEAD.get(), serverLevel);
+                deadEntity.moveTo(this.getX(), this.getY(), this.getZ(), serverLevel.getRandom().nextFloat() * 360.0F, 0.0F);
+                deadEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+                this.remove(RemovalReason.KILLED);
+                serverLevel.addFreshEntity(deadEntity);
+                deadEntity.kill();
+            }
         }
     }
 

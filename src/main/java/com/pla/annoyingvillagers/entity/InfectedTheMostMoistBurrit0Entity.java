@@ -2,13 +2,12 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
-import com.pla.annoyingvillagers.procedures.ArmoredHerobrineOnDeathProcedure;
-import com.pla.annoyingvillagers.procedures.InfectedChrisOnTickProcedure;
+import com.pla.annoyingvillagers.util.TeamUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -18,24 +17,26 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
 public class InfectedTheMostMoistBurrit0Entity extends PathfinderMob {
 
-    public InfectedTheMostMoistBurrit0Entity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.INFECTED_THEMOSTMOISTBURRIT0.get(), level);
+    public InfectedTheMostMoistBurrit0Entity(SpawnEntity spawnEntity, Level level) {
+        this(AnnoyingVillagersModEntities.INFECTED_THEMOSTMOISTBURRIT0.get(), level);
     }
 
     public InfectedTheMostMoistBurrit0Entity(EntityType<InfectedTheMostMoistBurrit0Entity> entitytype, Level level) {
@@ -45,15 +46,15 @@ public class InfectedTheMostMoistBurrit0Entity extends PathfinderMob {
         this.setNoAi(true);
         this.setCustomName(this.getDisplayName());
         this.setCustomNameVisible(true);
-        this.setItemSlot(EquipmentSlot.HEAD, new ItemStack((ItemLike) AnnoyingVillagersModItems.BROKEN_DIAMOND_HELMET.get()));
-        this.setItemSlot(EquipmentSlot.CHEST, new ItemStack((ItemLike) AnnoyingVillagersModItems.BROKEN_DIAMOND_CHESTPLATE.get()));
+        this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(AnnoyingVillagersModItems.BROKEN_DIAMOND_HELMET.get()));
+        this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(AnnoyingVillagersModItems.BROKEN_DIAMOND_CHESTPLATE.get()));
     }
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
-    public MobType getMobType() {
+    public @NotNull MobType getMobType() {
         return MobType.UNDEFINED;
     }
 
@@ -61,54 +62,71 @@ public class InfectedTheMostMoistBurrit0Entity extends PathfinderMob {
         return -0.35D;
     }
 
-    public SoundEvent getHurtSound(DamageSource damagesource) {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.generic.hurt"));
+    public SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
+        return ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.generic.hurt"));
     }
 
     public SoundEvent getDeathSound() {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.generic.death"));
+        return ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.generic.death"));
     }
 
-    public void baseTick() {
-        super.baseTick();
-        InfectedChrisOnTickProcedure.execute(this);
+    @Override
+    public void tick() {
+        super.tick();
+        if (!this.level().isClientSide() && this.tickCount % 20 == 0) {
+            this.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.HEROBRINE.get(), 30, 0, false, false));
+        }
     }
 
-    public void die(DamageSource damagesource) {
-        super.die(damagesource);
-        ArmoredHerobrineOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
-        double posX = this.getX();
-        double posY = this.getY();
-        double posZ = this.getZ();
-        LevelAccessor levelAccessor = this.level();
-        if (levelAccessor instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-            ServerLevel serverlevel = levelaccessor;
-            InfectedTheMostMoistBurrit0DeadEntity deadEntity = new InfectedTheMostMoistBurrit0DeadEntity((EntityType) AnnoyingVillagersModEntities.INFECTED_THEMOSTMOISTBURRIT0_DEAD.get(), serverlevel);
-            deadEntity.moveTo(posX, posY, posZ, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-            if (deadEntity instanceof Mob) {
-                Mob mob = (Mob) deadEntity;
-                mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
+    public void die(@NotNull DamageSource damageSource) {
+        super.die(damageSource);
+        double x = this.getX();
+        double y = this.getY();
+        double z = this.getZ();
+        if (this.level() instanceof ServerLevel serverLevel) {
+            serverLevel.getServer().getPlayerList().broadcastSystemMessage(
+                    Component.translatable("subtitles.herobrine_clone_die"),
+                    false
+            );
+
+            Item[] items = new Item[] {
+                    AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().asItem(),
+                    AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().asItem(),
+                    AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().asItem(),
+                    AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().asItem(),
+                    AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().asItem(),
+                    Items.ENDER_EYE,
+                    Items.ENDER_EYE,
+                    Items.SPLASH_POTION,
+                    Blocks.DIAMOND_BLOCK.asItem(),
+                    Items.IRON_SWORD,
+                    AnnoyingVillagersModItems.ENCHANTED_ENDER_PEARL.get(),
+                    AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()
+            };
+
+            for (Item item : items) {
+                ItemEntity drop = new ItemEntity(serverLevel, x, y + 1.0D, z, new ItemStack(item));
+                drop.setPickUpDelay(10);
+                serverLevel.addFreshEntity(drop);
             }
-            this.remove(RemovalReason.KILLED);
-            levelaccessor.addFreshEntity(deadEntity);
-            deadEntity.setPose(Pose.DYING);
-            try {
-                deadEntity.getServer().getCommands().getDispatcher().execute(
-                        "kill @s",
-                        deadEntity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
+
+            if (AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
+                InfectedTheMostMoistBurrit0DeadEntity deadEntity = new InfectedTheMostMoistBurrit0DeadEntity(AnnoyingVillagersModEntities.INFECTED_THEMOSTMOISTBURRIT0_DEAD.get(), serverLevel);
+                deadEntity.moveTo(x, y, z, serverLevel.getRandom().nextFloat() * 360.0F, 0.0F);
+                deadEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+                this.remove(RemovalReason.KILLED);
+                serverLevel.addFreshEntity(deadEntity);
+                deadEntity.setPose(Pose.DYING);
+                deadEntity.kill();
             }
         }
     }
 
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
-        SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
-        LivingEntity livingentity = (LivingEntity) this;
-
-        if (!livingentity.level().isClientSide()) {
-            livingentity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.HEROBRINE.get(), 8000, 3));
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverLevelAccessor, @NotNull DifficultyInstance difficultyInstance, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
+        if (!this.level().isClientSide()) {
+            TeamUtil.addOrJoinTeam(this, "herobrine");
         }
-        return spawngroupdata1;
+        return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
 
     public static Builder createAttributes() {

@@ -2,39 +2,40 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.procedures.InfectedChrisOnTickProcedure;
-import com.pla.annoyingvillagers.procedures.InfectedChrisOnInteractProcedure;
-import com.pla.annoyingvillagers.procedures.InfectedChrisOnSpawnProcedure;
-import com.pla.annoyingvillagers.procedures.InfectedChrisDieProcedure;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
 public class InfectedChrisEntity extends PathfinderMob {
 
-    public InfectedChrisEntity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.INJECTED_CHRIS.get(), level);
+    public InfectedChrisEntity(SpawnEntity spawnEntity, Level level) {
+        this(AnnoyingVillagersModEntities.INJECTED_CHRIS.get(), level);
     }
 
     public InfectedChrisEntity(EntityType<InfectedChrisEntity> entitytype, Level level) {
@@ -46,7 +47,7 @@ public class InfectedChrisEntity extends PathfinderMob {
         this.setCustomNameVisible(true);
     }
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -54,7 +55,7 @@ public class InfectedChrisEntity extends PathfinderMob {
         super.registerGoals();
     }
 
-    public MobType getMobType() {
+    public @NotNull MobType getMobType() {
         return MobType.UNDEFINED;
     }
 
@@ -62,72 +63,66 @@ public class InfectedChrisEntity extends PathfinderMob {
         return -0.35D;
     }
 
-    public SoundEvent getHurtSound(DamageSource damagesource) {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.generic.hurt"));
+    public SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
+        return ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.generic.hurt"));
     }
 
     public SoundEvent getDeathSound() {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.generic.death"));
+        return ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.generic.death"));
     }
 
-    public void die(DamageSource damagesource) {
-        super.die(damagesource);
-        InfectedChrisDieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ());
-        double posX = this.getX();
-        double posY = this.getY();
-        double posZ = this.getZ();
+    public void die(@NotNull DamageSource damageSource) {
+        super.die(damageSource);
+        double x = this.getX();
+        double y = this.getY();
+        double z = this.getZ();
         LevelAccessor levelAccessor = this.level();
-        if (levelAccessor instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-            ServerLevel serverlevel = levelaccessor;
-            InfectedChrisDeadEntity deadEntity = new InfectedChrisDeadEntity((EntityType) AnnoyingVillagersModEntities.INFECTED_CHRIS_DEAD.get(), serverlevel);
-            deadEntity.moveTo(posX, posY, posZ, levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-            if (deadEntity instanceof Mob) {
-                Mob mob = (Mob) deadEntity;
-                mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
+        if (levelAccessor instanceof ServerLevel serverLevel) {
+            Item[] items = new Item[] {
+                    AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get().asItem(), AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get().asItem(),
+                    AnnoyingVillagersModItems.BEDROCK_WEAPON.get(), AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get().asItem(), Blocks.OAK_SIGN.asItem(), Blocks.OBSIDIAN.asItem(), Blocks.OBSIDIAN.asItem(), Items.NETHERITE_INGOT, Items.ENDER_PEARL, Items.ENCHANTED_GOLDEN_APPLE, Items.ENDER_EYE, Items.ENDER_EYE, AnnoyingVillagersModItems.ENCHANTED_ENDER_PEARL.get()
+            };
+
+            for (Item item : items) {
+                ItemEntity drop = new ItemEntity(serverLevel, x, y + 1.0D, z, new ItemStack(item));
+                drop.setPickUpDelay(10);
+                serverLevel.addFreshEntity(drop);
             }
-            this.remove(RemovalReason.KILLED);
-            levelaccessor.addFreshEntity(deadEntity);
-            deadEntity.setPose(Pose.DYING);
-            try {
-                deadEntity.getServer().getCommands().getDispatcher().execute(
-                        "kill @s",
-                        deadEntity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
+
+            if (AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
+                InfectedChrisDeadEntity deadEntity = new InfectedChrisDeadEntity(AnnoyingVillagersModEntities.INFECTED_CHRIS_DEAD.get(), serverLevel);
+                deadEntity.moveTo(x, y, z, serverLevel.getRandom().nextFloat() * 360.0F, 0.0F);
+                deadEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+                this.remove(RemovalReason.KILLED);
+                serverLevel.addFreshEntity(deadEntity);
+                deadEntity.setPose(Pose.DYING);
+                deadEntity.kill();
             }
         }
     }
 
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
-        SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverLevelAccessor, @NotNull DifficultyInstance difficultyInstance, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
+        SpawnGroupData returnSpawnGroupData = super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawngroupdata, compoundtag);
 
-        InfectedChrisOnSpawnProcedure.execute(serverlevelaccessor, this);
-        return spawngroupdata1;
+        if (!this.level().isClientSide()) {
+            this.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.HEROBRINE.get(), 3000, 1));
+        }
+        return returnSpawnGroupData;
     }
 
-    public InteractionResult mobInteract(Player player, InteractionHand interactionhand) {
-        player.getItemInHand(interactionhand);
-        InteractionResult interactionresult = InteractionResult.sidedSuccess(this.level().isClientSide());
-
-        super.mobInteract(player, interactionhand);
-        double d0 = this.getX();
-        double d1 = this.getY();
-        double d2 = this.getZ();
-        Level level = this.level();
-
-        InfectedChrisOnInteractProcedure.execute(level, d0, d1, d2, this, player);
-        return interactionresult;
-    }
-
-    public void baseTick() {
-        super.baseTick();
-        InfectedChrisOnTickProcedure.execute(this);
+    @Override
+    public void tick() {
+        super.tick();
+        if (!this.level().isClientSide() && this.tickCount % 20 == 0) {
+            this.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.HEROBRINE.get(), 30, 0, false, false));
+        }
     }
 
     public boolean isPushable() {
         return false;
     }
 
-    protected void doPush(Entity entity) {}
+    protected void doPush(@NotNull Entity entity) {}
 
     protected void pushEntities() {}
 

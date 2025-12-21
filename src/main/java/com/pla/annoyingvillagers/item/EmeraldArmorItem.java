@@ -1,8 +1,9 @@
 package com.pla.annoyingvillagers.item;
 
-import com.pla.annoyingvillagers.procedures.EmeraldArmorJumpBootProcedure;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -13,6 +14,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -21,7 +23,7 @@ public abstract class EmeraldArmorItem extends ArmorItem {
     public EmeraldArmorItem(ArmorItem.Type type, Properties properties) {
         super(new ArmorMaterial() {
             @Override
-            public int getDurabilityForType(ArmorItem.Type type) {
+            public int getDurabilityForType(ArmorItem.@NotNull Type type) {
                 return switch (type) {
                     case BOOTS      -> 13 * 48;  // 624
                     case LEGGINGS   -> 15 * 48;  // 720
@@ -31,7 +33,7 @@ public abstract class EmeraldArmorItem extends ArmorItem {
             }
 
             @Override
-            public int getDefenseForType(ArmorItem.Type type) {
+            public int getDefenseForType(ArmorItem.@NotNull Type type) {
                 return switch (type) {
                     case BOOTS      -> 4;
                     case LEGGINGS   -> 5;
@@ -44,15 +46,15 @@ public abstract class EmeraldArmorItem extends ArmorItem {
                 return 10;
             }
 
-            public SoundEvent getEquipSound() {
-                return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.armor.equip_diamond")));
+            public @NotNull SoundEvent getEquipSound() {
+                return Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "item.armor.equip_diamond")));
             }
 
-            public Ingredient getRepairIngredient() {
-                return Ingredient.of(new ItemStack[]{new ItemStack(Items.EMERALD)});
+            public @NotNull Ingredient getRepairIngredient() {
+                return Ingredient.of(new ItemStack(Items.EMERALD));
             }
 
-            public String getName() {
+            public @NotNull String getName() {
                 return "emerald_armor";
             }
 
@@ -80,7 +82,9 @@ public abstract class EmeraldArmorItem extends ArmorItem {
         public void onInventoryTick(ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex) {
             super.onInventoryTick(stack, level, player, slotIndex, selectedIndex);
             if (player.getItemBySlot(EquipmentSlot.FEET) == stack) {
-                EmeraldArmorJumpBootProcedure.execute(player);
+                if (!player.level().isClientSide()) {
+                    player.addEffect(new MobEffectInstance(MobEffects.JUMP, 100, 1));
+                }
             }
         }
     }
@@ -99,7 +103,9 @@ public abstract class EmeraldArmorItem extends ArmorItem {
         public void onInventoryTick(ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex) {
             super.onInventoryTick(stack, level, player, slotIndex, selectedIndex);
             if (player.getItemBySlot(EquipmentSlot.LEGS) == stack) {
-                EmeraldArmorJumpBootProcedure.execute(player);
+                if (!player.level().isClientSide()) {
+                    player.addEffect(new MobEffectInstance(MobEffects.JUMP, 100, 1));
+                }
             }
         }
     }
@@ -118,7 +124,9 @@ public abstract class EmeraldArmorItem extends ArmorItem {
         public void onInventoryTick(ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex) {
             super.onInventoryTick(stack, level, player, slotIndex, selectedIndex);
             if (player.getItemBySlot(EquipmentSlot.CHEST) == stack) {
-                EmeraldArmorJumpBootProcedure.execute(player);
+                if (!player.level().isClientSide()) {
+                    player.addEffect(new MobEffectInstance(MobEffects.JUMP, 100, 1));
+                }
             }
         }
     }
@@ -137,7 +145,9 @@ public abstract class EmeraldArmorItem extends ArmorItem {
         public void onInventoryTick(ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex) {
             super.onInventoryTick(stack, level, player, slotIndex, selectedIndex);
             if (player.getItemBySlot(EquipmentSlot.HEAD) == stack) {
-                EmeraldArmorJumpBootProcedure.execute(player);
+                if (!player.level().isClientSide()) {
+                    player.addEffect(new MobEffectInstance(MobEffects.JUMP, 100, 1));
+                }
             }
         }
     }

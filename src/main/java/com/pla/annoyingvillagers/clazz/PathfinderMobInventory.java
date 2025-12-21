@@ -95,6 +95,12 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
 
     protected PathfinderMobInventory(EntityType<? extends PathfinderMob> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+        this.setDropChance(EquipmentSlot.MAINHAND, 0.0F);
+        this.setDropChance(EquipmentSlot.OFFHAND, 0.0F);
+        this.setDropChance(EquipmentSlot.CHEST, 0.0F);
+        this.setDropChance(EquipmentSlot.HEAD, 0.0F);
+        this.setDropChance(EquipmentSlot.LEGS, 0.0F);
+        this.setDropChance(EquipmentSlot.FEET, 0.0F);
     }
 
     @Override

@@ -1,11 +1,10 @@
 package com.pla.annoyingvillagers.entity;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.procedures.*;
-import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.util.TeamUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -14,7 +13,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -22,11 +20,11 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 
 import javax.annotation.Nullable;
@@ -44,10 +42,10 @@ public class InfectedPlayerMobEntity extends PlayerMobEntity {
     }
 
     public InfectedPlayerMobEntity(PlayMessages.SpawnEntity spawnEntity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.INFECTED_PLAYER_MOB.get(), level);
+        this(AnnoyingVillagersModEntities.INFECTED_PLAYER_MOB.get(), level);
     }
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -56,7 +54,7 @@ public class InfectedPlayerMobEntity extends PlayerMobEntity {
         this.targetSelector.getAvailableGoals().clear();
     }
 
-    public MobType getMobType() {
+    public @NotNull MobType getMobType() {
         return MobType.UNDEFINED;
     }
 
@@ -64,144 +62,90 @@ public class InfectedPlayerMobEntity extends PlayerMobEntity {
         return -0.35D;
     }
 
-    public SoundEvent getHurtSound(DamageSource damagesource) {
-        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.hurt")));
+    public @NotNull SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
+        return Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.hurt")));
     }
 
-    public SoundEvent getDeathSound() {
-        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.death")));
-    }
-
-    public void baseTick() {
-        super.baseTick();
-        InfectedChrisOnTickProcedure.execute(this);
+    public @NotNull SoundEvent getDeathSound() {
+        return Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.death")));
     }
 
     @Override
-    public void die(DamageSource damagesource) {
-        super.die(damagesource);
+    public void tick() {
+        super.tick();
+        if (!this.level().isClientSide() && this.tickCount % 20 == 0) {
+            this.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.HEROBRINE.get(), 30, 0, false, false));
+        }
+    }
+
+    @Override
+    public void die(@NotNull DamageSource damageSource) {
+        super.die(damageSource);
         String possessedBy = this.getPersistentData().getString("possessed_by");
-        if (possessedBy.equals("herobrine_clone")) {
-            ShadowHerobrineCloneDieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
-        } else if (possessedBy.equals("shadow_herobrine_clone")) {
-            HerobrineCloneDieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
-        } else if (possessedBy.equals("low_herobrine_clone") || possessedBy.equals("low_shadow_herobrine_clone")) {
-            LowHerobrineCloneDieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
-        } else if (possessedBy.equals("herobrine_7")) {
-            Herobrine7DieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
-        } else if (possessedBy.equals("shadow_herobrine")) {
-            DarkHerobrineOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
-        } else if (possessedBy.equals("null")) {
-            NullDieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        switch (possessedBy) {
+            case "herobrine_clone" ->
+                    ShadowHerobrineCloneDieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+            case "shadow_herobrine_clone" ->
+                    HerobrineCloneDieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+            case "low_herobrine_clone", "low_shadow_herobrine_clone" ->
+                    LowHerobrineCloneDieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+            case "herobrine_7" ->
+                    Herobrine7DieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+            case "shadow_herobrine" ->
+                    DarkHerobrineOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+            case "null" -> NullDieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
         }
-        if (this.level() instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-            PlayerMobDeadEntity corpse =  new PlayerMobDeadEntity(AnnoyingVillagersModEntities.PLAYER_MOB_DEAD.get(), levelaccessor);
-            corpse.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
-            corpse.setUsername(this.getUsername());
-            corpse.setProfile(this.getProfile());
-            corpse.finalizeSpawn(levelaccessor, levelaccessor.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
-            this.setInvisible(true);
-            this.remove(Entity.RemovalReason.KILLED);
-            levelaccessor.addFreshEntity(corpse);
-            new DelayedTask(3) {
-                @Override
-                public void run() {
-                    try {
-                        corpse.getServer().getCommands().getDispatcher().execute(
-                                "kill @s",
-                                corpse.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                    } catch (CommandSyntaxException e) {
-                    }
-                }
-            };
-        }
+        if (this.level() instanceof ServerLevel serverLevel) {
+            ItemStack itemstack;
+            ItemEntity itementity;
 
-        LevelAccessor levelaccessor1 = this.level();
-        ItemEntity itementity;
-        LivingEntity livingentity = (LivingEntity)this;
-        ItemStack itemstack;
+            itemstack = this.getItemBySlot(EquipmentSlot.FEET);
+            itementity = new ItemEntity(serverLevel, this.getX(), this.getY() + 1.0D, this.getZ(), itemstack);
+            itementity.setPickUpDelay(10);
+            serverLevel.addFreshEntity(itementity);
 
-        if (levelaccessor1 instanceof Level level) {
-            if (!level.isClientSide()) {
-                itemstack = livingentity.getItemBySlot(EquipmentSlot.FEET);
-                itementity = new ItemEntity(level, this.getX(), this.getY() + 1.0D, this.getZ(), itemstack);
-                itementity.setPickUpDelay(10);
-                level.addFreshEntity(itementity);
-            }
-        }
+            itemstack = this.getItemBySlot(EquipmentSlot.FEET);
+            itementity = new ItemEntity(serverLevel, this.getX(), this.getY() + 1.0D, this.getZ(), itemstack);
+            itementity.setPickUpDelay(10);
+            serverLevel.addFreshEntity(itementity);
 
-        if (levelaccessor1 instanceof Level level) {
-            if (!level.isClientSide()) {
-                itemstack = livingentity.getItemBySlot(EquipmentSlot.LEGS);
-                itementity = new ItemEntity(level,  this.getX(), this.getY() + 1.0D, this.getZ(), itemstack);
-                itementity.setPickUpDelay(10);
-                level.addFreshEntity(itementity);
-            }
-        }
+            itemstack = this.getItemBySlot(EquipmentSlot.CHEST);
+            itementity = new ItemEntity(serverLevel, this.getX(), this.getY() + 1.0D, this.getZ(), itemstack);
+            itementity.setPickUpDelay(10);
+            serverLevel.addFreshEntity(itementity);
 
-        if (levelaccessor1 instanceof Level level) {
-            if (!level.isClientSide()) {
-                itemstack = livingentity.getItemBySlot(EquipmentSlot.CHEST);
-                itementity = new ItemEntity(level,  this.getX(), this.getY() + 1.0D, this.getZ(), itemstack);
-                itementity.setPickUpDelay(10);
-                level.addFreshEntity(itementity);
-            }
-        }
+            itemstack = this.getItemBySlot(EquipmentSlot.HEAD);
+            itementity = new ItemEntity(serverLevel, this.getX(), this.getY() + 1.0D, this.getZ(), itemstack);
+            itementity.setPickUpDelay(10);
+            serverLevel.addFreshEntity(itementity);
 
-        if (levelaccessor1 instanceof Level level) {
-            if (!level.isClientSide()) {
-                itemstack = livingentity.getItemBySlot(EquipmentSlot.HEAD);
-                itementity = new ItemEntity(level, this.getX(), this.getY() + 1.0D, this.getZ(), itemstack);
-                itementity.setPickUpDelay(10);
-                level.addFreshEntity(itementity);
+            if (AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
+                PlayerMobDeadEntity corpse = new PlayerMobDeadEntity(AnnoyingVillagersModEntities.PLAYER_MOB_DEAD.get(), serverLevel);
+                corpse.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
+                corpse.setUsername(this.getUsername());
+                corpse.setProfile(this.getProfile());
+                corpse.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+                this.setInvisible(true);
+                this.remove(Entity.RemovalReason.KILLED);
+                serverLevel.addFreshEntity(corpse);
+                corpse.kill();
             }
         }
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @javax.annotation.Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
-        LivingEntity livingentity = (LivingEntity) this;
-
-        if (!livingentity.level().isClientSide()) {
-            livingentity.addEffect(new MobEffectInstance((MobEffect) AnnoyingVillagersModMobEffects.HEROBRINE.get(), 8000, 3));
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverLevelAccessor, @NotNull DifficultyInstance difficultyInstance, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
+        if (!this.level().isClientSide()) {
+            TeamUtil.addOrJoinTeam(this, "herobrine");
         }
-        if (!this.level().isClientSide() && this.getServer() != null) {
-            try {
-                this.getServer().getCommands().getDispatcher().execute(
-                        "team add herobrine",
-                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
-
-            }
-        }
-
-        if (!this.level().isClientSide() && this.getServer() != null) {
-            try {
-                this.getServer().getCommands().getDispatcher().execute(
-                        "team modify herobrine friendlyFire false",
-                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
-
-            }
-        }
-
-        if (!this.level().isClientSide() && this.getServer() != null) {
-            try {
-                this.getServer().getCommands().getDispatcher().execute(
-                        "team join herobrine @s",
-                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
-
-            }
-        }
-        return spawngroupdata;
+        return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
 
     public boolean isPushable() {
         return false;
     }
 
-    protected void doPush(Entity entity) {}
+    protected void doPush(@NotNull Entity entity) {}
 
     protected void pushEntities() {}
 

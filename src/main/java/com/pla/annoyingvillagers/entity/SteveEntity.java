@@ -84,10 +84,6 @@ public class SteveEntity extends PathfinderMobInventory {
 
     public SteveEntity(EntityType<SteveEntity> entitytype, Level level) {
         super(entitytype, level);
-        this.setDropChance(EquipmentSlot.MAINHAND, 0.0F);
-        this.setDropChance(EquipmentSlot.OFFHAND, 0.0F);
-        this.setDropChance(EquipmentSlot.CHEST, 0.0F);
-        this.setDropChance(EquipmentSlot.HEAD, 0.0F);
         this.setMaxUpStep(3.0F);
         this.xpReward = 8;
         this.setNoAi(false);

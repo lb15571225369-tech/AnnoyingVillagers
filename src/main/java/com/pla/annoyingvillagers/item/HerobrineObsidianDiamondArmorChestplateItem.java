@@ -5,11 +5,9 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import com.pla.annoyingvillagers.client.model.ModelHerobrineObsidianDiamondChestplate;
-import com.pla.annoyingvillagers.procedures.EmeraldArmorJumpBootProcedure;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
@@ -21,9 +19,7 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import static com.pla.annoyingvillagers.util.ArmorUtil.dropArmorSlot;

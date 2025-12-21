@@ -2,15 +2,13 @@ package com.pla.annoyingvillagers.item;
 
 import java.util.List;
 
-import com.pla.annoyingvillagers.procedures.CompressedDiamondOnCraftedProcedure;
-import com.pla.annoyingvillagers.procedures.CompressedDiamondOnDroppedProcedure;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public class CompressedDiamondItem extends Item {
 
@@ -18,18 +16,8 @@ public class CompressedDiamondItem extends Item {
         super((new Properties()).stacksTo(64).rarity(Rarity.EPIC));
     }
 
-    public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
-        super.appendHoverText(itemstack, level, list, tooltipflag);
+    public void appendHoverText(@NotNull ItemStack itemStack, Level level, @NotNull List<Component> list, @NotNull TooltipFlag tooltipFlag) {
+        super.appendHoverText(itemStack, level, list, tooltipFlag);
         list.add(Component.translatable("tooltip.annoyingvillagers.compressessed_diamond"));
-    }
-
-    public void onCraftedBy(ItemStack itemstack, Level level, Player player) {
-        super.onCraftedBy(itemstack, level, player);
-        CompressedDiamondOnCraftedProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, itemstack);
-    }
-
-    public boolean onDroppedByPlayer(ItemStack itemstack, Player player) {
-        CompressedDiamondOnDroppedProcedure.execute(player.level(), player);
-        return true;
     }
 }
