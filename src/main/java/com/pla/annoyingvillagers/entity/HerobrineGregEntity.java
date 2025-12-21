@@ -32,7 +32,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
@@ -156,7 +155,7 @@ public class HerobrineGregEntity extends Monster {
     }
 
     public HerobrineGregEntity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.HEROBRINE_GREG.get(), level);
+        this(AnnoyingVillagersModEntities.HEROBRINE_GREG.get(), level);
     }
 
     public HerobrineGregEntity(EntityType<HerobrineGregEntity> entitytype, Level level) {
@@ -427,7 +426,7 @@ public class HerobrineGregEntity extends Monster {
                 this.setNoAi(true);
                 this.summoning = true;
                 this.summonTiming = 20;
-                this.addEffect(new MobEffectInstance((MobEffect) EpicFightMobEffects.STUN_IMMUNITY.get(), 120, 3, false, false));
+                this.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 120, 3, false, false));
             }
 
             if (this.getHealth() <= 2 && this.summonTiming == -1) {
@@ -439,7 +438,7 @@ public class HerobrineGregEntity extends Monster {
                 this.summoning = true;
                 this.summonTiming = 20;
                 this.setHealth(1);
-                this.addEffect(new MobEffectInstance((MobEffect) EpicFightMobEffects.STUN_IMMUNITY.get(), 120, 3, false, false));
+                this.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 120, 3, false, false));
             }
 
             if (this.summonTiming > 0) {
@@ -491,30 +490,15 @@ public class HerobrineGregEntity extends Monster {
                         Component.translatable("subtitles.herobrine_will_be_back").getString()), false);
                 if (this.firstSummonedHerobrine instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
                     lowShadowHerobrineCloneEntity.setAutoKill(true);
-                    try {
-                        lowShadowHerobrineCloneEntity.getServer().getCommands().getDispatcher().execute(
-                                "kill @s",
-                                this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                    } catch (CommandSyntaxException e) {
-                    }
+                    lowShadowHerobrineCloneEntity.kill();
                 }
                 if (this.secondSummonedHerobrine instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
                     lowShadowHerobrineCloneEntity.setAutoKill(true);
-                    try {
-                        lowShadowHerobrineCloneEntity.getServer().getCommands().getDispatcher().execute(
-                                "kill @s",
-                                this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                    } catch (CommandSyntaxException e) {
-                    }
+                    lowShadowHerobrineCloneEntity.kill();
                 }
                 if (this.thirdSummonedHerobrine instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
                     lowShadowHerobrineCloneEntity.setAutoKill(true);
-                    try {
-                        lowShadowHerobrineCloneEntity.getServer().getCommands().getDispatcher().execute(
-                                "kill @s",
-                                this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                    } catch (CommandSyntaxException e) {
-                    }
+                    lowShadowHerobrineCloneEntity.kill();
                 }
                 this.discard();
             }
@@ -577,7 +561,7 @@ public class HerobrineGregEntity extends Monster {
             }
 
             if (this.combatMode) {
-                this.addEffect(new MobEffectInstance((MobEffect) EpicFightMobEffects.STUN_IMMUNITY.get(), 1, 3, false, false));
+                this.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 1, 3, false, false));
             }
         }
     }
@@ -610,7 +594,7 @@ public class HerobrineGregEntity extends Monster {
 
                 herobrine.moveTo(spawnX, spawnY, spawnZ, this.getYRot(), this.getXRot());
                 herobrine.lookAt(EntityAnchorArgument.Anchor.EYES, new Vec3(summonLookX, spawnY, summonLookZ));
-                herobrine.finalizeSpawn(levelaccessor, levelaccessor.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
+                herobrine.finalizeSpawn(levelaccessor, levelaccessor.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
                 levelaccessor.addFreshEntity(herobrine);
 
                 if (this.combatMode) {
@@ -914,11 +898,11 @@ public class HerobrineGregEntity extends Monster {
     }
 
     public @NotNull SoundEvent getHurtSound(DamageSource damagesource) {
-        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.hurt")));
+        return Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.hurt")));
     }
 
     public @NotNull SoundEvent getDeathSound() {
-        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.death")));
+        return Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.death")));
     }
 
     public boolean isDay(Level level) {

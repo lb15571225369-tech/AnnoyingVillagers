@@ -210,7 +210,7 @@ public class SteveEntity extends PathfinderMobInventory {
                         this.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
                         this.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
                     }
-                    return true;
+                    return super.hurt(damageSource, 1.0F);
                 }
             }
         }
@@ -262,6 +262,11 @@ public class SteveEntity extends PathfinderMobInventory {
             if (new Random().nextBoolean()) {
                 damagedStacks.add(diamondSword);
             }
+
+            ItemStack bow = new ItemStack(Items.BOW);
+            bow.enchant(Enchantments.POWER_ARROWS, 5);
+            bow.enchant(Enchantments.PUNCH_ARROWS, 5);
+            damagedStacks.add(bow);
 
             double chance = new Random().nextDouble(0.0, 1.0);
             if (chance < 0.2) {

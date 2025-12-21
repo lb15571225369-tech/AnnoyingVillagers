@@ -15,12 +15,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -69,22 +69,31 @@ public class JevEntity extends PathfinderMobInventory {
         super.registerGoals();
         this.goalSelector.addGoal(1, new LookAtPlayerGoal(this, AlexEntity.class, 12.0F));
         this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Monster.class, 5.0F, 1.2D, 1.8D));
+        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Player.class, 5.0F, 1.2D, 1.8D));
         this.goalSelector.addGoal(2, new Goal() {
             @Override
             public boolean canUse() {
-                return followTarget != null && followTarget.isAlive();
+                return followTarget != null && followTarget.isAlive() && distanceTo(followTarget) > (float)20.0D * 0.9F;
             }
 
             @Override
             public void tick() {
                 if (followTarget != null && followTarget.isAlive()) {
                     getNavigation().moveTo(followTarget, 2.0D);
+                    getLookControl().setLookAt(followTarget, 30.0F, 30.0F);
+                    if (distanceToSqr(followTarget) > 20.0D) {
+                        if (getNavigation().isDone()) {
+                            getNavigation().moveTo(followTarget, 2.0D);
+                        }
+                    } else {
+                        getNavigation().stop();
+                    }
                 }
             }
 
             @Override
             public boolean canContinueToUse() {
-                return followTarget != null && followTarget.isAlive() && distanceTo(followTarget) > 10.0D;
+                return followTarget != null && followTarget.isAlive() && distanceTo(followTarget) > 50.0D;
             }
         });
         this.goalSelector.addGoal(3, new RandomStrollGoal(this, 1.0D));
@@ -97,6 +106,8 @@ public class JevEntity extends PathfinderMobInventory {
     public @Nullable SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor pLevel, @NotNull DifficultyInstance pDifficulty, @NotNull MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
         SpawnGroupData returnSpawnGroupData = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
         TeamUtil.addOrJoinTeam(this, "alex");
+        setMainWeaponItem(new ItemStack(AnnoyingVillagersModItems.JEV_PENCIL.get()));
+        setOffWeaponItem(new ItemStack(AnnoyingVillagersModItems.JEV_BOOK.get()));
         return returnSpawnGroupData;
     }
 
@@ -195,7 +206,7 @@ public class JevEntity extends PathfinderMobInventory {
         return ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.villager.ambient"));
     }
 
-    public SoundEvent getHurtSound(DamageSource damagesource) {
+    public SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
         return ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.villager.hurt"));
     }
 
@@ -204,10 +215,6 @@ public class JevEntity extends PathfinderMobInventory {
     }
 
     public boolean hurt(@NotNull DamageSource damageSource, float f) {
-        if (this.getGapCooldown() == 0 && this.getHealth() <= ((float) 2/3 * this.getMaxHealth())) {
-            CombatBehaviour.drinkingHealingPotion(this, this.level(), false, f);
-            this.setGapCooldown();
-        }
         return super.hurt(damageSource, f);
     }
 

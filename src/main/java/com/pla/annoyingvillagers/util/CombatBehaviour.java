@@ -198,15 +198,6 @@ public class CombatBehaviour {
                 }
             }
         }
-
-        if (!entity.level().isClientSide() && entity.getServer() != null) {
-            try {
-                entity.getServer().getCommands().getDispatcher().execute(
-                        "execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10",
-                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-                );
-            } catch (CommandSyntaxException ignored) {}
-        }
     }
 
     public static void eatingGoldenApple(Entity entity, LevelAccessor levelaccessor, double amount) {

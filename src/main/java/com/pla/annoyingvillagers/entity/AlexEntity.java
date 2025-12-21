@@ -3,9 +3,7 @@ package com.pla.annoyingvillagers.entity;
 import javax.annotation.Nullable;
 
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
-import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.spawnhandler.AlexData;
 import com.pla.annoyingvillagers.util.*;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
@@ -17,7 +15,6 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -39,8 +36,7 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
-import yesman.epicfight.world.capabilities.EpicFightCapabilities;
-import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.effect.EpicFightMobEffects;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -63,6 +59,10 @@ public class AlexEntity extends PathfinderMobInventory {
 
     public AlexEntity(SpawnEntity spawnEntity, Level level) {
         this(AnnoyingVillagersModEntities.ALEX.get(), level);
+    }
+
+    public int getState() {
+        return state;
     }
 
     public AlexEntity(EntityType<AlexEntity> entitytype, Level level) {
@@ -159,6 +159,7 @@ public class AlexEntity extends PathfinderMobInventory {
             if (health - f <= 0.0F) {
                 if (this.state == 0 && !this.getOffhandItem().getItem().equals(Items.TOTEM_OF_UNDYING)) {
                     this.setHealth(1.0F);
+                    return super.hurt(damageSource, 1.0F);
                 }
             }
         }
@@ -193,6 +194,12 @@ public class AlexEntity extends PathfinderMobInventory {
             sword.enchant(Enchantments.KNOCKBACK, 2);
             sword.enchant(Enchantments.UNBREAKING, 5);
             damagedStacks.add(sword);
+
+            ItemStack bow = new ItemStack(Items.BOW);
+            bow.enchant(Enchantments.PUNCH_ARROWS, 3);
+            bow.enchant(Enchantments.POWER_ARROWS, 3);
+            bow.enchant(Enchantments.FLAMING_ARROWS, 2);
+            damagedStacks.add(bow);
 
             for (ItemStack stack : damagedStacks) {
                 stack.setDamageValue(EquipmentDataLoader.getRandomDamage(stack));
@@ -326,7 +333,10 @@ public class AlexEntity extends PathfinderMobInventory {
                 this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 30, 1));
                 this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 30, 0));
             }
-            if ((this.state == 0 || this.state == 1)
+            if (this.tickCount % 20 == 0 && this.state == 1) {
+                this.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 30, 1));
+            }
+            if (this.state == 0
                     && this.getHealth() <= 20
                     && !this.getItemInHand(InteractionHand.OFF_HAND).getItem().equals(Items.TOTEM_OF_UNDYING)) {
                 this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.TOTEM_OF_UNDYING));

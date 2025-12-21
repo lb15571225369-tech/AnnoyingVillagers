@@ -58,7 +58,7 @@ public class JevFist {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(20.0D)
-                            .maxCooldown (200)
+                            .maxCooldown (40)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canAttackWhileNotHealing)
@@ -82,7 +82,7 @@ public class JevFist {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(10.0D)
-                            .maxCooldown (200)
+                            .maxCooldown (40)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canAttackWhileNotHealing)
@@ -118,7 +118,7 @@ public class JevFist {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(2.0D)
-                            .maxCooldown(200)
+                            .maxCooldown(40)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 2.0D)

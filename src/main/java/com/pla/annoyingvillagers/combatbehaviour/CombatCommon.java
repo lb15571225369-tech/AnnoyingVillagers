@@ -241,7 +241,10 @@ public class CombatCommon {
         LivingEntity entity = mobpatch.getOriginal();
 
         BehaviorUtils.stopCurrentBehavior(entity);
-        entity.setItemInHand(InteractionHand.MAIN_HAND, PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_HEALING));
+        if (!entity.level().isClientSide) {
+            ItemStack stack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_HEALING);
+            entity.setItemInHand(InteractionHand.MAIN_HAND, stack);
+        }
         if (entity instanceof PathfinderMobInventory pathfinderMobInventory) {
             pathfinderMobInventory.setGapCooldown();
         }
@@ -279,6 +282,11 @@ public class CombatCommon {
         if (entity instanceof SteveEntity steveEntity && steveEntity.getState() == 1) {
             bow.enchant(Enchantments.POWER_ARROWS, 5);
             bow.enchant(Enchantments.PUNCH_ARROWS, 5);
+        }
+        if (entity instanceof AlexEntity alexEntity && alexEntity.getState() == 1) {
+            bow.enchant(Enchantments.PUNCH_ARROWS, 3);
+            bow.enchant(Enchantments.POWER_ARROWS, 3);
+            bow.enchant(Enchantments.FLAMING_ARROWS, 2);
         }
 
         entity.setItemInHand(InteractionHand.MAIN_HAND, bow.copy());
