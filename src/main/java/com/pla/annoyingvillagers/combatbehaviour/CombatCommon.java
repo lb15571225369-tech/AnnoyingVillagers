@@ -288,6 +288,10 @@ public class CombatCommon {
             bow.enchant(Enchantments.POWER_ARROWS, 3);
             bow.enchant(Enchantments.FLAMING_ARROWS, 2);
         }
+        if (entity instanceof ChrisEntity chrisEntity && chrisEntity.getState() == 1) {
+            bow.enchant(Enchantments.POWER_ARROWS, 2);
+            bow.enchant(Enchantments.PUNCH_ARROWS, 2);
+        }
 
         entity.setItemInHand(InteractionHand.MAIN_HAND, bow.copy());
         entity.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);

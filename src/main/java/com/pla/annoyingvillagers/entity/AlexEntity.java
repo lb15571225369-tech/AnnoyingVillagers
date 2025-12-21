@@ -186,6 +186,10 @@ public class AlexEntity extends PathfinderMobInventory {
                 serverLevel.addFreshEntity(drop);
             };
 
+            Consumer<Integer> dropArrows = (count) -> {
+                for (int i = 0; i < count; i++) dropStack.accept(new ItemStack(Items.ARROW));
+            };
+
             List<ItemStack> damagedStacks = new ArrayList<>();
 
             ItemStack sword = new ItemStack(Items.DIAMOND_SWORD);
@@ -231,6 +235,7 @@ public class AlexEntity extends PathfinderMobInventory {
             for (ItemStack stack : simpleDrops) {
                 dropStack.accept(stack);
             }
+            dropArrows.accept(new Random().nextInt(10, 20));
 
             if (AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
                 AlexDeadEntity alexDeadEntity = new AlexDeadEntity(AnnoyingVillagersModEntities.ALEX_DEAD.get(), serverLevel);

@@ -238,6 +238,10 @@ public class SteveEntity extends PathfinderMobInventory {
                 serverLevel.addFreshEntity(drop);
             };
 
+            Consumer<Integer> dropArrows = (count) -> {
+                for (int i = 0; i < count; i++) dropStack.accept(new ItemStack(Items.ARROW));
+            };
+
             List<ItemStack> damagedStacks = new ArrayList<>();
 
             ItemStack compressedDiamondHelmet = new ItemStack(AnnoyingVillagersModItems.COMPRESSED_DIAMOND_HELMET.get());
@@ -362,6 +366,7 @@ public class SteveEntity extends PathfinderMobInventory {
             for (ItemLike itemLike : simpleDrops) {
                 dropStack.accept(new ItemStack(itemLike));
             }
+            dropArrows.accept(new Random().nextInt(10, 30));
 
             if (AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
                 SteveDeadEntity steveDeadEntity = new SteveDeadEntity(AnnoyingVillagersModEntities.STEVE_DEAD.get(), serverLevel);

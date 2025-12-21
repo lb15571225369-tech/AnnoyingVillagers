@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
@@ -22,6 +23,9 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.network.NetworkHooks;
@@ -215,6 +219,14 @@ public class JevEntity extends PathfinderMobInventory {
     }
 
     public boolean hurt(@NotNull DamageSource damageSource, float f) {
+        if (this.getGapCooldown() == 0 && this.getHealth() <= ((float) 2/3 * this.getMaxHealth())) {
+            if (!this.level().isClientSide) {
+                ItemStack stack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_HEALING);
+                this.setItemInHand(InteractionHand.MAIN_HAND, stack);
+            }
+            CombatBehaviour.drinkingHealingPotion(this, this.level(), false, f);
+            this.setGapCooldown();
+        }
         return super.hurt(damageSource, f);
     }
 

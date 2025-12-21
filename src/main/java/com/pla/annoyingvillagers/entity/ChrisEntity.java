@@ -2,17 +2,14 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.procedures.ChrisOnDeathProcedure;
-import com.pla.annoyingvillagers.procedures.ChrisOnHurtProcedure;
-import com.pla.annoyingvillagers.procedures.ChrisOnSpawnProcedure;
 import com.pla.annoyingvillagers.spawnhandler.ChrisData;
-import com.pla.annoyingvillagers.util.CommonGoals;
+import com.pla.annoyingvillagers.util.*;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -20,11 +17,15 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -33,11 +34,20 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
+import yesman.epicfight.world.effect.EpicFightMobEffects;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.function.Consumer;
 
 
 public class ChrisEntity extends PathfinderMobInventory {
-    public ChrisEntity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.CHRIS.get(), level);
+    private int state = 0;
+
+    public ChrisEntity(SpawnEntity spawnEntity, Level level) {
+        this(AnnoyingVillagersModEntities.CHRIS.get(), level);
     }
 
     public ChrisEntity(EntityType<ChrisEntity> entitytype, Level level) {
@@ -48,17 +58,29 @@ public class ChrisEntity extends PathfinderMobInventory {
         this.setCustomName(this.getDisplayName());
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
-        ItemStack sword = new ItemStack(Items.DIAMOND_SWORD);
-        sword.enchant(Enchantments.KNOCKBACK, 5);
-        sword.enchant(Enchantments.UNBREAKING, 5);
-        this.setItemSlot(EquipmentSlot.MAINHAND, sword);
-        this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.ENDER_PEARL));
-        this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.DIAMOND_HELMET));
-        this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.DIAMOND_CHESTPLATE));
-        this.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.DIAMOND_BOOTS));
     }
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putInt("State", this.state);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        state = tag.getInt("State");
+    }
+
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -67,7 +89,7 @@ public class ChrisEntity extends PathfinderMobInventory {
         CommonGoals.registerGoalForNeutralNpc(this);
     }
 
-    public MobType getMobType() {
+    public @NotNull MobType getMobType() {
         return MobType.UNDEFINED;
     }
 
@@ -79,48 +101,177 @@ public class ChrisEntity extends PathfinderMobInventory {
         return -0.35D;
     }
 
-    public SoundEvent getHurtSound(DamageSource damagesource) {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.generic.hurt"));
+    public SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
+        return ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.generic.hurt"));
     }
 
     public SoundEvent getDeathSound() {
-        return (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.generic.death"));
+        return ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.generic.death"));
     }
 
-    public boolean hurt(DamageSource damagesource, float f) {
-        ChrisOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, f);
-        if (damagesource.is(DamageTypes.FALL)) return false;
-        if (damagesource.is(DamageTypes.CACTUS)) return false;
-        if (damagesource.is(DamageTypes.DROWN)) return false;
-        if (damagesource.is(DamageTypes.FALLING_ANVIL)) return false;
-        return super.hurt(damagesource, f);
-    }
-
-    public void die(DamageSource damagesource) {
-        super.die(damagesource);
-        ChrisOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
-        if (this.level() instanceof ServerLevel levelaccessor && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-            ServerLevel serverlevel = levelaccessor;
-            ChrisDeadEntity deadEntity = new ChrisDeadEntity((EntityType) AnnoyingVillagersModEntities.CHRIS_DEAD.get(), serverlevel);
-            deadEntity.moveTo(this.getX(), this.getY(), this.getZ(), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-            if (deadEntity instanceof Mob) {
-                Mob mob = (Mob) deadEntity;
-                mob.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
+    public boolean hurt(@NotNull DamageSource damageSource, float f) {
+        if (this.getEnderPearlCooldown() == 0) {
+            CombatBehaviour.throwEnderPearl(this, 180.0F);
+            Entity entity = this;
+            if (Math.random() <= 0.2D) {
+                new DelayedTask(20) {
+                    @Override
+                    public void run() {
+                        if (entity.isAlive()) {
+                            CombatBehaviour.throwEnderPearl(entity, 90.0F);
+                        }
+                    }
+                };
             }
-            this.remove(RemovalReason.KILLED);
-            levelaccessor.addFreshEntity(deadEntity);
-            try {
-                deadEntity.getServer().getCommands().getDispatcher().execute(
-                        "kill @s",
-                        deadEntity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
+            this.setEnderPearlCooldown();
+        }
+        if (this.level() instanceof ServerLevel && !damageSource.is(DamageTypes.FELL_OUT_OF_WORLD)) {
+            float health = this.getHealth();
+            if (health - f <= 0.0F) {
+                if (this.state == 0 && !this.getOffhandItem().getItem().equals(Items.TOTEM_OF_UNDYING)) {
+                    this.setHealth(1.0F);
+                    return super.hurt(damageSource, 1.0F);
+                }
+            }
+        }
+        return super.hurt(damageSource, f);
+    }
+
+    public void die(@NotNull DamageSource damageSource) {
+        super.die(damageSource);
+        if (this.level() instanceof ServerLevel serverLevel) {
+            serverLevel.getServer().getPlayerList().broadcastSystemMessage(
+                    Component.literal("<" + this.getDisplayName().getString() + "> Steve, I'm sorry."),
+                    false
+            );
+
+            final double x = this.getX();
+            final double y = this.getY() + 1.0D;
+            final double z = this.getZ();
+
+            Consumer<ItemStack> dropStack = (stack) -> {
+                ItemEntity drop = new ItemEntity(serverLevel, x, y, z, stack);
+                drop.setPickUpDelay(10);
+                serverLevel.addFreshEntity(drop);
+            };
+
+            Consumer<Integer> dropArrows = (count) -> {
+                for (int i = 0; i < count; i++) dropStack.accept(new ItemStack(Items.ARROW));
+            };
+
+            List<ItemStack> damagedStacks = new ArrayList<>();
+
+            ItemStack sword = new ItemStack(Items.DIAMOND_SWORD);
+            sword.enchant(Enchantments.KNOCKBACK, 5);
+            sword.enchant(Enchantments.SHARPNESS, 5);
+            sword.enchant(Enchantments.UNBREAKING, 5);
+            damagedStacks.add(sword);
+
+            ItemStack diamondHelmet = new ItemStack(Items.DIAMOND_HELMET);
+            diamondHelmet.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 5);
+            diamondHelmet.enchant(Enchantments.UNBREAKING, 5);
+            damagedStacks.add(diamondHelmet);
+
+            ItemStack diamondChestplate = new ItemStack(Items.DIAMOND_CHESTPLATE);
+            diamondChestplate.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 5);
+            diamondChestplate.enchant(Enchantments.UNBREAKING, 5);
+            damagedStacks.add(diamondChestplate);
+
+            ItemStack diamondBoots = new ItemStack(Items.DIAMOND_BOOTS);
+            diamondBoots.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 5);
+            diamondBoots.enchant(Enchantments.FROST_WALKER, 2);
+            diamondBoots.enchant(Enchantments.UNBREAKING, 5);
+            damagedStacks.add(diamondBoots);
+
+            ItemStack bow = new ItemStack(Items.BOW);
+            bow.enchant(Enchantments.POWER_ARROWS, 2);
+            bow.enchant(Enchantments.PUNCH_ARROWS, 2);
+            damagedStacks.add(bow);
+
+            ItemStack ironPickaxe = new ItemStack(Items.IRON_PICKAXE);
+            ironPickaxe.enchant(Enchantments.UNBREAKING, 3);
+            damagedStacks.add(ironPickaxe);
+
+            ItemStack ironAxe = new ItemStack(Items.IRON_AXE);
+            ironAxe.enchant(Enchantments.UNBREAKING, 3);
+            damagedStacks.add(ironAxe);
+
+            for (ItemStack stack : damagedStacks) {
+                stack.setDamageValue(EquipmentDataLoader.getRandomDamage(stack));
+                dropStack.accept(stack);
+            }
+
+            ItemStack[] simpleDrops = new ItemStack[] {
+                    new ItemStack(Items.TOTEM_OF_UNDYING),
+                    new ItemStack(Items.SHIELD),
+                    new ItemStack(Items.SPYGLASS),
+
+                    new ItemStack(Items.ENCHANTED_GOLDEN_APPLE),
+                    new ItemStack(Items.ENCHANTED_GOLDEN_APPLE),
+                    new ItemStack(Items.ENCHANTED_GOLDEN_APPLE),
+                    new ItemStack(Items.ENCHANTED_GOLDEN_APPLE),
+                    new ItemStack(Items.ENCHANTED_GOLDEN_APPLE),
+
+                    new ItemStack(Items.ENDER_PEARL),
+                    new ItemStack(Items.ENDER_PEARL),
+                    new ItemStack(Items.ENDER_PEARL),
+                    new ItemStack(Items.ENDER_PEARL),
+                    new ItemStack(Items.ENDER_PEARL),
+
+                    new ItemStack(Items.OAK_BOAT),
+
+                    new ItemStack(Items.IRON_INGOT),
+                    new ItemStack(Items.IRON_INGOT),
+                    new ItemStack(Items.IRON_INGOT),
+                    new ItemStack(Items.IRON_INGOT),
+
+                    new ItemStack(Items.CRAFTING_TABLE),
+                    new ItemStack(Items.CRAFTING_TABLE),
+
+                    new ItemStack(Items.DIAMOND),
+                    new ItemStack(Items.DIAMOND),
+                    new ItemStack(Items.DIAMOND),
+                    new ItemStack(Items.DIAMOND),
+
+                    new ItemStack(Items.GOLD_INGOT),
+                    new ItemStack(Items.GOLD_INGOT),
+                    new ItemStack(Items.GOLD_INGOT),
+
+                    new ItemStack(Items.EMERALD),
+                    new ItemStack(Items.EMERALD),
+                    new ItemStack(Items.EMERALD),
+                    new ItemStack(Items.EMERALD),
+
+                    new ItemStack(Items.GOLDEN_APPLE),
+                    new ItemStack(Items.GOLDEN_APPLE),
+                    new ItemStack(Items.GOLDEN_APPLE),
+                    new ItemStack(Items.GOLDEN_APPLE),
+                    new ItemStack(Items.GOLDEN_APPLE),
+                    new ItemStack(Items.GOLDEN_APPLE),
+
+                    new ItemStack(Items.WHITE_BED)
+            };
+
+            for (ItemStack stack : simpleDrops) {
+                dropStack.accept(stack);
+            }
+
+            dropArrows.accept(new Random().nextInt(10, 20));
+
+            if (AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
+                ChrisDeadEntity deadEntity = new ChrisDeadEntity(AnnoyingVillagersModEntities.CHRIS_DEAD.get(), serverLevel);
+                deadEntity.moveTo(this.getX(), this.getY(), this.getZ(), serverLevel.getRandom().nextFloat() * 360.0F, 0.0F);
+                deadEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+                this.remove(RemovalReason.KILLED);
+                serverLevel.addFreshEntity(deadEntity);
+                deadEntity.kill();
             }
         }
     }
 
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
-        if (mobspawntype == MobSpawnType.NATURAL || mobspawntype == MobSpawnType.CHUNK_GENERATION) {
-            ServerLevel serverLevel = serverlevelaccessor.getLevel();
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverLevelAccessor, @NotNull DifficultyInstance difficultyInstance, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
+        if (mobSpawnType == MobSpawnType.NATURAL || mobSpawnType == MobSpawnType.CHUNK_GENERATION) {
+            ServerLevel serverLevel = serverLevelAccessor.getLevel();
             ChrisData chrisData = ChrisData.get(serverLevel);
 
             if (!chrisData.tryClaim(serverLevel, this.getUUID())) {
@@ -129,9 +280,34 @@ public class ChrisEntity extends PathfinderMobInventory {
             }
         }
 
-        SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
-        ChrisOnSpawnProcedure.execute(this);
-        return spawngroupdata1;
+        SpawnGroupData returnSpawnGroupData = super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawngroupdata, compoundtag);
+
+        ItemStack sword = new ItemStack(Items.DIAMOND_SWORD);
+        sword.enchant(Enchantments.KNOCKBACK, 5);
+        sword.enchant(Enchantments.SHARPNESS, 5);
+        sword.enchant(Enchantments.UNBREAKING, 5);
+        this.setItemSlot(EquipmentSlot.MAINHAND, sword);
+
+        this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.ENDER_PEARL));
+
+        ItemStack diamondHelmet = new ItemStack(Items.DIAMOND_HELMET);
+        diamondHelmet.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 5);
+        diamondHelmet.enchant(Enchantments.UNBREAKING, 5);
+        this.setItemSlot(EquipmentSlot.HEAD, diamondHelmet);
+
+        ItemStack diamondChestplate = new ItemStack(Items.DIAMOND_CHESTPLATE);
+        diamondChestplate.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 5);
+        diamondChestplate.enchant(Enchantments.UNBREAKING, 5);
+        this.setItemSlot(EquipmentSlot.CHEST, diamondChestplate);
+
+        ItemStack diamondBoots = new ItemStack(Items.DIAMOND_BOOTS);
+        diamondBoots.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 5);
+        diamondBoots.enchant(Enchantments.FROST_WALKER, 2);
+        diamondBoots.enchant(Enchantments.UNBREAKING, 5);
+        this.setItemSlot(EquipmentSlot.FEET, diamondBoots);
+
+        TeamUtil.addOrJoinTeam(this, "steve");
+        return returnSpawnGroupData;
     }
 
     public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
@@ -147,7 +323,22 @@ public class ChrisEntity extends PathfinderMobInventory {
     }
 
     @Override
-    public void remove(RemovalReason reason) {
+    public void tick() {
+        super.tick();
+        if (!level().isClientSide) {
+            if (this.tickCount % 20 == 0 && this.state == 1) {
+                this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 30, 0));
+            }
+            if (this.state == 0
+                    && this.getHealth() <= 20
+                    && !this.getItemInHand(InteractionHand.OFF_HAND).getItem().equals(Items.TOTEM_OF_UNDYING)) {
+                this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(Items.TOTEM_OF_UNDYING));
+            }
+        }
+    }
+
+    @Override
+    public void remove(@NotNull RemovalReason reason) {
         super.remove(reason);
         if (!level().isClientSide && level() instanceof ServerLevel serverLevel &&
                 (reason == RemovalReason.KILLED || reason == RemovalReason.DISCARDED)) {
@@ -158,9 +349,9 @@ public class ChrisEntity extends PathfinderMobInventory {
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();
 
-        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.26D);
+        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.45D);
         builder = builder.add(Attributes.MAX_HEALTH, 50.0D);
-        builder = builder.add(Attributes.ARMOR, 20.0D);
+        builder = builder.add(Attributes.ARMOR, 0.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 48.0D);
         return builder;

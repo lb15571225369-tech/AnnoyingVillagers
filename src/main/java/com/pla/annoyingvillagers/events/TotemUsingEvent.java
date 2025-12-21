@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.events;
 
 import com.pla.annoyingvillagers.entity.AlexEntity;
+import com.pla.annoyingvillagers.entity.ChrisEntity;
 import com.pla.annoyingvillagers.entity.SteveEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
@@ -106,6 +107,26 @@ public class TotemUsingEvent {
                         alexEntity.setItemInHand(InteractionHand.OFF_HAND, diamondSword);
                         alexEntity.setOffWeaponItem(diamondSword);
                         alexEntity.setState(1);
+                        LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                        if (!entity.level().isClientSide() && entity.getServer() != null && livingEntityPatch != null) {
+                            livingEntityPatch.playAnimationSynchronized(AVAnimations.GUARD_BREAK_ATTACK, 0.0F);
+                        }
+                    }
+                };
+            }
+
+            if (entity instanceof ChrisEntity chrisEntity && entity.level() instanceof ServerLevel) {
+                new DelayedTask(1) {
+                    @Override
+                    public void run() {
+                        chrisEntity.setHealth(chrisEntity.getMaxHealth());
+                        ItemStack diamondSword = new ItemStack(Items.DIAMOND_SWORD);
+                        diamondSword.enchant(Enchantments.KNOCKBACK, 5);
+                        diamondSword.enchant(Enchantments.SHARPNESS, 5);
+                        diamondSword.enchant(Enchantments.UNBREAKING, 5);
+                        chrisEntity.setItemInHand(InteractionHand.OFF_HAND, diamondSword);
+                        chrisEntity.setOffWeaponItem(diamondSword);
+                        chrisEntity.setState(1);
                         LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                         if (!entity.level().isClientSide() && entity.getServer() != null && livingEntityPatch != null) {
                             livingEntityPatch.playAnimationSynchronized(AVAnimations.GUARD_BREAK_ATTACK, 0.0F);
