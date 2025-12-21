@@ -1,26 +1,34 @@
 package com.pla.annoyingvillagers.item;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.StealthAttackEntity;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
-import net.minecraft.core.BlockPos;
+import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
+import yesman.epicfight.api.animation.AnimationPlayer;
+import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.api.utils.math.Vec3f;
+import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
@@ -51,56 +59,75 @@ public class EnderAegisItem extends SwordItem {
                 return 2;
             }
 
-            public Ingredient getRepairIngredient() {
+            public @NotNull Ingredient getRepairIngredient() {
                 return Ingredient.of();
             }
         }, 3, -2.3F, (new Properties()).fireResistant());
     }
 
-    public void shieldShoot(Level level, Entity entity) {
-        if (!level.isClientSide()) {
-            for(float i = 1.0F; i <= 5.0F; i = i + 1.0F) {
-                StealthAttackEntity stealthAttackEntity = new StealthAttackEntity((EntityType) AnnoyingVillagersModEntities.STEALTH_ATTACK_PROJECTILE.get(), level);
-                stealthAttackEntity.setOwner(entity);
-                stealthAttackEntity.setBaseDamage((double) 4.0F);
-                stealthAttackEntity.setKnockback(5);
-                stealthAttackEntity.setSilent(true);
-                stealthAttackEntity.setPierceLevel((byte) 5);
-                stealthAttackEntity.setPos(entity.getX(), entity.getEyeY() - 0.1D, entity.getZ());
-                stealthAttackEntity.fromAegis = true;
-                stealthAttackEntity.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, i, 0.0F);
-                level.addFreshEntity(stealthAttackEntity);
+    public static void shieldShoot(Level level, Entity entity) {
+        if (level instanceof ServerLevel serverLevel) {
+            Vec3 forward = entity.getLookAngle().normalize();
+            Vec3 up = entity.getUpVector(1.0F).normalize();
+            Vec3 right = forward.cross(up).normalize();
+
+            Vec3 eye = entity.getEyePosition(1.0F);
+
+            double spawnForward = 0.0D;
+            double spread = 0.05D;
+            float velocity = 2.0F;
+            float inaccuracy = 0.0F;
+
+            Vec3[] offsets = new Vec3[] {
+                    Vec3.ZERO,
+                    up,
+                    up.scale(-1.0D),
+                    right.scale(-1.0D),
+                    right
+            };
+
+            for (Vec3 off : offsets) {
+                Vec3 spawnPos = eye.add(forward.scale(spawnForward)).add(off.scale(0.15D));
+                Vec3 dir = forward.add(off.scale(spread)).normalize();
+
+                StealthAttackEntity proj = new StealthAttackEntity(
+                        AnnoyingVillagersModEntities.STEALTH_ATTACK_PROJECTILE.get(), level
+                );
+                proj.setOwner(entity);
+                proj.setBaseDamage(10.0F);
+                proj.setKnockback(5);
+                proj.setSilent(true);
+                proj.setPierceLevel((byte) 5);
+                proj.fromAegis = true;
+
+                proj.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
+                proj.shoot(dir.x, dir.y, dir.z, velocity, inaccuracy);
+
+                serverLevel.addFreshEntity(proj);
             }
 
-            try {
-                entity.getServer().getCommands().getDispatcher().execute("execute as @s at @s anchored eyes run particle annoyingvillagers:spark ^ ^1 ^2 0 0 0 0.1 200",
-                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
+            Vec3 tipPos = eye.add(forward.scale(2.0D));
+            serverLevel.sendParticles(
+                    AnnoyingVillagersModParticleTypes.SPARK.get(),
+                    tipPos.x, tipPos.y, tipPos.z,
+                    300, 0.0D, 0.0D, 0.0D, 0.2D
+            );
+
+            level.playSound(null, entity.blockPosition(), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "cooldown"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+            level.playSound(null, entity.blockPosition(), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_shot"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+            level.playSound(null, entity.blockPosition(), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "bloom"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+
+            LivingEntityPatch<?> livingentitypatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+            if (livingentitypatch != null) {
+                livingentitypatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
             }
-        }
-        if (!level.isClientSide()) {
-            level.playSound((Player) null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "cooldown"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
-        } else {
-            level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "cooldown"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
-        }
-
-        if (!level.isClientSide()) {
-            level.playSound((Player) null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_shot"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
-        } else {
-            level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_shot"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
-        }
-
-        if (!level.isClientSide()) {
-            level.playSound((Player) null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "bloom"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
-        } else {
-            level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "bloom"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
         }
     }
 
-    public void inventoryTick(ItemStack itemstack, Level level, Entity entity, int i, boolean flag) {
+    public void inventoryTick(@NotNull ItemStack itemstack, @NotNull Level level, @NotNull Entity entity, int i, boolean flag) {
         super.inventoryTick(itemstack, level, entity, i, flag);
         if (flag) {
-            if (itemstack.getTag().getBoolean("SecondForm")) {
+            if (itemstack.getTag() != null && itemstack.getTag().getBoolean("SecondForm")) {
                 HerobrineWeaponEffectProcedure.execute(level, entity.getX(), entity.getY(), entity.getZ(), entity);
             }
         }
@@ -120,15 +147,8 @@ public class EnderAegisItem extends SwordItem {
         }
     }
 
-    public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
+    public void appendHoverText(@NotNull ItemStack itemstack, Level level, @NotNull List<Component> list, @NotNull TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
         list.add(Component.literal(Component.translatable("tooltip.annoyingvillagers.ender_aegis").getString() + ")§r"));
-    }
-
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
-        if (pPlayer.getMainHandItem().getTag().getBoolean("SecondForm")) {
-        }
-        return super.use(pLevel, pPlayer, pUsedHand);
     }
 }

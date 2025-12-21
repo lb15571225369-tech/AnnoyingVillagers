@@ -40,7 +40,9 @@ public class AVWeaponCapabilityPresets {
                     .swingSound(AVSounds.SWORD_WHOOSH.get())
                     .hitSound(EpicFightSounds.BLADE_HIT.get())
                     .newStyleCombo(Styles.ONE_HAND,
-                            AnimsNapoleon.NAPOLEON_AUTO_1,
+                            AnimsHerrscher.HERRSCHER_AUTO_1,
+                            AnimsHerrscher.HERRSCHER_AUTO_2,
+                            AnimsHerrscher.HERRSCHER_AUTO_3,
                             AVAnimations.ENDER_AEGIS_MOONLESS_AUTO_1,
                             AVAnimations.ENDER_AEGIS_MOONLESS_AUTO_2,
                             AnimsSolar.SOLAR_QUEMADURA,

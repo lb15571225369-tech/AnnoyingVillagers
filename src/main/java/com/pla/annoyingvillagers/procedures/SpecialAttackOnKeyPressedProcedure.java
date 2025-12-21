@@ -34,6 +34,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import reascer.wom.gameasset.WOMAnimations;
+import reascer.wom.gameasset.animations.weapons.AnimsAgony;
 import reascer.wom.gameasset.animations.weapons.AnimsHerrscher;
 import reascer.wom.gameasset.animations.weapons.AnimsNapoleon;
 import reascer.wom.gameasset.animations.weapons.AnimsRuine;
@@ -95,7 +96,7 @@ public class SpecialAttackOnKeyPressedProcedure {
                     });
         }
 
-        if (livingEntityPatch != null && entity instanceof Player player) {
+        if (entity instanceof Player player) {
             // Check by item
             ItemStack holdingItem = player.getMainHandItem();
             ItemStack offHandItem = player.getOffhandItem();
@@ -103,8 +104,6 @@ public class SpecialAttackOnKeyPressedProcedure {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
                     if (holdingItem.getTag() != null && holdingItem.getTag().getBoolean("SecondForm")) {
                         livingEntityPatch.playAnimationSynchronized(WOMAnimations.RAVANGER_CHARGE, 0.0F);
-                    } else {
-                        livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_DASH, 0.0F);
                     }
                     player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
                     return;

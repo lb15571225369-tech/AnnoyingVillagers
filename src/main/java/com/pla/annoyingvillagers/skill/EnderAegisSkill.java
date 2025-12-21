@@ -1,25 +1,32 @@
 package com.pla.annoyingvillagers.skill;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.entity.StealthAttackEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
-import net.minecraft.core.BlockPos;
+import com.pla.annoyingvillagers.item.EnderAegisItem;
+import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
 import reascer.wom.gameasset.animations.weapons.AnimsNapoleon;
+import yesman.epicfight.api.animation.AnimationPlayer;
+import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.animation.types.EntityState;
+import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.api.utils.AttackResult;
+import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.gameasset.EpicFightSounds;
+import yesman.epicfight.particle.EpicFightParticles;
+import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.skill.SkillBuilder;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
+import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.entity.eventlistener.PlayerEventListener.EventType;
 
@@ -83,74 +90,61 @@ public class EnderAegisSkill extends WeaponInnateSkill {
         container.getExecutor().getEventListener().addEventListener(
                 EventType.BASIC_ATTACK_EVENT, EVENT_UUID, event -> {
                     SkillContainer skillContainer = event.getPlayerPatch().getSkill(this);
+                    ItemStack itemStack = event.getPlayerPatch().getOriginal().getMainHandItem();
                     if (skillContainer == null) return;
-                    if (skillContainer.isActivated()) {
+                    if (skillContainer.isActivated()
+                            && itemStack.getTag() != null) {
                         event.setCanceled(true);
-                        skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.ENDER_AEGIS_BULL_CHARGE, 0.0F);
+                        skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.SHIELD_MAINHAND, 0.0F);
+                        new DelayedTask(10) {
+                            @Override
+                            public void run() {
+                                EnderAegisItem.shieldShoot(event.getPlayerPatch().getOriginal().level(), event.getPlayerPatch().getOriginal());
+                            }
+                        };
                     }
                 }
         );
 
-        container.getExecutor().getEventListener().addEventListener(
-                EventType.DEAL_DAMAGE_EVENT_DAMAGE, EVENT_UUID, event -> {
-                    if (event.getPlayerPatch().isLogicalClient()) return;
+        container.getExecutor().getEventListener().addEventListener(EventType.TAKE_DAMAGE_EVENT_ATTACK, EVENT_UUID, (pre) -> {
+            PlayerPatch<?> playerPatch = pre.getPlayerPatch();
+            ServerPlayer serverPlayer = pre.getPlayerPatch().getOriginal();
+            DamageSource damageSource = pre.getDamageSource();
+            SkillContainer skillContainer = pre.getPlayerPatch().getSkill(this);
+            if (skillContainer == null) return;
+            EnderAegisSkill enderAegisSkill = (EnderAegisSkill) skillContainer.getSkill();
+            AnimationPlayer animationPlayer = Objects.requireNonNull(playerPatch.getAnimator().getPlayerFor(null));
+            AssetAccessor<? extends DynamicAnimation> dynamicAnimation = animationPlayer.getAnimation();
+            float elapsedTimeFloat = animationPlayer.getElapsedTime();
+            EntityState entityState = dynamicAnimation.get().getState(playerPatch, elapsedTimeFloat);
 
-                    SkillContainer skillContainer = event.getPlayerPatch().getSkill(this);
-                    if (skillContainer == null) return;
-
-                    ServerPlayer player = event.getPlayerPatch().getOriginal();
-
-                    if (skillContainer.isActivated()) {
-                        LivingEntity target = event.getTarget();
-                        if (target == null || !target.isAlive()) {
-                            return;
+            if (!damageSource.is(DamageTypes.MAGIC) && !damageSource.is(DamageTypes.EXPLOSION)
+                    && !damageSource.is(DamageTypes.ON_FIRE) && !damageSource.is(DamageTypes.IN_FIRE) && !damageSource.is(DamageTypes.FALL)
+                    && skillContainer.isActivated() && dynamicAnimation == AVAnimations.SHIELD_MAINHAND && entityState.getLevel() < 3) {
+                Entity entity = damageSource.getEntity();
+                if (entity != null) {
+                    Vec3 entityPosition = entity.position();
+                    Vec3 entityViewVector = pre.getPlayerPatch().getOriginal().getViewVector(1.0F);
+                    Vec3 entitySubtract = entityPosition.subtract(pre.getPlayerPatch().getOriginal().getEyePosition()).normalize();
+                    if (entitySubtract.dot(entityViewVector) > (double)0.0F) {
+                        pre.setCanceled(true);
+                        pre.setResult(AttackResult.ResultType.BLOCKED);
+                        playerPatch.playSound(EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
+                        entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * -0.2, 0.0F, entity.getLookAngle().z * -0.2));
+                        serverPlayer.setDeltaMovement(new Vec3(serverPlayer.getLookAngle().x * -0.2, 0.0F, serverPlayer.getLookAngle().z * -0.2));
+                        if (serverPlayer.level() instanceof ServerLevel serverLevel) {
+                            EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, serverPlayer, damageSource.getEntity());
                         }
-                        shieldShootAtTarget(player, target.getEyePosition());
+                        enderAegisSkill.setDurationSynchronize(skillContainer, skillContainer.getRemainDuration() + 40);
                     }
                 }
-        );
+            }
+
+        });
     }
 
     @Override
     public void onRemoved(SkillContainer container) {
         container.getExecutor().getEventListener().removeListener(EventType.BASIC_ATTACK_EVENT, EVENT_UUID);
-        container.getExecutor().getEventListener().removeListener(EventType.DEAL_DAMAGE_EVENT_DAMAGE, EVENT_UUID);
-    }
-
-    private void shieldShootAtTarget(ServerPlayer player, Vec3 targetPos) {
-        Level level = player.level();
-        Vec3 eye = player.getEyePosition();
-        Vec3 dir = targetPos.subtract(eye);
-        double len2 = dir.lengthSqr();
-        if (len2 < 1.0e-6) return;
-        dir = dir.normalize();
-
-        if (!level.isClientSide()) {
-            for (float speed = 1.0F; speed <= 5.0F; speed += 1.0F) {
-                StealthAttackEntity stealth = new StealthAttackEntity(AnnoyingVillagersModEntities.STEALTH_ATTACK_PROJECTILE.get(), level);
-                stealth.setOwner(player);
-                stealth.setBaseDamage(4.0D);
-                stealth.setKnockback(5);
-                stealth.setSilent(true);
-                stealth.setPierceLevel((byte) 5);
-                stealth.fromAegis = true;
-                stealth.setPos(eye.x, eye.y - 0.1D, eye.z);
-                stealth.shoot(dir.x, dir.y, dir.z, speed, 0.0F);
-                level.addFreshEntity(stealth);
-            }
-
-            try {
-                player.getServer().getCommands().getDispatcher().execute(
-                        "execute as @s at @s anchored eyes run particle annoyingvillagers:spark ^ ^1 ^2 0 0 0 0.1 200",
-                        player.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-                );
-            } catch (CommandSyntaxException ignored) {
-            }
-
-            BlockPos pos = player.blockPosition();
-            level.playSound(null, pos, Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "cooldown"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
-            level.playSound(null, pos, Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_shot"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
-            level.playSound(null, pos, Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "bloom"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
-        }
     }
 }

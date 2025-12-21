@@ -14,6 +14,8 @@ import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.entity.eventlistener.TakeDamageEvent;
 
+import java.util.Objects;
+
 @Mixin(value = {GuardSkill.class}, remap = false)
 public abstract class GuardSkillMixin {
     @Inject(method = {"dealEvent"}, at = {@At("HEAD")}, cancellable = true)
@@ -23,8 +25,8 @@ public abstract class GuardSkillMixin {
 
         ItemStack main = serverPlayer.getMainHandItem();
         if (!(main.getItem() instanceof EnderAegisItem)) return;
-        if (main.hasTag() && main.getTag().getBoolean("SecondForm")) {
-            ((EnderAegisItem) main.getItem()).shieldShoot(serverPlayer.level(), serverPlayer);
+        if (main.hasTag() && Objects.requireNonNull(main.getTag()).getBoolean("SecondForm")) {
+            EnderAegisItem.shieldShoot(serverPlayer.level(), serverPlayer);
         } else {
             EnderAegisSkill.onParry((ServerPlayerPatch) playerpatch);
         }

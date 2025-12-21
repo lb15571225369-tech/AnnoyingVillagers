@@ -5,18 +5,14 @@ import java.util.Random;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import net.minecraft.core.BlockPos;
+import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.item.ItemStack;
@@ -29,7 +25,6 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
-import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.damagesource.StunType;
@@ -38,7 +33,7 @@ import yesman.epicfight.world.damagesource.StunType;
 public class StealthAttackEntity extends AbstractArrow implements ItemSupplier {
     public boolean fromAegis = false;
     public StealthAttackEntity(SpawnEntity spawnentity, Level level) {
-        super((EntityType) AnnoyingVillagersModEntities.STEALTH_ATTACK_PROJECTILE.get(), level);
+        super(AnnoyingVillagersModEntities.STEALTH_ATTACK_PROJECTILE.get(), level);
     }
 
     public StealthAttackEntity(EntityType<? extends StealthAttackEntity> entitytype, Level level) {
@@ -53,20 +48,20 @@ public class StealthAttackEntity extends AbstractArrow implements ItemSupplier {
         super(entitytype, livingentity, level);
     }
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @OnlyIn(Dist.CLIENT)
-    public ItemStack getItem() {
+    public @NotNull ItemStack getItem() {
         return new ItemStack(Blocks.AIR);
     }
 
-    public ItemStack getPickupItem() {
+    public @NotNull ItemStack getPickupItem() {
         return ItemStack.EMPTY;
     }
 
-    protected void doPostHurtEffects(LivingEntity livingentity) {
+    protected void doPostHurtEffects(@NotNull LivingEntity livingentity) {
         super.doPostHurtEffects(livingentity);
         livingentity.setArrowCount(livingentity.getArrowCount() - 1);
     }
@@ -76,7 +71,9 @@ public class StealthAttackEntity extends AbstractArrow implements ItemSupplier {
         if (this.inGround) {
             this.discard();
         }
-
+        if (this.fromAegis && !this.level().isClientSide()) {
+            HerobrineWeaponEffectProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+        }
     }
 
     public static StealthAttackEntity shoot(Level level, LivingEntity livingentity, Random random, float f, double d0, int i) {
@@ -88,7 +85,7 @@ public class StealthAttackEntity extends AbstractArrow implements ItemSupplier {
         stealthAttackEntity.setBaseDamage(d0);
         stealthAttackEntity.setKnockback(i);
         level.addFreshEntity(stealthAttackEntity);
-        level.playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.arrow.shoot"))), SoundSource.PLAYERS, 1.0F, 1.0F / (random.nextFloat() * 0.5F + 1.0F) + f / 2.0F);
+        level.playSound(null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.arrow.shoot"))), SoundSource.PLAYERS, 1.0F, 1.0F / (random.nextFloat() * 0.5F + 1.0F) + f / 2.0F);
         return stealthAttackEntity;
     }
 
@@ -104,7 +101,7 @@ public class StealthAttackEntity extends AbstractArrow implements ItemSupplier {
         stealthAttackEntity.setKnockback(7);
         stealthAttackEntity.setCritArrow(false);
         livingentity.level().addFreshEntity(stealthAttackEntity);
-        livingentity.level().playSound((Player) null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.arrow.shoot"))), SoundSource.PLAYERS, 1.0F, 1.0F / ((new Random()).nextFloat() * 0.5F + 1.0F));
+        livingentity.level().playSound(null, livingentity.getX(), livingentity.getY(), livingentity.getZ(), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.arrow.shoot"))), SoundSource.PLAYERS, 1.0F, 1.0F / ((new Random()).nextFloat() * 0.5F + 1.0F));
         return stealthAttackEntity;
     }
 
@@ -125,11 +122,11 @@ public class StealthAttackEntity extends AbstractArrow implements ItemSupplier {
             try {
                 vicTim.getServer().getCommands().getDispatcher().execute("execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1", vicTim.createCommandSourceStack().withSuppressedOutput().withPermission(4));
                 vicTim.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 5", vicTim.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(vicTim, LivingEntityPatch.class);
+                LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(vicTim, LivingEntityPatch.class);
                 if (livingEntityPatch != null) {
                     livingEntityPatch.applyStun(StunType.LONG, 40.0F);
                 }
-            } catch (CommandSyntaxException e) {
+            } catch (CommandSyntaxException ignored) {
             }
         }
         super.onHitEntity(pResult);
