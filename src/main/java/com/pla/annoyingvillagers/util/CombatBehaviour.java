@@ -1,13 +1,11 @@
 package com.pla.annoyingvillagers.util;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
 import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
 import com.pla.annoyingvillagers.entity.SteveEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
-import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -119,6 +117,24 @@ public class CombatBehaviour {
         }
     }
 
+    private static void recoverItemDueToFailure(Entity entity) {
+        if (entity instanceof PlayerNpcEntity playerNpcEntity) {
+            playerNpcEntity.setItemInHand(InteractionHand.MAIN_HAND, playerNpcEntity.getMainWeaponItem());
+            playerNpcEntity.setHealing(false);
+            playerNpcEntity.resetGapCooldown();
+        }
+        LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+        if (entity instanceof PathfinderMobInventory pathfinderMobInventory && livingEntityPatch != null) {
+            if (pathfinderMobInventory instanceof SteveEntity && CombatCommon.canSwitchWeapon((MobPatch<?>) livingEntityPatch)) {
+                CombatCommon.switchWeapon((MobPatch<?>) livingEntityPatch);
+            } else {
+                pathfinderMobInventory.setItemInHand(InteractionHand.MAIN_HAND, pathfinderMobInventory.getMainWeaponItem());
+            }
+            pathfinderMobInventory.setHealing(false);
+            pathfinderMobInventory.resetGapCooldown();
+        }
+    }
+
     private static void performEatingGoldenAppleActionMainHand(Entity entity,
                                                                LevelAccessor levelaccessor,
                                                                LivingEntityPatch<?> livingEntityPatch) {
@@ -126,6 +142,7 @@ public class CombatBehaviour {
         if (currentAnim.get() instanceof AttackAnimation ||
                 currentAnim.get() instanceof LongHitAnimation ||
                 currentAnim.get() instanceof HitAnimation) {
+            recoverItemDueToFailure(entity);
             return;
         }
 
@@ -171,6 +188,7 @@ public class CombatBehaviour {
         if (currentAnim.get() instanceof AttackAnimation ||
                 currentAnim.get() instanceof LongHitAnimation ||
                 currentAnim.get() instanceof HitAnimation) {
+            recoverItemDueToFailure(entity);
             return;
         }
 

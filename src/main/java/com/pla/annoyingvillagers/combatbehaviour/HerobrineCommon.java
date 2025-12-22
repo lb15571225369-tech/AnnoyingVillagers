@@ -7,6 +7,8 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.item.EnderAegisItem;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
@@ -49,7 +51,7 @@ public class HerobrineCommon {
     public static void changeToSecondForm(MobPatch<?> mobpatch) {
         if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
             herobrineMob.setState(1);
-            herobrineMob.setSecondFormHitLeft(new Random().nextInt(3, 10));
+            herobrineMob.setSecondFormHitLeft(new Random().nextInt(2, 5));
             if (herobrineMob instanceof AegisHerobrineEntity || herobrineMob instanceof SwordsmanHerobrineEntity
                     || herobrineMob instanceof SledgehammerHerobrineEntity || herobrineMob instanceof ReaperHerobrineEntity
                     || herobrineMob instanceof GlaiveHerobrineEntity) {
@@ -74,11 +76,15 @@ public class HerobrineCommon {
 
     public static void jump(MobPatch<?> mobpatch) {
         Entity entity = mobpatch.getOriginal();
-        if (entity instanceof PlayerNpcEntity playerNpcEntity) {
-            playerNpcEntity.jump();
+        if (entity instanceof HerobrineMob herobrineMob) {
+            herobrineMob.jump();
         }
-        if (entity instanceof PathfinderMobInventory pathfinderMobInventory) {
-            pathfinderMobInventory.jump();
+    }
+
+    public static void giveSlowFalling(MobPatch<?> mobpatch) {
+        Entity entity = mobpatch.getOriginal();
+        if (entity instanceof HerobrineMob herobrineMob) {
+            herobrineMob.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 60, 1));
         }
     }
 }

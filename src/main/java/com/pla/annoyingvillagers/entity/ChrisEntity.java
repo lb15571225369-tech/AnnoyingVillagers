@@ -58,6 +58,7 @@ public class ChrisEntity extends PathfinderMobInventory {
         this.setCustomName(this.getDisplayName());
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
+        this.setBlockProjectileChance(0.6);
     }
 
     public int getState() {

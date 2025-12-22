@@ -46,6 +46,7 @@ public class PurpleVillagerGeneralEntity extends PathfinderMobInventory {
         this.setMaxUpStep(3.0F);
         this.xpReward = 8;
         this.setNoAi(false);
+        this.setBlockProjectileChance(0.7);
     }
 
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {

@@ -52,18 +52,19 @@ public class HerobrineEnderAegis {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(2.0D)
-                            .weight(80.0D)
+                            .weight(200)
                             .maxCooldown (120)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(7.0D, 48.0D)
                                             .animationBehavior(WOMAnimations.MOB_ENDERSTEP_OBSCURIS, 0.0F)
+                                            .addExBehavior(HerobrineCommon::giveSlowFalling)
                             )
             )
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
-                            .weight(50.0D)
+                            .weight(200)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 6.0D)
@@ -75,10 +76,10 @@ public class HerobrineEnderAegis {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
-                            .weight(50.0D)
+                            .weight(200)
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .withinDistance(0.0D, 4.0D)
+                                            .withinDistance(0.0D, 3.0D)
                                             .custom(HerobrineCommon::canPlaySecondFormAnimation)
                                             .animationBehavior(AVAnimations.MOB_RAVANGER_CHARGE, 0.0F)
                             )
@@ -89,27 +90,27 @@ public class HerobrineEnderAegis {
                             .weight(40.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .withinDistance(0.0D, 4.0D)
+                                            .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AnimsHerrscher.HERRSCHER_AUTO_1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
-                                                            .withinDistance(0.0D, 4.0D)
+                                                            .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(AnimsHerrscher.HERRSCHER_AUTO_2, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
-                                                                            .withinDistance(0.0D, 4.0D)
+                                                                            .withinDistance(0.0D, 3.0D)
                                                                             .animationBehavior(AnimsHerrscher.HERRSCHER_AUTO_3, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
-                                                                                            .withinDistance(0.0D, 4.0D)
+                                                                                            .withinDistance(0.0D, 3.0D)
                                                                                             .animationBehavior(AVAnimations.ENDER_AEGIS_MOONLESS_AUTO_1, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
-                                                                                                            .withinDistance(0.0D, 4.0D)
+                                                                                                            .withinDistance(0.0D, 3.0D)
                                                                                                             .animationBehavior(AVAnimations.ENDER_AEGIS_MOONLESS_AUTO_2, 0.0F)
                                                                                                             .addNextBehavior(
                                                                                                                     Behavior.builder()
-                                                                                                                            .withinDistance(0.0D, 4.0D)
+                                                                                                                            .withinDistance(0.0D, 3.0D)
                                                                                                                             .animationBehavior(AnimsSolar.SOLAR_QUEMADURA, 0.0F)
                                                                                                             )
                                                                                             )
@@ -121,7 +122,7 @@ public class HerobrineEnderAegis {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
-                            .weight(20.0D)
+                            .weight(200)
                             .maxCooldown (40)
                             .addFirstBehavior(
                                     Behavior.builder()
@@ -143,7 +144,7 @@ public class HerobrineEnderAegis {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(20.0D)
-                            .maxCooldown (40)
+                            .maxCooldown (100)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 5.0D)
@@ -159,7 +160,7 @@ public class HerobrineEnderAegis {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(20.0D)
-                            .maxCooldown (200)
+                            .maxCooldown (100)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(HerobrineCommon::canChangeToSecondForm)

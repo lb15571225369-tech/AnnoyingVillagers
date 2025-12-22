@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import com.pla.annoyingvillagers.capabilities.AVCategories;
 import com.pla.annoyingvillagers.combatbehaviour.HerobrineEnderAegis;
-import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -16,9 +15,7 @@ import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
 import yesman.epicfight.api.animation.AnimationManager.AnimationAccessor;
 import yesman.epicfight.api.animation.Animator;
 import yesman.epicfight.api.animation.LivingMotions;
-import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
-import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.AttackResult;
 import yesman.epicfight.api.utils.AttackResult.ResultType;
 import yesman.epicfight.gameasset.Animations;
@@ -30,7 +27,6 @@ import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
 import yesman.epicfight.world.damagesource.EpicFightDamageSource;
 import yesman.epicfight.world.damagesource.StunType;
 
-import java.util.Objects;
 import java.util.Set;
 
 public class AegisHerobrinePatch extends CEHumanoidPatch implements CustomExecuteEntity {
@@ -81,15 +77,6 @@ public class AegisHerobrinePatch extends CEHumanoidPatch implements CustomExecut
         }
 
         return attackresult;
-    }
-
-    @Override
-    public AttackResult tryHurt(DamageSource damageSource, float amount) {
-        AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(this.getAnimator().getPlayerFor(null)).getAnimation();
-        if (dynamicAnimation == AVAnimations.MOB_NAPOLEON_RELOAD_1) {
-            return AttackResult.blocked(amount);
-        }
-        return super.tryHurt(damageSource, amount);
     }
 
     public void tick(LivingTickEvent livingTickEvent) {

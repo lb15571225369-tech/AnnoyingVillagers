@@ -49,6 +49,7 @@ public class VillagerScoutEntity extends PathfinderMobInventory{
         this.xpReward = 8;
         this.setNoAi(false);
         this.setPersistenceRequired();
+        this.setBlockProjectileChance(0.4);
     }
 
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {

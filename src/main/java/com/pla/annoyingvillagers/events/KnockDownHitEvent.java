@@ -34,7 +34,7 @@ public class KnockDownHitEvent {
             if (entity.isAlive()) {
                 LivingEntityPatch<?> livingEntityPatch;
                 AssetAccessor<? extends DynamicAnimation> dynamicanimation;
-                livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 
                 if (livingEntityPatch != null) {
                     dynamicanimation = livingEntityPatch.getAnimator().getPlayerFor(null).getAnimation();

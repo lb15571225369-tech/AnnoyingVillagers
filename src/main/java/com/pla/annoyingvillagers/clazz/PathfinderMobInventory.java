@@ -38,9 +38,18 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
     private boolean useBow = true;
     private final LivingEntityPatch<?> livingEntityPatch =  EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
     private Entity blockDamage = null;
+    private double blockProjectileChance;
 
     public Entity getBlockDamage() {
         return blockDamage;
+    }
+
+    public double getBlockProjectileChance() {
+        return blockProjectileChance;
+    }
+
+    public void setBlockProjectileChance(double blockProjectileChance) {
+        this.blockProjectileChance = blockProjectileChance;
     }
 
     public void setBlockDamage(Entity blockDamage) {
@@ -78,6 +87,8 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
     public void setGapCooldown() {
         this.gapCooldown = random.nextInt(100, 300);
     }
+
+    public void resetGapCooldown() {this.gapCooldown = 0; }
 
     public void setEnderPearlCooldown() {
         this.enderPearlCooldown = random.nextInt(100, 300);
@@ -128,6 +139,7 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
         tag.putInt("SwapToBowCooldown", this.swapToBowCooldown);
         tag.putBoolean("InitialSpawn", this.initialSpawn);
         tag.putBoolean("UseBow", this.useBow);
+        tag.putDouble("BlockProjectileChance", this.blockProjectileChance);
         if (!this.mainWeaponItem.isEmpty()) {
             CompoundTag itemTag = new CompoundTag();
             this.mainWeaponItem.save(itemTag);
@@ -164,6 +176,7 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
         this.swapToBowCooldown = tag.getInt("SwapToBowCooldown");
         this.initialSpawn = tag.getBoolean("InitialSpawn");
         this.useBow = tag.getBoolean("UseBow");
+        this.blockProjectileChance = tag.getDouble("BlockProjectileChance");
         if (tag.contains("MainHandItem", Tag.TAG_COMPOUND)) {
             this.mainWeaponItem = ItemStack.of(tag.getCompound("MainHandItem"));
         } else {

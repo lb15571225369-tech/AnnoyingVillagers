@@ -1,24 +1,15 @@
 package com.pla.annoyingvillagers.combatbehaviour;
 
-import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
 import com.pla.annoyingvillagers.entity.AngrySteveEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.item.LegendarySwordItem;
 import com.pla.annoyingvillagers.util.DelayedTask;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors.Behavior;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors.BehaviorRoot;
@@ -106,50 +97,7 @@ public class AngrySteveLegendarySword {
         }
     }
 
-    static void blockProjectile(MobPatch<?> mobpatch) {
-        Entity entity = mobpatch.getOriginal();
-        if (entity instanceof PathfinderMobInventory pathfinderMobInventory && entity.level() instanceof ServerLevel serverLevel) {
-            Entity projectile = pathfinderMobInventory.getBlockDamage();
-
-            int defenderGroundY = entity.blockPosition().below().getY();
-            BlockPos projXZ = BlockPos.containing(projectile.getX(), 0.0, projectile.getZ());
-            int projSurfaceY = serverLevel.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, projXZ).getY();
-
-            if (Math.abs(projSurfaceY - defenderGroundY) <= 1) {
-                pathfinderMobInventory.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.COBBLESTONE));
-                int topY = Mth.floor(projectile.getY());
-                int maxHeight = 3;
-                for (int y = projSurfaceY + 1; y <= topY && (y - projSurfaceY) <= maxHeight; y++) {
-                    BlockPos p = new BlockPos(projXZ.getX(), y, projXZ.getZ());
-                    if (serverLevel.getBlockState(p).canBeReplaced()) {
-                        mobpatch.playAnimationSynchronized(AVAnimations.PLACE_BLOCK, 0.0F);
-                        entity.playSound(SoundEvents.STONE_PLACE, 1.0F, 1.0F);
-                        serverLevel.setBlockAndUpdate(p, Blocks.COBBLESTONE.defaultBlockState());
-                    } else {
-                        break;
-                    }
-                }
-                pathfinderMobInventory.setItemInHand(InteractionHand.MAIN_HAND, pathfinderMobInventory.getMainWeaponItem());
-            } else {
-                mobpatch.playAnimationSynchronized(WOMAnimations.TORMENT_AUTO_1, 0.0F);
-            }
-            pathfinderMobInventory.setBlockDamage(null);
-        }
-    }
-
     public static final Builder<MobPatch<?>> LEGENDARY_SWORD = CECombatBehaviors.builder()
-            .newBehaviorRoot(
-                    BehaviorRoot.builder()
-                            .priority(3.0D)
-                            .weight(1000.0D)
-                            .maxCooldown(0)
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .custom(CombatCommon::canBlockProjectile)
-                                            .animationBehavior(AVAnimations.IDLE_BREAK, 0.0F)
-                                            .addExBehavior(AngrySteveLegendarySword::blockProjectile)
-                            )
-            )
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(3.0D)
@@ -426,7 +374,7 @@ public class AngrySteveLegendarySword {
                             .maxCooldown(40)
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .withinDistance(0.0D, 2.0D)
+                                            .withinDistance(0.0D, 3.0D)
                                             .custom(CombatCommon::canThrowEnderPearl)
                                             .custom(CombatCommon::canAttackWhileNotHealing)
                                             .animationBehavior(AVAnimations.THROWING_ENDER_PEARL_OFFHAND, 0.0F)
@@ -437,43 +385,43 @@ public class AngrySteveLegendarySword {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(2.0D)
-                            .maxCooldown(200)
+                            .maxCooldown (100)
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .withinDistance(0.0D, 2.0D)
+                                            .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_1, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .withinDistance(0.0D, 2.0D)
+                                            .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_2, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .withinDistance(0.0D, 2.0D)
+                                            .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_3, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .withinDistance(0.0D, 2.0D)
+                                            .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_4, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .canInterruptParent(true)
-                                            .withinDistance(0.0D, 2.0D)
+                                            .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_C, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .canInterruptParent(true)
-                                            .withinDistance(0.0D, 2.0D)
+                                            .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_RUSH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .canInterruptParent(true)
-                                            .withinDistance(0.0D, 2.0D)
+                                            .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_H, 0.0F)
                             )
             )
@@ -483,7 +431,7 @@ public class AngrySteveLegendarySword {
                             .weight(30.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .withinDistance(0.5D, 2.0D)
+                                            .withinDistance(0.0D, 3.0D)
                                             .custom(CombatCommon::canPerformGuarding)
                                             .guard(40)
                             )
@@ -494,22 +442,22 @@ public class AngrySteveLegendarySword {
                             .weight(10.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .withinDistance(0.0D, 2.0D)
+                                            .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .withinDistance(0.0D, 2.0D)
+                                            .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.BIPED_STEP_FORWARD, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .withinDistance(0.0D, 2.0D)
+                                            .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.BIPED_STEP_LEFT, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .withinDistance(0.0D, 2.0D)
+                                            .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.BIPED_STEP_RIGHT, 0.0F)
                             )
             )

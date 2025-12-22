@@ -57,6 +57,7 @@ public class VillagerScoutCaptainEntity extends PathfinderMobInventory {
         this.setCustomName(this.getDisplayName());
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
+        this.setBlockProjectileChance(0.5);
     }
 
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {

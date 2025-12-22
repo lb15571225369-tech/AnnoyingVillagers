@@ -62,6 +62,20 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     private ItemStack offWeaponItem = ItemStack.EMPTY;
     private boolean healing = false;
     private boolean useBow = true;
+    private Entity blockDamage = null;
+    private double blockProjectileChance;
+
+    public double getBlockProjectileChance() {
+        return blockProjectileChance;
+    }
+
+    public Entity getBlockDamage() {
+        return blockDamage;
+    }
+
+    public void setBlockDamage(Entity blockDamage) {
+        this.blockDamage = blockDamage;
+    }
 
     public boolean isHealing() {
         return healing;
@@ -86,6 +100,8 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     public void setGapCooldown() {
         this.gapCooldown = random.nextInt(100, 300);
     }
+
+    public void resetGapCooldown() {this.gapCooldown = 0; }
 
     public void setEnderPearlCooldown() {
         this.enderPearlCooldown = random.nextInt(100, 300);
@@ -124,6 +140,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         this.setNoAi(false);
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
+        this.blockProjectileChance = new Random().nextDouble(0.10, 0.15);
     }
 
     @Override
@@ -134,6 +151,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         tag.putInt("EnderPearlCooldown", this.enderPearlCooldown);
         tag.putInt("SwapToBowCooldown", this.swapToBowCooldown);
         tag.putBoolean("UseBow", this.useBow);
+        tag.putDouble("BlockProjectileChance", this.blockProjectileChance);
         if (this.target != null) {
             tag.putString("PlayerNpcTarget", this.target.name());
         }
@@ -159,6 +177,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         this.enderPearlCooldown = tag.getInt("EnderPearlCooldown");
         this.swapToBowCooldown = tag.getInt("SwapToBowCooldown");
         this.useBow = tag.getBoolean("UseBow");
+        this.blockProjectileChance = tag.getDouble("BlockProjectileChance");
         if (tag.contains("PlayerNpcTarget", Tag.TAG_STRING)) {
             String name = tag.getString("PlayerNpcTarget");
             try {

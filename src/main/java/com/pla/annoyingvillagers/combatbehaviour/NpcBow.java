@@ -73,7 +73,7 @@ public class NpcBow {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(20.0D)
-                            .maxCooldown (200)
+                            .maxCooldown (100)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(7.0D, 14.0D)
@@ -84,7 +84,7 @@ public class NpcBow {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(10.0D)
-                            .maxCooldown (200)
+                            .maxCooldown (100)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(7.0D, 14.0D)

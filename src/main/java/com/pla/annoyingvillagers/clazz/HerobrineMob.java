@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.block.ObsidianBlock;
-import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
@@ -40,6 +39,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -351,7 +351,7 @@ public class HerobrineMob extends Monster {
                 || this instanceof SwordsmanHerobrineEntity || this instanceof ReaperHerobrineEntity
                 || this instanceof NullEntity || this instanceof ShadowHerobrineEntity)) {
             float health = this.getHealth();
-            if (health - f <= 10.0F) {
+            if (health - f <= 50.0F) {
                 if (this.getState() == 0 || this.getState() == 1) {
                     this.setHealth(1.0F);
                     if (this.healingAnimationCooldown == 0) {
@@ -383,7 +383,6 @@ public class HerobrineMob extends Monster {
                 }
             }
         }
-        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] hurt passed, state = {}, health = {}, damage = {}", this.state, this.getHealth(), f);
         return super.hurt(damageSource, f);
     }
 
@@ -416,6 +415,19 @@ public class HerobrineMob extends Monster {
         healingAnimationCooldown = pCompound.getInt("HealingAnimationCooldown");
         state = pCompound.getInt("State");
         secondFormHitLeft = pCompound.getInt("SecondFormHitLeft");
+    }
+
+    public void jump() {
+        this.jumpFromGround();
+        Vec3 motion = this.getDeltaMovement();
+        Vec3 forward = this.getForward();
+        double strength = new Random().nextDouble(0.2, 0.4);
+        this.setDeltaMovement(
+                motion.x + forward.x * strength,
+                motion.y,
+                motion.z + forward.z * strength
+        );
+        this.hasImpulse = true;
     }
 
     @Override
@@ -528,7 +540,11 @@ public class HerobrineMob extends Monster {
             this.livingEntityPatch.applyStun(StunType.FALL, 0.0F);
         }
         if (this instanceof AegisHerobrineEntity) {
-            this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.ENDER_AEGIS.get()));
+            ItemStack enderAegis = new ItemStack(AnnoyingVillagersModItems.ENDER_AEGIS.get());
+            enderAegis.enchant(Enchantments.SHARPNESS, 5);
+            enderAegis.enchant(Enchantments.SWEEPING_EDGE, 5);
+            enderAegis.enchant(Enchantments.KNOCKBACK, 3);
+            this.setItemInHand(InteractionHand.MAIN_HAND, enderAegis);
         }
         this.setState(2);
     }
@@ -663,6 +679,8 @@ public class HerobrineMob extends Monster {
                 this.healingAnimationCooldown = this.healingAnimationCooldown - 1;
             }
             if (this.healingAnimationCooldown == 60) {
+                this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+                this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
                 if (this.livingEntityPatch != null) {
                     this.livingEntityPatch.playAnimationSynchronized(AVAnimations.HEROBRINE_STAGE_CHANGE, 0.0F);
                 }
@@ -670,7 +688,7 @@ public class HerobrineMob extends Monster {
                         PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this),
                         new ClientboundHerobrinePortalFx(new Vec3(this.getX(), this.getY(), this.getZ()))
                 );
-                if (this.level() instanceof ServerLevel serverLevel) {
+                if (this.level() instanceof ServerLevel) {
                     this.playSound(AnnoyingVillagersModSounds.PORTAL_NATURAL.get(), 1.0F, 1.0F);;
                 }
                 this.summonClonesForNextStage();

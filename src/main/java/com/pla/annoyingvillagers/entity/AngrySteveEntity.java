@@ -53,6 +53,7 @@ public class AngrySteveEntity extends PathfinderMobInventory {
         this.setCustomName(this.getDisplayName());
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
+        this.setBlockProjectileChance(1.0);
     }
 
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {

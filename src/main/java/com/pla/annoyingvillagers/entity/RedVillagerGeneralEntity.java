@@ -2,7 +2,6 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
@@ -34,7 +33,6 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
 import java.util.Random;
 import java.util.function.Consumer;
 
@@ -49,6 +47,7 @@ public class RedVillagerGeneralEntity extends PathfinderMobInventory {
         this.setMaxUpStep(3.0F);
         this.xpReward = 8;
         this.setNoAi(false);
+        this.setBlockProjectileChance(0.7);
     }
 
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {

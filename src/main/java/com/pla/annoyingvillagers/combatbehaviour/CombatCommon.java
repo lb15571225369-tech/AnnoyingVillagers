@@ -4,23 +4,21 @@ import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.util.CombatBehaviour;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.levelgen.Heightmap;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
@@ -65,13 +63,6 @@ public class CombatCommon {
         return false;
     }
 
-    public static boolean canBlockProjectile(MobPatch<?> mobpatch) {
-        if (mobpatch.getOriginal() instanceof PathfinderMobInventory pathfinderMobInventory) {
-            return pathfinderMobInventory.getBlockDamage() != null;
-        }
-        return false;
-    }
-
     public static boolean canThrowEnderPearl(MobPatch<?> mobpatch) {
         if (mobpatch.getOriginal().isPassenger()) return false;
 
@@ -106,7 +97,7 @@ public class CombatCommon {
         }
 
         if (mobpatch.getOriginal() instanceof PathfinderMobInventory pathfinderMobInventory) {
-            if ((pathfinderMobInventory instanceof SteveEntity
+            if ((pathfinderMobInventory instanceof SteveEntity || pathfinderMobInventory instanceof AngrySteveEntity
                     || pathfinderMobInventory instanceof AlexEntity || pathfinderMobInventory instanceof ChrisEntity)
                     && pathfinderMobInventory.getTarget() instanceof HerobrineMob) {
                 return false;
@@ -288,9 +279,13 @@ public class CombatCommon {
         if (entity instanceof PurpleVillagerGeneralEntity) {
             bow.enchant(Enchantments.PUNCH_ARROWS, 2);
         }
-        if (entity instanceof SteveEntity steveEntity && steveEntity.getState() == 1) {
+        if ((entity instanceof SteveEntity steveEntity && steveEntity.getState() == 1)
+        || entity instanceof AngrySteveEntity) {
             bow.enchant(Enchantments.POWER_ARROWS, 5);
             bow.enchant(Enchantments.PUNCH_ARROWS, 5);
+            if (entity instanceof AngrySteveEntity) {
+                bow.enchant(Enchantments.FLAMING_ARROWS, 2);
+            }
         }
         if (entity instanceof AlexEntity alexEntity && alexEntity.getState() == 1) {
             bow.enchant(Enchantments.PUNCH_ARROWS, 3);
@@ -366,6 +361,20 @@ public class CombatCommon {
         }
         if (entity instanceof PathfinderMobInventory pathfinderMobInventory) {
             pathfinderMobInventory.jump();
+        }
+    }
+
+    public static void swapToBlock(MobPatch<?> mobpatch) {
+        Entity entity = mobpatch.getOriginal();
+        if (entity instanceof LivingEntity livingEntity) {
+            double chance = new Random().nextDouble(0.0, 1.0);
+            if (chance <= 0.33) {
+                livingEntity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.COBBLESTONE));
+            } else if (chance <= 0.66) {
+                livingEntity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.MOSSY_COBBLESTONE));
+            } else {
+                livingEntity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.OAK_PLANKS));
+            }
         }
     }
 }

@@ -105,7 +105,9 @@ public class TotemUsingEvent {
                         diamondSword.enchant(Enchantments.KNOCKBACK, 2);
                         diamondSword.enchant(Enchantments.UNBREAKING, 5);
                         alexEntity.setItemInHand(InteractionHand.OFF_HAND, diamondSword);
+                        alexEntity.setItemInHand(InteractionHand.MAIN_HAND, diamondSword);
                         alexEntity.setOffWeaponItem(diamondSword);
+                        alexEntity.setMainWeaponItem(diamondSword);
                         alexEntity.setState(1);
                         LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                         if (!entity.level().isClientSide() && entity.getServer() != null && livingEntityPatch != null) {
