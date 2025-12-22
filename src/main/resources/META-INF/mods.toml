@@ -28,7 +28,7 @@ description='''${mod_description}'''
 [[dependencies.annoyingvillagers]]
     modId="wom"
     mandatory=true
-    versionRange="[20.2, )"
+    versionRange="[2.0, )"
     ordering="NONE"
     side="BOTH"
 [[dependencies.annoyingvillagers]]

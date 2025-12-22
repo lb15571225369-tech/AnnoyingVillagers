@@ -13,8 +13,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
+import net.shelmarow.combat_evolution.ai.iml.CustomExecuteEntity;
 import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
-import net.shelmarow.combat_evolution.iml.CustomExecuteEntity;
 import yesman.epicfight.api.animation.AnimationManager.AnimationAccessor;
 import yesman.epicfight.api.animation.Animator;
 import yesman.epicfight.api.animation.LivingMotions;
@@ -188,6 +188,10 @@ public class VillagerGeneralPatch extends CEHumanoidPatch implements CustomExecu
         // More logic when blocking damage success
     }
 
+    @Override
+    public void playGuardHitAnimation(DamageSource damageSource, boolean canCounter) {
+    }
+
     public AnimationAccessor<? extends StaticAnimation> getHitAnimation(StunType stuntype) {
         return switch (stuntype) {
             case LONG -> Animations.BIPED_HIT_LONG;
@@ -203,6 +207,11 @@ public class VillagerGeneralPatch extends CEHumanoidPatch implements CustomExecu
 
     @Override
     public boolean canBeExecuted(LivingEntityPatch<?> livingEntityPatch) {
+        return false;
+    }
+
+    @Override
+    public boolean canUseCustomType(LivingEntityPatch<?> livingEntityPatch) {
         return false;
     }
 

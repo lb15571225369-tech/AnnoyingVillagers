@@ -40,6 +40,7 @@ public class AnnoyingVillagersModEntities {
     public static final RegistryObject<EntityType<BbqEntity>> BBQ = register("bbq", Builder.<BbqEntity>of(BbqEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(BbqEntity::new).fireImmune().sized(0.4F, 0.7F));
     public static final RegistryObject<EntityType<ChrisEntity>> CHRIS = register("chris", Builder.<ChrisEntity>of(ChrisEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(128).setUpdateInterval(3).setCustomClientFactory(ChrisEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<SteveEntity>> STEVE = register("steve", Builder.<SteveEntity>of(SteveEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(SteveEntity::new).fireImmune().sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<AngrySteveEntity>> ANGRY_STEVE = register("angry_steve", Builder.<AngrySteveEntity>of(AngrySteveEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(AngrySteveEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<PlayerNpcEntity>> PLAYER_NPC = register("player_npc", Builder.<PlayerNpcEntity>of(PlayerNpcEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(PlayerNpcEntity::new).fireImmune().sized(0.6F, 1.8F));
 
     public static final RegistryObject<EntityType<InfectedTheMostMoistBurrit0Entity>> INFECTED_THEMOSTMOISTBURRIT0 = register("infected_the_most_moist_burrit0", Builder.<InfectedTheMostMoistBurrit0Entity>of(InfectedTheMostMoistBurrit0Entity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(InfectedTheMostMoistBurrit0Entity::new).sized(0.6F, 1.8F));
@@ -254,6 +255,7 @@ public class AnnoyingVillagersModEntities {
         entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.GREEN_VILLAGER_GENERAL.get(), (entity) -> VillagerGeneralPatch::new);
         entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.PURPLE_VILLAGER_GENERAL.get(), (entity) -> VillagerGeneralPatch::new);
         entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.STEVE.get(), (entity) -> StevePatch::new);
+        entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.ANGRY_STEVE.get(), (entity) -> AngryStevePatch::new);
         entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.ALEX.get(), (entity) -> AlexPatch::new);
         entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.JEV.get(), (entity) -> JevPatch::new);
         entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.CHRIS.get(), (entity) -> ChrisPatch::new);
@@ -288,6 +290,7 @@ public class AnnoyingVillagersModEntities {
         entityattributecreationevent.put(AnnoyingVillagersModEntities.ARMORED_HEROBRINE.get(), ArmoredHerobrineEntity.createAttributes().build());
         entityattributecreationevent.put(AnnoyingVillagersModEntities.STEVE_DEAD.get(), SteveDeadEntity.createAttributes().build());
         entityattributecreationevent.put(AnnoyingVillagersModEntities.STEVE.get(), SteveEntity.createAttributes().build());
+        entityattributecreationevent.put(AnnoyingVillagersModEntities.ANGRY_STEVE.get(), AngrySteveEntity.createAttributes().build());
         entityattributecreationevent.put(AnnoyingVillagersModEntities.CHRIS_DEAD.get(), SteveDeadEntity.createAttributes().build());
         entityattributecreationevent.put(AnnoyingVillagersModEntities.INFECTED_CHRIS_DEAD.get(), SteveDeadEntity.createAttributes().build());
         entityattributecreationevent.put(AnnoyingVillagersModEntities.VILLAGER_SCOUT_DEAD.get(), SteveDeadEntity.createAttributes().build());

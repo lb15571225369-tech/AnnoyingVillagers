@@ -9,16 +9,16 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors.Behavior;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors.BehaviorRoot;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors.Builder;
-import net.shelmarow.combat_evolution.ai.efcondition.HealthCheck;
+import net.shelmarow.combat_evolution.ai.condition.HealthCheck;
 import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.animations.weapons.AnimsAgony;
 import reascer.wom.gameasset.animations.weapons.AnimsNapoleon;
+import reascer.wom.gameasset.animations.weapons.AnimsSolar;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 import yesman.epicfight.world.effect.EpicFightMobEffects;
@@ -29,13 +29,6 @@ public class SteveLegendarySword {
         ItemStack itemStack = steveEntity.getMainHandItem();
         if (itemStack.getItem() instanceof LegendarySwordItem && steveEntity.level() instanceof ServerLevel serverLevel) {
             steveEntity.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 60, 2));
-            serverLevel.playSound(
-                    null,
-                    steveEntity.getX(), steveEntity.getY(), steveEntity.getZ(),
-                    AnnoyingVillagersModSounds.STEVE_ATTACK.get(),
-                    SoundSource.NEUTRAL,
-                    1.0F, 1.0F
-            );
             new DelayedTask(10) {
                 @Override
                 public void run() {
@@ -226,15 +219,66 @@ public class SteveLegendarySword {
                                                             .addNextBehavior(
                                                                     Behavior.builder()
                                                                             .withinDistance(0.0D, 5.0D)
-                                                                            .animationBehavior(AVAnimations.YELLOW_SOLAR_AUTO_2, 0.0F)
+                                                                            .animationBehavior(AnimsSolar.SOLAR_AUTO_1, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(AVAnimations.LEGENDARY_SWORD_WAKE_UP_ATTACK, 0.0F).addNextBehavior(
+                                                                                            .animationBehavior(AnimsSolar.SOLAR_AUTO_4, 0.0F)
+                                                                                            .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .withinDistance(0.0D, 5.0D)
-                                                                                                            .animationBehavior(AVAnimations.YELLOW_NAPOLEON_AUTO_3, 0.0F)
+                                                                                                            .animationBehavior(AVAnimations.YELLOW_SOLAR_AUTO_2, 0.0F)
+                                                                                                            .addNextBehavior(
+                                                                                                                    Behavior.builder()
+                                                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                                                            .animationBehavior(AVAnimations.LEGENDARY_SWORD_WAKE_UP_ATTACK, 0.0F).addNextBehavior(
+                                                                                                                                    Behavior.builder()
+                                                                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                                                                            .animationBehavior(AVAnimations.YELLOW_NAPOLEON_AUTO_3, 0.0F)
+                                                                                                                            )
+                                                                                                            )
                                                                                             )
+                                                                            )
+                                                            )
+
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .withinDistance(0.0D, 5.0D)
+                                                            .animationBehavior(WOMAnimations.TORMENT_AUTO_2, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AnimsSolar.SOLAR_AUTO_1, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AnimsSolar.SOLAR_AUTO_4, 0.0F)
+                                                                            )
+                                                            )
+
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(AnimsSolar.SOLAR_AUTO_4, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .withinDistance(0.0D, 5.0D)
+                                                            .animationBehavior(AVAnimations.YELLOW_SOLAR_AUTO_2, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.LEGENDARY_SWORD_WAKE_UP_ATTACK, 0.0F).addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.YELLOW_NAPOLEON_AUTO_3, 0.0F)
                                                                             )
                                                             )
                                             )
@@ -244,44 +288,17 @@ public class SteveLegendarySword {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(30.0D)
-                            .maxCooldown(40)
+                            .maxCooldown(200)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 5.0D)
                                             .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
-                                            .addNextBehavior(
-                                                    Behavior.builder()
-                                                            .withinDistance(0.0D, 5.0D)
-                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
-                                                            .addNextBehavior(
-                                                                    Behavior.builder()
-                                                                            .withinDistance(0.0D, 5.0D)
-                                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
-                                                                            .addNextBehavior(
-                                                                                    Behavior.builder()
-                                                                                            .withinDistance(0.0D, 5.0D)
-                                                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
-                                                                            )
-                                                            )
-                                            )
                             )
-            )
-            .newBehaviorRoot(
-                    BehaviorRoot.builder()
-                            .priority(1.0D)
-                            .weight(30.0D)
-                            .maxCooldown(40)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 5.0D)
                                             .animationBehavior(AVAnimations.YELLOW_NAPOLEON_AUSTERLITZ_SHOOT, 0.0F)
                             )
-            )
-            .newBehaviorRoot(
-                    BehaviorRoot.builder()
-                            .priority(1.0D)
-                            .weight(30.0D)
-                            .maxCooldown(40)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 5.0D)

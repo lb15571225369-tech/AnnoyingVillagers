@@ -18,6 +18,7 @@ import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 import java.util.List;
+import java.util.Random;
 
 public class LegendarySwordItem extends SwordItem {
 
@@ -52,7 +53,7 @@ public class LegendarySwordItem extends SwordItem {
     @Override
     public boolean hurtEnemy(@NotNull ItemStack pStack, @NotNull LivingEntity pTarget, @NotNull LivingEntity pAttacker) {
         if (!pAttacker.level().isClientSide()) {
-            ArmorUtil.damageArmor(pTarget, pAttacker, 15);
+            ArmorUtil.damageArmor(pTarget, new Random().nextInt(1, 5));
         }
         if (pAttacker instanceof Player player) {
             PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);

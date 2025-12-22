@@ -47,6 +47,7 @@ public class AnnoyingVillagersModEntityRenderers {
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.ARMORED_HEROBRINE.get(), ArmoredHerobrineRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.STEVE_DEAD.get(), SteveDeadRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.STEVE.get(), SteveRenderer::new);
+        registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.ANGRY_STEVE.get(), AngrySteveRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.CHRIS_DEAD.get(), ChrisDeadRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.INFECTED_CHRIS_DEAD.get(), InfectedChrisDeadRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.JEV_DEAD.get(), JevDeadRenderer::new);
@@ -114,6 +115,9 @@ public class AnnoyingVillagersModEntityRenderers {
                 (entitytype) -> (new PHumanoidRenderer<>(Meshes.BIPED, add.getContext(), entitytype))
                         .initLayerLast(add.getContext(), entitytype));
         add.addPatchedEntityRenderer(AnnoyingVillagersModEntities.STEVE.get(),
+                (entitytype) -> (new PHumanoidRenderer<>(Meshes.BIPED, add.getContext(), entitytype))
+                        .initLayerLast(add.getContext(), entitytype));
+        add.addPatchedEntityRenderer(AnnoyingVillagersModEntities.ANGRY_STEVE.get(),
                 (entitytype) -> (new PHumanoidRenderer<>(Meshes.BIPED, add.getContext(), entitytype))
                         .initLayerLast(add.getContext(), entitytype));
         add.addPatchedEntityRenderer(AnnoyingVillagersModEntities.ALEX.get(),

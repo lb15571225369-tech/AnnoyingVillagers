@@ -27,10 +27,9 @@ public class ArmorUtil {
     }
 
     public static void damageArmor(LivingEntity target,
-                             LivingEntity attacker,
                              int durabilityDamagePerPiece) {
         RandomSource random = target.getRandom();
-        ServerPlayer serverAttacker = attacker instanceof ServerPlayer serverPlayer ? serverPlayer : null;
+        ServerPlayer serverAttacker = target instanceof ServerPlayer serverPlayer ? serverPlayer : null;
 
         for (EquipmentSlot slot : new EquipmentSlot[]{
                 EquipmentSlot.FEET,

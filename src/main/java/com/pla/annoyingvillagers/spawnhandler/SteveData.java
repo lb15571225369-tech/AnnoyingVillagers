@@ -47,7 +47,7 @@ public class SteveData extends SavedData {
     public boolean isOccupied(ServerLevel serverLevel) {
         if (activeId != null) {
             Entity entity = serverLevel.getEntity(activeId);
-            if (entity instanceof SteveEntity && entity.isAlive()) {
+            if ((entity instanceof SteveEntity || entity instanceof AngrySteveEntity) && entity.isAlive()) {
                 return true;
             } else {
                 activeId = null;
@@ -68,6 +68,12 @@ public class SteveData extends SavedData {
         claimTick = now(serverLevel);
         setDirty();
         return true;
+    }
+
+    public void forceClaim(ServerLevel serverLevel, UUID id) {
+        activeId = id;
+        claimTick = now(serverLevel);
+        setDirty();
     }
 
     public void releaseIfMatches(ServerLevel serverLevel, UUID id) {

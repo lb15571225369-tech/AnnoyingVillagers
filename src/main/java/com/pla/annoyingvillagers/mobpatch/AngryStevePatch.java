@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.mobpatch;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
+import com.pla.annoyingvillagers.capabilities.AVCategories;
 import com.pla.annoyingvillagers.combatbehaviour.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import net.minecraft.world.InteractionHand;
@@ -12,6 +13,7 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
 import net.shelmarow.combat_evolution.ai.iml.CustomExecuteEntity;
 import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
+import reascer.wom.gameasset.WOMAnimations;
 import yesman.epicfight.api.animation.AnimationManager.AnimationAccessor;
 import yesman.epicfight.api.animation.Animator;
 import yesman.epicfight.api.animation.LivingMotions;
@@ -29,8 +31,8 @@ import yesman.epicfight.world.damagesource.StunType;
 
 import java.util.Set;
 
-public class AlexPatch extends CEHumanoidPatch implements CustomExecuteEntity {
-    public AlexPatch() {
+public class AngryStevePatch extends CEHumanoidPatch implements CustomExecuteEntity {
+    public AngryStevePatch() {
         super(Factions.NEUTRAL);
     }
 
@@ -57,7 +59,7 @@ public class AlexPatch extends CEHumanoidPatch implements CustomExecuteEntity {
                                 )));
         this.weaponAttackMotions
                 .put(WeaponCategories.NOT_WEAPON,
-                        ImmutableMap.of(Styles.ONE_HAND, NpcFist.FIST));
+                        ImmutableMap.of(Styles.ONE_HAND, PlayerNpcFist.FIST));
 
         this.weaponLivingMotions
                 .put(WeaponCategories.FIST,
@@ -71,12 +73,12 @@ public class AlexPatch extends CEHumanoidPatch implements CustomExecuteEntity {
                                 )));
         this.weaponAttackMotions
                 .put(WeaponCategories.FIST,
-                        ImmutableMap.of(Styles.ONE_HAND, NpcFist.FIST));
+                        ImmutableMap.of(Styles.ONE_HAND, PlayerNpcFist.FIST));
 
         this.weaponAttackMotions
                 .put(WeaponCategories.RANGED,
                         ImmutableMap.of(
-                                Styles.ONE_HAND, NpcBow.BOW
+                                Styles.ONE_HAND, PlayerNpcBow.BOW
                         ));
         this.weaponLivingMotions
                 .put(WeaponCategories.RANGED,
@@ -92,32 +94,22 @@ public class AlexPatch extends CEHumanoidPatch implements CustomExecuteEntity {
                                 )));
 
         this.weaponLivingMotions
-                .put(WeaponCategories.SWORD,
+                .put(AVCategories.LEGENDARY_SWORD,
                         ImmutableMap.of(
-                                Styles.ONE_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.BLOCK, Animations.SWORD_GUARD),
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
-                                        Pair.of(LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD),
-                                        Pair.of(LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
-                                ),
                                 Styles.TWO_HAND,
                                 Set.of(
-                                        Pair.of(LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD),
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_DUAL_WEAPON),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_HOLD_DUAL_WEAPON),
-                                        Pair.of(LivingMotions.RUN, AVAnimations.RUN_HOLD),
-                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_HOLD_DUAL_WEAPON),
+                                        Pair.of(LivingMotions.BLOCK, AVAnimations.LEGENDARY_SWORD_GUARD),
+                                        Pair.of(LivingMotions.IDLE, WOMAnimations.TORMENT_BERSERK_IDLE),
+                                        Pair.of(LivingMotions.WALK, WOMAnimations.TORMENT_BERSERK_WALK),
+                                        Pair.of(LivingMotions.RUN, AVAnimations.RUN_DUAL_BIG),
+                                        Pair.of(LivingMotions.CHASE, WOMAnimations.TORMENT_BERSERK_WALK),
                                         Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
                                 )
                         ));
         this.weaponAttackMotions
-                .put(WeaponCategories.SWORD,
+                .put(AVCategories.LEGENDARY_SWORD,
                         ImmutableMap.of(
-                                Styles.ONE_HAND, NpcSword.AV_SWORD,
-                                Styles.TWO_HAND, NpcSword.AV_DUAL_SWORD
+                                Styles.TWO_HAND, AngrySteveLegendarySword.LEGENDARY_SWORD
                         ));
     }
 

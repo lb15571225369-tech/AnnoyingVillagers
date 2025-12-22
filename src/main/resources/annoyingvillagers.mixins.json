@@ -13,7 +13,6 @@
     "ZombieMixin",
     "EnderDragonMixin",
     "GuardSkillMixin",
-    "ItemCooldownsMixin",
     "ExplosionMixin",
     "RaiderMixin",
     "MixinPHumanoidRenderer",
@@ -22,7 +21,8 @@
     "RenderBuffersMixin",
     "VillagerMixin",
     "VindicatorMixin",
-    "IllagerMixin"
+    "IllagerMixin",
+    "ClashBladeMixin"
   ],
   "client": [
   ],

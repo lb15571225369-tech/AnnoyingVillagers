@@ -2,8 +2,6 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
-import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
-import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
@@ -14,9 +12,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -31,32 +26,23 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
-import yesman.epicfight.world.capabilities.EpicFightCapabilities;
-import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.effect.EpicFightMobEffects;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-import java.util.function.Consumer;
 
 public class SteveEntity extends PathfinderMobInventory {
     // 0: normal
     // 1: second
-    // 2: angry
     private int state = 0;
     private int swapWeaponCooldown;
     private boolean sayLegendary = false;
@@ -68,19 +54,11 @@ public class SteveEntity extends PathfinderMobInventory {
 
     public void setState(int state) {
         this.state = state;
-        if (state == 2 && !this.level().isClientSide) {
-            this.goalSelector.removeAllGoals(goal -> true);
-            this.targetSelector.removeAllGoals(goal -> true);
-            CommonGoals.registerGoalForCrazyNpc(this);
-        }
     }
 
     public SteveEntity(SpawnEntity spawnEntity, Level level) {
         this(AnnoyingVillagersModEntities.STEVE.get(), level);
     }
-
-    private static final EntityDataAccessor<Boolean> USE_ANGRY_STEVE_TEXTURE =
-            SynchedEntityData.defineId(SteveEntity.class, EntityDataSerializers.BOOLEAN);
 
     public SteveEntity(EntityType<SteveEntity> entitytype, Level level) {
         super(entitytype, level);
@@ -98,6 +76,7 @@ public class SteveEntity extends PathfinderMobInventory {
 
     protected void registerGoals() {
         super.registerGoals();
+        CommonGoals.registerGoalForNeutralNpc(this);
     }
 
     public @NotNull MobType getMobType() {
@@ -128,18 +107,6 @@ public class SteveEntity extends PathfinderMobInventory {
 
     public int getSwapWeaponCooldown() {
         return swapWeaponCooldown;
-    }
-
-    public void setUseAngrySteveTexture(boolean useAngrySteveTexture) {
-        this.entityData.set(USE_ANGRY_STEVE_TEXTURE, useAngrySteveTexture);
-    }
-
-    public boolean isUseAngrySteveTexture() { return this.entityData.get(USE_ANGRY_STEVE_TEXTURE); }
-
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(USE_ANGRY_STEVE_TEXTURE, false);
     }
 
     public void setSayWhyKeepFighting(boolean sayWhyKeepFighting) {
@@ -188,23 +155,17 @@ public class SteveEntity extends PathfinderMobInventory {
                 || this.state == 1) {
                     this.setHealth(1.0F);
                     if (this.state == 1) {
-                        serverLevel.playSound(
-                                null,
-                                this.getX(), this.getY(), this.getZ(),
-                                AnnoyingVillagersModSounds.STEVE_ANGRY.get(),
-                                SoundSource.NEUTRAL,
-                                1.0F, 1.0F
-                        );
-                        LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
-                        if (patch != null) {
-                            patch.playAnimationSynchronized(AVAnimations.GUARD_BREAK_ATTACK, 0.0F);
-                        }
-                        this.setState(2);
-                        this.setUseAngrySteveTexture(true);
-                        this.setHealth(this.getMaxHealth());
-                        this.rollItem();
-                        this.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
-                        this.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
+                        AngrySteveEntity angrySteveEntity = new AngrySteveEntity(AnnoyingVillagersModEntities.ANGRY_STEVE.get(), serverLevel);
+
+                        angrySteveEntity.moveTo(this.blockPosition(), this.getYRot(), this.getXRot());
+                        InventoryUtils.transferInventory(this.getInventory(), angrySteveEntity.getInventory());
+
+                        this.discard();
+                        SteveData steveData = SteveData.get(serverLevel);
+                        steveData.forceClaim(serverLevel, angrySteveEntity.getUUID());
+
+                        angrySteveEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(angrySteveEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                        serverLevel.addFreshEntity(angrySteveEntity);
                     }
                     return super.hurt(damageSource, 1.0F);
                 }
@@ -213,175 +174,11 @@ public class SteveEntity extends PathfinderMobInventory {
         return super.hurt(damageSource, f);
     }
 
-    public void die(@NotNull DamageSource damageSource) {
-        super.die(damageSource);
-        if (this.level() instanceof ServerLevel serverLevel) {
-            serverLevel.playSound(
-                    null,
-                    this.getX(), this.getY(), this.getZ(),
-                    AnnoyingVillagersModSounds.STEVE_NO.get(),
-                    SoundSource.NEUTRAL,
-                    1.0F, 1.0F
-            );
-
-            final double x = this.getX();
-            final double y = this.getY() + 1.0D;
-            final double z = this.getZ();
-
-            Consumer<ItemStack> dropStack = (stack) -> {
-                ItemEntity drop = new ItemEntity(serverLevel, x, y, z, stack);
-                drop.setPickUpDelay(10);
-                serverLevel.addFreshEntity(drop);
-            };
-
-            Consumer<Integer> dropArrows = (count) -> {
-                for (int i = 0; i < count; i++) dropStack.accept(new ItemStack(Items.ARROW));
-            };
-
-            List<ItemStack> damagedStacks = new ArrayList<>();
-
-            ItemStack compressedDiamondHelmet = new ItemStack(AnnoyingVillagersModItems.COMPRESSED_DIAMOND_HELMET.get());
-            compressedDiamondHelmet.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 5);
-            compressedDiamondHelmet.enchant(Enchantments.PROJECTILE_PROTECTION, 5);
-            compressedDiamondHelmet.enchant(Enchantments.FIRE_PROTECTION, 5);
-            compressedDiamondHelmet.enchant(Enchantments.BLAST_PROTECTION, 5);
-            damagedStacks.add(compressedDiamondHelmet);
-
-            ItemStack compressedDiamondChestplate = new ItemStack(AnnoyingVillagersModItems.COMPRESSED_DIAMOND_CHESTPLATE.get());
-            compressedDiamondChestplate.enchant(Enchantments.ALL_DAMAGE_PROTECTION, 5);
-            compressedDiamondChestplate.enchant(Enchantments.PROJECTILE_PROTECTION, 5);
-            compressedDiamondChestplate.enchant(Enchantments.FIRE_PROTECTION, 5);
-            compressedDiamondChestplate.enchant(Enchantments.BLAST_PROTECTION, 5);
-            damagedStacks.add(compressedDiamondChestplate);
-
-            ItemStack diamondSword = new ItemStack(Items.DIAMOND_SWORD);
-            diamondSword.enchant(Enchantments.SHARPNESS, 5);
-            diamondSword.enchant(Enchantments.SMITE, 5);
-            damagedStacks.add(diamondSword);
-
-            if (new Random().nextBoolean()) {
-                damagedStacks.add(diamondSword);
-            }
-
-            ItemStack bow = new ItemStack(Items.BOW);
-            bow.enchant(Enchantments.POWER_ARROWS, 5);
-            bow.enchant(Enchantments.PUNCH_ARROWS, 5);
-            damagedStacks.add(bow);
-
-            double chance = new Random().nextDouble(0.0, 1.0);
-            if (chance < 0.2) {
-                ItemStack woodenDoor = new ItemStack(AnnoyingVillagersModItems.WOODEN_DOOR.get());
-                woodenDoor.enchant(Enchantments.SHARPNESS, 5);
-                woodenDoor.enchant(Enchantments.KNOCKBACK, 3);
-                woodenDoor.enchant(Enchantments.MENDING, 5);
-                damagedStacks.add(woodenDoor);
-            } else if (chance < 0.4) {
-                ItemStack craftingTable = new ItemStack(AnnoyingVillagersModItems.CRAFTING_TABLE.get());
-                craftingTable.enchant(Enchantments.SMITE, 5);
-                craftingTable.enchant(Enchantments.KNOCKBACK, 3);
-                craftingTable.enchant(Enchantments.MENDING, 5);
-                damagedStacks.add(craftingTable);
-            } else if (chance < 0.6) {
-                ItemStack ladder = new ItemStack(AnnoyingVillagersModItems.LADDER.get());
-                ladder.enchant(Enchantments.SMITE, 5);
-                ladder.enchant(Enchantments.SWEEPING_EDGE, 3);
-                ladder.enchant(Enchantments.MENDING, 5);
-                damagedStacks.add(ladder);
-            } else if (chance < 0.8) {
-                ItemStack trapDoor = new ItemStack(AnnoyingVillagersModItems.TRAPDOOR.get());
-                trapDoor.enchant(Enchantments.KNOCKBACK, 5);
-                trapDoor.enchant(Enchantments.SWEEPING_EDGE, 3);
-                trapDoor.enchant(Enchantments.MENDING, 5);
-                damagedStacks.add(trapDoor);
-            } else {
-                ItemStack mendingDiamondSword = new ItemStack(Items.DIAMOND_SWORD);
-                mendingDiamondSword.enchant(Enchantments.SHARPNESS, 5);
-                mendingDiamondSword.enchant(Enchantments.SMITE, 5);
-                mendingDiamondSword.enchant(Enchantments.MENDING, 5);
-                damagedStacks.add(mendingDiamondSword);
-            }
-
-            if (new Random().nextBoolean()) {
-                ItemStack woopieTheSword = new ItemStack(AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get());
-                woopieTheSword.enchant(Enchantments.SHARPNESS, 5);
-                woopieTheSword.enchant(Enchantments.SMITE, 5);
-                woopieTheSword.enchant(Enchantments.SWEEPING_EDGE, 5);
-                damagedStacks.add(woopieTheSword);
-                damagedStacks.add(new ItemStack(AnnoyingVillagersModItems.JESSICA_THE_DARK_SHIELD.get()));
-            } else {
-                ItemStack legendarySword = new ItemStack(AnnoyingVillagersModItems.LEGENDARY_SWORD.get());
-                legendarySword.enchant(Enchantments.SHARPNESS, 5);
-                legendarySword.enchant(Enchantments.SMITE, 5);
-                legendarySword.enchant(Enchantments.SWEEPING_EDGE, 5);
-                damagedStacks.add(legendarySword);
-            }
-
-            for (ItemStack stack : damagedStacks) {
-                stack.setDamageValue(EquipmentDataLoader.getRandomDamage(stack));
-                dropStack.accept(stack);
-            }
-
-            ItemLike[] simpleDrops = new ItemLike[] {
-                    Items.GOLDEN_APPLE, Items.GOLDEN_APPLE, Items.GOLDEN_APPLE, Items.GOLDEN_APPLE,
-                    Items.GOLDEN_APPLE, Items.GOLDEN_APPLE, Items.GOLDEN_APPLE, Items.GOLDEN_APPLE,
-                    Items.ENCHANTED_GOLDEN_APPLE, Items.ENCHANTED_GOLDEN_APPLE, Items.ENCHANTED_GOLDEN_APPLE,
-
-                    Items.ENDER_PEARL, Items.ENDER_PEARL, Items.ENDER_PEARL, Items.ENDER_PEARL, Items.ENDER_PEARL,
-                    Items.ENDER_PEARL, Items.ENDER_PEARL, Items.ENDER_PEARL, Items.ENDER_PEARL, Items.ENDER_PEARL,
-
-                    Blocks.DIRT, Blocks.DIRT, Blocks.DIRT, Blocks.DIRT, Blocks.DIRT, Blocks.DIRT, Blocks.DIRT, Blocks.DIRT,
-
-                    Blocks.TNT, Blocks.TNT,
-                    Blocks.DIAMOND_BLOCK,
-                    Blocks.DRAGON_EGG,
-
-                    Items.WHITE_BED,
-                    Items.CAKE,
-                    Items.WATER_BUCKET,
-                    Items.COOKED_BEEF, Items.COOKED_BEEF, Items.COOKED_BEEF,
-                    Items.FISHING_ROD,
-                    Items.LIGHT_GRAY_DYE,
-                    Items.CARROT, Items.CARROT,
-                    Items.BAKED_POTATO, Items.BAKED_POTATO,
-
-                    Items.STICK, Items.STICK, Items.STICK, Items.STICK, Items.STICK,
-                    Items.IRON_INGOT, Items.IRON_INGOT, Items.IRON_INGOT, Items.IRON_INGOT,
-                    Items.DIAMOND, Items.DIAMOND, Items.DIAMOND, Items.DIAMOND, Items.DIAMOND, Items.DIAMOND, Items.DIAMOND, Items.DIAMOND,
-
-                    AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get(),
-                    AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get(),
-                    AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get(),
-                    AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get(),
-                    AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get(),
-                    AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get(),
-                    AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get(),
-                    AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get(),
-                    AnnoyingVillagersModItems.COMPRESSED_DIAMOND.get(),
-            };
-
-            for (ItemLike itemLike : simpleDrops) {
-                dropStack.accept(new ItemStack(itemLike));
-            }
-            dropArrows.accept(new Random().nextInt(10, 30));
-
-            if (AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-                SteveDeadEntity steveDeadEntity = new SteveDeadEntity(AnnoyingVillagersModEntities.STEVE_DEAD.get(), serverLevel);
-
-                steveDeadEntity.moveTo(this.getX(), this.getY(), this.getZ(), serverLevel.getRandom().nextFloat() * 360.0F, 0.0F);
-                steveDeadEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(steveDeadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
-                this.remove(RemovalReason.KILLED);
-                serverLevel.addFreshEntity(steveDeadEntity);
-                steveDeadEntity.kill();
-            }
-        }
-    }
-
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putInt("State", this.state);
         tag.putInt("SwapWeaponCooldown", this.swapWeaponCooldown);
-        tag.putBoolean("UseAngrySteveTexture", isUseAngrySteveTexture());
         tag.putBoolean("SayLegendary", sayLegendary);
         tag.putBoolean("sayWhyKeepFighting", sayWhyKeepFighting);
     }
@@ -389,7 +186,6 @@ public class SteveEntity extends PathfinderMobInventory {
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        setUseAngrySteveTexture(tag.getBoolean("UseAngrySteveTexture"));
         this.state = tag.getInt("State");
         this.swapWeaponCooldown = tag.getInt("SwapWeaponCooldown");
         this.sayLegendary = tag.getBoolean("SayLegendary");
@@ -443,9 +239,6 @@ public class SteveEntity extends PathfinderMobInventory {
                         this.sayLegendary = true;
                     }
                     ItemStack legendarySword = new ItemStack(AnnoyingVillagersModItems.LEGENDARY_SWORD.get());
-                    legendarySword.enchant(Enchantments.SHARPNESS, 5);
-                    legendarySword.enchant(Enchantments.SMITE, 5);
-                    legendarySword.enchant(Enchantments.SWEEPING_EDGE, 5);
                     this.setItemInHand(InteractionHand.MAIN_HAND, legendarySword);
                     setWeapon = true;
                 }
@@ -518,13 +311,6 @@ public class SteveEntity extends PathfinderMobInventory {
     public void tick() {
         super.tick();
         if (this.level() instanceof ServerLevel serverLevel) {
-            if (this.tickCount == 1) {
-                if (this.getState() != 2) {
-                    CommonGoals.registerGoalForNeutralNpc(this);
-                } else {
-                    CommonGoals.registerGoalForCrazyNpc(this);
-                }
-            }
             if (this.getTarget() != null && this.getTarget().isAlive() && this.getMainHandItem().isEmpty()) {
                 rollItem();
                 serverLevel.playSound(
@@ -549,12 +335,6 @@ public class SteveEntity extends PathfinderMobInventory {
                     && this.getItemInHand(InteractionHand.OFF_HAND).getItem().equals(Items.TOTEM_OF_UNDYING)
                     && !(this.getItemInHand(InteractionHand.OFF_HAND).getItem() instanceof ShieldItem)) {
                 this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
-            }
-            if (this.getState() == 2 && this.tickCount % 20 == 0) {
-                this.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 30, 2));
-                this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 30, 3));
-                this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 30, 1));
-                this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 30, 1));
             }
             if (swapWeaponCooldown > 0) swapWeaponCooldown--;
         }

@@ -326,9 +326,6 @@ public class ChrisEntity extends PathfinderMobInventory {
     public void tick() {
         super.tick();
         if (!level().isClientSide) {
-            if (this.tickCount % 20 == 0 && this.state == 1) {
-                this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 30, 0));
-            }
             if (this.state == 0
                     && this.getHealth() <= 20
                     && !this.getItemInHand(InteractionHand.OFF_HAND).getItem().equals(Items.TOTEM_OF_UNDYING)) {

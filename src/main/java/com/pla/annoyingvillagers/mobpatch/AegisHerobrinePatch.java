@@ -4,9 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import com.pla.annoyingvillagers.capabilities.AVCategories;
 import com.pla.annoyingvillagers.combatbehaviour.HerobrineEnderAegis;
-import com.pla.annoyingvillagers.combatbehaviour.NpcBow;
-import com.pla.annoyingvillagers.combatbehaviour.NpcFist;
-import com.pla.annoyingvillagers.combatbehaviour.NpcSword;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -14,8 +11,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
+import net.shelmarow.combat_evolution.ai.iml.CustomExecuteEntity;
 import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
-import net.shelmarow.combat_evolution.iml.CustomExecuteEntity;
 import yesman.epicfight.api.animation.AnimationManager.AnimationAccessor;
 import yesman.epicfight.api.animation.Animator;
 import yesman.epicfight.api.animation.LivingMotions;
@@ -117,6 +114,10 @@ public class AegisHerobrinePatch extends CEHumanoidPatch implements CustomExecut
         // More logic when blocking damage success
     }
 
+    @Override
+    public void playGuardHitAnimation(DamageSource damageSource, boolean canCounter) {
+    }
+
     public AnimationAccessor<? extends StaticAnimation> getHitAnimation(StunType stuntype) {
         return switch (stuntype) {
             case LONG -> Animations.BIPED_HIT_LONG;
@@ -132,6 +133,11 @@ public class AegisHerobrinePatch extends CEHumanoidPatch implements CustomExecut
 
     @Override
     public boolean canBeExecuted(LivingEntityPatch<?> livingEntityPatch) {
+        return false;
+    }
+
+    @Override
+    public boolean canUseCustomType(LivingEntityPatch<?> livingEntityPatch) {
         return false;
     }
 

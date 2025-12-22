@@ -4,18 +4,21 @@ import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.util.CombatBehaviour;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.shelmarow.combat_evolution.ai.BehaviorUtils;
+import net.minecraft.world.level.levelgen.Heightmap;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 
 import java.util.Objects;
@@ -44,9 +47,6 @@ public class CombatCommon {
             return !playerNpcEntity.isHealing();
         }
         if (mobpatch.getOriginal() instanceof PathfinderMobInventory pathfinderMobInventory) {
-            if (pathfinderMobInventory instanceof SteveEntity steveEntity && steveEntity.getState() == 2) {
-                return false;
-            }
             if (pathfinderMobInventory.getGapCooldown() > 0) {
                 return false;
             }
@@ -61,6 +61,13 @@ public class CombatCommon {
         }
         if (mobpatch.getOriginal() instanceof PathfinderMobInventory pathfinderMobInventory) {
             return !pathfinderMobInventory.isHealing();
+        }
+        return false;
+    }
+
+    public static boolean canBlockProjectile(MobPatch<?> mobpatch) {
+        if (mobpatch.getOriginal() instanceof PathfinderMobInventory pathfinderMobInventory) {
+            return pathfinderMobInventory.getBlockDamage() != null;
         }
         return false;
     }
@@ -105,7 +112,7 @@ public class CombatCommon {
                 return false;
             }
             if (pathfinderMobInventory instanceof SteveEntity steveEntity) {
-                if (steveEntity.getItemInHand(InteractionHand.OFF_HAND).getItem().equals(Items.TOTEM_OF_UNDYING) || steveEntity.getState() == 2) return false;
+                if (steveEntity.getItemInHand(InteractionHand.OFF_HAND).getItem().equals(Items.TOTEM_OF_UNDYING)) return false;
             }
             return pathfinderMobInventory.isUseBow() && pathfinderMobInventory.getSwapToBowCooldown() == 0;
         }
@@ -120,8 +127,7 @@ public class CombatCommon {
         }
 
         if (mobpatch.getOriginal() instanceof SteveEntity steveEntity) {
-            return steveEntity.getSwapWeaponCooldown() == 0 && steveEntity.getState() != 2
-                    || (steveEntity.getState() == 0 && steveEntity.getHealth() <= 20 && !steveEntity.getMainHandItem().getItem().equals(Items.DIAMOND_SWORD));
+            return steveEntity.getSwapWeaponCooldown() == 0 || (steveEntity.getState() == 0 && steveEntity.getHealth() <= 20 && !steveEntity.getMainHandItem().getItem().equals(Items.DIAMOND_SWORD));
         }
 
         return false;
@@ -217,7 +223,6 @@ public class CombatCommon {
     public static void performEatingAnimation(MobPatch<?> mobpatch) {
         LivingEntity entity = mobpatch.getOriginal();
 
-        BehaviorUtils.stopCurrentBehavior(entity);
         entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.GOLDEN_APPLE));
         if (new Random().nextBoolean()) {
             CombatBehaviour.throwEnderPearl(entity, new Random().nextFloat(0.0F, 180.0F));
@@ -246,7 +251,6 @@ public class CombatCommon {
     public static void performDrinkingAnimation(MobPatch<?> mobpatch) {
         LivingEntity entity = mobpatch.getOriginal();
 
-        BehaviorUtils.stopCurrentBehavior(entity);
         if (!entity.level().isClientSide) {
             ItemStack stack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_HEALING);
             entity.setItemInHand(InteractionHand.MAIN_HAND, stack);
@@ -265,7 +269,6 @@ public class CombatCommon {
 
     public static void swapToBow(MobPatch<?> mobpatch) {
         LivingEntity entity = mobpatch.getOriginal();
-        BehaviorUtils.stopCurrentBehavior(entity);
         ItemStack bow = new ItemStack(Items.BOW);
 
         if (entity instanceof VillagerScoutCaptainEntity) {
@@ -310,7 +313,6 @@ public class CombatCommon {
 
     public static void switchWeapon(MobPatch<?> mobpatch) {
         LivingEntity entity = mobpatch.getOriginal();
-        BehaviorUtils.stopCurrentBehavior(entity);
         if (entity instanceof SteveEntity steveEntity) {
             steveEntity.rollItem();
         }
@@ -320,7 +322,6 @@ public class CombatCommon {
         if (mobpatch.getOriginal() instanceof PlayerNpcEntity playerNpcEntity) {
             ItemStack mainWeaponItem = playerNpcEntity.getMainWeaponItem();
             ItemStack offWeaponItem = playerNpcEntity.getOffWeaponItem();
-            BehaviorUtils.stopCurrentBehavior(playerNpcEntity);
             if (!mainWeaponItem.isEmpty()) {
                 playerNpcEntity.setItemInHand(InteractionHand.MAIN_HAND, mainWeaponItem.copy());
             }
@@ -333,7 +334,6 @@ public class CombatCommon {
         if (mobpatch.getOriginal() instanceof PathfinderMobInventory pathfinderMobInventory) {
             ItemStack mainWeaponItem = pathfinderMobInventory.getMainWeaponItem();
             ItemStack offWeaponItem = pathfinderMobInventory.getOffWeaponItem();
-            BehaviorUtils.stopCurrentBehavior(pathfinderMobInventory);
             if (pathfinderMobInventory instanceof SteveEntity) {
                 if (canSwitchWeapon(mobpatch)) {
                     switchWeapon(mobpatch);

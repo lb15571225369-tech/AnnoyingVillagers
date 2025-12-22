@@ -41,6 +41,7 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.RED_VILLAGER_GENERAL_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.PURPLE_VILLAGER_GENERAL_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.STEVE_SPAWN_EGG.get());
+                        pOutput.accept(AnnoyingVillagersModItems.ANGRY_STEVE_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.ALEX_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.CHRIS_SPAWN_EGG.get());
                         pOutput.accept(AnnoyingVillagersModItems.JEV_SPAWN_EGG.get());

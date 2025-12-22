@@ -9,7 +9,6 @@ import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.shelmarow.combat_evolution.ai.BehaviorUtils;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 
 import java.util.Random;
@@ -45,8 +44,6 @@ public class HerobrineCommon {
 
     public static void performHealingAnimation(MobPatch<?> mobpatch) {
         LivingEntity entity = mobpatch.getOriginal();
-
-        BehaviorUtils.stopCurrentBehavior(entity);
     }
 
     public static void changeToSecondForm(MobPatch<?> mobpatch) {

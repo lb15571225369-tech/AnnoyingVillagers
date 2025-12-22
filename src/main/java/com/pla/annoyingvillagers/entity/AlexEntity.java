@@ -334,13 +334,6 @@ public class AlexEntity extends PathfinderMobInventory {
                 jevToProtect = null;
                 jevUUID = null;
             }
-            if (this.tickCount % 20 == 0 && this.jevToProtect != null) {
-                this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 30, 1));
-                this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 30, 0));
-            }
-            if (this.tickCount % 20 == 0 && this.state == 1) {
-                this.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 30, 1));
-            }
             if (this.state == 0
                     && this.getHealth() <= 20
                     && !this.getItemInHand(InteractionHand.OFF_HAND).getItem().equals(Items.TOTEM_OF_UNDYING)) {

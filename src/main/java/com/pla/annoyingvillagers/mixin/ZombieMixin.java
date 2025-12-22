@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.mixin;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.util.CommonGoals;
+import com.pla.annoyingvillagers.util.TeamUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -37,35 +38,7 @@ public class ZombieMixin {
     private void monsterJoinHerobrineTeam(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag, CallbackInfoReturnable<SpawnGroupData> cir) {
         Zombie self = (Zombie) (Object) this;
         if (!self.level().isClientSide() && self.getServer() != null) {
-            if (!self.level().isClientSide() && self.getServer() != null) {
-                try {
-                    self.getServer().getCommands().getDispatcher().execute(
-                            "team add herobrine",
-                            self.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException e) {
-
-                }
-            }
-
-            if (!self.level().isClientSide() && self.getServer() != null) {
-                try {
-                    self.getServer().getCommands().getDispatcher().execute(
-                            "team modify herobrine friendlyFire false",
-                            self.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException e) {
-
-                }
-            }
-
-            if (!self.level().isClientSide() && self.getServer() != null) {
-                try {
-                    self.getServer().getCommands().getDispatcher().execute(
-                            "team join herobrine @s",
-                            self.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException e) {
-
-                }
-            }
+            TeamUtil.addOrJoinTeam(self, "herobrine");
 
             try {
                 self.getServer().getCommands().getDispatcher().execute(

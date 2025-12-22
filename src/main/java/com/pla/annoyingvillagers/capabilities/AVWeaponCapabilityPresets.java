@@ -174,6 +174,8 @@ public class AVWeaponCapabilityPresets {
                     .newStyleCombo(Styles.TWO_HAND,
                             WOMAnimations.TORMENT_AUTO_1,
                             WOMAnimations.TORMENT_AUTO_2,
+                            AnimsSolar.SOLAR_AUTO_1,
+                            AnimsSolar.SOLAR_AUTO_4,
                             AVAnimations.YELLOW_SOLAR_AUTO_2,
                             AVAnimations.LEGENDARY_SWORD_WAKE_UP_ATTACK,
                             AVAnimations.YELLOW_NAPOLEON_AUTO_3,

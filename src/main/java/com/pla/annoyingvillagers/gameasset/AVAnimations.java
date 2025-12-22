@@ -184,7 +184,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> SNAKE_BLADE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> IDLE_BREAK;
     public static AnimationManager.AnimationAccessor<StaticAnimation> THROWING_ENDER_PEARL_OFFHAND;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> THROWING_ENDER_PEARL_MAINHAND;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> PLACE_BLOCK;
     public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> SLEDGE_HAMMER_INNATE_DASH;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_SLAYER_ANTITHEUS_AUTO_2;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_SLAYER_ANTITHEUS_AUTO_3;
@@ -240,7 +240,7 @@ public class AVAnimations {
                 (accessor) -> new StaticAnimation(false, accessor, humanoidarmature));
         AVAnimations.THROWING_ENDER_PEARL_OFFHAND = builder.nextAccessor("biped/other/throwing_ender_pearl_offhand",
                 (accessor) -> new StaticAnimation(false, accessor, humanoidarmature));
-        AVAnimations.THROWING_ENDER_PEARL_MAINHAND = builder.nextAccessor("biped/other/throwing_ender_pearl_mainhand",
+        AVAnimations.PLACE_BLOCK = builder.nextAccessor("biped/other/place_block",
                 (accessor) -> new StaticAnimation(false, accessor, humanoidarmature));
         AVAnimations.GLOWING_AGONY_GUARD = builder.nextAccessor("biped/skill/glowing_agony_guard",
                 (accessor) -> (new StaticAnimation(0.05F, true, accessor, humanoidarmature))

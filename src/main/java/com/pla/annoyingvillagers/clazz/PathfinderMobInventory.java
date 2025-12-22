@@ -20,6 +20,8 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 import java.util.List;
 import java.util.Random;
@@ -34,6 +36,16 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
     private boolean healing = false;
     private boolean initialSpawn = false;
     private boolean useBow = true;
+    private final LivingEntityPatch<?> livingEntityPatch =  EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
+    private Entity blockDamage = null;
+
+    public Entity getBlockDamage() {
+        return blockDamage;
+    }
+
+    public void setBlockDamage(Entity blockDamage) {
+        this.blockDamage = blockDamage;
+    }
 
     public boolean isHealing() {
         return healing;
@@ -49,6 +61,10 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
 
     public void setSwapToBowCooldown() {
         this.swapToBowCooldown = random.nextInt(100, 300);
+    }
+
+    public LivingEntityPatch<?> getLivingEntityPatch() {
+        return livingEntityPatch;
     }
 
     public int getGapCooldown() {

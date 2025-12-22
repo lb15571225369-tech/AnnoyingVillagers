@@ -1,7 +1,7 @@
 package com.pla.annoyingvillagers.client.renderer;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.entity.SteveEntity;
+import com.pla.annoyingvillagers.entity.AngrySteveEntity;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
@@ -10,9 +10,9 @@ import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
-public class SteveRenderer extends HumanoidMobRenderer<SteveEntity, HumanoidModel<SteveEntity>> {
+public class AngrySteveRenderer extends HumanoidMobRenderer<AngrySteveEntity, HumanoidModel<AngrySteveEntity>> {
 
-    public SteveRenderer(Context context) {
+    public AngrySteveRenderer(Context context) {
         super(context, new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER)), 0.5F);
         this.addLayer(new HumanoidArmorLayer<>(
                 this,
@@ -21,7 +21,7 @@ public class SteveRenderer extends HumanoidMobRenderer<SteveEntity, HumanoidMode
                 context.getModelManager()));
     }
 
-    public @NotNull ResourceLocation getTextureLocation(SteveEntity steveEntity) {
-        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/steve.png");
+    public @NotNull ResourceLocation getTextureLocation(@NotNull AngrySteveEntity angrySteveEntity) {
+        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/angry_steve.png");
     }
 }

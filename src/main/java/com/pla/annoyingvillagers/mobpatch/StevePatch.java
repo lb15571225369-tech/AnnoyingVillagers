@@ -11,8 +11,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
+import net.shelmarow.combat_evolution.ai.iml.CustomExecuteEntity;
 import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
-import net.shelmarow.combat_evolution.iml.CustomExecuteEntity;
 import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.animations.weapons.AnimsMoonless;
 import reascer.wom.gameasset.animations.weapons.AnimsSolar;
@@ -275,6 +275,10 @@ public class StevePatch extends CEHumanoidPatch implements CustomExecuteEntity {
         // More logic when blocking damage success
     }
 
+    @Override
+    public void playGuardHitAnimation(DamageSource damageSource, boolean canCounter) {
+    }
+
     public AnimationAccessor<? extends StaticAnimation> getHitAnimation(StunType stuntype) {
         return switch (stuntype) {
             case LONG -> Animations.BIPED_HIT_LONG;
@@ -290,6 +294,11 @@ public class StevePatch extends CEHumanoidPatch implements CustomExecuteEntity {
 
     @Override
     public boolean canBeExecuted(LivingEntityPatch<?> livingEntityPatch) {
+        return false;
+    }
+
+    @Override
+    public boolean canUseCustomType(LivingEntityPatch<?> livingEntityPatch) {
         return false;
     }
 
