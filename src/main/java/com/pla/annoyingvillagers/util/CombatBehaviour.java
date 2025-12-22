@@ -10,12 +10,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ThrownEnderpearl;
 import net.minecraft.world.item.ItemStack;
@@ -460,6 +462,36 @@ public class CombatBehaviour {
                     };
                 }
             };
+        }
+    }
+
+    public static void forceLookAt(Entity self, Entity target, float maxYawChange, float maxPitchChange) {
+        if (target == null) return;
+
+        Vec3 eye = self.getEyePosition();
+        Vec3 to = target.getEyePosition().subtract(eye);
+
+        double dx = to.x;
+        double dy = to.y;
+        double dz = to.z;
+
+        double flat = Math.sqrt(dx * dx + dz * dz);
+        float targetYaw = (float)(Mth.atan2(dz, dx) * (180F / Math.PI)) - 90F;
+        float targetPitch = (float)(-(Mth.atan2(dy, flat) * (180F / Math.PI)));
+
+        float yaw = Mth.approachDegrees(self.getYRot(), targetYaw, maxYawChange);
+        float pitch = Mth.clamp(Mth.approachDegrees(self.getXRot(), targetPitch, maxPitchChange), -90F, 90F);
+
+        self.setYRot(yaw);
+        self.setXRot(pitch);
+        self.yRotO = yaw;
+        self.xRotO = pitch;
+
+        if (self instanceof Mob mob) {
+            mob.yBodyRot = yaw;
+            mob.yBodyRotO = yaw;
+            mob.yHeadRot = yaw;
+            mob.yHeadRotO = yaw;
         }
     }
 }

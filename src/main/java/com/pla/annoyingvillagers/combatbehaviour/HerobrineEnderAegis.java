@@ -24,36 +24,15 @@ public class HerobrineEnderAegis {
                                     Behavior.builder()
                                             .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
                                             .custom(HerobrineCommon::canPerformHealing)
-                                            .animationBehavior(WOMAnimations.SHADOWSTEP_LEFT, 0.0F)
-                                            .addExBehavior(HerobrineCommon::performHealingAnimation)
-                            )
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
-                                            .custom(HerobrineCommon::canPerformHealing)
-                                            .animationBehavior(WOMAnimations.SHADOWSTEP_RIGHT, 0.0F)
-                                            .addExBehavior(HerobrineCommon::performHealingAnimation)
-                            )
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
-                                            .custom(HerobrineCommon::canPerformHealing)
-                                            .animationBehavior(WOMAnimations.SHADOWSTEP_BACKWARD, 0.0F)
-                                            .addExBehavior(HerobrineCommon::performHealingAnimation)
-                            )
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
-                                            .custom(HerobrineCommon::canPerformHealing)
-                                            .animationBehavior(WOMAnimations.SHADOWSTEP_FORWARD, 0.0F)
+                                            .animationBehavior(AVAnimations.HEROBRINE_STAGE_CHANGE, 0.0F)
                                             .addExBehavior(HerobrineCommon::performHealingAnimation)
                             )
             )
             .newBehaviorRoot(
                     BehaviorRoot.builder()
-                            .priority(2.0D)
-                            .weight(200)
-                            .maxCooldown (120)
+                            .priority(1.0D)
+                            .weight(30)
+                            .maxCooldown(120)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(7.0D, 48.0D)
@@ -64,7 +43,8 @@ public class HerobrineEnderAegis {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
-                            .weight(200)
+                            .weight(40)
+                            .maxCooldown(100)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 6.0D)
@@ -76,7 +56,8 @@ public class HerobrineEnderAegis {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
-                            .weight(200)
+                            .weight(40)
+                            .maxCooldown(100)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 3.0D)
@@ -122,8 +103,8 @@ public class HerobrineEnderAegis {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
-                            .weight(200)
-                            .maxCooldown (40)
+                            .weight(30)
+                            .maxCooldown(120)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 5.0D)
@@ -144,7 +125,7 @@ public class HerobrineEnderAegis {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(20.0D)
-                            .maxCooldown (100)
+                            .maxCooldown(100)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 5.0D)
@@ -160,7 +141,7 @@ public class HerobrineEnderAegis {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(20.0D)
-                            .maxCooldown (100)
+                            .maxCooldown(120)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(HerobrineCommon::canChangeToSecondForm)

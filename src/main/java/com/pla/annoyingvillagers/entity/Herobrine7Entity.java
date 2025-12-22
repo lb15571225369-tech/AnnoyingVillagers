@@ -33,7 +33,6 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.utils.NameManager;
-import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
@@ -83,7 +82,7 @@ public class Herobrine7Entity extends HerobrineMob {
     }
 
     public boolean hurt(@NotNull DamageSource damagesource, float f) {
-        if (!this.isHealing()) {
+        if (!this.isSacrificing()) {
             Herobrine7OnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
         }
         if (damagesource.is(DamageTypes.FALL)) return false;
@@ -194,7 +193,7 @@ public class Herobrine7Entity extends HerobrineMob {
 
     public void playerTouch(Player player) {
         super.playerTouch(player);
-        if (!this.isHealing()) {
+        if (!this.isSacrificing()) {
             Herobrine7OnPlayerTouchProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
         }
     }

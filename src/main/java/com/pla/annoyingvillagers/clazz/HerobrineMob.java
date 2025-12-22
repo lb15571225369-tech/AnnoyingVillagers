@@ -77,8 +77,10 @@ public class HerobrineMob extends Monster {
     private BlockPos lastFeetPos = null;
     private EliteHerobrineKnockedEntity protectEntity;
     private UUID protectUUID;
-    private int healingAnimationCooldown = 0;
+    private int sacrificingAnimationCooldown = 0;
+    private boolean sacrificing = false;
     private boolean healing = false;
+    private int healingCooldown;
     private final LivingEntityPatch<?> livingEntityPatch =  EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
 
     private Entity firstPossessedHerobrine;
@@ -119,6 +121,14 @@ public class HerobrineMob extends Monster {
         return secondFormHitLeft;
     }
 
+    public void setHealingCooldown() {
+        this.healingCooldown = random.nextInt(300, 600);
+    }
+
+    public int getHealingCooldown() {
+        return healingCooldown;
+    }
+
     public Entity getFirstPossessedHerobrine() {
         return firstPossessedHerobrine;
     }
@@ -135,8 +145,8 @@ public class HerobrineMob extends Monster {
         return fourthPossessedHerobrine;
     }
 
-    public int getHealingAnimationCooldown() {
-        return healingAnimationCooldown;
+    public int getSacrificingAnimationCooldown() {
+        return sacrificingAnimationCooldown;
     }
 
     public boolean isAvailableSlot() {
@@ -218,8 +228,16 @@ public class HerobrineMob extends Monster {
         this.initialSpawn = initialSpawn;
     }
 
+    public boolean isSacrificing() {
+        return sacrificing;
+    }
+
     public boolean isHealing() {
         return healing;
+    }
+
+    public void setHealing(boolean healing) {
+        this.healing = healing;
     }
 
     protected HerobrineMob(EntityType<? extends Monster> pEntityType, Level pLevel) {
@@ -268,6 +286,44 @@ public class HerobrineMob extends Monster {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
+    private Entity getHealingHerobrine() {
+        if (isHealing()) {
+            if (firstPossessedHerobrine != null) {
+                if (firstPossessedHerobrine instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity && lowShadowHerobrineCloneEntity.isHealing()) {
+                    return lowShadowHerobrineCloneEntity;
+                }
+                if (firstPossessedHerobrine instanceof LowHerobrineCloneEntity lowHerobrineCloneEntity && lowHerobrineCloneEntity.isHealing()) {
+                    return lowHerobrineCloneEntity;
+                }
+            }
+            if (secondPossessedHerobrine != null) {
+                if (secondPossessedHerobrine instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity && lowShadowHerobrineCloneEntity.isHealing()) {
+                    return lowShadowHerobrineCloneEntity;
+                }
+                if (secondPossessedHerobrine instanceof LowHerobrineCloneEntity lowHerobrineCloneEntity && lowHerobrineCloneEntity.isHealing()) {
+                    return lowHerobrineCloneEntity;
+                }
+            }
+            if (thirdPossessedHerobrine != null) {
+                if (thirdPossessedHerobrine instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity && lowShadowHerobrineCloneEntity.isHealing()) {
+                    return lowShadowHerobrineCloneEntity;
+                }
+                if (thirdPossessedHerobrine instanceof LowHerobrineCloneEntity lowHerobrineCloneEntity && lowHerobrineCloneEntity.isHealing()) {
+                    return lowHerobrineCloneEntity;
+                }
+            }
+            if (fourthPossessedHerobrine != null) {
+                if (fourthPossessedHerobrine instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity && lowShadowHerobrineCloneEntity.isHealing()) {
+                    return lowShadowHerobrineCloneEntity;
+                }
+                if (fourthPossessedHerobrine instanceof LowHerobrineCloneEntity lowHerobrineCloneEntity && lowHerobrineCloneEntity.isHealing()) {
+                    return lowHerobrineCloneEntity;
+                }
+            }
+        }
+        return null;
+    }
+
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(1, new Goal() {
@@ -294,6 +350,31 @@ public class HerobrineMob extends Monster {
             @Override
             public boolean canContinueToUse() {
                 return protectEntity != null && protectEntity.isAlive() && distanceTo(protectEntity) > 50.0D;
+            }
+        });
+        this.goalSelector.addGoal(1, new Goal() {
+            @Override
+            public boolean canUse() {
+                return protectEntity != null && getHealingHerobrine() != null && getHealingHerobrine().isAlive() && distanceTo(getHealingHerobrine()) > (float)10.0D * 0.9F;
+            }
+
+            @Override
+            public void tick() {
+                if (getHealingHerobrine() != null && getHealingHerobrine().isAlive()) {
+                    getNavigation().moveTo(getHealingHerobrine(), 2.0D);
+                    if (distanceToSqr(getHealingHerobrine()) > 10.0D) {
+                        if (getNavigation().isDone()) {
+                            getNavigation().moveTo(getHealingHerobrine(), 2.0D);
+                        }
+                    } else {
+                        getNavigation().stop();
+                    }
+                }
+            }
+
+            @Override
+            public boolean canContinueToUse() {
+                return isHealing() && getHealingHerobrine() != null && getHealingHerobrine().isAlive() && distanceTo(getHealingHerobrine()) > 50.0D;
             }
         });
         CommonGoals.registerGoalForHostileNpc(this);
@@ -329,7 +410,7 @@ public class HerobrineMob extends Monster {
     }
 
     public boolean hurt(@NotNull DamageSource damageSource, float f) {
-        if (this.getPersistentData().getBoolean(NBT_RISING) || this.getPersistentData().getBoolean(NBT_SINKING) || this.healing) {
+        if (this.getPersistentData().getBoolean(NBT_RISING) || this.getPersistentData().getBoolean(NBT_SINKING) || this.sacrificing) {
             if (!this.level().isClientSide()
                     && !damageSource.is(DamageTypes.IN_WALL)
                     && !damageSource.is(DamageTypes.IN_FIRE)
@@ -354,8 +435,8 @@ public class HerobrineMob extends Monster {
             if (health - f <= 50.0F) {
                 if (this.getState() == 0 || this.getState() == 1) {
                     this.setHealth(1.0F);
-                    if (this.healingAnimationCooldown == 0) {
-                        this.healingAnimationCooldown = 80;
+                    if (this.sacrificingAnimationCooldown == 0) {
+                        this.sacrificingAnimationCooldown = 80;
                         this.setNoAi(true);
                         this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
                         this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
@@ -411,10 +492,12 @@ public class HerobrineMob extends Monster {
         if (pCompound.hasUUID("FourthPossessedHerobrineUuid")) {
             fourthPossessedHerobrineUuid = pCompound.getUUID("FourthPossessedHerobrineUuid");
         }
+        sacrificing = pCompound.getBoolean("Sacrificing");
         healing = pCompound.getBoolean("Healing");
-        healingAnimationCooldown = pCompound.getInt("HealingAnimationCooldown");
+        sacrificingAnimationCooldown = pCompound.getInt("SacrificingAnimationCooldown");
         state = pCompound.getInt("State");
         secondFormHitLeft = pCompound.getInt("SecondFormHitLeft");
+        healingCooldown = pCompound.getInt("HealingCooldown");
     }
 
     public void jump() {
@@ -455,10 +538,12 @@ public class HerobrineMob extends Monster {
         if (fourthPossessedHerobrineUuid != null) {
             pCompound.putUUID("FourthPossessedHerobrineUuid", fourthPossessedHerobrineUuid);
         }
+        pCompound.putBoolean("Sacrificing", sacrificing);
         pCompound.putBoolean("Healing", healing);
-        pCompound.putInt("HealingAnimationCooldown", healingAnimationCooldown);
+        pCompound.putInt("SacrificingAnimationCooldown", sacrificingAnimationCooldown);
         pCompound.putInt("State", state);
         pCompound.putInt("SecondFormHitLeft", secondFormHitLeft);
+        pCompound.putInt("HealingCooldown", healingCooldown);
     }
 
     @Override
@@ -532,8 +617,8 @@ public class HerobrineMob extends Monster {
         }
     }
 
-    private void recoverAfterHealing() {
-        this.healing = false;
+    private void recoverAfterSacrificing() {
+        this.sacrificing = false;
         this.setNoAi(false);
         this.removeAllEffects();
         if (this.livingEntityPatch != null) {
@@ -546,7 +631,12 @@ public class HerobrineMob extends Monster {
             enderAegis.enchant(Enchantments.KNOCKBACK, 3);
             this.setItemInHand(InteractionHand.MAIN_HAND, enderAegis);
         }
-        this.setState(2);
+        this.state = 2;
+    }
+
+    private void recoverAfterHealing() {
+        this.setHealingCooldown();
+        this.healing = false;
     }
 
     @Override
@@ -555,6 +645,8 @@ public class HerobrineMob extends Monster {
         this.floatOnAnyFluid();
         this.checkInsideBlocks();
         if (!this.level().isClientSide) {
+            if (this.healingCooldown > 0) this.healingCooldown = this.healingCooldown - 1;
+
             if (this instanceof HerobrineCloneEntity || this instanceof HerobrineChrisEntity) {
                 placeObsidianBlockWhenInWater(AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get());
             } else if (this instanceof ShadowHerobrineCloneEntity || this instanceof Herobrine7Entity
@@ -649,36 +741,48 @@ public class HerobrineMob extends Monster {
             if (firstPossessedHerobrine != null && !firstPossessedHerobrine.isAlive()) {
                 firstPossessedHerobrine = null;
                 firstPossessedHerobrineUuid = null;
-                if (this.healing && this.getEmptyBoundClone() == 4) {
+                if (this.sacrificing && this.getEmptyBoundClone() == 4) {
+                    recoverAfterSacrificing();
+                }
+                if (this.healing && getHealingHerobrine() == null) {
                     recoverAfterHealing();
                 }
             }
             if (secondPossessedHerobrine != null && !secondPossessedHerobrine.isAlive()) {
                 secondPossessedHerobrine = null;
                 secondPossessedHerobrineUuid = null;
-                if (this.healing && this.getEmptyBoundClone() == 4) {
+                if (this.sacrificing && this.getEmptyBoundClone() == 4) {
+                    recoverAfterSacrificing();
+                }
+                if (this.healing && getHealingHerobrine() == null) {
                     recoverAfterHealing();
                 }
             }
             if (thirdPossessedHerobrine != null && !thirdPossessedHerobrine.isAlive()) {
                 thirdPossessedHerobrine = null;
                 thirdPossessedHerobrineUuid = null;
-                if (this.healing && this.getEmptyBoundClone() == 4) {
+                if (this.sacrificing && this.getEmptyBoundClone() == 4) {
+                    recoverAfterSacrificing();
+                }
+                if (this.healing && getHealingHerobrine() == null) {
                     recoverAfterHealing();
                 }
             }
             if (fourthPossessedHerobrine != null && !fourthPossessedHerobrine.isAlive()) {
                 fourthPossessedHerobrine = null;
                 fourthPossessedHerobrineUuid = null;
-                if (this.healing && this.getEmptyBoundClone() >= 4) {
+                if (this.sacrificing && this.getEmptyBoundClone() >= 4) {
+                    recoverAfterSacrificing();
+                }
+                if (this.healing && getHealingHerobrine() == null) {
                     recoverAfterHealing();
                 }
             }
 
-            if (this.healingAnimationCooldown > 0) {
-                this.healingAnimationCooldown = this.healingAnimationCooldown - 1;
+            if (this.sacrificingAnimationCooldown > 0) {
+                this.sacrificingAnimationCooldown = this.sacrificingAnimationCooldown - 1;
             }
-            if (this.healingAnimationCooldown == 60) {
+            if (this.sacrificingAnimationCooldown == 60) {
                 this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
                 this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
                 if (this.livingEntityPatch != null) {
@@ -693,8 +797,8 @@ public class HerobrineMob extends Monster {
                 }
                 this.summonClonesForNextStage();
             }
-            if (this.healingAnimationCooldown == 50) {
-                this.healing = true;
+            if (this.sacrificingAnimationCooldown == 50) {
+                this.sacrificing = true;
                 if (this.gregUUID != null) {
                     ServerLevel serverLevel = (ServerLevel) this.level();
                     Entity entity = serverLevel.getEntity(this.gregUUID);
@@ -705,8 +809,8 @@ public class HerobrineMob extends Monster {
                     }
                 }
             }
-            if (this.healingAnimationCooldown == 10) {
-                this.healing = true;
+            if (this.sacrificingAnimationCooldown == 10) {
+                this.sacrificing = true;
                 this.setNoAi(true);
                 if (this.gregUUID != null) {
                     ServerLevel serverLevel = (ServerLevel) this.level();
@@ -718,9 +822,7 @@ public class HerobrineMob extends Monster {
                 if (this.firstPossessedHerobrine != null) {
                     ((Mob) firstPossessedHerobrine).addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 30, 3, false, false));
                     this.clearHandAndDropItem(firstPossessedHerobrine);
-                    if (firstPossessedHerobrine instanceof LowHerobrineCloneEntity lowHerobrineCloneEntity) {
-                        lowHerobrineCloneEntity.setSacrificing(true);
-                    } else if (firstPossessedHerobrine instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
+                    if (firstPossessedHerobrine instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
                         lowShadowHerobrineCloneEntity.setSacrificing(true);
                     }
                     firstPossessedHerobrine.lookAt(EntityAnchorArgument.Anchor.EYES, new Vec3(this.getX(), this.getY(), this.getZ()));
@@ -729,9 +831,7 @@ public class HerobrineMob extends Monster {
                 if (this.secondPossessedHerobrine != null) {
                     ((Mob) secondPossessedHerobrine).addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 10, 3, false, false));
                     this.clearHandAndDropItem(secondPossessedHerobrine);
-                    if (secondPossessedHerobrine instanceof LowHerobrineCloneEntity lowHerobrineCloneEntity) {
-                        lowHerobrineCloneEntity.setSacrificing(true);
-                    } else if (secondPossessedHerobrine instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
+                    if (secondPossessedHerobrine instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
                         lowShadowHerobrineCloneEntity.setSacrificing(true);
                     }
                     secondPossessedHerobrine.lookAt(EntityAnchorArgument.Anchor.EYES, new Vec3(this.getX(), this.getY(), this.getZ()));
@@ -740,9 +840,7 @@ public class HerobrineMob extends Monster {
                 if (this.thirdPossessedHerobrine != null) {
                     ((Mob) thirdPossessedHerobrine).addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 10, 3, false, false));
                     this.clearHandAndDropItem(thirdPossessedHerobrine);
-                    if (thirdPossessedHerobrine instanceof LowHerobrineCloneEntity lowHerobrineCloneEntity) {
-                        lowHerobrineCloneEntity.setSacrificing(true);
-                    } else if (thirdPossessedHerobrine instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
+                    if (thirdPossessedHerobrine instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
                         lowShadowHerobrineCloneEntity.setSacrificing(true);
                     }
                     thirdPossessedHerobrine.lookAt(EntityAnchorArgument.Anchor.EYES, new Vec3(this.getX(), this.getY(), this.getZ()));
@@ -752,16 +850,14 @@ public class HerobrineMob extends Monster {
                 if (this.fourthPossessedHerobrine != null) {
                     ((Mob) fourthPossessedHerobrine).addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 10, 3, false, false));
                     this.clearHandAndDropItem(fourthPossessedHerobrine);
-                    if (fourthPossessedHerobrine instanceof LowHerobrineCloneEntity lowHerobrineCloneEntity) {
-                        lowHerobrineCloneEntity.setSacrificing(true);
-                    } else if (fourthPossessedHerobrine instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
+                    if (fourthPossessedHerobrine instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity) {
                         lowShadowHerobrineCloneEntity.setSacrificing(true);
                     }
                     fourthPossessedHerobrine.lookAt(EntityAnchorArgument.Anchor.EYES, new Vec3(this.getX(), this.getY(), this.getZ()));
                     fourthPossessedHerobrine.playSound(AnnoyingVillagersModSounds.HEROBRINE_UNDERSTOOD.get(), 1.0F, 1.0F);
                 }
             }
-            if (this.healing && this.healingAnimationCooldown == 0) {
+            if (this.sacrificing && this.sacrificingAnimationCooldown == 0) {
                 if (this.getEmptyBoundClone() == 4) {
                     this.setNoAi(false);
                     return;
@@ -774,7 +870,7 @@ public class HerobrineMob extends Monster {
             if (this.secondFormHitLeft == 0 && this.state == 1) {
                 this.state = 0;
             }
-            if (this.tickCount % 20 == 0 && this.healing && this.healingAnimationCooldown == 0) {
+            if (this.tickCount % 20 == 0 && this.sacrificing && this.sacrificingAnimationCooldown == 0) {
                 AnnoyingVillagers.PACKET_HANDLER.send(
                         PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this),
                         new ClientboundLitePortalFx(new Vec3(this.getX(), this.getY(), this.getZ()))
@@ -845,6 +941,9 @@ public class HerobrineMob extends Monster {
         if (random.nextFloat() < 0.3f) {
             mob.setItemSlot(EquipmentSlot.FEET, randomDamage(new ItemStack(AnnoyingVillagersModItems.BROKEN_DIAMOND_BOOTS.get())));
         }
+    }
+
+    private void summonLowForSacrificing(ServerLevel server, Vec3 pos) {
     }
 
     private void summonLowCloneAt(ServerLevel server, Vec3 pos, int bindSlot) {

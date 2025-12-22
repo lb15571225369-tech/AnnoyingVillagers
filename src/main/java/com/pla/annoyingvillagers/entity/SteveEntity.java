@@ -250,16 +250,6 @@ public class SteveEntity extends PathfinderMobInventory {
             setWeapon = true;
         }
 
-        if (this.state == 2) {
-            ItemStack legendarySword = new ItemStack(AnnoyingVillagersModItems.LEGENDARY_SWORD.get());
-            legendarySword.enchant(Enchantments.SHARPNESS, 5);
-            legendarySword.enchant(Enchantments.SMITE, 5);
-            legendarySword.enchant(Enchantments.SWEEPING_EDGE, 5);
-            this.setItemInHand(InteractionHand.MAIN_HAND, legendarySword);
-            this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
-            setWeapon = true;
-        }
-
         if (!setWeapon) {
             chance = new Random().nextDouble(0.0, 1.0);
             if (chance <= 0.2) {

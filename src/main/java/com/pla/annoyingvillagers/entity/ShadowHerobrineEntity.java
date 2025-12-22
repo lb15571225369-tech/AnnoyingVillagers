@@ -30,7 +30,6 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.utils.NameManager;
-import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
@@ -91,7 +90,7 @@ public class ShadowHerobrineEntity extends HerobrineMob {
     }
 
     public boolean hurt(@NotNull DamageSource damagesource, float f) {
-        if (!this.isHealing()) {
+        if (!this.isSacrificing()) {
             DarkHerobrineOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
         }
         if (damagesource.is(DamageTypes.FALL)) return false;
@@ -172,7 +171,7 @@ public class ShadowHerobrineEntity extends HerobrineMob {
 
     public void playerTouch(Player player) {
         super.playerTouch(player);
-        if (!this.isHealing()) {
+        if (!this.isSacrificing()) {
             DarkHerobrineOnPlayerTouchProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
         }
     }

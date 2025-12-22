@@ -384,7 +384,7 @@ public class NullEntity extends HerobrineMob {
                        } else {
                            LivingEntity target = this.getTarget();
                            if (target != null && target.isAlive()) {
-                               if (this.isHealing()) {
+                               if (this.isSacrificing()) {
                                    this.nullSwordEntity.stopRelease();
                                }
                                this.nullSwordEntity.moveTo(getRandomPosition(target.getX(), -4, 4), getRandomPosition(target.getY(), -2, 2), getRandomPosition(target.getZ(), -4, 4));
@@ -403,7 +403,7 @@ public class NullEntity extends HerobrineMob {
                         } else {
                             LivingEntity target = this.getTarget();
                             if (target != null && target.isAlive()) {
-                                if (this.isHealing()) {
+                                if (this.isSacrificing()) {
                                     this.nullAxeEntity.stopRelease();
                                 }
                                 this.nullAxeEntity.moveTo(getRandomPosition(target.getX(), -4, 4), getRandomPosition(target.getY(), -2, 2), getRandomPosition(target.getZ(), -4, 4));
@@ -422,7 +422,7 @@ public class NullEntity extends HerobrineMob {
                         } else {
                             LivingEntity target = this.getTarget();
                             if (target != null && target.isAlive()) {
-                                if (this.isHealing()) {
+                                if (this.isSacrificing()) {
                                     this.nullPickaxeEntity.stopRelease();
                                 }
                                 this.nullPickaxeEntity.moveTo(getRandomPosition(target.getX(), -4, 4), getRandomPosition(target.getY(), -2, 2), getRandomPosition(target.getZ(), -4, 4));
@@ -441,7 +441,7 @@ public class NullEntity extends HerobrineMob {
                         } else {
                             LivingEntity target = this.getTarget();
                             if (target != null && target.isAlive()) {
-                                if (this.isHealing()) {
+                                if (this.isSacrificing()) {
                                     this.nullShovelEntity.stopRelease();
                                 }
                                 this.nullShovelEntity.moveTo(getRandomPosition(target.getX(), -4, 4), getRandomPosition(target.getY(), -2, 2), getRandomPosition(target.getZ(), -4, 4));
@@ -460,7 +460,7 @@ public class NullEntity extends HerobrineMob {
                         } else {
                             LivingEntity target = this.getTarget();
                             if (target != null && target.isAlive()) {
-                                if (this.isHealing()) {
+                                if (this.isSacrificing()) {
                                     this.nullHoeEntity.stopRelease();
                                 }
                                 this.nullHoeEntity.moveTo(getRandomPosition(target.getX(), -4, 4), getRandomPosition(target.getY(), -2, 2), getRandomPosition(target.getZ(), -4, 4));
@@ -567,7 +567,7 @@ public class NullEntity extends HerobrineMob {
     }
 
     public boolean hurt(@NotNull DamageSource damagesource, float f) {
-        if (!this.isHealing()) {
+        if (!this.isSacrificing()) {
             NullOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
         }
         if (damagesource.is(DamageTypes.FALL)) return false;

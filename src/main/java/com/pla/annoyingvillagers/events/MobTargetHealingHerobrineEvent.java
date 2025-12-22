@@ -16,7 +16,7 @@ public class MobTargetHealingHerobrineEvent {
         LivingEntity livingEntity = event.getEntity();
         if (livingEntity instanceof Mob mob) {
             if (mob.getTarget() instanceof HerobrineMob herobrineMob
-                    && herobrineMob.isHealing()) {
+                    && (herobrineMob.isSacrificing() || herobrineMob.isHealing())) {
                 if (herobrineMob.getFirstPossessedHerobrine() != null
                         && herobrineMob.getFirstPossessedHerobrine() instanceof LivingEntity living) {
                     mob.setTarget(living);
@@ -33,7 +33,7 @@ public class MobTargetHealingHerobrineEvent {
             }
 
             if (mob.getTarget() instanceof LowHerobrineCloneEntity lowHerobrineCloneEntity
-                    && lowHerobrineCloneEntity.isSacrificing()
+                    && lowHerobrineCloneEntity.isHealing()
                     && lowHerobrineCloneEntity.getPossessedByEntity() != null) {
                 if (!lowHerobrineCloneEntity.isAlive()) {
                     mob.setTarget(lowHerobrineCloneEntity.getPossessedByEntity());
@@ -41,7 +41,7 @@ public class MobTargetHealingHerobrineEvent {
             }
 
             if (mob.getTarget() instanceof LowShadowHerobrineCloneEntity lowShadowHerobrineCloneEntity
-                    && lowShadowHerobrineCloneEntity.isSacrificing()
+                    && (lowShadowHerobrineCloneEntity.isSacrificing() || lowShadowHerobrineCloneEntity.isHealing())
                     && lowShadowHerobrineCloneEntity.getPossessedByEntity() != null) {
                 if (!lowShadowHerobrineCloneEntity.isAlive()) {
                     mob.setTarget(lowShadowHerobrineCloneEntity.getPossessedByEntity());

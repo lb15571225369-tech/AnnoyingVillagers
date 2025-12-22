@@ -8,8 +8,10 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
+import com.pla.annoyingvillagers.network.ClientboundLitePortalFx;
 import com.pla.annoyingvillagers.procedures.HerobrinePortalProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineOnInitialSpawnProcedure;
+import com.pla.annoyingvillagers.util.CombatBehaviour;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
@@ -64,14 +66,14 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
     private HerobrineMob possessedByEntity;
     private UUID possessedByUuid;
     private boolean bound = false;
-    private boolean sacrificing = false;
+    private boolean healing = false;
     private final LivingEntityPatch<?> livingentitypatch = EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
     private EliteHerobrineKnockedEntity protectEntity;
     private UUID protectUUID;
     boolean renderPortal = false;
 
-    public boolean isSacrificing() {
-        return sacrificing;
+    public boolean isHealing() {
+        return healing;
     }
 
     public HerobrineMob getPossessedByEntity() {
@@ -102,8 +104,8 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
         this.possessedByEntity = possessedByEntity;
     }
 
-    public void setSacrificing(boolean sacrificing) {
-        this.sacrificing = sacrificing;
+    public void setHealing(boolean healing) {
+        this.healing = healing;
     }
 
     public LowHerobrineCloneEntity(EntityType<? extends LowHerobrineCloneEntity> type, Level level) {
@@ -120,7 +122,7 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
     }
 
     public boolean hurt(@NotNull DamageSource damageSource, float f) {
-        if (sacrificing) {
+        if (healing) {
             if (new Random().nextBoolean()) {
                 try {
                     Objects.requireNonNull(this.getServer()).getCommands().getDispatcher().execute(
@@ -136,7 +138,7 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
                 return super.hurt(damageSource, f/2.0F);
             }
         } else {
-            if (Math.random() <= 0.5D) {
+            if (Math.random() <= 0.5D && !damageSource.is(DamageTypes.IN_WALL)) {
                 if (this.level() instanceof ServerLevel serverLevel) {
                     serverLevel.playSound(null, this.blockPosition(), AnnoyingVillagersModSounds.OBSIDIAN_PLACE.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     Entity entity = this;
@@ -385,7 +387,7 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
             possessedByUuid = pCompound.getUUID("PossessedByUuid");
         }
         bound = pCompound.getBoolean("Bound");
-        sacrificing = pCompound.getBoolean("Sacrificing");
+        healing = pCompound.getBoolean("Healing");
     }
 
     @Override
@@ -402,7 +404,7 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
             pCompound.putUUID("PossessedByUuid", possessedByUuid);
         }
         pCompound.putBoolean("Bound", bound);
-        pCompound.putBoolean("Sacrificing", sacrificing);
+        pCompound.putBoolean("Healing", healing);
     }
 
     @Override
@@ -454,8 +456,8 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
             }
             if (!bound && possessedByEntity != null
                     && possessedByEntity.isAlive()
-                    && !possessedByEntity.isHealing()
-                    && possessedByEntity.getHealingAnimationCooldown() == 0) {
+                    && (!possessedByEntity.isSacrificing() || !possessedByEntity.isHealing())
+                    && possessedByEntity.getSacrificingAnimationCooldown() == 0) {
                 if (possessedByEntity.isAvailableSlot()) {
                     if (possessedByEntity.boundPossessed(this)) {
                         this.bound = true;
@@ -485,37 +487,42 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
                     this.kill();
                 }
             }
-            if (this.sacrificing) {
+            if (this.healing) {
                 if (this.getHealth() <= 2) {
-                    this.sacrificing = false;
+                    this.healing = false;
                     autoKill = true;
                     this.kill();
                 }
                 this.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 1, 3, false, false));
                 if (this.livingentitypatch != null) {
-                    this.livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_ASSISTANCE, 0.0F);
+                    this.livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_SACRIFICING, 0.0F);
                 }
                 if (this.tickCount % 140 == 0 && this.possessedByEntity.getHealth() < this.possessedByEntity.getMaxHealth() * 0.8) {
                     this.playSound(AnnoyingVillagersModSounds.HEROBRINE_UNDERSTOOD.get(), 1.0F, 1.0F);
                 }
                 if (this.tickCount % 20 == 0 && this.possessedByEntity != null) {
                     if (this.possessedByEntity.getMaxHealth() == this.possessedByEntity.getHealth()) {
-                        this.sacrificing = false;
+                        this.healing = false;
                         autoKill = true;
                         this.kill();
                     }
                     if (this.getHealth() <= 4) {
-                        this.sacrificing = false;
+                        this.healing = false;
                         autoKill = true;
                         this.kill();
                     } else {
                         this.setHealth(this.getHealth() - 2.0F);
                     }
                     this.possessedByEntity.heal(this.possessedByEntity.getMaxHealth() * 0.01F);
+                    AnnoyingVillagers.PACKET_HANDLER.send(
+                            PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this),
+                            new ClientboundLitePortalFx(new Vec3(this.getX(), this.getY(), this.getZ()))
+                    );
+                    CombatBehaviour.forceLookAt(this, this.possessedByEntity, 60.0F, 60.0F);
                 }
                 if (this.possessedByEntity != null) {
                     ServerLevel server = (ServerLevel)this.level();
-                    Vec3 from = getArmPosition(this, new Vec3f(0,0,0), Armatures.BIPED.get().toolR);
+                    Vec3 from = getHealingArmPosition(this, new Vec3f(0,0,0), Armatures.BIPED.get().toolR);
                     if (from == null) {
                         return;
                     }
@@ -567,7 +574,7 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
         }
     }
 
-    private static Vec3 getArmPosition(Entity entity, Vec3f translation, Joint joint) {
+    private static Vec3 getHealingArmPosition(Entity entity, Vec3f translation, Joint joint) {
         float handToTip = 1.2F;
         float yOffset = 0.0F;
         LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);

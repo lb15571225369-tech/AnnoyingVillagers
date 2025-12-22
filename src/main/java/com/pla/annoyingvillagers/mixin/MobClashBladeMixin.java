@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.mixin;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.animations.BowAttackAnimation;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
@@ -10,6 +11,8 @@ import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.efclash_blade.event.MobClashBladeEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -108,19 +111,28 @@ public class MobClashBladeMixin {
 
                 BiFunction<Integer, Integer, int[]> toWorld = getIntegerIntegerBiFunction(defender, rot);
 
-                BlockPos projXZ = BlockPos.containing(projectile.getX(), 0.0, projectile.getZ());
-                int projSurfaceY = serverLevel.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, projXZ).getY();
-
-                int topY = Mth.floor(projectile.getY());
-
                 ItemStack handStack = livingEntity.getItemInHand(InteractionHand.MAIN_HAND);
                 BlockState placeState = Blocks.COBBLESTONE.defaultBlockState();
                 if (handStack.getItem() instanceof BlockItem blockItem) {
                     placeState = blockItem.getBlock().defaultBlockState();
                 }
 
-                for (int y = projSurfaceY; y <= topY; y++) {
-                    int layer = y - projSurfaceY;
+                BlockPos baseXZ;
+                int topY;
+                ResourceLocation key = BuiltInRegistries.ENTITY_TYPE.getKey(projectile.getType());
+                if (key.getNamespace().equals("tacz")) {
+                    Direction facing = defender.getDirection();
+                    baseXZ = defender.blockPosition().relative(facing, 1);
+                    topY = Mth.floor(defender.getY() + defender.getBbHeight());
+                } else {
+                    baseXZ = BlockPos.containing(projectile.getX(), 0.0, projectile.getZ());
+                    topY = Mth.floor(projectile.getY());
+                }
+                int surfaceY = serverLevel.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, baseXZ).getY();
+                BlockPos projXZ = new BlockPos(baseXZ.getX(), 0, baseXZ.getZ());
+
+                for (int y = surfaceY; y <= topY; y++) {
+                    int layer = y - surfaceY;
 
                     BlockPos center = new BlockPos(projXZ.getX(), y, projXZ.getZ());
                     if (!serverLevel.getBlockState(center).canBeReplaced()) break;
@@ -276,19 +288,29 @@ public class MobClashBladeMixin {
                             } else if (chance <= 0.5) {
                                 defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_LEFT, 0.0F);
                                 CombatCommon.swapToBow((MobPatch<?>) defenderLivingEntityPatch);
-                            } else if (chance <= 0.75) {
+                            } else if (chance <= 0.7) {
+                                defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_ROLL_BACKWARD, 0.0F);
+                                CombatCommon.swapToBow((MobPatch<?>) defenderLivingEntityPatch);
+                            } else if (chance <= 0.8) {
                                 defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_RIGHT, 0.0F);
                                 CombatCommon.swapToMelee((MobPatch<?>) defenderLivingEntityPatch);
-                            } else {
+                            } else if (chance <= 0.9)  {
                                 defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_LEFT, 0.0F);
+                                CombatCommon.swapToMelee((MobPatch<?>) defenderLivingEntityPatch);
+                            } else {
+                                defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_ROLL_BACKWARD, 0.0F);
                                 CombatCommon.swapToMelee((MobPatch<?>) defenderLivingEntityPatch);
                             }
                         } else {
-                            if (new Random().nextBoolean()) {
+                            double chance = new Random().nextDouble(0.0, 1.0);
+                            if (chance <= 0.4) {
                                 defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_RIGHT, 0.0F);
                                 CombatCommon.swapToMelee((MobPatch<?>) defenderLivingEntityPatch);
-                            } else {
+                            } else if (chance <= 0.5) {
                                 defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_LEFT, 0.0F);
+                                CombatCommon.swapToMelee((MobPatch<?>) defenderLivingEntityPatch);
+                            } else {
+                                defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_ROLL_BACKWARD, 0.0F);
                                 CombatCommon.swapToMelee((MobPatch<?>) defenderLivingEntityPatch);
                             }
                         }
