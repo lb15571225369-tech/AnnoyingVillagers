@@ -125,7 +125,7 @@ public class NpcBow {
                                     Behavior.builder()
                                             .custom(CombatCommon::canThrowEnderPearl)
                                             .withinDistance(7.0D, 14.0D)
-                                            .animationBehavior(AVAnimations.THROWING_ENDER_PEARL_OFFHAND, 0.0F)
+                                            .animationBehavior(AVAnimations.CASTING_ONE_HAND_TOP, 0.0F)
                                             .addExBehavior(CombatCommon::performEnderPearlToTarget)
                             )
             );

@@ -1,10 +1,13 @@
 /*
- * Parts of this file are adapted from the EpicACG mod
- * and are licensed under the GNU General Public License v3 (GPL-3.0).
- * Copyright (C) the original EpicACG authors.
+ * Parts of this file are adapted from the EpicACG mod and are licensed under the
+ * GNU General Public License v3 (GPL-3.0). Copyright (C) the original EpicACG authors.
+ * See the included GPL-3.0 license file or https://www.gnu.org/licenses/gpl-3.0.html.
  *
- * See the included GPL-3.0 license file or https://www.gnu.org/licenses/gpl-3.0.html
- * for details.
+ * This file may also include assets/data derived from:
+ * "Epic Fight x Iron's Spells: Enhanced Animations" by YukamiNeeSan (MIT License).
+ * Used with attribution. Original project:
+ * https://www.curseforge.com/minecraft/mc-mods/epic-fight-x-irons-spells-enhanced-animations
+ * MIT notice: Copyright (c) YukamiNeeSan. See upstream/license for full text.
  */
 
 package com.pla.annoyingvillagers.gameasset;
@@ -46,6 +49,7 @@ import yesman.epicfight.api.animation.property.AnimationProperty.AttackPhaseProp
 import yesman.epicfight.api.animation.property.AnimationProperty.StaticAnimationProperty;
 import yesman.epicfight.api.animation.types.*;
 import yesman.epicfight.api.animation.types.AttackAnimation.Phase;
+import yesman.epicfight.api.collider.Collider;
 import yesman.epicfight.api.utils.HitEntityList.Priority;
 import yesman.epicfight.api.utils.LevelUtil;
 import yesman.epicfight.api.utils.TimePairList;
@@ -183,7 +187,6 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_AEGIS_BULL_CHARGE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> SNAKE_BLADE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> IDLE_BREAK;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> THROWING_ENDER_PEARL_OFFHAND;
     public static AnimationManager.AnimationAccessor<StaticAnimation> PLACE_BLOCK;
     public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> SLEDGE_HAMMER_INNATE_DASH;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_SLAYER_ANTITHEUS_AUTO_2;
@@ -191,8 +194,6 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_SLAYER_ANTITHEUS_AUTO_4;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_SLAYER_ANTITHEUS_AGRESSION;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_SLAYER_ANTITHEUS_GUILLOTINE;
-    public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> ENDER_SLAYER_MOONLESS_LUNAR_FULLMOON;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> ENDER_SLAYER_ANTITHEUS_AIMING;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_AEGIS_MOONLESS_AUTO_1;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_AEGIS_MOONLESS_AUTO_2;
     public static AnimationManager.AnimationAccessor<BowAttackAnimation> BOW_AUTO_1;
@@ -205,7 +206,11 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> YELLOW_NAPOLEON_AUTO_4;
     public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> YELLOW_NAPOLEON_AUSTERLITZ_SHOOT;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> MOB_RAVANGER_CHARGE;
-    public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> MOB_NAPOLEON_RELOAD_1;
+    public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> ENDER_AEGIS_NAPOLEON_RELOAD_1;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> CASTING_ONE_HAND_TOP;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> CASTING_ONE_HAND_INWARD;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> CASTING_ONE_HAND_BUFF;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> CHANTING_ONE_HAND_FRONT;
 
     @SubscribeEvent
     public static void registerAnimations(AnimationManager.AnimationRegistryEvent event) {
@@ -224,6 +229,8 @@ public class AVAnimations {
                 (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
         AVAnimations.HEROBRINE_STAGE_CHANGE = builder.nextAccessor("biped/other/herobrine_stage_change",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
+        AVAnimations.PORTAL_SUMMON = builder.nextAccessor("biped/other/portal_summon",
+                (accessor) -> new StaticAnimation(false, accessor, humanoidarmature));
         AVAnimations.KNOCKED_ELITE = builder.nextAccessor("biped/other/knocked_elite",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
         AVAnimations.EATING_ELITE_1 = builder.nextAccessor("biped/other/eating_elite_1",
@@ -237,8 +244,6 @@ public class AVAnimations {
         AVAnimations.SNAKE_BLADE = builder.nextAccessor("biped/other/snake_blade",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
         AVAnimations.IDLE_BREAK = builder.nextAccessor("biped/other/idle_break",
-                (accessor) -> new StaticAnimation(false, accessor, humanoidarmature));
-        AVAnimations.THROWING_ENDER_PEARL_OFFHAND = builder.nextAccessor("biped/other/throwing_ender_pearl_offhand",
                 (accessor) -> new StaticAnimation(false, accessor, humanoidarmature));
         AVAnimations.PLACE_BLOCK = builder.nextAccessor("biped/other/place_block",
                 (accessor) -> new StaticAnimation(false, accessor, humanoidarmature));
@@ -571,7 +576,7 @@ public class AVAnimations {
                         .addState(EntityState.CAN_SKILL_EXECUTION, false)
                         .addState(EntityState.CAN_BASIC_ATTACK, false)
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
-        AVAnimations.KNOCKDOWN_RIGHT = builder.nextAccessor("biped/combat/knockdown_forward",
+        AVAnimations.KNOCKDOWN_RIGHT = builder.nextAccessor("biped/combat/knockdown_right",
                 (accessor) -> (new LongHitAnimation(0.1F, accessor, humanoidarmature))
                         .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
                         .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true)
@@ -1125,17 +1130,6 @@ public class AVAnimations {
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.7F)
                         .addProperty(AttackAnimationProperty.EXTRA_COLLIDERS, 2)
                         .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true));
-        AVAnimations.ENDER_SLAYER_MOONLESS_LUNAR_FULLMOON = builder.nextAccessor("biped/other/ender_slayer_moonless_lunar_fullmoon", (accessor) -> (new SpecialAttackAnimation(0.05F, accessor, humanoidarmature,
-                new Phase(0.0F, 0.6F, 0.7F, 0.85F, Float.MAX_VALUE, humanoidarmature.get().rootJoint, null)))
-                .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(2.5F))
-                .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(20.0F))
-                .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.FALL)
-                .addProperty(AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE))
-                .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6F)
-                .addProperty(StaticAnimationProperty.POSE_MODIFIER, null));
-        AVAnimations.ENDER_SLAYER_ANTITHEUS_AIMING = builder.nextAccessor("biped/other/ender_slayer_antitheus_aiming",
-                (accessor) -> new StaticAnimation(false, accessor, humanoidarmature)
-                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, (self, entitypatch, speed, prevElapsedTime, elapsedTime) -> 2.0F));
         AVAnimations.ENDER_AEGIS_MOONLESS_AUTO_1 = builder.nextAccessor("biped/combat/ender_aegis_moonless_auto_1",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.05F, accessor, humanoidarmature,
                         new Phase(0.0F, 0.25F, 0.45F, 0.5F, Float.MAX_VALUE, humanoidarmature.get().toolR, null)))
@@ -1292,7 +1286,7 @@ public class AVAnimations {
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F)
                         .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
                         .addProperty(StaticAnimationProperty.POSE_MODIFIER, null));
-        AVAnimations.MOB_NAPOLEON_RELOAD_1 = builder.nextAccessor("biped/skill/mob_napoleon_reload_1",
+        AVAnimations.ENDER_AEGIS_NAPOLEON_RELOAD_1 = builder.nextAccessor("biped/skill/ender_aegis_napoleon_reload_1",
                 (accessor) -> (new SpecialAttackAnimation(0.15F, accessor, humanoidarmature,
                         new Phase(0.0F, 0.15F, 0.25F, 0.3F, 0.3F, humanoidarmature.get().toolR, null),
                         new Phase(0.3F, 0.35F, 0.45F, 0.5F, 0.5F, humanoidarmature.get().toolR, null),
@@ -1315,7 +1309,22 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.0F), 4)
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD, 4)
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F)
-                        .addProperty(WomAnimationProperty.ANTI_STUN_MULTIPLYER, 1.0F));
+                        .addProperty(WomAnimationProperty.ANTI_STUN_MULTIPLYER, 1.0F)
+                        .addEvents(new AnimationEvent[]{
+                                AnimationEvent.InTimeEvent.create(2.0F, (livingEntityPatch, self, p) -> {
+                                    if (!livingEntityPatch.isLogicalClient()) {
+                                        livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
+                                    }
+                                }, Side.SERVER)
+                        }));
+        AVAnimations.CASTING_ONE_HAND_TOP = builder.nextAccessor("biped/other/casting_one_hand_top",
+                (accessor) -> new StaticAnimation(false, accessor, humanoidarmature));
+        AVAnimations.CASTING_ONE_HAND_INWARD = builder.nextAccessor("biped/other/casting_one_hand_inward",
+                (accessor) -> new StaticAnimation(false, accessor, humanoidarmature));
+        AVAnimations.CASTING_ONE_HAND_BUFF = builder.nextAccessor("biped/other/casting_one_hand_buff",
+                (accessor) -> new StaticAnimation(false, accessor, humanoidarmature));
+        AVAnimations.CHANTING_ONE_HAND_FRONT = builder.nextAccessor("biped/other/chanting_one_hand_front",
+                (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
     }
 
     private static class ReuseableEvents {

@@ -539,7 +539,7 @@ public class LowShadowHerobrineCloneEntity extends Monster {
                         CombatBehaviour.forceLookAt(this, this.possessedByEntity, 60.0F, 60.0F);
                     }
                 }
-                if (this.possessedByEntity != null) {
+                if (this.possessedByEntity != null && this.possessedByEntity.isAlive()) {
                     ServerLevel server = (ServerLevel)this.level();
                     Vec3 from = null;
                     if (this.sacrificing) {
@@ -593,6 +593,11 @@ public class LowShadowHerobrineCloneEntity extends Monster {
                                 vx, vy, vz,
                                 0.0);
                     }
+                } else {
+                    this.sacrificing = false;
+                    this.healing = false;
+                    autoKill = true;
+                    this.kill();
                 }
             }
         }

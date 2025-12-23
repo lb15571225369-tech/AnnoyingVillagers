@@ -4,11 +4,15 @@ import java.util.Objects;
 import java.util.Random;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -19,19 +23,20 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
-import yesman.epicfight.world.capabilities.EpicFightCapabilities;
-import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
-import yesman.epicfight.world.damagesource.StunType;
+import yesman.epicfight.api.utils.LevelUtil;
+import yesman.epicfight.particle.EpicFightParticles;
 
 @OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
 public class StealthAttackEntity extends AbstractArrow implements ItemSupplier {
     public boolean fromAegis = false;
+
     public StealthAttackEntity(SpawnEntity spawnentity, Level level) {
         super(AnnoyingVillagersModEntities.STEALTH_ATTACK_PROJECTILE.get(), level);
     }
@@ -73,6 +78,18 @@ public class StealthAttackEntity extends AbstractArrow implements ItemSupplier {
         }
         if (this.fromAegis && !this.level().isClientSide()) {
             HerobrineWeaponEffectProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+            doGroundSlamAtSelf();
+        }
+    }
+
+    private void doGroundSlamAtSelf() {
+        if (!(this.level() instanceof ServerLevel serverLevel)) return;
+
+        BlockPos floor = BlockPos.containing(this.position().x, this.position().y - 1.0, this.position().z);
+        Vec3 center = new Vec3(this.getX(), floor.getY(), this.getZ());
+        Entity src = (this.getOwner() != null) ? this.getOwner() : this;
+        if (src instanceof LivingEntity livingSrc) {
+            LevelUtil.circleSlamFracture(livingSrc, serverLevel, center, 3.5D, true, true, true);
         }
     }
 
@@ -118,16 +135,17 @@ public class StealthAttackEntity extends AbstractArrow implements ItemSupplier {
         Entity vicTim = pResult.getEntity();
         Entity owner = this.getOwner();
         if (vicTim == owner) return;
-        if (fromAegis && !vicTim.level().isClientSide() && vicTim.getServer() != null) {
-            try {
-                vicTim.getServer().getCommands().getDispatcher().execute("execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1", vicTim.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                vicTim.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:spark ^ ^1.5 ^0.8 0 0 0 0.1 5", vicTim.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(vicTim, LivingEntityPatch.class);
-                if (livingEntityPatch != null) {
-                    livingEntityPatch.applyStun(StunType.LONG, 40.0F);
-                }
-            } catch (CommandSyntaxException ignored) {
-            }
+        if (fromAegis && vicTim.level() instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(EpicFightParticles.HIT_BLUNT.get(),
+                    vicTim.getX(), vicTim.getY() + 1.5, vicTim.getZ() + 0.8,
+                    1,
+                    0.1, 0.1, 0.1,
+                    1);
+            serverLevel.sendParticles(AnnoyingVillagersModParticleTypes.SPARK.get(),
+                    vicTim.getX(), vicTim.getY() + 1.5, vicTim.getZ() + 0.8,
+                    5,
+                    0, 0, 0,
+                    0.1);
         }
         super.onHitEntity(pResult);
     }

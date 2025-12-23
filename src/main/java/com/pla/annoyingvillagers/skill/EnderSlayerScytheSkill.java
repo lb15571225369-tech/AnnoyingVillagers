@@ -42,7 +42,7 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
                             serverPlayerPatch.playAnimationSynchronized(AVAnimations.SWORD_SKILL, 0.0F);
                             babyEnderDragonEntity.setShootingState(false);
                         } else {
-                            serverPlayerPatch.playAnimationSynchronized(AVAnimations.ENDER_SLAYER_ANTITHEUS_AIMING, 0.0F);
+                            serverPlayerPatch.playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_TOP, 0.0F);
                             babyEnderDragonEntity.setShootingState(true);
                             skillContainer.getExecutor().playSound(AnnoyingVillagersModSounds.SECOND_FORM_RELEASE.get(), 0.0F, 0.0F);
                         }

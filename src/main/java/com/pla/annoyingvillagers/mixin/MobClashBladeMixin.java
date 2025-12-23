@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.mixin;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.animations.BowAttackAnimation;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
@@ -58,7 +57,7 @@ public class MobClashBladeMixin {
         }
 
         if (defender instanceof AegisHerobrineEntity
-                && defenderDynamicAnimation == AVAnimations.MOB_NAPOLEON_RELOAD_1) {
+                && defenderDynamicAnimation == AVAnimations.ENDER_AEGIS_NAPOLEON_RELOAD_1) {
             cir.setReturnValue(true);
         }
 

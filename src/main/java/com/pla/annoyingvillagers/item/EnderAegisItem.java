@@ -6,11 +6,13 @@ import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -59,61 +61,69 @@ public class EnderAegisItem extends SwordItem {
     }
 
     public static void shieldShoot(Level level, Entity entity) {
-        if (level instanceof ServerLevel serverLevel) {
-            Vec3 forward = entity.getLookAngle().normalize();
-            Vec3 up = entity.getUpVector(1.0F).normalize();
-            Vec3 right = forward.cross(up).normalize();
+        if (!(level instanceof ServerLevel serverLevel)) return;
 
-            Vec3 eye = entity.getEyePosition(1.0F);
+        Vec3 look = entity.getLookAngle();
+        Vec3 forward = new Vec3(look.x, 0.0D, look.z);
 
-            double spawnForward = 0.0D;
-            double spread = 0.05D;
-            float velocity = 2.0F;
-            float inaccuracy = 0.0F;
+        if (forward.lengthSqr() < 1.0E-6D) {
+            float yawRad = (float) Math.toRadians(entity.getYRot());
+            forward = new Vec3(-Mth.sin(yawRad), 0.0D, Mth.cos(yawRad));
+        }
+        forward = forward.normalize();
 
-            Vec3[] offsets = new Vec3[] {
-                    Vec3.ZERO,
-                    up,
-                    up.scale(-1.0D),
-                    right.scale(-1.0D),
-                    right
-            };
+        Vec3 up = new Vec3(0.0D, 1.0D, 0.0D);
+        Vec3 right = forward.cross(up).normalize();
 
-            for (Vec3 off : offsets) {
-                Vec3 spawnPos = eye.add(forward.scale(spawnForward)).add(off.scale(0.15D));
-                Vec3 dir = forward.add(off.scale(spread)).normalize();
+        Vec3 eye = entity.getEyePosition(1.0F);
 
-                StealthAttackEntity proj = new StealthAttackEntity(
-                        AnnoyingVillagersModEntities.STEALTH_ATTACK_PROJECTILE.get(), level
-                );
-                proj.setOwner(entity);
-                proj.setBaseDamage(10.0F);
-                proj.setKnockback(5);
-                proj.setSilent(true);
-                proj.setPierceLevel((byte) 5);
-                proj.fromAegis = true;
+        double spawnForward = 0.0D;
+        double spread = 0.05D;
+        float velocity = 1.2F;
+        float inaccuracy = 0.0F;
 
-                proj.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
-                proj.shoot(dir.x, dir.y, dir.z, velocity, inaccuracy);
+        Vec3[] offsets = new Vec3[] {
+                Vec3.ZERO,
+                up,
+                up.scale(-1.0D),
+                right.scale(-1.0D),
+                right
+        };
 
-                serverLevel.addFreshEntity(proj);
-            }
+        for (Vec3 off : offsets) {
+            Vec3 spawnPos = eye.add(forward.scale(spawnForward)).add(off.scale(0.15D));
+            Vec3 dir = forward.add(off.scale(spread)).normalize();
 
-            Vec3 tipPos = eye.add(forward.scale(2.0D));
-            serverLevel.sendParticles(
-                    AnnoyingVillagersModParticleTypes.SPARK.get(),
-                    tipPos.x, tipPos.y, tipPos.z,
-                    300, 0.0D, 0.0D, 0.0D, 0.2D
+            StealthAttackEntity proj = new StealthAttackEntity(
+                    AnnoyingVillagersModEntities.STEALTH_ATTACK_PROJECTILE.get(), level
             );
+            proj.setOwner(entity);
+            proj.setBaseDamage(15.0F);
+            proj.setKnockback(5);
+            proj.setSilent(true);
+            proj.setPierceLevel((byte) 5);
+            proj.fromAegis = true;
 
-            level.playSound(null, entity.blockPosition(), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "cooldown"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
-            level.playSound(null, entity.blockPosition(), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_shot"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
-            level.playSound(null, entity.blockPosition(), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "bloom"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+            proj.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
+            proj.shoot(dir.x, dir.y, dir.z, velocity, inaccuracy);
 
-            LivingEntityPatch<?> livingentitypatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
-            if (livingentitypatch != null) {
-                livingentitypatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
-            }
+            serverLevel.addFreshEntity(proj);
+        }
+
+        Vec3 tipPos = eye.add(forward.scale(2.0D));
+        serverLevel.sendParticles(
+                AnnoyingVillagersModParticleTypes.SPARK.get(),
+                tipPos.x, tipPos.y, tipPos.z,
+                300, 0.0D, 0.0D, 0.0D, 0.2D
+        );
+
+        level.playSound(null, entity.blockPosition(), AnnoyingVillagersModSounds.COOL_DOWN.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
+        level.playSound(null, entity.blockPosition(), AnnoyingVillagersModSounds.ENDER_SHOT.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
+        level.playSound(null, entity.blockPosition(), AnnoyingVillagersModSounds.BLOOM.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
+
+        LivingEntityPatch<?> livingentitypatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+        if (livingentitypatch != null) {
+            livingentitypatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
         }
     }
 

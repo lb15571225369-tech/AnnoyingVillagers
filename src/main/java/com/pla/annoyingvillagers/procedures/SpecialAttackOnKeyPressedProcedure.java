@@ -6,7 +6,6 @@ import com.pla.annoyingvillagers.entity.BabyEnderDragonEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.item.*;
 import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
 import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
@@ -16,7 +15,6 @@ import com.pla.annoyingvillagers.skill.WoopieTheSwordSkill;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -34,7 +32,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import reascer.wom.gameasset.WOMAnimations;
-import reascer.wom.gameasset.animations.weapons.AnimsAgony;
 import reascer.wom.gameasset.animations.weapons.AnimsHerrscher;
 import reascer.wom.gameasset.animations.weapons.AnimsNapoleon;
 import reascer.wom.gameasset.animations.weapons.AnimsRuine;
@@ -200,7 +197,7 @@ public class SpecialAttackOnKeyPressedProcedure {
                         }
                     }
                     if (success) {
-                        livingEntityPatch.playAnimationSynchronized(AVAnimations.ENDER_SLAYER_MOONLESS_LUNAR_FULLMOON, 0.0F);
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_INWARD, 0.0F);
                     } else {
                         livingEntityPatch.playAnimationSynchronized(AnimsNapoleon.NAPOLEON_AUTO_3, 0.0F);
                     }

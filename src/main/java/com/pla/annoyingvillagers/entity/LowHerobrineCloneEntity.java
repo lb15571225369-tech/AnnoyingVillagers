@@ -520,7 +520,7 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
                     );
                     CombatBehaviour.forceLookAt(this, this.possessedByEntity, 60.0F, 60.0F);
                 }
-                if (this.possessedByEntity != null) {
+                if (this.possessedByEntity != null && this.possessedByEntity.isAlive()) {
                     ServerLevel server = (ServerLevel)this.level();
                     Vec3 from = getHealingArmPosition(this, new Vec3f(0,0,0), Armatures.BIPED.get().toolR);
                     if (from == null) {
@@ -569,6 +569,10 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
                                 vx, vy, vz,
                                 0.0);
                     }
+                } else {
+                    this.healing = false;
+                    autoKill = true;
+                    this.kill();
                 }
             }
         }

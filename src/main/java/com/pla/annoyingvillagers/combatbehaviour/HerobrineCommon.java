@@ -1,12 +1,10 @@
 package com.pla.annoyingvillagers.combatbehaviour;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.item.EnderAegisItem;
-import com.pla.annoyingvillagers.network.ClientboundLitePortalFx;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -16,7 +14,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 
@@ -55,6 +52,7 @@ public class HerobrineCommon {
         if (!(entity.level() instanceof ServerLevel serverLevel)) return;
         if (!(entity instanceof HerobrineMob herobrineMob)) return;
 
+        herobrineMob.setHealing(true);
         List<Entity> bound = getEntities(herobrineMob);
 
         Random random = new Random();
@@ -119,12 +117,6 @@ public class HerobrineCommon {
             low.setHealing(true);
             low.setNoAi(true);
         }
-
-        AnnoyingVillagers.PACKET_HANDLER.send(
-                PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> herobrineMob),
-                new ClientboundLitePortalFx(new Vec3(herobrineMob.getX(), herobrineMob.getY(), herobrineMob.getZ()))
-        );
-        herobrineMob.setHealing(true);
     }
 
     private static @NotNull List<Entity> getEntities(HerobrineMob herobrineMob) {

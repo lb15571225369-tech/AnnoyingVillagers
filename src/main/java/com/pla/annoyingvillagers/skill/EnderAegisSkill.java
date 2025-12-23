@@ -13,13 +13,11 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import reascer.wom.gameasset.animations.weapons.AnimsNapoleon;
 import yesman.epicfight.api.animation.AnimationPlayer;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.EntityState;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.AttackResult;
-import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.particle.HitParticleType;
@@ -57,7 +55,7 @@ public class EnderAegisSkill extends WeaponInnateSkill {
 
     @Override
     public void executeOnServer(SkillContainer skillContainer, FriendlyByteBuf friendlyByteBuf) {
-        skillContainer.getExecutor().playAnimationSynchronized(AnimsNapoleon.NAPOLEON_RELOAD_1, 0.0F);
+        skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.ENDER_AEGIS_NAPOLEON_RELOAD_1, 0.0F);
         skillContainer.getExecutor().playSound(AnnoyingVillagersModSounds.SECOND_FORM_RELEASE.get(), 0.0F, 0.0F);
         if (skillContainer.isActivated()) {
             this.cancelOnServer(skillContainer, friendlyByteBuf);
