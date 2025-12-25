@@ -119,7 +119,7 @@ public class HerobrineCommon {
         }
     }
 
-    private static @NotNull List<Entity> getEntities(HerobrineMob herobrineMob) {
+    public static @NotNull List<Entity> getEntities(HerobrineMob herobrineMob) {
         List<Entity> bound = new ArrayList<>(4);
         Entity c1 = herobrineMob.getFirstPossessedHerobrine();
         Entity c2 = herobrineMob.getSecondPossessedHerobrine();

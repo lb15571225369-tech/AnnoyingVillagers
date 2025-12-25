@@ -8,8 +8,11 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class SpecialAttackCooldownEvent {
+public class AttackCooldownEvent {
     private static final String NBT_SPECIAL_CD = "SpecialAttackCooldown";
+    private static final String NBT_KICK_CD = "KickAttackCooldown";
+    private static final String NBT_STUN_ESCAPE_CD = "StunEscapeCooldown";
+
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
@@ -24,6 +27,24 @@ public class SpecialAttackCooldownEvent {
                 data.putInt(NBT_SPECIAL_CD, coolDownValue - 1);
             } else {
                 data.remove(NBT_SPECIAL_CD);
+            }
+        }
+
+        if (player.tickCount % 20 == 0 && data.contains(NBT_KICK_CD)) {
+            int coolDownValue = data.getInt(NBT_KICK_CD);
+            if (coolDownValue > 0) {
+                data.putInt(NBT_KICK_CD, coolDownValue - 1);
+            } else {
+                data.remove(NBT_KICK_CD);
+            }
+        }
+
+        if (player.tickCount % 20 == 0 && data.contains(NBT_STUN_ESCAPE_CD)) {
+            int coolDownValue = data.getInt(NBT_STUN_ESCAPE_CD);
+            if (coolDownValue > 0) {
+                data.putInt(NBT_STUN_ESCAPE_CD, coolDownValue - 1);
+            } else {
+                data.remove(NBT_STUN_ESCAPE_CD);
             }
         }
     }

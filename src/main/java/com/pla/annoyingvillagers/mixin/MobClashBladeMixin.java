@@ -1,12 +1,18 @@
 package com.pla.annoyingvillagers.mixin;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.animations.BowAttackAnimation;
+import com.pla.annoyingvillagers.animations.HeavyAttackAnimation;
+import com.pla.annoyingvillagers.animations.KickAttackAnimation;
+import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
 import com.pla.annoyingvillagers.entity.AegisHerobrineEntity;
 import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.util.EpicfightUtil;
 import com.pla.efclash_blade.event.MobClashBladeEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,8 +22,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.BowItem;
@@ -32,13 +40,15 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import yesman.epicfight.api.animation.types.DynamicAnimation;
-import yesman.epicfight.api.animation.types.EntityState;
+import reascer.wom.gameasset.animations.weapons.AnimsAgony;
+import yesman.epicfight.api.animation.types.*;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 
+import java.util.Objects;
 import java.util.Random;
 import java.util.function.BiFunction;
 
@@ -50,30 +60,41 @@ public class MobClashBladeMixin {
                                                    AssetAccessor<? extends DynamicAnimation> defenderDynamicAnimation,
                                                    EntityState defenderEntityState, Entity attacker, Entity defender,
                                                    CallbackInfoReturnable<Boolean> cir) {
+        if (EpicfightUtil.isLongHitAnimation(defenderDynamicAnimation)) {
+            cir.setReturnValue(false);
+            return;
+        }
+
+        // Auto clash while playing animation
         if (defender instanceof AegisHerobrineEntity
                 && defenderDynamicAnimation == AVAnimations.SHIELD_MAINHAND
                 && defenderEntityState.getLevel() == 3) {
             cir.setReturnValue(true);
+            return;
         }
 
         if (defender instanceof AegisHerobrineEntity
                 && defenderDynamicAnimation == AVAnimations.ENDER_AEGIS_NAPOLEON_RELOAD_1) {
             cir.setReturnValue(true);
+            return;
         }
 
         if (livingAttackEvent.getSource().getDirectEntity() instanceof Projectile projectile
                 && defender.onGround()
                 && !defender.isPassenger()
                 && defender.level() instanceof ServerLevel) {
+            // Projectile clashing
             if (defender instanceof PathfinderMobInventory pathfinderMobInventory
                     && pathfinderMobInventory.getBlockDamage() == null
                     && new Random().nextDouble() <= pathfinderMobInventory.getBlockProjectileChance()
                     && (pathfinderMobInventory.getItemInHand(InteractionHand.MAIN_HAND).getItem()
                     .equals(pathfinderMobInventory.getMainWeaponItem().getItem())
-                    || pathfinderMobInventory.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof BowItem)) {
+                    || pathfinderMobInventory.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof BowItem)
+                    && !pathfinderMobInventory.isHealing()) {
                 pathfinderMobInventory.setBlockDamage(projectile);
                 CombatCommon.swapToBlock((MobPatch<?>) defenderLivingEntityPatch);
                 cir.setReturnValue(true);
+                return;
             }
 
             if (defender instanceof PlayerNpcEntity playerNpcEntity
@@ -81,10 +102,69 @@ public class MobClashBladeMixin {
                     && new Random().nextDouble() <= playerNpcEntity.getBlockProjectileChance()
                     && (playerNpcEntity.getItemInHand(InteractionHand.MAIN_HAND).getItem()
                     .equals(playerNpcEntity.getMainWeaponItem().getItem())
-                    || playerNpcEntity.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof BowItem)) {
+                    || playerNpcEntity.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof BowItem)
+                    && playerNpcEntity.isHealing()) {
                 playerNpcEntity.setBlockDamage(projectile);
                 CombatCommon.swapToBlock((MobPatch<?>) defenderLivingEntityPatch);
                 cir.setReturnValue(true);
+                return;
+            }
+
+            if (defender instanceof HerobrineMob) {
+                if (!(projectile instanceof AbstractArrow)) {
+                    cir.setReturnValue(true);
+                    return;
+                }
+            }
+
+        } else if (!(livingAttackEvent.getSource().getDirectEntity() instanceof Projectile)
+                && defender.onGround()
+                && !defender.isPassenger()
+                && defender.level() instanceof ServerLevel) {
+            // Non-projectile clashing
+            ResourceLocation indirectEntity = BuiltInRegistries.ENTITY_TYPE.getKey(Objects.requireNonNull(livingAttackEvent.getSource().getDirectEntity()).getType());
+            boolean isDamageFromGunKnight = indirectEntity.getNamespace().equals("torchesbecomesunlight")
+                    && (indirectEntity.getPath().equals("gun_knight_patriot") || indirectEntity.getPath().equals("turret"));
+            if (isDamageFromGunKnight) {
+                if (defender instanceof PathfinderMobInventory pathfinderMobInventory
+                        && pathfinderMobInventory.getBlockDamage() == null
+                        && new Random().nextDouble() <= pathfinderMobInventory.getBlockProjectileChance()
+                        && (pathfinderMobInventory.getItemInHand(InteractionHand.MAIN_HAND).getItem()
+                        .equals(pathfinderMobInventory.getMainWeaponItem().getItem())
+                        || pathfinderMobInventory.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof BowItem)) {
+                    pathfinderMobInventory.setBlockDamage(livingAttackEvent.getSource().getDirectEntity());
+                    CombatCommon.swapToBlock((MobPatch<?>) defenderLivingEntityPatch);
+                    cir.setReturnValue(true);
+                    return;
+                }
+
+                if (defender instanceof PlayerNpcEntity playerNpcEntity
+                        && playerNpcEntity.getBlockDamage() == null
+                        && new Random().nextDouble() <= playerNpcEntity.getBlockProjectileChance()
+                        && (playerNpcEntity.getItemInHand(InteractionHand.MAIN_HAND).getItem()
+                        .equals(playerNpcEntity.getMainWeaponItem().getItem())
+                        || playerNpcEntity.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof BowItem)) {
+                    playerNpcEntity.setBlockDamage(livingAttackEvent.getSource().getDirectEntity());
+                    CombatCommon.swapToBlock((MobPatch<?>) defenderLivingEntityPatch);
+                    cir.setReturnValue(true);
+                    return;
+                }
+            }
+
+            // Clash custom animation
+            if (defender instanceof HerobrineMob) {
+                LivingEntityPatch<?> attackerLivingEntityPatch = EpicFightCapabilities.getEntityPatch(attacker, LivingEntityPatch.class);
+                if (attackerLivingEntityPatch != null) {
+                    AssetAccessor<? extends DynamicAnimation> attackerDynamicAnimation = Objects.requireNonNull(attackerLivingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
+                    if (attackerDynamicAnimation != null) {
+                        if (attackerDynamicAnimation.get() instanceof HeavyAttackAnimation) {
+                            cir.setReturnValue(true);
+                            return;
+                        } else {
+                            AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] damage passed for Herobrine {}", attackerDynamicAnimation.get().toString());
+                        }
+                    }
+                }
             }
         }
     }
@@ -97,6 +177,12 @@ public class MobClashBladeMixin {
                                                   CallbackInfo ci) {
         if (defender instanceof LivingEntity livingEntity
                 && defender.level() instanceof ServerLevel serverLevel) {
+            // Herobrine playing animation
+            if (defender instanceof AegisHerobrineEntity) {
+                defenderLivingEntityPatch.playAnimationSynchronized(AnimsAgony.AGONY_GUARD_HIT_1, 0.0F);
+            }
+
+            // Place block to clash
             Entity projectile = null;
             if (defender instanceof PathfinderMobInventory pathfinderMobInventory) {
                 projectile = pathfinderMobInventory.getBlockDamage();
@@ -119,7 +205,8 @@ public class MobClashBladeMixin {
                 BlockPos baseXZ;
                 int topY;
                 ResourceLocation key = BuiltInRegistries.ENTITY_TYPE.getKey(projectile.getType());
-                if (key.getNamespace().equals("tacz")) {
+                if (key.getNamespace().equals("tacz")
+                        || (key.getNamespace().equals("torchesbecomesunlight") && (key.getPath().equals("gun_knight_patriot") || key.getPath().equals("turret")))) {
                     Direction facing = defender.getDirection();
                     baseXZ = defender.blockPosition().relative(facing, 1);
                     topY = Mth.floor(defender.getY() + defender.getBbHeight());
@@ -260,19 +347,24 @@ public class MobClashBladeMixin {
                                                   AssetAccessor<? extends DynamicAnimation> defenderDynamicAnimation,
                                                   EntityState defenderEntityState, Entity attacker, Entity defender,
                                                   CallbackInfo ci) {
-        if (defender instanceof LivingEntity livingEntity
-                && defender.level() instanceof ServerLevel) {
+        if (!(defender.level() instanceof ServerLevel serverLevel)) return;
+
+        LivingEntityPatch<?> attackerLivingEntityPatch = EpicFightCapabilities.getEntityPatch(attacker, LivingEntityPatch.class);
+
+        // Clash projectile post
+        if ((defender instanceof PathfinderMobInventory pathfinderMobInventory && pathfinderMobInventory.getBlockDamage() != null)
+                || (defender instanceof PlayerNpcEntity playerNpcEntity && playerNpcEntity.getBlockDamage() != null)) {
             new DelayedTask(10) {
                 @Override
                 public void run() {
                     boolean rollAndSwap = false;
-                    if (livingEntity instanceof PathfinderMobInventory pathfinderMobInventory
+                    if (defender instanceof PathfinderMobInventory pathfinderMobInventory
                             && pathfinderMobInventory.getBlockDamage() != null) {
                         pathfinderMobInventory.setBlockDamage(null);
                         rollAndSwap = true;
                     }
 
-                    if (livingEntity instanceof PlayerNpcEntity playerNpcEntity
+                    if (defender instanceof PlayerNpcEntity playerNpcEntity
                             && playerNpcEntity.getBlockDamage() != null) {
                         playerNpcEntity.setBlockDamage(null);
                         rollAndSwap = true;
@@ -293,7 +385,7 @@ public class MobClashBladeMixin {
                             } else if (chance <= 0.8) {
                                 defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_RIGHT, 0.0F);
                                 CombatCommon.swapToMelee((MobPatch<?>) defenderLivingEntityPatch);
-                            } else if (chance <= 0.9)  {
+                            } else if (chance <= 0.9) {
                                 defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_LEFT, 0.0F);
                                 CombatCommon.swapToMelee((MobPatch<?>) defenderLivingEntityPatch);
                             } else {
@@ -316,6 +408,36 @@ public class MobClashBladeMixin {
                     }
                 }
             };
+        }
+
+        // Clash kick post
+        if (attackerLivingEntityPatch != null) {
+            AssetAccessor<? extends DynamicAnimation> attackerDynamicAnimation = Objects.requireNonNull(attackerLivingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
+            if (attackerDynamicAnimation != null) {
+                if ((defender instanceof PathfinderMobInventory pathfinderMobInventory && pathfinderMobInventory.getBlockDamage() != null)
+                        || (defender instanceof PlayerNpcEntity playerNpcEntity && playerNpcEntity.getBlockDamage() != null)) {
+                    return;
+                }
+                if (attackerDynamicAnimation.get() instanceof KickAttackAnimation) {
+                    attacker.playSound(AnnoyingVillagersModSounds.KICK_GUARD_BREAK.get());
+                    attackerLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_COMMON_NEUTRALIZED, 0.0F);
+                    attacker.hurt(serverLevel.damageSources().generic(), 1.0F);
+                }
+            }
+        }
+
+        // Clash custom attack post
+        if (defender instanceof HerobrineMob) {
+            if (attackerLivingEntityPatch != null) {
+                AssetAccessor<? extends DynamicAnimation> attackerDynamicAnimation = Objects.requireNonNull(attackerLivingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
+                if (attackerDynamicAnimation != null) {
+                    if (attackerDynamicAnimation.get() instanceof HeavyAttackAnimation) {
+                        defender.playSound(AnnoyingVillagersModSounds.KICK_GUARD_BREAK.get());
+                        defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_COMMON_NEUTRALIZED, 0.0F);
+                        defender.hurt(serverLevel.damageSources().generic(), 1.0F);
+                    }
+                }
+            }
         }
     }
 }

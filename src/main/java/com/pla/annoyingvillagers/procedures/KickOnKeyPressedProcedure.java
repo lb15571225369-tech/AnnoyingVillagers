@@ -18,18 +18,19 @@ import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
 import java.util.Objects;
 
 public class KickOnKeyPressedProcedure {
-    private static final String NBT_SPECIAL_CD = "SpecialAttackCooldown";
+    private static final String NBT_KICK_CD = "KickAttackCooldown";
+    private static final String NBT_STUN_ESCAPE_CD = "StunEscapeCooldown";
 
     public static void execute(LevelAccessor levelaccessor, final Entity entity) {
         if (entity instanceof LivingEntity) {
-            if (entity.getPersistentData().getInt(NBT_SPECIAL_CD) == 0) {
-                LivingEntityPatch<?> livingentitypatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+            LivingEntityPatch<?> livingentitypatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 
-                if (livingentitypatch != null) {
-                    AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(livingentitypatch.getAnimator().getPlayerFor(null)).getAnimation();
-                    entity.getPersistentData().putInt(NBT_SPECIAL_CD, 1);
+            if (livingentitypatch != null) {
+                AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(livingentitypatch.getAnimator().getPlayerFor(null)).getAnimation();
 
-                    if (!(dynamicAnimation instanceof AttackBreakAnimation) && !(dynamicAnimation instanceof LongHitAnimation)) {
+                if (!(dynamicAnimation instanceof AttackBreakAnimation) && !(dynamicAnimation instanceof LongHitAnimation)) {
+                    if (entity.getPersistentData().getInt(NBT_KICK_CD) == 0) {
+                        entity.getPersistentData().putInt(NBT_KICK_CD, 3);
                         if (entity.isShiftKeyDown()) {
                             if (entity.isSprinting()) {
                                 PlayerPatch<?> playerpatch = EpicFightCapabilities.getEntityPatch(entity, PlayerPatch.class);
@@ -49,7 +50,7 @@ public class KickOnKeyPressedProcedure {
                         } else {
                             if (entity.isSprinting()) {
                                 if (!entity.level().isClientSide() && entity.getServer() != null) {
-                                    LivingEntityPatch<?> livingEntityPatch =  EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                                    LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                                     if (livingEntityPatch != null) {
                                         livingEntityPatch.playAnimationSynchronized(AVAnimations.KICK_RUSH, 0.0F);
                                     }
@@ -96,8 +97,11 @@ public class KickOnKeyPressedProcedure {
                                 }
                             }
                         }
-                    } else {
-                        if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    }
+                } else {
+                    if (!entity.level().isClientSide() && entity.getServer() != null) {
+                        if (entity.getPersistentData().getInt(NBT_STUN_ESCAPE_CD) == 0) {
+                            entity.getPersistentData().putInt(NBT_STUN_ESCAPE_CD, 1);
                             LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                             if (livingEntityPatch != null) {
                                 if (entity.isSprinting()) {

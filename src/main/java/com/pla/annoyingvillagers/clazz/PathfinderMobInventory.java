@@ -6,7 +6,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -39,9 +38,18 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
     private final LivingEntityPatch<?> livingEntityPatch =  EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
     private Entity blockDamage = null;
     private double blockProjectileChance;
+    private boolean swapBackToBow = false;
 
     public Entity getBlockDamage() {
         return blockDamage;
+    }
+
+    public void setSwapBackToBow(boolean swapBackToBow) {
+        this.swapBackToBow = swapBackToBow;
+    }
+
+    public boolean isSwapBackToBow() {
+        return swapBackToBow;
     }
 
     public double getBlockProjectileChance() {

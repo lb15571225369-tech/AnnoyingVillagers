@@ -4,8 +4,11 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import yesman.epicfight.api.animation.Joint;
+import yesman.epicfight.api.animation.types.*;
+import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.api.utils.math.Vec3f;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
@@ -38,5 +41,13 @@ public class EpicfightUtil {
                 m.m31 + (base.getY() + (entity.getBbHeight() / 1.8) - 1.0) + yOffset,
                 m.m32 + base.getZ()
         );
+    }
+
+    public static boolean isLongHitAnimation(AssetAccessor<? extends DynamicAnimation> dynamicAnimation) {
+        return dynamicAnimation.get() instanceof LongHitAnimation ||
+                (dynamicAnimation.get() instanceof LinkAnimation linkAnimation && linkAnimation.getRealAnimation().get() instanceof LongHitAnimation &&
+                        (linkAnimation.getRealAnimation() == Animations.BIPED_COMMON_NEUTRALIZED
+                                || linkAnimation.getRealAnimation() == Animations.GREATSWORD_GUARD_BREAK
+                                || linkAnimation.getRealAnimation() == Animations.BIPED_KNOCKDOWN));
     }
 }

@@ -121,7 +121,7 @@ public class AnnoyingVillagersModEntityRenderers {
                 (entitytype) -> (new PHumanoidRenderer<>(Meshes.BIPED, add.getContext(), entitytype))
                         .initLayerLast(add.getContext(), entitytype));
         add.addPatchedEntityRenderer(AnnoyingVillagersModEntities.ALEX.get(),
-                (entitytype) -> (new PHumanoidRenderer<>(Meshes.BIPED, add.getContext(), entitytype))
+                (entitytype) -> (new PHumanoidRenderer<>(Meshes.ALEX, add.getContext(), entitytype))
                         .initLayerLast(add.getContext(), entitytype));
         add.addPatchedEntityRenderer(AnnoyingVillagersModEntities.JEV.get(),
                 (entitytype) -> (new PIllagerRenderer<>(add.getContext(), entitytype))

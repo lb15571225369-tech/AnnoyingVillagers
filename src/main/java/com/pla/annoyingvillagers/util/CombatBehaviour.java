@@ -1,7 +1,6 @@
 package com.pla.annoyingvillagers.util;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
 import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
@@ -30,10 +29,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 import yesman.epicfight.api.animation.Joint;
-import yesman.epicfight.api.animation.types.AttackAnimation;
-import yesman.epicfight.api.animation.types.DynamicAnimation;
-import yesman.epicfight.api.animation.types.HitAnimation;
-import yesman.epicfight.api.animation.types.LongHitAnimation;
+import yesman.epicfight.api.animation.types.*;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.api.utils.math.Vec3f;
@@ -137,9 +133,7 @@ public class CombatBehaviour {
                                                                LevelAccessor levelaccessor,
                                                                LivingEntityPatch<?> livingEntityPatch) {
         AssetAccessor<? extends DynamicAnimation> currentAnim = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
-        if (currentAnim.get() instanceof AttackAnimation ||
-                currentAnim.get() instanceof LongHitAnimation ||
-                currentAnim.get() instanceof HitAnimation) {
+        if (currentAnim.get() instanceof AttackAnimation || EpicfightUtil.isLongHitAnimation(currentAnim)) {
             recoverItemDueToFailure(entity);
             return;
         }
@@ -183,9 +177,7 @@ public class CombatBehaviour {
                                                                    LevelAccessor levelaccessor,
                                                                    LivingEntityPatch<?> livingEntityPatch) {
         AssetAccessor<? extends DynamicAnimation> currentAnim = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
-        if (currentAnim.get() instanceof AttackAnimation ||
-                currentAnim.get() instanceof LongHitAnimation ||
-                currentAnim.get() instanceof HitAnimation) {
+        if (currentAnim.get() instanceof AttackAnimation || EpicfightUtil.isLongHitAnimation(currentAnim)) {
             recoverItemDueToFailure(entity);
             return;
         }
@@ -251,9 +243,7 @@ public class CombatBehaviour {
                     LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                     if (patch == null) return;
                     AssetAccessor<? extends DynamicAnimation> currentAnim = Objects.requireNonNull(patch.getAnimator().getPlayerFor(null)).getAnimation();
-                    if (currentAnim.get() instanceof AttackAnimation ||
-                            currentAnim.get() instanceof LongHitAnimation ||
-                            currentAnim.get() instanceof HitAnimation) {
+                    if (currentAnim.get() instanceof AttackAnimation || EpicfightUtil.isLongHitAnimation(currentAnim)) {
                         recoverItemDueToFailure(entity);
                         return;
                     }
@@ -373,9 +363,7 @@ public class CombatBehaviour {
                     LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                     if (patch == null) return;
                     AssetAccessor<? extends DynamicAnimation> currentAnim = Objects.requireNonNull(patch.getAnimator().getPlayerFor(null)).getAnimation();
-                    if (currentAnim.get() instanceof AttackAnimation ||
-                            currentAnim.get() instanceof LongHitAnimation ||
-                            currentAnim.get() instanceof HitAnimation) {
+                    if (currentAnim.get() instanceof AttackAnimation || EpicfightUtil.isLongHitAnimation(currentAnim)) {
                         recoverItemDueToFailure(entity);
                         return;
                     }

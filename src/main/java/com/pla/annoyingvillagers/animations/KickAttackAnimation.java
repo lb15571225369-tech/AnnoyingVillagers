@@ -3,11 +3,7 @@ package com.pla.annoyingvillagers.animations;
 import java.util.*;
 import javax.annotation.Nullable;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Vec3i;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.GameRules.BooleanValue;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.loading.FMLEnvironment;
@@ -32,8 +28,6 @@ import yesman.epicfight.api.model.Armature;
 import yesman.epicfight.api.utils.datastruct.TypeFlexibleHashMap;
 import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
-import yesman.epicfight.world.damagesource.EpicFightDamageSource;
-import yesman.epicfight.world.damagesource.StunType;
 import yesman.epicfight.world.gamerule.EpicFightGameRules;
 
 public class KickAttackAnimation extends AttackAnimation {
@@ -95,14 +89,14 @@ public class KickAttackAnimation extends AttackAnimation {
             LivingEntity livingentity = livingentitypatch.getTarget();
 
             if (!(Boolean) dynamicanimation.getRealAnimation().get().getProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE).orElse(false) && livingentity != null) {
-                TransformSheet transformsheet1 = ((TransformSheet) dynamicanimation.getTransfroms().get("Root")).copyAll();
+                TransformSheet transformsheet1 = dynamicanimation.getTransfroms().get("Root").copyAll();
                 Keyframe[] akeyframe = transformsheet1.getKeyframes();
                 byte b0 = 0;
                 int i = transformsheet1.getKeyframes().length - 1;
                 Vec3f vec3f = akeyframe[i].transform().translation();
-                Vec3 vec3 = ((LivingEntity) livingentitypatch.getOriginal()).getEyePosition();
+                Vec3 vec3 = livingentitypatch.getOriginal().getEyePosition();
                 Vec3 vec31 = livingentity.position();
-                float f1 = Math.max((float) vec31.subtract(vec3).horizontalDistance() * 1.75F - (livingentity.getBbWidth() + ((LivingEntity) livingentitypatch.getOriginal()).getBbWidth()) * 0.75F, 0.0F);
+                float f1 = Math.max((float) vec31.subtract(vec3).horizontalDistance() * 1.75F - (livingentity.getBbWidth() + livingentitypatch.getOriginal().getBbWidth()) * 0.75F, 0.0F);
                 Vec3f vec3f1 = new Vec3f(vec3f.x, 0.0F, -f1);
                 float f2 = Math.min(vec3f1.length() / vec3f.length(), 2.0F);
 
@@ -114,7 +108,7 @@ public class KickAttackAnimation extends AttackAnimation {
 
                 transformsheet.readFrom(transformsheet1);
             } else {
-                transformsheet.readFrom((TransformSheet) dynamicanimation.getTransfroms().get("Root"));
+                transformsheet.readFrom(dynamicanimation.getTransfroms().get("Root"));
             }
 
         });
@@ -122,7 +116,7 @@ public class KickAttackAnimation extends AttackAnimation {
 
     public void end(LivingEntityPatch<?> livingentitypatch, AssetAccessor<? extends DynamicAnimation> nextAnimation, boolean flag) {
         super.end(livingentitypatch, nextAnimation, flag);
-        boolean flag1 = ((BooleanValue) ((LivingEntity) livingentitypatch.getOriginal()).level().getGameRules().getRule(EpicFightGameRules.STIFF_COMBO_ATTACKS.getRuleKey())).get();
+        boolean flag1 = livingentitypatch.getOriginal().level().getGameRules().getRule(EpicFightGameRules.STIFF_COMBO_ATTACKS.getRuleKey()).get();
 
         if (!flag && !nextAnimation.get().isMainFrameAnimation() && livingentitypatch.isLogicalClient() && !flag1) {
             float f = 0.05F * this.getPlaySpeed(livingentitypatch, nextAnimation.get());
@@ -135,7 +129,7 @@ public class KickAttackAnimation extends AttackAnimation {
     public TypeFlexibleHashMap<StateFactor<?>> getStatesMap(LivingEntityPatch<?> livingentitypatch, float f) {
         TypeFlexibleHashMap<StateFactor<?>> typeflexiblehashmap = super.getStatesMap(livingentitypatch, f);
 
-        if (!((BooleanValue) ((LivingEntity) livingentitypatch.getOriginal()).level().getGameRules().getRule(EpicFightGameRules.STIFF_COMBO_ATTACKS.getRuleKey())).get()) {
+        if (!livingentitypatch.getOriginal().level().getGameRules().getRule(EpicFightGameRules.STIFF_COMBO_ATTACKS.getRuleKey()).get()) {
             typeflexiblehashmap.put(EntityState.MOVEMENT_LOCKED, Optional.of(false));
         }
 
@@ -145,7 +139,7 @@ public class KickAttackAnimation extends AttackAnimation {
     public Vec3 getCoordVector(LivingEntityPatch<?> livingentitypatch, AssetAccessor<? extends DynamicAnimation> nextAnimation) {
         Vec3 vec3 = super.getCoordVector(livingentitypatch, nextAnimation);
 
-        if (livingentitypatch.shouldBlockMoving() && (Boolean) this.getProperty(ActionAnimationProperty.CANCELABLE_MOVE).orElse(false)) {
+        if (livingentitypatch.shouldBlockMoving() && this.getProperty(ActionAnimationProperty.CANCELABLE_MOVE).orElse(false)) {
             vec3 = vec3.scale(0.0D);
         }
 
@@ -154,69 +148,5 @@ public class KickAttackAnimation extends AttackAnimation {
 
     public boolean isBasicAttackAnimation() {
         return true;
-    }
-
-    public float applyAntiStunLock(Entity entity, float f, EpicFightDamageSource epicfightdamagesource, Phase phase, String s, String s1) {
-        boolean flag = false;
-        String s2;
-        String s3;
-        int i;
-
-        if (entity.level().getBlockState(new BlockPos(new Vec3i((int) entity.getX(), (int) entity.getY() - 1, (int) entity.getZ()))).isAir() && epicfightdamagesource.getStunType() != StunType.FALL) {
-            s2 = String.valueOf(this.getId());
-            s3 = s2 + "-" + String.valueOf(phase.contact);
-            if (s.split(":").length > 3) {
-                if (String.valueOf(this.getId()).equals(s.split(":")[3].split("-")[0]) && !String.valueOf(phase.contact).equals(s.split(":")[3].split("-")[1])) {
-                    f = Float.valueOf(s.split(":")[1]) * 0.98F;
-                    flag = true;
-                } else {
-                    f = Float.valueOf(s.split(":")[1]) * 0.9F;
-                    flag = false;
-                }
-            }
-
-            for (i = 3; i < s.split(":").length && i < 7; ++i) {
-                if (s.split(":")[i].equals(s3)) {
-                    f *= 0.6F;
-                }
-            }
-        } else {
-            s2 = String.valueOf(this.getId());
-            s3 = s2 + "-" + String.valueOf(phase.contact);
-            if (s.split(":").length > 3) {
-                if (String.valueOf(this.getId()).equals(s.split(":")[3].split("-")[0]) && !String.valueOf(phase.contact).equals(s.split(":")[3].split("-")[1])) {
-                    f = Float.valueOf(s.split(":")[1]) * 0.98F;
-                    flag = true;
-                } else {
-                    f = Float.valueOf(s.split(":")[1]) * 0.8F;
-                    flag = false;
-                }
-            }
-
-            for (i = 3; i < s.split(":").length && i < 5; ++i) {
-                if (s.split(":")[i].equals(s3)) {
-                    f *= 0.6F;
-                }
-            }
-        }
-
-        entity.removeTag(s);
-        boolean flag1 = true;
-        byte b0;
-
-        if (flag) {
-            s1 = "anti_stunlock:" + f + ":" + entity.tickCount;
-            b0 = 6;
-        } else {
-            s1 = "anti_stunlock:" + f + ":" + entity.tickCount + ":" + this.getId() + "-" + phase.contact;
-            b0 = 5;
-        }
-
-        for (i = 3; i < s.split(":").length && i < b0; ++i) {
-            s1 = s1.concat(":" + s.split(":")[i]);
-        }
-
-        entity.addTag(s1);
-        return f;
     }
 }

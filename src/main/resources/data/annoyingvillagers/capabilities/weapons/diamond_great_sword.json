@@ -1,5 +1,5 @@
 {
-	"type": "epicfight:greatsword",
+	"type": "annoyingvillagers:av_greatsword",
 	"attributes": {
 		"common": {
 			"armor_negation":30.0,

@@ -599,10 +599,18 @@
       }
     ]
   },
-"woopie_wind": {
+  "woopie_wind": {
     "sounds": [
       {
         "name": "annoyingvillagers:woopie_wind",
+        "stream": false
+      }
+    ]
+  },
+  "kick_guard_break": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:kick_guard_break",
         "stream": false
       }
     ]

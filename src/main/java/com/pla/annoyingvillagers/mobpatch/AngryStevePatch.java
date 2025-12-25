@@ -2,7 +2,6 @@ package com.pla.annoyingvillagers.mobpatch;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
-import com.pla.annoyingvillagers.capabilities.AVCategories;
 import com.pla.annoyingvillagers.combatbehaviour.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import net.minecraft.world.InteractionHand;
@@ -94,7 +93,7 @@ public class AngryStevePatch extends CEHumanoidPatch implements CustomExecuteEnt
                                 )));
 
         this.weaponLivingMotions
-                .put(AVCategories.LEGENDARY_SWORD,
+                .put(WeaponCategories.GREATSWORD,
                         ImmutableMap.of(
                                 Styles.TWO_HAND,
                                 Set.of(
@@ -102,12 +101,12 @@ public class AngryStevePatch extends CEHumanoidPatch implements CustomExecuteEnt
                                         Pair.of(LivingMotions.IDLE, WOMAnimations.TORMENT_BERSERK_IDLE),
                                         Pair.of(LivingMotions.WALK, WOMAnimations.TORMENT_BERSERK_WALK),
                                         Pair.of(LivingMotions.RUN, AVAnimations.RUN_DUAL_BIG),
-                                        Pair.of(LivingMotions.CHASE, WOMAnimations.TORMENT_BERSERK_WALK),
+                                        Pair.of(LivingMotions.CHASE, AVAnimations.RUN_DUAL_BIG),
                                         Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
                                 )
                         ));
         this.weaponAttackMotions
-                .put(AVCategories.LEGENDARY_SWORD,
+                .put(WeaponCategories.GREATSWORD,
                         ImmutableMap.of(
                                 Styles.TWO_HAND, AngrySteveLegendarySword.LEGENDARY_SWORD
                         ));

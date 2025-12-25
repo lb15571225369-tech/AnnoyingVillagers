@@ -2,7 +2,6 @@ package com.pla.annoyingvillagers.mobpatch;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
-import com.pla.annoyingvillagers.capabilities.AVCategories;
 import com.pla.annoyingvillagers.combatbehaviour.NpcBow;
 import com.pla.annoyingvillagers.combatbehaviour.NpcFist;
 import com.pla.annoyingvillagers.combatbehaviour.NpcSword;
@@ -75,44 +74,6 @@ public class VillagerGeneralPatch extends CEHumanoidPatch implements CustomExecu
         this.weaponAttackMotions
                 .put(WeaponCategories.FIST,
                         ImmutableMap.of(Styles.ONE_HAND, NpcFist.FIST));
-
-        this.weaponLivingMotions
-                .put(AVCategories.AV_SWORD,
-                        ImmutableMap.of(
-                                Styles.ONE_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.BLOCK, Animations.SWORD_GUARD),
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
-                                        Pair.of(LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD),
-                                        Pair.of(LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
-                                )
-                        ));
-        this.weaponAttackMotions
-                .put(AVCategories.AV_SWORD,
-                        ImmutableMap.of(
-                                Styles.ONE_HAND, NpcSword.AV_SWORD
-                        ));
-
-        this.weaponLivingMotions
-                .put(AVCategories.WOOPIE_THE_SWORD,
-                        ImmutableMap.of(
-                                Styles.ONE_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.BLOCK, Animations.SWORD_GUARD),
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
-                                        Pair.of(LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD),
-                                        Pair.of(LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
-                                )
-                        ));
-        this.weaponAttackMotions
-                .put(AVCategories.WOOPIE_THE_SWORD,
-                        ImmutableMap.of(
-                                Styles.ONE_HAND, NpcSword.AV_SWORD
-                        ));
 
         this.weaponLivingMotions
                 .put(WeaponCategories.SWORD,

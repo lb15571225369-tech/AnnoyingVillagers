@@ -56,6 +56,7 @@ import yesman.epicfight.api.utils.TimePairList;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.api.utils.math.ValueModifier;
 import yesman.epicfight.api.utils.math.Vec3f;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.Animations.ReusableSources;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.gameasset.ColliderPreset;
@@ -211,6 +212,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> CASTING_ONE_HAND_INWARD;
     public static AnimationManager.AnimationAccessor<StaticAnimation> CASTING_ONE_HAND_BUFF;
     public static AnimationManager.AnimationAccessor<StaticAnimation> CHANTING_ONE_HAND_FRONT;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> LOW_CLONE_CLASH;
 
     @SubscribeEvent
     public static void registerAnimations(AnimationManager.AnimationRegistryEvent event) {
@@ -1324,6 +1326,8 @@ public class AVAnimations {
         AVAnimations.CASTING_ONE_HAND_BUFF = builder.nextAccessor("biped/other/casting_one_hand_buff",
                 (accessor) -> new StaticAnimation(false, accessor, humanoidarmature));
         AVAnimations.CHANTING_ONE_HAND_FRONT = builder.nextAccessor("biped/other/chanting_one_hand_front",
+                (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
+        AVAnimations.LOW_CLONE_CLASH = builder.nextAccessor("biped/other/low_clone_clash",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
     }
 

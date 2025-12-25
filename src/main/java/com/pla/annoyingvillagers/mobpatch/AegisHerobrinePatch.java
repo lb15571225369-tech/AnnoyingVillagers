@@ -2,7 +2,6 @@ package com.pla.annoyingvillagers.mobpatch;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
-import com.pla.annoyingvillagers.capabilities.AVCategories;
 import com.pla.annoyingvillagers.combatbehaviour.HerobrineEnderAegis;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -46,7 +45,7 @@ public class AegisHerobrinePatch extends CEHumanoidPatch implements CustomExecut
 
     protected void setWeaponMotions() {
         this.weaponLivingMotions
-                .put(AVCategories.ENDER_AEGIS,
+                .put(WeaponCategories.SWORD,
                         ImmutableMap.of(
                                 Styles.ONE_HAND,
                                 Set.of(
@@ -59,7 +58,7 @@ public class AegisHerobrinePatch extends CEHumanoidPatch implements CustomExecut
                                 )
                         ));
         this.weaponAttackMotions
-                .put(AVCategories.ENDER_AEGIS,
+                .put(WeaponCategories.SWORD,
                         ImmutableMap.of(
                                 Styles.ONE_HAND, HerobrineEnderAegis.ENDER_AEGIS
                         ));

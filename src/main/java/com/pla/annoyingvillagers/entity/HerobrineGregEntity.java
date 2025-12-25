@@ -10,6 +10,7 @@ import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.procedures.HerobrinePortalProcedure;
 import com.pla.annoyingvillagers.spawnhandler.GregData;
@@ -445,13 +446,8 @@ public class HerobrineGregEntity extends Monster {
                 this.summonTiming = this.summonTiming - 1;
             }
             if (this.summonTiming == 10) {
-                try {
-                    this.getServer().getCommands().getDispatcher().execute(
-                            "playsound annoyingvillagers:portal_summon voice @a ~ ~ ~",
-                            this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException e) {
-                }
-                this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getDisplayName().getString() + "> " +
+                this.playSound(AnnoyingVillagersModSounds.PORTAL_SUMMON.get(), 1.0F, 1.0F);
+                Objects.requireNonNull(this.level().getServer()).getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getDisplayName().getString() + "> " +
                         Component.translatable("subtitles.herobrine_summon").getString()), false);
             }
             if (this.summonTiming == 1) {

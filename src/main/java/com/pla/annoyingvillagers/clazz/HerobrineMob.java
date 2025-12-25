@@ -635,7 +635,6 @@ public class HerobrineMob extends Monster {
     }
 
     private void recoverAfterHealing() {
-        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] recoverAfterHealing is called");
         this.setHealingCooldown();
         this.healing = false;
     }

@@ -1,7 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.capabilities.AVCategories;
 import com.pla.annoyingvillagers.entity.BabyEnderDragonEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
@@ -36,6 +35,7 @@ import reascer.wom.gameasset.animations.weapons.AnimsHerrscher;
 import reascer.wom.gameasset.animations.weapons.AnimsNapoleon;
 import reascer.wom.gameasset.animations.weapons.AnimsRuine;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.animation.types.LinkAnimation;
 import yesman.epicfight.api.animation.types.LongHitAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.math.Vec3f;
@@ -66,7 +66,7 @@ public class SpecialAttackOnKeyPressedProcedure {
         PlayerPatch<?> playerpatch = EpicFightCapabilities.getEntityPatch(entity, PlayerPatch.class);
         LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
         AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
-        if (dynamicAnimation.get() instanceof LongHitAnimation) {
+        if (EpicfightUtil.isLongHitAnimation(dynamicAnimation)) {
             return;
         }
 
@@ -274,9 +274,41 @@ public class SpecialAttackOnKeyPressedProcedure {
                 }
             }
 
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.WOODEN_DOOR.get())) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_CHARGED_ATTACK_2, 0.0F);
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
+                    return;
+                }
+            }
+
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.CRAFTING_TABLE.get())) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_AIRSLAM, 0.0F);
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
+                    return;
+                }
+            }
+
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.LADDER.get())) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    livingEntityPatch.playAnimationSynchronized(Animations.VINDICATOR_SWING_AXE3, 0.0F);
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
+                    return;
+                }
+            }
+
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.TRAPDOOR.get())) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    livingEntityPatch.playAnimationSynchronized(Animations.VINDICATOR_SWING_AXE2, 0.0F);
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
+                    return;
+                }
+            }
+
             // Check by categories
-            if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.AXE
-                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.AV_AXE) {
+            if (playerpatch == null) return;
+            if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.AXE) {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
                     if (!entity.getPersistentData().contains("AxeCombo")) {
                         livingEntityPatch.playAnimationSynchronized(AVAnimations.AXE_HEAVY_AUTO_1, 0.0F);
@@ -296,15 +328,10 @@ public class SpecialAttackOnKeyPressedProcedure {
             if ((playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.SWORD
                     || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.LONGSWORD
                     || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.TACHI
-                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.AV_LONGSWORD
-                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.AV_TACHI
                     || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.DAGGER
-                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.AV_SWORD)
                     && (playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SWORD
-                    || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == AVCategories.AV_SWORD
                     || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.TACHI
-                    || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == AVCategories.AV_TACHI
-                    || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE)) {
+                    || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE))) {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
                     if (!entity.getPersistentData().contains("DualSwordCombo")) {
                         livingEntityPatch.playAnimationSynchronized(Animations.DAGGER_DUAL_DASH, 0.0F);
@@ -325,17 +352,12 @@ public class SpecialAttackOnKeyPressedProcedure {
             }
 
             if ((playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.SWORD
-                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.AV_SWORD
                     || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.LONGSWORD
                     || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.TACHI
-                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.AV_LONGSWORD
-                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.AV_TACHI
                     || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.DAGGER
                     || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.UCHIGATANA)
                     && playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.SWORD
-                    && playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != AVCategories.AV_SWORD
                     && playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI
-                    && playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != AVCategories.AV_TACHI
                     && playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.AXE) {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
                     if (!entity.getPersistentData().contains("SwordCombo")) {
@@ -353,8 +375,7 @@ public class SpecialAttackOnKeyPressedProcedure {
                 }
             }
 
-            if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.GREATSWORD
-                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.AV_GREATSWORD) {
+            if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.GREATSWORD) {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
                     livingEntityPatch.playAnimationSynchronized(AVAnimations.GIANT_WHIRLWIND, 0.0F);
                     player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
@@ -364,11 +385,7 @@ public class SpecialAttackOnKeyPressedProcedure {
 
             if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.FIST
                     || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.NOT_WEAPON
-                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.RANGED
-                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.WOODEN_DOOR
-                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.CRAFTING_TABLE
-                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.TRAPDOOR
-                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.LADDER) {
+                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.RANGED) {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
                     if (entity.isSprinting()) {
                         if (entity.isShiftKeyDown()) {
@@ -398,42 +415,9 @@ public class SpecialAttackOnKeyPressedProcedure {
             }
 
             if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.SPEAR
-                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.TRIDENT
-                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.AV_SPEAR) {
+                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.TRIDENT) {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
                     livingEntityPatch.playAnimationSynchronized(AVAnimations.SPEAR_THRUST, 0.0F);
-                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
-                    return;
-                }
-            }
-
-            if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.WOODEN_DOOR) {
-                if (!entity.level().isClientSide() && entity.getServer() != null) {
-                    livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_CHARGED_ATTACK_2, 0.0F);
-                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
-                    return;
-                }
-            }
-
-            if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.CRAFTING_TABLE) {
-                if (!entity.level().isClientSide() && entity.getServer() != null) {
-                    livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_AIRSLAM, 0.0F);
-                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
-                    return;
-                }
-            }
-
-            if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.LADDER) {
-                if (!entity.level().isClientSide() && entity.getServer() != null) {
-                    livingEntityPatch.playAnimationSynchronized(Animations.VINDICATOR_SWING_AXE3, 0.0F);
-                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
-                    return;
-                }
-            }
-
-            if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == AVCategories.TRAPDOOR) {
-                if (!entity.level().isClientSide() && entity.getServer() != null) {
-                    livingEntityPatch.playAnimationSynchronized(Animations.VINDICATOR_SWING_AXE2, 0.0F);
                     player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
                     return;
                 }

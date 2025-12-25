@@ -4,7 +4,9 @@ import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.util.CombatBehaviour;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -96,13 +98,20 @@ public class CombatCommon {
 
         if (mobpatch.getOriginal() instanceof PathfinderMobInventory pathfinderMobInventory) {
             if ((pathfinderMobInventory instanceof SteveEntity || pathfinderMobInventory instanceof AngrySteveEntity
-                    || pathfinderMobInventory instanceof AlexEntity || pathfinderMobInventory instanceof ChrisEntity)
-                    && pathfinderMobInventory.getTarget() instanceof HerobrineMob) {
-                return false;
+                    || pathfinderMobInventory instanceof AlexEntity || pathfinderMobInventory instanceof ChrisEntity)) {
+                if (target instanceof HerobrineMob) {
+                    return false;
+                }
+                ResourceLocation key = BuiltInRegistries.ENTITY_TYPE.getKey(target.getType());
+                if (key.getNamespace().equals("torchesbecomesunlight")
+                        && (key.getPath().equals("gun_knight_patriot") || key.getPath().equals("turret"))) {
+                    return false;
+                }
+                if (pathfinderMobInventory instanceof SteveEntity steveEntity) {
+                    if (steveEntity.getItemInHand(InteractionHand.OFF_HAND).getItem().equals(Items.TOTEM_OF_UNDYING)) return false;
+                }
             }
-            if (pathfinderMobInventory instanceof SteveEntity steveEntity) {
-                if (steveEntity.getItemInHand(InteractionHand.OFF_HAND).getItem().equals(Items.TOTEM_OF_UNDYING)) return false;
-            }
+
             return pathfinderMobInventory.isUseBow() && pathfinderMobInventory.getSwapToBowCooldown() == 0;
         }
 

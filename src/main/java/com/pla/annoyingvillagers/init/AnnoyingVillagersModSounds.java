@@ -67,6 +67,7 @@ public class AnnoyingVillagersModSounds {
     public static final RegistryObject<SoundEvent> GREG_REQUESTING_ASSISTANCE = register("greg_requesting_assistance");
     public static final RegistryObject<SoundEvent> HEROBRINE_UNDERSTOOD = register("herobrine_understood");
     public static final RegistryObject<SoundEvent> WOOPIE_WIND = register("woopie_wind");
+    public static final RegistryObject<SoundEvent> KICK_GUARD_BREAK = register("kick_guard_break");
 
     private static RegistryObject<SoundEvent> register(String name) {
         return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, name)));

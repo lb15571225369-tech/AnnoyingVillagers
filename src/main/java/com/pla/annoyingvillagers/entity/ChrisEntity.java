@@ -20,8 +20,6 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -35,7 +33,6 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
-import yesman.epicfight.world.effect.EpicFightMobEffects;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -311,7 +308,7 @@ public class ChrisEntity extends PathfinderMobInventory {
         return returnSpawnGroupData;
     }
 
-    public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
+    public void awardKillScore(@NotNull Entity entity, int i, @NotNull DamageSource damagesource) {
         super.awardKillScore(entity, i, damagesource);
     }
 
@@ -349,7 +346,7 @@ public class ChrisEntity extends PathfinderMobInventory {
 
         builder = builder.add(Attributes.MOVEMENT_SPEED, 0.45D);
         builder = builder.add(Attributes.MAX_HEALTH, 50.0D);
-        builder = builder.add(Attributes.ARMOR, 0.0D);
+        builder = builder.add(Attributes.ARMOR, 30.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 0.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 48.0D);
         return builder;

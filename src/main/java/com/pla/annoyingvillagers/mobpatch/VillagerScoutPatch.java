@@ -90,7 +90,7 @@ public class VillagerScoutPatch extends CEHumanoidPatch implements CustomExecute
                                         Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_DUAL_WEAPON),
                                         Pair.of(LivingMotions.WALK, Animations.BIPED_HOLD_DUAL_WEAPON),
                                         Pair.of(LivingMotions.RUN, Animations.BIPED_RUN_DUAL),
-                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_HOLD_DUAL_WEAPON),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_RUN_DUAL),
                                         Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
                                 )
                         ));
