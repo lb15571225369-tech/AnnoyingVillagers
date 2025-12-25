@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.events;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -18,6 +19,7 @@ public class AttackCooldownEvent {
         Player player = event.player;
         if (event.phase != TickEvent.Phase.END) return;
         if (player.level().isClientSide()) return;
+        if (!(player instanceof ServerPlayer serverPlayer)) return;
 
         CompoundTag data = player.getPersistentData();
 

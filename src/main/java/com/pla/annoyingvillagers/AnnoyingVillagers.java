@@ -6,6 +6,8 @@ import java.util.function.Supplier;
 
 import com.pla.annoyingvillagers.client.engine.SpriteArrowsCommonEntrypoint;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
+import com.pla.annoyingvillagers.gameasset.AVSkillCategories;
+import com.pla.annoyingvillagers.gameasset.AVSkillSlots;
 import com.pla.annoyingvillagers.init.*;
 import com.pla.annoyingvillagers.network.*;
 import com.pla.annoyingvillagers.events.NpcGearLoadEvent;
@@ -20,6 +22,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -37,6 +40,7 @@ import org.apache.logging.log4j.Logger;
 import com.pla.annoyingvillagers.capabilities.AVWeaponCapabilityPresets;
 import com.pla.annoyingvillagers.gameasset.AVSounds;
 import yesman.epicfight.gameasset.Armatures;
+import yesman.epicfight.main.EpicFightSharedConstants;
 
 @Mod(AnnoyingVillagers.MODID)
 public class AnnoyingVillagers {
@@ -64,10 +68,16 @@ public class AnnoyingVillagers {
         AVSounds.SOUNDS.register(modEventBus);
         MinecraftForge.EVENT_BUS.register(new NpcGearLoadEvent());
         context.registerConfig(ModConfig.Type.COMMON, AnnoyingVillagersConfig.SPEC, "annoyingvillagers-server.toml");
+        this.setupSkillSystem();
 
         if (FMLEnvironment.dist.isClient()) {
             modEventBus.addListener(EventPriority.LOWEST, ClassLoadingProtection::listen);
         }
+    }
+
+    private void setupSkillSystem() {
+        AVSkillSlots.ENUM_MANAGER.registerEnumCls("annoyingvillagers", AVSkillSlots.class);
+        AVSkillCategories.ENUM_MANAGER.registerEnumCls("annoyingvillagers", AVSkillCategories.class);
     }
 
     private static class ClassLoadingProtection {

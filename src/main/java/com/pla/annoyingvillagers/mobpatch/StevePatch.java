@@ -8,6 +8,8 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors;
@@ -15,14 +17,19 @@ import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
 import net.shelmarow.combat_evolution.ai.iml.CustomExecuteEntity;
 import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
 import reascer.wom.gameasset.WOMAnimations;
+import reascer.wom.gameasset.animations.weapons.AnimsMoonless;
+import reascer.wom.gameasset.animations.weapons.AnimsSolar;
 import yesman.epicfight.api.animation.AnimationManager.AnimationAccessor;
 import yesman.epicfight.api.animation.Animator;
 import yesman.epicfight.api.animation.LivingMotions;
 import yesman.epicfight.api.animation.types.StaticAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.AttackResult;
 import yesman.epicfight.api.utils.AttackResult.ResultType;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.EpicFightSounds;
+import yesman.epicfight.network.EpicFightNetworkManager;
+import yesman.epicfight.network.server.SPChangeLivingMotion;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.Factions;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
@@ -98,52 +105,11 @@ public class StevePatch extends CEHumanoidPatch implements CustomExecuteEntity {
                                         Pair.of(LivingMotions.SHOT, Animations.BIPED_BOW_SHOT)
                                 )));
 
-        this.weaponLivingMotions
-                .put(WeaponCategories.SWORD,
-                        ImmutableMap.of(
-                                Styles.ONE_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.BLOCK, Animations.SWORD_GUARD),
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
-                                        Pair.of(LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD),
-                                        Pair.of(LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
-                                ),
-                                Styles.TWO_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD),
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_DUAL_WEAPON),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_HOLD_DUAL_WEAPON),
-                                        Pair.of(LivingMotions.RUN, AVAnimations.RUN_HOLD),
-                                        Pair.of(LivingMotions.CHASE, AVAnimations.RUN_HOLD),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
-                                )
-                        ));
         this.weaponAttackMotions
                 .put(WeaponCategories.SWORD,
                         ImmutableMap.of(
                                 Styles.ONE_HAND, SteveSword.AV_SWORD,
                                 Styles.TWO_HAND, SteveSword.AV_DUAL_SWORD
-                        ));
-
-        this.weaponLivingMotions
-                .put(WeaponCategories.GREATSWORD,
-                        ImmutableMap.of(
-                                Styles.TWO_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.BLOCK, AVAnimations.LEGENDARY_SWORD_GUARD),
-                                        Pair.of(LivingMotions.IDLE, WOMAnimations.TORMENT_BERSERK_IDLE),
-                                        Pair.of(LivingMotions.WALK, WOMAnimations.TORMENT_BERSERK_WALK),
-                                        Pair.of(LivingMotions.RUN, AVAnimations.RUN_DUAL_BIG),
-                                        Pair.of(LivingMotions.CHASE, AVAnimations.RUN_DUAL_BIG),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
-                                )
-                        ));
-        this.weaponAttackMotions
-                .put(WeaponCategories.GREATSWORD,
-                        ImmutableMap.of(
-                                Styles.TWO_HAND, SteveLegendarySword.LEGENDARY_SWORD
                         ));
     }
 
@@ -182,7 +148,64 @@ public class StevePatch extends CEHumanoidPatch implements CustomExecuteEntity {
             }
         }
 
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.LEGENDARY_SWORD.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.TWO_HAND) {
+                return SteveLegendarySword.LEGENDARY_SWORD;
+            }
+        }
+
         return super.getCustomWeaponMotionBuilder();
+    }
+
+    @Override
+    public void modifyLivingMotionByCurrentItem() {
+        super.modifyLivingMotionByCurrentItem();
+
+        Animator animator = this.getAnimator();
+        CapabilityItem mainHandCap = this.getHoldingItemCapability(InteractionHand.MAIN_HAND);
+        Style style = mainHandCap.getStyle(this);
+
+        AssetAccessor<? extends StaticAnimation> oldBlock = animator.getLivingAnimations().get(LivingMotions.BLOCK);
+        AssetAccessor<? extends StaticAnimation> newBlock = oldBlock;
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.WOODEN_DOOR.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.TWO_HAND) {
+                newBlock = AnimsSolar.SOLAR_GUARD;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.CRAFTING_TABLE.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.TWO_HAND) {
+                newBlock = AVAnimations.CARRY;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.LADDER.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.TWO_HAND) {
+                newBlock = AnimsMoonless.MOONLESS_GUARD;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.TRAPDOOR.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.TWO_HAND) {
+                newBlock = AVAnimations.SHIELD_MAINHAND;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get().getDefaultInstance())) {
+            if (style == Styles.ONE_HAND) {
+                newBlock = AVAnimations.SHIELD_MAINHAND;
+            }
+        }
+
+        if (newBlock == oldBlock) return;
+        animator.addLivingAnimation(LivingMotions.BLOCK, newBlock);
+
+        if (!this.isLogicalClient()) {
+            SPChangeLivingMotion msg = new SPChangeLivingMotion(this.original.getId());
+            msg.putEntries(animator.getLivingAnimations().entrySet());
+            EpicFightNetworkManager.sendToAllPlayerTrackingThisEntity(msg, this.original);
+        }
     }
 
     public void playGuardBreakSound() {

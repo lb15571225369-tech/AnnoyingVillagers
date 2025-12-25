@@ -74,8 +74,8 @@ mixin {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     implementation fg.deobf("curse.maven:epic-fight-mod-405076:7345468")
-    implementation fg.deobf("curse.maven:combat-evolution-1377795:7361563")
-    implementation fg.deobf("curse.maven:epicfight-clash-blade-1408812:7367747")
+    implementation fg.deobf("curse.maven:combat-evolution-1377795:7373729")
+    implementation fg.deobf("curse.maven:epicfight-clash-blade-1408812:7376983")
     implementation fg.deobf("curse.maven:weapons-of-miracles-epicfight-918614:7363591")
 
     implementation fg.deobf("curse.maven:player-mobs-430513:5780869")

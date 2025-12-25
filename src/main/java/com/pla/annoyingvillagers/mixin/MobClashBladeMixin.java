@@ -2,12 +2,12 @@ package com.pla.annoyingvillagers.mixin;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.animations.BowAttackAnimation;
-import com.pla.annoyingvillagers.animations.HeavyAttackAnimation;
 import com.pla.annoyingvillagers.animations.KickAttackAnimation;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
 import com.pla.annoyingvillagers.entity.AegisHerobrineEntity;
+import com.pla.annoyingvillagers.entity.AngrySteveEntity;
 import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
@@ -22,7 +22,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -123,9 +123,10 @@ public class MobClashBladeMixin {
                 && defender.level() instanceof ServerLevel) {
             // Non-projectile clashing
             ResourceLocation indirectEntity = BuiltInRegistries.ENTITY_TYPE.getKey(Objects.requireNonNull(livingAttackEvent.getSource().getDirectEntity()).getType());
+            AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] indirect entity is {}", indirectEntity);
             boolean isDamageFromGunKnight = indirectEntity.getNamespace().equals("torchesbecomesunlight")
                     && (indirectEntity.getPath().equals("gun_knight_patriot") || indirectEntity.getPath().equals("turret"));
-            if (isDamageFromGunKnight) {
+            if (isDamageFromGunKnight || livingAttackEvent.getSource().is(DamageTypes.EXPLOSION)) {
                 if (defender instanceof PathfinderMobInventory pathfinderMobInventory
                         && pathfinderMobInventory.getBlockDamage() == null
                         && new Random().nextDouble() <= pathfinderMobInventory.getBlockProjectileChance()
@@ -150,143 +151,155 @@ public class MobClashBladeMixin {
                     return;
                 }
             }
-
-            // Clash custom animation
-            if (defender instanceof HerobrineMob) {
-                LivingEntityPatch<?> attackerLivingEntityPatch = EpicFightCapabilities.getEntityPatch(attacker, LivingEntityPatch.class);
-                if (attackerLivingEntityPatch != null) {
-                    AssetAccessor<? extends DynamicAnimation> attackerDynamicAnimation = Objects.requireNonNull(attackerLivingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
-                    if (attackerDynamicAnimation != null) {
-                        if (attackerDynamicAnimation.get() instanceof HeavyAttackAnimation) {
-                            cir.setReturnValue(true);
-                            return;
-                        } else {
-                            AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] damage passed for Herobrine {}", attackerDynamicAnimation.get().toString());
-                        }
-                    }
-                }
-            }
         }
     }
+
+//    @Inject(method = "forceClashBlade", at = @At("HEAD"), cancellable = true)
+//    private static void clashAgainstOpSkill(LivingAttackEvent livingAttackEvent,
+//                                                   LivingEntityPatch<?> defenderLivingEntityPatch,
+//                                                   AssetAccessor<? extends DynamicAnimation> defenderDynamicAnimation,
+//                                                   EntityState defenderEntityState, Entity attacker, Entity defender,
+//                                                   CallbackInfoReturnable<Boolean> cir) {
+//        // Clash custom animation
+//        if (EpicfightUtil.isLongHitAnimation(defenderDynamicAnimation)) {
+//            cir.setReturnValue(false);
+//            return;
+//        }
+//
+//        if (defender instanceof HerobrineMob || defender instanceof AngrySteveEntity) {
+//            LivingEntityPatch<?> attackerLivingEntityPatch = EpicFightCapabilities.getEntityPatch(attacker, LivingEntityPatch.class);
+//            if (attackerLivingEntityPatch != null) {
+//                AssetAccessor<? extends DynamicAnimation> attackerDynamicAnimation = Objects.requireNonNull(attackerLivingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
+//                if (attackerDynamicAnimation != null && attackerDynamicAnimation.get().getRegistryName() != null) {
+//                    AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] damage passed {}, defenderEntityState {}", attackerDynamicAnimation.get().getRegistryName().toString(), defenderEntityState);
+//                }
+//            }
+//        }
+//    }
 
     @Inject(method = "customPreAdditionClashBlade", at = @At("HEAD"), cancellable = true)
     private static void customLogicBeforeClashing(LivingAttackEvent livingAttackEvent,
                                                   LivingEntityPatch<?> defenderLivingEntityPatch,
                                                   AssetAccessor<? extends DynamicAnimation> defenderDynamicAnimation,
-                                                  EntityState defenderEntityState, Entity attacker, Entity defender,
+                                                  EntityState defenderEntityState, Entity attacker,
+                                                  Entity defender, int clashBy,
                                                   CallbackInfo ci) {
         if (defender instanceof LivingEntity livingEntity
                 && defender.level() instanceof ServerLevel serverLevel) {
             // Herobrine playing animation
-            if (defender instanceof AegisHerobrineEntity) {
-                defenderLivingEntityPatch.playAnimationSynchronized(AnimsAgony.AGONY_GUARD_HIT_1, 0.0F);
+            if (clashBy != 0) {
+                if (defender instanceof AegisHerobrineEntity) {
+                    defenderLivingEntityPatch.playAnimationSynchronized(AnimsAgony.AGONY_GUARD_HIT_1, 0.0F);
+                }
             }
 
             // Place block to clash
-            Entity projectile = null;
-            if (defender instanceof PathfinderMobInventory pathfinderMobInventory) {
-                projectile = pathfinderMobInventory.getBlockDamage();
-            } else if (defender instanceof PlayerNpcEntity playerNpcEntity) {
-                projectile = playerNpcEntity.getBlockDamage();
-            }
-            if (projectile != null) {
-                Random random = new Random();
-                int pattern = random.nextInt(11);
-                int rot = random.nextInt(4);
-
-                BiFunction<Integer, Integer, int[]> toWorld = getIntegerIntegerBiFunction(defender, rot);
-
-                ItemStack handStack = livingEntity.getItemInHand(InteractionHand.MAIN_HAND);
-                BlockState placeState = Blocks.COBBLESTONE.defaultBlockState();
-                if (handStack.getItem() instanceof BlockItem blockItem) {
-                    placeState = blockItem.getBlock().defaultBlockState();
+            if (clashBy == 1) {
+                Entity projectile = null;
+                if (defender instanceof PathfinderMobInventory pathfinderMobInventory) {
+                    projectile = pathfinderMobInventory.getBlockDamage();
+                } else if (defender instanceof PlayerNpcEntity playerNpcEntity) {
+                    projectile = playerNpcEntity.getBlockDamage();
                 }
+                if (projectile != null) {
+                    Random random = new Random();
+                    int pattern = random.nextInt(11);
+                    int rot = random.nextInt(4);
 
-                BlockPos baseXZ;
-                int topY;
-                ResourceLocation key = BuiltInRegistries.ENTITY_TYPE.getKey(projectile.getType());
-                if (key.getNamespace().equals("tacz")
-                        || (key.getNamespace().equals("torchesbecomesunlight") && (key.getPath().equals("gun_knight_patriot") || key.getPath().equals("turret")))) {
-                    Direction facing = defender.getDirection();
-                    baseXZ = defender.blockPosition().relative(facing, 1);
-                    topY = Mth.floor(defender.getY() + defender.getBbHeight());
-                } else {
-                    baseXZ = BlockPos.containing(projectile.getX(), 0.0, projectile.getZ());
-                    topY = Mth.floor(projectile.getY());
-                }
-                int surfaceY = serverLevel.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, baseXZ).getY();
-                BlockPos projXZ = new BlockPos(baseXZ.getX(), 0, baseXZ.getZ());
+                    BiFunction<Integer, Integer, int[]> toWorld = getIntegerIntegerBiFunction(defender, rot);
 
-                for (int y = surfaceY; y <= topY; y++) {
-                    int layer = y - surfaceY;
+                    ItemStack handStack = livingEntity.getItemInHand(InteractionHand.MAIN_HAND);
+                    BlockState placeState = Blocks.COBBLESTONE.defaultBlockState();
+                    if (handStack.getItem() instanceof BlockItem blockItem) {
+                        placeState = blockItem.getBlock().defaultBlockState();
+                    }
 
-                    BlockPos center = new BlockPos(projXZ.getX(), y, projXZ.getZ());
-                    if (!serverLevel.getBlockState(center).canBeReplaced()) break;
+                    BlockPos baseXZ;
+                    int topY;
+                    ResourceLocation key = BuiltInRegistries.ENTITY_TYPE.getKey(projectile.getType());
+                    if (key.getNamespace().equals("tacz")
+                            || (key.getNamespace().equals("torchesbecomesunlight") && (key.getPath().equals("gun_knight_patriot") || key.getPath().equals("turret")))) {
+                        Direction facing = defender.getDirection();
+                        baseXZ = defender.blockPosition().relative(facing, 1);
+                        topY = Mth.floor(defender.getY() + defender.getBbHeight());
+                    } else {
+                        baseXZ = BlockPos.containing(projectile.getX(), 0.0, projectile.getZ());
+                        topY = Mth.floor(projectile.getY());
+                    }
+                    int surfaceY = serverLevel.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, baseXZ).getY();
+                    BlockPos projXZ = new BlockPos(baseXZ.getX(), 0, baseXZ.getZ());
 
-                    defenderLivingEntityPatch.playAnimationSynchronized(AVAnimations.PLACE_BLOCK, 0.0F);
-                    defender.playSound(SoundEvents.STONE_PLACE, 2.0F, 1.0F);
-                    serverLevel.setBlockAndUpdate(center, placeState);
+                    for (int y = surfaceY; y <= topY; y++) {
+                        int layer = y - surfaceY;
 
-                    int[][] extrasLocal = switch (pattern) {
-                        case 0 -> new int[][]{};
+                        BlockPos center = new BlockPos(projXZ.getX(), y, projXZ.getZ());
+                        if (!serverLevel.getBlockState(center).canBeReplaced()) break;
 
-                        case 1 -> {
-                            if (layer == 3) yield new int[][]{{1, 0}};
-                            else yield new int[][]{};
-                        }
+                        defenderLivingEntityPatch.playAnimationSynchronized(AVAnimations.PLACE_BLOCK, 0.0F);
+                        defender.playSound(SoundEvents.STONE_PLACE, 2.0F, 1.0F);
+                        serverLevel.setBlockAndUpdate(center, placeState);
 
-                        case 2 -> {
-                            if (layer == 0) yield new int[][]{{-1, 0}, {1, 0}, {2, 0}};
-                            else if (layer == 1) yield new int[][]{{1, 0}};
-                            else yield new int[][]{};
-                        }
+                        int[][] extrasLocal = switch (pattern) {
+                            case 0 -> new int[][]{};
 
-                        case 3 -> {
-                            if (layer == 1) yield new int[][]{{-1, 0}, {1, 0}};
-                            else yield new int[][]{};
-                        }
+                            case 1 -> {
+                                if (layer == 3) yield new int[][]{{1, 0}};
+                                else yield new int[][]{};
+                            }
 
-                        case 4 -> {
-                            if (layer == 0) yield new int[][]{{-1, 0}, {1, 0}};
-                            else yield new int[][]{};
-                        }
+                            case 2 -> {
+                                if (layer == 0) yield new int[][]{{-1, 0}, {1, 0}, {2, 0}};
+                                else if (layer == 1) yield new int[][]{{1, 0}};
+                                else yield new int[][]{};
+                            }
 
-                        case 5 -> new int[][]{{1, 0}};
+                            case 3 -> {
+                                if (layer == 1) yield new int[][]{{-1, 0}, {1, 0}};
+                                else yield new int[][]{};
+                            }
 
-                        case 6 -> {
-                            if (layer <= 1) yield new int[][]{{1, 0}};
-                            else yield new int[][]{};
-                        }
+                            case 4 -> {
+                                if (layer == 0) yield new int[][]{{-1, 0}, {1, 0}};
+                                else yield new int[][]{};
+                            }
 
-                        case 7 -> {
-                            if (layer == 0) yield new int[][]{{1, 0}};
-                            else yield new int[][]{};
-                        }
+                            case 5 -> new int[][]{{1, 0}};
 
-                        case 8 -> {
-                            if (layer == 1) yield new int[][]{{1, 0}};
-                            else yield new int[][]{};
-                        }
+                            case 6 -> {
+                                if (layer <= 1) yield new int[][]{{1, 0}};
+                                else yield new int[][]{};
+                            }
 
-                        case 9 -> {
-                            if (layer == 0) yield new int[][]{{-1, 0}};
-                            else yield new int[][]{};
-                        }
+                            case 7 -> {
+                                if (layer == 0) yield new int[][]{{1, 0}};
+                                else yield new int[][]{};
+                            }
 
-                        default -> {
-                            if (layer == 1) yield new int[][]{{-1, 0}};
-                            else yield new int[][]{};
-                        }
-                    };
+                            case 8 -> {
+                                if (layer == 1) yield new int[][]{{1, 0}};
+                                else yield new int[][]{};
+                            }
 
-                    for (int[] ab : extrasLocal) {
-                        int[] dzdx = toWorld.apply(ab[0], ab[1]);
-                        int dx = dzdx[0];
-                        int dz = dzdx[1];
+                            case 9 -> {
+                                if (layer == 0) yield new int[][]{{-1, 0}};
+                                else yield new int[][]{};
+                            }
 
-                        BlockPos p = center.offset(dx, 0, dz);
-                        if (serverLevel.getBlockState(p).canBeReplaced()) {
-                            serverLevel.setBlockAndUpdate(p, placeState);
+                            default -> {
+                                if (layer == 1) yield new int[][]{{-1, 0}};
+                                else yield new int[][]{};
+                            }
+                        };
+
+                        for (int[] ab : extrasLocal) {
+                            int[] dzdx = toWorld.apply(ab[0], ab[1]);
+                            int dx = dzdx[0];
+                            int dz = dzdx[1];
+
+                            BlockPos p = center.offset(dx, 0, dz);
+                            if (serverLevel.getBlockState(p).canBeReplaced()) {
+                                serverLevel.setBlockAndUpdate(p, placeState);
+                            }
                         }
                     }
                 }
@@ -345,99 +358,98 @@ public class MobClashBladeMixin {
     private static void revertWeaponAfterClashing(LivingAttackEvent livingAttackEvent,
                                                   LivingEntityPatch<?> defenderLivingEntityPatch,
                                                   AssetAccessor<? extends DynamicAnimation> defenderDynamicAnimation,
-                                                  EntityState defenderEntityState, Entity attacker, Entity defender,
+                                                  EntityState defenderEntityState, Entity attacker,
+                                                  Entity defender, int clashBy,
                                                   CallbackInfo ci) {
         if (!(defender.level() instanceof ServerLevel serverLevel)) return;
 
         LivingEntityPatch<?> attackerLivingEntityPatch = EpicFightCapabilities.getEntityPatch(attacker, LivingEntityPatch.class);
 
+        // Clash kick post
+        if (clashBy == 0) {
+            if (attackerLivingEntityPatch != null) {
+                AssetAccessor<? extends DynamicAnimation> attackerDynamicAnimation = Objects.requireNonNull(attackerLivingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
+                if (attackerDynamicAnimation != null) {
+                    if ((defender instanceof PathfinderMobInventory pathfinderMobInventory && pathfinderMobInventory.getBlockDamage() != null)
+                            || (defender instanceof PlayerNpcEntity playerNpcEntity && playerNpcEntity.getBlockDamage() != null)) {
+                        return;
+                    }
+                    if (attackerDynamicAnimation.get() instanceof KickAttackAnimation) {
+                        attacker.playSound(AnnoyingVillagersModSounds.KICK_GUARD_BREAK.get());
+                        attackerLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_COMMON_NEUTRALIZED, 0.0F);
+                        attacker.hurt(serverLevel.damageSources().generic(), 1.0F);
+                    }
+                }
+            }
+        }
+
         // Clash projectile post
-        if ((defender instanceof PathfinderMobInventory pathfinderMobInventory && pathfinderMobInventory.getBlockDamage() != null)
-                || (defender instanceof PlayerNpcEntity playerNpcEntity && playerNpcEntity.getBlockDamage() != null)) {
-            new DelayedTask(10) {
-                @Override
-                public void run() {
-                    boolean rollAndSwap = false;
-                    if (defender instanceof PathfinderMobInventory pathfinderMobInventory
-                            && pathfinderMobInventory.getBlockDamage() != null) {
-                        pathfinderMobInventory.setBlockDamage(null);
-                        rollAndSwap = true;
-                    }
+        if (clashBy == 1) {
+            if ((defender instanceof PathfinderMobInventory pathfinderMobInventory && pathfinderMobInventory.getBlockDamage() != null)
+                    || (defender instanceof PlayerNpcEntity playerNpcEntity && playerNpcEntity.getBlockDamage() != null)) {
+                new DelayedTask(10) {
+                    @Override
+                    public void run() {
+                        boolean rollAndSwap = false;
+                        if (defender instanceof PathfinderMobInventory pathfinderMobInventory
+                                && pathfinderMobInventory.getBlockDamage() != null) {
+                            pathfinderMobInventory.setBlockDamage(null);
+                            rollAndSwap = true;
+                        }
 
-                    if (defender instanceof PlayerNpcEntity playerNpcEntity
-                            && playerNpcEntity.getBlockDamage() != null) {
-                        playerNpcEntity.setBlockDamage(null);
-                        rollAndSwap = true;
-                    }
+                        if (defender instanceof PlayerNpcEntity playerNpcEntity
+                                && playerNpcEntity.getBlockDamage() != null) {
+                            playerNpcEntity.setBlockDamage(null);
+                            rollAndSwap = true;
+                        }
 
-                    if (rollAndSwap) {
-                        if (CombatCommon.canSwapToBow((MobPatch<?>) defenderLivingEntityPatch)) {
-                            double chance = new Random().nextDouble(0.0, 1.0);
-                            if (chance <= 0.25) {
-                                defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_RIGHT, 0.0F);
-                                CombatCommon.swapToBow((MobPatch<?>) defenderLivingEntityPatch);
-                            } else if (chance <= 0.5) {
-                                defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_LEFT, 0.0F);
-                                CombatCommon.swapToBow((MobPatch<?>) defenderLivingEntityPatch);
-                            } else if (chance <= 0.7) {
-                                defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_ROLL_BACKWARD, 0.0F);
-                                CombatCommon.swapToBow((MobPatch<?>) defenderLivingEntityPatch);
-                            } else if (chance <= 0.8) {
-                                defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_RIGHT, 0.0F);
-                                CombatCommon.swapToMelee((MobPatch<?>) defenderLivingEntityPatch);
-                            } else if (chance <= 0.9) {
-                                defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_LEFT, 0.0F);
-                                CombatCommon.swapToMelee((MobPatch<?>) defenderLivingEntityPatch);
+                        if (rollAndSwap) {
+                            if (CombatCommon.canSwapToBow((MobPatch<?>) defenderLivingEntityPatch)) {
+                                double chance = new Random().nextDouble(0.0, 1.0);
+                                if (chance <= 0.25) {
+                                    defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_RIGHT, 0.0F);
+                                    CombatCommon.swapToBow((MobPatch<?>) defenderLivingEntityPatch);
+                                } else if (chance <= 0.5) {
+                                    defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_LEFT, 0.0F);
+                                    CombatCommon.swapToBow((MobPatch<?>) defenderLivingEntityPatch);
+                                } else if (chance <= 0.7) {
+                                    defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_ROLL_BACKWARD, 0.0F);
+                                    CombatCommon.swapToBow((MobPatch<?>) defenderLivingEntityPatch);
+                                } else if (chance <= 0.8) {
+                                    defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_RIGHT, 0.0F);
+                                    CombatCommon.swapToMelee((MobPatch<?>) defenderLivingEntityPatch);
+                                } else if (chance <= 0.9) {
+                                    defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_LEFT, 0.0F);
+                                    CombatCommon.swapToMelee((MobPatch<?>) defenderLivingEntityPatch);
+                                } else {
+                                    defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_ROLL_BACKWARD, 0.0F);
+                                    CombatCommon.swapToMelee((MobPatch<?>) defenderLivingEntityPatch);
+                                }
                             } else {
-                                defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_ROLL_BACKWARD, 0.0F);
-                                CombatCommon.swapToMelee((MobPatch<?>) defenderLivingEntityPatch);
-                            }
-                        } else {
-                            double chance = new Random().nextDouble(0.0, 1.0);
-                            if (chance <= 0.4) {
-                                defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_RIGHT, 0.0F);
-                                CombatCommon.swapToMelee((MobPatch<?>) defenderLivingEntityPatch);
-                            } else if (chance <= 0.5) {
-                                defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_LEFT, 0.0F);
-                                CombatCommon.swapToMelee((MobPatch<?>) defenderLivingEntityPatch);
-                            } else {
-                                defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_ROLL_BACKWARD, 0.0F);
-                                CombatCommon.swapToMelee((MobPatch<?>) defenderLivingEntityPatch);
+                                double chance = new Random().nextDouble(0.0, 1.0);
+                                if (chance <= 0.4) {
+                                    defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_RIGHT, 0.0F);
+                                    CombatCommon.swapToMelee((MobPatch<?>) defenderLivingEntityPatch);
+                                } else if (chance <= 0.5) {
+                                    defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_LEFT, 0.0F);
+                                    CombatCommon.swapToMelee((MobPatch<?>) defenderLivingEntityPatch);
+                                } else {
+                                    defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_ROLL_BACKWARD, 0.0F);
+                                    CombatCommon.swapToMelee((MobPatch<?>) defenderLivingEntityPatch);
+                                }
                             }
                         }
                     }
-                }
-            };
-        }
-
-        // Clash kick post
-        if (attackerLivingEntityPatch != null) {
-            AssetAccessor<? extends DynamicAnimation> attackerDynamicAnimation = Objects.requireNonNull(attackerLivingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
-            if (attackerDynamicAnimation != null) {
-                if ((defender instanceof PathfinderMobInventory pathfinderMobInventory && pathfinderMobInventory.getBlockDamage() != null)
-                        || (defender instanceof PlayerNpcEntity playerNpcEntity && playerNpcEntity.getBlockDamage() != null)) {
-                    return;
-                }
-                if (attackerDynamicAnimation.get() instanceof KickAttackAnimation) {
-                    attacker.playSound(AnnoyingVillagersModSounds.KICK_GUARD_BREAK.get());
-                    attackerLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_COMMON_NEUTRALIZED, 0.0F);
-                    attacker.hurt(serverLevel.damageSources().generic(), 1.0F);
-                }
+                };
             }
         }
 
         // Clash custom attack post
-        if (defender instanceof HerobrineMob) {
-            if (attackerLivingEntityPatch != null) {
-                AssetAccessor<? extends DynamicAnimation> attackerDynamicAnimation = Objects.requireNonNull(attackerLivingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
-                if (attackerDynamicAnimation != null) {
-                    if (attackerDynamicAnimation.get() instanceof HeavyAttackAnimation) {
-                        defender.playSound(AnnoyingVillagersModSounds.KICK_GUARD_BREAK.get());
-                        defenderLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_COMMON_NEUTRALIZED, 0.0F);
-                        defender.hurt(serverLevel.damageSources().generic(), 1.0F);
-                    }
-                }
-            }
-        }
+//        if (clashBy == 2) {
+//            if (defender instanceof HerobrineMob || defender instanceof AngrySteveEntity) {
+//                defenderLivingEntityPatch.playAnimationSynchronized(AVAnimations.GUARD_BREAK_ATTACK, 0.0F);
+//                defender.hurt(serverLevel.damageSources().generic(), 1.0F);
+//            }
+//        }
     }
 }

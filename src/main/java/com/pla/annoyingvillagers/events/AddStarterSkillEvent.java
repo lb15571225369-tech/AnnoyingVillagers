@@ -1,6 +1,8 @@
 package com.pla.annoyingvillagers.events;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.gameasset.AVSkillSlots;
+import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.efclash_blade.gameasset.EFClashBladeSkills;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -15,6 +17,7 @@ import yesman.epicfight.gameasset.EpicFightSkills;
 import yesman.epicfight.network.EpicFightNetworkManager;
 import yesman.epicfight.skill.Skill;
 import yesman.epicfight.skill.SkillContainer;
+import yesman.epicfight.skill.SkillSlot;
 import yesman.epicfight.skill.SkillSlots;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
@@ -23,7 +26,7 @@ import javax.annotation.Nullable;
 
 @Mod.EventBusSubscriber
 public class AddStarterSkillEvent {
-    private static final String KEY = AnnoyingVillagers.MODID + ":av_has_joined_before";
+    private static final String KEY = AnnoyingVillagers.MODID + ":av_1_4_has_joined_before";
     @SubscribeEvent
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent playerloggedinevent) {
         execute(playerloggedinevent, playerloggedinevent.getEntity().level(), playerloggedinevent.getEntity().getX(), playerloggedinevent.getEntity().getY(), playerloggedinevent.getEntity().getZ(), playerloggedinevent.getEntity());
@@ -61,7 +64,7 @@ public class AddStarterSkillEvent {
         persisted(p).putBoolean(KEY, true);
     }
 
-    private static void giveSkill(ServerPlayer player, ServerPlayerPatch patch, SkillSlots slot, Skill skill) {
+    private static void giveSkill(ServerPlayer player, ServerPlayerPatch patch, SkillSlot slot, Skill skill) {
         if (skill == null) return;
 
         SkillContainer container = patch.getSkillCapability().getSkillContainerFor(slot);
@@ -84,6 +87,7 @@ public class AddStarterSkillEvent {
                     ServerPlayerPatch playerPatch = EpicFightCapabilities.getEntityPatch(serverPlayer, ServerPlayerPatch.class);
                     if (playerPatch == null) return;
 
+                    giveSkill(serverPlayer, playerPatch, AVSkillSlots.AV_KICK, AVSkills.KICK);
                     giveSkill(serverPlayer, playerPatch, SkillSlots.PASSIVE1, EFClashBladeSkills.CLASH_BLADE);
                     giveSkill(serverPlayer, playerPatch, SkillSlots.GUARD, EpicFightSkills.GUARD);
                     giveSkill(serverPlayer, playerPatch, SkillSlots.DODGE, EpicFightSkills.ROLL);

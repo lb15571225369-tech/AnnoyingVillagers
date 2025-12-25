@@ -79,68 +79,6 @@ public class LowHerobrineClonePatch extends CEHumanoidPatch implements CustomExe
         this.weaponAttackMotions
                 .put(WeaponCategories.FIST,
                         ImmutableMap.of(Styles.ONE_HAND, PlayerNpcFist.FIST));
-
-        this.weaponLivingMotions
-                .put(WeaponCategories.AXE,
-                        ImmutableMap.of(Styles.ONE_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.BLOCK, Animations.BIPED_BLOCK),
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
-                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN),
-                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_RUN),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
-                                )));
-        this.weaponAttackMotions
-                .put(WeaponCategories.AXE,
-                        ImmutableMap.of(Styles.ONE_HAND, PlayerNpcAxe.AXE));
-
-        this.weaponLivingMotions
-                .put(WeaponCategories.SWORD,
-                        ImmutableMap.of(
-                                Styles.ONE_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.BLOCK, Animations.SWORD_GUARD),
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
-                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN),
-                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_RUN),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
-                                ),
-                                Styles.TWO_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD),
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_DUAL_WEAPON),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_HOLD_DUAL_WEAPON),
-                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN_DUAL),
-                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_HOLD_DUAL_WEAPON),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
-                                )
-                        ));
-        this.weaponAttackMotions
-                .put(WeaponCategories.SWORD,
-                        ImmutableMap.of(
-                                Styles.ONE_HAND, PlayerNpcSword.SWORD,
-                                Styles.TWO_HAND, PlayerNpcSword.DUAL_SWORD
-                        ));
-
-        this.weaponAttackMotions
-                .put(WeaponCategories.DAGGER,
-                        ImmutableMap.of(
-                                Styles.ONE_HAND, PlayerNpcDagger.DAGGER,
-                                Styles.TWO_HAND, PlayerNpcDagger.DUAL_DAGGER
-                        ));
-        this.weaponLivingMotions
-                .put(WeaponCategories.DAGGER,
-                        ImmutableMap.of(Styles.TWO_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_DUAL_WEAPON),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_HOLD_DUAL_WEAPON),
-                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN_DUAL),
-                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_HOLD_DUAL_WEAPON),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
-                                )));
-
         this.weaponAttackMotions
                 .put(WeaponCategories.RANGED,
                         ImmutableMap.of(
@@ -159,36 +97,30 @@ public class LowHerobrineClonePatch extends CEHumanoidPatch implements CustomExe
                                         Pair.of(LivingMotions.SHOT, Animations.BIPED_BOW_SHOT)
                                 )));
 
-        this.weaponLivingMotions
-                .put(WeaponCategories.UCHIGATANA,
+        this.weaponAttackMotions
+                .put(WeaponCategories.AXE,
+                        ImmutableMap.of(Styles.ONE_HAND, PlayerNpcAxe.AXE));
+
+        this.weaponAttackMotions
+                .put(WeaponCategories.SWORD,
                         ImmutableMap.of(
-                                Styles.TWO_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.BLOCK, Animations.UCHIGATANA_GUARD),
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_UCHIGATANA),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK_UCHIGATANA),
-                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN_UCHIGATANA),
-                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_WALK_UCHIGATANA),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
-                                )
+                                Styles.ONE_HAND, PlayerNpcSword.SWORD,
+                                Styles.TWO_HAND, PlayerNpcSword.DUAL_SWORD
                         ));
+
+        this.weaponAttackMotions
+                .put(WeaponCategories.DAGGER,
+                        ImmutableMap.of(
+                                Styles.ONE_HAND, PlayerNpcDagger.DAGGER,
+                                Styles.TWO_HAND, PlayerNpcDagger.DUAL_DAGGER
+                        ));
+
         this.weaponAttackMotions
                 .put(WeaponCategories.UCHIGATANA,
                         ImmutableMap.of(
                                 Styles.TWO_HAND, PlayerNpcUchigatana.UCHIGATANA
                         ));
 
-        this.weaponLivingMotions
-                .put(WeaponCategories.GREATSWORD,
-                        ImmutableMap.of(Styles.TWO_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.BLOCK, Animations.GREATSWORD_GUARD),
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_GREATSWORD),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK_GREATSWORD),
-                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN_GREATSWORD),
-                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_WALK_GREATSWORD),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
-                                )));
         this.weaponAttackMotions
                 .put(WeaponCategories.GREATSWORD,
                         ImmutableMap.of(Styles.TWO_HAND, PlayerNpcGreatsword.GREATSWORD));
@@ -199,28 +131,6 @@ public class LowHerobrineClonePatch extends CEHumanoidPatch implements CustomExe
                                 Styles.ONE_HAND, PlayerNpcSpear.SPEAR_SHIELD,
                                 Styles.TWO_HAND, PlayerNpcSpear.SPEAR
                         ));
-        this.weaponLivingMotions
-                .put(WeaponCategories.SPEAR,
-                        ImmutableMap.of(
-                                Styles.ONE_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.BLOCK, AVAnimations.SHIELD_OFFHAND),
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
-                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN_SPEAR),
-                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_WALK),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
-                                ),
-                                Styles.TWO_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.BLOCK, Animations.SPEAR_GUARD),
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_SPEAR),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK_SPEAR),
-                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN_SPEAR),
-                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_WALK_SPEAR),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
-                                )
-                        ));
 
         this.weaponAttackMotions
                 .put(WeaponCategories.LONGSWORD,
@@ -228,46 +138,11 @@ public class LowHerobrineClonePatch extends CEHumanoidPatch implements CustomExe
                                 Styles.ONE_HAND, PlayerNpcLongsword.LONGSWORD_SHIELD,
                                 Styles.TWO_HAND, PlayerNpcLongsword.LONGSWORD
                         ));
-        this.weaponLivingMotions
-                .put(WeaponCategories.LONGSWORD,
-                        ImmutableMap.of(
-                                Styles.ONE_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.BLOCK, AVAnimations.SHIELD_OFFHAND),
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_LONGSWORD),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK_LONGSWORD),
-                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN_LONGSWORD),
-                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_WALK_LONGSWORD),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
-                                ),
-                                Styles.TWO_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.BLOCK, Animations.LONGSWORD_GUARD),
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_LONGSWORD),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK_LONGSWORD),
-                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN_LONGSWORD),
-                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_WALK_LONGSWORD),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
-                                )
-                        ));
 
         this.weaponAttackMotions
                 .put(WeaponCategories.TACHI,
                         ImmutableMap.of(
                                 Styles.TWO_HAND, PlayerNpcTachi.TACHI
-                        ));
-        this.weaponLivingMotions
-                .put(WeaponCategories.TACHI,
-                        ImmutableMap.of(
-                                Styles.TWO_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.BLOCK, Animations.LONGSWORD_GUARD),
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_HOLD_TACHI),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_HOLD_TACHI),
-                                        Pair.of(LivingMotions.RUN, Animations.BIPED_HOLD_TACHI),
-                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_HOLD_TACHI),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
-                                )
                         ));
     }
 
