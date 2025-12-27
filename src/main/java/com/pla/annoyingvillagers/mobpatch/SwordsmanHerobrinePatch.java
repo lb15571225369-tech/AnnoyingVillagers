@@ -2,10 +2,9 @@ package com.pla.annoyingvillagers.mobpatch;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
-import com.pla.annoyingvillagers.clazz.HerobrineMob;
+import com.pla.annoyingvillagers.combatbehaviour.HerobrineDemoniacVoltageReaver;
 import com.pla.annoyingvillagers.combatbehaviour.HerobrineEnderAegis;
-import com.pla.annoyingvillagers.item.EnderAegisItem;
-import net.minecraft.server.level.ServerLevel;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -14,6 +13,7 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
 import net.shelmarow.combat_evolution.ai.iml.CustomExecuteEntity;
 import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
+import reascer.wom.gameasset.animations.weapons.AnimsSolar;
 import yesman.epicfight.api.animation.AnimationManager.AnimationAccessor;
 import yesman.epicfight.api.animation.Animator;
 import yesman.epicfight.api.animation.LivingMotions;
@@ -31,8 +31,8 @@ import yesman.epicfight.world.damagesource.StunType;
 
 import java.util.Set;
 
-public class AegisHerobrinePatch extends CEHumanoidPatch implements CustomExecuteEntity {
-    public AegisHerobrinePatch() {
+public class SwordsmanHerobrinePatch extends CEHumanoidPatch implements CustomExecuteEntity {
+    public SwordsmanHerobrinePatch() {
         super(Factions.UNDEAD);
     }
 
@@ -48,22 +48,22 @@ public class AegisHerobrinePatch extends CEHumanoidPatch implements CustomExecut
 
     protected void setWeaponMotions() {
         this.weaponLivingMotions
-                .put(WeaponCategories.SWORD,
+                .put(WeaponCategories.GREATSWORD,
                         ImmutableMap.of(
-                                Styles.ONE_HAND,
+                                Styles.TWO_HAND,
                                 Set.of(
-                                        Pair.of(LivingMotions.BLOCK, Animations.BIPED_BLOCK),
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
-                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN),
-                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_RUN),
+                                        Pair.of(LivingMotions.BLOCK, AnimsSolar.SOLAR_GUARD),
+                                        Pair.of(LivingMotions.IDLE, AVAnimations.VALOUR_HOLD_GREATSWORD),
+                                        Pair.of(LivingMotions.WALK, AVAnimations.VALOUR_WALK_GREATSWORD),
+                                        Pair.of(LivingMotions.RUN, AVAnimations.VALOUR_RUN_GREATSWORD),
+                                        Pair.of(LivingMotions.CHASE, AVAnimations.VALOUR_RUN_GREATSWORD),
                                         Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
                                 )
                         ));
         this.weaponAttackMotions
-                .put(WeaponCategories.SWORD,
+                .put(WeaponCategories.GREATSWORD,
                         ImmutableMap.of(
-                                Styles.ONE_HAND, HerobrineEnderAegis.ENDER_AEGIS
+                                Styles.TWO_HAND, HerobrineDemoniacVoltageReaver.DEMONIAC_VOLTAGE_REAVER
                         ));
     }
 
@@ -100,10 +100,7 @@ public class AegisHerobrinePatch extends CEHumanoidPatch implements CustomExecut
     @Override
     public void onGuardHit(DamageSource damageSource) {
         super.onGuardHit(damageSource);
-        if (this.getOriginal() instanceof HerobrineMob herobrineMob
-                && herobrineMob.getState() > 0 && herobrineMob.level() instanceof ServerLevel serverLevel) {
-            EnderAegisItem.shieldShoot(serverLevel, herobrineMob);
-        }
+        // More logic when blocking damage success
     }
 
     @Override

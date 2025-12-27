@@ -33,18 +33,11 @@ public class SnakeBladeHit {
             Level worldIn = playerIn.level();
             Entity closestValid = null;
             Vec3 playerEyes = playerIn.getEyePosition(1.0F);
-            HitResult hitresult = worldIn.clip(new ClipContext(playerEyes, playerEyes.add(playerIn.getLookAngle().scale(16.0D)), ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, playerIn));
-            if (hitresult instanceof EntityHitResult) {
-                Entity entity = ((EntityHitResult) hitresult).getEntity();
+            worldIn.clip(new ClipContext(playerEyes, playerEyes.add(playerIn.getLookAngle().scale(16.0D)), ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, playerIn));
+            for (Entity entity : worldIn.getEntitiesOfClass(LivingEntity.class, playerIn.getBoundingBox().inflate(16.0D))) {
                 if (!entity.equals(playerIn) && !playerIn.isAlliedTo(entity) && !entity.isAlliedTo(playerIn) && (entity instanceof Mob || entity instanceof Player) && playerIn.hasLineOfSight(entity)) {
-                    closestValid = entity;
-                }
-            } else {
-                for (Entity entity : worldIn.getEntitiesOfClass(LivingEntity.class, playerIn.getBoundingBox().inflate(16.0D))) {
-                    if (!entity.equals(playerIn) && !playerIn.isAlliedTo(entity) && !entity.isAlliedTo(playerIn) && (entity instanceof Mob || entity instanceof Player) && playerIn.hasLineOfSight(entity)) {
-                        if (closestValid == null || playerIn.distanceTo(entity) < playerIn.distanceTo(closestValid)) {
-                            closestValid = entity;
-                        }
+                    if (closestValid == null || playerIn.distanceTo(entity) < playerIn.distanceTo(closestValid)) {
+                        closestValid = entity;
                     }
                 }
             }
@@ -80,18 +73,21 @@ public class SnakeBladeHit {
                 if (!worldIn.isClientSide) {
                     if (closestValid != null) {
                         SnakeBladeEntity segment = AnnoyingVillagersModEntities.SNAKE_BLADE.get().create(worldIn);
-                        if (segment != null && stack.hasFoil()) {
-                            segment.setEnchanted(true);
+                        if (segment != null) {
+                            if (stack.hasFoil()) {
+                                segment.setEnchanted(true);
+                            }
+                            segment.copyPosition(playerIn);
+                            worldIn.addFreshEntity(segment);
+                            segment.setCreatorEntityUUID(playerIn.getUUID());
+                            segment.setFromEntityID(playerIn.getId());
+                            segment.setToEntityID(closestValid.getId());
+                            segment.copyPosition(playerIn);
+                            segment.setProgress(0.0F);
+                            setLastFragment(playerIn, segment);
+                            return true;
                         }
-                        segment.copyPosition(playerIn);
-                        worldIn.addFreshEntity(segment);
-                        segment.setCreatorEntityUUID(playerIn.getUUID());
-                        segment.setFromEntityID(playerIn.getId());
-                        segment.setToEntityID(closestValid.getId());
-                        segment.copyPosition(playerIn);
-                        segment.setProgress(0.0F);
-                        setLastFragment(playerIn, segment);
-                        return true;
+                        return false;
                     }
                 }
             }
@@ -122,7 +118,7 @@ public class SnakeBladeHit {
         return true;
     }
 
-    public final class LocalSpace {
+    public static final class LocalSpace {
         private static final Vec3 UP = new Vec3(0, 1, 0);
 
         public static Vec3 forward(LivingEntity e) {

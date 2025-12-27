@@ -3,25 +3,21 @@ package com.pla.annoyingvillagers.entity;
 import java.util.*;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
 import com.pla.annoyingvillagers.skill.DemoniacVoltageReaverSkill;
 import com.pla.annoyingvillagers.util.SnakeBladeHit;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
@@ -36,8 +32,9 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
-import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
@@ -73,7 +70,7 @@ public class SnakeBladeEntity extends Entity {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -84,7 +81,7 @@ public class SnakeBladeEntity extends Entity {
         this.entityData.define(TARGET_COUNT, 0);
         this.entityData.define(CURRENT_TARGET_ID, -1);
         this.entityData.define(PROGRESS, 0F);
-        this.entityData.define(DAMAGE, new Random().nextFloat(10.0F, 30.0F));
+        this.entityData.define(DAMAGE, new Random().nextFloat(10.0F, 15.0F));
         this.entityData.define(RETRACTING, false);
         this.entityData.define(HAS_BLADE, true);
         this.entityData.define(ENCHANTED, false);
@@ -162,21 +159,15 @@ public class SnakeBladeEntity extends Entity {
                 double dz0 = target.getZ() - this.getZ();
                 if ((dx0*dx0 + dy0*dy0 + dz0*dz0) > radius) continue;
 
-                if (!this.level().isClientSide() && this.getServer() != null) {
-                    try {
-                        this.getServer().getCommands().getDispatcher().execute(
-                                "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
-                                this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                    } catch (CommandSyntaxException e) {
-
-                    }
+                if (this.level() instanceof ServerLevel serverLevel) {
+                    serverLevel.sendParticles(EpicFightParticles.HIT_BLUNT.get(),
+                            this.getX(), this.getY() + 1.5, this.getZ() + 0.8,
+                            1,
+                            0.1, 0.1, 0.1,
+                            1);
                 }
 
-                if (!this.level().isClientSide()) {
-                    this.level().playSound(null, new BlockPos((int) this.getX(), (int) this.getY(), (int) this.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "obsidian_hit"))), SoundSource.BLOCKS, 1.0F, (float) (0.5 + Math.random() * 0.5));
-                } else {
-                    this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "obsidian_hit"))), SoundSource.BLOCKS, 1.0F, (float) (0.5 + Math.random() * 0.5), false);
-                }
+                this.playSound(AnnoyingVillagersModSounds.OBSIDIAN_HIT.get(), 1.0F, (float) (0.5 + Math.random() * 0.5));
 
                 if (!target.level().isClientSide() && target.getServer() != null) {
                     LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(target, LivingEntityPatch.class);
@@ -194,12 +185,12 @@ public class SnakeBladeEntity extends Entity {
                     increaseSkillPoint(creator, 3.0F);
                 }
 
-                try {
-                    Objects.requireNonNull(this.getServer()).getCommands().getDispatcher().execute(
-                            "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
-                            this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException e) {
-
+                if (this.level() instanceof ServerLevel serverLevel) {
+                    serverLevel.sendParticles(EpicFightParticles.HIT_BLUNT.get(),
+                            this.getX(), this.getY() + 1.5, this.getZ() + 0.8,
+                            1,
+                            0.1, 0.1, 0.1,
+                            1);
                 }
 
                 double dx = this.getX() - target.getX();
@@ -226,8 +217,7 @@ public class SnakeBladeEntity extends Entity {
         }
         if(this.isRetracting() && progress == 0F) {
             Entity from = this.getFromEntity();
-            if(from instanceof SnakeBladeEntity){
-                SnakeBladeEntity snakeBladeFragment = (SnakeBladeEntity) from;
+            if(from instanceof SnakeBladeEntity snakeBladeFragment){
                 snakeBladeFragment.setRetracting(true);
                 updateLastFragment(snakeBladeFragment);
             } else {
@@ -238,6 +228,9 @@ public class SnakeBladeEntity extends Entity {
                             stack.removeTagKey("SnakeAnimation");
                         }
                     }
+                } else if (creator instanceof LivingEntity living) {
+                    ItemStack itemStack = living.getMainHandItem();
+                    itemStack.removeTagKey("SnakeAnimation");
                 }
                 LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(creator, LivingEntityPatch.class);
                 if (livingEntityPatch != null) {
@@ -267,23 +260,18 @@ public class SnakeBladeEntity extends Entity {
                             if(entity instanceof LivingEntity) {
                                 if (current != creator && current.hurt(this.level().damageSources().indirectMagic(this, (LivingEntity) entity), this.getBaseDamage())) {
                                     increaseSkillPoint(creator, 5.0F);
-                                    if (!this.level().isClientSide() && entity.getServer() != null) {
-                                        try {
-                                            this.getServer().getCommands().getDispatcher().execute(
-                                                    "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
-                                                    this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                        } catch (CommandSyntaxException e) {
-
-                                        }
+                                    if (this.level() instanceof ServerLevel serverLevel) {
+                                        serverLevel.sendParticles(EpicFightParticles.HIT_BLUNT.get(),
+                                                this.getX(), this.getY() + 1.5, this.getZ() + 0.8,
+                                                1,
+                                                0.1, 0.1, 0.1,
+                                                1);
                                     }
 
-                                    if (!this.level().isClientSide()) {
-                                        this.level().playSound(null, new BlockPos((int) this.getX(), (int) this.getY(), (int) this.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "obsidian_hit"))), SoundSource.BLOCKS, 1.0F, (float) (0.5 + Math.random() * 0.5));
-                                    } else {
-                                        this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "obsidian_hit"))), SoundSource.BLOCKS, 1.0F, (float) (0.5 + Math.random() * 0.5), false);
-                                    }
+                                    this.playSound(AnnoyingVillagersModSounds.OBSIDIAN_HIT.get(), 1.0F, (float) (0.5 + Math.random() * 0.5));
+
                                     if (!current.level().isClientSide() && current.getServer() != null) {
-                                        LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(current, LivingEntityPatch.class);
+                                        LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(current, LivingEntityPatch.class);
                                         if (livingEntityPatch != null) {
                                             livingEntityPatch.playAnimationSynchronized(AVAnimations.GUARD_BREAK_ATTACK, 0.0F);
                                         }
@@ -296,7 +284,7 @@ public class SnakeBladeEntity extends Entity {
                                     }
                                     if (new Random().nextBoolean()) {
                                         if (!current.level().isClientSide() && current.getServer() != null) {
-                                            LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(current, LivingEntityPatch.class);
+                                            LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(current, LivingEntityPatch.class);
                                             if (livingEntityPatch != null) {
                                                 livingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN, 0.0F);
                                             }
@@ -380,18 +368,20 @@ public class SnakeBladeEntity extends Entity {
     private void createChain(Entity closestValid) {
         this.entityData.set(HAS_BLADE, false);
         SnakeBladeEntity child = AnnoyingVillagersModEntities.SNAKE_BLADE.get().create(this.level());
-        if (this.isEnchanted()) {
-            child.setEnchanted(true);
+        if (child != null) {
+            if (this.isEnchanted()) {
+                child.setEnchanted(true);
+            }
+            child.previouslyTouched = new ArrayList<>(previouslyTouched);
+            child.previouslyTouched.add(closestValid);
+            child.setCreatorEntityUUID(this.getCreatorEntityUUID());
+            child.setFromEntityID(this.getId());
+            child.setToEntityID(closestValid.getId());
+            child.setPos(closestValid.getX(), closestValid.getY(0.4F), closestValid.getZ());
+            child.setTargetsHit(this.getTargetsHit() + 1);
+            updateLastFragment(child);
+            this.level().addFreshEntity(child);
         }
-        child.previouslyTouched = new ArrayList<>(previouslyTouched);
-        child.previouslyTouched.add(closestValid);
-        child.setCreatorEntityUUID(this.getCreatorEntityUUID());
-        child.setFromEntityID(this.getId());
-        child.setToEntityID(closestValid.getId());
-        child.setPos(closestValid.getX(), closestValid.getY(0.4F), closestValid.getZ());
-        child.setTargetsHit(this.getTargetsHit() + 1);
-        updateLastFragment(child);
-        this.level().addFreshEntity(child);
     }
 
     private void createChainGuard(String nextDirection) {

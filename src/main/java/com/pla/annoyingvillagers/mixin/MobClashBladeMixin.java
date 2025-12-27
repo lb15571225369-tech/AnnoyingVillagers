@@ -1,13 +1,11 @@
 package com.pla.annoyingvillagers.mixin;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.animations.BowAttackAnimation;
 import com.pla.annoyingvillagers.animations.KickAttackAnimation;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
 import com.pla.annoyingvillagers.entity.AegisHerobrineEntity;
-import com.pla.annoyingvillagers.entity.AngrySteveEntity;
 import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
@@ -67,7 +65,7 @@ public class MobClashBladeMixin {
 
         // Auto clash while playing animation
         if (defender instanceof AegisHerobrineEntity
-                && defenderDynamicAnimation == AVAnimations.SHIELD_MAINHAND
+                && defenderDynamicAnimation == AVAnimations.AEGIS_SHIELD_SHOOT
                 && defenderEntityState.getLevel() == 3) {
             cir.setReturnValue(true);
             return;

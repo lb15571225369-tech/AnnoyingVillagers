@@ -7,13 +7,12 @@ import net.shelmarow.combat_evolution.ai.CECombatBehaviors.BehaviorRoot;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors.Builder;
 import net.shelmarow.combat_evolution.ai.condition.HealthCheck;
 import reascer.wom.gameasset.WOMAnimations;
-import reascer.wom.gameasset.animations.weapons.AnimsHerrscher;
-import reascer.wom.gameasset.animations.weapons.AnimsSolar;
+import reascer.wom.gameasset.animations.weapons.AnimsRuine;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 
-public class HerobrineEnderAegis {
-    public static final Builder<MobPatch<?>> ENDER_AEGIS = CECombatBehaviors.builder()
+public class HerobrineDemoniacVoltageReaver {
+    public static final Builder<MobPatch<?>> DEMONIAC_VOLTAGE_REAVER = CECombatBehaviors.builder()
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(2.0D)
@@ -42,26 +41,21 @@ public class HerobrineEnderAegis {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
-                            .weight(40)
-                            .maxCooldown(100)
+                            .weight(20)
+                            .maxCooldown(200)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 6.0D)
                                             .custom(HerobrineCommon::canPlaySecondFormAnimation)
-                                            .animationBehavior(AVAnimations.AEGIS_SHIELD_SHOOT, 0.0F)
-                                            .addExBehavior(HerobrineCommon::playSecondFormAnimation)
+                                            .animationBehavior(AVAnimations.MOB_SNAKE_BLADE, 0.0F)
+                                            .addExBehavior(HerobrineCommon::playSecondFormGuardAnimation)
                             )
-            )
-            .newBehaviorRoot(
-                    BehaviorRoot.builder()
-                            .priority(1.0D)
-                            .weight(40)
-                            .maxCooldown(100)
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .withinDistance(0.0D, 3.0D)
+                                            .withinDistance(0.0D, 6.0D)
                                             .custom(HerobrineCommon::canPlaySecondFormAnimation)
-                                            .animationBehavior(AVAnimations.MOB_RAVANGER_CHARGE, 0.0F)
+                                            .animationBehavior(AVAnimations.MOB_SNAKE_BLADE, 0.0F)
+                                            .addExBehavior(HerobrineCommon::playSecondFormAnimation)
                             )
             )
             .newBehaviorRoot(
@@ -71,28 +65,23 @@ public class HerobrineEnderAegis {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 3.0D)
-                                            .animationBehavior(AnimsHerrscher.HERRSCHER_AUTO_1, 0.0F)
+                                            .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
                                                             .withinDistance(0.0D, 3.0D)
-                                                            .animationBehavior(AnimsHerrscher.HERRSCHER_AUTO_2, 0.0F)
+                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_AUTO_2, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
                                                                             .withinDistance(0.0D, 3.0D)
-                                                                            .animationBehavior(AnimsHerrscher.HERRSCHER_AUTO_3, 0.0F)
+                                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_AUTO_1, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
                                                                                             .withinDistance(0.0D, 3.0D)
-                                                                                            .animationBehavior(AVAnimations.ENDER_AEGIS_MOONLESS_AUTO_1, 0.0F)
+                                                                                            .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_2, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .withinDistance(0.0D, 3.0D)
-                                                                                                            .animationBehavior(AVAnimations.ENDER_AEGIS_MOONLESS_AUTO_2, 0.0F)
-                                                                                                            .addNextBehavior(
-                                                                                                                    Behavior.builder()
-                                                                                                                            .withinDistance(0.0D, 3.0D)
-                                                                                                                            .animationBehavior(AnimsSolar.SOLAR_QUEMADURA, 0.0F)
-                                                                                                            )
+                                                                                                            .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_4, 0.0F)
                                                                                             )
                                                                             )
                                                             )
@@ -102,50 +91,34 @@ public class HerobrineEnderAegis {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
-                            .weight(30)
-                            .maxCooldown(120)
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(AVAnimations.ENDER_AEGIS_BULL_CHARGE, 0.0F)
-                                            .addNextBehavior(
-                                                    Behavior.builder()
-                                                            .withinDistance(0.0D, 5.0D)
-                                                            .animationBehavior(AVAnimations.ENDER_AEGIS_BULL_CHARGE, 0.0F)
-                                                            .addNextBehavior(
-                                                                    Behavior.builder()
-                                                                            .withinDistance(0.0D, 5.0D)
-                                                                            .animationBehavior(AVAnimations.ENDER_AEGIS_BULL_CHARGE, 0.0F)
-                                                            )
-                                            )
-                            )
-            )
-            .newBehaviorRoot(
-                    BehaviorRoot.builder()
-                            .priority(1.0D)
-                            .weight(20.0D)
+                            .weight(30.0D)
                             .maxCooldown(100)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(AnimsSolar.SOLAR_OBSCURIDAD_IMPACTO, 0.0F)
+                                            .animationBehavior(AVAnimations.DEMONIAC_TORMENT_CHARGED_ATTACK_2, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(AnimsSolar.SOLAR_HORNO, 0.0F)
+                                            .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_1, 0.0F)
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(WOMAnimations.TORMENT_CHARGED_ATTACK_1, 0.0F)
                             )
             )
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(20.0D)
-                            .maxCooldown(120)
+                            .maxCooldown(200)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(HerobrineCommon::canChangeToSecondForm)
                                             .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(AVAnimations.ENDER_AEGIS_NAPOLEON_RELOAD_1, 0.0F)
+                                            .animationBehavior(AVAnimations.VALOUR_GREATSWORD_GUARD_HIT, 0.0F)
                                             .addExBehavior(HerobrineCommon::changeToSecondForm)
                             )
             )

@@ -92,13 +92,13 @@ public class AVWeaponCapabilityPresets {
                     .hitSound(EpicFightSounds.BLADE_HIT.get())
                     .canBePlacedOffhand(false)
                     .newStyleCombo(Styles.TWO_HAND,
-                            AnimsRuine.RUINE_AUTO_1,
+                            AVAnimations.DEMONIAC_RUINE_AUTO_1,
                             WOMAnimations.TORMENT_BERSERK_AUTO_2,
                             WOMAnimations.TORMENT_BERSERK_AUTO_1,
-                            AnimsRuine.RUINE_AUTO_2,
-                            AnimsRuine.RUINE_AUTO_4,
-                            WOMAnimations.TORMENT_CHARGED_ATTACK_2,
-                            AnimsRuine.RUINE_COMET
+                            AVAnimations.DEMONIAC_RUINE_AUTO_2,
+                            AVAnimations.DEMONIAC_RUINE_AUTO_4,
+                            AVAnimations.DEMONIAC_TORMENT_CHARGED_ATTACK_2,
+                            AVAnimations.DEMONIAC_RUINE_COMET
                     ).newStyleCombo(Styles.MOUNT,
                             Animations.SWORD_MOUNT_ATTACK)
                     .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.DEMONIAC_VOLTAGE_REAVER)
@@ -136,7 +136,7 @@ public class AVWeaponCapabilityPresets {
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AVAnimations.VALOUR_WALK_GREATSWORD)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.VALOUR_RUN_GREATSWORD)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.VALOUR_RUN_GREATSWORD)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AVAnimations.VALOUR_GREATSWORD_GUARD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AnimsRuine.RUINE_GUARD)
                     .weaponCombinationPredicator(
                             (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE
                                     || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SWORD
@@ -184,6 +184,7 @@ public class AVWeaponCapabilityPresets {
                             AVAnimations.YELLOW_SOLAR_AUTO_2,
                             AVAnimations.LEGENDARY_SWORD_WAKE_UP_ATTACK,
                             AVAnimations.YELLOW_NAPOLEON_AUTO_3,
+                            AVAnimations.DEMONIAC_TORMENT_CHARGED_ATTACK_2,
                             AVAnimations.YELLOW_NAPOLEON_AUSTERLITZ_SHOOT,
                             WOMAnimations.TORMENT_BERSERK_DASH
                     ).newStyleCombo(Styles.MOUNT, Animations.SWORD_MOUNT_ATTACK)

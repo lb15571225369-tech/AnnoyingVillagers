@@ -235,6 +235,11 @@ public class SteveLegendarySword {
                                                                                                                                     Behavior.builder()
                                                                                                                                             .withinDistance(0.0D, 5.0D)
                                                                                                                                             .animationBehavior(AVAnimations.YELLOW_NAPOLEON_AUTO_3, 0.0F)
+                                                                                                                                            .animationBehavior(AVAnimations.DEMONIAC_TORMENT_CHARGED_ATTACK_2, 0.0F).addNextBehavior(
+                                                                                                                                                    Behavior.builder()
+                                                                                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                                                                                            .animationBehavior(AVAnimations.YELLOW_NAPOLEON_AUTO_3, 0.0F)
+                                                                                                                                            )
                                                                                                                             )
                                                                                                             )
                                                                                             )

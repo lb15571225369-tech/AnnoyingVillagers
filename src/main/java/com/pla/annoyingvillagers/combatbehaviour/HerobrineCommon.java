@@ -6,12 +6,14 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.item.EnderAegisItem;
 import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.util.SnakeBladeHit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -35,6 +37,11 @@ public class HerobrineCommon {
 
     public static boolean canChangeToSecondForm(MobPatch<?> mobpatch) {
         if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
+            ItemStack item = herobrineMob.getMainHandItem();
+            if (herobrineMob instanceof SwordsmanHerobrineEntity
+                    && item.getTag() != null && item.getTag().contains("SnakeAnimation")) {
+                return false;
+            }
             return herobrineMob.getState() == 0;
         }
         return false;
@@ -42,9 +49,24 @@ public class HerobrineCommon {
 
     public static boolean canPlaySecondFormAnimation(MobPatch<?> mobpatch) {
         if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
+            ItemStack item = herobrineMob.getMainHandItem();
+            if (herobrineMob instanceof SwordsmanHerobrineEntity
+                    && item.getTag() != null && item.getTag().contains("SnakeAnimation")) {
+                return false;
+            }
             return herobrineMob.getState() != 0;
         }
         return false;
+    }
+
+    public static boolean canPerformGuarding(MobPatch<?> mobpatch) {
+        if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
+            if (herobrineMob instanceof SwordsmanHerobrineEntity && herobrineMob.getState() > 0) {
+                return false;
+            }
+            return true;
+        }
+        return true;
     }
 
     public static void performHealingAnimation(MobPatch<?> mobpatch) {
@@ -117,6 +139,8 @@ public class HerobrineCommon {
             low.setHealing(true);
             low.setNoAi(true);
         }
+
+        chosen.playSound(AnnoyingVillagersModSounds.HEROBRINE_UNDERSTOOD.get(), 1.0F, 1.0F);
     }
 
     public static @NotNull List<Entity> getEntities(HerobrineMob herobrineMob) {
@@ -147,6 +171,7 @@ public class HerobrineCommon {
 
     public static void playSecondFormAnimation(MobPatch<?> mobpatch) {
         if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
+            ItemStack item = herobrineMob.getMainHandItem();
             herobrineMob.setSecondFormHitLeft(herobrineMob.getSecondFormHitLeft() - 1);
             if (herobrineMob instanceof AegisHerobrineEntity && herobrineMob.level() instanceof ServerLevel serverLevel) {
                 new DelayedTask(10) {
@@ -155,6 +180,22 @@ public class HerobrineCommon {
                         EnderAegisItem.shieldShoot(serverLevel, herobrineMob);
                     }
                 };
+            } else if (herobrineMob instanceof SwordsmanHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
+                if (SnakeBladeHit.process(item, herobrineMob)) {
+                    item.getOrCreateTag().putBoolean("SnakeAnimation", true);
+                }
+            }
+        }
+    }
+
+    public static void playSecondFormGuardAnimation(MobPatch<?> mobpatch) {
+        if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
+            ItemStack item = herobrineMob.getMainHandItem();
+            herobrineMob.setSecondFormHitLeft(herobrineMob.getSecondFormHitLeft() - 1);
+            if (herobrineMob instanceof SwordsmanHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
+                if (SnakeBladeHit.processGuard(item, herobrineMob)) {
+                    item.getOrCreateTag().putBoolean("SnakeAnimation", true);
+                }
             }
         }
     }

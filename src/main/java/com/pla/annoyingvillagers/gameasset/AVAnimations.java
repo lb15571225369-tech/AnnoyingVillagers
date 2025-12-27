@@ -16,6 +16,7 @@
  */
 
 package com.pla.annoyingvillagers.gameasset;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -27,12 +28,15 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -80,6 +84,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> EAT_OFFHAND;
     public static AnimationManager.AnimationAccessor<StaticAnimation> DRINK_OFFHAND;
     public static AnimationManager.AnimationAccessor<StaticAnimation> SHIELD_MAINHAND;
+    public static AnimationManager.AnimationAccessor<ActionAnimation> AEGIS_SHIELD_SHOOT;
     public static AnimationManager.AnimationAccessor<StaticAnimation> SHIELD_OFFHAND;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> COUNTER;
     public static AnimationManager.AnimationAccessor<StaticAnimation> FIST_GUARD;
@@ -193,6 +198,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> HEROBRINE_STAGE_CHANGE;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_AEGIS_BULL_CHARGE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> SNAKE_BLADE;
+    public static AnimationManager.AnimationAccessor<ActionAnimation> MOB_SNAKE_BLADE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> IDLE_BREAK;
     public static AnimationManager.AnimationAccessor<StaticAnimation> PLACE_BLOCK;
     public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> SLEDGE_HAMMER_INNATE_DASH;
@@ -227,6 +233,12 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_GLAIVE_NAPOLEON_AUTO_2;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_GLAIVE_NAPOLEON_AUTO_4;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_GLAIVE_NAPOLEON_AUSTERLITZ;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> DEMONIAC_RUINE_AUTO_1;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> DEMONIAC_RUINE_AUTO_2;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> DEMONIAC_RUINE_AUTO_4;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> DEMONIAC_TORMENT_CHARGED_ATTACK_2;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> DEMONIAC_RUINE_COMET;
+
 
     @SubscribeEvent
     public static void registerAnimations(AnimationManager.AnimationRegistryEvent event) {
@@ -259,6 +271,8 @@ public class AVAnimations {
                 (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
         AVAnimations.SNAKE_BLADE = builder.nextAccessor("biped/other/snake_blade",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
+        AVAnimations.MOB_SNAKE_BLADE = builder.nextAccessor("biped/other/mob_snake_blade",
+                (accessor) -> new ActionAnimation(0.0F, accessor, humanoidarmature));
         AVAnimations.IDLE_BREAK = builder.nextAccessor("biped/other/idle_break",
                 (accessor) -> new StaticAnimation(false, accessor, humanoidarmature));
         AVAnimations.PLACE_BLOCK = builder.nextAccessor("biped/other/place_block",
@@ -279,6 +293,8 @@ public class AVAnimations {
                 (accessor) -> new StaticAnimation(0.35F, true, accessor, humanoidarmature));
         AVAnimations.SHIELD_MAINHAND = builder.nextAccessor("biped/living/shield_mainhand",
                 (accessor) -> new StaticAnimation(0.35F, true, accessor, humanoidarmature));
+        AVAnimations.AEGIS_SHIELD_SHOOT = builder.nextAccessor("biped/skill/aegis_shield_shoot",
+                (accessor) -> new ActionAnimation(0.35F, accessor, humanoidarmature));
         AVAnimations.SHIELD_OFFHAND = builder.nextAccessor("biped/living/shield_offhand",
                 (accessor) -> new StaticAnimation(0.35F, true, accessor, humanoidarmature));
         AVAnimations.COUNTER = builder.nextAccessor("biped/guard/counter",
@@ -1242,9 +1258,9 @@ public class AVAnimations {
                         .addProperty(ActionAnimationProperty.MOVE_VERTICAL, true)
                         .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(1.2F, 2.25F)).addStateRemoveOld(EntityState.CAN_SKILL_EXECUTION, true).newTimePair(0.0F, 0.85F).addState(EntityState.CAN_SKILL_EXECUTION, false)
                         .addEvents(new AnimationEvent[]{
-                                AnimationEvent.InTimeEvent.create(1.0F, (livingEntityPatch, self, p) -> {
+                                AnimationEvent.InTimeEvent.create(2.5F, (livingEntityPatch, self, p) -> {
                                     if (!livingEntityPatch.isLogicalClient()) {
-                                        livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_CHARGED_ATTACK_2, 0.0F);
+                                        livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
                                     }
                                 }, Side.SERVER)
                         }));
@@ -1414,6 +1430,120 @@ public class AVAnimations {
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.4F)
                         .addEvents(new AnimationEvent[]{
                                 AnimationEvent.InTimeEvent.create(2.0F, (livingEntityPatch, self, p) -> {
+                                    if (!livingEntityPatch.isLogicalClient()) {
+                                        livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
+                                    }
+                                }, Side.SERVER)
+                        }));
+        AVAnimations.DEMONIAC_RUINE_AUTO_1 = builder.nextAccessor("biped/combat/demoniac_ruine_auto_1",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.25F, 0.2F, 0.55F, 0.55F, null, humanoidarmature.get().toolR, accessor, humanoidarmature))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.0F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(0.75F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.2F)
+                        .addProperty(StaticAnimationProperty.POSE_MODIFIER, null).addEvents(new AnimationEvent[]{
+                                AnimationEvent.InTimeEvent.create(1.5F, (livingEntityPatch, self, p) -> {
+                                    if (!livingEntityPatch.isLogicalClient()) {
+                                        livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
+                                    }
+                                }, Side.SERVER)
+                        }));
+        AVAnimations.DEMONIAC_RUINE_AUTO_2 = builder.nextAccessor("biped/combat/demoniac_ruine_auto_2",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.2F, accessor, humanoidarmature,
+                        new Phase(0.0F, 0.15F, 0.55F, 0.59F, 0.59F, humanoidarmature.get().toolR, null),
+                        new Phase(0.59F, 0.6F, 0.85F, 0.95F, Float.MAX_VALUE, humanoidarmature.get().toolR, null)))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.8F))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.8F), 1)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(0.95F), 1)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE, 1)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.2F).addEvents(new AnimationEvent[]{
+                                AnimationEvent.InTimeEvent.create(1.5F, (livingEntityPatch, self, p) -> {
+                                    if (!livingEntityPatch.isLogicalClient()) {
+                                        livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
+                                    }
+                                }, Side.SERVER)
+                        }));
+        AVAnimations.DEMONIAC_RUINE_AUTO_4 = builder.nextAccessor("biped/combat/demoniac_ruine_auto_4",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.25F, accessor, humanoidarmature,
+                        new Phase(0.0F, 0.5F, 0.6F, 0.65F, 0.65F, humanoidarmature.get().toolR, WOMWeaponColliders.RUINE_COMET),
+                        new Phase(0.65F, 0.8F, 1.05F, 1.45F, Float.MAX_VALUE, humanoidarmature.get().toolR, null)))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.2F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(2.4F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.5F), 1)
+                        .addProperty(AttackPhaseProperty.EXTRA_DAMAGE, Set.of(WOMExtraDamageInstance.WOM_TARGET_CURRENT_HEALTH.create(1.0F)), 1)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.4F), 1)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NEUTRALIZE, 1)
+                        .addProperty(AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE), 1)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.5F)
+                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
+                        .addEvents(new AnimationEvent[]{
+                                AnimationEvent.InTimeEvent.create(1.5F, (livingEntityPatch, self, p) -> {
+                                    if (!livingEntityPatch.isLogicalClient()) {
+                                        livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
+                                    }
+                                }, Side.SERVER)
+                        }));
+        AVAnimations.DEMONIAC_RUINE_COMET = builder.nextAccessor("biped/combat/demoniac_ruine_comet",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.05F, 0.25F, 0.55F, 0.75F, WOMWeaponColliders.RUINE_COMET, humanoidarmature.get().toolR, accessor, humanoidarmature))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.0F))
+                        .addProperty(AttackPhaseProperty.EXTRA_DAMAGE, Set.of(WOMExtraDamageInstance.WOM_TARGET_CURRENT_HEALTH.create(0.5F)))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.8F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                        .addProperty(AttackAnimationProperty.EXTRA_COLLIDERS, 20)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.5F)
+                        .addProperty(StaticAnimationProperty.POSE_MODIFIER, null)
+                        .addProperty(ActionAnimationProperty.MOVE_VERTICAL, true)
+                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, false)
+                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
+                        .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
+                        .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.0F, 0.3F)).addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, (self, livingEntityPatch, speed, prevElapsedTime, elapsedTime) -> {
+                    if (elapsedTime >= 0.35F && elapsedTime < 0.45F) {
+                        float dpx = (float) livingEntityPatch.getOriginal().getX();
+                        float dpy = (float) livingEntityPatch.getOriginal().getY();
+                        float dpz = (float) livingEntityPatch.getOriginal().getZ();
+
+                        for(BlockState block = livingEntityPatch.getOriginal().level().getBlockState(new BlockPos.MutableBlockPos(dpx, dpy, dpz)); (block.getBlock() instanceof BushBlock || block.isAir()) && !block.is(Blocks.VOID_AIR); block = livingEntityPatch.getOriginal().level().getBlockState(new BlockPos.MutableBlockPos(dpx, dpy, dpz))) {
+                            --dpy;
+                        }
+
+                        float distanceToGround = (float) org.joml.Math.max(org.joml.Math.abs(livingEntityPatch.getOriginal().getY() - (double)dpy) - (double)1.0F, 0.0F);
+                        LivingEntity livingentity = livingEntityPatch.getOriginal();
+                        Vec3f direction = new Vec3f(2.5F, -0.25F, 0.0F);
+                        OpenMatrix4f rotation = (new OpenMatrix4f()).rotate(-org.joml.Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 90.0F), new Vec3f(0.0F, 1.0F, 0.0F));
+                        OpenMatrix4f.transform3v(rotation, direction, direction);
+                        AABB box = AABB.ofSize(livingEntityPatch.getOriginal().getPosition(1.0F), 3.0F, 3.0F, 3.0F);
+                        List<Entity> list = livingEntityPatch.getOriginal().level().getEntities(livingEntityPatch.getOriginal(), box);
+                        if (distanceToGround > 0.5F && list.isEmpty()) {
+                            livingentity.move(MoverType.SELF, direction.toDoubleVector());
+                            return 0.05F;
+                        } else {
+                            return speed;
+                        }
+                    } else {
+                        return speed;
+                    }
+                })
+                        .addEvents(AnimationEvent.InTimeEvent.create(0.25F, reascer.wom.gameasset.ReuseableEvents.RUINE_COMET_AIRBURST, Side.CLIENT), AnimationEvent.InTimeEvent.create(0.5F, reascer.wom.gameasset.ReuseableEvents.RUINE_COMET_GROUNDTHRUST, Side.CLIENT))
+                        .addEvents(new AnimationEvent[]{
+                                AnimationEvent.InTimeEvent.create(1.0F, (livingEntityPatch, self, p) -> {
+                                    if (!livingEntityPatch.isLogicalClient()) {
+                                        livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
+                                    }
+                                }, Side.SERVER)
+                        }));
+        AVAnimations.DEMONIAC_TORMENT_CHARGED_ATTACK_2 = builder.nextAccessor("biped/combat/demoniac_torment_charged_attack_2",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.05F, 0.25F, 0.4F, 1.0F, null, humanoidarmature.get().toolR, accessor, humanoidarmature))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2.0F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.2F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.FALL)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F)
+                        .addProperty(StaticAnimationProperty.POSE_MODIFIER, null)
+                        .addProperty(ActionAnimationProperty.MOVE_VERTICAL, true)
+                        .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.15F, 0.65F))
+                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false).addEvents(new AnimationEvent[]{
+                                AnimationEvent.InTimeEvent.create(1.0F, (livingEntityPatch, self, p) -> {
                                     if (!livingEntityPatch.isLogicalClient()) {
                                         livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
                                     }
