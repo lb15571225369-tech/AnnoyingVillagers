@@ -8,10 +8,12 @@ public class AnnoyingVillagersConfig {
 
     public static ForgeConfigSpec.ConfigValue<Double> HEROBRINE_POSSESS_RATE;
     public static ForgeConfigSpec.ConfigValue<Boolean> PHYSIC_MOD_COMPAT;
-    public static ForgeConfigSpec.ConfigValue<Boolean> EXECUTION_PLAYER;
-    public static ForgeConfigSpec.ConfigValue<Boolean> EXECUTION_NPC;
     public static ForgeConfigSpec.ConfigValue<Integer> HEROBRINE_RECALL_MIN_TIME;
     public static ForgeConfigSpec.ConfigValue<Integer> HEROBRINE_RECALL_MAX_TIME;
+    public static ForgeConfigSpec.ConfigValue<Double> KICK_GUARD_BREAK_MIN_CHANCE;
+    public static ForgeConfigSpec.ConfigValue<Double> KICK_GUARD_BREAK_MAX_CHANCE;
+    public static ForgeConfigSpec.ConfigValue<Double> MOB_GUARD_BREAK_WAKE_UP_MIN_CHANCE;
+    public static ForgeConfigSpec.ConfigValue<Double> MOB_GUARD_BREAK_WAKE_UP_MAX_CHANCE;
 
     static {
         HEROBRINE_POSSESS_RATE = BUILDER.comment(
@@ -21,13 +23,6 @@ public class AnnoyingVillagersConfig {
                         "Spawn dead body for the mob on killed",
                         "Install Physic Mod to see the effect")
                 .define("physicModCompat", false);
-        EXECUTION_PLAYER = BUILDER.comment(
-                        "This mod tweaked the Execution from Resurrection",
-                        "Set to false if you want to disable Execution for Player")
-                .define("executionPlayer", true);
-        EXECUTION_NPC = BUILDER.comment(
-                        "Set to false if you want to disable Execution for NPC")
-                .define("executionNpc", true);
         HEROBRINE_RECALL_MIN_TIME = BUILDER.comment(
                         "The minimum value (in minutes) for Herobrine's random recall time. This value should be lower than or equal the maximum. " +
                                 "After a random time between min and max, Herobrine will vanish and return to the Herobrine dimension.")
@@ -36,6 +31,18 @@ public class AnnoyingVillagersConfig {
                         "The maximum value (in minutes) for Herobrine's random recall time. This value should be greater than or equal to the minimum. " +
                                 "After a random time between min and max, Herobrine will vanish and return to the Herobrine dimension.")
                 .defineInRange("herobrineRecallMaxTime", 300, 1, 10080);
+        KICK_GUARD_BREAK_MIN_CHANCE = BUILDER.comment(
+                        "Min chance for mob and player can guard break enemy on kick")
+                .defineInRange("kickGuardBreakMinChance", 0.05D, 0.0D, 1.0D);
+        KICK_GUARD_BREAK_MAX_CHANCE = BUILDER.comment(
+                        "Max chance for mob and player can guard break enemy on kick")
+                .defineInRange("kickGuardBreakMaxChance", 0.4D, 0.0D, 1.0D);
+        MOB_GUARD_BREAK_WAKE_UP_MIN_CHANCE = BUILDER.comment(
+                        "Min chance for mob can wake up automatically on guard break")
+                .defineInRange("mobGuardBreakWakeUpMinChance", 0.05D, 0.0D, 1.0D);
+        MOB_GUARD_BREAK_WAKE_UP_MAX_CHANCE = BUILDER.comment(
+                        "Max chance for mob can wake up automatically on guard break")
+                .defineInRange("mobGuardBreakWakeUpMaxChance", 0.4D, 0.0D, 1.0D);
         SPEC = BUILDER.build();
     }
 }

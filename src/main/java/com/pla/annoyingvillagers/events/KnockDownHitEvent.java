@@ -14,6 +14,8 @@ import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
+import java.util.Objects;
+
 @EventBusSubscriber
 public class KnockDownHitEvent {
 
@@ -37,8 +39,8 @@ public class KnockDownHitEvent {
                 livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 
                 if (livingEntityPatch != null) {
-                    dynamicanimation = livingEntityPatch.getAnimator().getPlayerFor(null).getAnimation();
-                    if (dynamicanimation instanceof KnockdownAnimation || dynamicanimation == AVAnimations.KNOCKDOWN_FORWRAD || dynamicanimation == AVAnimations.KNOCKDOWN_RIGHT || dynamicanimation == AVAnimations.KNOCKDOWN_LEFT) {
+                    dynamicanimation = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
+                    if (dynamicanimation instanceof KnockdownAnimation || dynamicanimation == AVAnimations.KNOCKDOWN_FORWARD || dynamicanimation == AVAnimations.KNOCKDOWN_RIGHT || dynamicanimation == AVAnimations.KNOCKDOWN_LEFT) {
                         if (Math.random() <= 0.4D) {
                             if (!entity.level().isClientSide() && entity.getServer() != null) {
                                 livingEntityPatch.playAnimationSynchronized(AVAnimations.KNOCKDOWN_RIGHT, 0.0F);
@@ -48,7 +50,7 @@ public class KnockDownHitEvent {
                                 livingEntityPatch.playAnimationSynchronized(AVAnimations.KNOCKDOWN_LEFT, 0.0F);
                             }
                         } else if (!entity.level().isClientSide() && entity.getServer() != null) {
-                            livingEntityPatch.playAnimationSynchronized(AVAnimations.KNOCKDOWN_FORWRAD, 0.0F);
+                            livingEntityPatch.playAnimationSynchronized(AVAnimations.KNOCKDOWN_FORWARD, 0.0F);
                         }
                     }
                 }

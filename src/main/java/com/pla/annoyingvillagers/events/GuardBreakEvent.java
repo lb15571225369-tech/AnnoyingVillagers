@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.events;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.animations.KickAttackAnimation;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -37,10 +38,24 @@ public class GuardBreakEvent {
             AssetAccessor<? extends DynamicAnimation> attackerDynamicAnimation = Objects.requireNonNull(attackerLivingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
             if (attackerDynamicAnimation != null && attackerDynamicAnimation.get() instanceof KickAttackAnimation) {
                 float hpPct = victim.getHealth() / victim.getMaxHealth();
-                float chance = 0.05f + (1.0f - hpPct) * 0.70f;
-                chance = Mth.clamp(chance, 0.05f, 0.40f);
 
-                if (victim.getRandom().nextFloat() < chance) {
+                double min = AnnoyingVillagersConfig.KICK_GUARD_BREAK_MIN_CHANCE.get();
+                double max = AnnoyingVillagersConfig.KICK_GUARD_BREAK_MAX_CHANCE.get();
+                if (max < min) {
+                    double tmp = max;
+                    max = min;
+                    min = tmp;
+                }
+                double chance;
+                if (max == min) {
+                    chance = max;
+                } else {
+                    double t = (1.0D - hpPct) / 0.5D;
+                    t = Mth.clamp(t, 0.0D, 1.0D);
+                    chance = min + t * (max - min);
+                }
+
+                if (victim.getRandom().nextFloat() < (float) chance) {
                     victim.playSound(AnnoyingVillagersModSounds.KICK_GUARD_BREAK.get());
                     victimLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_COMMON_NEUTRALIZED, 0.0F);
                 }

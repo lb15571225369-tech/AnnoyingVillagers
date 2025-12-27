@@ -130,6 +130,12 @@ public class AnnoyingVillagers {
                     ClientboundLitePortalFx::decode,
                     ClientboundLitePortalFx::handle
             );
+            AnnoyingVillagers.addNetworkMessage(
+                    KickMessage.class,
+                    KickMessage::buffer,
+                    KickMessage::new,
+                    KickMessage::handle
+            );
         }
     }
 

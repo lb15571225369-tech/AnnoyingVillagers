@@ -47,8 +47,7 @@ public class RenderLegendarySword extends RenderItemBase {
             ItemStack itemstack;
 
             if (dynamicAnimation ==  AVAnimations.LEGENDARY_SWORD_WAKE_UP_ATTACK || dynamicAnimation == AVAnimations.LEGENDARY_SWORD_HEAVY_ATTACK || dynamicAnimation == AVAnimations.YELLOW_SOLAR_AUTO_2
-                    || dynamicAnimation == AVAnimations.YELLOW_NAPOLEON_AUTO_3 || dynamicAnimation == AVAnimations.YELLOW_NAPOLEON_AUSTERLITZ_SHOOT
-                    || dynamicAnimation == AVAnimations.YELLOW_NAPOLEON_AUTO_4 || dynamicAnimation == AnimsNapoleon.NAPOLEON_WATERLOW_SHOOT) {
+                    || dynamicAnimation == AVAnimations.YELLOW_NAPOLEON_AUTO_3 || dynamicAnimation == AVAnimations.YELLOW_NAPOLEON_AUSTERLITZ_SHOOT || dynamicAnimation == AnimsNapoleon.NAPOLEON_WATERLOW_SHOOT) {
                 itemstack = new ItemStack(AnnoyingVillagersModItems.HEAVY_ATTACK_LEGENDARY_SWORD.get());
                 poseStack.pushPose();
                 MathUtils.mulStack(poseStack, openmatrix4f);

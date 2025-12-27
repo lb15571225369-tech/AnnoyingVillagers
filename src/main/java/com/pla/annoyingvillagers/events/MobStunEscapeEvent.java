@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.events;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.util.DelayedTask;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.util.Mth;
@@ -39,8 +40,24 @@ public class MobStunEscapeEvent {
             if (victimDynamicAnimation != null
                     && (EpicfightUtil.isLongHitAnimation(victimDynamicAnimation) && victim.isAlive())) {
                 float hpPct = victim.getHealth() / victim.getMaxHealth();
-                float chance = 0.30f + hpPct * 0.40f;
-                chance = Mth.clamp(chance, 0.30f, 0.70f);
+
+                double min = AnnoyingVillagersConfig.MOB_GUARD_BREAK_WAKE_UP_MIN_CHANCE.get();
+                double max = AnnoyingVillagersConfig.MOB_GUARD_BREAK_WAKE_UP_MAX_CHANCE.get();
+
+                if (max < min) {
+                    double tmp = max;
+                    max = min;
+                    min = tmp;
+                }
+
+                double chance;
+                if (max == min) {
+                    chance = max;
+                } else {
+                    double t = (1.0D - hpPct) / 0.5D;
+                    t = Mth.clamp(t, 0.0D, 1.0D);
+                    chance = max - t * (max - min);
+                }
 
                 if (victim.getRandom().nextFloat() < chance) {
                     new DelayedTask(10) {

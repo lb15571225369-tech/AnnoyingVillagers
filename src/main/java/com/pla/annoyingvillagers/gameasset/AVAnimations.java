@@ -3,6 +3,11 @@
  * GNU General Public License v3 (GPL-3.0). Copyright (C) the original EpicACG authors.
  * See the included GPL-3.0 license file or https://www.gnu.org/licenses/gpl-3.0.html.
  *
+ * Parts of this project include assets (e.g., animations) derived from:
+ * "Epic Fight - Valour Guard" by namelesslk.
+ * License: GNU Lesser General Public License v2.1 (LGPL-2.1).
+ * Source/Project: Epic Fight - Valour Guard.
+ *
  * This file may also include assets/data derived from:
  * "Epic Fight x Iron's Spells: Enhanced Animations" by YukamiNeeSan (MIT License).
  * Used with attribution. Original project:
@@ -34,6 +39,7 @@ import net.minecraftforge.fml.common.Mod;
 import reascer.wom.animation.WomAnimationProperty;
 import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
 import reascer.wom.animation.attacks.SpecialAttackAnimation;
+import reascer.wom.gameasset.ReuseableEvents;
 import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.colliders.WOMWeaponColliders;
 import reascer.wom.particle.WOMParticles;
@@ -126,7 +132,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> KNIFE_CHECK;
     public static AnimationManager.AnimationAccessor<StaticAnimation> CARRY;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> FIST_LEFT;
-    public static AnimationManager.AnimationAccessor<LongHitAnimation> KNOCKDOWN_FORWRAD;
+    public static AnimationManager.AnimationAccessor<LongHitAnimation> KNOCKDOWN_FORWARD;
     public static AnimationManager.AnimationAccessor<LongHitAnimation> KNOCKDOWN_RIGHT;
     public static AnimationManager.AnimationAccessor<LongHitAnimation> KNOCKDOWN_LEFT;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> AXE_HEAVY_AUTO_1;
@@ -204,7 +210,6 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BowAttackAnimation> BOW_AUTO_5;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> YELLOW_SOLAR_AUTO_2;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> YELLOW_NAPOLEON_AUTO_3;
-    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> YELLOW_NAPOLEON_AUTO_4;
     public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> YELLOW_NAPOLEON_AUSTERLITZ_SHOOT;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> MOB_RAVANGER_CHARGE;
     public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> ENDER_AEGIS_NAPOLEON_RELOAD_1;
@@ -213,6 +218,15 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> CASTING_ONE_HAND_BUFF;
     public static AnimationManager.AnimationAccessor<StaticAnimation> CHANTING_ONE_HAND_FRONT;
     public static AnimationManager.AnimationAccessor<StaticAnimation> LOW_CLONE_CLASH;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> VALOUR_HOLD_GREATSWORD;
+    public static AnimationManager.AnimationAccessor<MovementAnimation> VALOUR_WALK_GREATSWORD;
+    public static AnimationManager.AnimationAccessor<MovementAnimation> VALOUR_RUN_GREATSWORD;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> VALOUR_GREATSWORD_GUARD;
+    public static AnimationManager.AnimationAccessor<GuardAnimation> VALOUR_GREATSWORD_GUARD_HIT;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_GLAIVE_NAPOLEON_AUTO_1;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_GLAIVE_NAPOLEON_AUTO_2;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_GLAIVE_NAPOLEON_AUTO_4;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_GLAIVE_NAPOLEON_AUSTERLITZ;
 
     @SubscribeEvent
     public static void registerAnimations(AnimationManager.AnimationRegistryEvent event) {
@@ -567,7 +581,7 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.5F))
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN)
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
-        AVAnimations.KNOCKDOWN_FORWRAD = builder.nextAccessor("biped/combat/knockdown_forward",
+        AVAnimations.KNOCKDOWN_FORWARD = builder.nextAccessor("biped/combat/knockdown_forward",
                 (accessor) -> (new LongHitAnimation(0.1F, accessor, humanoidarmature))
                         .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
                         .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true)
@@ -1234,17 +1248,6 @@ public class AVAnimations {
                                     }
                                 }, Side.SERVER)
                         }));
-        AVAnimations.YELLOW_NAPOLEON_AUTO_4 = builder.nextAccessor("biped/combat/yellow_napoleon_auto_4",
-                (accessor) -> (new BasicMultipleAttackAnimation(0.1F, accessor, humanoidarmature,
-                        new Phase(0.0F, 0.6F, 1.0F, 1.9F, Float.MAX_VALUE, humanoidarmature.get().toolR, null)))
-                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.multiplier(6.0F))
-                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2.0F))
-                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN)
-                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F)
-                        .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.0F, 1.2F))
-                        .addProperty(ActionAnimationProperty.MOVE_VERTICAL, true).addEvents(
-                                new AnimationEvent[]{AnimationEvent.InTimeEvent.create(0.4F, reascer.wom.gameasset.ReuseableEvents.NAPOLEON_RELOAD_SPECIAL, Side.SERVER)}
-                        ));
         AVAnimations.YELLOW_NAPOLEON_AUSTERLITZ_SHOOT = builder.nextAccessor("biped/combat/yellow_napoleon_austerlitz_shoot",
                 (accessor) -> (new SpecialAttackAnimation(0.05F, accessor, humanoidarmature,
                         new Phase(0.0F, 0.15F, 0.4F, 0.41F, 0.41F, humanoidarmature.get().toolR, null),
@@ -1329,6 +1332,93 @@ public class AVAnimations {
                 (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
         AVAnimations.LOW_CLONE_CLASH = builder.nextAccessor("biped/other/low_clone_clash",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
+        AVAnimations.VALOUR_HOLD_GREATSWORD = builder.nextAccessor("biped/living/valour_hold_greatsword",
+                (accessor) -> new StaticAnimation(true, accessor, Armatures.BIPED));
+        AVAnimations.VALOUR_RUN_GREATSWORD = builder.nextAccessor("biped/living/valour_run_greatsword",
+                (accessor) -> new MovementAnimation(true, accessor, Armatures.BIPED));
+        AVAnimations.VALOUR_WALK_GREATSWORD = builder.nextAccessor("biped/living/valour_walk_greatsword",
+                (accessor) -> new MovementAnimation(true, accessor, Armatures.BIPED));
+        AVAnimations.VALOUR_GREATSWORD_GUARD = builder.nextAccessor("biped/skill/valour_guard_greatsword",
+                (accessor) -> new StaticAnimation(0.25F, true, accessor, Armatures.BIPED));
+        AVAnimations.VALOUR_GREATSWORD_GUARD_HIT = builder.nextAccessor("biped/skill/valour_guard_greatsword_hit",
+                (accessor) -> new GuardAnimation(0.05F, accessor, Armatures.BIPED));
+        AVAnimations.ENDER_GLAIVE_NAPOLEON_AUTO_1 = builder.nextAccessor("biped/combat/ender_glaive_napoleon_auto_1",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.2F, accessor, humanoidarmature,
+                        new Phase(0.0F, 0.1F, 0.45F, 0.79F, 0.79F, humanoidarmature.get().toolR, null),
+                        new Phase(0.79F, 0.8F, 1.0F, 1.05F, Float.MAX_VALUE, humanoidarmature.get().toolR, null)))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.8F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(0.2F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.8F), 1)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.1F), 1)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD, 1)
+                        .addProperty(AttackAnimationProperty.CANCELABLE_MOVE, false)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.2F).addEvents(new AnimationEvent[]{
+                                AnimationEvent.InTimeEvent.create(2.0F, (livingEntityPatch, self, p) -> {
+                                    if (!livingEntityPatch.isLogicalClient()) {
+                                        livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
+                                    }
+                                }, Side.SERVER)
+                        }));
+        AVAnimations.ENDER_GLAIVE_NAPOLEON_AUTO_2 = builder.nextAccessor("biped/combat/ender_glaive_napoleon_auto_2",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.15F, accessor, humanoidarmature,
+                        new Phase(0.0F, 0.5F, 0.6F, 0.64F, 0.64F, humanoidarmature.get().toolR, null),
+                        new Phase(0.64F, 0.65F, 0.95F, 1.0F, Float.MAX_VALUE, humanoidarmature.get().toolR, null)))
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.multiplier(6.0F))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.6F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(0.2F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.multiplier(6.0F), 1)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.6F), 1)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(0.7F), 1)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.FALL, 1)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.2F).addEvents(new AnimationEvent[]{
+                                AnimationEvent.InTimeEvent.create(2.0F, (livingEntityPatch, self, p) -> {
+                                    if (!livingEntityPatch.isLogicalClient()) {
+                                        livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
+                                    }
+                                }, Side.SERVER)
+                        }));
+        AVAnimations.ENDER_GLAIVE_NAPOLEON_AUTO_4 = builder.nextAccessor("biped/combat/ender_glaive_napoleon_auto_4",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.1F, accessor, humanoidarmature,
+                        new Phase(0.0F, 0.6F, 1.0F, 1.9F, Float.MAX_VALUE, humanoidarmature.get().toolR, null)))
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.multiplier(6.0F))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2.0F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F)
+                        .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.0F, 1.2F))
+                        .addProperty(ActionAnimationProperty.MOVE_VERTICAL, true)
+                        .addEvents(new AnimationEvent[]{
+                                AnimationEvent.InTimeEvent.create(2.0F, (livingEntityPatch, self, p) -> {
+                                    if (!livingEntityPatch.isLogicalClient()) {
+                                        livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
+                                    }
+                                }, Side.SERVER)
+                        }));
+        AVAnimations.ENDER_GLAIVE_NAPOLEON_AUSTERLITZ = builder.nextAccessor("biped/combat/ender_glaive_napoleon_austerlitz",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.1F, accessor, humanoidarmature,
+                        new Phase(0.0F, 0.05F, 0.1F, 0.14F, 0.14F, humanoidarmature.get().toolR, null),
+                        new Phase(0.14F, 0.15F, 0.3F, 0.35F, 0.35F, humanoidarmature.get().toolR, null),
+                        new Phase(0.35F, 0.45F, 0.55F, 0.59F, 0.59F, humanoidarmature.get().toolR, null),
+                        new Phase(0.59F, 0.6F, 0.8F, 0.9F, Float.MAX_VALUE, humanoidarmature.get().toolR, null)))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.3F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.7F), 1)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(0.5F), 1)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.FALL, 1)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.5F), 2)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD, 2)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.8F), 3)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(0.7F), 3)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.FALL, 3)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.4F)
+                        .addEvents(new AnimationEvent[]{
+                                AnimationEvent.InTimeEvent.create(2.0F, (livingEntityPatch, self, p) -> {
+                                    if (!livingEntityPatch.isLogicalClient()) {
+                                        livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
+                                    }
+                                }, Side.SERVER)
+                        }));
     }
 
     private static class ReuseableEvents {

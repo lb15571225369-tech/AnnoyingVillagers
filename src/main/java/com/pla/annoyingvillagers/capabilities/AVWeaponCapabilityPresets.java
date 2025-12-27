@@ -63,23 +63,23 @@ public class AVWeaponCapabilityPresets {
                     .hitSound(EpicFightSounds.BLADE_HIT.get())
                     .canBePlacedOffhand(false)
                     .newStyleCombo(Styles.TWO_HAND,
-                            AnimsNapoleon.NAPOLEON_AUTO_1,
-                            AnimsAgony.AGONY_AUTO_4,
+                            AVAnimations.ENDER_GLAIVE_NAPOLEON_AUTO_1,
                             WOMAnimations.STAFF_AUTO_2,
                             WOMAnimations.STAFF_AUTO_3,
-                            AnimsOrbit.ORBIT_ATTACK_2,
-                            AnimsOrbit.ORBIT_ATTACK_3,
-                            AnimsNapoleon.NAPOLEON_AUSTERLITZ,
+                            AVAnimations.ENDER_GLAIVE_NAPOLEON_AUTO_2,
+                            AVAnimations.ENDER_GLAIVE_NAPOLEON_AUTO_4,
+                            AnimsAgony.AGONY_AUTO_4,
+                            AVAnimations.ENDER_GLAIVE_NAPOLEON_AUSTERLITZ,
                             AnimsAgony.AGONY_RIPPING_FANGS)
                     .newStyleCombo(Styles.MOUNT,
                             Animations.SPEAR_MOUNT_ATTACK)
                     .innateSkill(Styles.TWO_HAND,
                             (itemstack) -> AVSkills.ENDER_GLAIVE)
                     .comboCancel((style) -> false)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AnimsNapoleon.NAPOLEON_IDLE)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AnimsNapoleon.NAPOLEON_WALK)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AnimsAgony.AGONY_RUN)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AnimsAgony.AGONY_RUN)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AVAnimations.VALOUR_HOLD_GREATSWORD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AVAnimations.VALOUR_WALK_GREATSWORD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.VALOUR_RUN_GREATSWORD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.VALOUR_RUN_GREATSWORD)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AVAnimations.GLOWING_AGONY_GUARD);
 
     public static final Function<Item, Builder> DEMONIAC_VOLTAGE_REAVER = (item) ->
@@ -102,10 +102,10 @@ public class AVWeaponCapabilityPresets {
                     ).newStyleCombo(Styles.MOUNT,
                             Animations.SWORD_MOUNT_ATTACK)
                     .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.DEMONIAC_VOLTAGE_REAVER)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, WOMAnimations.TORMENT_BERSERK_IDLE)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, WOMAnimations.TORMENT_BERSERK_WALK)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, WOMAnimations.TORMENT_BERSERK_RUN)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, WOMAnimations.TORMENT_BERSERK_RUN)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AVAnimations.VALOUR_HOLD_GREATSWORD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AVAnimations.VALOUR_WALK_GREATSWORD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.VALOUR_RUN_GREATSWORD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.VALOUR_RUN_GREATSWORD)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AnimsSolar.SOLAR_GUARD)
                     .weaponCombinationPredicator(
                             (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE
@@ -132,11 +132,11 @@ public class AVWeaponCapabilityPresets {
                     ).newStyleCombo(Styles.MOUNT,
                             Animations.SWORD_MOUNT_ATTACK)
                     .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.OBSIDIAN_SLEDGEHAMMER)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, WOMAnimations.TORMENT_BERSERK_IDLE)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, WOMAnimations.TORMENT_BERSERK_WALK)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, WOMAnimations.TORMENT_BERSERK_RUN)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, WOMAnimations.TORMENT_BERSERK_RUN)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AnimsRuine.RUINE_GUARD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AVAnimations.VALOUR_HOLD_GREATSWORD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AVAnimations.VALOUR_WALK_GREATSWORD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.VALOUR_RUN_GREATSWORD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.VALOUR_RUN_GREATSWORD)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AVAnimations.VALOUR_GREATSWORD_GUARD)
                     .weaponCombinationPredicator(
                             (livingentitypatch) -> livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE
                                     || (livingentitypatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SWORD

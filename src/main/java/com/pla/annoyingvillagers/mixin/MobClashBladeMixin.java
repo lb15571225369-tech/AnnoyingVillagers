@@ -123,7 +123,6 @@ public class MobClashBladeMixin {
                 && defender.level() instanceof ServerLevel) {
             // Non-projectile clashing
             ResourceLocation indirectEntity = BuiltInRegistries.ENTITY_TYPE.getKey(Objects.requireNonNull(livingAttackEvent.getSource().getDirectEntity()).getType());
-            AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] indirect entity is {}", indirectEntity);
             boolean isDamageFromGunKnight = indirectEntity.getNamespace().equals("torchesbecomesunlight")
                     && (indirectEntity.getPath().equals("gun_knight_patriot") || indirectEntity.getPath().equals("turret"));
             if (isDamageFromGunKnight || livingAttackEvent.getSource().is(DamageTypes.EXPLOSION)) {
