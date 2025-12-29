@@ -3,7 +3,6 @@ package com.pla.annoyingvillagers.entity;
 import java.util.Objects;
 import java.util.Random;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
@@ -32,6 +31,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import yesman.epicfight.api.utils.LevelUtil;
 import yesman.epicfight.particle.EpicFightParticles;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 @OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
 public class StealthAttackEntity extends AbstractArrow implements ItemSupplier {
@@ -64,11 +65,6 @@ public class StealthAttackEntity extends AbstractArrow implements ItemSupplier {
 
     public @NotNull ItemStack getPickupItem() {
         return ItemStack.EMPTY;
-    }
-
-    protected void doPostHurtEffects(@NotNull LivingEntity livingentity) {
-        super.doPostHurtEffects(livingentity);
-        livingentity.setArrowCount(livingentity.getArrowCount() - 1);
     }
 
     public void tick() {
@@ -146,6 +142,10 @@ public class StealthAttackEntity extends AbstractArrow implements ItemSupplier {
                     5,
                     0, 0, 0,
                     0.1);
+            LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(vicTim, LivingEntityPatch.class);
+            if (livingEntityPatch != null) {
+                livingEntityPatch.playAnimationSynchronized(AVAnimations.LONGEST_HIT, 0.0F);
+            }
         }
         super.onHitEntity(pResult);
     }

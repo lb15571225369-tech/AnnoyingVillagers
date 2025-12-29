@@ -7,7 +7,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.item.WoopieTheSwordItem;
 import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
 import com.pla.annoyingvillagers.network.ClientboundWoopieSwordWindFx;
-import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -46,7 +46,7 @@ public class SteveWoopieSword {
                 );
                 steveEntity.setSayWhyKeepFighting(true);
             }
-            new DelayedTask(6) {
+            new DelayedTask(10) {
                 @Override
                 public void run() {
                     Vec3 windPos = EpicfightUtil.getJointWithTranslation(
@@ -75,6 +75,26 @@ public class SteveWoopieSword {
     }
 
     public static final Builder<MobPatch<?>> WOOPIE_THE_SWORD = CECombatBehaviors.builder()
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(4.0D)
+                            .weight(1000.0D)
+                            .maxCooldown (0)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(CombatCommon::canEscape)
+                                            .withinDistance(0.0D, 8.0D)
+                                            .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
+                                            .addExBehavior(CombatCommon::swapToBlockToEscape)
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canEscape)
+                                            .withinDistance(8.0D, 48.0D)
+                                            .guard(40)
+                            )
+            )
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(3.0D)
@@ -114,27 +134,6 @@ public class SteveWoopieSword {
                             .priority(2.0D)
                             .weight(70.0D)
                             .maxCooldown (0)
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
-                                            .custom(CombatCommon::canPerformEating)
-                                            .animationBehavior(Animations.BIPED_STEP_LEFT, 0.0F)
-                                            .addExBehavior(CombatCommon::performEatingAnimation)
-                            )
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
-                                            .custom(CombatCommon::canPerformEating)
-                                            .animationBehavior(Animations.BIPED_STEP_RIGHT, 0.0F)
-                                            .addExBehavior(CombatCommon::performEatingAnimation)
-                            )
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
-                                            .custom(CombatCommon::canPerformEating)
-                                            .animationBehavior(Animations.BIPED_STEP_FORWARD, 0.0F)
-                                            .addExBehavior(CombatCommon::performEatingAnimation)
-                            )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)

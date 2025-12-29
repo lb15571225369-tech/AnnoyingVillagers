@@ -14,6 +14,7 @@ public class AnnoyingVillagersConfig {
     public static ForgeConfigSpec.ConfigValue<Double> KICK_GUARD_BREAK_MAX_CHANCE;
     public static ForgeConfigSpec.ConfigValue<Double> MOB_GUARD_BREAK_WAKE_UP_MIN_CHANCE;
     public static ForgeConfigSpec.ConfigValue<Double> MOB_GUARD_BREAK_WAKE_UP_MAX_CHANCE;
+    public static ForgeConfigSpec.ConfigValue<Boolean> TURN_ON_NPC_CHAT;
 
     static {
         HEROBRINE_POSSESS_RATE = BUILDER.comment(
@@ -43,6 +44,9 @@ public class AnnoyingVillagersConfig {
         MOB_GUARD_BREAK_WAKE_UP_MAX_CHANCE = BUILDER.comment(
                         "Max chance for mob can wake up automatically on guard break")
                 .defineInRange("mobGuardBreakWakeUpMaxChance", 0.4D, 0.0D, 1.0D);
+        TURN_ON_NPC_CHAT = BUILDER.comment(
+                        "Turn on all chatting for NPC")
+                .define("turnOnNpcChat", true);
         SPEC = BUILDER.build();
     }
 }

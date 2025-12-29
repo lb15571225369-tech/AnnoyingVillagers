@@ -2,10 +2,12 @@ package com.pla.annoyingvillagers.entity;
 
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.spawnhandler.SteveData;
+import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -53,7 +55,7 @@ public class AngrySteveEntity extends PathfinderMobInventory {
         this.setCustomName(this.getDisplayName());
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
-        this.setBlockProjectileChance(1.0);
+        this.setPlaceBlockToParryChance(1.0);
     }
 
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -293,7 +295,7 @@ public class AngrySteveEntity extends PathfinderMobInventory {
                 1.0F, 1.0F
         );
         if (this.getLivingEntityPatch() != null) {
-            this.getLivingEntityPatch().applyStun(StunType.FALL, 0.0F);
+            this.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.GUARD_BREAK_ATTACK, 0.0F);
         }
     }
 

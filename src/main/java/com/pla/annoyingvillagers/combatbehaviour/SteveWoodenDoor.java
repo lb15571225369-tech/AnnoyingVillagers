@@ -14,6 +14,26 @@ public class SteveWoodenDoor {
     public static final Builder<MobPatch<?>> WOODEN_DOOR = CECombatBehaviors.builder()
             .newBehaviorRoot(
                     BehaviorRoot.builder()
+                            .priority(4.0D)
+                            .weight(1000.0D)
+                            .maxCooldown (0)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(CombatCommon::canEscape)
+                                            .withinDistance(0.0D, 8.0D)
+                                            .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
+                                            .addExBehavior(CombatCommon::swapToBlockToEscape)
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canEscape)
+                                            .withinDistance(8.0D, 48.0D)
+                                            .guard(40)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
                             .priority(3.0D)
                             .weight(100.0D)
                             .maxCooldown (120)
@@ -35,13 +55,6 @@ public class SteveWoodenDoor {
                             .priority(2.0D)
                             .weight(70.0D)
                             .maxCooldown (0)
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
-                                            .custom(CombatCommon::canPerformEating)
-                                            .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
-                                            .addExBehavior(CombatCommon::performEatingAnimation)
-                            )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)

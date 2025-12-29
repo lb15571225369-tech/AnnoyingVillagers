@@ -6,6 +6,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.spawnhandler.SteveData;
+import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.*;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
 import net.minecraft.core.BlockPos;
@@ -65,7 +66,7 @@ public class SteveEntity extends PathfinderMobInventory {
         this.setCustomName(this.getDisplayName());
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
-        this.setBlockProjectileChance(0.8);
+        this.setPlaceBlockToParryChance(0.8);
     }
 
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -157,7 +158,7 @@ public class SteveEntity extends PathfinderMobInventory {
 
                         angrySteveEntity.moveTo(this.blockPosition(), this.getYRot(), this.getXRot());
                         InventoryUtils.transferInventory(this.getInventory(), angrySteveEntity.getInventory());
-
+                        angrySteveEntity.setTarget(this.getTarget());
                         this.discard();
                         SteveData steveData = SteveData.get(serverLevel);
                         steveData.forceClaim(serverLevel, angrySteveEntity.getUUID());

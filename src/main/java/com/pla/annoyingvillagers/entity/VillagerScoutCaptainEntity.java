@@ -7,7 +7,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.util.CombatBehaviour;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
-import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.TeamUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -57,7 +57,7 @@ public class VillagerScoutCaptainEntity extends PathfinderMobInventory {
         this.setCustomName(this.getDisplayName());
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
-        this.setBlockProjectileChance(0.5);
+        this.setPlaceBlockToParryChance(0.5);
     }
 
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {

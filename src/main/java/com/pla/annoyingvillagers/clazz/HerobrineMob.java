@@ -631,6 +631,13 @@ public class HerobrineMob extends Monster {
             enderAegis.enchant(Enchantments.KNOCKBACK, 3);
             this.setItemInHand(InteractionHand.MAIN_HAND, enderAegis);
         }
+        if (this instanceof SwordsmanHerobrineEntity) {
+            ItemStack demoniacVoltageReaver = new ItemStack(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER.get());
+            demoniacVoltageReaver.enchant(Enchantments.SHARPNESS, 5);
+            demoniacVoltageReaver.enchant(Enchantments.SWEEPING_EDGE, 5);
+            demoniacVoltageReaver.enchant(Enchantments.KNOCKBACK, 3);
+            this.setItemInHand(InteractionHand.MAIN_HAND, demoniacVoltageReaver);
+        }
         this.state = 2;
     }
 

@@ -1,7 +1,9 @@
 package com.pla.annoyingvillagers.util;
 
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.task.TaskScheduler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -194,13 +196,15 @@ public class AnimationSheduler {
 
             if (reTry && !data.contains("idle_message_broadcasted") && mob instanceof PlayerNpcEntity) {
                 // reTry is false meaning temp call so no message
-                String message = "<" + mob.getDisplayName().getString() + "> " + idleMessages
-                        .getOrDefault(idleAnimation, List.of("..."))
-                        .get(new Random().nextInt(idleMessages.get(idleAnimation).size()));
-                serverLevel.getServer().getPlayerList().broadcastSystemMessage(
-                        Component.literal(message),
-                        false
-                );
+                if (AnnoyingVillagersConfig.TURN_ON_NPC_CHAT.get()) {
+                    String message = "<" + mob.getDisplayName().getString() + "> " + idleMessages
+                            .getOrDefault(idleAnimation, List.of("..."))
+                            .get(new Random().nextInt(idleMessages.get(idleAnimation).size()));
+                    serverLevel.getServer().getPlayerList().broadcastSystemMessage(
+                            Component.literal(message),
+                            false
+                    );
+                }
                 data.putBoolean("idle_message_broadcasted", true);
             }
 

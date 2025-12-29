@@ -1,10 +1,10 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.clazz.PlayerNpcTarget;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -16,7 +16,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.SimpleContainer;
@@ -63,10 +62,10 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     private boolean healing = false;
     private boolean useBow = true;
     private Entity blockDamage = null;
-    private double blockProjectileChance;
+    private double placeBlockToParryChance;
 
-    public double getBlockProjectileChance() {
-        return blockProjectileChance;
+    public double getPlaceBlockToParryChance() {
+        return placeBlockToParryChance;
     }
 
     public Entity getBlockDamage() {
@@ -140,7 +139,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         this.setNoAi(false);
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
-        this.blockProjectileChance = new Random().nextDouble(0.10, 0.15);
+        this.placeBlockToParryChance = new Random().nextDouble(0.20, 0.40);
     }
 
     @Override
@@ -151,7 +150,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         tag.putInt("EnderPearlCooldown", this.enderPearlCooldown);
         tag.putInt("SwapToBowCooldown", this.swapToBowCooldown);
         tag.putBoolean("UseBow", this.useBow);
-        tag.putDouble("BlockProjectileChance", this.blockProjectileChance);
+        tag.putDouble("BlockProjectileChance", this.placeBlockToParryChance);
         if (this.target != null) {
             tag.putString("PlayerNpcTarget", this.target.name());
         }
@@ -177,7 +176,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         this.enderPearlCooldown = tag.getInt("EnderPearlCooldown");
         this.swapToBowCooldown = tag.getInt("SwapToBowCooldown");
         this.useBow = tag.getBoolean("UseBow");
-        this.blockProjectileChance = tag.getDouble("BlockProjectileChance");
+        this.placeBlockToParryChance = tag.getDouble("BlockProjectileChance");
         if (tag.contains("PlayerNpcTarget", Tag.TAG_STRING)) {
             String name = tag.getString("PlayerNpcTarget");
             try {
@@ -532,12 +531,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         this.mainWeaponItem = this.getMainHandItem().copy();
         this.offWeaponItem = this.getOffWeaponItem().copy();
 
-        try {
-            Objects.requireNonNull(this.getServer()).getCommands().getDispatcher().execute(
-                    "tellraw @a {\"text\":\"" + this.getDisplayName().getString() + " has joined the game\",\"color\":\"yellow\"}",
-                    this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-        } catch (CommandSyntaxException ignored) {
-        }
+        ChatUtil.joinGame(this);
 
         try {
             Objects.requireNonNull(this.getServer()).getCommands().getDispatcher().execute(

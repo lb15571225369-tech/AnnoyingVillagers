@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.util;
+package com.pla.annoyingvillagers.task;
 
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

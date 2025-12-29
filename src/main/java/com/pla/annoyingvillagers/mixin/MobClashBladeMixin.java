@@ -7,9 +7,10 @@ import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
 import com.pla.annoyingvillagers.entity.AegisHerobrineEntity;
 import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
+import com.pla.annoyingvillagers.entity.SwordsmanHerobrineEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
-import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
 import com.pla.efclash_blade.event.MobClashBladeEvent;
 import net.minecraft.core.BlockPos;
@@ -77,6 +78,12 @@ public class MobClashBladeMixin {
             return;
         }
 
+        if (defender instanceof SwordsmanHerobrineEntity
+                && defenderDynamicAnimation == AVAnimations.APPLY_IMBUEMENT) {
+            cir.setReturnValue(true);
+            return;
+        }
+
         if (livingAttackEvent.getSource().getDirectEntity() instanceof Projectile projectile
                 && defender.onGround()
                 && !defender.isPassenger()
@@ -84,7 +91,7 @@ public class MobClashBladeMixin {
             // Projectile clashing
             if (defender instanceof PathfinderMobInventory pathfinderMobInventory
                     && pathfinderMobInventory.getBlockDamage() == null
-                    && new Random().nextDouble() <= pathfinderMobInventory.getBlockProjectileChance()
+                    && new Random().nextDouble() <= pathfinderMobInventory.getPlaceBlockToParryChance()
                     && (pathfinderMobInventory.getItemInHand(InteractionHand.MAIN_HAND).getItem()
                     .equals(pathfinderMobInventory.getMainWeaponItem().getItem())
                     || pathfinderMobInventory.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof BowItem)
@@ -97,7 +104,7 @@ public class MobClashBladeMixin {
 
             if (defender instanceof PlayerNpcEntity playerNpcEntity
                     && playerNpcEntity.getBlockDamage() == null
-                    && new Random().nextDouble() <= playerNpcEntity.getBlockProjectileChance()
+                    && new Random().nextDouble() <= playerNpcEntity.getPlaceBlockToParryChance()
                     && (playerNpcEntity.getItemInHand(InteractionHand.MAIN_HAND).getItem()
                     .equals(playerNpcEntity.getMainWeaponItem().getItem())
                     || playerNpcEntity.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof BowItem)
@@ -123,10 +130,12 @@ public class MobClashBladeMixin {
             ResourceLocation indirectEntity = BuiltInRegistries.ENTITY_TYPE.getKey(Objects.requireNonNull(livingAttackEvent.getSource().getDirectEntity()).getType());
             boolean isDamageFromGunKnight = indirectEntity.getNamespace().equals("torchesbecomesunlight")
                     && (indirectEntity.getPath().equals("gun_knight_patriot") || indirectEntity.getPath().equals("turret"));
-            if (isDamageFromGunKnight || livingAttackEvent.getSource().is(DamageTypes.EXPLOSION)) {
+            boolean ignisFileBall = indirectEntity.getNamespace().equals("cataclysm")
+                    && (indirectEntity.getPath().equals("ignis_abyss_fireball") || indirectEntity.getPath().equals("ignis_fireball"));
+            if (isDamageFromGunKnight || ignisFileBall || livingAttackEvent.getSource().is(DamageTypes.EXPLOSION)) {
                 if (defender instanceof PathfinderMobInventory pathfinderMobInventory
                         && pathfinderMobInventory.getBlockDamage() == null
-                        && new Random().nextDouble() <= pathfinderMobInventory.getBlockProjectileChance()
+                        && new Random().nextDouble() <= pathfinderMobInventory.getPlaceBlockToParryChance()
                         && (pathfinderMobInventory.getItemInHand(InteractionHand.MAIN_HAND).getItem()
                         .equals(pathfinderMobInventory.getMainWeaponItem().getItem())
                         || pathfinderMobInventory.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof BowItem)) {
@@ -138,7 +147,7 @@ public class MobClashBladeMixin {
 
                 if (defender instanceof PlayerNpcEntity playerNpcEntity
                         && playerNpcEntity.getBlockDamage() == null
-                        && new Random().nextDouble() <= playerNpcEntity.getBlockProjectileChance()
+                        && new Random().nextDouble() <= playerNpcEntity.getPlaceBlockToParryChance()
                         && (playerNpcEntity.getItemInHand(InteractionHand.MAIN_HAND).getItem()
                         .equals(playerNpcEntity.getMainWeaponItem().getItem())
                         || playerNpcEntity.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof BowItem)) {
@@ -150,29 +159,6 @@ public class MobClashBladeMixin {
             }
         }
     }
-
-//    @Inject(method = "forceClashBlade", at = @At("HEAD"), cancellable = true)
-//    private static void clashAgainstOpSkill(LivingAttackEvent livingAttackEvent,
-//                                                   LivingEntityPatch<?> defenderLivingEntityPatch,
-//                                                   AssetAccessor<? extends DynamicAnimation> defenderDynamicAnimation,
-//                                                   EntityState defenderEntityState, Entity attacker, Entity defender,
-//                                                   CallbackInfoReturnable<Boolean> cir) {
-//        // Clash custom animation
-//        if (EpicfightUtil.isLongHitAnimation(defenderDynamicAnimation)) {
-//            cir.setReturnValue(false);
-//            return;
-//        }
-//
-//        if (defender instanceof HerobrineMob || defender instanceof AngrySteveEntity) {
-//            LivingEntityPatch<?> attackerLivingEntityPatch = EpicFightCapabilities.getEntityPatch(attacker, LivingEntityPatch.class);
-//            if (attackerLivingEntityPatch != null) {
-//                AssetAccessor<? extends DynamicAnimation> attackerDynamicAnimation = Objects.requireNonNull(attackerLivingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
-//                if (attackerDynamicAnimation != null && attackerDynamicAnimation.get().getRegistryName() != null) {
-//                    AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] damage passed {}, defenderEntityState {}", attackerDynamicAnimation.get().getRegistryName().toString(), defenderEntityState);
-//                }
-//            }
-//        }
-//    }
 
     @Inject(method = "customPreAdditionClashBlade", at = @At("HEAD"), cancellable = true)
     private static void customLogicBeforeClashing(LivingAttackEvent livingAttackEvent,
@@ -440,13 +426,5 @@ public class MobClashBladeMixin {
                 };
             }
         }
-
-        // Clash custom attack post
-//        if (clashBy == 2) {
-//            if (defender instanceof HerobrineMob || defender instanceof AngrySteveEntity) {
-//                defenderLivingEntityPatch.playAnimationSynchronized(AVAnimations.GUARD_BREAK_ATTACK, 0.0F);
-//                defender.hurt(serverLevel.damageSources().generic(), 1.0F);
-//            }
-//        }
     }
 }

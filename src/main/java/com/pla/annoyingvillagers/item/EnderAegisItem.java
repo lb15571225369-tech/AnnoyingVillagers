@@ -56,37 +56,29 @@ public class EnderAegisItem extends SwordItem {
         }, 3, -2.3F, (new Properties()).fireResistant());
     }
 
-    private static Vec3 aimDirection(Entity entity) {
-        if (entity instanceof Player) {
-            return entity.getLookAngle();
-        }
-        if (entity instanceof Mob mob) {
-            LivingEntity tgt = mob.getTarget();
-            if (tgt != null && tgt.isAlive()) {
-                Vec3 from = mob.getEyePosition(1.0F);
-                Vec3 to = tgt.getEyePosition(1.0F);
-                return to.subtract(from);
-            }
-        }
-        return entity.getLookAngle();
-    }
-
     public static void shieldShoot(Level level, Entity entity) {
         if (!(level instanceof ServerLevel serverLevel)) return;
 
+        Vec3 eye = entity.getEyePosition(1.0F);
         Vec3 look = entity.getLookAngle();
-        Vec3 forward = new Vec3(look.x, 0.0D, look.z);
 
-        if (forward.lengthSqr() < 1.0E-6D) {
-            float yawRad = (float) Math.toRadians(entity.getYRot());
-            forward = new Vec3(-Mth.sin(yawRad), 0.0D, Mth.cos(yawRad));
+        if (entity instanceof Mob mob) {
+            LivingEntity target = mob.getTarget();
+            if (target != null) {
+                look = target.getEyePosition(1.0F).subtract(eye);
+            }
+        } else if (entity instanceof Player) {
+            look = new Vec3(look.x, 0.0D, look.z);
         }
-        forward = forward.normalize();
+
+        if (look.lengthSqr() < 1.0E-6D) {
+            float yawRad = (float) Math.toRadians(entity.getYRot());
+            look = new Vec3(-Mth.sin(yawRad), 0.0D, Mth.cos(yawRad));
+        }
+        Vec3 forward = look.normalize();
 
         Vec3 up = new Vec3(0.0D, 1.0D, 0.0D);
         Vec3 right = forward.cross(up).normalize();
-
-        Vec3 eye = entity.getEyePosition(1.0F);
 
         double spawnForward = 0.0D;
         double spread = 0.05D;

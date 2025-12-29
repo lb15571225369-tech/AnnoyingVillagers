@@ -68,16 +68,12 @@ public class AnnoyingVillagers {
         AVSounds.SOUNDS.register(modEventBus);
         MinecraftForge.EVENT_BUS.register(new NpcGearLoadEvent());
         context.registerConfig(ModConfig.Type.COMMON, AnnoyingVillagersConfig.SPEC, "annoyingvillagers-server.toml");
-        this.setupSkillSystem();
+        AVSkillSlots.ENUM_MANAGER.registerEnumCls("annoyingvillagers", AVSkillSlots.class);
+        AVSkillCategories.ENUM_MANAGER.registerEnumCls("annoyingvillagers", AVSkillCategories.class);
 
         if (FMLEnvironment.dist.isClient()) {
             modEventBus.addListener(EventPriority.LOWEST, ClassLoadingProtection::listen);
         }
-    }
-
-    private void setupSkillSystem() {
-        AVSkillSlots.ENUM_MANAGER.registerEnumCls("annoyingvillagers", AVSkillSlots.class);
-        AVSkillCategories.ENUM_MANAGER.registerEnumCls("annoyingvillagers", AVSkillCategories.class);
     }
 
     private static class ClassLoadingProtection {

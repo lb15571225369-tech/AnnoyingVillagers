@@ -2,7 +2,7 @@ package com.pla.annoyingvillagers.item;
 
 import com.pla.annoyingvillagers.entity.BlockProjectileEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
-import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.task.DelayedTask;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;

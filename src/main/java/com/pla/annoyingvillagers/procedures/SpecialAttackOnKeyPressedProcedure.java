@@ -7,7 +7,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.item.*;
 import com.pla.annoyingvillagers.skill.EnderSlayerScytheSkill;
 import com.pla.annoyingvillagers.skill.WoopieTheSwordSkill;
-import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;

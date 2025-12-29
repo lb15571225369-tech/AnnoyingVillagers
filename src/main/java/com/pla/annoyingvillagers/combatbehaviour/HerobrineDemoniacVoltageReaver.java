@@ -41,26 +41,6 @@ public class HerobrineDemoniacVoltageReaver {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
-                            .weight(20)
-                            .maxCooldown(200)
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .withinDistance(0.0D, 6.0D)
-                                            .custom(HerobrineCommon::canPlaySecondFormAnimation)
-                                            .animationBehavior(AVAnimations.MOB_SNAKE_BLADE, 0.0F)
-                                            .addExBehavior(HerobrineCommon::playSecondFormGuardAnimation)
-                            )
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .withinDistance(0.0D, 6.0D)
-                                            .custom(HerobrineCommon::canPlaySecondFormAnimation)
-                                            .animationBehavior(AVAnimations.MOB_SNAKE_BLADE, 0.0F)
-                                            .addExBehavior(HerobrineCommon::playSecondFormAnimation)
-                            )
-            )
-            .newBehaviorRoot(
-                    BehaviorRoot.builder()
-                            .priority(1.0D)
                             .weight(40.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
@@ -112,14 +92,34 @@ public class HerobrineDemoniacVoltageReaver {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
-                            .weight(20.0D)
+                            .weight(10.0D)
                             .maxCooldown(200)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(HerobrineCommon::canChangeToSecondForm)
-                                            .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(AVAnimations.VALOUR_GREATSWORD_GUARD_HIT, 0.0F)
+                                            .withinDistance(0.0D, 6.0D)
+                                            .animationBehavior(AVAnimations.APPLY_IMBUEMENT, 0.0F)
                                             .addExBehavior(HerobrineCommon::changeToSecondForm)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                            .weight(5)
+                            .maxCooldown(200)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .withinDistance(0.0D, 6.0D)
+                                            .custom(HerobrineCommon::canPlaySecondFormAnimation)
+                                            .animationBehavior(AVAnimations.MOB_SNAKE_BLADE, 0.0F)
+                                            .addExBehavior(HerobrineCommon::playSecondFormGuardAnimation)
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .withinDistance(0.0D, 6.0D)
+                                            .custom(HerobrineCommon::canPlaySecondFormAnimation)
+                                            .animationBehavior(AVAnimations.MOB_SNAKE_BLADE, 0.0F)
+                                            .addExBehavior(HerobrineCommon::playSecondFormAnimation)
                             )
             )
             .newBehaviorRoot(

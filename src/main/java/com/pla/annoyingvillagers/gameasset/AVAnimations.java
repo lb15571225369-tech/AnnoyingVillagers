@@ -1,18 +1,31 @@
 /*
- * Parts of this file are adapted from the EpicACG mod and are licensed under the
- * GNU General Public License v3 (GPL-3.0). Copyright (C) the original EpicACG authors.
- * See the included GPL-3.0 license file or https://www.gnu.org/licenses/gpl-3.0.html.
+ * Annoying Villagers — Unified Attribution & License Notice
  *
- * Parts of this project include assets (e.g., animations) derived from:
- * "Epic Fight - Valour Guard" by namelesslk.
- * License: GNU Lesser General Public License v2.1 (LGPL-2.1).
- * Source/Project: Epic Fight - Valour Guard.
+ * This file may include or adapt code/assets from third-party projects listed below.
+ * Keep this notice and all upstream notices.
  *
- * This file may also include assets/data derived from:
- * "Epic Fight x Iron's Spells: Enhanced Animations" by YukamiNeeSan (MIT License).
- * Used with attribution. Original project:
- * https://www.curseforge.com/minecraft/mc-mods/epic-fight-x-irons-spells-enhanced-animations
- * MIT notice: Copyright (c) YukamiNeeSan. See upstream/license for full text.
+ * [1] EpicACG — author: dfdyz — License: GPL-3.0
+ *     - Portions of this file are adapted from the EpicACG mod.
+ *     - See: licenses/GPL-3.0.txt and https://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * [2] Epic Fight — Valour Guard — author: namelesslk — License: LGPL-2.1
+ *     - Derived assets (e.g., animations).
+ *     - See: licenses/LGPL-2.1.txt
+ *
+ * [3] Epic Fight x Iron's Spells: Enhanced Animations — author: YukamiNeeSan — License: MIT
+ *     - Derived assets/data used with attribution.
+ *     - Source: https://www.curseforge.com/minecraft/mc-mods/epic-fight-x-irons-spells-enhanced-animations
+ *     - See: licenses/MIT-YukamiNeeSan.txt
+ *
+ * [4] Tactical Imbuements — author: m3tte — License: MIT
+ *     - Code and/or assets referenced/derived.
+ *     - Source: https://www.curseforge.com/minecraft/mc-mods/tactical-imbuements
+ *     - See: licenses/MIT-TacticalImbuements.txt
+ *
+ * Notes:
+ * - Where GPL-3.0/LGPL-2.1 applies, provide the corresponding license texts and
+ *   make source changes available under the same license terms as required.
+ * - MIT components require retaining the original MIT notice with copyright.
  */
 
 package com.pla.annoyingvillagers.gameasset;
@@ -197,7 +210,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> SNAKE_BLADE;
     public static AnimationManager.AnimationAccessor<ActionAnimation> MOB_SNAKE_BLADE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> IDLE_BREAK;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> PLACE_BLOCK;
+    public static AnimationManager.AnimationAccessor<ActionAnimation> PLACE_BLOCK;
     public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> SLEDGE_HAMMER_INNATE_DASH;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_SLAYER_ANTITHEUS_AUTO_2;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_SLAYER_ANTITHEUS_AUTO_3;
@@ -235,6 +248,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> DEMONIAC_RUINE_AUTO_4;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> DEMONIAC_TORMENT_CHARGED_ATTACK_2;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> DEMONIAC_RUINE_COMET;
+    public static AnimationManager.AnimationAccessor<ActionAnimation>  APPLY_IMBUEMENT;
 
 
     @SubscribeEvent
@@ -273,7 +287,7 @@ public class AVAnimations {
         AVAnimations.IDLE_BREAK = builder.nextAccessor("biped/other/idle_break",
                 (accessor) -> new StaticAnimation(false, accessor, humanoidarmature));
         AVAnimations.PLACE_BLOCK = builder.nextAccessor("biped/other/place_block",
-                (accessor) -> new StaticAnimation(false, accessor, humanoidarmature));
+                (accessor) -> new ActionAnimation(0.0F, accessor, humanoidarmature));
         AVAnimations.GLOWING_AGONY_GUARD = builder.nextAccessor("biped/skill/glowing_agony_guard",
                 (accessor) -> (new StaticAnimation(0.05F, true, accessor, humanoidarmature))
                         .addEvents(AnimationEvent.InTimeEvent.create(0.0F, reascer.wom.gameasset.ReuseableEvents.FAST_SPINING_AGONY, Side.CLIENT),
@@ -1541,6 +1555,19 @@ public class AVAnimations {
                         .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.15F, 0.65F))
                         .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false).addEvents(new AnimationEvent[]{
                                 AnimationEvent.InTimeEvent.create(1.0F, (livingEntityPatch, self, p) -> {
+                                    if (!livingEntityPatch.isLogicalClient()) {
+                                        livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
+                                    }
+                                }, Side.SERVER)
+                        }));
+
+        AVAnimations.APPLY_IMBUEMENT = builder.nextAccessor("biped/other/apply_imbuement",
+                (accessor) -> (new ActionAnimation(0.1F, accessor, humanoidarmature))
+                        .addProperty(AnimationProperty.ActionAnimationProperty.STOP_MOVEMENT, false)
+                        .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, true)
+                        .addProperty(AnimationProperty.ActionAnimationProperty.AFFECT_SPEED, true)
+                        .addEvents(new AnimationEvent[]{
+                                AnimationEvent.InTimeEvent.create(1.5F, (livingEntityPatch, self, p) -> {
                                     if (!livingEntityPatch.isLogicalClient()) {
                                         livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
                                     }

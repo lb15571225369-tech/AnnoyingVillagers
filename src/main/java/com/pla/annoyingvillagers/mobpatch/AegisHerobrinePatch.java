@@ -22,6 +22,8 @@ import yesman.epicfight.api.utils.AttackResult;
 import yesman.epicfight.api.utils.AttackResult.ResultType;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.EpicFightSounds;
+import yesman.epicfight.particle.EpicFightParticles;
+import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.world.capabilities.entitypatch.Factions;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.Styles;
@@ -103,6 +105,10 @@ public class AegisHerobrinePatch extends CEHumanoidPatch implements CustomExecut
         if (this.getOriginal() instanceof HerobrineMob herobrineMob
                 && herobrineMob.getState() > 0 && herobrineMob.level() instanceof ServerLevel serverLevel) {
             EnderAegisItem.shieldShoot(serverLevel, herobrineMob);
+        }
+        if (this.getOriginal().level() instanceof ServerLevel serverLevel) {
+            this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
+            EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, this.getOriginal(), damageSource.getEntity());
         }
     }
 

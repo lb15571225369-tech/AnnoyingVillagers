@@ -1,9 +1,7 @@
 package com.pla.annoyingvillagers.procedures;
 
-import com.pla.annoyingvillagers.util.DelayedTask;
-import net.minecraft.Util;
+import com.pla.annoyingvillagers.task.DelayedTask;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;

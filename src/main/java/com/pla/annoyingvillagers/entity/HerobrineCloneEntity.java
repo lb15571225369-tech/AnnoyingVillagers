@@ -3,7 +3,7 @@ package com.pla.annoyingvillagers.entity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.spawnhandler.HerobrineMobData;
-import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -31,7 +31,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.utils.NameManager;
-import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 

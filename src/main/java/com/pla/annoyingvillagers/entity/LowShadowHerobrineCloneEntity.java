@@ -13,7 +13,7 @@ import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.spawnhandler.HerobrineMobData;
 import com.pla.annoyingvillagers.util.CombatBehaviour;
 import com.pla.annoyingvillagers.util.CommonGoals;
-import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -54,6 +54,9 @@ import yesman.epicfight.api.animation.Joint;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.gameasset.Armatures;
+import yesman.epicfight.gameasset.EpicFightSounds;
+import yesman.epicfight.particle.EpicFightParticles;
+import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.effect.EpicFightMobEffects;
@@ -250,22 +253,33 @@ public class LowShadowHerobrineCloneEntity extends Monster {
 
     public boolean hurt(@NotNull DamageSource damageSource, float f) {
         if (sacrificing || healing) {
-            if (new Random().nextBoolean()) {
-                try {
-                    Objects.requireNonNull(this.getServer()).getCommands().getDispatcher().execute(
-                            "playsound epicfight:entity.hit.clash neutral @p",
-                            this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                    this.getServer().getCommands().getDispatcher().execute(
-                            "execute at @s run particle epicfight:hit_blade ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
-                            this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException ignored) {
+            if (new Random().nextBoolean()
+                    && this.level() instanceof ServerLevel serverLevel) {
+                if (!damageSource.is(DamageTypes.IN_WALL)
+                        && !damageSource.is(DamageTypes.IN_FIRE)
+                        && !damageSource.is(DamageTypes.ON_FIRE)) {
+                    this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
+                    EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO,
+                            this, damageSource.getEntity());
                 }
                 return false;
             } else {
-                return super.hurt(damageSource, f/2.0F);
+                float health = this.getHealth();
+                if (health - f <= 5.0F && (this.healing || this.sacrificing)) {
+                    protectEntity = null;
+                    protectUUID = null;
+                    autoKill = true;
+                    this.kill();
+                    return false;
+                } else {
+                    return super.hurt(damageSource, f / 2.0F);
+                }
             }
         } else {
-            if (Math.random() <= 0.5D && !damageSource.is(DamageTypes.IN_WALL)) {
+            if (Math.random() <= 0.5D&&
+                    !damageSource.is(DamageTypes.IN_WALL)
+                    && !damageSource.is(DamageTypes.IN_FIRE)
+                    && !damageSource.is(DamageTypes.ON_FIRE)) {
                 if (this.level() instanceof ServerLevel serverLevel) {
                     serverLevel.playSound(null, this.blockPosition(), AnnoyingVillagersModSounds.OBSIDIAN_PLACE.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     Entity entity = this;
@@ -346,7 +360,16 @@ public class LowShadowHerobrineCloneEntity extends Monster {
         if (damageSource.is(DamageTypes.DROWN)) return false;
         if (damageSource.is(DamageTypes.WITHER_SKULL)) return false;
         if (damageSource.is(DamageTypes.DRAGON_BREATH)) return false;
-        return super.hurt(damageSource, f);
+        float health = this.getHealth();
+        if (health - f <= 5.0F && (this.healing || this.sacrificing)) {
+            protectEntity = null;
+            protectUUID = null;
+            autoKill = true;
+            this.kill();
+            return false;
+        } else {
+            return super.hurt(damageSource, f / 2.0F);
+        }
     }
 
     public void die(@NotNull DamageSource damagesource) {
@@ -371,15 +394,21 @@ public class LowShadowHerobrineCloneEntity extends Monster {
                 corpse.setItemSlot(EquipmentSlot.LEGS, this.getItemBySlot(EquipmentSlot.LEGS).copy());
                 corpse.setItemSlot(EquipmentSlot.FEET, this.getItemBySlot(EquipmentSlot.FEET).copy());
                 serverLevel.addFreshEntity(corpse);
-            } else if (AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-                ShadowHerobrineDeadEntity corpse = new ShadowHerobrineDeadEntity(AnnoyingVillagersModEntities.SHADOW_HEROBRINE_DEAD.get(), serverLevel);
-                corpse.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
-                corpse.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()),
-                        MobSpawnType.MOB_SUMMONED, null, null);
-                this.setInvisible(true);
-                this.remove(RemovalReason.KILLED);
-                serverLevel.addFreshEntity(corpse);
-                corpse.kill();
+            } else {
+                if (this.healing || this.sacrificing) {
+                    this.kill();
+                }
+
+                if (AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
+                    ShadowHerobrineDeadEntity corpse = new ShadowHerobrineDeadEntity(AnnoyingVillagersModEntities.SHADOW_HEROBRINE_DEAD.get(), serverLevel);
+                    corpse.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
+                    corpse.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()),
+                            MobSpawnType.MOB_SUMMONED, null, null);
+                    this.setInvisible(true);
+                    this.remove(RemovalReason.KILLED);
+                    serverLevel.addFreshEntity(corpse);
+                    corpse.kill();
+                }
             }
 
             ItemEntity itemEntity;

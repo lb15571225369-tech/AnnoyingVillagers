@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import com.pla.annoyingvillagers.combatbehaviour.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -21,6 +22,8 @@ import yesman.epicfight.api.utils.AttackResult;
 import yesman.epicfight.api.utils.AttackResult.ResultType;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.EpicFightSounds;
+import yesman.epicfight.particle.EpicFightParticles;
+import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.world.capabilities.entitypatch.Factions;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.Styles;
@@ -58,7 +61,7 @@ public class AngryStevePatch extends CEHumanoidPatch implements CustomExecuteEnt
                                 )));
         this.weaponAttackMotions
                 .put(WeaponCategories.NOT_WEAPON,
-                        ImmutableMap.of(Styles.ONE_HAND, PlayerNpcFist.FIST));
+                        ImmutableMap.of(Styles.ONE_HAND, NpcFist.FIST));
 
         this.weaponLivingMotions
                 .put(WeaponCategories.FIST,
@@ -72,12 +75,12 @@ public class AngryStevePatch extends CEHumanoidPatch implements CustomExecuteEnt
                                 )));
         this.weaponAttackMotions
                 .put(WeaponCategories.FIST,
-                        ImmutableMap.of(Styles.ONE_HAND, PlayerNpcFist.FIST));
+                        ImmutableMap.of(Styles.ONE_HAND, NpcFist.FIST));
 
         this.weaponAttackMotions
                 .put(WeaponCategories.RANGED,
                         ImmutableMap.of(
-                                Styles.ONE_HAND, PlayerNpcBow.BOW
+                                Styles.ONE_HAND, NpcBow.BOW
                         ));
         this.weaponLivingMotions
                 .put(WeaponCategories.RANGED,
@@ -145,7 +148,10 @@ public class AngryStevePatch extends CEHumanoidPatch implements CustomExecuteEnt
     @Override
     public void onGuardHit(DamageSource damageSource) {
         super.onGuardHit(damageSource);
-        // More logic when blocking damage success
+        if (this.getOriginal().level() instanceof ServerLevel serverLevel) {
+            this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
+            EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, this.getOriginal(), damageSource.getEntity());
+        }
     }
 
     @Override

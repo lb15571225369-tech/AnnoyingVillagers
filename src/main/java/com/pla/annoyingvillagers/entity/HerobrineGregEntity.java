@@ -15,6 +15,7 @@ import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.procedures.HerobrinePortalProcedure;
 import com.pla.annoyingvillagers.spawnhandler.GregData;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
+import com.pla.annoyingvillagers.util.ChatUtil;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -979,14 +980,7 @@ public class HerobrineGregEntity extends Monster {
         }
 
         SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
-        if (!this.level().isClientSide() && this.getServer() != null) {
-            try {
-                this.getServer().getCommands().getDispatcher().execute(
-                        "tellraw @a {\"text\":\"Greg has joined the game\",\"color\":\"yellow\"}",
-                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
-            }
-        }
+        ChatUtil.joinGame(this, "Greg");
         return spawngroupdata1;
     }
 

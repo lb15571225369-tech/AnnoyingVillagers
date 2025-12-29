@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.spawnhandler.ChrisData;
+import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.*;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
 import net.minecraft.core.BlockPos;
@@ -55,7 +56,7 @@ public class ChrisEntity extends PathfinderMobInventory {
         this.setCustomName(this.getDisplayName());
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
-        this.setBlockProjectileChance(0.6);
+        this.setPlaceBlockToParryChance(0.6);
     }
 
     public int getState() {

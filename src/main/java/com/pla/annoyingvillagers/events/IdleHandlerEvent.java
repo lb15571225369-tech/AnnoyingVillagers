@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.events;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
 import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
+import com.pla.annoyingvillagers.task.TaskScheduler;
 import com.pla.annoyingvillagers.util.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;

@@ -8,7 +8,7 @@ import com.pla.annoyingvillagers.item.ObsidianSledgehammerItem;
 import com.pla.annoyingvillagers.item.WoopieTheSwordItem;
 import com.pla.annoyingvillagers.skill.EnderGlaiveSkill;
 import com.pla.annoyingvillagers.skill.WoopieTheSwordSkill;
-import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.task.DelayedTask;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.Projectile;

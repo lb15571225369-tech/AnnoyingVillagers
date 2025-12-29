@@ -10,7 +10,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.spawnhandler.BluedemonData;
-import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.task.DelayedTask;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -39,7 +39,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import com.pla.annoyingvillagers.entity.BlueDemonTridentParticleEntity;
 import com.pla.annoyingvillagers.entity.BlueDemonEndStagingEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 

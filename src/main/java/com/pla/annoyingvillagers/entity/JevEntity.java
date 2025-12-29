@@ -63,7 +63,7 @@ public class JevEntity extends PathfinderMobInventory {
         this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(AnnoyingVillagersModItems.JEV_BOOK.get()));
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(AnnoyingVillagersModItems.JEV_PENCIL.get()));
         this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(AnnoyingVillagersModItems.JEV_GLASSES.get()));
-        this.setBlockProjectileChance(0.0);
+        this.setPlaceBlockToParryChance(0.0);
     }
 
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {

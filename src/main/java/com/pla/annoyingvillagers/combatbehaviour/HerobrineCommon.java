@@ -5,8 +5,9 @@ import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.item.EnderAegisItem;
-import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.SnakeBladeHit;
+import com.pla.annoyingvillagers.util.TeamUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -101,6 +102,7 @@ public class HerobrineCommon {
                 low.setRenderPortal(false);
                 low.setPossessedByUuid(herobrineMob.getUUID());
                 low.setNoAi(true);
+                TeamUtil.addOrJoinTeam(low, "herobrine");
                 serverLevel.addFreshEntity(low);
                 spawned = low;
             } else {
@@ -112,6 +114,7 @@ public class HerobrineCommon {
                 low.setRenderPortal(false);
                 low.setPossessedByUuid(herobrineMob.getUUID());
                 low.setNoAi(true);
+                TeamUtil.addOrJoinTeam(low, "herobrine");
                 serverLevel.addFreshEntity(low);
                 spawned = low;
             }
@@ -160,7 +163,7 @@ public class HerobrineCommon {
     public static void changeToSecondForm(MobPatch<?> mobpatch) {
         if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
             herobrineMob.setState(1);
-            herobrineMob.setSecondFormHitLeft(new Random().nextInt(2, 5));
+            herobrineMob.setSecondFormHitLeft(new Random().nextInt(1, 3));
             if (herobrineMob instanceof AegisHerobrineEntity || herobrineMob instanceof SwordsmanHerobrineEntity
                     || herobrineMob instanceof SledgehammerHerobrineEntity || herobrineMob instanceof ReaperHerobrineEntity
                     || herobrineMob instanceof GlaiveHerobrineEntity) {
@@ -181,6 +184,9 @@ public class HerobrineCommon {
                     }
                 };
             } else if (herobrineMob instanceof SwordsmanHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
+                if (herobrineMob.getTarget() != null) {
+                    herobrineMob.getLookControl().setLookAt(herobrineMob.getTarget() , 30.0F, 30.0F);
+                }
                 if (SnakeBladeHit.process(item, herobrineMob)) {
                     item.getOrCreateTag().putBoolean("SnakeAnimation", true);
                 }
@@ -193,6 +199,9 @@ public class HerobrineCommon {
             ItemStack item = herobrineMob.getMainHandItem();
             herobrineMob.setSecondFormHitLeft(herobrineMob.getSecondFormHitLeft() - 1);
             if (herobrineMob instanceof SwordsmanHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
+                if (herobrineMob.getTarget() != null) {
+                    herobrineMob.getLookControl().setLookAt(herobrineMob.getTarget() , 30.0F, 30.0F);
+                }
                 if (SnakeBladeHit.processGuard(item, herobrineMob)) {
                     item.getOrCreateTag().putBoolean("SnakeAnimation", true);
                 }

@@ -6,6 +6,7 @@ import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
 import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
 import com.pla.annoyingvillagers.entity.SteveEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.task.DelayedTask;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -133,7 +134,9 @@ public class CombatBehaviour {
                                                                LevelAccessor levelaccessor,
                                                                LivingEntityPatch<?> livingEntityPatch) {
         AssetAccessor<? extends DynamicAnimation> currentAnim = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
-        if (currentAnim.get() instanceof AttackAnimation || EpicfightUtil.isLongHitAnimation(currentAnim)) {
+        if (currentAnim.get() instanceof AttackAnimation
+                || EpicfightUtil.isLongHitAnimation(currentAnim)
+                || CombatCommon.canEscape((MobPatch<?>) livingEntityPatch)) {
             recoverItemDueToFailure(entity);
             return;
         }
@@ -177,7 +180,9 @@ public class CombatBehaviour {
                                                                    LevelAccessor levelaccessor,
                                                                    LivingEntityPatch<?> livingEntityPatch) {
         AssetAccessor<? extends DynamicAnimation> currentAnim = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
-        if (currentAnim.get() instanceof AttackAnimation || EpicfightUtil.isLongHitAnimation(currentAnim)) {
+        if (currentAnim.get() instanceof AttackAnimation
+                || EpicfightUtil.isLongHitAnimation(currentAnim)
+                || CombatCommon.canEscape((MobPatch<?>) livingEntityPatch)) {
             recoverItemDueToFailure(entity);
             return;
         }
@@ -208,7 +213,7 @@ public class CombatBehaviour {
         }
     }
 
-    public static void eatingGoldenApple(Entity entity, LevelAccessor levelaccessor, double amount) {
+    public static void eatingGoldenApple(Entity entity, LevelAccessor levelaccessor, double amount, boolean isEnchanted) {
         LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 
         if (livingEntityPatch != null && entity instanceof LivingEntity livingEntity) {
@@ -243,7 +248,9 @@ public class CombatBehaviour {
                     LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                     if (patch == null) return;
                     AssetAccessor<? extends DynamicAnimation> currentAnim = Objects.requireNonNull(patch.getAnimator().getPlayerFor(null)).getAnimation();
-                    if (currentAnim.get() instanceof AttackAnimation || EpicfightUtil.isLongHitAnimation(currentAnim)) {
+                    if (currentAnim.get() instanceof AttackAnimation
+                            || EpicfightUtil.isLongHitAnimation(currentAnim)
+                            || CombatCommon.canEscape((MobPatch<?>) livingEntityPatch)) {
                         recoverItemDueToFailure(entity);
                         return;
                     }
@@ -311,8 +318,15 @@ public class CombatBehaviour {
                             }
 
                             if (!livingEntity.level().isClientSide()) {
-                                livingEntity.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 2400, 1));
-                                livingEntity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 0));
+                                if (isEnchanted) {
+                                    livingEntity.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 2400, 3));
+                                    livingEntity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 400, 1));
+                                    livingEntity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 6000, 0));
+                                    livingEntity.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 6000, 0));
+                                } else {
+                                    livingEntity.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 2400, 0));
+                                    livingEntity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 1));
+                                }
                             }
 
                             if (entity instanceof PlayerNpcEntity playerNpcEntity) {
@@ -363,7 +377,9 @@ public class CombatBehaviour {
                     LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                     if (patch == null) return;
                     AssetAccessor<? extends DynamicAnimation> currentAnim = Objects.requireNonNull(patch.getAnimator().getPlayerFor(null)).getAnimation();
-                    if (currentAnim.get() instanceof AttackAnimation || EpicfightUtil.isLongHitAnimation(currentAnim)) {
+                    if (currentAnim.get() instanceof AttackAnimation
+                            || EpicfightUtil.isLongHitAnimation(currentAnim)
+                            || CombatCommon.canEscape((MobPatch<?>) livingEntityPatch)) {
                         recoverItemDueToFailure(entity);
                         return;
                     }

@@ -561,7 +561,7 @@ public class AVWeaponCapabilityPresets {
 
     public static final Function<Item, Builder> TRAPDOOR = (item) ->
             WeaponCapability.builder()
-                    .category(WeaponCategories.SWORD)
+                    .category(WeaponCategories.AXE)
                     .styleProvider((livingentitypatch) -> Styles.TWO_HAND)
                     .collider(ColliderPreset.SWORD)
                     .swingSound(SoundEvents.WOODEN_TRAPDOOR_OPEN)
@@ -603,7 +603,7 @@ public class AVWeaponCapabilityPresets {
 
     public static final Function<Item, Builder> LADDER = (item) ->
             WeaponCapability.builder()
-                    .category(WeaponCategories.SWORD)
+                    .category(WeaponCategories.AXE)
                     .styleProvider((livingentitypatch) -> Styles.TWO_HAND)
                     .collider(ColliderPreset.SWORD)
                     .swingSound(SoundEvents.LADDER_STEP)

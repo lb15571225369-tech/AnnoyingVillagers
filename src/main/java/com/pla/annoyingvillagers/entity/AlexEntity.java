@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.spawnhandler.AlexData;
+import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.*;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
 import net.minecraft.core.BlockPos;
@@ -70,7 +71,7 @@ public class AlexEntity extends PathfinderMobInventory {
         this.setCustomName(Component.translatable(this.getType().getDescriptionId()));
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
-        this.setBlockProjectileChance(0.7);
+        this.setPlaceBlockToParryChance(0.7);
     }
 
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {

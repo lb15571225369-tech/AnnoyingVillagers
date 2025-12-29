@@ -6,6 +6,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.*;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
 import net.minecraft.core.BlockPos;
@@ -49,7 +50,7 @@ public class VillagerScoutEntity extends PathfinderMobInventory{
         this.xpReward = 8;
         this.setNoAi(false);
         this.setPersistenceRequired();
-        this.setBlockProjectileChance(0.4);
+        this.setPlaceBlockToParryChance(0.4);
     }
 
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {

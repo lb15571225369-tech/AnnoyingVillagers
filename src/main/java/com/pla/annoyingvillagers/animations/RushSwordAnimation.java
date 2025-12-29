@@ -1,11 +1,9 @@
 package com.pla.annoyingvillagers.animations;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.task.DelayedTask;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
 import yesman.epicfight.api.animation.AnimationManager;

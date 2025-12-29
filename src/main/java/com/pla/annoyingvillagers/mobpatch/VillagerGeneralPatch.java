@@ -6,6 +6,7 @@ import com.pla.annoyingvillagers.combatbehaviour.NpcBow;
 import com.pla.annoyingvillagers.combatbehaviour.NpcFist;
 import com.pla.annoyingvillagers.combatbehaviour.NpcSword;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -22,6 +23,8 @@ import yesman.epicfight.api.utils.AttackResult;
 import yesman.epicfight.api.utils.AttackResult.ResultType;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.EpicFightSounds;
+import yesman.epicfight.particle.EpicFightParticles;
+import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.world.capabilities.entitypatch.Factions;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.Styles;
@@ -146,7 +149,10 @@ public class VillagerGeneralPatch extends CEHumanoidPatch implements CustomExecu
     @Override
     public void onGuardHit(DamageSource damageSource) {
         super.onGuardHit(damageSource);
-        // More logic when blocking damage success
+        if (this.getOriginal().level() instanceof ServerLevel serverLevel) {
+            this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
+            EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, this.getOriginal(), damageSource.getEntity());
+        }
     }
 
     @Override

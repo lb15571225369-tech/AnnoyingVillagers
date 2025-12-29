@@ -13,7 +13,7 @@ import com.pla.annoyingvillagers.procedures.HerobrinePortalProcedure;
 import com.pla.annoyingvillagers.procedures.HerobrineOnInitialSpawnProcedure;
 import com.pla.annoyingvillagers.util.CombatBehaviour;
 import com.pla.annoyingvillagers.util.CommonGoals;
-import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -49,6 +49,9 @@ import yesman.epicfight.api.animation.Joint;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.gameasset.Armatures;
+import yesman.epicfight.gameasset.EpicFightSounds;
+import yesman.epicfight.particle.EpicFightParticles;
+import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.effect.EpicFightMobEffects;
@@ -123,22 +126,33 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
 
     public boolean hurt(@NotNull DamageSource damageSource, float f) {
         if (healing) {
-            if (new Random().nextBoolean()) {
-                try {
-                    Objects.requireNonNull(this.getServer()).getCommands().getDispatcher().execute(
-                            "playsound epicfight:entity.hit.clash neutral @p",
-                            this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                    this.getServer().getCommands().getDispatcher().execute(
-                            "execute at @s run particle epicfight:hit_blade ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
-                            this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException ignored) {
+            if (new Random().nextBoolean()
+                    && this.level() instanceof ServerLevel serverLevel) {
+                if (!damageSource.is(DamageTypes.IN_WALL)
+                        && !damageSource.is(DamageTypes.IN_FIRE)
+                        && !damageSource.is(DamageTypes.ON_FIRE)) {
+                    this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
+                    EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO,
+                            this, damageSource.getEntity());
                 }
                 return false;
             } else {
-                return super.hurt(damageSource, f/2.0F);
+                float health = this.getHealth();
+                if (health - f <= 5.0F && this.healing) {
+                    protectEntity = null;
+                    protectUUID = null;
+                    autoKill = true;
+                    this.kill();
+                    return false;
+                } else {
+                    return super.hurt(damageSource, f / 2.0F);
+                }
             }
         } else {
-            if (Math.random() <= 0.5D && !damageSource.is(DamageTypes.IN_WALL)) {
+            if (Math.random() <= 0.5D
+                    && !damageSource.is(DamageTypes.IN_WALL)
+                    && !damageSource.is(DamageTypes.IN_FIRE)
+                    && !damageSource.is(DamageTypes.ON_FIRE)) {
                 if (this.level() instanceof ServerLevel serverLevel) {
                     serverLevel.playSound(null, this.blockPosition(), AnnoyingVillagersModSounds.OBSIDIAN_PLACE.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     Entity entity = this;
@@ -219,7 +233,16 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
         if (damageSource.is(DamageTypes.DROWN)) return false;
         if (damageSource.is(DamageTypes.WITHER_SKULL)) return false;
         if (damageSource.is(DamageTypes.DRAGON_BREATH)) return false;
-        return super.hurt(damageSource, f);
+        float health = this.getHealth();
+        if (health - f <= 5.0F && this.healing) {
+            protectEntity = null;
+            protectUUID = null;
+            autoKill = true;
+            this.kill();
+            return false;
+        } else {
+            return super.hurt(damageSource, f / 2.0F);
+        }
     }
 
     @Override
@@ -316,7 +339,6 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
 
     @Override
     public void die(@NotNull DamageSource damageSource) {
-        super.die(damageSource);
         if (this.level() instanceof ServerLevel serverLevel) {
             if (!autoKill) {
                 InfectedPlayerMobEntity corpse = new InfectedPlayerMobEntity(AnnoyingVillagersModEntities.INFECTED_PLAYER_MOB.get(), serverLevel);
@@ -365,6 +387,7 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
             itemEntity.setPickUpDelay(10);
             serverLevel.addFreshEntity(itemEntity);
         }
+        super.die(damageSource);
     }
 
     @Override

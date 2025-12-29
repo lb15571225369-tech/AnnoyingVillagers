@@ -1,7 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.task.DelayedTask;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.LevelAccessor;
 import yesman.epicfight.api.animation.types.*;

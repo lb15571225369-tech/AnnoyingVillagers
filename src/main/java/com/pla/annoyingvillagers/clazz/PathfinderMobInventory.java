@@ -1,11 +1,12 @@
 package com.pla.annoyingvillagers.clazz;
 
-import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.task.DelayedTask;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -37,7 +38,7 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
     private boolean useBow = true;
     private final LivingEntityPatch<?> livingEntityPatch =  EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
     private Entity blockDamage = null;
-    private double blockProjectileChance;
+    private double placeBlockToParryChance;
     private boolean swapBackToBow = false;
 
     public Entity getBlockDamage() {
@@ -52,12 +53,12 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
         return swapBackToBow;
     }
 
-    public double getBlockProjectileChance() {
-        return blockProjectileChance;
+    public double getPlaceBlockToParryChance() {
+        return placeBlockToParryChance;
     }
 
-    public void setBlockProjectileChance(double blockProjectileChance) {
-        this.blockProjectileChance = blockProjectileChance;
+    public void setPlaceBlockToParryChance(double placeBlockToParryChance) {
+        this.placeBlockToParryChance = placeBlockToParryChance;
     }
 
     public void setBlockDamage(Entity blockDamage) {
@@ -147,7 +148,7 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
         tag.putInt("SwapToBowCooldown", this.swapToBowCooldown);
         tag.putBoolean("InitialSpawn", this.initialSpawn);
         tag.putBoolean("UseBow", this.useBow);
-        tag.putDouble("BlockProjectileChance", this.blockProjectileChance);
+        tag.putDouble("BlockProjectileChance", this.placeBlockToParryChance);
         if (!this.mainWeaponItem.isEmpty()) {
             CompoundTag itemTag = new CompoundTag();
             this.mainWeaponItem.save(itemTag);
@@ -184,7 +185,7 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
         this.swapToBowCooldown = tag.getInt("SwapToBowCooldown");
         this.initialSpawn = tag.getBoolean("InitialSpawn");
         this.useBow = tag.getBoolean("UseBow");
-        this.blockProjectileChance = tag.getDouble("BlockProjectileChance");
+        this.placeBlockToParryChance = tag.getDouble("BlockProjectileChance");
         if (tag.contains("MainHandItem", Tag.TAG_COMPOUND)) {
             this.mainWeaponItem = ItemStack.of(tag.getCompound("MainHandItem"));
         } else {
@@ -335,6 +336,25 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
                 motion.y,
                 motion.z + forward.z * strength
         );
+        this.hasImpulse = true;
+    }
+
+    public void shortPillarJump() {
+        if (!this.onGround()) return;
+        this.jumpFromGround();
+
+        Vec3 v = this.getDeltaMovement();
+        float yawRad = this.yBodyRot * Mth.DEG_TO_RAD;
+        Vec3 forwardFlat = new Vec3(-Mth.sin(yawRad), 0.0D, Mth.cos(yawRad)).normalize();
+        double backMag = 0.18D + this.getRandom().nextDouble() * 0.12D;
+        Vec3 backward = forwardFlat.scale(-backMag);
+        double yImpulse = Math.max(0.42D, v.y);
+        this.setDeltaMovement(
+                v.x * 0.6D + backward.x,
+                yImpulse,
+                v.z * 0.6D + backward.z
+        );
+
         this.hasImpulse = true;
     }
 

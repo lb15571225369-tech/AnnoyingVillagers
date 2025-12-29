@@ -42,31 +42,6 @@ public class HerobrineEnderAegis {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
-                            .weight(40)
-                            .maxCooldown(100)
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .withinDistance(0.0D, 6.0D)
-                                            .custom(HerobrineCommon::canPlaySecondFormAnimation)
-                                            .animationBehavior(AVAnimations.AEGIS_SHIELD_SHOOT, 0.0F)
-                                            .addExBehavior(HerobrineCommon::playSecondFormAnimation)
-                            )
-            )
-            .newBehaviorRoot(
-                    BehaviorRoot.builder()
-                            .priority(1.0D)
-                            .weight(40)
-                            .maxCooldown(100)
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .withinDistance(0.0D, 3.0D)
-                                            .custom(HerobrineCommon::canPlaySecondFormAnimation)
-                                            .animationBehavior(AVAnimations.MOB_RAVANGER_CHARGE, 0.0F)
-                            )
-            )
-            .newBehaviorRoot(
-                    BehaviorRoot.builder()
-                            .priority(1.0D)
                             .weight(40.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
@@ -139,14 +114,39 @@ public class HerobrineEnderAegis {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
-                            .weight(20.0D)
-                            .maxCooldown(120)
+                            .weight(10.0D)
+                            .maxCooldown(200)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(HerobrineCommon::canChangeToSecondForm)
                                             .withinDistance(0.0D, 5.0D)
                                             .animationBehavior(AVAnimations.ENDER_AEGIS_NAPOLEON_RELOAD_1, 0.0F)
                                             .addExBehavior(HerobrineCommon::changeToSecondForm)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                            .weight(5)
+                            .maxCooldown(200)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .withinDistance(0.0D, 6.0D)
+                                            .custom(HerobrineCommon::canPlaySecondFormAnimation)
+                                            .animationBehavior(AVAnimations.AEGIS_SHIELD_SHOOT, 0.0F)
+                                            .addExBehavior(HerobrineCommon::playSecondFormAnimation)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                            .weight(5)
+                            .maxCooldown(200)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .withinDistance(0.0D, 6.0D)
+                                            .custom(HerobrineCommon::canPlaySecondFormAnimation)
+                                            .animationBehavior(AVAnimations.MOB_RAVANGER_CHARGE, 0.0F)
                             )
             )
             .newBehaviorRoot(

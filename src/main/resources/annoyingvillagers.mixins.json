@@ -4,7 +4,6 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "annoyingvillagers.mixins.refmap.json",
   "mixins": [
-    "AttributeInstanceMixin",
     "PlayerMobMixin",
     "PlayerMobMixin2",
     "MobMixin",
@@ -23,7 +22,8 @@
     "VindicatorMixin",
     "IllagerMixin",
     "MobClashBladeMixin",
-    "ClashBladeMixin"
+    "ClashBladeMixin",
+    "AbstractArrowMixin"
   ],
   "client": [
   ],

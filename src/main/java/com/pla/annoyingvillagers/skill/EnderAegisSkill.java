@@ -4,7 +4,7 @@ import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.item.EnderAegisItem;
-import com.pla.annoyingvillagers.util.DelayedTask;
+import com.pla.annoyingvillagers.task.DelayedTask;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -94,10 +94,11 @@ public class EnderAegisSkill extends WeaponInnateSkill {
                             && itemStack.getTag() != null) {
                         event.setCanceled(true);
                         skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.SHIELD_MAINHAND, 0.0F);
+                        ServerPlayer serverPlayer = event.getPlayerPatch().getOriginal();
                         new DelayedTask(10) {
                             @Override
                             public void run() {
-                                EnderAegisItem.shieldShoot(event.getPlayerPatch().getOriginal().level(), event.getPlayerPatch().getOriginal());
+                                EnderAegisItem.shieldShoot(serverPlayer.level(), serverPlayer);
                             }
                         };
                     }
