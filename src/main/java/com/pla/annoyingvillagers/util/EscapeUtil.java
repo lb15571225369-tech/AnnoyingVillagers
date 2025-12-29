@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.util;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.entity.AegisHerobrineEntity;
 import com.pla.annoyingvillagers.entity.SwordsmanHerobrineEntity;
@@ -18,7 +17,6 @@ import java.util.Set;
 public class EscapeUtil {
     private static final Set<String> DANGEROUS_ANIMATIONS = Set.of(
             "annoyingvillagers:biped/skill/ender_aegis_bull_charge",
-            "annoyingvillagers:biped/combat/legendary_sword_heavy_attack",
             "efn:biped/ng_greatsword/ng_great_charge1ing",
             "efn:biped/ng_greatsword/ng_great_charge1max",
             "efn:biped/ng_greatsword/ng_great_charge1max_2",
@@ -29,6 +27,7 @@ public class EscapeUtil {
             "efn:biped/nf_meen/nf_meen_charge1",
             "efn:biped/nf_meen/nf_meen_charge2",
             "efn:biped/nf_meen/nf_meen_charge3",
+            "efn:biped/nf_meen/nf_meen_skill_max",
             "efn:biped/yamato/dmcyamato_judgementcut",
             "efn:biped/yamato/dmcyamato_judgementcut_all",
             "efn:biped/yamato_judgementcut_end",
@@ -84,7 +83,7 @@ public class EscapeUtil {
 
     public static boolean isAnimationDangerous(AssetAccessor<? extends DynamicAnimation> targetDynamicAnimation) {
         if (targetDynamicAnimation != null && targetDynamicAnimation.get().getRegistryName() != null) {
-            String animation =  targetDynamicAnimation.get().getRegistryName().toString();
+            String animation = targetDynamicAnimation.get().getRegistryName().toString();
             return DANGEROUS_ANIMATIONS.contains(animation);
         }
         return false;

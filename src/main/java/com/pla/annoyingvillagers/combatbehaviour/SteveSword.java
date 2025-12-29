@@ -29,7 +29,7 @@ public class SteveSword {
                                     Behavior.builder()
                                             .custom(CombatCommon::canEscape)
                                             .withinDistance(8.0D, 48.0D)
-                                            .guard(40)
+                                            .animationBehavior(Animations.BIPED_SNEAK, 0.0F)
                             )
             )
             .newBehaviorRoot(
@@ -223,17 +223,6 @@ public class SteveSword {
                                             .canInterruptParent(true)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_H, 0.0F)
-                            )
-            )
-            .newBehaviorRoot(
-                    BehaviorRoot.builder()
-                            .priority(1.0D)
-                            .weight(30.0D)
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .withinDistance(0.0D, 3.0D)
-                                            .custom(CombatCommon::canPerformGuarding)
-                                            .guard(40)
                             )
             )
             .newBehaviorRoot(

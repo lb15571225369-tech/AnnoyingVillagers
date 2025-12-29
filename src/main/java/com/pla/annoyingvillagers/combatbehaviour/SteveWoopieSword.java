@@ -243,7 +243,7 @@ public class SteveWoopieSword {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(40.0D)
-                            .maxCooldown (40)
+                            .maxCooldown (20)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(2.0D, 14.0D)
@@ -254,7 +254,7 @@ public class SteveWoopieSword {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(30.0D)
-                            .maxCooldown (40)
+                            .maxCooldown (20)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(0.0D, 3.0D)

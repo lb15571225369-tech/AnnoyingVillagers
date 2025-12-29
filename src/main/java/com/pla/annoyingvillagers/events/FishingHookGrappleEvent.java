@@ -49,14 +49,14 @@ public class FishingHookGrappleEvent {
         }
     }
 
-    private static boolean tryPlunge(Player player, boolean addCooldown) {
+    private static boolean tryPlunge(Player player) {
         FishingHook hook = player.fishing;
         if (hook == null || !hook.isAlive()) return false;
 
         var tag = hook.getPersistentData();
         if (!tag.getBoolean(KEY_LATCHED)) return false;
 
-        if (addCooldown && player.getCooldowns().isOnCooldown(Items.FISHING_ROD)) return false;
+        if (player.getCooldowns().isOnCooldown(Items.FISHING_ROD)) return false;
 
         Vec3 anchor = new Vec3(tag.getDouble(KEY_AX), tag.getDouble(KEY_AY), tag.getDouble(KEY_AZ));
         Vec3 eye = player.position().add(0, player.getEyeHeight(), 0);
@@ -83,7 +83,7 @@ public class FishingHookGrappleEvent {
         player.setDeltaMovement(vel);
         player.hurtMarked = true;
         player.fallDistance = 0;
-        if (addCooldown) player.getCooldowns().addCooldown(Items.FISHING_ROD, 20);
+        if (true) player.getCooldowns().addCooldown(Items.FISHING_ROD, 20);
         tag.putBoolean(KEY_LATCHED, false);
         return true;
     }
@@ -113,7 +113,7 @@ public class FishingHookGrappleEvent {
         if (player.level().isClientSide()) return;
         boolean holdingRod = player.getMainHandItem().is(Items.FISHING_ROD) || player.getOffhandItem().is(Items.FISHING_ROD);
         if (!holdingRod || player.fishing == null) return;
-        if (tryPlunge(player, true)) {
+        if (tryPlunge(player)) {
             retrieveNow(player, event.getHand());
             event.setCanceled(true);
             event.setCancellationResult(InteractionResult.SUCCESS);
@@ -128,7 +128,7 @@ public class FishingHookGrappleEvent {
         boolean holdingRod = player.getMainHandItem().is(Items.FISHING_ROD) || player.getOffhandItem().is(Items.FISHING_ROD);
         if (!holdingRod || player.fishing == null) return;
 
-        if (tryPlunge(player, true)) {
+        if (tryPlunge(player)) {
             retrieveNow(player, event.getHand());
             event.setUseItem(Event.Result.DENY);
             event.setCancellationResult(InteractionResult.SUCCESS);
@@ -143,7 +143,7 @@ public class FishingHookGrappleEvent {
         boolean holdingRod = player.getMainHandItem().is(Items.FISHING_ROD) || player.getOffhandItem().is(Items.FISHING_ROD);
         if (!holdingRod || player.fishing == null) return;
 
-        if (tryPlunge(player, true)) {
+        if (tryPlunge(player)) {
             retrieveNow(player, event.getHand());
             event.setCanceled(true);
             event.setCancellationResult(InteractionResult.SUCCESS);
