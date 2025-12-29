@@ -20,6 +20,7 @@ public class HerobrineDemoniacVoltageReaver {
                             .maxCooldown (0)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
                                             .custom(HerobrineCommon::canPerformHealing)
                                             .animationBehavior(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F)
@@ -33,6 +34,7 @@ public class HerobrineDemoniacVoltageReaver {
                             .maxCooldown(120)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(7.0D, 48.0D)
                                             .animationBehavior(WOMAnimations.MOB_ENDERSTEP_OBSCURIS, 0.0F)
                                             .addExBehavior(HerobrineCommon::giveSlowFalling)
@@ -44,22 +46,27 @@ public class HerobrineDemoniacVoltageReaver {
                             .weight(40.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(WOMAnimations.TORMENT_BERSERK_AUTO_2, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                             .withinDistance(0.0D, 3.0D)
                                                                             .animationBehavior(WOMAnimations.TORMENT_BERSERK_AUTO_1, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 3.0D)
                                                                                             .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_2, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                             .withinDistance(0.0D, 3.0D)
                                                                                                             .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_4, 0.0F)
                                                                                             )
@@ -75,16 +82,19 @@ public class HerobrineDemoniacVoltageReaver {
                             .maxCooldown(100)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 5.0D)
                                             .animationBehavior(AVAnimations.DEMONIAC_TORMENT_CHARGED_ATTACK_2, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 5.0D)
                                             .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_1, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 5.0D)
                                             .animationBehavior(WOMAnimations.TORMENT_CHARGED_ATTACK_1, 0.0F)
                             )
@@ -96,6 +106,7 @@ public class HerobrineDemoniacVoltageReaver {
                             .maxCooldown(200)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(HerobrineCommon::canChangeToSecondForm)
                                             .withinDistance(0.0D, 6.0D)
                                             .animationBehavior(AVAnimations.APPLY_IMBUEMENT, 0.0F)
@@ -109,6 +120,7 @@ public class HerobrineDemoniacVoltageReaver {
                             .maxCooldown(200)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 6.0D)
                                             .custom(HerobrineCommon::canPlaySecondFormAnimation)
                                             .animationBehavior(AVAnimations.MOB_SNAKE_BLADE, 0.0F)
@@ -116,6 +128,7 @@ public class HerobrineDemoniacVoltageReaver {
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 6.0D)
                                             .custom(HerobrineCommon::canPlaySecondFormAnimation)
                                             .animationBehavior(AVAnimations.MOB_SNAKE_BLADE, 0.0F)
@@ -128,6 +141,7 @@ public class HerobrineDemoniacVoltageReaver {
                             .weight(30.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .custom(HerobrineCommon::canPerformGuarding)
                                             .guard(40)
@@ -139,21 +153,25 @@ public class HerobrineDemoniacVoltageReaver {
                             .weight(10.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 5.0D)
                                             .animationBehavior(WOMAnimations.ENDERSTEP_FORWARD, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 5.0D)
                                             .animationBehavior(WOMAnimations.ENDERSTEP_BACKWARD, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 5.0D)
                                             .animationBehavior(WOMAnimations.ENDERSTEP_LEFT, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 5.0D)
                                             .animationBehavior(WOMAnimations.ENDERSTEP_RIGHT, 0.0F)
                             )
@@ -165,6 +183,7 @@ public class HerobrineDemoniacVoltageReaver {
                             .maxCooldown(160)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(HerobrineCommon::canJump)
                                             .withinDistance(5.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_JUMP, 0.0F)

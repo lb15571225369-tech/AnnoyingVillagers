@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.events;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
 import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
@@ -15,7 +14,6 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.shelmarow.combat_evolution.execution.ExecutionHandler;
-import net.shelmarow.combat_evolution.execution.ExecutionTask;
 import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
 import net.shelmarow.combat_evolution.tickTask.TickTaskManager;
 import yesman.epicfight.api.animation.types.StaticAnimation;

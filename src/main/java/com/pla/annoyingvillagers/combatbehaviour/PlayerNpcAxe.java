@@ -38,6 +38,7 @@ public class PlayerNpcAxe {
                             .maxCooldown (0)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
                                             .custom(CombatCommon::canPerformEating)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
@@ -51,6 +52,7 @@ public class PlayerNpcAxe {
                             .maxCooldown (120)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canSwapToBow)
                                             .withinDistance(7.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
@@ -58,6 +60,7 @@ public class PlayerNpcAxe {
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canSwapToBow)
                                             .withinDistance(7.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
@@ -71,6 +74,7 @@ public class PlayerNpcAxe {
                             .maxCooldown (120)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canThrowEnderPearl)
                                             .withinDistance(7.0D, 48.0D)
                                             .animationBehavior(AVAnimations.CASTING_ONE_HAND_TOP, 0.0F)
@@ -83,10 +87,12 @@ public class PlayerNpcAxe {
                             .weight(40.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.AXE_AUTO1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(Animations.AXE_AUTO2, 0.0F)
                                             )
@@ -99,14 +105,17 @@ public class PlayerNpcAxe {
                             .maxCooldown (100)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.AXE_HEAVY_AUTO_1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(AVAnimations.AXE_HEAVY_AUTO_2, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                             .withinDistance(0.0D, 3.0D)
                                                                             .animationBehavior(AVAnimations.AXE_FUN_SKILL, 0.0F)
                                                             )
@@ -120,16 +129,19 @@ public class PlayerNpcAxe {
                             .maxCooldown (100)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.AXE_DASH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.AXE_AIRSLASH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.THE_GUILLOTINE, 0.0F)
                             )
@@ -141,6 +153,7 @@ public class PlayerNpcAxe {
                             .maxCooldown(40)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .custom(CombatCommon::canThrowEnderPearl)
                                             .animationBehavior(AVAnimations.CASTING_ONE_HAND_TOP, 0.0F)
@@ -154,39 +167,43 @@ public class PlayerNpcAxe {
                             .maxCooldown (100)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_1, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_2, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_3, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_4, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .canInterruptParent(true)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_C, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .canInterruptParent(true)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_RUSH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .canInterruptParent(true)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_H, 0.0F)
                             )
@@ -197,6 +214,7 @@ public class PlayerNpcAxe {
                             .weight(30.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .custom(CombatCommon::canPerformGuarding)
                                             .guard(40)
@@ -208,11 +226,13 @@ public class PlayerNpcAxe {
                             .weight(10.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
                             )
@@ -224,6 +244,7 @@ public class PlayerNpcAxe {
                             .maxCooldown(160)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canJump)
                                             .withinDistance(5.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_JUMP, 0.0F)
@@ -239,6 +260,7 @@ public class PlayerNpcAxe {
                             .maxCooldown (0)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canEscape)
                                             .withinDistance(0.0D, 8.0D)
@@ -259,6 +281,7 @@ public class PlayerNpcAxe {
                             .maxCooldown (0)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
                                             .custom(CombatCommon::canPerformEating)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
@@ -272,6 +295,7 @@ public class PlayerNpcAxe {
                             .maxCooldown (120)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canSwapToBow)
                                             .withinDistance(7.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
@@ -279,6 +303,7 @@ public class PlayerNpcAxe {
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canSwapToBow)
                                             .withinDistance(7.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
@@ -292,6 +317,7 @@ public class PlayerNpcAxe {
                             .maxCooldown (120)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canThrowEnderPearl)
                                             .withinDistance(7.0D, 48.0D)
                                             .animationBehavior(AVAnimations.CASTING_ONE_HAND_TOP, 0.0F)
@@ -304,18 +330,22 @@ public class PlayerNpcAxe {
                             .weight(40.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.AXE_AUTO1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(Animations.AXE_AUTO2, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                             .withinDistance(0.0D, 3.0D)
                                                                             .animationBehavior(Animations.SWORD_AUTO1, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 3.0D)
                                                                                             .animationBehavior(Animations.SWORD_AUTO2, 0.0F)
                                                                             )
@@ -330,14 +360,17 @@ public class PlayerNpcAxe {
                             .maxCooldown (100)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.AXE_HEAVY_AUTO_1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(AVAnimations.AXE_HEAVY_AUTO_2, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                             .withinDistance(0.0D, 3.0D)
                                                                             .animationBehavior(AVAnimations.AXE_FUN_SKILL, 0.0F)
                                                             )
@@ -351,16 +384,19 @@ public class PlayerNpcAxe {
                             .maxCooldown (100)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.AXE_DASH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.AXE_AIRSLASH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.THE_GUILLOTINE, 0.0F)
                             )
@@ -372,6 +408,7 @@ public class PlayerNpcAxe {
                             .maxCooldown (100)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .custom(CombatCommon::canThrowEnderPearl)
                                             .animationBehavior(AVAnimations.CASTING_ONE_HAND_TOP, 0.0F)
@@ -385,39 +422,43 @@ public class PlayerNpcAxe {
                             .maxCooldown (100)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_1, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_2, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_3, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_4, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .canInterruptParent(true)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_C, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .canInterruptParent(true)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_RUSH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .canInterruptParent(true)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_H, 0.0F)
                             )
@@ -428,6 +469,7 @@ public class PlayerNpcAxe {
                             .weight(30.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .custom(CombatCommon::canPerformGuarding)
                                             .guard(40)
@@ -439,11 +481,13 @@ public class PlayerNpcAxe {
                             .weight(10.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
                             )
@@ -455,6 +499,7 @@ public class PlayerNpcAxe {
                             .maxCooldown(160)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canJump)
                                             .withinDistance(5.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_JUMP, 0.0F)

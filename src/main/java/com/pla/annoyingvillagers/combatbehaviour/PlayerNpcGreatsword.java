@@ -40,6 +40,7 @@ public class PlayerNpcGreatsword {
                             .maxCooldown (0)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
                                             .custom(CombatCommon::canPerformEating)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
@@ -53,6 +54,7 @@ public class PlayerNpcGreatsword {
                             .maxCooldown (120)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canSwapToBow)
                                             .withinDistance(7.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
@@ -60,6 +62,7 @@ public class PlayerNpcGreatsword {
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canSwapToBow)
                                             .withinDistance(7.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
@@ -73,6 +76,7 @@ public class PlayerNpcGreatsword {
                             .maxCooldown (120)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canThrowEnderPearl)
                                             .withinDistance(7.0D, 48.0D)
                                             .animationBehavior(AVAnimations.CASTING_ONE_HAND_TOP, 0.0F)
@@ -85,10 +89,12 @@ public class PlayerNpcGreatsword {
                             .weight(40.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.GREATSWORD_AUTO1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(Animations.GREATSWORD_AUTO2, 0.0F)
                                             )
@@ -101,6 +107,7 @@ public class PlayerNpcGreatsword {
                             .maxCooldown (100)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.GIANT_WHIRLWIND, 0.0F)
                             )
@@ -112,20 +119,24 @@ public class PlayerNpcGreatsword {
                             .maxCooldown (100)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.GREATSWORD_DASH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.GREATSWORD_AIR_SLASH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.STEEL_WHIRLWIND_CHARGING, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(Animations.STEEL_WHIRLWIND, 0.0F)
                                             )
@@ -138,6 +149,7 @@ public class PlayerNpcGreatsword {
                             .maxCooldown(40)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .custom(CombatCommon::canThrowEnderPearl)
                                             .animationBehavior(AVAnimations.CASTING_ONE_HAND_TOP, 0.0F)
@@ -151,38 +163,45 @@ public class PlayerNpcGreatsword {
                             .maxCooldown (100)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_1, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_2, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_3, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_4, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .canInterruptParent(true)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_C, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .canInterruptParent(true)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_RUSH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .canInterruptParent(true)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_H, 0.0F)
@@ -194,6 +213,7 @@ public class PlayerNpcGreatsword {
                             .weight(30.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .custom(CombatCommon::canPerformGuarding)
                                             .guard(40)
@@ -205,11 +225,13 @@ public class PlayerNpcGreatsword {
                             .weight(10.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
                             )
@@ -221,6 +243,7 @@ public class PlayerNpcGreatsword {
                             .maxCooldown(160)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canJump)
                                             .withinDistance(5.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_JUMP, 0.0F)
@@ -256,6 +279,7 @@ public class PlayerNpcGreatsword {
                             .maxCooldown (0)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
                                             .custom(CombatCommon::canPerformEating)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
@@ -269,6 +293,7 @@ public class PlayerNpcGreatsword {
                             .maxCooldown (120)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canSwapToBow)
                                             .withinDistance(7.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
@@ -276,6 +301,7 @@ public class PlayerNpcGreatsword {
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canSwapToBow)
                                             .withinDistance(7.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
@@ -289,6 +315,7 @@ public class PlayerNpcGreatsword {
                             .maxCooldown (120)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canThrowEnderPearl)
                                             .withinDistance(7.0D, 48.0D)
                                             .animationBehavior(AVAnimations.CASTING_ONE_HAND_TOP, 0.0F)
@@ -301,22 +328,27 @@ public class PlayerNpcGreatsword {
                             .weight(40.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.GREATSWORD_AUTO1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(Animations.GREATSWORD_AUTO2, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                             .withinDistance(0.0D, 3.0D)
                                                                             .animationBehavior(WOMAnimations.TORMENT_AUTO_2, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 3.0D)
                                                                                             .animationBehavior(WOMAnimations.TORMENT_AUTO_3, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                             .withinDistance(0.0D, 3.0D)
                                                                                                             .animationBehavior(AnimsSolar.SOLAR_HORNO, 0.0F)
                                                                                             )
@@ -332,6 +364,7 @@ public class PlayerNpcGreatsword {
                             .maxCooldown (100)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.GIANT_WHIRLWIND, 0.0F)
                             )
@@ -343,20 +376,24 @@ public class PlayerNpcGreatsword {
                             .maxCooldown (100)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.GREATSWORD_DASH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.GREATSWORD_AIR_SLASH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.STEEL_WHIRLWIND_CHARGING, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(Animations.STEEL_WHIRLWIND, 0.0F)
                                             )
@@ -366,9 +403,10 @@ public class PlayerNpcGreatsword {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(10.0D)
-                            .maxCooldown (100)
+                            .maxCooldown(40)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .custom(CombatCommon::canThrowEnderPearl)
                                             .animationBehavior(AVAnimations.CASTING_ONE_HAND_TOP, 0.0F)
@@ -382,38 +420,45 @@ public class PlayerNpcGreatsword {
                             .maxCooldown (100)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_1, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_2, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_3, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_4, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .canInterruptParent(true)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_C, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .canInterruptParent(true)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_RUSH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .canInterruptParent(true)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_H, 0.0F)
@@ -425,6 +470,7 @@ public class PlayerNpcGreatsword {
                             .weight(30.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .custom(CombatCommon::canPerformGuarding)
                                             .guard(40)
@@ -436,11 +482,13 @@ public class PlayerNpcGreatsword {
                             .weight(10.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
                             )
@@ -452,6 +500,7 @@ public class PlayerNpcGreatsword {
                             .maxCooldown(160)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canJump)
                                             .withinDistance(5.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_JUMP, 0.0F)
