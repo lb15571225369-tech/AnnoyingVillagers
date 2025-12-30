@@ -28,7 +28,6 @@ public class EscapeUtil {
             "efn:biped/nf_meen/nf_meen_charge2",
             "efn:biped/nf_meen/nf_meen_charge3",
             "efn:biped/nf_meen/nf_meen_skill_max",
-            "efn:biped/yamato/dmcyamato_judgementcut",
             "efn:biped/yamato/dmcyamato_judgementcut_all",
             "efn:biped/yamato_judgementcut_end",
             "efn:biped/nf_skill/biped_execute",

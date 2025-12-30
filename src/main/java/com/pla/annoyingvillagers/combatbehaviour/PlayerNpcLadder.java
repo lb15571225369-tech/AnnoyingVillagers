@@ -194,21 +194,18 @@ public class PlayerNpcLadder {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .canInterruptParent(true)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_C, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .canInterruptParent(true)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_RUSH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .canInterruptParent(true)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_H, 0.0F)
                             )

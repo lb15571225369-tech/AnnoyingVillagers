@@ -48,6 +48,10 @@ public class HerobrineCommon {
         return false;
     }
 
+    public static boolean needTargetNearby(MobPatch<?> mobpatch) {
+
+    }
+
     public static boolean canPlaySecondFormAnimation(MobPatch<?> mobpatch) {
         if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
             ItemStack item = herobrineMob.getMainHandItem();

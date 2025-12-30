@@ -259,7 +259,6 @@ public class NpcFist {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .canInterruptParent(true)
                                             .custom(CombatCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_C, 0.0F)
@@ -267,7 +266,6 @@ public class NpcFist {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .canInterruptParent(true)
                                             .custom(CombatCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_RUSH, 0.0F)
@@ -275,7 +273,6 @@ public class NpcFist {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .canInterruptParent(true)
                                             .custom(CombatCommon::canAttackWhileNotHealing)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_COMBO, 0.0F)

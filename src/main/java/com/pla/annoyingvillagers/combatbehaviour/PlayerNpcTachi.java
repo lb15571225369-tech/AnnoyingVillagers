@@ -39,6 +39,7 @@ public class PlayerNpcTachi {
                             .maxCooldown (0)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
                                             .custom(CombatCommon::canPerformEating)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
@@ -52,6 +53,7 @@ public class PlayerNpcTachi {
                             .maxCooldown (120)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canSwapToBow)
                                             .withinDistance(7.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
@@ -59,6 +61,7 @@ public class PlayerNpcTachi {
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canSwapToBow)
                                             .withinDistance(7.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
@@ -72,6 +75,7 @@ public class PlayerNpcTachi {
                             .maxCooldown (120)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canThrowEnderPearl)
                                             .withinDistance(7.0D, 48.0D)
                                             .animationBehavior(AVAnimations.CASTING_ONE_HAND_TOP, 0.0F)
@@ -84,14 +88,17 @@ public class PlayerNpcTachi {
                             .weight(40.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.TACHI_AUTO1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(Animations.TACHI_AUTO2, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                             .withinDistance(0.0D, 3.0D)
                                                                             .animationBehavior(Animations.TACHI_AUTO3, 0.0F)
                                                             )
@@ -105,14 +112,17 @@ public class PlayerNpcTachi {
                             .maxCooldown (100)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.SWORD_HEAVY_AUTO_1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(AVAnimations.SWORD_HEAVY_AUTO_2, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                             .withinDistance(0.0D, 3.0D)
                                                                             .animationBehavior(AVAnimations.SWORD_HEAVY_AUTO_3, 0.0F)
                                                             )
@@ -126,24 +136,29 @@ public class PlayerNpcTachi {
                             .maxCooldown (100)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.TACHI_DASH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.LONGSWORD_AIR_SLASH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.RUSHING_TEMPO1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(Animations.RUSHING_TEMPO2, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                             .withinDistance(0.0D, 3.0D)
                                                                             .animationBehavior(Animations.RUSHING_TEMPO3, 0.0F)
                                                             )
@@ -157,6 +172,7 @@ public class PlayerNpcTachi {
                             .maxCooldown(40)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .custom(CombatCommon::canThrowEnderPearl)
                                             .animationBehavior(AVAnimations.CASTING_ONE_HAND_TOP, 0.0F)
@@ -170,39 +186,43 @@ public class PlayerNpcTachi {
                             .maxCooldown (100)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_1, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_2, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_3, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_4, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .canInterruptParent(true)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_C, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .canInterruptParent(true)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_RUSH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .canInterruptParent(true)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_H, 0.0F)
                             )
@@ -213,6 +233,7 @@ public class PlayerNpcTachi {
                             .weight(30.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .custom(CombatCommon::canPerformGuarding)
                                             .guard(40)
@@ -224,11 +245,13 @@ public class PlayerNpcTachi {
                         .weight(10.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
                             )
@@ -240,6 +263,7 @@ public class PlayerNpcTachi {
                             .maxCooldown(160)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canJump)
                                             .withinDistance(5.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_JUMP, 0.0F)
@@ -255,6 +279,7 @@ public class PlayerNpcTachi {
                             .maxCooldown (0)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canEscape)
                                             .withinDistance(0.0D, 8.0D)
@@ -275,6 +300,7 @@ public class PlayerNpcTachi {
                             .maxCooldown (0)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
                                             .custom(CombatCommon::canPerformEating)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
@@ -288,6 +314,7 @@ public class PlayerNpcTachi {
                             .maxCooldown (120)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canSwapToBow)
                                             .withinDistance(7.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
@@ -295,6 +322,7 @@ public class PlayerNpcTachi {
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canSwapToBow)
                                             .withinDistance(7.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
@@ -308,6 +336,7 @@ public class PlayerNpcTachi {
                             .maxCooldown (120)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canThrowEnderPearl)
                                             .withinDistance(7.0D, 48.0D)
                                             .animationBehavior(AVAnimations.CASTING_ONE_HAND_TOP, 0.0F)
@@ -320,22 +349,27 @@ public class PlayerNpcTachi {
                             .weight(40.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.TACHI_AUTO1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(Animations.TACHI_AUTO2, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                             .withinDistance(0.0D, 3.0D)
                                                                             .animationBehavior(AnimsRuine.RUINE_AUTO_1, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 3.0D)
                                                                                             .animationBehavior(Animations.TACHI_AUTO3, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                             .withinDistance(0.0D, 3.0D)
                                                                                                             .animationBehavior(AnimsRuine.RUINE_CHATIMENT, 0.0F)
                                                                                             )
@@ -351,14 +385,17 @@ public class PlayerNpcTachi {
                             .maxCooldown (100)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.SWORD_HEAVY_AUTO_1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(AVAnimations.SWORD_HEAVY_AUTO_2, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                             .withinDistance(0.0D, 3.0D)
                                                                             .animationBehavior(AVAnimations.SWORD_HEAVY_AUTO_3, 0.0F)
                                                             )
@@ -372,24 +409,29 @@ public class PlayerNpcTachi {
                             .maxCooldown (100)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.TACHI_DASH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.LONGSWORD_AIR_SLASH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.RUSHING_TEMPO1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(Animations.RUSHING_TEMPO2, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                             .withinDistance(0.0D, 3.0D)
                                                                             .animationBehavior(Animations.RUSHING_TEMPO3, 0.0F)
                                                             )
@@ -403,6 +445,7 @@ public class PlayerNpcTachi {
                             .maxCooldown(40)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .custom(CombatCommon::canThrowEnderPearl)
                                             .animationBehavior(AVAnimations.CASTING_ONE_HAND_TOP, 0.0F)
@@ -416,39 +459,43 @@ public class PlayerNpcTachi {
                             .maxCooldown (100)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_1, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_2, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_3, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_4, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .canInterruptParent(true)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_C, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .canInterruptParent(true)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_RUSH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .canInterruptParent(true)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_H, 0.0F)
                             )
@@ -459,6 +506,7 @@ public class PlayerNpcTachi {
                             .weight(30.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .custom(CombatCommon::canPerformGuarding)
                                             .guard(40)
@@ -470,11 +518,13 @@ public class PlayerNpcTachi {
                             .weight(10.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
                             )
@@ -486,6 +536,7 @@ public class PlayerNpcTachi {
                             .maxCooldown(160)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canJump)
                                             .withinDistance(5.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_JUMP, 0.0F)
@@ -521,6 +572,7 @@ public class PlayerNpcTachi {
                             .maxCooldown (0)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
                                             .custom(CombatCommon::canPerformEating)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
@@ -534,6 +586,7 @@ public class PlayerNpcTachi {
                             .maxCooldown (120)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canSwapToBow)
                                             .withinDistance(7.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
@@ -541,6 +594,7 @@ public class PlayerNpcTachi {
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canSwapToBow)
                                             .withinDistance(7.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
@@ -554,6 +608,7 @@ public class PlayerNpcTachi {
                             .maxCooldown (120)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canThrowEnderPearl)
                                             .withinDistance(7.0D, 48.0D)
                                             .animationBehavior(AVAnimations.CASTING_ONE_HAND_TOP, 0.0F)
@@ -566,22 +621,27 @@ public class PlayerNpcTachi {
                             .weight(40.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.SWORD_DUAL_AUTO1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(Animations.SWORD_DUAL_AUTO2, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                             .withinDistance(0.0D, 3.0D)
                                                                             .animationBehavior(AVAnimations.DUAL_SWORD_AUTO3, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 3.0D)
                                                                                             .animationBehavior(AVAnimations.DUAL_SWORD_AUTO4, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                             .withinDistance(0.0D, 3.0D)
                                                                                                             .animationBehavior(AVAnimations.DUAL_SWORD_AUTO5, 0.0F)
                                                                                             )
@@ -597,18 +657,22 @@ public class PlayerNpcTachi {
                             .maxCooldown (100)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.DAGGER_DUAL_DASH, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                             .withinDistance(0.0D, 3.0D)
                                                             .animationBehavior(Animations.LONGSWORD_AUTO2, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                             .withinDistance(0.0D, 3.0D)
                                                                             .animationBehavior(AVAnimations.DUAL_DANCING_EDGE, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 3.0D)
                                                                                             .animationBehavior(AVAnimations.DUAL_SWORD_DANCING_EDGE, 0.0F)
                                                                             )
@@ -623,16 +687,19 @@ public class PlayerNpcTachi {
                             .maxCooldown (100)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.SWORD_DUAL_DASH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.SWORD_DUAL_AIR_SLASH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.DANCING_EDGE, 0.0F)
                             )
@@ -644,6 +711,7 @@ public class PlayerNpcTachi {
                             .maxCooldown(40)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .custom(CombatCommon::canThrowEnderPearl)
                                             .animationBehavior(AVAnimations.CASTING_ONE_HAND_TOP, 0.0F)
@@ -657,39 +725,43 @@ public class PlayerNpcTachi {
                             .maxCooldown (100)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_1, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_2, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_3, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_4, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .canInterruptParent(true)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_C, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .canInterruptParent(true)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_RUSH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .canInterruptParent(true)
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(AVAnimations.KICK_H, 0.0F)
                             )
@@ -700,6 +772,7 @@ public class PlayerNpcTachi {
                             .weight(30.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .custom(CombatCommon::canPerformGuarding)
                                             .guard(40)
@@ -711,11 +784,13 @@ public class PlayerNpcTachi {
                             .weight(10.0D)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 3.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
                             )
@@ -727,6 +802,7 @@ public class PlayerNpcTachi {
                             .maxCooldown(160)
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canJump)
                                             .withinDistance(5.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_JUMP, 0.0F)
