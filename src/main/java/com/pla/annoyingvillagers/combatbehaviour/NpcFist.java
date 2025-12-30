@@ -25,6 +25,7 @@ public class NpcFist {
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
+                                            .custom(CombatCommon::canAttackWhileNotHealing)
                                             .custom(CombatCommon::canEscape)
                                             .withinDistance(8.0D, 48.0D)
                                             .guard(40)

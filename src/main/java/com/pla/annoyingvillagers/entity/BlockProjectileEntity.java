@@ -8,7 +8,7 @@ import com.pla.annoyingvillagers.blockentity.DarkObUpBlockEntity;
 import com.pla.annoyingvillagers.blockentity.ShadowObsidianBlockEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.util.ObsidianWeaponUtil;
+import com.pla.annoyingvillagers.util.HerobrineUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -102,7 +102,7 @@ public class BlockProjectileEntity extends ThrowableProjectile {
         if (this.notReadyForShoot) return;
         Entity target = result.getEntity();
         final UUID ownerId = this.playerUUID;
-        final boolean isHerobrine = ObsidianWeaponUtil.isHerobrineFaction(target);
+        final boolean isHerobrine = HerobrineUtil.isHerobrineFaction(target);
 
         boolean blockDamage =
                 (ownerId == null && isHerobrine)

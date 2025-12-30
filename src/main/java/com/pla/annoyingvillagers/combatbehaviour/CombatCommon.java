@@ -67,6 +67,8 @@ public class CombatCommon {
             } else if (entity instanceof PlayerNpcEntity playerNpcEntity
                     && new Random().nextDouble() <= playerNpcEntity.getPlaceBlockToParryChance()) {
                 return true;
+            } else {
+                return true;
             }
         }
         return false;
@@ -355,7 +357,7 @@ public class CombatCommon {
         }
     }
 
-    private static java.util.function.BiFunction<Integer, Integer, int[]> getIntegerIntegerBiFunction(Entity anchor, int rot) {
+    static java.util.function.BiFunction<Integer, Integer, int[]> getIntegerIntegerBiFunction(Entity anchor, int rot) {
         Direction facing = anchor.getDirection();
 
         int fx = facing.getStepX();

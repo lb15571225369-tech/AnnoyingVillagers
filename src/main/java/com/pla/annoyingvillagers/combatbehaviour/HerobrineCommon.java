@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.combatbehaviour;
 
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.entity.*;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.item.EnderAegisItem;
@@ -9,11 +10,13 @@ import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.SnakeBladeHit;
 import com.pla.annoyingvillagers.util.TeamUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
@@ -23,6 +26,9 @@ import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.BiFunction;
+
+import static com.pla.annoyingvillagers.combatbehaviour.CombatCommon.getIntegerIntegerBiFunction;
 
 public class HerobrineCommon {
     public static boolean canJump(MobPatch<?> mobpatch) {
@@ -46,10 +52,6 @@ public class HerobrineCommon {
             return herobrineMob.getState() == 0;
         }
         return false;
-    }
-
-    public static boolean needTargetNearby(MobPatch<?> mobpatch) {
-
     }
 
     public static boolean canPlaySecondFormAnimation(MobPatch<?> mobpatch) {
@@ -225,5 +227,52 @@ public class HerobrineCommon {
         if (entity instanceof HerobrineMob herobrineMob) {
             herobrineMob.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 60, 1));
         }
+    }
+
+    public static void performEscapeRunAwayWithLowClone(MobPatch<?> mobpatch) {
+        final Mob mob = mobpatch.getOriginal();
+        if (!(mob.level() instanceof ServerLevel serverLevel)) return;
+        CombatCommon.performEscapeRunAway(mobpatch);
+        new DelayedTask(1) {
+            @Override public void run() {
+                mobpatch.playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F);
+                if (!mob.isAlive()) return;
+
+                mobpatch.playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_INWARD, 0.0F);
+
+                final LivingEntity target = mob.getTarget();
+                final Direction dir = (target != null)
+                        ? Direction.getNearest(target.getX() - mob.getX(), 0.0D, target.getZ() - mob.getZ())
+                        : mob.getDirection();
+
+                final Random random = new Random();
+                final int dist = 1 + random.nextInt(3);
+
+                final int rot = random.nextInt(4);
+                final BiFunction<Integer, Integer, int[]> toWorld = getIntegerIntegerBiFunction(mob, rot);
+                final int lateral = random.nextInt(3) - 1;
+                final int[] dxz = toWorld.apply(lateral, 0);
+
+                BlockPos baseXZ = mob.blockPosition().relative(dir, dist).offset(dxz[0], 0, dxz[1]);
+                int surfaceY = serverLevel.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, baseXZ).getY();
+                BlockPos spawnPos = new BlockPos(baseXZ.getX(), surfaceY, baseXZ.getZ());
+
+                LowShadowHerobrineCloneEntity clone =
+                        new LowShadowHerobrineCloneEntity(AnnoyingVillagersModEntities.LOW_SHADOW_HEROBRINE_CLONE.get(), serverLevel);
+
+                float yaw = dir.toYRot();
+                clone.moveTo(spawnPos.getX() + 0.5D, spawnPos.getY(), spawnPos.getZ() + 0.5D, yaw, 0.0F);
+                clone.setRenderPortal(false);
+
+                clone.setForEscaping(true);
+                clone.setNoAi(true);
+                if (mob instanceof HerobrineMob herobrineMob) {
+                    clone.setPossessedByEntity(herobrineMob);
+                    clone.setPossessedByUuid(herobrineMob.getUUID());
+                }
+
+                serverLevel.addFreshEntity(clone);
+            }
+        };
     }
 }

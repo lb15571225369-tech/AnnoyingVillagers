@@ -1,9 +1,9 @@
 package com.pla.annoyingvillagers.entity;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
@@ -15,6 +15,7 @@ import com.pla.annoyingvillagers.util.CombatBehaviour;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
+import com.pla.annoyingvillagers.util.HerobrineUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -115,7 +116,6 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
         super(type, level);
         this.setMaxUpStep(3.0F);
         this.xpReward = 50;
-        this.setNoAi(false);
         this.setPersistenceRequired();
         this.setCustomNameVisible(false);
     }
@@ -155,75 +155,7 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
                     && !damageSource.is(DamageTypes.ON_FIRE)) {
                 if (this.level() instanceof ServerLevel serverLevel) {
                     serverLevel.playSound(null, this.blockPosition(), AnnoyingVillagersModSounds.OBSIDIAN_PLACE.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
-                    Entity entity = this;
-                    try {
-                        Objects.requireNonNull(entity.getServer()).getCommands().getDispatcher().execute(
-                                "execute as @s at @s anchored eyes run setblock ^ ^-1 ^1 annoyingvillagers:obsidian",
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                        new DelayedTask(1) {
-                            @Override
-                            public void run() {
-                                try {
-                                    entity.getServer().getCommands().getDispatcher().execute(
-                                            "execute as @s at @s anchored eyes run setblock ^ ^ ^1 annoyingvillagers:obsidian",
-                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                } catch (CommandSyntaxException ignored) {
-                                }
-                                new DelayedTask(1) {
-                                    @Override
-                                    public void run() {
-                                        try {
-                                            entity.getServer().getCommands().getDispatcher().execute(
-                                                    "execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:obsidian",
-                                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                        } catch (CommandSyntaxException ignored) {
-                                        }
-                                        new DelayedTask(1) {
-                                            public void run() {
-                                                try {
-                                                    entity.getServer().getCommands().getDispatcher().execute(
-                                                            "execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:obsidian",
-                                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                } catch (CommandSyntaxException ignored) {
-                                                }
-                                                new DelayedTask(1) {
-                                                    public void run() {
-                                                        try {
-                                                            entity.getServer().getCommands().getDispatcher().execute(
-                                                                    "execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:obsidian",
-                                                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                        } catch (CommandSyntaxException ignored) {
-                                                        }
-                                                        new DelayedTask(1) {
-                                                            public void run() {
-                                                                try {
-                                                                    entity.getServer().getCommands().getDispatcher().execute(
-                                                                            "execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:obsidian",
-                                                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                                } catch (CommandSyntaxException ignored) {
-                                                                }
-                                                                new DelayedTask(1) {
-                                                                    public void run() {
-                                                                        try {
-                                                                            entity.getServer().getCommands().getDispatcher().execute(
-                                                                                    "execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:obsidian",
-                                                                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                                        } catch (CommandSyntaxException ignored) {
-                                                                        }
-                                                                    }
-                                                                };
-                                                            }
-                                                        };
-                                                    }
-                                                };
-                                            }
-                                        };
-                                    }
-                                };
-                            }
-                        };
-                    } catch (CommandSyntaxException ignored) {
-                    }
+                    HerobrineUtil.spawnObsidianEyeLineStaggered(serverLevel, this, AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get().defaultBlockState(), 1);
                 }
             }
         }
@@ -238,6 +170,7 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
             protectEntity = null;
             protectUUID = null;
             autoKill = true;
+            healing = false;
             this.kill();
             return false;
         } else {

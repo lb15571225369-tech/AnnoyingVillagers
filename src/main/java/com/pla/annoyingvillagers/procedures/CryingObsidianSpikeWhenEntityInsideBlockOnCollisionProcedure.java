@@ -5,7 +5,7 @@ import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.block.CryingObsidianSpikeBlock;
 import com.pla.annoyingvillagers.blockentity.CryingObsidianSpikeBlockEntity;
 import com.pla.annoyingvillagers.task.DelayedTask;
-import com.pla.annoyingvillagers.util.ObsidianWeaponUtil;
+import com.pla.annoyingvillagers.util.HerobrineUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -43,7 +43,7 @@ public class CryingObsidianSpikeWhenEntityInsideBlockOnCollisionProcedure {
                             && state.hasProperty(CryingObsidianSpikeBlock.FROM_PLAYER)
                             && state.getValue(CryingObsidianSpikeBlock.FROM_PLAYER);
 
-            if (!fromPlayer && ObsidianWeaponUtil.isHerobrineFaction(entity)) {
+            if (!fromPlayer && HerobrineUtil.isHerobrineFaction(entity)) {
                 return;
             }
 

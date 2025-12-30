@@ -206,6 +206,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> HEROBRINE_SACRIFICING;
     public static AnimationManager.AnimationAccessor<StaticAnimation> HEROBRINE_ASSISTANCE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> HEROBRINE_STAGE_CHANGE;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> LOW_CLONE_ESCAPE;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_AEGIS_BULL_CHARGE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> SNAKE_BLADE;
     public static AnimationManager.AnimationAccessor<ActionAnimation> MOB_SNAKE_BLADE;
@@ -229,11 +230,10 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> YELLOW_NAPOLEON_AUSTERLITZ_SHOOT;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> MOB_RAVANGER_CHARGE;
     public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> ENDER_AEGIS_NAPOLEON_RELOAD_1;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> CASTING_ONE_HAND_TOP;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> CASTING_ONE_HAND_INWARD;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> CASTING_ONE_HAND_BUFF;
+    public static AnimationManager.AnimationAccessor<ActionAnimation> CASTING_ONE_HAND_TOP;
+    public static AnimationManager.AnimationAccessor<ActionAnimation> CASTING_ONE_HAND_INWARD;
+    public static AnimationManager.AnimationAccessor<ActionAnimation> CASTING_ONE_HAND_BUFF;
     public static AnimationManager.AnimationAccessor<StaticAnimation> CHANTING_ONE_HAND_FRONT;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> LOW_CLONE_CLASH;
     public static AnimationManager.AnimationAccessor<StaticAnimation> VALOUR_HOLD_GREATSWORD;
     public static AnimationManager.AnimationAccessor<MovementAnimation> VALOUR_WALK_GREATSWORD;
     public static AnimationManager.AnimationAccessor<MovementAnimation> VALOUR_RUN_GREATSWORD;
@@ -267,6 +267,8 @@ public class AVAnimations {
         AVAnimations.HEROBRINE_ASSISTANCE = builder.nextAccessor("biped/other/herobrine_assistance",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
         AVAnimations.HEROBRINE_STAGE_CHANGE = builder.nextAccessor("biped/other/herobrine_stage_change",
+                (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
+        AVAnimations.LOW_CLONE_ESCAPE = builder.nextAccessor("biped/other/low_clone_escape",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
         AVAnimations.PORTAL_SUMMON = builder.nextAccessor("biped/other/portal_summon",
                 (accessor) -> new StaticAnimation(false, accessor, humanoidarmature));
@@ -1350,14 +1352,12 @@ public class AVAnimations {
                                 }, Side.SERVER)
                         }));
         AVAnimations.CASTING_ONE_HAND_TOP = builder.nextAccessor("biped/other/casting_one_hand_top",
-                (accessor) -> new StaticAnimation(false, accessor, humanoidarmature));
+                (accessor) -> new ActionAnimation(0.0F, accessor, humanoidarmature));
         AVAnimations.CASTING_ONE_HAND_INWARD = builder.nextAccessor("biped/other/casting_one_hand_inward",
-                (accessor) -> new StaticAnimation(false, accessor, humanoidarmature));
+                (accessor) -> new ActionAnimation(0.0F, accessor, humanoidarmature));
         AVAnimations.CASTING_ONE_HAND_BUFF = builder.nextAccessor("biped/other/casting_one_hand_buff",
-                (accessor) -> new StaticAnimation(false, accessor, humanoidarmature));
+                (accessor) -> new ActionAnimation(0.0F, accessor, humanoidarmature));
         AVAnimations.CHANTING_ONE_HAND_FRONT = builder.nextAccessor("biped/other/chanting_one_hand_front",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
-        AVAnimations.LOW_CLONE_CLASH = builder.nextAccessor("biped/other/low_clone_clash",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
         AVAnimations.VALOUR_HOLD_GREATSWORD = builder.nextAccessor("biped/living/valour_hold_greatsword",
                 (accessor) -> new StaticAnimation(true, accessor, Armatures.BIPED));

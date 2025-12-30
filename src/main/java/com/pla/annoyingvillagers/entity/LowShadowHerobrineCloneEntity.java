@@ -4,6 +4,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
@@ -15,6 +16,7 @@ import com.pla.annoyingvillagers.util.CombatBehaviour;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
+import com.pla.annoyingvillagers.util.HerobrineUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -78,6 +80,7 @@ public class LowShadowHerobrineCloneEntity extends Monster {
     private boolean bound = false;
     private boolean sacrificing = false;
     private boolean healing = false;
+    private boolean forEscaping = false;
     private final LivingEntityPatch<?> livingentitypatch = EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
 
     public boolean isHealing() {
@@ -86,6 +89,10 @@ public class LowShadowHerobrineCloneEntity extends Monster {
 
     public boolean isSacrificing() {
         return sacrificing;
+    }
+
+    public void setForEscaping(boolean forEscaping) {
+        this.forEscaping = forEscaping;
     }
 
     public HerobrineMob getPossessedByEntity() {
@@ -276,81 +283,14 @@ public class LowShadowHerobrineCloneEntity extends Monster {
                 }
             }
         } else {
-            if (Math.random() <= 0.5D&&
-                    !damageSource.is(DamageTypes.IN_WALL)
+            if (Math.random() <= 0.5D
+                    && !damageSource.is(DamageTypes.IN_WALL)
                     && !damageSource.is(DamageTypes.IN_FIRE)
-                    && !damageSource.is(DamageTypes.ON_FIRE)) {
+                    && !damageSource.is(DamageTypes.ON_FIRE)
+                    && !this.forEscaping) {
                 if (this.level() instanceof ServerLevel serverLevel) {
                     serverLevel.playSound(null, this.blockPosition(), AnnoyingVillagersModSounds.OBSIDIAN_PLACE.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
-                    Entity entity = this;
-                    try {
-                        Objects.requireNonNull(entity.getServer()).getCommands().getDispatcher().execute(
-                                "execute as @s at @s anchored eyes run setblock ^ ^-1 ^1 annoyingvillagers:shadow_obsidian",
-                                entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                        new DelayedTask(1) {
-                            @Override
-                            public void run() {
-                                try {
-                                    entity.getServer().getCommands().getDispatcher().execute(
-                                            "execute as @s at @s anchored eyes run setblock ^ ^ ^1 annoyingvillagers:shadow_obsidian",
-                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                } catch (CommandSyntaxException ignored) {
-                                }
-                                new DelayedTask(1) {
-                                    @Override
-                                    public void run() {
-                                        try {
-                                            entity.getServer().getCommands().getDispatcher().execute(
-                                                    "execute as @s at @s anchored eyes run setblock ^ ^ ^2 annoyingvillagers:shadow_obsidian",
-                                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                        } catch (CommandSyntaxException ignored) {
-                                        }
-                                        new DelayedTask(1) {
-                                            public void run() {
-                                                try {
-                                                    entity.getServer().getCommands().getDispatcher().execute(
-                                                            "execute as @s at @s anchored eyes run setblock ^ ^ ^3 annoyingvillagers:shadow_obsidian",
-                                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                } catch (CommandSyntaxException ignored) {
-                                                }
-                                                new DelayedTask(1) {
-                                                    public void run() {
-                                                        try {
-                                                            entity.getServer().getCommands().getDispatcher().execute(
-                                                                    "execute as @s at @s anchored eyes run setblock ^ ^ ^4 annoyingvillagers:shadow_obsidian",
-                                                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                        } catch (CommandSyntaxException ignored) {
-                                                        }
-                                                        new DelayedTask(1) {
-                                                            public void run() {
-                                                                try {
-                                                                    entity.getServer().getCommands().getDispatcher().execute(
-                                                                            "execute as @s at @s anchored eyes run setblock ^ ^ ^5 annoyingvillagers:shadow_obsidian",
-                                                                            entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                                } catch (CommandSyntaxException ignored) {
-                                                                }
-                                                                new DelayedTask(1) {
-                                                                    public void run() {
-                                                                        try {
-                                                                            entity.getServer().getCommands().getDispatcher().execute(
-                                                                                    "execute as @s at @s anchored eyes run setblock ^ ^ ^6 annoyingvillagers:shadow_obsidian",
-                                                                                    entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                                                                        } catch (CommandSyntaxException ignored) {
-                                                                        }
-                                                                    }
-                                                                };
-                                                            }
-                                                        };
-                                                    }
-                                                };
-                                            }
-                                        };
-                                    }
-                                };
-                            }
-                        };
-                    } catch (CommandSyntaxException ignored) {
-                    }
+                    HerobrineUtil.spawnObsidianEyeLineStaggered(serverLevel, this, AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().defaultBlockState(), 1);
                 }
             }
         }
@@ -361,10 +301,13 @@ public class LowShadowHerobrineCloneEntity extends Monster {
         if (damageSource.is(DamageTypes.WITHER_SKULL)) return false;
         if (damageSource.is(DamageTypes.DRAGON_BREATH)) return false;
         float health = this.getHealth();
-        if (health - f <= 5.0F && (this.healing || this.sacrificing)) {
+        if (health - f <= 5.0F && (this.healing || this.sacrificing || this.forEscaping)) {
             protectEntity = null;
             protectUUID = null;
             autoKill = true;
+            this.healing = false;
+            this.sacrificing = false;
+            this.forEscaping = false;
             this.kill();
             return false;
         } else {
@@ -468,6 +411,17 @@ public class LowShadowHerobrineCloneEntity extends Monster {
                     }
                     this.initialSpawn = false;
                 }
+                if (this.forEscaping && this.level() instanceof ServerLevel serverLevel) {
+                    this.setNoAi(false);
+                    Entity entity = this;
+                    new DelayedTask(10) {
+                        @Override
+                        public void run() {
+                            HerobrineUtil.spawnObsidian3x3x3AtBody(serverLevel, entity, AnnoyingVillagersModBlocks.CRYING_OBSIDIAN_BLOCK.get().defaultBlockState());
+                            entity.discard();
+                        }
+                    };
+                }
             }
 
             if (protectEntity == null && protectUUID != null) {
@@ -493,7 +447,7 @@ public class LowShadowHerobrineCloneEntity extends Monster {
                     possessedByEntity = null;
                 }
             }
-            if (!bound && possessedByEntity != null
+            if (!forEscaping && !bound && possessedByEntity != null
                     && possessedByEntity.isAlive()
                     && (!possessedByEntity.isSacrificing() || !possessedByEntity.isHealing())
                     && possessedByEntity.getSacrificingAnimationCooldown() == 0) {
@@ -629,6 +583,18 @@ public class LowShadowHerobrineCloneEntity extends Monster {
                     this.kill();
                 }
             }
+            if (this.forEscaping) {
+                if (this.getHealth() <= 2) {
+                    this.forEscaping = false;
+                    autoKill = true;
+                    this.kill();
+                }
+
+                this.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 1, 3, false, false));
+                if (this.livingentitypatch != null) {
+                    this.livingentitypatch.playAnimationSynchronized(AVAnimations.LOW_CLONE_ESCAPE, 0.0F);
+                }
+            }
         }
     }
 
@@ -727,6 +693,7 @@ public class LowShadowHerobrineCloneEntity extends Monster {
         bound = pCompound.getBoolean("Bound");
         sacrificing = pCompound.getBoolean("Sacrificing");
         healing = pCompound.getBoolean("Healing");
+        forEscaping = pCompound.getBoolean("ForEscaping");
     }
 
     @Override
@@ -745,6 +712,7 @@ public class LowShadowHerobrineCloneEntity extends Monster {
         pCompound.putBoolean("Bound", bound);
         pCompound.putBoolean("Sacrificing", sacrificing);
         pCompound.putBoolean("Healing", healing);
+        pCompound.putBoolean("ForEscaping", forEscaping);
     }
 
     public static Builder createAttributes() {

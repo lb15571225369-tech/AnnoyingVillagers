@@ -3,26 +3,19 @@ package com.pla.annoyingvillagers.procedures;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.block.DarkObUpBlock;
 import com.pla.annoyingvillagers.blockentity.DarkObUpBlockEntity;
-import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
-import com.pla.annoyingvillagers.util.ObsidianWeaponUtil;
+import com.pla.annoyingvillagers.util.HerobrineUtil;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
-
-import java.util.Random;
 
 public class DarkObSsOnEntityInsideProcedure {
 
@@ -43,7 +36,7 @@ public class DarkObSsOnEntityInsideProcedure {
                             && state.hasProperty(DarkObUpBlock.FROM_PLAYER)
                             && state.getValue(DarkObUpBlock.FROM_PLAYER);
 
-            if (!fromPlayer && ObsidianWeaponUtil.isHerobrineFaction(entity)) {
+            if (!fromPlayer && HerobrineUtil.isHerobrineFaction(entity)) {
                 return;
             }
 
