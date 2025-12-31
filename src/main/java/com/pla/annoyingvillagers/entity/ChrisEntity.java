@@ -109,6 +109,10 @@ public class ChrisEntity extends PathfinderMobInventory {
     }
 
     public boolean hurt(@NotNull DamageSource damageSource, float f) {
+        if (this.getUnableToDamageCooldown() > 0) {
+            return false;
+        }
+        
         if (this.getEnderPearlCooldown() == 0) {
             CombatBehaviour.throwEnderPearl(this, 180.0F);
             Entity entity = this;

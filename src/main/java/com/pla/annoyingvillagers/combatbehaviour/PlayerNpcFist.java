@@ -21,7 +21,7 @@ public class PlayerNpcFist {
                                             .custom(CombatCommon::canEscape)
                                             .withinDistance(0.0D, 8.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
-                                            .addExBehavior(CombatCommon::performEscapeRunAwayWithRandomBlocks)
+                                            .addExBehavior(CombatCommon::performEscapeRunAway)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()

@@ -135,6 +135,9 @@ public class AlexEntity extends PathfinderMobInventory {
     }
 
     public boolean hurt(@NotNull DamageSource damageSource, float f) {
+        if (this.getUnableToDamageCooldown() > 0) {
+            return false;
+        }
         if (this.getEnderPearlCooldown() == 0) {
             if (Math.random() <= 0.2D && !this.level().isClientSide() && this.getServer() != null) {
                 this.getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getDisplayName().getString() + "> Are you being serious ?"), false);

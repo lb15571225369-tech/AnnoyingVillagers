@@ -40,6 +40,15 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
     private Entity blockDamage = null;
     private double placeBlockToParryChance;
     private boolean swapBackToBow = false;
+    private int unableToDamageCooldown = 0;
+
+    public void setUnableToDamageCooldown(int unableToDamageCooldown) {
+        this.unableToDamageCooldown = unableToDamageCooldown;
+    }
+
+    public int getUnableToDamageCooldown() {
+        return unableToDamageCooldown;
+    }
 
     public Entity getBlockDamage() {
         return blockDamage;
@@ -371,6 +380,7 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
         if (gapCooldown > 0) gapCooldown--;
         if (enderPearlCooldown > 0) enderPearlCooldown--;
         if (swapToBowCooldown > 0) swapToBowCooldown--;
+        if (unableToDamageCooldown > 0) unableToDamageCooldown--;
 
         if ((tickCount + getId()) % 20 == 0) {
             if (!isInventoryFull()) {

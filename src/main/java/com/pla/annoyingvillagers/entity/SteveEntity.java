@@ -125,6 +125,10 @@ public class SteveEntity extends PathfinderMobInventory {
     }
 
     public boolean hurt(DamageSource damageSource, float f) {
+        if (this.getUnableToDamageCooldown() > 0) {
+            return false;
+        }
+
         if (damageSource.getEntity() != null && this.getEnderPearlCooldown() == 0) {
             CombatBehaviour.throwEnderPearl(this, (float) new Random().nextDouble(90.0D, 180.0D));
             LivingEntity entity = this;

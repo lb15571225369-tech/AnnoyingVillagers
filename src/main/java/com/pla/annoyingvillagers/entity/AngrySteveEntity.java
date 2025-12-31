@@ -88,6 +88,10 @@ public class AngrySteveEntity extends PathfinderMobInventory {
     }
 
     public boolean hurt(DamageSource damageSource, float f) {
+        if (this.getUnableToDamageCooldown() > 0) {
+            return false;
+        }
+
         if (damageSource.getEntity() != null && this.getEnderPearlCooldown() == 0) {
             CombatBehaviour.throwEnderPearl(this, (float) new Random().nextDouble(90.0D, 180.0D));
             LivingEntity entity = this;
@@ -294,8 +298,9 @@ public class AngrySteveEntity extends PathfinderMobInventory {
                 SoundSource.NEUTRAL,
                 1.0F, 1.0F
         );
+        this.setUnableToDamageCooldown(100);
         if (this.getLivingEntityPatch() != null) {
-            this.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.GUARD_BREAK_ATTACK, 0.0F);
+            this.getLivingEntityPatch().applyStun(StunType.FALL, 4.0F);
         }
     }
 

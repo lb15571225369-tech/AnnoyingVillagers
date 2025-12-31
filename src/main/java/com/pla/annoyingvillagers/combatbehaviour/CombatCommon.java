@@ -268,15 +268,6 @@ public class CombatCommon {
         CombatBehaviour.throwEnderPearl(entity, 0.0F);
     }
 
-    public static void performEscapeRunAwayWithRandomBlocks(MobPatch<?> mobpatch) {
-        performEscapeRunAway(mobpatch);
-        new DelayedTask(1) {
-            @Override public void run() {
-                placeRandomFrontWall(mobpatch);
-            }
-        };
-    }
-
     public static void placeRandomFrontWall(MobPatch<?> mobpatch) {
         final Mob mob = mobpatch.getOriginal();
         if (!(mob.level() instanceof ServerLevel serverLevel)) return;
@@ -441,6 +432,14 @@ public class CombatCommon {
                 mobpatch.playAnimationSynchronized(Animations.BIPED_JUMP, 0.0F);
             }
         };
+
+        if (mob instanceof SteveEntity || mob instanceof AngrySteveEntity) {
+            new DelayedTask(1) {
+                @Override public void run() {
+                    placeRandomFrontWall(mobpatch);
+                }
+            };
+        }
     }
 
     public static void performEatingAnimation(MobPatch<?> mobpatch) {
