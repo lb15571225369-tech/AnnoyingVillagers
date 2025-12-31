@@ -144,7 +144,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> KNIFE_IDLE;
     public static AnimationManager.AnimationAccessor<MovementAnimation> KNIFE_RUN;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> KNIFE_ATTACK;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> KNIFE_CHECK;
+    public static AnimationManager.AnimationAccessor<ActionAnimation> KNIFE_CHECK;
     public static AnimationManager.AnimationAccessor<StaticAnimation> CARRY;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> FIST_LEFT;
     public static AnimationManager.AnimationAccessor<LongHitAnimation> KNOCKDOWN_FORWARD;
@@ -599,7 +599,7 @@ public class AVAnimations {
                         .addState(EntityState.LOCKON_ROTATE, false)
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
         AVAnimations.KNIFE_CHECK = builder.nextAccessor("biped/other/knife_check",
-                (accessor) -> new StaticAnimation(false, accessor, humanoidarmature));
+                (accessor) -> new ActionAnimation(0.0F, accessor, humanoidarmature));
         AVAnimations.CARRY = builder.nextAccessor("biped/other/carry",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
         AVAnimations.FIST_LEFT = builder.nextAccessor("biped/combat/fist_left",

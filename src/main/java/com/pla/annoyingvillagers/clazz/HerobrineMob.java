@@ -45,6 +45,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
@@ -54,10 +55,14 @@ import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import yesman.epicfight.gameasset.EpicFightSounds;
+import yesman.epicfight.particle.EpicFightParticles;
+import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.damagesource.StunType;
@@ -411,60 +416,92 @@ public class HerobrineMob extends Monster {
 
     public boolean hurt(@NotNull DamageSource damageSource, float f) {
         if (this.getPersistentData().getBoolean(NBT_RISING) || this.getPersistentData().getBoolean(NBT_SINKING) || this.sacrificing) {
-            if (!this.level().isClientSide()
+            if (this.level() instanceof ServerLevel serverLevel
                     && !damageSource.is(DamageTypes.IN_WALL)
                     && !damageSource.is(DamageTypes.IN_FIRE)
                     && !damageSource.is(DamageTypes.ON_FIRE)) {
-                try {
-                    Objects.requireNonNull(this.getServer()).getCommands().getDispatcher().execute(
-                            "playsound epicfight:entity.hit.clash neutral @p",
-                            this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                    this.getServer().getCommands().getDispatcher().execute(
-                            "execute at @s run particle epicfight:hit_blade ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
-                            this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException ignored) {
-                }
+                this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
+                EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO,
+                        this, damageSource.getEntity());
             }
             return false;
         }
-        if (this.level() instanceof ServerLevel serverLevel && !damageSource.is(DamageTypes.FELL_OUT_OF_WORLD)
-                && (this instanceof AegisHerobrineEntity || this instanceof SledgehammerHerobrineEntity
-                || this instanceof SwordsmanHerobrineEntity || this instanceof ReaperHerobrineEntity
-                || this instanceof NullEntity || this instanceof ShadowHerobrineEntity)) {
-            float health = this.getHealth();
-            if (health - f <= 50.0F) {
-                if (this.getState() == 0 || this.getState() == 1) {
-                    this.setHealth(1.0F);
-                    if (this.sacrificingAnimationCooldown == 0) {
-                        this.sacrificingAnimationCooldown = 80;
-                        this.setNoAi(true);
-                        this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
-                        this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
-                        this.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 80, 2));
-                        if (this.gregUUID != null) {
-                            Entity entity = serverLevel.getEntity(this.gregUUID);
-                            if (entity instanceof HerobrineGregEntity herobrineGregEntity && entity.isAlive()) {
-                                herobrineGregEntity.playSound(AnnoyingVillagersModSounds.GREG_REQUESTING_ASSISTANCE.get(), 1.0F, 1.0F);
-                                Objects.requireNonNull(herobrineGregEntity.level().getServer()).getPlayerList().broadcastSystemMessage(Component.literal("<"
-                                        + Component.translatable("entity.annoyingvillagers.herobrine_greg").getString() + "> "
-                                        + Component.translatable("subtitles.herobrine_request").getString()), false);
-                                herobrineGregEntity.setNoAi(true);
-                            } else {
-                                this.playSound(AnnoyingVillagersModSounds.SELF_REQUESTING_ASSISTANCE.get(), 1.0F, 1.0F);
-                                Objects.requireNonNull(this.level().getServer()).getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getChatName() + "> "
-                                        + Component.translatable("subtitles.herobrine_request").getString()), false);
-                            }
-                        } else {
-                            this.playSound(AnnoyingVillagersModSounds.SELF_REQUESTING_ASSISTANCE.get(), 1.0F, 1.0F);
-                            Objects.requireNonNull(this.level().getServer()).getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getChatName() + "> "
-                                    + Component.translatable("subtitles.herobrine_request").getString()), false);
-                        }
-                    }
-                    return false;
-                }
+        return super.hurt(damageSource, f);
+    }
+
+    private void triggerSecondForm(ServerLevel serverLevel) {
+        if (this.sacrificingAnimationCooldown != 0) return;
+
+        this.sacrificingAnimationCooldown = 80;
+        this.setNoAi(true);
+        this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+        this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+        this.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 80, 2));
+
+        if (this.gregUUID != null) {
+            Entity entity = serverLevel.getEntity(this.gregUUID);
+            if (entity instanceof HerobrineGregEntity herobrineGregEntity && entity.isAlive()) {
+                herobrineGregEntity.playSound(AnnoyingVillagersModSounds.GREG_REQUESTING_ASSISTANCE.get(), 1.0F, 1.0F);
+                Objects.requireNonNull(herobrineGregEntity.level().getServer()).getPlayerList().broadcastSystemMessage(
+                        Component.literal("<" + Component.translatable("entity.annoyingvillagers.herobrine_greg").getString() + "> "
+                                + Component.translatable("subtitles.herobrine_request").getString()), false);
+                herobrineGregEntity.setNoAi(true);
+                return;
             }
         }
-        return super.hurt(damageSource, f);
+
+        this.playSound(AnnoyingVillagersModSounds.SELF_REQUESTING_ASSISTANCE.get(), 1.0F, 1.0F);
+        Objects.requireNonNull(this.level().getServer()).getPlayerList().broadcastSystemMessage(
+                Component.literal("<" + this.getChatName() + "> " + Component.translatable("subtitles.herobrine_request").getString()),
+                false);
+    }
+
+    @Override
+    protected void actuallyHurt(@NotNull DamageSource pDamageSource, float pDamageAmount) {
+        if (pDamageSource.is(DamageTypes.FELL_OUT_OF_WORLD)) {
+            super.actuallyHurt(pDamageSource, pDamageAmount);
+            return;
+        }
+
+        if (this.isInvulnerableTo(pDamageSource)) {
+            return;
+        }
+
+        pDamageAmount = ForgeHooks.onLivingHurt(this, pDamageSource, pDamageAmount);
+        if (pDamageAmount <= 0.0F) {
+            return;
+        }
+
+        pDamageAmount = this.getDamageAfterArmorAbsorb(pDamageSource, pDamageAmount);
+        pDamageAmount = this.getDamageAfterMagicAbsorb(pDamageSource, pDamageAmount);
+
+        float f1 = Math.max(pDamageAmount - this.getAbsorptionAmount(), 0.0F);
+        float absorbed = pDamageAmount - f1;
+        if (absorbed > 0.0F) {
+            this.setAbsorptionAmount(this.getAbsorptionAmount() - absorbed);
+            if (this.getAbsorptionAmount() < 0.0F) this.setAbsorptionAmount(0.0F);
+        }
+        if (this.level() instanceof ServerLevel serverLevel
+                && this.getState() < 2
+                && (this instanceof AegisHerobrineEntity
+                || this instanceof SledgehammerHerobrineEntity
+                || this instanceof SwordsmanHerobrineEntity
+                || this instanceof ReaperHerobrineEntity
+                || this instanceof NullEntity
+                || this instanceof ShadowHerobrineEntity)
+                && (this.getHealth() - f1) <= 1.0F) {
+            this.setHealth(1.0F);
+            this.sacrificing = true;
+            this.triggerSecondForm(serverLevel);
+            return;
+        }
+        f1 = ForgeHooks.onLivingDamage(this, pDamageSource, f1);
+        if (f1 <= 0.0F) {
+            return;
+        }
+        this.getCombatTracker().recordDamage(pDamageSource, f1);
+        this.setHealth(this.getHealth() - f1);
+        this.gameEvent(GameEvent.ENTITY_DAMAGE);
     }
 
     @Override

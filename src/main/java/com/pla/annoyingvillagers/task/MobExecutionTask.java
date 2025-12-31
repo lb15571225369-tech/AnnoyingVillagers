@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.task;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;

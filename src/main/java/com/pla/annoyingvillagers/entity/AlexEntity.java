@@ -7,7 +7,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.spawnhandler.AlexData;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.*;
-import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
+import com.pla.annoyingvillagers.clazz.AVNpc;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -31,6 +31,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -40,7 +42,7 @@ import java.util.*;
 import java.util.function.Consumer;
 
 
-public class AlexEntity extends PathfinderMobInventory {
+public class AlexEntity extends AVNpc {
     private JevEntity jevToProtect;
     private UUID jevUUID;
     private boolean jevDeathMessageSent = false;
@@ -156,16 +158,47 @@ public class AlexEntity extends PathfinderMobInventory {
             }
             this.setEnderPearlCooldown();
         }
-        if (this.level() instanceof ServerLevel && !damageSource.is(DamageTypes.FELL_OUT_OF_WORLD)) {
-            float health = this.getHealth();
-            if (health - f <= 5.0F) {
-                if (this.state == 0 && !this.getOffhandItem().getItem().equals(Items.TOTEM_OF_UNDYING)) {
-                    this.setHealth(1.0F);
-                    return super.hurt(damageSource, 1.0F);
-                }
-            }
-        }
         return super.hurt(damageSource, f);
+    }
+
+    @Override
+    protected void actuallyHurt(@NotNull DamageSource pDamageSource, float pDamageAmount) {
+        if (pDamageSource.is(DamageTypes.FELL_OUT_OF_WORLD)) {
+            super.actuallyHurt(pDamageSource, pDamageAmount);
+            return;
+        }
+
+        if (this.isInvulnerableTo(pDamageSource)) {
+            return;
+        }
+
+        pDamageAmount = ForgeHooks.onLivingHurt(this, pDamageSource, pDamageAmount);
+        if (pDamageAmount <= 0.0F) {
+            return;
+        }
+
+        pDamageAmount = this.getDamageAfterArmorAbsorb(pDamageSource, pDamageAmount);
+        pDamageAmount = this.getDamageAfterMagicAbsorb(pDamageSource, pDamageAmount);
+
+        float f1 = Math.max(pDamageAmount - this.getAbsorptionAmount(), 0.0F);
+        float absorbed = pDamageAmount - f1;
+        if (absorbed > 0.0F) {
+            this.setAbsorptionAmount(this.getAbsorptionAmount() - absorbed);
+            if (this.getAbsorptionAmount() < 0.0F) this.setAbsorptionAmount(0.0F);
+        }
+        if (this.level() instanceof ServerLevel
+                && this.state == 0 && (this.getHealth() - f1) <= 1.0F
+                && !this.getOffhandItem().getItem().equals(Items.TOTEM_OF_UNDYING)) {
+            this.setHealth(1.0F);
+            return;
+        }
+        f1 = ForgeHooks.onLivingDamage(this, pDamageSource, f1);
+        if (f1 <= 0.0F) {
+            return;
+        }
+        this.getCombatTracker().recordDamage(pDamageSource, f1);
+        this.setHealth(this.getHealth() - f1);
+        this.gameEvent(GameEvent.ENTITY_DAMAGE);
     }
 
     public void die(@NotNull DamageSource damageSource) {

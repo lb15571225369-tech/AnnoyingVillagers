@@ -1,7 +1,7 @@
 package com.pla.annoyingvillagers.util;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
+import com.pla.annoyingvillagers.clazz.AVNpc;
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
 import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
 import com.pla.annoyingvillagers.entity.SteveEntity;
@@ -123,10 +123,10 @@ public class CombatBehaviour {
             playerNpcEntity.setHealing(false);
             playerNpcEntity.resetGapCooldown();
         }
-        if (entity instanceof PathfinderMobInventory pathfinderMobInventory) {
-            pathfinderMobInventory.setItemInHand(InteractionHand.MAIN_HAND, pathfinderMobInventory.getMainWeaponItem());
-            pathfinderMobInventory.setHealing(false);
-            pathfinderMobInventory.resetGapCooldown();
+        if (entity instanceof AVNpc AVNpc) {
+            AVNpc.setItemInHand(InteractionHand.MAIN_HAND, AVNpc.getMainWeaponItem());
+            AVNpc.setHealing(false);
+            AVNpc.resetGapCooldown();
         }
     }
 
@@ -220,7 +220,7 @@ public class CombatBehaviour {
             if (entity instanceof PlayerNpcEntity playerNpcEntity && playerNpcEntity.isHealing()) {
                 return;
             }
-            if (entity instanceof PathfinderMobInventory pathfinderMobInventory && pathfinderMobInventory.isHealing()) {
+            if (entity instanceof AVNpc AVNpc && AVNpc.isHealing()) {
                 return;
             }
             livingEntity.addEffect(
@@ -233,11 +233,11 @@ public class CombatBehaviour {
                     playerNpcEntity.setHealing(true);
                 }
             }
-            if (entity instanceof PathfinderMobInventory pathfinderMobInventory) {
-                if (pathfinderMobInventory.isHealing()) {
+            if (entity instanceof AVNpc AVNpc) {
+                if (AVNpc.isHealing()) {
                     return;
                 } else {
-                    pathfinderMobInventory.setHealing(true);
+                    AVNpc.setHealing(true);
                 }
             }
             new DelayedTask(20) {
@@ -309,11 +309,11 @@ public class CombatBehaviour {
                             if (entity instanceof PlayerNpcEntity playerNpcEntity) {
                                 livingEntity.setItemInHand(InteractionHand.MAIN_HAND, playerNpcEntity.getMainWeaponItem());
                             }
-                            if (entity instanceof PathfinderMobInventory pathfinderMobInventory && livingEntityPatch1 != null) {
-                                if (pathfinderMobInventory instanceof SteveEntity && CombatCommon.canSwitchWeapon((MobPatch<?>) livingEntityPatch1)) {
+                            if (entity instanceof AVNpc AVNpc && livingEntityPatch1 != null) {
+                                if (AVNpc instanceof SteveEntity && CombatCommon.canSwitchWeapon((MobPatch<?>) livingEntityPatch1)) {
                                     CombatCommon.switchWeapon((MobPatch<?>) livingEntityPatch1);
                                 } else {
-                                    livingEntity.setItemInHand(InteractionHand.MAIN_HAND, pathfinderMobInventory.getMainWeaponItem());
+                                    livingEntity.setItemInHand(InteractionHand.MAIN_HAND, AVNpc.getMainWeaponItem());
                                 }
                             }
 
@@ -332,8 +332,8 @@ public class CombatBehaviour {
                             if (entity instanceof PlayerNpcEntity playerNpcEntity) {
                                 playerNpcEntity.setHealing(false);
                             }
-                            if (entity instanceof PathfinderMobInventory pathfinderMobInventory) {
-                                pathfinderMobInventory.setHealing(false);
+                            if (entity instanceof AVNpc AVNpc) {
+                                AVNpc.setHealing(false);
                             }
                         }
                     };
@@ -349,7 +349,7 @@ public class CombatBehaviour {
             if (entity instanceof PlayerNpcEntity playerNpcEntity && playerNpcEntity.isHealing()) {
                 return;
             }
-            if (entity instanceof PathfinderMobInventory pathfinderMobInventory && pathfinderMobInventory.isHealing()) {
+            if (entity instanceof AVNpc AVNpc && AVNpc.isHealing()) {
                 return;
             }
             livingEntity.addEffect(
@@ -362,11 +362,11 @@ public class CombatBehaviour {
                     playerNpcEntity.setHealing(true);
                 }
             }
-            if (entity instanceof PathfinderMobInventory pathfinderMobInventory) {
-                if (pathfinderMobInventory.isHealing()) {
+            if (entity instanceof AVNpc AVNpc) {
+                if (AVNpc.isHealing()) {
                     return;
                 } else {
-                    pathfinderMobInventory.setHealing(true);
+                    AVNpc.setHealing(true);
                 }
             }
             new DelayedTask(20) {
@@ -438,11 +438,11 @@ public class CombatBehaviour {
                             if (entity instanceof PlayerNpcEntity playerNpcEntity) {
                                 livingEntity.setItemInHand(InteractionHand.MAIN_HAND, playerNpcEntity.getMainWeaponItem());
                             }
-                            if (entity instanceof PathfinderMobInventory pathfinderMobInventory && livingEntityPatch1 != null) {
-                                if (pathfinderMobInventory instanceof SteveEntity && CombatCommon.canSwitchWeapon((MobPatch<?>) livingEntityPatch1)) {
+                            if (entity instanceof AVNpc AVNpc && livingEntityPatch1 != null) {
+                                if (AVNpc instanceof SteveEntity && CombatCommon.canSwitchWeapon((MobPatch<?>) livingEntityPatch1)) {
                                     CombatCommon.switchWeapon((MobPatch<?>) livingEntityPatch1);
                                 } else {
-                                    livingEntity.setItemInHand(InteractionHand.MAIN_HAND, pathfinderMobInventory.getMainWeaponItem());
+                                    livingEntity.setItemInHand(InteractionHand.MAIN_HAND, AVNpc.getMainWeaponItem());
                                 }
                             }
 
@@ -457,8 +457,8 @@ public class CombatBehaviour {
                             if (entity instanceof PlayerNpcEntity playerNpcEntity) {
                                 playerNpcEntity.setHealing(false);
                             }
-                            if (entity instanceof PathfinderMobInventory pathfinderMobInventory) {
-                                pathfinderMobInventory.setHealing(false);
+                            if (entity instanceof AVNpc AVNpc) {
+                                AVNpc.setHealing(false);
                             }
                         }
                     };

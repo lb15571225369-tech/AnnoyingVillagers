@@ -3,7 +3,7 @@ package com.pla.annoyingvillagers.mixin;
 import com.pla.annoyingvillagers.animations.BowAttackAnimation;
 import com.pla.annoyingvillagers.animations.KickAttackAnimation;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
-import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
+import com.pla.annoyingvillagers.clazz.AVNpc;
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
 import com.pla.annoyingvillagers.entity.AegisHerobrineEntity;
 import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
@@ -89,14 +89,14 @@ public class MobClashBladeMixin {
                 && !defender.isPassenger()
                 && defender.level() instanceof ServerLevel) {
             // Projectile clashing
-            if (defender instanceof PathfinderMobInventory pathfinderMobInventory
-                    && pathfinderMobInventory.getBlockDamage() == null
-                    && new Random().nextDouble() <= pathfinderMobInventory.getPlaceBlockToParryChance()
-                    && (pathfinderMobInventory.getItemInHand(InteractionHand.MAIN_HAND).getItem()
-                    .equals(pathfinderMobInventory.getMainWeaponItem().getItem())
-                    || pathfinderMobInventory.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof BowItem)
-                    && !pathfinderMobInventory.isHealing()) {
-                pathfinderMobInventory.setBlockDamage(projectile);
+            if (defender instanceof AVNpc AVNpc
+                    && AVNpc.getBlockDamage() == null
+                    && new Random().nextDouble() <= AVNpc.getPlaceBlockToParryChance()
+                    && (AVNpc.getItemInHand(InteractionHand.MAIN_HAND).getItem()
+                    .equals(AVNpc.getMainWeaponItem().getItem())
+                    || AVNpc.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof BowItem)
+                    && !AVNpc.isHealing()) {
+                AVNpc.setBlockDamage(projectile);
                 CombatCommon.swapToBlock((MobPatch<?>) defenderLivingEntityPatch);
                 cir.setReturnValue(true);
                 return;
@@ -131,15 +131,16 @@ public class MobClashBladeMixin {
             boolean isDamageFromGunKnight = indirectEntity.getNamespace().equals("torchesbecomesunlight")
                     && (indirectEntity.getPath().equals("gun_knight_patriot") || indirectEntity.getPath().equals("turret"));
             boolean ignisFileBall = indirectEntity.getNamespace().equals("cataclysm")
-                    && (indirectEntity.getPath().equals("ignis_abyss_fireball") || indirectEntity.getPath().equals("ignis_fireball"));
+                    && (indirectEntity.getPath().equals("ignis_abyss_fireball") || indirectEntity.getPath().equals("ignis_fireball")
+                    || indirectEntity.getPath().equals("flame_jet") || indirectEntity.getPath().equals("flame_strike"));
             if (isDamageFromGunKnight || ignisFileBall || livingAttackEvent.getSource().is(DamageTypes.EXPLOSION)) {
-                if (defender instanceof PathfinderMobInventory pathfinderMobInventory
-                        && pathfinderMobInventory.getBlockDamage() == null
-                        && new Random().nextDouble() <= pathfinderMobInventory.getPlaceBlockToParryChance()
-                        && (pathfinderMobInventory.getItemInHand(InteractionHand.MAIN_HAND).getItem()
-                        .equals(pathfinderMobInventory.getMainWeaponItem().getItem())
-                        || pathfinderMobInventory.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof BowItem)) {
-                    pathfinderMobInventory.setBlockDamage(livingAttackEvent.getSource().getDirectEntity());
+                if (defender instanceof AVNpc AVNpc
+                        && AVNpc.getBlockDamage() == null
+                        && new Random().nextDouble() <= AVNpc.getPlaceBlockToParryChance()
+                        && (AVNpc.getItemInHand(InteractionHand.MAIN_HAND).getItem()
+                        .equals(AVNpc.getMainWeaponItem().getItem())
+                        || AVNpc.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof BowItem)) {
+                    AVNpc.setBlockDamage(livingAttackEvent.getSource().getDirectEntity());
                     CombatCommon.swapToBlock((MobPatch<?>) defenderLivingEntityPatch);
                     cir.setReturnValue(true);
                     return;
@@ -179,8 +180,8 @@ public class MobClashBladeMixin {
             // Place block to clash
             if (clashBy == 1) {
                 Entity projectile = null;
-                if (defender instanceof PathfinderMobInventory pathfinderMobInventory) {
-                    projectile = pathfinderMobInventory.getBlockDamage();
+                if (defender instanceof AVNpc AVNpc) {
+                    projectile = AVNpc.getBlockDamage();
                 } else if (defender instanceof PlayerNpcEntity playerNpcEntity) {
                     projectile = playerNpcEntity.getBlockDamage();
                 }
@@ -330,8 +331,8 @@ public class MobClashBladeMixin {
                                                                 AssetAccessor<? extends DynamicAnimation> defenderDynamicAnimation,
                                                                 EntityState defenderEntityState, Entity attacker, Entity defender,
                                                                 CallbackInfoReturnable<Boolean> cir) {
-        if (defender instanceof PathfinderMobInventory pathfinderMobInventory
-                && pathfinderMobInventory.getBlockDamage() != null
+        if (defender instanceof AVNpc AVNpc
+                && AVNpc.getBlockDamage() != null
                 && defender.level() instanceof ServerLevel) {
             cir.setReturnValue(false);
         }
@@ -353,7 +354,7 @@ public class MobClashBladeMixin {
             if (attackerLivingEntityPatch != null) {
                 AssetAccessor<? extends DynamicAnimation> attackerDynamicAnimation = Objects.requireNonNull(attackerLivingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
                 if (attackerDynamicAnimation != null) {
-                    if ((defender instanceof PathfinderMobInventory pathfinderMobInventory && pathfinderMobInventory.getBlockDamage() != null)
+                    if ((defender instanceof AVNpc AVNpc && AVNpc.getBlockDamage() != null)
                             || (defender instanceof PlayerNpcEntity playerNpcEntity && playerNpcEntity.getBlockDamage() != null)) {
                         return;
                     }
@@ -368,15 +369,15 @@ public class MobClashBladeMixin {
 
         // Clash projectile post
         if (clashBy == 1) {
-            if ((defender instanceof PathfinderMobInventory pathfinderMobInventory && pathfinderMobInventory.getBlockDamage() != null)
+            if ((defender instanceof AVNpc AVNpc && AVNpc.getBlockDamage() != null)
                     || (defender instanceof PlayerNpcEntity playerNpcEntity && playerNpcEntity.getBlockDamage() != null)) {
                 new DelayedTask(10) {
                     @Override
                     public void run() {
                         boolean rollAndSwap = false;
-                        if (defender instanceof PathfinderMobInventory pathfinderMobInventory
-                                && pathfinderMobInventory.getBlockDamage() != null) {
-                            pathfinderMobInventory.setBlockDamage(null);
+                        if (defender instanceof AVNpc AVNpc
+                                && AVNpc.getBlockDamage() != null) {
+                            AVNpc.setBlockDamage(null);
                             rollAndSwap = true;
                         }
 

@@ -13,6 +13,19 @@ public class SteveLadder {
     public static final Builder<MobPatch<?>> LADDER = CECombatBehaviors.builder()
             .newBehaviorRoot(
                     BehaviorRoot.builder()
+                            .priority(5.0D)
+                            .weight(1000.0D)
+                            .maxCooldown (0)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canExecute)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(Animations.BIPED_SNEAK, 0.0F)
+                                            .addExBehavior(CombatCommon::performExecute)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
                             .priority(4.0D)
                             .weight(1000.0D)
                             .maxCooldown (0)

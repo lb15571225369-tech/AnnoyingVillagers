@@ -7,7 +7,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.*;
-import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
+import com.pla.annoyingvillagers.clazz.AVNpc;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -37,7 +37,7 @@ import java.util.Random;
 import java.util.function.Consumer;
 
 
-public class GreenVillagerGeneralEntity extends PathfinderMobInventory {
+public class GreenVillagerGeneralEntity extends AVNpc {
 
     public GreenVillagerGeneralEntity(SpawnEntity spawnentity, Level level) {
         this(AnnoyingVillagersModEntities.PURPLE_VILLAGER_GENERAL.get(), level);

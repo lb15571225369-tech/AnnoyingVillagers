@@ -268,6 +268,19 @@ public class PlayerNpcLongsword {
     public static final Builder<MobPatch<?>> LONGSWORD = CECombatBehaviors.builder()
             .newBehaviorRoot(
                     BehaviorRoot.builder()
+                            .priority(4.0D)
+                            .weight(1000.0D)
+                            .maxCooldown (0)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canExecute)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(Animations.BIPED_SNEAK, 0.0F)
+                                            .addExBehavior(CombatCommon::performExecute)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
                             .priority(3.0D)
                             .weight(1000.0D)
                             .maxCooldown (0)
@@ -528,6 +541,19 @@ public class PlayerNpcLongsword {
     public static final Builder<MobPatch<?>> AV_LONGSWORD_SHIELD = CECombatBehaviors.builder()
             .newBehaviorRoot(
                     BehaviorRoot.builder()
+                            .priority(4.0D)
+                            .weight(1000.0D)
+                            .maxCooldown (0)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canExecute)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(Animations.BIPED_SNEAK, 0.0F)
+                                            .addExBehavior(CombatCommon::performExecute)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
                             .priority(3.0D)
                             .weight(1000.0D)
                             .maxCooldown (0)
@@ -780,6 +806,19 @@ public class PlayerNpcLongsword {
             );
 
     public static final Builder<MobPatch<?>> AV_LONGSWORD = CECombatBehaviors.builder()
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(4.0D)
+                            .weight(1000.0D)
+                            .maxCooldown (0)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canExecute)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(Animations.BIPED_SNEAK, 0.0F)
+                                            .addExBehavior(CombatCommon::performExecute)
+                            )
+            )
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(3.0D)

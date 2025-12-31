@@ -15,6 +15,19 @@ public class HerobrineDemoniacVoltageReaver {
     public static final Builder<MobPatch<?>> DEMONIAC_VOLTAGE_REAVER = CECombatBehaviors.builder()
             .newBehaviorRoot(
                     BehaviorRoot.builder()
+                            .priority(5.0D)
+                            .weight(1000.0D)
+                            .maxCooldown (0)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canExecute)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(Animations.BIPED_SNEAK, 0.0F)
+                                            .addExBehavior(CombatCommon::performExecute)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
                             .priority(4.0D)
                             .weight(1000.0D)
                             .maxCooldown (0)
@@ -72,22 +85,22 @@ public class HerobrineDemoniacVoltageReaver {
                                             .addNextBehavior(
                                                     Behavior.builder()
                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                                            .withinDistance(0.0D, 5.0D)
+                                                            .withinDistance(0.0D, 6.0D)
                                                             .animationBehavior(WOMAnimations.TORMENT_BERSERK_AUTO_2, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .withinDistance(0.0D, 6.0D)
                                                                             .animationBehavior(WOMAnimations.TORMENT_BERSERK_AUTO_1, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .withinDistance(0.0D, 6.0D)
                                                                                             .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_2, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                                            .withinDistance(0.0D, 8.0D)
                                                                                                             .animationBehavior(AVAnimations.DEMONIAC_RUINE_AUTO_4, 0.0F)
                                                                                             )
                                                                             )

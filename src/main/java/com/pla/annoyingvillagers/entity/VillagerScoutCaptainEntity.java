@@ -6,7 +6,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.util.CombatBehaviour;
 import com.pla.annoyingvillagers.util.CommonGoals;
-import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
+import com.pla.annoyingvillagers.clazz.AVNpc;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.TeamUtil;
 import net.minecraft.core.BlockPos;
@@ -44,7 +44,7 @@ import java.util.Random;
 import java.util.function.Consumer;
 
 
-public class VillagerScoutCaptainEntity extends PathfinderMobInventory {
+public class VillagerScoutCaptainEntity extends AVNpc {
     public VillagerScoutCaptainEntity(SpawnEntity spawnEntity, Level level) {
         this(AnnoyingVillagersModEntities.VILLAGER_SCOUT_CAPTAIN.get(), level);
     }

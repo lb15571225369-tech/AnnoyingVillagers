@@ -1,10 +1,13 @@
 package com.pla.annoyingvillagers.combatbehaviour;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
-import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
+import com.pla.annoyingvillagers.clazz.AVNpc;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.item.LegendarySwordItem;
 import com.pla.annoyingvillagers.task.DelayedTask;
+import com.pla.annoyingvillagers.task.MobExecutionTask;
 import com.pla.annoyingvillagers.util.CombatBehaviour;
 import com.pla.annoyingvillagers.util.EscapeUtil;
 import net.minecraft.core.BlockPos;
@@ -23,18 +26,104 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import net.shelmarow.combat_evolution.execution.ExecutionHandler;
+import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
+import net.shelmarow.combat_evolution.tickTask.TickTaskManager;
+import yesman.epicfight.api.animation.types.StaticAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
+import yesman.epicfight.world.capabilities.item.CapabilityItem;
 
 import java.util.Objects;
 import java.util.Random;
 import java.util.function.BiFunction;
 
 public class CombatCommon {
+    public static boolean isHoldingWeapon(LivingEntity entity){
+        CapabilityItem capabilityItem = EpicFightCapabilities.getItemStackCapability(entity.getItemInHand(InteractionHand.MAIN_HAND));
+        return capabilityItem.getWeaponCategory() != CapabilityItem.WeaponCategories.NOT_WEAPON && capabilityItem.getWeaponCategory() != CapabilityItem.WeaponCategories.FIST;
+    }
+
+    public static boolean targetIsInRange(LivingEntity attacker, LivingEntity target, double minDist, double maxDist, double maxAngleDegrees) {
+        Vec3 targetPos = target.position();
+        Vec3 playerPos = attacker.position();
+
+        double distance = playerPos.distanceTo(targetPos);
+        if (distance < minDist || distance > maxDist) return false;
+
+        float yaw = target.getYRot();
+        double yawRad = Math.toRadians(yaw);
+        Vec3 forward = new Vec3(-Math.sin(yawRad), 0, Math.cos(yawRad)).normalize();
+        Vec3 toPlayer = playerPos.subtract(targetPos).normalize();
+
+        double dot = forward.dot(toPlayer);
+        double angle = Math.toDegrees(Math.acos(dot));
+
+        return angle <= maxAngleDegrees;
+    }
+
+    public static boolean canExecute(LivingEntity attacker, LivingEntity victim, LivingEntityPatch<?> victimEntityPatch) {
+        float maxDist = ExecutionHandler.EXECUTION_DISTANCE;
+        if (attacker instanceof AegisHerobrineEntity) {
+            maxDist = 4.0F;
+        }
+        if (attacker instanceof SwordsmanHerobrineEntity
+                || attacker instanceof AngrySteveEntity
+                || attacker instanceof SteveEntity steveEntity && steveEntity.getMainWeaponItem().getItem() instanceof LegendarySwordItem) {
+            maxDist = 5.0F;
+        }
+        return attacker.isAlive() && victim.isAlive()
+                && ExecutionHandler.isExecutingTarget(attacker, victim)
+                && ExecutionHandler.isTargetSupported(victimEntityPatch)
+                && isHoldingWeapon(attacker)
+                && targetIsInRange(attacker, victim, 0, maxDist, 180);
+    }
+
+    public static Vec3 calculateExecutionPosition(LivingEntity target, Vec3 offset) {
+        float yaw = target.getYRot();
+        double rad = Math.toRadians(yaw);
+
+        double forwardX = -Math.sin(rad);
+        double forwardZ = Math.cos(rad);
+
+        double rightX = Math.cos(rad);
+        double rightZ = Math.sin(rad);
+
+        double offsetX = forwardX * offset.x + rightX * offset.z;
+        double offsetY = offset.y;
+        double offsetZ = forwardZ * offset.x + rightZ * offset.z;
+
+        return target.position().add(offsetX, offsetY, offsetZ);
+    }
+
+    public static boolean canExecute(MobPatch<?> mobPatch) {
+        Mob attacker = mobPatch.getOriginal();
+        LivingEntity victim = attacker.getTarget();
+        if (victim == null || !victim.isAlive()) return false;
+
+        LivingEntityPatch<?> victimEntityPatch = EpicFightCapabilities.getEntityPatch(victim, LivingEntityPatch.class);
+        if (victimEntityPatch != null
+                && (attacker instanceof PlayerNpcEntity || attacker instanceof AVNpc || attacker instanceof HerobrineMob)) {
+            AssetAccessor<? extends StaticAnimation> currentAnimation =
+                    Objects.requireNonNull(victimEntityPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
+
+            if (ExecutionHandler.isTargetGuardBreak(currentAnimation, victimEntityPatch) && canExecute(attacker, victim, victimEntityPatch)) {
+                ExecutionTypeManager.Type executionType = ExecutionHandler.getExecutionType(mobPatch, victimEntityPatch);
+                Level level = attacker.level();
+                Vec3 frontPos = calculateExecutionPosition(victim, executionType.offset());
+                return ExecutionHandler.canStandHere(level, frontPos, attacker);
+            }
+        }
+        return false;
+    }
+
     public static boolean canPerformNormalAttackLogic(MobPatch<?> mobpatch) {
         LivingEntity attacker = mobpatch.getOriginal();
         LivingEntity victim = mobpatch.getOriginal().getTarget();
@@ -52,8 +141,8 @@ public class CombatCommon {
         if (mobpatch.getOriginal() instanceof PlayerNpcEntity playerNpcEntity) {
             return !playerNpcEntity.isHealing();
         }
-        if (mobpatch.getOriginal() instanceof PathfinderMobInventory pathfinderMobInventory) {
-            return !pathfinderMobInventory.isHealing();
+        if (mobpatch.getOriginal() instanceof AVNpc AVNpc) {
+            return !AVNpc.isHealing();
         }
         return false;
     }
@@ -61,8 +150,8 @@ public class CombatCommon {
     public static boolean canEscape(MobPatch<?> mobpatch) {
         Mob entity = mobpatch.getOriginal();
         if (EscapeUtil.checkEscape(entity)) {
-            if (entity instanceof PathfinderMobInventory pathfinderMobInventory
-                    && new Random().nextDouble() <= pathfinderMobInventory.getPlaceBlockToParryChance()) {
+            if (entity instanceof AVNpc AVNpc
+                    && new Random().nextDouble() <= AVNpc.getPlaceBlockToParryChance()) {
                 return true;
             } else if (entity instanceof PlayerNpcEntity playerNpcEntity
                     && new Random().nextDouble() <= playerNpcEntity.getPlaceBlockToParryChance()) {
@@ -89,11 +178,11 @@ public class CombatCommon {
             }
             return !playerNpcEntity.isHealing();
         }
-        if (mobpatch.getOriginal() instanceof PathfinderMobInventory pathfinderMobInventory) {
-            if (pathfinderMobInventory.getGapCooldown() > 0) {
+        if (mobpatch.getOriginal() instanceof AVNpc AVNpc) {
+            if (AVNpc.getGapCooldown() > 0) {
                 return false;
             }
-            return !pathfinderMobInventory.isHealing();
+            return !AVNpc.isHealing();
         }
         return false;
     }
@@ -103,8 +192,8 @@ public class CombatCommon {
         if (mobpatch.getOriginal() instanceof PlayerNpcEntity playerNpcEntity) {
             return !playerNpcEntity.isHealing();
         }
-        if (mobpatch.getOriginal() instanceof PathfinderMobInventory pathfinderMobInventory) {
-            return !pathfinderMobInventory.isHealing();
+        if (mobpatch.getOriginal() instanceof AVNpc AVNpc) {
+            return !AVNpc.isHealing();
         }
         return false;
     }
@@ -123,11 +212,11 @@ public class CombatCommon {
             }
             return playerNpcEntity.getEnderPearlCooldown() == 0;
         }
-        if (mobpatch.getOriginal() instanceof PathfinderMobInventory pathfinderMobInventory) {
-            if (pathfinderMobInventory.isHealing()) {
+        if (mobpatch.getOriginal() instanceof AVNpc AVNpc) {
+            if (AVNpc.isHealing()) {
                 return false;
             }
-            return pathfinderMobInventory.getEnderPearlCooldown() == 0;
+            return AVNpc.getEnderPearlCooldown() == 0;
         }
         return false;
     }
@@ -142,9 +231,9 @@ public class CombatCommon {
             return playerNpcEntity.isUseBow() && playerNpcEntity.getSwapToBowCooldown() == 0;
         }
 
-        if (mobpatch.getOriginal() instanceof PathfinderMobInventory pathfinderMobInventory) {
-            if ((pathfinderMobInventory instanceof SteveEntity || pathfinderMobInventory instanceof AngrySteveEntity
-                    || pathfinderMobInventory instanceof AlexEntity || pathfinderMobInventory instanceof ChrisEntity)) {
+        if (mobpatch.getOriginal() instanceof AVNpc AVNpc) {
+            if ((AVNpc instanceof SteveEntity || AVNpc instanceof AngrySteveEntity
+                    || AVNpc instanceof AlexEntity || AVNpc instanceof ChrisEntity)) {
                 if (target instanceof HerobrineMob) {
                     return false;
                 }
@@ -157,12 +246,12 @@ public class CombatCommon {
                         && (key.getPath().equals("arterius"))) {
                     return false;
                 }
-                if (pathfinderMobInventory instanceof SteveEntity steveEntity) {
+                if (AVNpc instanceof SteveEntity steveEntity) {
                     if (steveEntity.getItemInHand(InteractionHand.OFF_HAND).getItem().equals(Items.TOTEM_OF_UNDYING)) return false;
                 }
             }
 
-            return pathfinderMobInventory.isUseBow() && pathfinderMobInventory.getSwapToBowCooldown() == 0;
+            return AVNpc.isUseBow() && AVNpc.getSwapToBowCooldown() == 0;
         }
 
         return false;
@@ -192,9 +281,9 @@ public class CombatCommon {
         double dx = target.getX() - entity.getX();
         double dz = target.getZ() - entity.getZ();
         double dy = target.getEyeY() - entity.getEyeY();
-        double horiz = Math.sqrt(dx * dx + dz * dz);
+        double horizontal = Math.sqrt(dx * dx + dz * dz);
         float yaw = (float) (Mth.atan2(dz, dx) * (180F / (float) Math.PI)) - 90.0F;
-        float pitch = (float) (-(Mth.atan2(dy, horiz) * (180F / (float) Math.PI)));
+        float pitch = (float) (-(Mth.atan2(dy, horizontal) * (180F / (float) Math.PI)));
 
         entity.setYRot(yaw);
         entity.setXRot(pitch);
@@ -210,8 +299,8 @@ public class CombatCommon {
             playerNpcEntity.setEnderPearlCooldown();
         }
 
-        if (entity instanceof PathfinderMobInventory pathfinderMobInventory) {
-            pathfinderMobInventory.setEnderPearlCooldown();
+        if (entity instanceof AVNpc AVNpc) {
+            AVNpc.setEnderPearlCooldown();
         }
 
         CombatBehaviour.throwEnderPearl(entity, 0.0F);
@@ -227,18 +316,6 @@ public class CombatCommon {
 
         double dx = entity.getX() - target.getX();
         double dz = entity.getZ() - target.getZ();
-        double horiz = Math.sqrt(dx * dx + dz * dz);
-
-        if (horiz < 1.0E-3D) {
-            CombatBehaviour.throwEnderPearl(entity, 0.0F);
-            if (entity instanceof PlayerNpcEntity playerNpcEntity) {
-                playerNpcEntity.setEnderPearlCooldown();
-            }
-            if (entity instanceof PathfinderMobInventory pathfinderMobInventory) {
-                pathfinderMobInventory.setEnderPearlCooldown();
-            }
-            return;
-        }
 
         float yaw = (float) (Mth.atan2(dz, dx) * (180F / (float) Math.PI)) - 90.0F;
 
@@ -262,8 +339,8 @@ public class CombatCommon {
         if (entity instanceof PlayerNpcEntity playerNpcEntity) {
             playerNpcEntity.setEnderPearlCooldown();
         }
-        if (entity instanceof PathfinderMobInventory pathfinderMobInventory) {
-            pathfinderMobInventory.setEnderPearlCooldown();
+        if (entity instanceof AVNpc AVNpc) {
+            AVNpc.setEnderPearlCooldown();
         }
         CombatBehaviour.throwEnderPearl(entity, 0.0F);
     }
@@ -426,8 +503,8 @@ public class CombatCommon {
             @Override public void run() {
                 if (!mob.isAlive() || !mob.onGround()) return;
 
-                if (mob instanceof PathfinderMobInventory pathfinderMobInventory) {
-                    pathfinderMobInventory.shortPillarJump();
+                if (mob instanceof AVNpc AVNpc) {
+                    AVNpc.shortPillarJump();
                 }
                 mobpatch.playAnimationSynchronized(Animations.BIPED_JUMP, 0.0F);
             }
@@ -446,8 +523,8 @@ public class CombatCommon {
         LivingEntity entity = mobpatch.getOriginal();
         boolean isEnchanted;
 
-        if (entity instanceof PathfinderMobInventory pathfinderMobInventory
-                && new Random().nextDouble() <= pathfinderMobInventory.getPlaceBlockToParryChance()) {
+        if (entity instanceof AVNpc AVNpc
+                && new Random().nextDouble() <= AVNpc.getPlaceBlockToParryChance()) {
             entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.ENCHANTED_GOLDEN_APPLE));
             isEnchanted = true;
         } else {
@@ -459,8 +536,8 @@ public class CombatCommon {
             if (entity instanceof PlayerNpcEntity playerNpcEntity) {
                 playerNpcEntity.setEnderPearlCooldown();
             }
-            if (entity instanceof PathfinderMobInventory pathfinderMobInventory) {
-                pathfinderMobInventory.setEnderPearlCooldown();
+            if (entity instanceof AVNpc AVNpc) {
+                AVNpc.setEnderPearlCooldown();
             }
         } else {
             performEscapeRunAway(mobpatch);
@@ -469,8 +546,8 @@ public class CombatCommon {
         if (entity instanceof PlayerNpcEntity playerNpcEntity) {
             playerNpcEntity.setGapCooldown();
         }
-        if (entity instanceof PathfinderMobInventory pathfinderMobInventory) {
-            pathfinderMobInventory.setGapCooldown();
+        if (entity instanceof AVNpc AVNpc) {
+            AVNpc.setGapCooldown();
         }
 
         CombatBehaviour.eatingGoldenApple(
@@ -488,8 +565,8 @@ public class CombatCommon {
             ItemStack stack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_HEALING);
             entity.setItemInHand(InteractionHand.MAIN_HAND, stack);
         }
-        if (entity instanceof PathfinderMobInventory pathfinderMobInventory) {
-            pathfinderMobInventory.setGapCooldown();
+        if (entity instanceof AVNpc AVNpc) {
+            AVNpc.setGapCooldown();
         }
 
         CombatBehaviour.drinkingHealingPotion(
@@ -568,31 +645,31 @@ public class CombatCommon {
             playerNpcEntity.setSwapToBowCooldown();
         }
 
-        if (mobpatch.getOriginal() instanceof PathfinderMobInventory pathfinderMobInventory) {
-            ItemStack mainWeaponItem = pathfinderMobInventory.getMainWeaponItem();
-            ItemStack offWeaponItem = pathfinderMobInventory.getOffWeaponItem();
-            if (pathfinderMobInventory instanceof SteveEntity) {
+        if (mobpatch.getOriginal() instanceof AVNpc AVNpc) {
+            ItemStack mainWeaponItem = AVNpc.getMainWeaponItem();
+            ItemStack offWeaponItem = AVNpc.getOffWeaponItem();
+            if (AVNpc instanceof SteveEntity) {
                 if (canSwitchWeapon(mobpatch)) {
                     switchWeapon(mobpatch);
                 } else {
                     if (!mainWeaponItem.isEmpty() && !(mainWeaponItem.getItem() instanceof BowItem)) {
-                        pathfinderMobInventory.setItemInHand(InteractionHand.MAIN_HAND, mainWeaponItem.copy());
+                        AVNpc.setItemInHand(InteractionHand.MAIN_HAND, mainWeaponItem.copy());
                     }
                     if (!offWeaponItem.isEmpty()) {
-                        pathfinderMobInventory.setItemInHand(InteractionHand.OFF_HAND, offWeaponItem.copy());
+                        AVNpc.setItemInHand(InteractionHand.OFF_HAND, offWeaponItem.copy());
                     }
                 }
             } else {
                 if (!mainWeaponItem.isEmpty() && !(mainWeaponItem.getItem() instanceof BowItem)) {
-                    pathfinderMobInventory.setItemInHand(InteractionHand.MAIN_HAND, mainWeaponItem.copy());
-                } else if (pathfinderMobInventory instanceof VillagerScoutEntity villagerScoutEntity) {
+                    AVNpc.setItemInHand(InteractionHand.MAIN_HAND, mainWeaponItem.copy());
+                } else if (AVNpc instanceof VillagerScoutEntity villagerScoutEntity) {
                     villagerScoutEntity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.IRON_SWORD));
                 }
                 if (!offWeaponItem.isEmpty()) {
-                    pathfinderMobInventory.setItemInHand(InteractionHand.OFF_HAND, offWeaponItem.copy());
+                    AVNpc.setItemInHand(InteractionHand.OFF_HAND, offWeaponItem.copy());
                 }
             }
-            pathfinderMobInventory.setSwapToBowCooldown();
+            AVNpc.setSwapToBowCooldown();
         }
     }
 
@@ -601,8 +678,8 @@ public class CombatCommon {
         if (entity instanceof PlayerNpcEntity playerNpcEntity) {
             playerNpcEntity.jump();
         }
-        if (entity instanceof PathfinderMobInventory pathfinderMobInventory) {
-            pathfinderMobInventory.jump();
+        if (entity instanceof AVNpc AVNpc) {
+            AVNpc.jump();
         }
     }
 
@@ -632,5 +709,47 @@ public class CombatCommon {
                 livingEntity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.OAK_PLANKS));
             }
         }
+    }
+
+    public static void performExecute(MobPatch<?> mobPatch) {
+        final Mob attacker = mobPatch.getOriginal();
+        final LivingEntity victim = attacker.getTarget();
+        if (victim == null) return;
+
+        final LivingEntityPatch<?> victimPatch = EpicFightCapabilities.getEntityPatch(victim, LivingEntityPatch.class);
+        if (victimPatch == null) return;
+
+        final ExecutionTypeManager.Type execType = ExecutionHandler.getExecutionType(mobPatch, victimPatch);
+        faceTargetHard(attacker, victim);
+        final Vec3 frontPos = calculateExecutionPosition(victim, execType.offset());
+        attacker.teleportTo(frontPos.x, frontPos.y, frontPos.z);
+        faceTargetHard(attacker, victim);
+        TickTaskManager.addTask(victim.getUUID(),
+                new MobExecutionTask(attacker, victim, execType, execType.totalTick()));
+    }
+
+    private static void faceTargetHard(Mob self, LivingEntity target) {
+        Vec3 from = self.getEyePosition(1.0F);
+        Vec3 to = target.getEyePosition(1.0F);
+        double dx = to.x - from.x;
+        double dy = to.y - from.y;
+        double dz = to.z - from.z;
+
+        double horiz = Math.sqrt(dx * dx + dz * dz);
+        if (horiz < 1.0E-6) horiz = 1.0E-6;
+
+        float yaw   = (float)(Mth.atan2(dz, dx) * (180F / Math.PI)) - 90.0F;
+        float pitch = (float)(-(Mth.atan2(dy, horiz) * (180F / Math.PI)));
+
+        self.getNavigation().stop();
+        self.setYRot(yaw);
+        self.setXRot(pitch);
+        self.setYBodyRot(yaw);
+        self.setYHeadRot(yaw);
+        self.yRotO = yaw;
+        self.xRotO = pitch;
+        self.yBodyRotO = yaw;
+        self.yHeadRotO = yaw;
+        self.getLookControl().setLookAt(target, 90.0F, 90.0F);
     }
 }

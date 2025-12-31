@@ -1,7 +1,7 @@
 package com.pla.annoyingvillagers.events;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
+import com.pla.annoyingvillagers.clazz.AVNpc;
 import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
 import com.pla.annoyingvillagers.task.TaskScheduler;
 import com.pla.annoyingvillagers.util.*;
@@ -38,7 +38,7 @@ public class IdleHandlerEvent {
     public static void onLivingTick(LivingEvent.LivingTickEvent event) {
         Entity entity = event.getEntity();
         if (entity != null && !entity.level().isClientSide()) {
-            if (entity instanceof PathfinderMobInventory) {
+            if (entity instanceof AVNpc) {
                 scheduleIdleActionDecision((Mob) event.getEntity());
             }
             else if (entity instanceof Zombie || entity instanceof AbstractSkeleton) {

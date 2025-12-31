@@ -26,7 +26,7 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import java.util.List;
 import java.util.Random;
 
-public class PathfinderMobInventory extends PathfinderMob implements RangedAttackMob {
+public class AVNpc extends PathfinderMob implements RangedAttackMob {
     private final SimpleContainer inventory = new SimpleContainer(27);
     private int gapCooldown;
     private int enderPearlCooldown;
@@ -138,7 +138,7 @@ public class PathfinderMobInventory extends PathfinderMob implements RangedAttac
         return useBow;
     }
 
-    protected PathfinderMobInventory(EntityType<? extends PathfinderMob> pEntityType, Level pLevel) {
+    protected AVNpc(EntityType<? extends PathfinderMob> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         this.setDropChance(EquipmentSlot.MAINHAND, 0.0F);
         this.setDropChance(EquipmentSlot.OFFHAND, 0.0F);

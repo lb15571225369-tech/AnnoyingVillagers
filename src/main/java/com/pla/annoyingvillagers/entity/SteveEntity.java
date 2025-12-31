@@ -8,7 +8,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.spawnhandler.SteveData;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.*;
-import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
+import com.pla.annoyingvillagers.clazz.AVNpc;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -31,6 +31,8 @@ import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -38,7 +40,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
-public class SteveEntity extends PathfinderMobInventory {
+public class SteveEntity extends AVNpc {
     // 0: normal
     // 1: second
     private int state = 0;
@@ -124,7 +126,7 @@ public class SteveEntity extends PathfinderMobInventory {
         return ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft","entity.generic.death"));
     }
 
-    public boolean hurt(DamageSource damageSource, float f) {
+    public boolean hurt(@NotNull DamageSource damageSource, float f) {
         if (this.getUnableToDamageCooldown() > 0) {
             return false;
         }
@@ -151,30 +153,78 @@ public class SteveEntity extends PathfinderMobInventory {
 
             this.setEnderPearlCooldown();
         }
-        if (this.level() instanceof ServerLevel serverLevel && !damageSource.is(DamageTypes.FELL_OUT_OF_WORLD)) {
-            float health = this.getHealth();
-            if (health - f <= 5.0F) {
-                if (this.state == 0 && !this.getOffhandItem().getItem().equals(Items.TOTEM_OF_UNDYING)
-                || this.state == 1) {
-                    this.setHealth(1.0F);
-                    if (this.state == 1) {
-                        AngrySteveEntity angrySteveEntity = new AngrySteveEntity(AnnoyingVillagersModEntities.ANGRY_STEVE.get(), serverLevel);
+        return super.hurt(damageSource, f);
+    }
 
-                        angrySteveEntity.moveTo(this.blockPosition(), this.getYRot(), this.getXRot());
-                        InventoryUtils.transferInventory(this.getInventory(), angrySteveEntity.getInventory());
-                        angrySteveEntity.setTarget(this.getTarget());
-                        this.discard();
-                        SteveData steveData = SteveData.get(serverLevel);
-                        steveData.forceClaim(serverLevel, angrySteveEntity.getUUID());
+    @Override
+    protected void actuallyHurt(@NotNull DamageSource pDamageSource, float pDamageAmount) {
+        if (pDamageSource.is(DamageTypes.FELL_OUT_OF_WORLD)) {
+            super.actuallyHurt(pDamageSource, pDamageAmount);
+            return;
+        }
 
-                        angrySteveEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(angrySteveEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
-                        serverLevel.addFreshEntity(angrySteveEntity);
-                    }
-                    return super.hurt(damageSource, 1.0F);
-                }
+        if (this.isInvulnerableTo(pDamageSource)) {
+            return;
+        }
+
+        pDamageAmount = ForgeHooks.onLivingHurt(this, pDamageSource, pDamageAmount);
+        if (pDamageAmount <= 0.0F) {
+            return;
+        }
+
+        pDamageAmount = this.getDamageAfterArmorAbsorb(pDamageSource, pDamageAmount);
+        pDamageAmount = this.getDamageAfterMagicAbsorb(pDamageSource, pDamageAmount);
+
+        float f1 = Math.max(pDamageAmount - this.getAbsorptionAmount(), 0.0F);
+        float absorbed = pDamageAmount - f1;
+        if (absorbed > 0.0F) {
+            this.setAbsorptionAmount(this.getAbsorptionAmount() - absorbed);
+            if (this.getAbsorptionAmount() < 0.0F) this.setAbsorptionAmount(0.0F);
+        }
+        if (this.level() instanceof ServerLevel
+                && this.state == 0 && (this.getHealth() - f1) <= 1.0F
+                && !this.getOffhandItem().getItem().equals(Items.TOTEM_OF_UNDYING)) {
+            this.setHealth(1.0F);
+            return;
+        }
+        f1 = ForgeHooks.onLivingDamage(this, pDamageSource, f1);
+        if (f1 <= 0.0F) {
+            return;
+        }
+        this.getCombatTracker().recordDamage(pDamageSource, f1);
+        this.setHealth(this.getHealth() - f1);
+        this.gameEvent(GameEvent.ENTITY_DAMAGE);
+    }
+
+    @Override
+    public void die(@NotNull DamageSource pDamageSource) {
+        if (this.level() instanceof ServerLevel serverLevel) {
+            LivingEntity target = null;
+            if (pDamageSource.getEntity() instanceof LivingEntity living && living.isAlive()) {
+                target = living;
+            } else if (this.getTarget() != null && this.getTarget().isAlive()) {
+                target = this.getTarget();
+            } else if (this.getLastHurtByMob() != null && this.getLastHurtByMob().isAlive()) {
+                target = this.getLastHurtByMob();
+            }
+
+            AngrySteveEntity angrySteveEntity = new AngrySteveEntity(AnnoyingVillagersModEntities.ANGRY_STEVE.get(), serverLevel);
+
+            angrySteveEntity.moveTo(this.blockPosition(), this.getYRot(), this.getXRot());
+            InventoryUtils.transferInventory(this.getInventory(), angrySteveEntity.getInventory());
+            this.discard();
+            SteveData steveData = SteveData.get(serverLevel);
+            steveData.forceClaim(serverLevel, angrySteveEntity.getUUID());
+
+            angrySteveEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(angrySteveEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+            serverLevel.addFreshEntity(angrySteveEntity);
+            if (target != null) {
+                angrySteveEntity.setTarget(target);
+                angrySteveEntity.setLastHurtByMob(target);
             }
         }
-        return super.hurt(damageSource, f);
+
+        super.die(pDamageSource);
     }
 
     @Override

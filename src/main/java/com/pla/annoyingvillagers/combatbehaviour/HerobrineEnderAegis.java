@@ -16,6 +16,19 @@ public class HerobrineEnderAegis {
     public static final Builder<MobPatch<?>> ENDER_AEGIS = CECombatBehaviors.builder()
             .newBehaviorRoot(
                     BehaviorRoot.builder()
+                            .priority(5.0D)
+                            .weight(1000.0D)
+                            .maxCooldown (0)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canExecute)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(Animations.BIPED_SNEAK, 0.0F)
+                                            .addExBehavior(CombatCommon::performExecute)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
                             .priority(4.0D)
                             .weight(1000.0D)
                             .maxCooldown (0)
@@ -73,27 +86,27 @@ public class HerobrineEnderAegis {
                                             .addNextBehavior(
                                                     Behavior.builder()
                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                                            .withinDistance(0.0D, 4.0D)
+                                                            .withinDistance(0.0D, 5.0D)
                                                             .animationBehavior(AnimsHerrscher.HERRSCHER_AUTO_2, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                                                            .withinDistance(0.0D, 4.0D)
+                                                                            .withinDistance(0.0D, 5.0D)
                                                                             .animationBehavior(AnimsHerrscher.HERRSCHER_AUTO_3, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                                                                            .withinDistance(0.0D, 4.0D)
+                                                                                            .withinDistance(0.0D, 6.0D)
                                                                                             .animationBehavior(AVAnimations.ENDER_AEGIS_MOONLESS_AUTO_1, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                                                                                            .withinDistance(0.0D, 4.0D)
+                                                                                                            .withinDistance(0.0D, 6.0D)
                                                                                                             .animationBehavior(AVAnimations.ENDER_AEGIS_MOONLESS_AUTO_2, 0.0F)
                                                                                                             .addNextBehavior(
                                                                                                                     Behavior.builder()
                                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                                                                                                            .withinDistance(0.0D, 4.0D)
+                                                                                                                            .withinDistance(0.0D, 6.0D)
                                                                                                                             .animationBehavior(AnimsSolar.SOLAR_QUEMADURA, 0.0F)
                                                                                                             )
                                                                                             )

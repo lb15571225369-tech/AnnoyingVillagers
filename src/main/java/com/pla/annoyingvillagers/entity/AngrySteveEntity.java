@@ -1,6 +1,6 @@
 package com.pla.annoyingvillagers.entity;
 
-import com.pla.annoyingvillagers.clazz.PathfinderMobInventory;
+import com.pla.annoyingvillagers.clazz.AVNpc;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
@@ -34,7 +34,6 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
-import yesman.epicfight.world.damagesource.StunType;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Consumer;
 
-public class AngrySteveEntity extends PathfinderMobInventory {
+public class AngrySteveEntity extends AVNpc {
     public AngrySteveEntity(SpawnEntity spawnEntity, Level level) {
         this(AnnoyingVillagersModEntities.ANGRY_STEVE.get(), level);
     }
@@ -298,9 +297,9 @@ public class AngrySteveEntity extends PathfinderMobInventory {
                 SoundSource.NEUTRAL,
                 1.0F, 1.0F
         );
-        this.setUnableToDamageCooldown(100);
+        this.setUnableToDamageCooldown(60);
         if (this.getLivingEntityPatch() != null) {
-            this.getLivingEntityPatch().applyStun(StunType.FALL, 4.0F);
+            this.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.GUARD_BREAK_ATTACK, 0.0F);
         }
     }
 
