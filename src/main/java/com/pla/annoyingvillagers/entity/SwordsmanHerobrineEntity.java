@@ -76,7 +76,7 @@ public class SwordsmanHerobrineEntity extends HerobrineMob {
         }
     }
 
-    public void die(DamageSource damagesource) {
+    public void die(@NotNull DamageSource damagesource) {
         super.die(damagesource);
         if (this.level() instanceof ServerLevel serverLevel) {
             EliteHerobrineKnockedEntity eliteHerobrineKnockedEntity = new EliteHerobrineKnockedEntity(AnnoyingVillagersModEntities.ELITE_HEROBRINE_KNOCKED.get(), serverLevel);

@@ -64,11 +64,10 @@ public class AVWeaponCapabilityPresets {
                     .canBePlacedOffhand(false)
                     .newStyleCombo(Styles.TWO_HAND,
                             AVAnimations.ENDER_GLAIVE_NAPOLEON_AUTO_1,
-                            WOMAnimations.STAFF_AUTO_2,
-                            WOMAnimations.STAFF_AUTO_3,
                             AVAnimations.ENDER_GLAIVE_NAPOLEON_AUTO_2,
-                            AVAnimations.ENDER_GLAIVE_NAPOLEON_AUTO_4,
                             AnimsAgony.AGONY_AUTO_4,
+                            AnimsAgony.AGONY_AUTO_2,
+                            AnimsAgony.AGONY_AUTO_3,
                             AVAnimations.ENDER_GLAIVE_NAPOLEON_AUSTERLITZ,
                             AnimsAgony.AGONY_RIPPING_FANGS)
                     .newStyleCombo(Styles.MOUNT,

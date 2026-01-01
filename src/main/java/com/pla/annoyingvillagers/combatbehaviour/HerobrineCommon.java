@@ -1,30 +1,44 @@
 package com.pla.annoyingvillagers.combatbehaviour;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.item.EnderAegisItem;
+import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
+import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
 import com.pla.annoyingvillagers.task.DelayedTask;
+import com.pla.annoyingvillagers.util.EpicfightUtil;
 import com.pla.annoyingvillagers.util.SnakeBladeHit;
 import com.pla.annoyingvillagers.util.TeamUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import reascer.wom.gameasset.animations.weapons.AnimsAgony;
+import yesman.epicfight.api.utils.math.Vec3f;
+import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
+import yesman.epicfight.world.effect.EpicFightMobEffects;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.function.BiFunction;
 
@@ -196,6 +210,81 @@ public class HerobrineCommon {
                 if (SnakeBladeHit.process(item, herobrineMob)) {
                     item.getOrCreateTag().putBoolean("SnakeAnimation", true);
                 }
+            } else if (herobrineMob instanceof GlaiveHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
+                herobrineMob.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 40, 3));
+                new DelayedTask(10) {
+                    @Override
+                    public void run() {
+                        Vec3 tipPos = EpicfightUtil.getJointWithTranslation(
+                                herobrineMob,
+                                new Vec3f(0.0F, 0.0F, 0.0F),
+                                Armatures.BIPED.get().toolR,
+                                4.3F,
+                                2.3F
+                        );
+                        if (tipPos != null) {
+                            BlockPos mutePos = BlockPos.containing(tipPos);
+                            AnnoyingVillagers.PACKET_HANDLER.send(
+                                    PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> herobrineMob),
+                                    new ClientboundMuteExplosionAtPos(mutePos, 4)
+                            );
+                            herobrineMob.level().explode(herobrineMob, tipPos.x, tipPos.y, tipPos.z,
+                                    2.0F, true, Level.ExplosionInteraction.TNT);
+                            Vec3 glaivePos = EpicfightUtil.getJointWithTranslation(herobrineMob, new Vec3f(0, 0, 0),
+                                    Armatures.BIPED.get().toolR, 1.3F, 2.3F);
+                            Vec3 explosionPos = EpicfightUtil.getJointWithTranslation(herobrineMob, new Vec3f(0, 0, 0),
+                                    Armatures.BIPED.get().toolR, 10.3F, 2.3F);
+                            AnnoyingVillagers.PACKET_HANDLER.send(
+                                    PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> herobrineMob),
+                                    new ClientboundGlaiveExplosionFx(glaivePos, explosionPos)
+                            );
+                            if (explosionPos != null) {
+                                herobrineMob.level().playSound(null, new BlockPos((int) explosionPos.x, (int) explosionPos.y, (int) explosionPos.z), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_shot"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                            }
+                        }
+                    }
+                };
+            }
+        }
+    }
+
+    public static void playSecondFormSpecialAnimation(MobPatch<?> mobpatch) {
+        if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
+            herobrineMob.setSecondFormHitLeft(herobrineMob.getSecondFormHitLeft() - 1);
+            if (herobrineMob instanceof GlaiveHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
+                herobrineMob.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 40, 3));
+                new DelayedTask(14) {
+                    @Override
+                    public void run() {
+                        Vec3 tipPos = EpicfightUtil.getJointWithTranslation(
+                                herobrineMob,
+                                new Vec3f(0.0F, 0.0F, 0.0F),
+                                Armatures.BIPED.get().toolR,
+                                4.3F,
+                                2.3F
+                        );
+                        if (tipPos != null) {
+                            BlockPos mutePos = BlockPos.containing(tipPos);
+                            AnnoyingVillagers.PACKET_HANDLER.send(
+                                    PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> herobrineMob),
+                                    new ClientboundMuteExplosionAtPos(mutePos, 4)
+                            );
+                            herobrineMob.level().explode(herobrineMob, tipPos.x, tipPos.y, tipPos.z,
+                                    2.0F, true, Level.ExplosionInteraction.TNT);
+                            Vec3 glaivePos = EpicfightUtil.getJointWithTranslation(herobrineMob, new Vec3f(0, 0, 0),
+                                    Armatures.BIPED.get().toolR, 1.3F, 2.3F);
+                            Vec3 explosionPos = EpicfightUtil.getJointWithTranslation(herobrineMob, new Vec3f(0, 0, 0),
+                                    Armatures.BIPED.get().toolR, 10.3F, 2.3F);
+                            AnnoyingVillagers.PACKET_HANDLER.send(
+                                    PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> herobrineMob),
+                                    new ClientboundGlaiveExplosionFx(glaivePos, explosionPos)
+                            );
+                            if (explosionPos != null) {
+                                herobrineMob.level().playSound(null, new BlockPos((int) explosionPos.x, (int) explosionPos.y, (int) explosionPos.z), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_shot"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                            }
+                        }
+                    }
+                };
             }
         }
     }
@@ -274,5 +363,17 @@ public class HerobrineCommon {
                 serverLevel.addFreshEntity(clone);
             }
         };
+    }
+
+    public static void performAgonySpecialAttack(MobPatch<?> mobpatch) {
+        Entity entity = mobpatch.getOriginal();
+        if (entity instanceof HerobrineMob) {
+            new DelayedTask(10) {
+                @Override
+                public void run() {
+                    mobpatch.playAnimationSynchronized(AnimsAgony.AGONY_RIPPING_FANGS, 0.0F);
+                }
+            };
+        }
     }
 }

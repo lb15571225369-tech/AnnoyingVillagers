@@ -263,6 +263,7 @@ public class AnnoyingVillagersModEntities {
         entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.LOW_SHADOW_HEROBRINE_CLONE.get(), (entity) -> LowHerobrineClonePatch::new);
         entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.AEGIS_HEROBRINE.get(), (entity) -> AegisHerobrinePatch::new);
         entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.SWORDSMAN_HEROBRINE.get(), (entity) -> SwordsmanHerobrinePatch::new);
+        entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.GLAIVE_HEROBRINE.get(), (entity) -> GlaiveHerobrinePatch::new);
     }
 
     @SubscribeEvent

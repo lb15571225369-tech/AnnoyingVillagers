@@ -6,6 +6,7 @@ import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.AVNpc;
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
 import com.pla.annoyingvillagers.entity.AegisHerobrineEntity;
+import com.pla.annoyingvillagers.entity.GlaiveHerobrineEntity;
 import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
 import com.pla.annoyingvillagers.entity.SwordsmanHerobrineEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
@@ -40,6 +41,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import reascer.wom.gameasset.animations.weapons.AnimsAgony;
+import reascer.wom.gameasset.animations.weapons.AnimsSolar;
 import yesman.epicfight.api.animation.types.*;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.Animations;
@@ -80,6 +82,12 @@ public class MobClashBladeMixin {
 
         if (defender instanceof SwordsmanHerobrineEntity
                 && defenderDynamicAnimation == AVAnimations.APPLY_IMBUEMENT) {
+            cir.setReturnValue(true);
+            return;
+        }
+
+        if (defender instanceof GlaiveHerobrineEntity
+                && (defenderDynamicAnimation == AVAnimations.AGONY_GUARD_HIT_1)) {
             cir.setReturnValue(true);
             return;
         }
@@ -172,8 +180,11 @@ public class MobClashBladeMixin {
                 && defender.level() instanceof ServerLevel serverLevel) {
             // Herobrine playing animation
             if (clashBy != 0) {
-                if (defender instanceof AegisHerobrineEntity) {
+                if (defender instanceof AegisHerobrineEntity || defender instanceof GlaiveHerobrineEntity) {
                     defenderLivingEntityPatch.playAnimationSynchronized(AnimsAgony.AGONY_GUARD_HIT_1, 0.0F);
+                }
+                if (defender instanceof SwordsmanHerobrineEntity) {
+                    defenderLivingEntityPatch.playAnimationSynchronized(AnimsSolar.SOLAR_GUARD_HIT, 0.0F);
                 }
             }
 

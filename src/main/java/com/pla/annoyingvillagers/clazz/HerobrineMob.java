@@ -487,6 +487,7 @@ public class HerobrineMob extends Monster {
                 || this instanceof SledgehammerHerobrineEntity
                 || this instanceof SwordsmanHerobrineEntity
                 || this instanceof ReaperHerobrineEntity
+                || this instanceof GlaiveHerobrineEntity
                 || this instanceof NullEntity
                 || this instanceof ShadowHerobrineEntity)
                 && (this.getHealth() - f1) <= 1.0F) {
