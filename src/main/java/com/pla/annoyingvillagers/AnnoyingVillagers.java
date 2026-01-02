@@ -155,6 +155,7 @@ public class AnnoyingVillagers {
         Armatures.registerEntityTypeArmature(AnnoyingVillagersModEntities.AEGIS_HEROBRINE.get(), Armatures.BIPED);
         Armatures.registerEntityTypeArmature(AnnoyingVillagersModEntities.SWORDSMAN_HEROBRINE.get(), Armatures.BIPED);
         Armatures.registerEntityTypeArmature(AnnoyingVillagersModEntities.GLAIVE_HEROBRINE.get(), Armatures.BIPED);
+        Armatures.registerEntityTypeArmature(AnnoyingVillagersModEntities.SLEDGEHAMMER_HEROBRINE.get(), Armatures.BIPED);
     }
 
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)

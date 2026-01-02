@@ -144,5 +144,8 @@ public class AnnoyingVillagersModEntityRenderers {
         add.addPatchedEntityRenderer(AnnoyingVillagersModEntities.GLAIVE_HEROBRINE.get(),
                 (entitytype) -> (new PHumanoidRenderer<>(Meshes.BIPED, add.getContext(), entitytype))
                         .initLayerLast(add.getContext(), entitytype));
+        add.addPatchedEntityRenderer(AnnoyingVillagersModEntities.SLEDGEHAMMER_HEROBRINE.get(),
+                (entitytype) -> (new PHumanoidRenderer<>(Meshes.BIPED, add.getContext(), entitytype))
+                        .initLayerLast(add.getContext(), entitytype));
     }
 }

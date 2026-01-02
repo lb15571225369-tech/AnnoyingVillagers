@@ -30,6 +30,7 @@ import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
@@ -90,6 +91,51 @@ public class ObsidianSledgehammerItem extends AxeItem {
                     new ObsidianSledgehammerHitEntity(entity.level(),
                             x, blockpos.getY() + topOffset, z, rotation, delay, 3.0F, owner));
         }
+    }
+
+    public static void triggerCircleWhenGroundHits(MobPatch<?> mobPatch, boolean fillMiddle) {
+        if (mobPatch.getOriginal() == null) return;
+
+        if (!mobPatch.getOriginal().level().isClientSide()) {
+            HerobrineWeaponEffectProcedure.execute(mobPatch.getOriginal().level(),
+                    mobPatch.getOriginal().getX(), mobPatch.getOriginal().getY(),
+                    mobPatch.getOriginal().getZ(), mobPatch.getOriginal());
+        }
+        AnimationPlayer animationPlayer = mobPatch.getAnimator().getPlayerFor(null);
+        if (animationPlayer == null) {
+            new DelayedTask(1) {
+                public void run(){
+                    triggerCircleWhenGroundHits(mobPatch, fillMiddle);
+                }
+            };
+            return;
+        }
+
+        float elapsedRaw = getElapsedRaw(animationPlayer);
+        if (elapsedRaw >= 0.58F) {
+            if (fillMiddle) {
+                mobPatch.playAnimationSynchronized(AVAnimations.SLEDGE_HAMMER_INNATE_DASH, 0.0F);
+            }
+            if (mobPatch.getOriginal().getMainHandItem().getItem() instanceof ObsidianSledgehammerItem) {
+                Vec3 tip = ObsidianSledgehammerItem.jointWorldPoint(
+                        mobPatch, new Vec3f(0, 0, -1.1f),
+                        Armatures.BIPED.get().toolR);
+
+                BlockHitResult blockHitResult = ObsidianSledgehammerItem.raycastDown(
+                        mobPatch.getOriginal().level(), tip.add(0, 0.25, 0), mobPatch, 8.0);
+
+                if (blockHitResult != null && !mobPatch.getOriginal().level().isClientSide()) {
+                    ObsidianSledgehammerItem.circleHit(mobPatch.getOriginal(), blockHitResult, fillMiddle);
+                }
+            }
+            return;
+        }
+
+        new DelayedTask(1){
+            @Override public void run(){
+                triggerCircleWhenGroundHits(mobPatch, fillMiddle);
+            }
+        };
     }
 
     public static void triggerCircleWhenGroundHits(ServerPlayerPatch serverPlayerPatch, boolean fillMiddle) {

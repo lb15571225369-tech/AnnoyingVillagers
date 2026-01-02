@@ -3,10 +3,12 @@ package com.pla.annoyingvillagers.util;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.entity.AegisHerobrineEntity;
 import com.pla.annoyingvillagers.entity.GlaiveHerobrineEntity;
+import com.pla.annoyingvillagers.entity.SledgehammerHerobrineEntity;
 import com.pla.annoyingvillagers.entity.SwordsmanHerobrineEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.animations.weapons.AnimsAgony;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
@@ -81,6 +83,9 @@ public class EscapeUtil {
             if (herobrineMob instanceof GlaiveHerobrineEntity) {
                 return (herobrineMob.getState() > 0 && targetDynamicAnimation == AVAnimations.AGONY_GUARD_HIT_1)
                         || targetDynamicAnimation == AnimsAgony.AGONY_AUTO_2 || targetDynamicAnimation == AVAnimations.ENDER_GLAIVE_NAPOLEON_SHOOT_3;
+            }
+            if (herobrineMob instanceof SledgehammerHerobrineEntity) {
+                return targetDynamicAnimation == WOMAnimations.TORMENT_BERSERK_CONVERT || targetDynamicAnimation == WOMAnimations.TORMENT_DASH;
             }
         }
         return isAnimationDangerous(targetDynamicAnimation);

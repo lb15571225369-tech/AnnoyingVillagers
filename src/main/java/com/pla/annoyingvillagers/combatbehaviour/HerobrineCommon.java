@@ -7,6 +7,7 @@ import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.item.EnderAegisItem;
+import com.pla.annoyingvillagers.item.ObsidianSledgehammerItem;
 import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
 import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
 import com.pla.annoyingvillagers.task.DelayedTask;
@@ -238,6 +239,8 @@ public class HerobrineCommon {
                         }
                     }
                 };
+            } else if (herobrineMob instanceof SledgehammerHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
+                ObsidianSledgehammerItem.triggerCircleWhenGroundHits(mobpatch, true);
             }
         }
     }
@@ -279,6 +282,8 @@ public class HerobrineCommon {
                         }
                     }
                 };
+            } else if (herobrineMob instanceof SledgehammerHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
+                ObsidianSledgehammerItem.triggerCircleWhenGroundHits(mobpatch, false);
             }
         }
     }

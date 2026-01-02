@@ -121,8 +121,8 @@ public class AVWeaponCapabilityPresets {
                     .hitSound(EpicFightSounds.BLADE_HIT.get())
                     .canBePlacedOffhand(false)
                     .newStyleCombo(Styles.TWO_HAND,
-                            AnimsRuine.RUINE_AUTO_1,
-                            AnimsRuine.RUINE_AUTO_2,
+                            AVAnimations.DEMONIAC_RUINE_AUTO_1,
+                            AVAnimations.DEMONIAC_RUINE_AUTO_2,
                             WOMAnimations.TORMENT_AUTO_4,
                             AnimsSolar.SOLAR_AUTO_4,
                             AnimsSolar.SOLAR_AUTO_2,
@@ -160,10 +160,10 @@ public class AVWeaponCapabilityPresets {
                             Animations.SWORD_MOUNT_ATTACK)
                     .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.ENDER_SLAYER_SCYTHE)
                     .comboCancel((style) -> false)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_HOLD_SPEAR)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, WOMAnimations.ANTITHEUS_WALK)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, WOMAnimations.ANTITHEUS_RUN)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, WOMAnimations.ANTITHEUS_RUN)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AVAnimations.GLOWING_AGONY_GUARD);
 
     public static final Function<Item, Builder> LEGENDARY_SWORD = (item) ->
