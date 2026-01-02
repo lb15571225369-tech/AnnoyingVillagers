@@ -10,6 +10,7 @@ import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
 import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
 import com.pla.annoyingvillagers.skill.EnderGlaiveSkill;
 import com.pla.annoyingvillagers.skill.EnderSlayerScytheSkill;
+import com.pla.annoyingvillagers.skill.ObsidianSledgeHammerSkill;
 import com.pla.annoyingvillagers.skill.WoopieTheSwordSkill;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
@@ -175,6 +176,17 @@ public class SpecialAttackOnKeyPressedProcedure {
             if (holdingItem.getItem().equals(AnnoyingVillagersModItems.OBSIDIAN_SLEDGEHAMMER.get())) {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
                     livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F);
+                    PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+                    if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
+                        SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.OBSIDIAN_SLEDGEHAMMER);
+                        if (skillContainer != null && skillContainer.getSkill() instanceof ObsidianSledgeHammerSkill obsidianSledgeHammerSkill) {
+                            if (skillContainer.getStack() >= 1) {
+                                ObsidianSledgehammerItem.triggerCircleWhenGroundHits(serverPlayerPatch, false);
+                                obsidianSledgeHammerSkill.getResourceType().consumer
+                                        .consume(skillContainer, serverPlayerPatch, obsidianSledgeHammerSkill.getDefaultConsumptionAmount(serverPlayerPatch));
+                            }
+                        }
+                    }
                     player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
                     return;
                 }

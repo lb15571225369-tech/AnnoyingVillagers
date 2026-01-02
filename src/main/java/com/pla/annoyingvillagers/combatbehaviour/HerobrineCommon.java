@@ -81,12 +81,6 @@ public class HerobrineCommon {
     }
 
     public static boolean canPerformGuarding(MobPatch<?> mobpatch) {
-        if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
-            if (herobrineMob instanceof SwordsmanHerobrineEntity && herobrineMob.getState() > 0) {
-                return false;
-            }
-            return true;
-        }
         return true;
     }
 

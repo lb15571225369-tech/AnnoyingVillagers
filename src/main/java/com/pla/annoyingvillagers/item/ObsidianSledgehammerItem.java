@@ -1,8 +1,10 @@
 package com.pla.annoyingvillagers.item;
 
 import com.pla.annoyingvillagers.entity.ObsidianSledgehammerHitEntity;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
+import com.pla.annoyingvillagers.task.DelayedTask;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -20,9 +22,11 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
+import yesman.epicfight.api.animation.AnimationPlayer;
 import yesman.epicfight.api.animation.Joint;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.api.utils.math.Vec3f;
+import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
@@ -88,7 +92,59 @@ public class ObsidianSledgehammerItem extends AxeItem {
         }
     }
 
-    public static void circleHit(Entity entity, BlockHitResult firstHit) {
+    public static void triggerCircleWhenGroundHits(ServerPlayerPatch serverPlayerPatch, boolean fillMiddle) {
+        if (serverPlayerPatch.getOriginal() == null) return;
+
+        Player player = serverPlayerPatch.getOriginal();
+        if (!player.level().isClientSide()) {
+            HerobrineWeaponEffectProcedure.execute(player.level(), player.getX(), player.getY(), player.getZ(), player);
+        }
+        AnimationPlayer animationPlayer = serverPlayerPatch.getAnimator().getPlayerFor(null);
+        if (animationPlayer == null) {
+            new DelayedTask(1) {
+                public void run(){
+                    triggerCircleWhenGroundHits(serverPlayerPatch, fillMiddle);
+                }
+            };
+            return;
+        }
+
+        float elapsedRaw = getElapsedRaw(animationPlayer);
+        if (elapsedRaw >= 0.58F) {
+            if (fillMiddle) {
+                serverPlayerPatch.playAnimationSynchronized(AVAnimations.SLEDGE_HAMMER_INNATE_DASH, 0.0F);
+            }
+            if (player.getMainHandItem().getItem() instanceof ObsidianSledgehammerItem) {
+                Vec3 tip = ObsidianSledgehammerItem.jointWorldPoint(
+                        serverPlayerPatch, new Vec3f(0, 0, -1.1f),
+                        Armatures.BIPED.get().toolR);
+
+                BlockHitResult blockHitResult = ObsidianSledgehammerItem.raycastDown(
+                        player.level(), tip.add(0, 0.25, 0), serverPlayerPatch, 8.0);
+
+                if (blockHitResult != null && !player.level().isClientSide()) {
+                    ObsidianSledgehammerItem.circleHit(player, blockHitResult, fillMiddle);
+                }
+            }
+            return;
+        }
+
+        new DelayedTask(1){
+            @Override public void run(){
+                triggerCircleWhenGroundHits(serverPlayerPatch, fillMiddle);
+            }
+        };
+    }
+
+    private static float getElapsedRaw(AnimationPlayer animationPlayer) {
+        try {
+            return (float) animationPlayer.getClass().getMethod("getElapsedTime").invoke(animationPlayer);
+        } catch (Exception e) {
+            return 0f;
+        }
+    }
+
+    public static void circleHit(Entity entity, BlockHitResult firstHit, boolean fillMiddle) {
         if (entity.level().isClientSide) return;
 
         Level level = entity.level();
@@ -113,10 +169,12 @@ public class ObsidianSledgehammerItem extends AxeItem {
         final double spacing = 1.0;
         final double dr = spacing * Math.sqrt(3.0) / 2.0;
 
-        spawnObsidianSpike(groundLocation.x, groundLocation.z, standingOnY, maxY, 0.0F, 0, entity);
+        if (fillMiddle) {
+            spawnObsidianSpike(groundLocation.x, groundLocation.z, standingOnY, maxY, 0.0F, 0, entity);
+        }
 
-        int ring = 1;
-        for (double r = dr; r <= rMax + 1e-6; r += dr, ring++) {
+        int ring = fillMiddle ? 1 : 2;
+        for (double r = fillMiddle ? dr : (dr * 2.0); r <= rMax + 1e-6; r += dr, ring++) {
             int n = Math.max(1, (int) Math.round((2.0 * Math.PI * r) / spacing));
             double offset = ((ring & 1) == 0) ? 0.0 : (Math.PI / n);
 

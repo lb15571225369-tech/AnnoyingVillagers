@@ -11,6 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import yesman.epicfight.api.animation.AnimationPlayer;
@@ -55,12 +56,9 @@ public class EnderAegisSkill extends WeaponInnateSkill {
 
     @Override
     public void executeOnServer(SkillContainer skillContainer, FriendlyByteBuf friendlyByteBuf) {
-        skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.ENDER_AEGIS_NAPOLEON_RELOAD_1, 0.0F);
-        skillContainer.getExecutor().playSound(AnnoyingVillagersModSounds.SECOND_FORM_RELEASE.get(), 0.0F, 0.0F);
-        if (skillContainer.isActivated()) {
-            this.cancelOnServer(skillContainer, friendlyByteBuf);
-            skillContainer.deactivate();
-        } else {
+        if (!skillContainer.isActivated()) {
+            skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.ENDER_AEGIS_NAPOLEON_RELOAD_1, 0.0F);
+            skillContainer.getExecutor().playSound(AnnoyingVillagersModSounds.SECOND_FORM_RELEASE.get(), 0.0F, 0.0F);
             super.executeOnServer(skillContainer, friendlyByteBuf);
             skillContainer.activate();
         }
@@ -68,8 +66,7 @@ public class EnderAegisSkill extends WeaponInnateSkill {
 
     @Override
     public boolean canExecute(SkillContainer container) {
-        if (container.isActivated()) return true;
-        return super.canExecute(container);
+        return !container.isActivated();
     }
 
     public void executeOnClient(SkillContainer container, FriendlyByteBuf args) {
@@ -90,17 +87,22 @@ public class EnderAegisSkill extends WeaponInnateSkill {
                     SkillContainer skillContainer = event.getPlayerPatch().getSkill(this);
                     ItemStack itemStack = event.getPlayerPatch().getOriginal().getMainHandItem();
                     if (skillContainer == null) return;
+
                     if (skillContainer.isActivated()
                             && itemStack.getTag() != null) {
                         event.setCanceled(true);
-                        skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.SHIELD_MAINHAND, 0.0F);
-                        ServerPlayer serverPlayer = event.getPlayerPatch().getOriginal();
-                        new DelayedTask(10) {
-                            @Override
-                            public void run() {
-                                EnderAegisItem.shieldShoot(serverPlayer.level(), serverPlayer);
-                            }
-                        };
+                        if (event.getPlayerPatch().getOriginal().getCooldowns().getCooldownPercent(itemStack.getItem(), 0) == 0) {
+                            skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.SHIELD_MAINHAND, 0.0F);
+                            ServerPlayer serverPlayer = event.getPlayerPatch().getOriginal();
+                            new DelayedTask(10) {
+                                @Override
+                                public void run() {
+                                    EnderAegisItem.shieldShoot(serverPlayer.level(), serverPlayer);
+                                    ItemCooldowns cooldowns = event.getPlayerPatch().getOriginal().getCooldowns();
+                                    cooldowns.addCooldown(itemStack.getItem(), 10);
+                                }
+                            };
+                        }
                     }
                 }
         );

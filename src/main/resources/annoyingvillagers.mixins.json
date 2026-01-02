@@ -23,7 +23,8 @@
     "IllagerMixin",
     "MobClashBladeMixin",
     "ClashBladeMixin",
-    "AbstractArrowMixin"
+    "AbstractArrowMixin",
+    "ItemCooldownsMixin"
   ],
   "client": [
   ],
