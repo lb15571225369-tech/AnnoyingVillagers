@@ -150,11 +150,11 @@ public class AVWeaponCapabilityPresets {
                     .canBePlacedOffhand(false)
                     .newStyleCombo(Styles.TWO_HAND,
                             AVAnimations.ENDER_SLAYER_ANTITHEUS_AUTO_2,
-                            AVAnimations.ENDER_SLAYER_ANTITHEUS_AUTO_3,
+                            AnimsAgony.AGONY_AUTO_1,
                             AVAnimations.ENDER_SLAYER_ANTITHEUS_AUTO_4,
-                            AnimsNapoleon.NAPOLEON_WATERLOW,
+                            AVAnimations.ENDER_SLAYER_SCYTHE_NAPOLEON_WATERLOW,
                             AVAnimations.ENDER_SLAYER_ANTITHEUS_AGRESSION,
-                            AnimsAgony.AGONY_CLAWSTRIKE,
+                            AVAnimations.ENDER_SLAYER_SCYTHE_ORBIT_MAD_REACH,
                             AVAnimations.ENDER_SLAYER_ANTITHEUS_GUILLOTINE)
                     .newStyleCombo(Styles.MOUNT,
                             Animations.SWORD_MOUNT_ATTACK)
@@ -179,9 +179,9 @@ public class AVWeaponCapabilityPresets {
                             WOMAnimations.TORMENT_AUTO_1,
                             WOMAnimations.TORMENT_AUTO_2,
                             AnimsSolar.SOLAR_AUTO_1,
-                            AnimsSolar.SOLAR_AUTO_4,
-                            AVAnimations.YELLOW_SOLAR_AUTO_2,
+                            AVAnimations.LEGENDARY_SWORD_AUTO_4,
                             AVAnimations.LEGENDARY_SWORD_WAKE_UP_ATTACK,
+                            AVAnimations.YELLOW_SOLAR_AUTO_2,
                             AVAnimations.YELLOW_NAPOLEON_AUTO_3,
                             AVAnimations.DEMONIAC_TORMENT_CHARGED_ATTACK_2,
                             AVAnimations.YELLOW_NAPOLEON_AUSTERLITZ_SHOOT,

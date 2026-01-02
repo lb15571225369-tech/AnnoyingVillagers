@@ -220,26 +220,27 @@ public class AngrySteveLegendarySword {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 6.0D)
-                                                                                            .animationBehavior(AnimsSolar.SOLAR_AUTO_4, 0.0F)
+                                                                                            .animationBehavior(AVAnimations.LEGENDARY_SWORD_AUTO_4, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                             .withinDistance(0.0D, 7.0D)
-                                                                                                            .animationBehavior(AVAnimations.YELLOW_SOLAR_AUTO_2, 0.0F)
+                                                                                                            .animationBehavior(AVAnimations.LEGENDARY_SWORD_WAKE_UP_ATTACK, 0.0F)
                                                                                                             .addNextBehavior(
                                                                                                                     Behavior.builder()
                                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                                             .withinDistance(0.0D, 7.0D)
-                                                                                                                            .animationBehavior(AVAnimations.LEGENDARY_SWORD_WAKE_UP_ATTACK, 0.0F).addNextBehavior(
+                                                                                                                            .animationBehavior(AVAnimations.YELLOW_SOLAR_AUTO_2, 0.0F)
+                                                                                                                            .addNextBehavior(
                                                                                                                                     Behavior.builder()
                                                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                                                             .withinDistance(0.0D, 7.0D)
                                                                                                                                             .animationBehavior(AVAnimations.YELLOW_NAPOLEON_AUTO_3, 0.0F)
-                                                                                                                                            .animationBehavior(AVAnimations.DEMONIAC_TORMENT_CHARGED_ATTACK_2, 0.0F).addNextBehavior(
+                                                                                                                                            .addNextBehavior(
                                                                                                                                                     Behavior.builder()
                                                                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                                                                             .withinDistance(0.0D, 7.0D)
-                                                                                                                                                            .animationBehavior(AVAnimations.YELLOW_NAPOLEON_AUTO_3, 0.0F)
+                                                                                                                                                            .animationBehavior(AVAnimations.DEMONIAC_TORMENT_CHARGED_ATTACK_2, 0.0F)
                                                                                                                                             )
                                                                                                                             )
                                                                                                             )
@@ -268,7 +269,7 @@ public class AngrySteveLegendarySword {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 7.0D)
-                                                                                            .animationBehavior(AnimsSolar.SOLAR_AUTO_4, 0.0F)
+                                                                                            .animationBehavior(AVAnimations.LEGENDARY_SWORD_AUTO_4, 0.0F)
                                                                             )
                                                             )
 

@@ -6,6 +6,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
+import com.pla.annoyingvillagers.util.TeamUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -52,11 +53,10 @@ public class ReaperHerobrineEntity extends HerobrineMob {
     private UUID enderDragonUUID;
     private boolean spawnEnderDragon = false;
     private int breathCooldown = 0;
-    private int nextStack = 3;
     private int dragonSummonCooldown = 3600;
 
-    public ReaperHerobrineEntity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.REAPER_HEROBRINE.get(), level);
+    public ReaperHerobrineEntity(SpawnEntity spawnEntity, Level level) {
+        this(AnnoyingVillagersModEntities.REAPER_HEROBRINE.get(), level);
     }
 
     public ReaperHerobrineEntity(EntityType<ReaperHerobrineEntity> entitytype, Level level) {
@@ -67,12 +67,8 @@ public class ReaperHerobrineEntity extends HerobrineMob {
         this.setCustomName(this.getDisplayName());
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
-        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.ENDER_SLAYER_SCYTHE.get()));
+        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(AnnoyingVillagersModItems.ENDER_SLAYER_SCYTHE.get()));
         this.setChatName(this.getDisplayName().getString());
-    }
-
-    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     public int getCooldownTicks() {
@@ -83,26 +79,6 @@ public class ReaperHerobrineEntity extends HerobrineMob {
         this.getPersistentData().putInt("DragonCooldown", ticks);
     }
 
-    public @NotNull MobType getMobType() {
-        return MobType.UNDEFINED;
-    }
-
-    public boolean removeWhenFarAway(double d0) {
-        return false;
-    }
-
-    public double getMyRidingOffset() {
-        return -0.35D;
-    }
-
-    public @NotNull SoundEvent getHurtSound(@NotNull DamageSource damagesource) {
-        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.hurt")));
-    }
-
-    public @NotNull SoundEvent getDeathSound() {
-        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.death")));
-    }
-
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
@@ -110,7 +86,6 @@ public class ReaperHerobrineEntity extends HerobrineMob {
             tag.putUUID("EnderDragonUUID", enderDragonUUID);
         }
         tag.putBoolean("SpawnEnderDragon", spawnEnderDragon);
-        tag.putInt("NextStack", nextStack);
         tag.putInt("DragonSummonCooldown", dragonSummonCooldown);
     }
 
@@ -121,17 +96,14 @@ public class ReaperHerobrineEntity extends HerobrineMob {
             enderDragonUUID = tag.getUUID("EnderDragonUUID");
         }
         spawnEnderDragon = tag.getBoolean("SpawnEnderDragon");
-        nextStack = tag.contains("NextStack") ? tag.getInt("NextStack") : nextStack;
         dragonSummonCooldown = tag.contains("DragonSummonCooldown") ? tag.getInt("DragonSummonCooldown") : dragonSummonCooldown;
     }
 
     private void spawnEnderDragon() {
-        if (this.level() instanceof ServerLevel levelaccessor) {
-            ServerLevel serverlevel = (ServerLevel) levelaccessor;
-
-            EnderDragon dragon = new EnderDragon(EntityType.ENDER_DRAGON, serverlevel);
+        if (this.level() instanceof ServerLevel serverLevel) {
+            EnderDragon dragon = new EnderDragon(EntityType.ENDER_DRAGON, serverLevel);
             dragon.moveTo(this.getX(), this.getY() + 20.0D, this.getZ(), new Random().nextFloat() * 360.0F, 0.0F);
-            dragon.finalizeSpawn(serverlevel, serverlevel.getCurrentDifficultyAt(dragon.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+            dragon.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(dragon.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
 
             dragon.setFightOrigin(BlockPos.containing(this.getX(), this.getY(), this.getZ()));
             dragon.getPhaseManager().setPhase(EnderDragonPhase.HOVERING);
@@ -139,33 +111,17 @@ public class ReaperHerobrineEntity extends HerobrineMob {
             dragon.addTag("av_dragon");
             dragon.getPersistentData().putUUID("herobrine_uuid", this.getUUID());
 
-            serverlevel.addFreshEntity(dragon);
-            try {
-                dragon.getServer().getCommands().getDispatcher().execute(
-                        "team join herobrine @s",
-                        dragon.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
-
-            }
+            serverLevel.addFreshEntity(dragon);
+            TeamUtil.addOrJoinTeam(dragon, "herobrine");
 
             this.enderDragonUUID = dragon.getUUID();
             this.enderDragon = dragon;
 
             if (this.level().getServer() != null) {
-                this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getChatName() + "> " +
+                Objects.requireNonNull(this.level().getServer()).getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getChatName() + "> " +
                         Component.translatable("subtitles.herobrine_summon").getString()), false);
             }
         }
-    }
-
-    @Override
-    public boolean doHurtTarget(Entity pEntity) {
-        if (!pEntity.level().isClientSide()) {
-            if (!this.getPersistentData().getBoolean("SecondForm")) {
-                this.getPersistentData().putInt("HitCount", (this.getPersistentData().contains("HitCount") ? this.getPersistentData().getInt("HitCount") : 0) + 1);
-            }
-        }
-        return super.doHurtTarget(pEntity);
     }
 
     @Override
@@ -197,7 +153,7 @@ public class ReaperHerobrineEntity extends HerobrineMob {
                 enderDragon = null;
                 enderDragonUUID = null;
                 if (this.level().getServer() != null) {
-                    this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getChatName() + ">  " +
+                    Objects.requireNonNull(this.level().getServer()).getPlayerList().broadcastSystemMessage(Component.literal("<" + this.getChatName() + ">  " +
                             Component.translatable("subtitles.reaper_herobrine_return_dragon").getString()), false);
                 }
                 dragonSummonCooldown = 3600;
@@ -215,30 +171,10 @@ public class ReaperHerobrineEntity extends HerobrineMob {
                 }
             }
             if (breathCooldown > 0) breathCooldown--;
-
-            if (this.getPersistentData().getBoolean("SecondForm")) {
-                HerobrineWeaponEffectProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
-                int cooldown = getCooldownTicks();
-                if (cooldown > 0) {
-                    setCooldownTicks(cooldown - 1);
-                } else {
-                    this.getPersistentData().remove("SecondForm");
+            if (this.tickCount % 20 == 0) {
+                if (this.getState() > 0) {
+                    HerobrineWeaponEffectProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
                 }
-            } else if (!this.getPersistentData().getBoolean("SecondForm") && this.getPersistentData().getInt("HitCount") >= nextStack) {
-                this.getPersistentData().putBoolean("SecondForm", true);
-                this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 2));
-                this.addEffect(new MobEffectInstance(MobEffects.JUMP, 200, 2));
-                setCooldownTicks(200);
-                this.getPersistentData().remove("HitCount");
-                nextStack = new Random().nextInt(3, 6);
-                playSound = true;
-            }
-        }
-        if (playSound) {
-            if (!this.level().isClientSide()) {
-                this.level().playSound(null, new BlockPos((int) this.getX(), (int) this.getY(), (int) this.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "second_form_release"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
-            } else {
-                this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "second_form_release"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
             }
         }
     }
@@ -276,20 +212,19 @@ public class ReaperHerobrineEntity extends HerobrineMob {
         super.remove(pReason);
     }
 
-    public void die(DamageSource damagesource) {
-        super.die(damagesource);
-        if (this.level() instanceof ServerLevel levelaccessor) {
-            ServerLevel serverlevel = (ServerLevel)levelaccessor;
-            EliteHerobrineKnockedEntity eliteHerobrineKnockedEntity = new EliteHerobrineKnockedEntity((EntityType) AnnoyingVillagersModEntities.ELITE_HEROBRINE_KNOCKED.get(), serverlevel);
+    public void die(@NotNull DamageSource damageSource) {
+        super.die(damageSource);
+        if (this.level() instanceof ServerLevel serverLevel) {
+            EliteHerobrineKnockedEntity eliteHerobrineKnockedEntity = new EliteHerobrineKnockedEntity(AnnoyingVillagersModEntities.ELITE_HEROBRINE_KNOCKED.get(), serverLevel);
 
-            eliteHerobrineKnockedEntity.moveTo(this.getX(), this.getY(), this.getZ(), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
+            eliteHerobrineKnockedEntity.moveTo(this.getX(), this.getY(), this.getZ(), serverLevel.getRandom().nextFloat() * 360.0F, 0.0F);
             eliteHerobrineKnockedEntity.getPersistentData().putString("FromElite", "EnderSlayerScythe");
-            eliteHerobrineKnockedEntity.finalizeSpawn(serverlevel, levelaccessor.getCurrentDifficultyAt(eliteHerobrineKnockedEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+            eliteHerobrineKnockedEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(eliteHerobrineKnockedEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
             this.remove(RemovalReason.KILLED);
-            levelaccessor.addFreshEntity(eliteHerobrineKnockedEntity);
+            serverLevel.addFreshEntity(eliteHerobrineKnockedEntity);
 
             if (this.getGregUUID() != null) {
-                Entity entity = levelaccessor.getEntity(this.getGregUUID());
+                Entity entity = serverLevel.getEntity(this.getGregUUID());
                 if (entity instanceof HerobrineGregEntity herobrineGregEntity && entity.isAlive()) {
                     herobrineGregEntity.requestProtect(eliteHerobrineKnockedEntity.getUUID(), eliteHerobrineKnockedEntity);
                 }
@@ -297,17 +232,13 @@ public class ReaperHerobrineEntity extends HerobrineMob {
         }
     }
 
-    public void baseTick() {
-        super.baseTick();
-    }
-
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();
 
-        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.35D);
-        builder = builder.add(Attributes.MAX_HEALTH, 230.0D);
-        builder = builder.add(Attributes.ARMOR, 20.0D);
-        builder = builder.add(Attributes.ATTACK_DAMAGE, 5.0D);
+        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.45D);
+        builder = builder.add(Attributes.MAX_HEALTH, 250.0D);
+        builder = builder.add(Attributes.ARMOR, 50.0D);
+        builder = builder.add(Attributes.ATTACK_DAMAGE, 4.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 48.0D);
         return builder;
     }
