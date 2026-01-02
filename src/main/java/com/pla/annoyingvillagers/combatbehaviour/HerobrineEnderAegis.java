@@ -188,19 +188,6 @@ public class HerobrineEnderAegis {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
-                            .weight(25)
-                            .maxCooldown(300)
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .withinDistance(0.0D, 5.0D)
-                                            .custom(HerobrineCommon::canPlaySecondFormAnimation)
-                                            .animationBehavior(AVAnimations.MOB_RAVANGER_CHARGE, 0.0F)
-                            )
-            )
-            .newBehaviorRoot(
-                    BehaviorRoot.builder()
-                            .priority(1.0D)
                             .weight(30.0D)
                             .addFirstBehavior(
                                     Behavior.builder()

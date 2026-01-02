@@ -96,11 +96,7 @@ public class SpecialAttackOnKeyPressedProcedure {
             ItemStack offHandItem = player.getOffhandItem();
             if (holdingItem.getItem().equals(AnnoyingVillagersModItems.ENDER_AEGIS.get())) {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
-                    if (holdingItem.getTag() != null && holdingItem.getTag().getBoolean("SecondForm")) {
-                        livingEntityPatch.playAnimationSynchronized(WOMAnimations.RAVANGER_CHARGE, 0.0F);
-                    } else {
-                        livingEntityPatch.playAnimationSynchronized(AVAnimations.ENDER_AEGIS_BULL_CHARGE, 0.0F);
-                    }
+                    livingEntityPatch.playAnimationSynchronized(AVAnimations.ENDER_AEGIS_BULL_CHARGE, 0.0F);
                     player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
                     return;
                 }
