@@ -17,7 +17,6 @@ import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -171,19 +170,25 @@ public class SpecialAttackOnKeyPressedProcedure {
             }
             if (holdingItem.getItem().equals(AnnoyingVillagersModItems.OBSIDIAN_SLEDGEHAMMER.get())) {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
-                    livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F);
+                    boolean success = false;
+
                     PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
                     if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
                         SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.OBSIDIAN_SLEDGEHAMMER);
                         if (skillContainer != null && skillContainer.getSkill() instanceof ObsidianSledgeHammerSkill obsidianSledgeHammerSkill) {
                             if (skillContainer.getStack() >= 1) {
+                                livingEntityPatch.playAnimationSynchronized(AVAnimations.LEGENDARY_SWORD_AUTO_4, 0.0F);
                                 ObsidianSledgehammerItem.triggerCircleWhenGroundHits(serverPlayerPatch, false);
                                 obsidianSledgeHammerSkill.getResourceType().consumer
                                         .consume(skillContainer, serverPlayerPatch, obsidianSledgeHammerSkill.getDefaultConsumptionAmount(serverPlayerPatch));
+                                success = true;
                             }
                         }
                     }
-                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
+                    if (!success) {
+                        livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F);
+                    }
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
                     return;
                 }
             }

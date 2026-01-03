@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.mobpatch;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import com.pla.annoyingvillagers.combatbehaviour.HerobrineEnderGlaive;
+import com.pla.annoyingvillagers.combatbehaviour.HerobrineEnderSlayerScythe;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -13,6 +14,7 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
 import net.shelmarow.combat_evolution.ai.iml.CustomExecuteEntity;
 import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
+import reascer.wom.gameasset.animations.weapons.AnimsEnderblaster;
 import yesman.epicfight.api.animation.AnimationManager.AnimationAccessor;
 import yesman.epicfight.api.animation.Animator;
 import yesman.epicfight.api.animation.LivingMotions;
@@ -54,17 +56,27 @@ public class ReaperHerobrinePatch extends CEHumanoidPatch implements CustomExecu
                                 Styles.TWO_HAND,
                                 Set.of(
                                         Pair.of(LivingMotions.BLOCK, AVAnimations.GLOWING_AGONY_GUARD),
-                                        Pair.of(LivingMotions.IDLE, AVAnimations.VALOUR_HOLD_GREATSWORD),
-                                        Pair.of(LivingMotions.WALK, AVAnimations.VALOUR_WALK_GREATSWORD),
-                                        Pair.of(LivingMotions.RUN, AVAnimations.VALOUR_RUN_GREATSWORD),
-                                        Pair.of(LivingMotions.CHASE, AVAnimations.VALOUR_RUN_GREATSWORD),
+                                        Pair.of(LivingMotions.IDLE, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE),
+                                        Pair.of(LivingMotions.WALK, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE),
+                                        Pair.of(LivingMotions.RUN, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE),
+                                        Pair.of(LivingMotions.CHASE, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                ),
+                                Styles.MOUNT,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, AVAnimations.GLOWING_AGONY_GUARD),
+                                        Pair.of(LivingMotions.IDLE, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE),
+                                        Pair.of(LivingMotions.WALK, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE),
+                                        Pair.of(LivingMotions.RUN, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE),
+                                        Pair.of(LivingMotions.CHASE, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE),
                                         Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
                                 )
                         ));
         this.weaponAttackMotions
                 .put(WeaponCategories.SPEAR,
                         ImmutableMap.of(
-                                Styles.TWO_HAND, HerobrineEnderGlaive.ENDER_GLAIVE
+                                Styles.TWO_HAND, HerobrineEnderSlayerScythe.ENDER_SLAYER_SCYTHE,
+                                Styles.MOUNT, HerobrineEnderSlayerScythe.ENDER_SLAYER_SCYTHE
                         ));
     }
 

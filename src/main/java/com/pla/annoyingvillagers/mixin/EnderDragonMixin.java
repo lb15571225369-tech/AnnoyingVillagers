@@ -19,7 +19,7 @@ public abstract class EnderDragonMixin {
     @Shadow public abstract BlockPos getFightOrigin();
 
     @Redirect(
-            method = "findClosestNode",
+            method = "findClosestNode()I",
             at = @At(
                     value = "NEW",
                     target = "net/minecraft/world/level/pathfinder/Node"
@@ -36,7 +36,7 @@ public abstract class EnderDragonMixin {
     }
 
     @Redirect(
-            method = "findClosestNode",
+            method = "findClosestNode()I",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/world/level/Level;getHeightmapPos(Lnet/minecraft/world/level/levelgen/Heightmap$Types;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/core/BlockPos;"
@@ -74,5 +74,21 @@ public abstract class EnderDragonMixin {
             int z = tag.getInt("av_fight_origin_z");
             this.fightOrigin = new BlockPos(x, y, z);
         }
+    }
+
+    @Redirect(
+            method = "findClosestNode()I",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/level/Level;getSeaLevel()I"
+            )
+    )
+    private int redirectSeaLevel(Level level) {
+        EnderDragon dragon = (EnderDragon)(Object)this;
+        if (!dragon.getTags().contains("av_dragon")) {
+            return level.getSeaLevel();
+        }
+        BlockPos origin = dragon.getFightOrigin();
+        return level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, origin).getY();
     }
 }

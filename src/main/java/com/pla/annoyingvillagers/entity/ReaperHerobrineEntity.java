@@ -1,33 +1,28 @@
 package com.pla.annoyingvillagers.entity;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
+import com.pla.annoyingvillagers.util.CombatBehaviour;
 import com.pla.annoyingvillagers.util.TeamUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.boss.EnderDragonPart;
@@ -35,12 +30,9 @@ import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.enderdragon.phases.EnderDragonPhase;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -99,6 +91,11 @@ public class ReaperHerobrineEntity extends HerobrineMob {
         dragonSummonCooldown = tag.contains("DragonSummonCooldown") ? tag.getInt("DragonSummonCooldown") : dragonSummonCooldown;
     }
 
+    @Override
+    public double getMyRidingOffset() {
+        return -2.5D;
+    }
+
     private void spawnEnderDragon() {
         if (this.level() instanceof ServerLevel serverLevel) {
             EnderDragon dragon = new EnderDragon(EntityType.ENDER_DRAGON, serverLevel);
@@ -127,7 +124,6 @@ public class ReaperHerobrineEntity extends HerobrineMob {
     @Override
     public void tick() {
         super.tick();
-        boolean playSound = false;
         if (!level().isClientSide) {
             if (!spawnEnderDragon) {
                 this.spawnEnderDragon = true;
@@ -170,6 +166,16 @@ public class ReaperHerobrineEntity extends HerobrineMob {
                     }
                 }
             }
+            if (this.getHealth() <= (float) 2 /3 * this.getMaxHealth() && enderDragon != null && !this.isPassenger()) {
+                enderDragon.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
+                this.startRiding(enderDragon);
+            }
+
+            if (enderDragon != null) {
+                LivingEntity target = this.getTarget();
+                if (target != null && target.isAlive()) enderDragon.setTarget(target);
+            }
+
             if (breathCooldown > 0) breathCooldown--;
             if (this.tickCount % 20 == 0) {
                 if (this.getState() > 0) {
@@ -201,6 +207,7 @@ public class ReaperHerobrineEntity extends HerobrineMob {
         if (damagesource.is(DamageTypes.WITHER_SKULL)) return false;
         if (damagesource.is(DamageTypes.DRAGON_BREATH)) return false;
         if (damagesource.getDirectEntity() instanceof AbstractArrow) return false;
+        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] took damage from {}", damagesource);
         return super.hurt(damagesource, f);
     }
 

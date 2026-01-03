@@ -265,6 +265,7 @@ public class AnnoyingVillagersModEntities {
         entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.SWORDSMAN_HEROBRINE.get(), (entity) -> SwordsmanHerobrinePatch::new);
         entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.GLAIVE_HEROBRINE.get(), (entity) -> GlaiveHerobrinePatch::new);
         entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.SLEDGEHAMMER_HEROBRINE.get(), (entity) -> SledgehammerHerobrinePatch::new);
+        entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.REAPER_HEROBRINE.get(), (entity) -> ReaperHerobrinePatch::new);
     }
 
     @SubscribeEvent
