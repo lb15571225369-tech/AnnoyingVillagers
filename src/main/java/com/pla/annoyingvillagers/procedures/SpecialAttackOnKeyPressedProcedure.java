@@ -205,7 +205,7 @@ public class SpecialAttackOnKeyPressedProcedure {
                                 && skillContainer.getSkill() instanceof EnderSlayerScytheSkill) {
                             Entity dragon = serverLevel.getEntity(player.getPersistentData().getUUID("DragonUUID"));
                             if (dragon instanceof HerobrineDragonEntity herobrineDragonEntity && herobrineDragonEntity.getPassengers().isEmpty()) {
-                                herobrineDragonEntity.startFlyThroughSummoner();
+                                herobrineDragonEntity.recallAndLand(true);
                                 success = true;
                             }
                         }

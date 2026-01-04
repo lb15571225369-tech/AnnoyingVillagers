@@ -14,7 +14,6 @@
 
 package com.pla.annoyingvillagers.entity;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.client.animation.DragonAnimator;
 import com.pla.annoyingvillagers.client.engine.MountCameraManager;
 import com.pla.annoyingvillagers.client.engine.MountControlsMessenger;
@@ -52,6 +51,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
@@ -59,11 +59,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import reascer.wom.world.entity.mob.EnderHand;
-import yesman.epicfight.skill.SkillContainer;
-import yesman.epicfight.skill.SkillSlots;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
-import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
-import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.capabilities.item.WeaponCapability;
 
@@ -110,12 +106,13 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
     private Vec3 breathHoverPos;
     private int breathHoverTimeToLiveTicks;
 
-    private boolean flyThroughActive = false;
-    private int flyThroughTicks = 0;
-    private int flyThroughMaxTicks = 0;
-    private int flyThroughCooldown = 0;
-    private double flyThroughSpeed = 0.0D;
-    private Vec3 flyThroughEnd = null;
+    private boolean recallActive = false;
+    private boolean recallAutoMount = false;
+    private Vec3 recallLandPos = null;
+
+    public boolean isRecallActive() {
+        return recallActive;
+    }
 
     public HerobrineDragonEntity(EntityType<? extends HerobrineDragonEntity> type, Level level)
     {
@@ -146,6 +143,7 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
     protected void registerGoals() // TODO: Much Smarter AI and features
     {
         goalSelector.addGoal(1, new FloatGoal(this));
+        goalSelector.addGoal(1, new RecallLandGoal(this));
         goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
         goalSelector.addGoal(3, new DragonOrbitLeaderGoal(this, 1.15, 20f, 50f, 180f));
         goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.85f));
@@ -238,10 +236,6 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
         navigation = flying ?
                 flyingNavigation :
                 groundNavigation;
-    }
-
-    public boolean isFlyThroughActive() {
-        return flyThroughActive;
     }
 
     @Override
@@ -344,68 +338,18 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
         serverLevel.addFreshEntity(beam);
     }
 
-    private void aimBodyAndHeadAt(Vec3 to, float maxYawStep, float maxPitchStep) {
-        Vec3 from = this.getEyePosition(1.0F);
+    public void recallAndLand(boolean autoMount) {
+        if (this.level().isClientSide()) return;
+        if (this.summoner == null || !this.summoner.isAlive()) return;
 
-        double dx = to.x - from.x;
-        double dz = to.z - from.z;
-        double dy = to.y - from.y;
-        double distXZ = Math.sqrt(dx * dx + dz * dz);
+        this.recallActive = true;
+        this.recallAutoMount = autoMount;
+        this.recallLandPos = null; // recompute when goal starts
 
-        float wantYaw   = (float)(Mth.atan2(dz, dx) * (180F / Math.PI)) - 90F;
-        float wantPitch = (float)(-(Mth.atan2(dy, distXZ) * (180F / Math.PI)));
-
-        float yaw   = Mth.approachDegrees(this.getYRot(), wantYaw, maxYawStep);
-        float pitch = Mth.approachDegrees(this.getXRot(), wantPitch, maxPitchStep);
-
-        this.setYRot(yaw);
-        this.setXRot(pitch);
-        this.setYHeadRot(yaw);
-        this.setYBodyRot(yaw);
-    }
-
-    public void startFlyThroughSummoner() {
-        if (level().isClientSide()) return;
-        if (flyThroughCooldown > 0) return;
-
-        if (!summoner.isAlive()) return;
-
+        // cancel breath hover if running
         this.breathHoverTimeToLiveTicks = 0;
         this.breathHoverTarget = null;
         this.breathHoverPos = null;
-
-        // force flight mode
-        if (!this.isFlying() && this.canFly()) this.liftOff();
-        this.setFlying(true);
-        this.setNavigation(true);
-        this.getNavigation().stop();
-        this.setNoGravity(true);
-
-        Vec3 from = this.getEyePosition(1.0F);
-        Vec3 target = summoner.getEyePosition(1.0F);
-
-        Vec3 dir = target.subtract(from);
-        if (dir.lengthSqr() < 1e-6) dir = this.getLookAngle();
-        dir = dir.normalize();
-
-        double passDistance = 12.0D * this.getScale(); // TUNE: how far past the player
-        this.flyThroughEnd = target.add(dir.scale(passDistance));
-
-        this.flyThroughActive = true;
-        this.flyThroughTicks = 0;
-        this.flyThroughMaxTicks = 45;
-        this.flyThroughSpeed = 2.2D;
-        this.flyThroughCooldown = 40;
-    }
-
-    private void stopFlyThrough() {
-        this.flyThroughActive = false;
-        this.flyThroughEnd = null;
-        this.flyThroughSpeed = 0.0D;
-        this.flyThroughTicks = 0;
-        this.flyThroughMaxTicks = 0;
-
-        this.setNoGravity(false);
     }
 
     private static boolean hasEnderSlayerScythe(Player p) {
@@ -438,34 +382,6 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
         super.tick();
         if (this.level() instanceof ServerLevel serverLevel)
         {
-            if (flyThroughCooldown > 0) flyThroughCooldown--;
-
-            if (flyThroughActive) {
-                flyThroughTicks++;
-
-                if (!this.summoner.isAlive() || flyThroughEnd == null) {
-                    stopFlyThrough();
-                } else {
-                    if (!this.isFlying() && this.canFly()) this.liftOff();
-                    this.setFlying(true);
-                    this.setNavigation(true);
-                    this.getNavigation().stop();
-                    this.setNoGravity(true);
-
-                    this.getMoveControl().setWantedPosition(
-                            flyThroughEnd.x, flyThroughEnd.y, flyThroughEnd.z,
-                            flyThroughSpeed
-                    );
-
-                    aimBodyAndHeadAt(flyThroughEnd, 25.0F, 18.0F);
-                    if (this.distanceToSqr(flyThroughEnd) < 9.0D || flyThroughTicks >= flyThroughMaxTicks) {
-                        stopFlyThrough();
-                        summoner.startRiding(this);
-                        navigation.stop();
-                    }
-                }
-            }
-
             if (breathHoverTimeToLiveTicks > 0) {
                 breathHoverTimeToLiveTicks--;
 
@@ -1037,5 +953,166 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
                 .add(KNOCKBACK_RESISTANCE, BASE_KB_RESISTANCE)
                 .add(ATTACK_DAMAGE, BASE_DAMAGE)
                 .add(FLYING_SPEED, BASE_SPEED_FLYING);
+    }
+
+    public void aimBodyAndHeadAt(Vec3 to, float maxYawStep, float maxPitchStep) {
+        Vec3 from = this.getEyePosition(1.0F);
+
+        double dx = to.x - from.x;
+        double dz = to.z - from.z;
+        double dy = to.y - from.y;
+        double distXZ = Math.sqrt(dx * dx + dz * dz);
+
+        float wantYaw   = (float)(Mth.atan2(dz, dx) * (180F / Math.PI)) - 90F;
+        float wantPitch = (float)(-(Mth.atan2(dy, distXZ) * (180F / Math.PI)));
+
+        float yaw   = Mth.approachDegrees(this.getYRot(), wantYaw, maxYawStep);
+        float pitch = Mth.approachDegrees(this.getXRot(), wantPitch, maxPitchStep);
+
+        this.setYRot(yaw);
+        this.setXRot(pitch);
+        this.setYHeadRot(yaw);
+        this.setYBodyRot(yaw);
+    }
+
+    private class RecallLandGoal extends Goal {
+        private final HerobrineDragonEntity dragon;
+
+        // 0 = go above landing point, 1 = descend
+        private int stage = 0;
+
+        public RecallLandGoal(HerobrineDragonEntity dragon) {
+            this.dragon = dragon;
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        }
+
+        @Override
+        public boolean canUse() {
+            return dragon.recallActive
+                    && dragon.summoner != null
+                    && dragon.summoner.isAlive()
+                    && !dragon.isPassenger()
+                    && !dragon.hasControllingPassenger();
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return canUse();
+        }
+
+        @Override
+        public void start() {
+            stage = 0;
+
+            if (dragon.level() instanceof ServerLevel serverLevel) {
+                dragon.recallLandPos = findLandingPosNearSummoner(serverLevel, dragon.summoner);
+            }
+
+            // force flight control
+            if (!dragon.isFlying() && dragon.canFly()) dragon.liftOff();
+            dragon.setFlying(true);
+            dragon.setNavigation(true);
+            dragon.getNavigation().stop();
+            dragon.setNoGravity(true);
+        }
+
+        @Override
+        public void stop() {
+            dragon.recallActive = false;
+            dragon.recallLandPos = null;
+            dragon.setNoGravity(false);
+            stage = 0;
+        }
+
+        @Override
+        public void tick() {
+            if (!(dragon.level() instanceof ServerLevel serverLevel)) {
+                stop();
+                return;
+            }
+
+            LivingEntity owner = dragon.summoner;
+            if (owner == null || !owner.isAlive()) {
+                stop();
+                return;
+            }
+
+            if (dragon.recallLandPos == null) {
+                dragon.recallLandPos = findLandingPosNearSummoner(serverLevel, owner);
+            }
+
+            Vec3 land = dragon.recallLandPos;
+
+            // Always keep control while recalling
+            dragon.getNavigation().stop();
+            dragon.setNoGravity(true);
+            if (!dragon.isFlying() && dragon.canFly()) dragon.liftOff();
+            dragon.setFlying(true);
+            dragon.setNavigation(true);
+
+            // Stage 0: go to a point above landing spot
+            double aboveY = Math.max(owner.getY() + 10.0, land.y + 10.0);
+            Vec3 above = new Vec3(land.x, aboveY, land.z);
+
+            if (stage == 0) {
+                dragon.getMoveControl().setWantedPosition(above.x, above.y, above.z, 1.8D);
+                dragon.aimBodyAndHeadAt(above, 25.0F, 18.0F);
+
+                // once close enough above -> descend
+                if (dragon.distanceToSqr(above) < 16.0D) { // 4 blocks
+                    stage = 1;
+                }
+                return;
+            }
+
+            // Stage 1: descend to landing position
+            dragon.getMoveControl().setWantedPosition(land.x, land.y, land.z, 1.2D);
+            dragon.aimBodyAndHeadAt(land, 18.0F, 12.0F);
+
+            boolean close = dragon.distanceToSqr(land) < 9.0D; // 3 blocks
+            if (close || dragon.onGround()) {
+                // finish landing
+                dragon.setNoGravity(false);
+                dragon.setDeltaMovement(Vec3.ZERO);
+
+                // optional automount
+                if (dragon.recallAutoMount && owner instanceof Player p) {
+                    p.startRiding(dragon, true);
+                }
+
+                // done
+                stop();
+            }
+        }
+
+        private Vec3 findLandingPosNearSummoner(ServerLevel level, LivingEntity owner) {
+            BlockPos base = owner.blockPosition();
+
+            for (int r = 0; r <= 3; r++) {
+                for (int dx = -r; dx <= r; dx++) {
+                    for (int dz = -r; dz <= r; dz++) {
+                        BlockPos col = base.offset(dx, 0, dz);
+                        int groundY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, col).getY();
+                        double x = col.getX() + 0.5;
+                        double y = groundY + 1.0;
+                        double z = col.getZ() + 0.5;
+
+                        AABB movedBox = dragon.getBoundingBox().move(
+                                x - dragon.getX(),
+                                y - dragon.getY(),
+                                z - dragon.getZ()
+                        );
+
+                        if (level.noCollision(dragon, movedBox) && !level.containsAnyLiquid(movedBox)) {
+                            return new Vec3(x, y, z);
+                        }
+                    }
+                }
+            }
+
+            BlockPos col = BlockPos.containing(owner.getX(), 0.0, owner.getZ());
+            int groundY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, col).getY();
+            return new Vec3(owner.getX(), groundY + 1.0, owner.getZ());
+        }
     }
 }
