@@ -24,9 +24,11 @@
     "MobClashBladeMixin",
     "ClashBladeMixin",
     "AbstractArrowMixin",
-    "ItemCooldownsMixin"
+    "ItemCooldownsMixin",
+    "EnsureSafeFlyingVehicleMixin"
   ],
   "client": [
+    "client.ModelPartMixin"
   ],
   "minVersion": "0.8"
 }

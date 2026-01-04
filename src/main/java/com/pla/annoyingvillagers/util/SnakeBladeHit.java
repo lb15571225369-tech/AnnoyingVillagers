@@ -1,3 +1,13 @@
+/*
+ * SPDX-License-Identifier: CC-BY-NC-ND-4.0
+ *
+ * Portions of this file are based on source code from "The Cataclysm"
+ * © MCL_Ender (mcl_ender). The Cataclysm assets are all rights reserved.
+ *
+ * The Cataclysm source code is licensed under Creative Commons
+ * Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0).
+ */
+
 package com.pla.annoyingvillagers.util;
 
 import com.pla.annoyingvillagers.capabilities.SnakeBladeCapability;
@@ -5,7 +15,6 @@ import com.pla.annoyingvillagers.entity.SnakeBladeEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModCapabilities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,8 +23,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;

@@ -82,11 +82,17 @@ public class AnnoyingVillagersModKeyMappings {
         }
     };
 
+    public static final KeyMapping DRAGON_FLIGHT_DESCENT_KEY = new KeyMapping(
+            "key.annoyingvillagers.dragon_flight_descent",
+            GLFW.GLFW_KEY_Z,
+            "key.categories.annoyingvillagers");
+
     @SubscribeEvent
     public static void registerKeyBindings(RegisterKeyMappingsEvent event) {
         event.register(AnnoyingVillagersModKeyMappings.KICK);
         event.register(AnnoyingVillagersModKeyMappings.WEAPONS_MORE_ATTACK);
         event.register(AnnoyingVillagersModKeyMappings.THROW_ENDER_PEARL);
+        event.register(AnnoyingVillagersModKeyMappings.DRAGON_FLIGHT_DESCENT_KEY);
     }
 
     @EventBusSubscriber({Dist.CLIENT})

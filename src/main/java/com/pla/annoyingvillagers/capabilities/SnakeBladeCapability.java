@@ -1,3 +1,13 @@
+/*
+ * SPDX-License-Identifier: CC-BY-NC-ND-4.0
+ *
+ * Portions of this file are based on source code from "The Cataclysm"
+ * © MCL_Ender (mcl_ender). The Cataclysm assets are all rights reserved.
+ *
+ * The Cataclysm source code is licensed under Creative Commons
+ * Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0).
+ */
+
 package com.pla.annoyingvillagers.capabilities;
 
 import java.util.UUID;
