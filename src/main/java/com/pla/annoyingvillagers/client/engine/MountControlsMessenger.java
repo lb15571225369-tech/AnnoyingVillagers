@@ -14,7 +14,7 @@
 
 package com.pla.annoyingvillagers.client.engine;
 
-import com.pla.annoyingvillagers.entity.HerobrineDragon;
+import com.pla.annoyingvillagers.entity.HerobrineDragonEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModKeyMappings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
@@ -44,7 +44,7 @@ public class MountControlsMessenger
         if (delay > 0)
         {
             var player = Minecraft.getInstance().player;
-            if (!(player.getVehicle() instanceof HerobrineDragon))
+            if (!(player.getVehicle() instanceof HerobrineDragonEntity))
             {
                 delay = 0;
                 return;

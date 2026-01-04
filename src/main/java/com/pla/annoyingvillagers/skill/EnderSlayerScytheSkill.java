@@ -1,16 +1,20 @@
 package com.pla.annoyingvillagers.skill;
 
-import com.pla.annoyingvillagers.entity.BabyEnderDragonEntity;
+import com.pla.annoyingvillagers.entity.HerobrineDragonEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.item.EnderSlayerScytheItem;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import yesman.epicfight.skill.SkillBuilder;
 import yesman.epicfight.skill.SkillContainer;
@@ -37,15 +41,16 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
 //                AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] : executeOnServer implement dragon shoot calling");
                 if (player.getPersistentData().contains("DragonUUID")) {
                     Entity entity = serverLevel.getEntity(player.getPersistentData().getUUID("DragonUUID"));
-                    if (entity instanceof BabyEnderDragonEntity babyEnderDragonEntity) {
-                        if (babyEnderDragonEntity.isShootingState()) {
-                            serverPlayerPatch.playAnimationSynchronized(AVAnimations.SWORD_SKILL, 0.0F);
-                            babyEnderDragonEntity.setShootingState(false);
-                        } else {
-                            serverPlayerPatch.playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_TOP, 0.0F);
-                            babyEnderDragonEntity.setShootingState(true);
-                            skillContainer.getExecutor().playSound(AnnoyingVillagersModSounds.SECOND_FORM_RELEASE.get(), 0.0F, 0.0F);
-                        }
+                    LivingEntity target = player.getLastHurtMob();
+                    if (target == null || !target.isAlive()) {
+                        target = player.getLastHurtByMob();
+                    }
+                    if (target == null || !target.isAlive()) {
+                        target = HerobrineDragonEntity.getNearestLivingEntity(player.level(), player, 40.0D);
+                    }
+                    if (entity instanceof HerobrineDragonEntity herobrineDragonEntity && target != null && target.isAlive()) {
+                        serverPlayerPatch.playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_TOP, 0.0F);
+                        herobrineDragonEntity.shootThunderBreathAtTarget(target);
                     }
                 }
             }
@@ -83,10 +88,9 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
         SkillContainer skillContainer = serverPlayerPatch.getSkill(this);
         if ((skillContainer == null || skillContainer != container) && player.getPersistentData().contains("DragonUUID")
                 && player.level() instanceof ServerLevel serverLevel) {
-//            AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] : updateContainer skill container swapped, removing dragon");
             Entity entity = serverLevel.getEntity(player.getPersistentData().getUUID("DragonUUID"));
-            if (entity instanceof BabyEnderDragonEntity babyEnderDragonEntity) {
-                babyEnderDragonEntity.discard();
+            if (entity instanceof HerobrineDragonEntity herobrineDragonEntity) {
+                herobrineDragonEntity.discard();
             }
         }
 
@@ -94,23 +98,23 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
             if (itemStack.getItem() instanceof EnderSlayerScytheItem && player.level() instanceof ServerLevel && player.getPersistentData().contains("DragonUUID")) {
 //                AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] : updateContainer dragon already spawned, check if dragon is not null");
                 Entity entity = serverLevel.getEntity(player.getPersistentData().getUUID("DragonUUID"));
-                if (!(entity instanceof BabyEnderDragonEntity)) {
-                    BabyEnderDragonEntity babyEnderDragonEntity = spawnBabyEnderDragon(player, serverLevel);
-                    if (babyEnderDragonEntity != null) {
-                        player.getPersistentData().putUUID("DragonUUID", babyEnderDragonEntity.getUUID());
+                if (!(entity instanceof HerobrineDragonEntity)) {
+                    HerobrineDragonEntity herobrineDragonEntity = spawnBabyEnderDragon(player, serverLevel);
+                    if (herobrineDragonEntity != null) {
+                        player.getPersistentData().putUUID("DragonUUID", herobrineDragonEntity.getUUID());
                     }
                 }
             } else if (itemStack.getItem() instanceof EnderSlayerScytheItem && !player.getPersistentData().contains("DragonUUID")) {
 //                AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] : updateContainer should spawn dragon here");
-                BabyEnderDragonEntity babyEnderDragonEntity = spawnBabyEnderDragon(player, serverLevel);
-                if (babyEnderDragonEntity != null) {
-                    player.getPersistentData().putUUID("DragonUUID", babyEnderDragonEntity.getUUID());
+                HerobrineDragonEntity herobrineDragonEntity = spawnBabyEnderDragon(player, serverLevel);
+                if (herobrineDragonEntity != null) {
+                    player.getPersistentData().putUUID("DragonUUID", herobrineDragonEntity.getUUID());
                 }
             } else if (!(itemStack.getItem() instanceof EnderSlayerScytheItem) && player.getPersistentData().contains("DragonUUID")) {
 //                AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] : updateContainer remove dragon tag and despawn here ?");
                 Entity entity = serverLevel.getEntity(player.getPersistentData().getUUID("DragonUUID"));
-                if (entity instanceof BabyEnderDragonEntity babyEnderDragonEntity) {
-                    babyEnderDragonEntity.discard();
+                if (entity instanceof HerobrineDragonEntity herobrineDragonEntity) {
+                    herobrineDragonEntity.discard();
                 }
                 player.getPersistentData().remove("DragonUUID");
             }
@@ -129,18 +133,44 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
                 .add(rightVec.scale(right));
     }
 
-    private BabyEnderDragonEntity spawnBabyEnderDragon(Player player, ServerLevel serverLevel) {
+    private static Vec3 findOrbitSpawnPos(ServerLevel level, Player player, HerobrineDragonEntity dragon,
+                                          float rMin, float rMax) {
+        RandomSource rng = level.getRandom();
+
+        for (int i = 0; i < 24; i++) {
+            double ang = rng.nextDouble() * (Math.PI * 2.0);
+            double r = Mth.nextDouble(rng, rMin, rMax);
+
+            double x = player.getX() + Math.cos(ang) * r;
+            double z = player.getZ() + Math.sin(ang) * r;
+
+            BlockPos col = BlockPos.containing(x, 0.0, z);
+            int groundY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, col).getY();
+
+            double y = Math.max(player.getY() + 12.0, groundY + 18.0);
+            y += Mth.nextDouble(rng, -2.0, 6.0);
+
+            y = Mth.clamp(y, level.getMinBuildHeight() + 6.0, level.getMaxBuildHeight() - 6.0);
+
+            dragon.moveTo(x, y, z, rng.nextFloat() * 360.0F, 0.0F);
+            AABB box = dragon.getBoundingBox();
+
+            if (level.noCollision(dragon, box) && !level.containsAnyLiquid(box)) {
+                return new Vec3(x, y, z);
+            }
+        }
+
+        return player.position().add(0.0, 20.0, 0.0);
+    }
+
+    private HerobrineDragonEntity spawnBabyEnderDragon(Player player, ServerLevel serverLevel) {
         if (!player.isAlive()) return null;
-        BabyEnderDragonEntity babyEnderDragonEntity = new BabyEnderDragonEntity(AnnoyingVillagersModEntities.BABY_ENDER_DRAGON.get(), serverLevel);
-        Vec3 posBehind3D = posBehind3D(player, 1.0D, 2.0D, 1.0D);
-        babyEnderDragonEntity.moveTo(
-                posBehind3D.x,
-                posBehind3D.y,
-                posBehind3D.z
-        );
-        babyEnderDragonEntity.setFollowTarget(player);
-        babyEnderDragonEntity.setFollowTargetUUID(player.getUUID());
-        serverLevel.addFreshEntity(babyEnderDragonEntity);
-        return babyEnderDragonEntity;
+        HerobrineDragonEntity herobrineDragonEntity = new HerobrineDragonEntity(AnnoyingVillagersModEntities.HEROBRINE_DRAGON.get(), serverLevel);
+        Vec3 spawnPos = findOrbitSpawnPos(serverLevel, player, herobrineDragonEntity, 20.0F, 50.0F);
+        herobrineDragonEntity.moveTo(spawnPos.x, spawnPos.y, spawnPos.z, serverLevel.getRandom().nextFloat() * 360.0F, 0.0F);
+        herobrineDragonEntity.setSummoner(player);
+        herobrineDragonEntity.setSummonerUUID(player.getUUID());
+        serverLevel.addFreshEntity(herobrineDragonEntity);
+        return herobrineDragonEntity;
     }
 }

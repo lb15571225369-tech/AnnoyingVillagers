@@ -14,16 +14,16 @@
 
 package com.pla.annoyingvillagers.util;
 
-import com.pla.annoyingvillagers.entity.HerobrineDragon;
+import com.pla.annoyingvillagers.entity.HerobrineDragonEntity;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 
 public class DragonMoveController extends MoveControl
 {
-    private final HerobrineDragon dragon;
+    private final HerobrineDragonEntity dragon;
 
-    public DragonMoveController(HerobrineDragon dragon)
+    public DragonMoveController(HerobrineDragonEntity dragon)
     {
         super(dragon);
         this.dragon = dragon;

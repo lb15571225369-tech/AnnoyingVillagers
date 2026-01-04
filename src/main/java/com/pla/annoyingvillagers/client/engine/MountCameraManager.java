@@ -14,7 +14,7 @@
 
 package com.pla.annoyingvillagers.client.engine;
 
-import com.pla.annoyingvillagers.entity.HerobrineDragon;
+import com.pla.annoyingvillagers.entity.HerobrineDragonEntity;
 import net.minecraft.client.Camera;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
@@ -37,7 +37,7 @@ public class MountCameraManager
     @SuppressWarnings("ConstantConditions") // player should never be null at time of calling
     public static void setMountCameraAngles(Camera camera)
     {
-        if (Minecraft.getInstance().player.getVehicle() instanceof HerobrineDragon && !Minecraft.getInstance().options.getCameraType().isFirstPerson())
+        if (Minecraft.getInstance().player.getVehicle() instanceof HerobrineDragonEntity && !Minecraft.getInstance().options.getCameraType().isFirstPerson())
         {
             camera.move(0, 4, 0);
             camera.move(-camera.getMaxZoom(6), 0, 0); // do distance calcs AFTER our new position is set

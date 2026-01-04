@@ -14,15 +14,15 @@
 
 package com.pla.annoyingvillagers.util;
 
-import com.pla.annoyingvillagers.entity.HerobrineDragon;
+import com.pla.annoyingvillagers.entity.HerobrineDragonEntity;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
 
 public class DragonBodyController extends BodyRotationControl
 {
-    private final HerobrineDragon dragon;
+    private final HerobrineDragonEntity dragon;
 
-    public DragonBodyController(HerobrineDragon dragon)
+    public DragonBodyController(HerobrineDragonEntity dragon)
     {
         super(dragon);
         this.dragon = dragon;

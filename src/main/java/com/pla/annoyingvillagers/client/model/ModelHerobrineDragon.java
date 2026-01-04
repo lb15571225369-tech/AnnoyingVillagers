@@ -22,7 +22,7 @@ import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.accessors.ModelPartAccess;
 import com.pla.annoyingvillagers.client.animation.DragonAnimator;
 import com.pla.annoyingvillagers.client.engine.ModelPartProxy;
-import com.pla.annoyingvillagers.entity.HerobrineDragon;
+import com.pla.annoyingvillagers.entity.HerobrineDragonEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -43,7 +43,7 @@ import java.util.NoSuchElementException;
  * @author Nico Bergemann <barracuda415 at yahoo.de>
  */
 @SuppressWarnings("UnnecessaryLocalVariable")
-public class ModelHerobrineDragon extends EntityModel<HerobrineDragon>
+public class ModelHerobrineDragon extends EntityModel<HerobrineDragonEntity>
 {
     public static final ModelLayerLocation LAYER_LOCATION =
             new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "modelherobrinedragon"), "main");
@@ -351,14 +351,14 @@ public class ModelHerobrineDragon extends EntityModel<HerobrineDragon>
     }
 
     @Override
-    public void prepareMobModel(HerobrineDragon dragon, float pLimbSwing, float pLimbSwingAmount, float pPartialTick)
+    public void prepareMobModel(HerobrineDragonEntity dragon, float pLimbSwing, float pLimbSwingAmount, float pPartialTick)
     {
         size = Math.min(dragon.getScale(), 1);
         dragon.getAnimator().setPartialTicks(pPartialTick);
     }
 
     @Override
-    public void setupAnim(HerobrineDragon dragon, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch)
+    public void setupAnim(HerobrineDragonEntity dragon, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch)
     {
         DragonAnimator animator = dragon.getAnimator();
         animator.setLook(pNetHeadYaw, pHeadPitch);

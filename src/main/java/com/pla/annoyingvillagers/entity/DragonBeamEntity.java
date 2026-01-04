@@ -21,7 +21,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.ClipContext.Block;
@@ -44,7 +43,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class DragonBeamEntity extends Entity {
-    public EnderDragon caster;
+    public HerobrineDragonEntity caster;
     public LivingEntity target;
     public double endPosX;
     public double endPosY;
@@ -84,7 +83,7 @@ public class DragonBeamEntity extends Entity {
 
     }
 
-    public DragonBeamEntity(EntityType<? extends DragonBeamEntity> type, Level world, EnderDragon caster, LivingEntity target, double x, double y, double z, int duration, int pow) {
+    public DragonBeamEntity(EntityType<? extends DragonBeamEntity> type, Level world, HerobrineDragonEntity caster, LivingEntity target, double x, double y, double z, int duration, int pow) {
         this(type, world);
         this.caster = caster;
         this.target = target;
@@ -317,7 +316,7 @@ public class DragonBeamEntity extends Entity {
         }
 
         if (this.tickCount == 1 && this.level().isClientSide) {
-            this.caster = (EnderDragon) this.level().getEntity(this.getCasterID());
+            this.caster = (HerobrineDragonEntity) this.level().getEntity(this.getCasterID());
             this.target = (LivingEntity) this.level().getEntity(this.getTargetID());
         }
 
@@ -329,7 +328,8 @@ public class DragonBeamEntity extends Entity {
         }
 
         if (this.caster != null) {
-            this.moveTo(caster.getX(), caster.getY() + caster.getBbHeight() * 0.6, caster.getZ());
+            Vec3 mouth = this.caster.beamMouthPos(1.0F);
+            this.setPos(mouth.x, mouth.y, mouth.z);
         }
 
         if (this.target != null && this.target.isAlive()) {
@@ -403,14 +403,13 @@ public class DragonBeamEntity extends Entity {
 
         if (this.isRenderable() && this.level().isClientSide() && !renderBeam && this.tickCount >= 3) {
             renderBeam = true;
-            Vec3 from = new Vec3(caster.head.getX(), caster.head.getEyeY(), caster.head.getZ());
-            Vec3 to = new Vec3(target.getX(), target.getY(), target.getZ());
+
+            Vec3 from = caster.beamMouthPos(1.0F);
+            Vec3 to = target.getEyePosition(1.0F);
 
             new DragonBeamParticleEmitterInfo(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "dragon_beam"))
                     .fromTo(from, to, DragonBeamParticleEmitterInfo.ForwardAxis.PLUS_Z, 0f)
-                    .follow(caster.head, target, 120,
-                            DragonBeamParticleEmitterInfo.ForwardAxis.PLUS_Z,
-                            0f)
+                    .follow(caster, target, 120, DragonBeamParticleEmitterInfo.ForwardAxis.PLUS_Z, 0f)
                     .spawnInWorld(caster.level(), null);
         }
 

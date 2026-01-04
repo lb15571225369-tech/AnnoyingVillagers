@@ -18,7 +18,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.client.model.ModelHerobrineDragon;
-import com.pla.annoyingvillagers.entity.HerobrineDragon;
+import com.pla.annoyingvillagers.entity.HerobrineDragonEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -30,7 +30,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class HerobrineDragonRenderer extends MobRenderer<HerobrineDragon, ModelHerobrineDragon> {
+public class HerobrineDragonRenderer extends MobRenderer<HerobrineDragonEntity, ModelHerobrineDragon> {
     private static final ResourceLocation BODY_TEXTURE =
             ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/herobrine_dragon/body.png");
     private static final ResourceLocation GLOW_TEXTURE =
@@ -47,25 +47,25 @@ public class HerobrineDragonRenderer extends MobRenderer<HerobrineDragon, ModelH
     }
 
     @Override
-    public boolean shouldRender(@NotNull HerobrineDragon dragon, @NotNull Frustum frustum,
+    public boolean shouldRender(@NotNull HerobrineDragonEntity dragon, @NotNull Frustum frustum,
                                 double camX, double camY, double camZ) {
         return super.shouldRender(dragon, frustum, camX, camY, camZ);
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull HerobrineDragon dragon) {
+    public @NotNull ResourceLocation getTextureLocation(@NotNull HerobrineDragonEntity dragon) {
         return BODY_TEXTURE;
     }
 
     // Let death layer handle rendering during death dissolve
     @Nullable
     @Override
-    protected RenderType getRenderType(HerobrineDragon entity, boolean visible, boolean invisToClient, boolean glowing) {
+    protected RenderType getRenderType(HerobrineDragonEntity entity, boolean visible, boolean invisToClient, boolean glowing) {
         return entity.deathTime > 0 ? null : super.getRenderType(entity, visible, invisToClient, glowing);
     }
 
     @Override
-    protected void setupRotations(@NotNull HerobrineDragon dragon, @NotNull PoseStack ps,
+    protected void setupRotations(@NotNull HerobrineDragonEntity dragon, @NotNull PoseStack ps,
                                   float ageInTicks, float yaw, float partialTicks) {
         super.setupRotations(dragon, ps, ageInTicks, yaw, partialTicks);
 
@@ -79,18 +79,18 @@ public class HerobrineDragonRenderer extends MobRenderer<HerobrineDragon, ModelH
     }
 
     @Override
-    protected float getFlipDegrees(@NotNull HerobrineDragon entity) {
+    protected float getFlipDegrees(@NotNull HerobrineDragonEntity entity) {
         return 0;
     }
 
-    private static class GlowLayer extends RenderLayer<HerobrineDragon, ModelHerobrineDragon> {
+    private static class GlowLayer extends RenderLayer<HerobrineDragonEntity, ModelHerobrineDragon> {
         public GlowLayer(HerobrineDragonRenderer parent) {
             super(parent);
         }
 
         @Override
         public void render(@NotNull PoseStack ps, @NotNull MultiBufferSource buffer, int light,
-                           @NotNull HerobrineDragon dragon,
+                           @NotNull HerobrineDragonEntity dragon,
                            float limbSwing, float limbSwingAmount, float partialTicks,
                            float ageInTicks, float netHeadYaw, float headPitch) {
             if (dragon.deathTime > 0) return;
@@ -102,14 +102,14 @@ public class HerobrineDragonRenderer extends MobRenderer<HerobrineDragon, ModelH
         }
     }
 
-    private static class DeathLayer extends RenderLayer<HerobrineDragon, ModelHerobrineDragon> {
+    private static class DeathLayer extends RenderLayer<HerobrineDragonEntity, ModelHerobrineDragon> {
         public DeathLayer(HerobrineDragonRenderer parent) {
             super(parent);
         }
 
         @Override
         public void render(@NotNull PoseStack ps, @NotNull MultiBufferSource buffer, int light,
-                           @NotNull HerobrineDragon dragon,
+                           @NotNull HerobrineDragonEntity dragon,
                            float limbSwing, float limbSwingAmount, float partialTicks,
                            float ageInTicks, float netHeadYaw, float headPitch) {
             if (dragon.deathTime <= 0) return;

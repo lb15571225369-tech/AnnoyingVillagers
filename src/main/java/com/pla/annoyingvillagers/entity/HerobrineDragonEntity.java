@@ -14,14 +14,17 @@
 
 package com.pla.annoyingvillagers.entity;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.client.animation.DragonAnimator;
 import com.pla.annoyingvillagers.client.engine.MountCameraManager;
 import com.pla.annoyingvillagers.client.engine.MountControlsMessenger;
+import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModKeyMappings;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.util.DragonBodyController;
-import com.pla.annoyingvillagers.util.DragonFollowOwnerGoal;
+import com.pla.annoyingvillagers.util.DragonOrbitLeaderGoal;
 import com.pla.annoyingvillagers.util.DragonMoveController;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -37,12 +40,14 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.player.Player;
@@ -57,6 +62,11 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
+import reascer.wom.world.entity.mob.EnderHand;
+import yesman.epicfight.skill.SkillContainer;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
+import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -72,7 +82,7 @@ import static net.minecraft.world.entity.ai.attributes.Attributes.*;
  * @author Kay9
  */
 @SuppressWarnings({"deprecation", "SameReturnValue"})
-public class HerobrineDragon extends TamableAnimal implements FlyingAnimal, PlayerRideable
+public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal, PlayerRideable
 {
     // base attributes
     public static final double BASE_SPEED_GROUND = 0.3; // actual speed varies from ground friction
@@ -97,7 +107,11 @@ public class HerobrineDragon extends TamableAnimal implements FlyingAnimal, Play
     private final GroundPathNavigation groundNavigation;
     private final FlyingPathNavigation flyingNavigation;
 
-    public HerobrineDragon(EntityType<? extends HerobrineDragon> type, Level level)
+    private LivingEntity breathHoverTarget;
+    private Vec3 breathHoverPos;
+    private int breathHoverTimeToLiveTicks;
+
+    public HerobrineDragonEntity(EntityType<? extends HerobrineDragonEntity> type, Level level)
     {
         super(type, level);
 
@@ -127,7 +141,7 @@ public class HerobrineDragon extends TamableAnimal implements FlyingAnimal, Play
     {
         goalSelector.addGoal(1, new FloatGoal(this));
         goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
-        goalSelector.addGoal(3, new DragonFollowOwnerGoal(this, 1f, 10f, 3.5f, 32f));
+        goalSelector.addGoal(3, new DragonOrbitLeaderGoal(this, 1.15, 20f, 50f, 180f));
         goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.85f));
         goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 16f));
         goalSelector.addGoal(6, new RandomLookAroundGoal(this));
@@ -227,36 +241,197 @@ public class HerobrineDragon extends TamableAnimal implements FlyingAnimal, Play
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }
 
+    public static LivingEntity getNearestLivingEntity(Level level, Entity sourceEntity, double range) {
+        AABB searchBox = sourceEntity.getBoundingBox().inflate(range);
+
+        return level.getNearestEntity(
+                level.getEntitiesOfClass(LivingEntity.class, searchBox,
+                        e -> e != sourceEntity
+                                && !(e instanceof HerobrineDragonEntity)
+                                && !(e instanceof EnderHand)
+                                && !e.isAlliedTo(sourceEntity)
+                                && e.isAlive()),
+                TargetingConditions.DEFAULT,
+                (LivingEntity) sourceEntity,
+                sourceEntity.getX(), sourceEntity.getY(), sourceEntity.getZ()
+        );
+    }
+
+    private void aimBodyAndHeadAt(LivingEntity target, float maxYawStep, float maxPitchStep) {
+        Vec3 from = this.getEyePosition(1.0F);
+        Vec3 to   = target.getEyePosition(1.0F);
+
+        double dx = to.x - from.x;
+        double dz = to.z - from.z;
+        double dy = to.y - from.y;
+        double distXZ = Math.sqrt(dx * dx + dz * dz);
+
+        float wantYaw   = (float)(Mth.atan2(dz, dx) * (180F / Math.PI)) - 90F;
+        float wantPitch = (float)(-(Mth.atan2(dy, distXZ) * (180F / Math.PI)));
+
+        float yaw   = Mth.approachDegrees(this.getYRot(), wantYaw, maxYawStep);
+        float pitch = Mth.approachDegrees(this.getXRot(), wantPitch, maxPitchStep);
+
+        this.setYRot(yaw);
+        this.setXRot(pitch);
+
+        this.setYHeadRot(yaw);
+        this.setYBodyRot(yaw);
+    }
+
+    public Vec3 beamMouthPos(float partial) {
+        Vec3 eye = new Vec3(
+                Mth.lerp(partial, this.xOld, this.getX()),
+                Mth.lerp(partial, this.yOld, this.getY()) + this.getEyeHeight(),
+                Mth.lerp(partial, this.zOld, this.getZ())
+        );
+
+        float headYaw   = Mth.lerp(partial, this.yHeadRotO, this.yHeadRot);
+        float headPitch = Mth.lerp(partial, this.xRotO, this.getXRot());
+        Vec3 look = Vec3.directionFromRotation(headPitch, headYaw);
+
+        double baseForward = Math.max(1.0, this.getBbWidth() * 0.7);
+
+        double extraForward = 5.2 * this.getScale();
+        double extraUp = 4.0 * this.getScale();
+
+        double forward = baseForward + extraForward;
+
+        return eye.add(look.scale(forward))
+                .add(0.0, extraUp, 0.0);
+    }
+
+    public void shootThunderBreathAtTarget(LivingEntity target) {
+        if (!(this.level() instanceof ServerLevel serverLevel)) return;
+        if (target == null || !target.isAlive()) return;
+
+        this.breathHoverTarget = target;
+
+        Vec3 position = this.position();
+        if (this.onGround()) position = position.add(0.0, 10.0, 0.0);
+        this.breathHoverPos = position;
+
+        this.breathHoverTimeToLiveTicks = 110;
+
+        this.getNavigation().stop();
+
+        if (!this.isFlying() && this.canFly()) this.liftOff();
+        this.setFlying(true);
+        this.setNavigation(true);
+
+        Vec3 mouth = this.getEyePosition()
+                .add(this.getLookAngle().scale(Math.max(1.0, this.getBbWidth() * 0.6)));
+
+        DragonBeamEntity beam = new DragonBeamEntity(
+                AnnoyingVillagersModEntities.DRAGON_BEAM.get(),
+                serverLevel,
+                this,
+                target,
+                mouth.x, mouth.y, mouth.z,
+                100, 2
+        );
+
+        serverLevel.addFreshEntity(beam);
+    }
+
     @Override
     public void tick()
     {
         super.tick();
 
+
         if (isServer())
         {
-            // heal randomly
-            if (isAlive() && getRandom().nextFloat() < 0.001) heal(1f);
-            if (summoner == null && summonerUUID != null) {
+            if (breathHoverTimeToLiveTicks > 0) {
+                breathHoverTimeToLiveTicks--;
+
+                if (breathHoverTarget != null && !breathHoverTarget.isAlive()) {
+                    breathHoverTarget = null;
+                }
+
+                if (!hasControllingPassenger() && !isPassenger() && !isLeashed()) {
+                    if (breathHoverPos == null) breathHoverPos = this.position();
+
+                    if (!this.isFlying() && this.canFly()) this.liftOff();
+                    this.setFlying(true);
+                    this.setNavigation(true);
+
+                    this.getNavigation().stop();
+                    this.setNoGravity(true);
+
+                    if (breathHoverTarget != null) {
+                        aimBodyAndHeadAt(breathHoverTarget, 10.0F, 6.0F);
+                    }
+
+                    double y = breathHoverPos.y + Math.sin((double) this.tickCount * 0.25) * 0.25;
+                    this.getMoveControl().setWantedPosition(breathHoverPos.x, y, breathHoverPos.z, 0.12D);
+
+                    Vec3 dv = this.getDeltaMovement();
+                    this.setDeltaMovement(dv.x * 0.2, dv.y * 0.6, dv.z * 0.2);
+                }
+
+                if (breathHoverTimeToLiveTicks <= 0) {
+                    this.setNoGravity(false);
+                    breathHoverTarget = null;
+                    breathHoverPos = null;
+                }
+            } else {
+                if (this.isNoGravity()) this.setNoGravity(false);
+            }
+
+            if (summoner == null && summonerUUID != null && this.level() instanceof ServerLevel serverLevel) {
                 Entity entity = ((ServerLevel) level()).getEntity(summonerUUID);
-                if (entity instanceof LivingEntity livingEntity) {
+                if (!(entity instanceof Player) && entity instanceof LivingEntity livingEntity) {
                     summoner = livingEntity;
                 } else {
-                    summonerUUID = null;
+                    var server = serverLevel.getServer();
+                    var serverPlayer = server.getPlayerList().getPlayer(summonerUUID);
+
+                    if (serverPlayer != null) {
+                        summoner = serverPlayer;
+                    }
                 }
             }
+
             if (summoner != null && !summoner.isAlive()) {
                 summoner = null;
                 summonerUUID = null;
+                this.discard();
             }
-            if (summoner != null && summoner.isAlive()) {
-                double distanceSq = this.distanceToSqr(summoner);
 
-                if (distanceSq > 600.0D) {
-                    this.teleportTo(
-                            summoner.getX(),
-                            summoner.getY(),
-                            summoner.getZ()
+            if (summoner != null && summoner.isAlive() && summoner instanceof Player player) {
+                if (summoner.getPersistentData().contains("DragonUUID")
+                        && !this.getUUID().equals(summoner.getPersistentData().getUUID("DragonUUID"))) {
+                    this.discard();
+                } else if (!summoner.getPersistentData().contains("DragonUUID")) {
+                    this.discard();
+                }
+
+                PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+                if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
+                    SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.ENDER_SLAYER_SCYTHE);
+                    if (skillContainer == null) {
+                        summoner.getPersistentData().remove("DragonUUID");
+                        this.discard();
+                    }
+                }
+            }
+
+            if (summoner != null && summoner.isAlive() && !isLeashed() && !isPassenger() && !hasControllingPassenger()) {
+                double distSqr = this.distanceToSqr(summoner);
+                double farDist = 320.0D;
+
+                if (distSqr > farDist * farDist) {
+                    if (!isFlying() && canFly()) liftOff();
+                    getNavigation().stop();
+
+                    double toY = Mth.clamp(
+                            summoner.getY() + 18.0D,
+                            level().getMinBuildHeight() + 6.0D,
+                            level().getMaxBuildHeight() - 6.0D
                     );
+
+                    getMoveControl().setWantedPosition(summoner.getX(), toY, summoner.getZ(), 1.8D);
                 }
             }
         }
@@ -264,11 +439,6 @@ public class HerobrineDragon extends TamableAnimal implements FlyingAnimal, Play
         {
             // update animations on the client
             animator.tick();
-
-            // because vanilla age does not increment on client...
-            int age = getAge();
-            if (age < 0) setAge(++age);
-            else if (age > 0) setAge(--age);
         }
 
         // update nearGround state when moving for flight and animation logic
@@ -386,7 +556,17 @@ public class HerobrineDragon extends TamableAnimal implements FlyingAnimal, Play
 
     public void liftOff()
     {
-        if (canFly()) jumpFromGround();
+        if (!canFly() || isInWater()) return;
+
+        Vec3 dv = this.getDeltaMovement();
+        if (this.onGround() || dv.y < 0.15D) {
+            this.setDeltaMovement(dv.x, 0.42D, dv.z);
+        }
+
+        this.setFlying(true);
+        if (this.isServer()) {
+            this.setNavigation(true);
+        }
     }
 
     @Override
@@ -421,7 +601,7 @@ public class HerobrineDragon extends TamableAnimal implements FlyingAnimal, Play
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return AnnoyingVillagersModSounds.DRAGON_AMBIENT_SOUND.get();
+        return SoundEvents.ENDER_DRAGON_AMBIENT;
     }
 
     @Nullable
@@ -447,11 +627,6 @@ public class HerobrineDragon extends TamableAnimal implements FlyingAnimal, Play
 
     @Override
     public @NotNull SoundEvent getEatingSound(@NotNull ItemStack itemStackIn)
-    {
-        return SoundEvents.GENERIC_EAT;
-    }
-
-    public SoundEvent getAttackSound()
     {
         return SoundEvents.GENERIC_EAT;
     }
@@ -496,28 +671,6 @@ public class HerobrineDragon extends TamableAnimal implements FlyingAnimal, Play
         return 2 - getScale();
     }
 
-    public boolean isFoodItem(ItemStack stack)
-    {
-        var food = stack.getItem().getFoodProperties(stack, this);
-        return food != null && food.isMeat();
-    }
-
-    public void tamedFor(Player player, boolean successful)
-    {
-        if (successful)
-        {
-            setTame(true);
-            navigation.stop();
-            setTarget(null);
-            setOwnerUUID(player.getUUID());
-            level().broadcastEntityEvent(this, (byte) 7);
-        }
-        else
-        {
-            level().broadcastEntityEvent(this, (byte) 6);
-        }
-    }
-
     public boolean isTamedFor(Player player)
     {
         return isTame() && isOwnedBy(player);
@@ -560,17 +713,6 @@ public class HerobrineDragon extends TamableAnimal implements FlyingAnimal, Play
         return false;
     }
 
-    @Override
-    @SuppressWarnings("ConstantConditions")
-    public boolean doHurtTarget(Entity entityIn)
-    {
-        boolean attacked = entityIn.hurt(damageSources().mobAttack(this), (float) getAttribute(ATTACK_DAMAGE).getValue());
-
-        if (attacked) doEnchantDamageEffects(this, entityIn);
-
-        return attacked;
-    }
-
     public void onWingsDown(float speed)
     {
         if (!isInWater())
@@ -584,14 +726,6 @@ public class HerobrineDragon extends TamableAnimal implements FlyingAnimal, Play
         }
     }
 
-    @Override
-    public void swing(@NotNull InteractionHand hand)
-    {
-        // play eating sound
-        playSound(getAttackSound(), 1, 0.7f);
-        super.swing(hand);
-    }
-
     /**
      * Called when the entity is attacked.
      */
@@ -599,10 +733,7 @@ public class HerobrineDragon extends TamableAnimal implements FlyingAnimal, Play
     public boolean hurt(@NotNull DamageSource src, float par2)
     {
         if (isInvulnerableTo(src)) return false;
-
-        // don't just sit there!
-        setOrderedToSit(false);
-
+        if (src.getEntity() == summoner) return false;
         return super.hurt(src, par2);
     }
 
@@ -613,7 +744,7 @@ public class HerobrineDragon extends TamableAnimal implements FlyingAnimal, Play
     public boolean canMate(@NotNull Animal mate)
     {
         if (mate == this) return false; // No. Just... no.
-        if (!(mate instanceof HerobrineDragon dragonMate)) return false;
+        if (!(mate instanceof HerobrineDragonEntity dragonMate)) return false;
         return isInLove() && mate.isInLove();
     }
 

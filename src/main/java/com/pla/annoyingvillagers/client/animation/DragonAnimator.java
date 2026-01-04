@@ -16,7 +16,7 @@ package com.pla.annoyingvillagers.client.animation;
 
 import com.pla.annoyingvillagers.accessors.ModelPartAccess;
 import com.pla.annoyingvillagers.client.model.ModelHerobrineDragon;
-import com.pla.annoyingvillagers.entity.HerobrineDragon;
+import com.pla.annoyingvillagers.entity.HerobrineDragonEntity;
 import com.pla.annoyingvillagers.util.CircularBuffer;
 import com.pla.annoyingvillagers.util.LerpedFloat;
 import net.minecraft.client.model.geom.ModelPart;
@@ -33,7 +33,7 @@ public class DragonAnimator
     // constants
     private static final int JAW_OPENING_TIME_FOR_ATTACK = 5;
 
-    private final HerobrineDragon dragon;
+    private final HerobrineDragonEntity dragon;
 
     // entity parameters
     private float partialTicks;
@@ -131,7 +131,7 @@ public class DragonAnimator
     // Y rotation angles for air, thigh only
     private final float[] yAirAll = {-0.1f, 0.1f};
 
-    public DragonAnimator(HerobrineDragon dragon)
+    public DragonAnimator(HerobrineDragonEntity dragon)
     {
         this.dragon = dragon;
     }

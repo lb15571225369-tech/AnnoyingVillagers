@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.client.emitterinfo;
 
+import com.pla.annoyingvillagers.entity.HerobrineDragonEntity;
 import mod.chloeprime.aaaparticles.api.common.DynamicParameter;
 import mod.chloeprime.aaaparticles.api.common.ParticleEmitterInfo;
 import net.minecraft.world.entity.boss.EnderDragonPart;
@@ -20,7 +21,7 @@ import java.util.Optional;
 public class DragonBeamParticleEmitterInfo extends ParticleEmitterInfo {
     public enum ForwardAxis { PLUS_Z, PLUS_Y }
 
-    private WeakReference<EnderDragonPart> casterRef = new WeakReference<>(null);
+    private WeakReference<HerobrineDragonEntity> casterRef = new WeakReference<>(null);
     private WeakReference<LivingEntity> targetRef = new WeakReference<>(null);
     private int durationTicks = 0;
     private ForwardAxis axis = ForwardAxis.PLUS_Z;
@@ -54,7 +55,7 @@ public class DragonBeamParticleEmitterInfo extends ParticleEmitterInfo {
         return this;
     }
 
-    public DragonBeamParticleEmitterInfo follow(EnderDragonPart caster, LivingEntity target, int durationTicks,
+    public DragonBeamParticleEmitterInfo follow(HerobrineDragonEntity caster, LivingEntity target, int durationTicks,
                                                 ForwardAxis axis, float extraRollRad) {
         this.casterRef = new WeakReference<>(caster);
         this.targetRef = new WeakReference<>(target);
@@ -98,6 +99,10 @@ public class DragonBeamParticleEmitterInfo extends ParticleEmitterInfo {
         }
     }
 
+    private static Vec3 mouthLerped(HerobrineDragonEntity herobrineDragonEntity, float partial) {
+        return herobrineDragonEntity.beamMouthPos(partial);
+    }
+
     @Override
     public void spawnInWorld(Level level, Player player) {
         if (NativePlatform.isRunningOnUnsupportedPlatform()) return;
@@ -108,12 +113,12 @@ public class DragonBeamParticleEmitterInfo extends ParticleEmitterInfo {
             if (this.hasParameters()) for (DynamicParameter p : this.parameters) em.setDynamicInput(p.index(), p.value());
             if (this.hasTriggers())    this.triggers.forEach(em::sendTrigger);
 
-            final EnderDragonPart caster0 = casterRef.get();
+            final HerobrineDragonEntity caster0 = casterRef.get();
             if (caster0 == null || !caster0.isAlive()) { em.stop(); return; }
             final int startTick = caster0.tickCount;
 
             // first frame
-            Vec3 from0 = new Vec3(caster0.getX(), caster0.getEyeY(), caster0.getZ());
+            Vec3 from0 = mouthLerped(caster0, 1.0F);
             LivingEntity t0 = targetRef.get();
             Vec3 to0 = (t0 != null && t0.isAlive())
                     ? new Vec3(t0.getX(), t0.getEyeY(), t0.getZ())
@@ -124,13 +129,13 @@ public class DragonBeamParticleEmitterInfo extends ParticleEmitterInfo {
             aim(em, from0, to0, axis, roll);
 
             em.addPreDrawCallback((Emitter, partial) -> {
-                EnderDragonPart c = casterRef.get();
+                HerobrineDragonEntity c = casterRef.get();
                 if (c == null || !c.isAlive()) { Emitter.stop(); return; }
                 if (durationTicks > 0 && (c.tickCount - startTick) >= durationTicks) {
                     Emitter.stop(); return;
                 }
 
-                Vec3 from = eyeLerped(c, partial);
+                Vec3 from = mouthLerped(c, partial);
                 LivingEntity t = targetRef.get();
                 Vec3 to;
                 if (t != null && t.isAlive()) {
