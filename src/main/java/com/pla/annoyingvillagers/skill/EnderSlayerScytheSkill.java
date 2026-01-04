@@ -81,56 +81,23 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
     @Override
     public void updateContainer(SkillContainer container) {
         super.updateContainer(container);
-        Player player = container.getExecutor().getOriginal();
-        ItemStack itemStack = player.getMainHandItem();
         if (container.getExecutor().isLogicalClient()) return;
+
         ServerPlayerPatch serverPlayerPatch = container.getServerExecutor();
-        SkillContainer skillContainer = serverPlayerPatch.getSkill(this);
-        if ((skillContainer == null || skillContainer != container) && player.getPersistentData().contains("DragonUUID")
-                && player.level() instanceof ServerLevel serverLevel) {
-            Entity entity = serverLevel.getEntity(player.getPersistentData().getUUID("DragonUUID"));
-            if (entity instanceof HerobrineDragonEntity herobrineDragonEntity) {
-                herobrineDragonEntity.discard();
-            }
+        Player player = serverPlayerPatch.getOriginal();
+        if (!(player.level() instanceof ServerLevel serverLevel)) return;
+
+        if (player.tickCount % 5 != 0) return;
+
+        ItemStack main = player.getMainHandItem();
+        if (!(main.getItem() instanceof EnderSlayerScytheItem)) {
+            return;
         }
 
-        if (player.tickCount % 5 == 0 && player.level() instanceof ServerLevel serverLevel) {
-            if (itemStack.getItem() instanceof EnderSlayerScytheItem && player.level() instanceof ServerLevel && player.getPersistentData().contains("DragonUUID")) {
-//                AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] : updateContainer dragon already spawned, check if dragon is not null");
-                Entity entity = serverLevel.getEntity(player.getPersistentData().getUUID("DragonUUID"));
-                if (!(entity instanceof HerobrineDragonEntity)) {
-                    HerobrineDragonEntity herobrineDragonEntity = spawnBabyEnderDragon(player, serverLevel);
-                    if (herobrineDragonEntity != null) {
-                        player.getPersistentData().putUUID("DragonUUID", herobrineDragonEntity.getUUID());
-                    }
-                }
-            } else if (itemStack.getItem() instanceof EnderSlayerScytheItem && !player.getPersistentData().contains("DragonUUID")) {
-//                AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] : updateContainer should spawn dragon here");
-                HerobrineDragonEntity herobrineDragonEntity = spawnBabyEnderDragon(player, serverLevel);
-                if (herobrineDragonEntity != null) {
-                    player.getPersistentData().putUUID("DragonUUID", herobrineDragonEntity.getUUID());
-                }
-            } else if (!(itemStack.getItem() instanceof EnderSlayerScytheItem) && player.getPersistentData().contains("DragonUUID")) {
-//                AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] : updateContainer remove dragon tag and despawn here ?");
-                Entity entity = serverLevel.getEntity(player.getPersistentData().getUUID("DragonUUID"));
-                if (entity instanceof HerobrineDragonEntity herobrineDragonEntity) {
-                    herobrineDragonEntity.discard();
-                }
-                player.getPersistentData().remove("DragonUUID");
-            }
+        if (!player.getPersistentData().contains("DragonUUID")) {
+            HerobrineDragonEntity herobrineDragonEntity = spawnBabyEnderDragon(player, serverLevel);
+            if (herobrineDragonEntity != null) player.getPersistentData().putUUID("DragonUUID", herobrineDragonEntity.getUUID());
         }
-    }
-
-    private static Vec3 posBehind3D(Player p, double back, double up, double right) {
-        Vec3 look = p.getLookAngle().normalize();
-        Vec3 forwardXZ = new Vec3(look.x, 0, look.z);
-        if (forwardXZ.lengthSqr() < 1e-6) forwardXZ = new Vec3(-Mth.sin(p.getYRot() * ((float)Math.PI/180F)), 0, Mth.cos(p.getYRot() * ((float)Math.PI/180F)));
-        forwardXZ = forwardXZ.normalize();
-        Vec3 rightVec = new Vec3(-forwardXZ.z, 0, forwardXZ.x);
-        return p.position()
-                .subtract(look.scale(back))
-                .add(0, up, 0)
-                .add(rightVec.scale(right));
     }
 
     private static Vec3 findOrbitSpawnPos(ServerLevel level, Player player, HerobrineDragonEntity dragon,

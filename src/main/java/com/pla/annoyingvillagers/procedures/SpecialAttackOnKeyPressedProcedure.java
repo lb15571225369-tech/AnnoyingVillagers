@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.procedures;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.BabyEnderDragonEntity;
+import com.pla.annoyingvillagers.entity.HerobrineDragonEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
@@ -198,19 +199,14 @@ public class SpecialAttackOnKeyPressedProcedure {
                     PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
                     if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
                         SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.ENDER_SLAYER_SCYTHE);
-                        if (skillContainer != null && skillContainer.getStack() == 5
+                        if (skillContainer != null
                                 && entity.getPersistentData().contains("DragonUUID")
                                 && entity.level() instanceof ServerLevel serverLevel
                                 && skillContainer.getSkill() instanceof EnderSlayerScytheSkill) {
                             Entity dragon = serverLevel.getEntity(player.getPersistentData().getUUID("DragonUUID"));
-                            if (dragon instanceof BabyEnderDragonEntity babyEnderDragonEntity) {
-                                LivingEntity near = BabyEnderDragonEntity.getNearestLivingEntity(entity.level(), entity, 15.0D);
-                                if (near != null) {
-                                    Skill.setSkillStackSynchronize(skillContainer, 0);
-                                    Skill.setSkillConsumptionSynchronize(skillContainer, 0.0F);
-                                    babyEnderDragonEntity.summonBeam();
-                                    success = true;
-                                }
+                            if (dragon instanceof HerobrineDragonEntity herobrineDragonEntity && herobrineDragonEntity.getPassengers().isEmpty()) {
+                                herobrineDragonEntity.startFlyThroughSummoner();
+                                success = true;
                             }
                         }
                     }

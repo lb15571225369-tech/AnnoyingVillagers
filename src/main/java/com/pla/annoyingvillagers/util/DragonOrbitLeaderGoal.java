@@ -98,6 +98,7 @@ public class DragonOrbitLeaderGoal extends Goal {
         if (dragon.isPassenger()) return false;
         if (dragon.hasControllingPassenger()) return false;
         if (dragon.isOrderedToSit() && dragon.getSummoner() == null) return false;
+        if (dragon.isFlyThroughActive()) return false;
 
         leader = resolved;
         return true;

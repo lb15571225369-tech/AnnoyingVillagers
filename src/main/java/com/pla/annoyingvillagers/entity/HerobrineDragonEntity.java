@@ -14,15 +14,14 @@
 
 package com.pla.annoyingvillagers.entity;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.client.animation.DragonAnimator;
 import com.pla.annoyingvillagers.client.engine.MountCameraManager;
 import com.pla.annoyingvillagers.client.engine.MountControlsMessenger;
-import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModKeyMappings;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
+import com.pla.annoyingvillagers.item.EnderSlayerScytheItem;
 import com.pla.annoyingvillagers.util.DragonBodyController;
 import com.pla.annoyingvillagers.util.DragonOrbitLeaderGoal;
 import com.pla.annoyingvillagers.util.DragonMoveController;
@@ -37,10 +36,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
@@ -64,9 +60,12 @@ import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import reascer.wom.world.entity.mob.EnderHand;
 import yesman.epicfight.skill.SkillContainer;
+import yesman.epicfight.skill.SkillSlots;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
+import yesman.epicfight.world.capabilities.item.CapabilityItem;
+import yesman.epicfight.world.capabilities.item.WeaponCapability;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -110,6 +109,13 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
     private LivingEntity breathHoverTarget;
     private Vec3 breathHoverPos;
     private int breathHoverTimeToLiveTicks;
+
+    private boolean flyThroughActive = false;
+    private int flyThroughTicks = 0;
+    private int flyThroughMaxTicks = 0;
+    private int flyThroughCooldown = 0;
+    private double flyThroughSpeed = 0.0D;
+    private Vec3 flyThroughEnd = null;
 
     public HerobrineDragonEntity(EntityType<? extends HerobrineDragonEntity> type, Level level)
     {
@@ -234,6 +240,10 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
                 groundNavigation;
     }
 
+    public boolean isFlyThroughActive() {
+        return flyThroughActive;
+    }
+
     @Override
     public @NotNull SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor pLevel, @NotNull DifficultyInstance pDifficulty, @NotNull MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @org.jetbrains.annotations.Nullable CompoundTag pDataTag) {
         setAge(0);
@@ -334,14 +344,128 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
         serverLevel.addFreshEntity(beam);
     }
 
+    private void aimBodyAndHeadAt(Vec3 to, float maxYawStep, float maxPitchStep) {
+        Vec3 from = this.getEyePosition(1.0F);
+
+        double dx = to.x - from.x;
+        double dz = to.z - from.z;
+        double dy = to.y - from.y;
+        double distXZ = Math.sqrt(dx * dx + dz * dz);
+
+        float wantYaw   = (float)(Mth.atan2(dz, dx) * (180F / Math.PI)) - 90F;
+        float wantPitch = (float)(-(Mth.atan2(dy, distXZ) * (180F / Math.PI)));
+
+        float yaw   = Mth.approachDegrees(this.getYRot(), wantYaw, maxYawStep);
+        float pitch = Mth.approachDegrees(this.getXRot(), wantPitch, maxPitchStep);
+
+        this.setYRot(yaw);
+        this.setXRot(pitch);
+        this.setYHeadRot(yaw);
+        this.setYBodyRot(yaw);
+    }
+
+    public void startFlyThroughSummoner() {
+        if (level().isClientSide()) return;
+        if (flyThroughCooldown > 0) return;
+
+        if (!summoner.isAlive()) return;
+
+        this.breathHoverTimeToLiveTicks = 0;
+        this.breathHoverTarget = null;
+        this.breathHoverPos = null;
+
+        // force flight mode
+        if (!this.isFlying() && this.canFly()) this.liftOff();
+        this.setFlying(true);
+        this.setNavigation(true);
+        this.getNavigation().stop();
+        this.setNoGravity(true);
+
+        Vec3 from = this.getEyePosition(1.0F);
+        Vec3 target = summoner.getEyePosition(1.0F);
+
+        Vec3 dir = target.subtract(from);
+        if (dir.lengthSqr() < 1e-6) dir = this.getLookAngle();
+        dir = dir.normalize();
+
+        double passDistance = 12.0D * this.getScale(); // TUNE: how far past the player
+        this.flyThroughEnd = target.add(dir.scale(passDistance));
+
+        this.flyThroughActive = true;
+        this.flyThroughTicks = 0;
+        this.flyThroughMaxTicks = 45;
+        this.flyThroughSpeed = 2.2D;
+        this.flyThroughCooldown = 40;
+    }
+
+    private void stopFlyThrough() {
+        this.flyThroughActive = false;
+        this.flyThroughEnd = null;
+        this.flyThroughSpeed = 0.0D;
+        this.flyThroughTicks = 0;
+        this.flyThroughMaxTicks = 0;
+
+        this.setNoGravity(false);
+    }
+
+    private static boolean hasEnderSlayerScythe(Player p) {
+        for (ItemStack s : p.getInventory().items) {
+            if (s.getItem() instanceof EnderSlayerScytheItem) return true;
+        }
+        for (ItemStack s : p.getInventory().offhand) {
+            if (s.getItem() instanceof EnderSlayerScytheItem) return true;
+        }
+        return false;
+    }
+
+    private static boolean isAllowedHeldCategory(Player p) {
+        ItemStack main = p.getMainHandItem();
+
+        if (main.getItem() instanceof EnderSlayerScytheItem) return true;
+
+        CapabilityItem cap = EpicFightCapabilities.getItemStackCapability(main);
+        if (!(cap instanceof WeaponCapability weaponCap)) return true;
+
+        var cat = weaponCap.getWeaponCategory();
+        return cat == CapabilityItem.WeaponCategories.FIST
+                || cat == CapabilityItem.WeaponCategories.RANGED
+                || cat == CapabilityItem.WeaponCategories.NOT_WEAPON;
+    }
+
     @Override
     public void tick()
     {
         super.tick();
-
-
-        if (isServer())
+        if (this.level() instanceof ServerLevel serverLevel)
         {
+            if (flyThroughCooldown > 0) flyThroughCooldown--;
+
+            if (flyThroughActive) {
+                flyThroughTicks++;
+
+                if (!this.summoner.isAlive() || flyThroughEnd == null) {
+                    stopFlyThrough();
+                } else {
+                    if (!this.isFlying() && this.canFly()) this.liftOff();
+                    this.setFlying(true);
+                    this.setNavigation(true);
+                    this.getNavigation().stop();
+                    this.setNoGravity(true);
+
+                    this.getMoveControl().setWantedPosition(
+                            flyThroughEnd.x, flyThroughEnd.y, flyThroughEnd.z,
+                            flyThroughSpeed
+                    );
+
+                    aimBodyAndHeadAt(flyThroughEnd, 25.0F, 18.0F);
+                    if (this.distanceToSqr(flyThroughEnd) < 9.0D || flyThroughTicks >= flyThroughMaxTicks) {
+                        stopFlyThrough();
+                        summoner.startRiding(this);
+                        navigation.stop();
+                    }
+                }
+            }
+
             if (breathHoverTimeToLiveTicks > 0) {
                 breathHoverTimeToLiveTicks--;
 
@@ -379,7 +503,7 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
                 if (this.isNoGravity()) this.setNoGravity(false);
             }
 
-            if (summoner == null && summonerUUID != null && this.level() instanceof ServerLevel serverLevel) {
+            if (summoner == null && summonerUUID != null) {
                 Entity entity = ((ServerLevel) level()).getEntity(summonerUUID);
                 if (!(entity instanceof Player) && entity instanceof LivingEntity livingEntity) {
                     summoner = livingEntity;
@@ -403,17 +527,16 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
                 if (summoner.getPersistentData().contains("DragonUUID")
                         && !this.getUUID().equals(summoner.getPersistentData().getUUID("DragonUUID"))) {
                     this.discard();
+                    return;
                 } else if (!summoner.getPersistentData().contains("DragonUUID")) {
                     this.discard();
+                    return;
                 }
 
-                PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
-                if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
-                    SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.ENDER_SLAYER_SCYTHE);
-                    if (skillContainer == null) {
-                        summoner.getPersistentData().remove("DragonUUID");
-                        this.discard();
-                    }
+                if (!hasEnderSlayerScythe(player) || !isAllowedHeldCategory(player)) {
+                    player.getPersistentData().remove("DragonUUID");
+                    this.discard();
+                    return;
                 }
             }
 
@@ -451,7 +574,7 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
             setFlying(flying);
 
             // update pathfinding method
-            if (isServer()) setNavigation(flying);
+            if (!this.level().isClientSide()) setNavigation(flying);
         }
     }
 
@@ -526,34 +649,6 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
         return (float) getAttributeValue(isFlying()? FLYING_SPEED : MOVEMENT_SPEED);
     }
 
-    @Override
-    public @NotNull InteractionResult mobInteract(Player player, @NotNull InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
-
-        InteractionResult itemRes = stack.interactLivingEntity(player, this, hand);
-        if (itemRes.consumesAction()) return itemRes;
-
-        if (player.isSecondaryUseActive() && isTamedFor(player)) {
-            if (!level().isClientSide) {
-                navigation.stop();
-                setOrderedToSit(!isOrderedToSit());
-                if (isOrderedToSit()) setTarget(null);
-            }
-            return InteractionResult.sidedSuccess(level().isClientSide);
-        }
-
-        if (!level().isClientSide) {
-            player.startRiding(this);
-            setSummoner(player);
-            navigation.stop();
-            setTarget(null);
-        }
-
-        setOrderedToSit(false);
-        setInSittingPose(false);
-        return InteractionResult.sidedSuccess(level().isClientSide);
-    }
-
     public void liftOff()
     {
         if (!canFly() || isInWater()) return;
@@ -564,7 +659,7 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
         }
 
         this.setFlying(true);
-        if (this.isServer()) {
+        if (!this.level().isClientSide()) {
             this.setNavigation(true);
         }
     }
@@ -881,12 +976,6 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
     public boolean isBaby()
     {
         return false;
-    }
-
-    // simple helper method to determine if we're on the server thread.
-    public boolean isServer()
-    {
-        return !level().isClientSide;
     }
 
     public DragonAnimator getAnimator()

@@ -1673,7 +1673,7 @@ public class AVAnimations {
                         .addProperty(ActionAnimationProperty.MOVE_VERTICAL, true)
                         .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(1.2F, 2.25F)).addStateRemoveOld(EntityState.CAN_SKILL_EXECUTION, true).newTimePair(0.0F, 0.85F).addState(EntityState.CAN_SKILL_EXECUTION, false)
                         .addEvents(new AnimationEvent[]{
-                                AnimationEvent.InTimeEvent.create(1.0F, (livingEntityPatch, self, p) -> {
+                                AnimationEvent.InTimeEvent.create(2.0F, (livingEntityPatch, self, p) -> {
                                     if (!livingEntityPatch.isLogicalClient()) {
                                         livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
                                     }
