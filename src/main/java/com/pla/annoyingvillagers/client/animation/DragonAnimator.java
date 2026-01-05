@@ -17,10 +17,10 @@ package com.pla.annoyingvillagers.client.animation;
 import com.pla.annoyingvillagers.accessors.ModelPartAccess;
 import com.pla.annoyingvillagers.client.model.ModelHerobrineDragon;
 import com.pla.annoyingvillagers.entity.HerobrineDragonEntity;
-import com.pla.annoyingvillagers.util.CircularBuffer;
-import com.pla.annoyingvillagers.util.LerpedFloat;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
+
+import java.util.Arrays;
 
 /**
  * Animation control class to put useless reptiles in motion.
@@ -719,6 +719,148 @@ public class DragonAnimator
             float c0 = CR[3][0] * knot0 + CR[3][1] * knot1 + CR[3][2] * knot2 + CR[3][3] * knot3;
 
             result[i] = ((c3 * x + c2) * x + c1) * x + c0;
+        }
+    }
+
+    public static class LerpedFloat
+    {
+        protected float current;
+        protected float previous;
+
+        public LerpedFloat()
+        {
+            current = previous = 0;
+        }
+
+        public LerpedFloat(float start)
+        {
+            current = previous = start;
+        }
+
+        public float get(float x)
+        {
+            return Mth.clampedLerp(previous, current, x);
+        }
+
+        public float get()
+        {
+            return current;
+        }
+
+        public void set(float value)
+        {
+            sync();
+            current = value;
+        }
+
+        public void add(float value)
+        {
+            sync();
+            current += value;
+        }
+
+        public void sync()
+        {
+            previous = current;
+        }
+
+        public float getPrevious()
+        {
+            return previous;
+        }
+
+        public static Clamped unit()
+        {
+            return new Clamped(0, 1);
+        }
+
+        /**
+         * Clamped Implementation.
+         * Basically just ensure that the value stays clamped within the specified {@link Clamped#min}-{@link Clamped#max} bounds.
+         */
+        public static class Clamped extends LerpedFloat
+        {
+            private final float min;
+            private final float max;
+
+            public Clamped(float start, float min, float max)
+            {
+                super(Mth.clamp(start, min, max));
+                this.min = min;
+                this.max = max;
+            }
+
+            public Clamped(float min, float max)
+            {
+                this(0, min, max);
+            }
+
+            @Override
+            public void set(float value)
+            {
+                super.set(Mth.clamp(value, min, max));
+            }
+
+            @Override
+            public void add(float value)
+            {
+                super.add(value);
+                current = Mth.clamp(current, min, max);
+            }
+
+            public float getMin()
+            {
+                return min;
+            }
+
+            public float getMax()
+            {
+                return max;
+            }
+        }
+    }
+
+    /**
+     * Very simple fixed size circular buffer implementation for animation purposes.
+     *
+     * @author Nico Bergemann <barracuda415 at yahoo.de>
+     */
+    public static class CircularBuffer
+    {
+        private final float[] buffer;
+        private int index = 0;
+
+        public CircularBuffer(int size)
+        {
+            buffer = new float[size];
+        }
+
+        public void fill(float value)
+        {
+            Arrays.fill(buffer, value);
+        }
+
+        public void update(float value)
+        {
+            // move forward
+            index++;
+
+            // restart pointer at the end to form a virtual ring
+            index %= buffer.length;
+
+            buffer[index] = value;
+        }
+
+        public float get(float x, int offset)
+        {
+            int i = index - offset;
+            int len = buffer.length - 1;
+            return Mth.clampedLerp(buffer[i - 1 & len], buffer[i & len], x);
+        }
+
+        public float get(float x, int offset1, int offset2)
+        {
+            return get(x, offset2) - get(x, offset1);
         }
     }
 }

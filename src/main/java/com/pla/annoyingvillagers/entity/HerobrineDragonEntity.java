@@ -21,9 +21,6 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModKeyMappings;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.item.EnderSlayerScytheItem;
-import com.pla.annoyingvillagers.util.DragonBodyController;
-import com.pla.annoyingvillagers.util.DragonOrbitLeaderGoal;
-import com.pla.annoyingvillagers.util.DragonMoveController;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -38,7 +35,9 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
@@ -261,7 +260,7 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
         );
     }
 
-    private void aimBodyAndHeadAt(LivingEntity target, float maxYawStep, float maxPitchStep) {
+    private void aimBodyAndHeadAt(LivingEntity target) {
         Vec3 from = this.getEyePosition(1.0F);
         Vec3 to = target.getEyePosition(1.0F);
 
@@ -273,8 +272,8 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
         float wantYaw   = (float)(Mth.atan2(dz, dx) * (180F / Math.PI)) - 90F;
         float wantPitch = (float)(-(Mth.atan2(dy, distXZ) * (180F / Math.PI)));
 
-        float yaw   = Mth.approachDegrees(this.getYRot(), wantYaw, maxYawStep);
-        float pitch = Mth.approachDegrees(this.getXRot(), wantPitch, maxPitchStep);
+        float yaw   = Mth.approachDegrees(this.getYRot(), wantYaw, (float) 10.0);
+        float pitch = Mth.approachDegrees(this.getXRot(), wantPitch, (float) 6.0);
 
         this.setYRot(yaw);
         this.setXRot(pitch);
@@ -433,7 +432,7 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
                     this.setNoGravity(true);
 
                     if (breathHoverTarget != null) {
-                        aimBodyAndHeadAt(breathHoverTarget, 10.0F, 6.0F);
+                        aimBodyAndHeadAt(breathHoverTarget);
                     }
 
                     double y = breathHoverPos.y + Math.sin((double) this.tickCount * 0.25) * 0.25;
@@ -1008,7 +1007,7 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
         this.setYBodyRot(yaw);
     }
 
-    private class RecallLandGoal extends Goal {
+    private static class RecallLandGoal extends Goal {
         private final HerobrineDragonEntity dragon;
         private int stage = 0;
 
@@ -1136,6 +1135,342 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
             BlockPos col = BlockPos.containing(owner.getX(), 0.0, owner.getZ());
             int groundY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, col).getY();
             return new Vec3(owner.getX(), groundY + 1.0, owner.getZ());
+        }
+    }
+
+    public static class DragonOrbitLeaderGoal extends Goal {
+        private static final double TWO_PI = Math.PI * 2.0;
+
+        private static final double ORBIT_RING_INNER_FACTOR = 0.80;
+        private static final double ORBIT_RING_OUTER_FACTOR = 1.35;
+
+        private final HerobrineDragonEntity dragon;
+        private final Level level;
+
+        private final double baseSpeed;
+        private final float orbitRadiusMin;
+        private final float orbitRadiusMax;
+        private final float farCatchUpDistance;
+
+        private LivingEntity leader;
+
+        private int updateCooldownTicks;
+
+        private double orbitAngleRadians;
+        private int orbitDirectionSign;
+
+        private double orbitRadiusCurrent;
+        private double orbitRadiusDesired;
+
+        private double orbitAngularSpeedCurrent;
+        private double orbitAngularSpeedDesired;
+
+        private double orbitBaseHeightCurrent;
+        private double orbitBaseHeightDesired;
+
+        private double verticalWaveAmplitude;
+        private double verticalWaveSpeed;
+        private double verticalWavePhase;
+
+        private int paramsTimeToLiveTicks;
+
+        private double yJitterCurrent;
+        private double yJitterDesired;
+
+        public DragonOrbitLeaderGoal(
+                HerobrineDragonEntity dragon,
+                double baseSpeed,
+                float orbitRadiusMin,
+                float orbitRadiusMax,
+                float farCatchUpDistance
+        ) {
+            this.dragon = dragon;
+            this.level = dragon.level();
+            this.baseSpeed = baseSpeed;
+            this.orbitRadiusMin = orbitRadiusMin;
+            this.orbitRadiusMax = orbitRadiusMax;
+            this.farCatchUpDistance = farCatchUpDistance;
+            setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        }
+
+        private LivingEntity resolveLeader() {
+            LivingEntity summoner = dragon.getSummoner();
+            if (summoner != null) return summoner;
+            return dragon.getOwner();
+        }
+
+        @Override
+        public boolean canUse() {
+            LivingEntity resolved = resolveLeader();
+            if (resolved == null) return false;
+            if (!resolved.isAlive()) return false;
+            if (resolved.isSpectator()) return false;
+
+            if (dragon.isLeashed()) return false;
+            if (dragon.isPassenger()) return false;
+            if (dragon.hasControllingPassenger()) return false;
+            if (dragon.isOrderedToSit() && dragon.getSummoner() == null) return false;
+            if (dragon.isRecallActive()) return false;
+
+            leader = resolved;
+            return true;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            LivingEntity resolved = resolveLeader();
+            if (resolved == null) return false;
+            if (!resolved.isAlive()) return false;
+            if (resolved.isSpectator()) return false;
+
+            if (dragon.isLeashed()) return false;
+            if (dragon.isPassenger()) return false;
+            if (dragon.hasControllingPassenger()) return false;
+            if (dragon.isOrderedToSit() && dragon.getSummoner() == null) return false;
+            if (dragon.isRecallActive()) return false;
+
+            leader = resolved;
+            return true;
+        }
+
+        @Override
+        public void start() {
+            updateCooldownTicks = 0;
+
+            orbitAngleRadians = Mth.nextDouble(dragon.getRandom(), 0.0, TWO_PI);
+            orbitDirectionSign = dragon.getRandom().nextBoolean() ? 1 : -1;
+
+            orbitRadiusCurrent = orbitRadiusDesired = Mth.nextDouble(dragon.getRandom(), orbitRadiusMin, orbitRadiusMax);
+
+            orbitAngularSpeedCurrent = orbitAngularSpeedDesired = Mth.nextDouble(dragon.getRandom(), 0.045, 0.11);
+
+            orbitBaseHeightCurrent = orbitBaseHeightDesired = 14.0 + dragon.getRandom().nextInt(14);
+
+            verticalWaveAmplitude = Mth.nextDouble(dragon.getRandom(), 2.0, 7.0);
+            verticalWaveSpeed = Mth.nextDouble(dragon.getRandom(), 0.018, 0.045);
+            verticalWavePhase = Mth.nextDouble(dragon.getRandom(), 0.0, TWO_PI);
+
+            paramsTimeToLiveTicks = 80 + dragon.getRandom().nextInt(140);
+
+            dragon.getNavigation().stop();
+            yJitterCurrent = yJitterDesired = Mth.nextDouble(dragon.getRandom(), -6.0, 6.0);
+        }
+
+        @Override
+        public void stop() {
+            leader = null;
+            dragon.getNavigation().stop();
+        }
+
+        @Override
+        public void tick() {
+            if (leader == null) return;
+
+            dragon.getLookControl().setLookAt(leader, 10.0F, dragon.getMaxHeadXRot());
+
+            orbitAngleRadians = wrapAngle(orbitAngleRadians + orbitDirectionSign * orbitAngularSpeedCurrent);
+            verticalWavePhase = wrapAngle(verticalWavePhase + verticalWaveSpeed);
+
+            if (--paramsTimeToLiveTicks <= 0 || dragon.getRandom().nextInt(220) == 0) {
+                rerollOrbitParameters();
+            }
+
+            orbitRadiusCurrent = Mth.lerp(0.08, orbitRadiusCurrent, orbitRadiusDesired);
+            orbitAngularSpeedCurrent = Mth.lerp(0.08, orbitAngularSpeedCurrent, orbitAngularSpeedDesired);
+            orbitBaseHeightCurrent = Mth.lerp(0.08, orbitBaseHeightCurrent, orbitBaseHeightDesired);
+
+            if (--updateCooldownTicks > 0) return;
+            updateCooldownTicks = adjustedTickDelay(2);
+
+            Vec3 leaderPosition = leader.position();
+            Vec3 dragonOffsetFromLeader = dragon.position().subtract(leaderPosition);
+
+            double distanceToLeader = dragonOffsetFromLeader.length();
+            double distanceToLeaderSquared = distanceToLeader * distanceToLeader;
+            double farCatchUpDistanceSquared = (double) farCatchUpDistance * (double) farCatchUpDistance;
+
+            if (distanceToLeaderSquared >= farCatchUpDistanceSquared) {
+                if (!dragon.isFlying() && dragon.canFly()) {
+                    dragon.liftOff();
+                }
+
+                double catchUpY = computeDesiredY(leaderPosition.x, leaderPosition.z, leaderPosition.y) + 6.0;
+                catchUpY = Mth.clamp(catchUpY, minY(), maxY());
+                Vec3 catchUpTarget = new Vec3(leaderPosition.x, catchUpY, leaderPosition.z);
+
+                setMoveTarget(catchUpTarget, baseSpeed * 1.65);
+                return;
+            }
+
+            if (!dragon.isFlying() && dragon.canFly()) {
+                if (dragon.onGround() || (leader.getY() - dragon.getY()) > 2.0 || distanceToLeader > orbitRadiusMin) {
+                    dragon.liftOff();
+                }
+            }
+
+            double orbitRingMinDistance = orbitRadiusMin * ORBIT_RING_INNER_FACTOR;
+            double orbitRingMaxDistance = orbitRadiusMax * ORBIT_RING_OUTER_FACTOR;
+
+            Vec3 targetPosition;
+
+            if (distanceToLeader < orbitRingMinDistance || distanceToLeader > orbitRingMaxDistance) {
+                Vec3 outwardDirection = distanceToLeader > 1.0E-4 ? dragonOffsetFromLeader.scale(1.0 / distanceToLeader) : new Vec3(1.0, 0.0, 0.0);
+                Vec3 ringPoint = leaderPosition.add(outwardDirection.scale(orbitRadiusDesired));
+                double ringY = computeDesiredY(ringPoint.x, ringPoint.z, leaderPosition.y);
+                targetPosition = new Vec3(ringPoint.x, ringY, ringPoint.z);
+            } else {
+                double orbitX = leaderPosition.x + Math.cos(orbitAngleRadians) * orbitRadiusCurrent;
+                double orbitZ = leaderPosition.z + Math.sin(orbitAngleRadians) * orbitRadiusCurrent;
+                double orbitY = computeDesiredY(orbitX, orbitZ, leaderPosition.y);
+                targetPosition = new Vec3(orbitX, orbitY, orbitZ);
+            }
+
+            if (!canMoveTo(targetPosition)) {
+                Vec3 liftedTarget = targetPosition.add(0.0, 14.0, 0.0);
+                if (canMoveTo(liftedTarget)) {
+                    targetPosition = liftedTarget;
+                } else {
+                    orbitAngleRadians = Mth.nextDouble(dragon.getRandom(), 0.0, TWO_PI);
+                    double fallbackY = Mth.clamp(leaderPosition.y + orbitBaseHeightCurrent + 18.0, minY(), maxY());
+                    targetPosition = new Vec3(leaderPosition.x, fallbackY, leaderPosition.z);
+                }
+            }
+
+            setMoveTarget(targetPosition, baseSpeed);
+            yJitterCurrent = Mth.lerp(0.05, yJitterCurrent, yJitterDesired);
+        }
+
+        private void setMoveTarget(Vec3 target, double speed) {
+            if (dragon.isFlying()) {
+                dragon.getNavigation().stop();
+                dragon.getMoveControl().setWantedPosition(target.x, target.y, target.z, speed);
+            } else {
+                dragon.getNavigation().moveTo(target.x, target.y, target.z, speed);
+            }
+        }
+
+        private void rerollOrbitParameters() {
+            if (dragon.getRandom().nextFloat() < 0.30f) {
+                orbitDirectionSign *= -1;
+            }
+
+            orbitRadiusDesired = Mth.nextDouble(dragon.getRandom(), orbitRadiusMin, orbitRadiusMax);
+            orbitAngularSpeedDesired = Mth.nextDouble(dragon.getRandom(), 0.04, 0.13);
+
+            orbitBaseHeightDesired = 14.0 + dragon.getRandom().nextInt(18);
+
+            verticalWaveAmplitude = Mth.nextDouble(dragon.getRandom(), 2.0, 8.0);
+            verticalWaveSpeed = Mth.nextDouble(dragon.getRandom(), 0.016, 0.05);
+
+            if (dragon.getRandom().nextFloat() < 0.35f) {
+                orbitAngleRadians = Mth.nextDouble(dragon.getRandom(), 0.0, TWO_PI);
+            }
+
+            paramsTimeToLiveTicks = 70 + dragon.getRandom().nextInt(160);
+            yJitterDesired = Mth.nextDouble(dragon.getRandom(), -10.0, 10.0);
+        }
+
+        private double computeDesiredY(double x, double z, double leaderY) {
+            BlockPos columnPos = BlockPos.containing(x, 0.0, z);
+            int groundY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, columnPos).getY();
+
+            double y = Math.max(leaderY + orbitBaseHeightCurrent, groundY + 10.0);
+
+            y += Math.sin(verticalWavePhase) * verticalWaveAmplitude;
+            y += yJitterCurrent;
+
+            return Mth.clamp(y, minY(), maxY());
+        }
+
+        private double minY() {
+            return level.getMinBuildHeight() + 6.0;
+        }
+
+        private double maxY() {
+            return level.getMaxBuildHeight() - 6.0;
+        }
+
+        private boolean canMoveTo(Vec3 pos) {
+            Vec3 delta = pos.subtract(dragon.position());
+            AABB moved = dragon.getBoundingBox().move(delta);
+            return level.noCollision(dragon, moved) && !level.containsAnyLiquid(moved);
+        }
+
+        private static double wrapAngle(double angle) {
+            angle %= TWO_PI;
+            return angle < 0.0 ? angle + TWO_PI : angle;
+        }
+    }
+
+    public static class DragonMoveController extends MoveControl
+    {
+        private final HerobrineDragonEntity dragon;
+
+        public DragonMoveController(HerobrineDragonEntity dragon)
+        {
+            super(dragon);
+            this.dragon = dragon;
+        }
+
+        @Override
+        public void tick()
+        {
+            // original movement behavior if the entity isn't flying
+            if (!dragon.isFlying())
+            {
+                super.tick();
+                return;
+            }
+
+            if (operation == Operation.MOVE_TO)
+            {
+                operation = Operation.WAIT;
+                double xDif = wantedX - mob.getX();
+                double yDif = wantedY - mob.getY();
+                double zDif = wantedZ - mob.getZ();
+                double sq = xDif * xDif + yDif * yDif + zDif * zDif;
+                if (sq < (double) 2.5000003E-7F)
+                {
+                    mob.setYya(0.0F);
+                    mob.setZza(0.0F);
+                    return;
+                }
+
+                float speed = (float) (speedModifier * mob.getAttributeValue(Attributes.FLYING_SPEED));
+                double distSq = Math.sqrt(xDif * xDif + zDif * zDif);
+                mob.setSpeed(speed);
+                if (Math.abs(yDif) > (double) 1.0E-5F || Math.abs(distSq) > (double) 1.0E-5F)
+                    mob.setYya((float) yDif * speed);
+
+                float yaw = (float) (Mth.atan2(zDif, xDif) * (double) (180F / (float) Math.PI)) - 90.0F;
+                mob.setYRot(rotlerp(mob.getYRot(), yaw, 6));
+            }
+            else
+            {
+                mob.setYya(0);
+                mob.setZza(0);
+            }
+        }
+    }
+
+    public static class DragonBodyController extends BodyRotationControl
+    {
+        private final HerobrineDragonEntity dragon;
+
+        public DragonBodyController(HerobrineDragonEntity dragon)
+        {
+            super(dragon);
+            this.dragon = dragon;
+        }
+
+        @Override
+        public void clientTick()
+        {
+            // sync the body to the yRot; no reason to have any other random rotations.
+            dragon.yBodyRot = dragon.getYRot();
+
+            // clamp head rotations so necks don't fucking turn inside out
+            dragon.yHeadRot = Mth.rotateIfNecessary(dragon.yHeadRot, dragon.yBodyRot, dragon.getMaxHeadYRot());
         }
     }
 }
