@@ -40,6 +40,22 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Random;
 
 public class DragonMeteoriteEntity extends PathfinderMob {
+    private Vec3 posToAim;
+
+    private boolean motionInited = false;
+    private double xd = 0.0;
+    private double yd = 0.0;
+    private double zd = 0.0;
+
+    public void setPosToAim(@Nullable Vec3 pos) {
+        this.posToAim = pos;
+        this.motionInited = false;
+    }
+
+    @Nullable
+    public Vec3 getPosToAim() {
+        return posToAim;
+    }
 
     public DragonMeteoriteEntity(SpawnEntity spawnEntity, Level level) {
         this(AnnoyingVillagersModEntities.DRAGON_METEORITE.get(), level);
@@ -51,6 +67,27 @@ public class DragonMeteoriteEntity extends PathfinderMob {
         this.xpReward = 0;
         this.setNoAi(false);
         this.setPersistenceRequired();
+    }
+
+    @Override
+    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        if (posToAim != null) {
+            tag.putDouble("AimX", posToAim.x);
+            tag.putDouble("AimY", posToAim.y);
+            tag.putDouble("AimZ", posToAim.z);
+        }
+    }
+
+    @Override
+    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.contains("AimX") && tag.contains("AimY") && tag.contains("AimZ")) {
+            this.posToAim = new Vec3(tag.getDouble("AimX"), tag.getDouble("AimY"), tag.getDouble("AimZ"));
+        } else {
+            this.posToAim = null;
+        }
+        this.motionInited = false;
     }
 
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -116,25 +153,48 @@ public class DragonMeteoriteEntity extends PathfinderMob {
             double d5;
 
             this.setInvulnerable(true);
-            this.getPersistentData().putDouble("xd", Mth.nextDouble(RandomSource.create(), -0.7D, 0.7D));
-            this.getPersistentData().putDouble("zd", Mth.nextDouble(RandomSource.create(), -0.7D, 0.7D));
+            if (!motionInited) {
+                if (posToAim != null) {
+                    Vec3 from = this.position();
+                    Vec3 dir = posToAim.subtract(from);
 
-            if (this.onGround() || this.isInWall()) {
-                serverLevel.explode(null, d0, d1, d2, new Random().nextFloat(4.0F, 8.0F), Level.ExplosionInteraction.MOB);
+                    double dist = dir.length();
+                    if (dist > 1.0E-4) {
+                        // tốc độ tổng – chỉnh tuỳ ý
+                        double speed = 1.8D;
+
+                        Vec3 vel = dir.scale(speed / dist);
+                        xd = vel.x;
+                        yd = vel.y;
+                        zd = vel.z;
+                    } else {
+                        xd = yd = zd = 0.0D;
+                    }
+                } else {
+                    RandomSource r = serverLevel.getRandom();
+                    xd = Mth.nextDouble(r, -0.7D, 0.7D);
+                    yd = -1.8D;
+                    zd = Mth.nextDouble(r, -0.7D, 0.7D);
+                }
+                motionInited = true;
+            }
+
+            if (this.onGround() || this.isInWall() || (posToAim != null && this.position().distanceToSqr(posToAim) < 1.0D)) {
+                serverLevel.explode(null, d0, d1, d2, new Random().nextFloat(2.0F, 4.0F), Level.ExplosionInteraction.MOB);
 
                 RandomSource randomSource = serverLevel.getRandom();
                 BlockState endfireState = AnnoyingVillagersModBlocks.END_FIRE.get().defaultBlockState();
 
-                for (int i = 0; i < 100; i++) {
+                for (int i = 0; i < 25; i++) {
                     BlockPos pos = BlockPos.containing(d0, d1, d2);
                     serverLevel.setBlock(pos, endfireState, 3);
                     FallingBlockEntity fallingBlockEntity = FallingBlockEntity.fall(serverLevel, pos, endfireState);
                     fallingBlockEntity.time = 1;
                     fallingBlockEntity.dropItem = false;
 
-                    double vx = Mth.nextDouble(randomSource, -0.5D, 0.5D);
-                    double vy = Mth.nextDouble(randomSource,  0.1D, 0.9D);
-                    double vz = Mth.nextDouble(randomSource, -0.5D, 0.5D);
+                    double vx = Mth.nextDouble(randomSource, -0.15D, 0.15D);
+                    double vy = Mth.nextDouble(randomSource,  0.2D, 0.5D);
+                    double vz = Mth.nextDouble(randomSource, -0.15D, 0.15D);
 
                     fallingBlockEntity.setDeltaMovement(vx, vy, vz);
                     fallingBlockEntity.hasImpulse = true;
@@ -150,7 +210,9 @@ public class DragonMeteoriteEntity extends PathfinderMob {
                 DamageSource damageSource = new DamageSource(damageTypeReg.getHolderOrThrow(DamageTypes.EXPLOSION), this);
 
                 for (LivingEntity entity : serverLevel.getEntitiesOfClass(LivingEntity.class, box,
-                        livingEntity -> livingEntity.isAlive() && !(livingEntity instanceof DragonMeteoriteEntity))) {
+                        livingEntity -> livingEntity.isAlive()
+                                && !(livingEntity instanceof DragonMeteoriteEntity)
+                                && !(livingEntity instanceof HerobrineDragonEntity))) {
 
                     Vec3 dir = entity.position().subtract(center);
                     double dist = Math.max(0.001D, dir.length());
@@ -173,7 +235,28 @@ public class DragonMeteoriteEntity extends PathfinderMob {
                 this.discard();
             }
 
-            this.setDeltaMovement(new Vec3(this.getPersistentData().getDouble("xd"), -1.8D, this.getPersistentData().getDouble("zd")));
+            this.setNoGravity(true);
+            this.setDeltaMovement(xd, yd, zd);
+            this.hasImpulse = true;
+
+            if (posToAim != null) {
+                Vec3 fromEye = this.getEyePosition();
+                Vec3 toEye = posToAim;
+
+                double dx = toEye.x - fromEye.x;
+                double dz = toEye.z - fromEye.z;
+                double dy = toEye.y - fromEye.y;
+                double distXZ = Math.sqrt(dx * dx + dz * dz);
+
+                float yaw = (float)(Mth.atan2(dz, dx) * (180F / Math.PI)) - 90F;
+                float pitch = (float)(-(Mth.atan2(dy, distXZ) * (180F / Math.PI)));
+
+                this.setYRot(yaw);
+                this.setYHeadRot(yaw);
+                this.setYBodyRot(yaw);
+                this.setXRot(pitch);
+            }
+
             d3 = -5.0D;
             for (int i = 0; i < 10; ++i) {
                 d4 = -5.0D;

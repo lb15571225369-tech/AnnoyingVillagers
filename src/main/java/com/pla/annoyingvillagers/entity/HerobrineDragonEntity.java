@@ -263,7 +263,7 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
 
     private void aimBodyAndHeadAt(LivingEntity target, float maxYawStep, float maxPitchStep) {
         Vec3 from = this.getEyePosition(1.0F);
-        Vec3 to   = target.getEyePosition(1.0F);
+        Vec3 to = target.getEyePosition(1.0F);
 
         double dx = to.x - from.x;
         double dz = to.z - from.z;
@@ -290,7 +290,7 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
                 Mth.lerp(partial, this.zOld, this.getZ())
         );
 
-        float headYaw   = Mth.lerp(partial, this.yHeadRotO, this.yHeadRot);
+        float headYaw = Mth.lerp(partial, this.yHeadRotO, this.yHeadRot);
         float headPitch = Mth.lerp(partial, this.xRotO, this.getXRot());
         Vec3 look = Vec3.directionFromRotation(headPitch, headYaw);
 
@@ -336,6 +336,39 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
         );
 
         serverLevel.addFreshEntity(beam);
+    }
+
+    public void shootMeteoriteAtTarget(LivingEntity target) {
+        if (!(this.level() instanceof ServerLevel serverLevel)) return;
+        if (target == null || !target.isAlive()) return;
+
+        this.breathHoverTarget = target;
+
+        Vec3 position = this.position();
+        if (this.onGround()) position = position.add(0.0, 10.0, 0.0);
+        this.breathHoverPos = position;
+
+        this.breathHoverTimeToLiveTicks = 40;
+
+        this.getNavigation().stop();
+
+        if (!this.isFlying() && this.canFly()) this.liftOff();
+        this.setFlying(true);
+        this.setNavigation(true);
+
+        Vec3 look = this.getLookAngle();
+        double baseForward = Math.max(1.0, this.getBbWidth() * 0.6);
+        double extraForward = 6.5 * this.getScale();
+        double heightOffset = -1.0 * this.getScale();
+        Vec3 spawnPos = this.getEyePosition()
+                .add(look.scale(baseForward + extraForward))
+                .add(0.0, heightOffset, 0.0);
+
+        DragonMeteoriteEntity dragonMeteoriteEntity = new DragonMeteoriteEntity(AnnoyingVillagersModEntities.DRAGON_METEORITE.get(), serverLevel);
+        dragonMeteoriteEntity.moveTo(spawnPos.x, spawnPos.y, spawnPos.z, 0F, 0F);
+        dragonMeteoriteEntity.setPosToAim(new Vec3(target.getX(), target.getY(0.5D), target.getZ()));
+        dragonMeteoriteEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+        serverLevel.addFreshEntity(dragonMeteoriteEntity);
     }
 
     public void recallAndLand(boolean autoMount) {
@@ -977,8 +1010,6 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
 
     private class RecallLandGoal extends Goal {
         private final HerobrineDragonEntity dragon;
-
-        // 0 = go above landing point, 1 = descend
         private int stage = 0;
 
         public RecallLandGoal(HerobrineDragonEntity dragon) {
@@ -1008,7 +1039,6 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
                 dragon.recallLandPos = findLandingPosNearSummoner(serverLevel, dragon.summoner);
             }
 
-            // force flight control
             if (!dragon.isFlying() && dragon.canFly()) dragon.liftOff();
             dragon.setFlying(true);
             dragon.setNavigation(true);
@@ -1043,14 +1073,12 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
 
             Vec3 land = dragon.recallLandPos;
 
-            // Always keep control while recalling
             dragon.getNavigation().stop();
             dragon.setNoGravity(true);
             if (!dragon.isFlying() && dragon.canFly()) dragon.liftOff();
             dragon.setFlying(true);
             dragon.setNavigation(true);
 
-            // Stage 0: go to a point above landing spot
             double aboveY = Math.max(owner.getY() + 10.0, land.y + 10.0);
             Vec3 above = new Vec3(land.x, aboveY, land.z);
 
@@ -1058,29 +1086,24 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
                 dragon.getMoveControl().setWantedPosition(above.x, above.y, above.z, 1.8D);
                 dragon.aimBodyAndHeadAt(above, 25.0F, 18.0F);
 
-                // once close enough above -> descend
-                if (dragon.distanceToSqr(above) < 16.0D) { // 4 blocks
+                if (dragon.distanceToSqr(above) < 16.0D) {
                     stage = 1;
                 }
                 return;
             }
 
-            // Stage 1: descend to landing position
             dragon.getMoveControl().setWantedPosition(land.x, land.y, land.z, 1.2D);
             dragon.aimBodyAndHeadAt(land, 18.0F, 12.0F);
 
-            boolean close = dragon.distanceToSqr(land) < 9.0D; // 3 blocks
+            boolean close = dragon.distanceToSqr(land) < 9.0D;
             if (close || dragon.onGround()) {
-                // finish landing
                 dragon.setNoGravity(false);
                 dragon.setDeltaMovement(Vec3.ZERO);
 
-                // optional automount
                 if (dragon.recallAutoMount && owner instanceof Player p) {
                     p.startRiding(dragon, true);
                 }
 
-                // done
                 stop();
             }
         }
