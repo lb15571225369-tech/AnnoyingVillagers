@@ -90,6 +90,7 @@ public class AnnoyingVillagersModEntityRenderers {
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.PLAYER_NPC.get(), PlayerMobRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.HEROBRINE_WARDEN.get(), HerobrineWardenRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.HEROBRINE_DRAGON.get(), HerobrineDragonRenderer::new);
+        registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.DRAGON_METEORITE.get(), DragonMeteoriteRenderer::new);
     }
 
     @SubscribeEvent

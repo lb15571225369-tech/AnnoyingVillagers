@@ -618,13 +618,13 @@
   "entity.dragon.ambient": {
     "sounds": [
       {
-        "name": "dragonmounts:entity/dragon/breathe1",
+        "name": "annoyingvillagers:entity/dragon/breathe1",
         "volume": 0.5,
         "pitch": 0.5,
         "weight": 3
       },
       {
-        "name": "dragonmounts:entity/dragon/breathe2",
+        "name": "annoyingvillagers:entity/dragon/breathe2",
         "volume": 0.5,
         "pitch": 0.5,
         "weight": 3
@@ -639,16 +639,16 @@
   "entity.dragon.step": {
     "sounds": [
       {
-        "name": "dragonmounts:entity/dragon/step1"
+        "name": "annoyingvillagers:entity/dragon/step1"
       },
       {
-        "name": "dragonmounts:entity/dragon/step2"
+        "name": "annoyingvillagers:entity/dragon/step2"
       },
       {
-        "name": "dragonmounts:entity/dragon/step3"
+        "name": "annoyingvillagers:entity/dragon/step3"
       },
       {
-        "name": "dragonmounts:entity/dragon/step4"
+        "name": "annoyingvillagers:entity/dragon/step4"
       }
     ],
     "subtitle": "subtitles.entity.dragon.step"
@@ -656,9 +656,18 @@
   "entity.dragon.death": {
     "sounds": [
       {
-        "name": "dragonmounts:entity/dragon/death"
+        "name": "annoyingvillagers:entity/dragon/death"
       }
     ],
     "subtitle": "subtitles.entity.dragon.death"
+  },
+  "muffled_boom": {
+    "subtitle": "subtitles.muffled_boom",
+    "sounds": [
+      {
+        "name": "annoyingvillagers:muffled_explosion",
+        "stream": false
+      }
+    ]
   }
 }

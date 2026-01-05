@@ -42,4 +42,8 @@ public class AnnoyingVillagersModParticleTypes {
             REGISTRY.register("null", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> FULL_COWL =
             REGISTRY.register("full_cowl", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> METEORITE_TRAIL =
+            REGISTRY.register("meteorite_trail", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> BIG_SPLASH =
+            REGISTRY.register("big_splash", () -> new SimpleParticleType(true));
 }

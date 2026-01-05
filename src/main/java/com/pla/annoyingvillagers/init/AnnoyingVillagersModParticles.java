@@ -13,18 +13,20 @@ import net.minecraftforge.fml.common.Mod;
 public class AnnoyingVillagersModParticles {
     @SubscribeEvent
     public static void registerParticles(RegisterParticleProvidersEvent event) {
-        Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.RED_SPARK.get(), RedSparkParticle::provider);
-        Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.ELECTRIC_SPARK.get(), ElectricSparkParticle::provider);
-        Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.DRAGON_SPARK.get(), DragonSparkParticle::provider);
-        Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.ELECTRIC_SPARK_2.get(), ElectricSpark2Particle::provider);
-        Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.SPARK.get(), SparkParticle::provider);
-        Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.PE.get(), PeParticle::provider);
-        Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.GLOWINGEYES.get(), GlowingEyesParticle::provider);
-        Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.LIGHT.get(), LightParticle::provider);
-        Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.BLUESPARK.get(), BlueSparkParticle::provider);
-        Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.GREENSPARK.get(), GreenSparkParticle::provider);
-        Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.ENDER.get(), EnderParticle::provider);
-        Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.NULL.get(), SmokeParticle.Provider::new);
-        Minecraft.getInstance().particleEngine.register((SimpleParticleType) AnnoyingVillagersModParticleTypes.FULL_COWL.get(), FullCowlParticle::provider);
+        event.registerSpriteSet(AnnoyingVillagersModParticleTypes.RED_SPARK.get(), RedSparkParticle::provider);
+        event.registerSpriteSet(AnnoyingVillagersModParticleTypes.ELECTRIC_SPARK.get(), ElectricSparkParticle::provider);
+        event.registerSpriteSet(AnnoyingVillagersModParticleTypes.DRAGON_SPARK.get(), DragonSparkParticle::provider);
+        event.registerSpriteSet(AnnoyingVillagersModParticleTypes.ELECTRIC_SPARK_2.get(), ElectricSpark2Particle::provider);
+        event.registerSpriteSet(AnnoyingVillagersModParticleTypes.SPARK.get(), SparkParticle::provider);
+        event.registerSpriteSet(AnnoyingVillagersModParticleTypes.PE.get(), PeParticle::provider);
+        event.registerSpriteSet(AnnoyingVillagersModParticleTypes.GLOWINGEYES.get(), GlowingEyesParticle::provider);
+        event.registerSpriteSet(AnnoyingVillagersModParticleTypes.LIGHT.get(), LightParticle::provider);
+        event.registerSpriteSet(AnnoyingVillagersModParticleTypes.BLUESPARK.get(), BlueSparkParticle::provider);
+        event.registerSpriteSet(AnnoyingVillagersModParticleTypes.GREENSPARK.get(), GreenSparkParticle::provider);
+        event.registerSpriteSet(AnnoyingVillagersModParticleTypes.ENDER.get(), EnderParticle::provider);
+        event.registerSpriteSet(AnnoyingVillagersModParticleTypes.NULL.get(), SmokeParticle.Provider::new);
+        event.registerSpriteSet(AnnoyingVillagersModParticleTypes.FULL_COWL.get(), FullCowlParticle::provider);
+        event.registerSpriteSet(AnnoyingVillagersModParticleTypes.METEORITE_TRAIL.get(), MeteoriteTrailParticle::provider);
+        event.registerSpriteSet(AnnoyingVillagersModParticleTypes.BIG_SPLASH.get(), BigSplashParticle::provider);
     }
 }

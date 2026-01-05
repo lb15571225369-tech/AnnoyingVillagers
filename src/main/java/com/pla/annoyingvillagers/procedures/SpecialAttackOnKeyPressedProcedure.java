@@ -211,7 +211,7 @@ public class SpecialAttackOnKeyPressedProcedure {
                         }
                     }
                     if (success) {
-                        livingEntityPatch.playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_INWARD, 0.0F);
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.SWORD_SKILL, 0.0F);
                     } else {
                         livingEntityPatch.playAnimationSynchronized(AVAnimations.ENDER_SLAYER_SCYTHE_NAPOLEON_AUTO_3, 0.0F);
                     }
