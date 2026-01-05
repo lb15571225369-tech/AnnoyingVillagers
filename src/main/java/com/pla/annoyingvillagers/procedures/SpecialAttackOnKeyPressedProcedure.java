@@ -202,6 +202,7 @@ public class SpecialAttackOnKeyPressedProcedure {
                         if (skillContainer != null
                                 && entity.getPersistentData().contains("DragonUUID")
                                 && entity.level() instanceof ServerLevel serverLevel
+                                && entity.onGround()
                                 && skillContainer.getSkill() instanceof EnderSlayerScytheSkill) {
                             Entity dragon = serverLevel.getEntity(player.getPersistentData().getUUID("DragonUUID"));
                             if (dragon instanceof HerobrineDragonEntity herobrineDragonEntity && herobrineDragonEntity.getPassengers().isEmpty()) {
@@ -213,7 +214,7 @@ public class SpecialAttackOnKeyPressedProcedure {
                     if (success) {
                         livingEntityPatch.playAnimationSynchronized(AVAnimations.SWORD_SKILL, 0.0F);
                     } else {
-                        livingEntityPatch.playAnimationSynchronized(AVAnimations.ENDER_SLAYER_SCYTHE_NAPOLEON_AUTO_3, 0.0F);
+
                     }
                     player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
                     return;

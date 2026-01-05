@@ -39,6 +39,9 @@ import com.pla.annoyingvillagers.util.BowFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -56,8 +59,10 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import reascer.wom.animation.WomAnimationProperty;
+import reascer.wom.animation.attacks.AntitheusShootAttackAnimation;
 import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
 import reascer.wom.animation.attacks.SpecialAttackAnimation;
+import reascer.wom.animation.attacks.UltimateAttackAnimation;
 import reascer.wom.gameasset.ReuseableEvents;
 import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.WOMSkills;
@@ -85,14 +90,17 @@ import yesman.epicfight.api.utils.TimePairList;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.api.utils.math.ValueModifier;
 import yesman.epicfight.api.utils.math.Vec3f;
+import yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerPatch;
 import yesman.epicfight.gameasset.Animations.ReusableSources;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.gameasset.ColliderPreset;
 import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.model.armature.HumanoidArmature;
 import yesman.epicfight.particle.EpicFightParticles;
+import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.SkillDataKey;
 import yesman.epicfight.skill.SkillDataManager;
+import yesman.epicfight.skill.SkillSlots;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
@@ -224,11 +232,6 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> IDLE_BREAK;
     public static AnimationManager.AnimationAccessor<ActionAnimation> PLACE_BLOCK;
     public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> SLEDGE_HAMMER_INNATE_DASH;
-    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_SLAYER_ANTITHEUS_AUTO_2;
-    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_SLAYER_ANTITHEUS_AUTO_3;
-    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_SLAYER_ANTITHEUS_AUTO_4;
-    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_SLAYER_ANTITHEUS_AGRESSION;
-    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_SLAYER_ANTITHEUS_GUILLOTINE;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_AEGIS_MOONLESS_AUTO_1;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_AEGIS_MOONLESS_AUTO_2;
     public static AnimationManager.AnimationAccessor<BowAttackAnimation> BOW_AUTO_1;
@@ -262,10 +265,23 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<ActionAnimation> APPLY_IMBUEMENT;
     public static AnimationManager.AnimationAccessor<ActionAnimation> AGONY_GUARD_HIT_1;
     public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> ENDER_GLAIVE_NAPOLEON_SHOOT_3;
-    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_SLAYER_SCYTHE_NAPOLEON_AUTO_3;
-    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_SLAYER_SCYTHE_NAPOLEON_WATERLOW;
-    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_SLAYER_SCYTHE_ORBIT_MAD_REACH;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> CLONE_ANTITHEUS_AUTO_1;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> CLONE_ANTITHEUS_AUTO_2;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> CLONE_ANTITHEUS_AUTO_3;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> CLONE_ANTITHEUS_AUTO_4;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> CLONE_ANTITHEUS_AGRESSION;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> CLONE_ANTITHEUS_GUILLOTINE;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> CLONE_ANTITHEUS_IDLE;
+    public static AnimationManager.AnimationAccessor<UltimateAttackAnimation> CLONE_ANTITHEUS_ASCENSION;
+    public static AnimationManager.AnimationAccessor<UltimateAttackAnimation> CLONE_ANTITHEUS_LAPSE;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> CLONE_ANTITHEUS_ASCENDED_DEATHFALL;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> CLONE_ANTITHEUS_ASCENDED_BLINK;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> CLONE_ANTITHEUS_ASCENDED_BLACKHOLE;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_GLAIVE_NAPOLEON_AUTO_3;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_GLAIVE_NAPOLEON_WATERLOW;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_GLAIVE_ORBIT_MAD_REACH;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> LEGENDARY_SWORD_AUTO_4;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> CLONE_ENDERBLASTER_TWOHAND_TOMAHAWK;
 
     @SubscribeEvent
     public static void registerAnimations(AnimationManager.AnimationRegistryEvent event) {
@@ -1119,7 +1135,7 @@ public class AVAnimations {
                         .addProperty(ActionAnimationProperty.STOP_MOVEMENT, false)
                         .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
                         .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.0F, 1.5F)));
-        AVAnimations.ENDER_SLAYER_ANTITHEUS_AGRESSION = builder.nextAccessor("biped/combat/ender_slayer_antitheus_agression",
+        AVAnimations.CLONE_ANTITHEUS_AGRESSION = builder.nextAccessor("biped/combat/clone_antitheus_agression",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.05F, accessor, humanoidarmature,
                         new Phase(0.0F, 0.2F, 0.35F, 0.59F, 0.59F, humanoidarmature.get().toolR, WOMWeaponColliders.ANTITHEUS_AGRESSION),
                         new Phase(0.59F, 0.6F, 0.65F, 0.85F, Float.MAX_VALUE, humanoidarmature.get().rootJoint, WOMWeaponColliders.ANTITHEUS_AGRESSION_REAP))).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.7F))
@@ -1145,7 +1161,7 @@ public class AVAnimations {
                                     }
                                 }, Side.SERVER)
                         }));
-        AVAnimations.ENDER_SLAYER_ANTITHEUS_GUILLOTINE = builder.nextAccessor("biped/combat/ender_slayer_antitheus_guillotine",
+        AVAnimations.CLONE_ANTITHEUS_GUILLOTINE = builder.nextAccessor("biped/combat/clone_antitheus_guillotine",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.05F, accessor, humanoidarmature,
                         new Phase(0.0F, 0.5F, 0.75F, 0.79F, 0.79F, humanoidarmature.get().toolR, null),
                         new Phase(0.79F, 0.8F, 1.0F, 1.1F, Float.MAX_VALUE, humanoidarmature.get().toolR, null)))
@@ -1172,7 +1188,23 @@ public class AVAnimations {
                                     }
                                 }, Side.SERVER)
                         }));
-        AVAnimations.ENDER_SLAYER_ANTITHEUS_AUTO_2 = builder.nextAccessor("biped/combat/ender_slayer_antitheus_auto_2",
+        AVAnimations.CLONE_ANTITHEUS_AUTO_1 = builder.nextAccessor("biped/combat/clone_antitheus_auto_1",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.15F, accessor, humanoidarmature,
+                        new Phase(0.0F, 0.35F, 0.55F, 0.69F, 0.69F, humanoidarmature.get().toolR, null),
+                        new Phase(0.69F, 0.7F, 0.9F, 0.9F, Float.MAX_VALUE, humanoidarmature.get().toolR, null)))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.55F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.5F))
+                        .addProperty(AttackPhaseProperty.PARTICLE, WOMParticles.ANTITHEUS_HIT)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.75F), 1)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.0F), 1)
+                        .addProperty(AttackPhaseProperty.PARTICLE, WOMParticles.ANTITHEUS_HIT, 1)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE, 1)
+                        .addProperty(AttackAnimationProperty.EXTRA_COLLIDERS, 1)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.9F)
+                        .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
+                        .addState(EntityState.CAN_SKILL_EXECUTION, false));
+        AVAnimations.CLONE_ANTITHEUS_AUTO_2 = builder.nextAccessor("biped/combat/clone_antitheus_auto_2",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.15F, 0.15F, 0.45F, 0.45F, null, humanoidarmature.get().toolR, accessor, humanoidarmature))
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.2F))
                         .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.0F))
@@ -1187,7 +1219,7 @@ public class AVAnimations {
                                     }
                                 }, Side.SERVER)
                         }));
-        AVAnimations.ENDER_SLAYER_ANTITHEUS_AUTO_3 = builder.nextAccessor("biped/combat/ender_slayer_antitheus_auto_3",
+        AVAnimations.CLONE_ANTITHEUS_AUTO_3 = builder.nextAccessor("biped/combat/clone_antitheus_auto_3",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.15F, accessor, humanoidarmature,
                         new Phase(0.0F, 0.15F, 0.35F, 0.5F, 0.5F, humanoidarmature.get().toolR, null),
                         new Phase(0.5F, 0.55F, 0.7F, 0.75F, Float.MAX_VALUE, humanoidarmature.get().toolR, null)))
@@ -1202,7 +1234,7 @@ public class AVAnimations {
                         .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
                         .addProperty(AttackAnimationProperty.EXTRA_COLLIDERS, 5)
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.9F));
-        AVAnimations.ENDER_SLAYER_ANTITHEUS_AUTO_4 = builder.nextAccessor("biped/combat/ender_slayer_antitheus_auto_4",
+        AVAnimations.CLONE_ANTITHEUS_AUTO_4 = builder.nextAccessor("biped/combat/clone_antitheus_auto_4",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.15F, 0.5F, 0.75F, 0.9F, null, humanoidarmature.get().toolR, accessor, humanoidarmature))
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.6F))
                         .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.5F))
@@ -1218,6 +1250,158 @@ public class AVAnimations {
                                     }
                                 }, Side.SERVER)
                         }));
+        AVAnimations.CLONE_ANTITHEUS_ASCENSION = builder.nextAccessor("biped/skill/clone_antitheus_ascension",
+                (accessor) -> (new UltimateAttackAnimation(0.1F, accessor, humanoidarmature,
+                        new Phase(0.0F, 0.5F, 0.6F, 0.65F, 0.65F, (humanoidarmature.get()).rootJoint, WOMWeaponColliders.PLUNDER_PERDITION),
+                        new Phase(0.65F, 1.75F, 2.05F, 2.8F, Float.MAX_VALUE, humanoidarmature.get().rootJoint, WOMWeaponColliders.PLUNDER_PERDITION)))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(1.0F)).addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(4.0F))
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(20.0F))
+                        .addProperty(AttackPhaseProperty.PARTICLE, WOMParticles.ANTITHEUS_PUNCH_HIT)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.2F), 1)
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(20.0F), 1)
+                        .addProperty(AttackPhaseProperty.PARTICLE, WOMParticles.ANTITHEUS_PUNCH_HIT, 1)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE, 1)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.7F)
+                        .addProperty(AttackAnimationProperty.ATTACK_SPEED_FACTOR, 1.0F));
+        AVAnimations.CLONE_ANTITHEUS_LAPSE = builder.nextAccessor("biped/skill/clone_antitheus_lapse",
+                (accessor) -> (new UltimateAttackAnimation(0.1F, accessor, humanoidarmature,
+                        new Phase(0.0F, 0.65F, 0.75F, 0.8F, 0.8F, humanoidarmature.get().rootJoint, WOMWeaponColliders.PLUNDER_PERDITION),
+                        new Phase(0.8F, 1.3F, 1.4F, 1.45F, 1.45F, humanoidarmature.get().rootJoint, WOMWeaponColliders.PLUNDER_PERDITION),
+                        new Phase(1.45F, 1.75F, 1.85F, 2.3F, Float.MAX_VALUE, humanoidarmature.get().rootJoint, WOMWeaponColliders.PLUNDER_PERDITION)))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(1.0F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(4.0F))
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(20.0F))
+                        .addProperty(AttackPhaseProperty.PARTICLE, WOMParticles.ANTITHEUS_PUNCH_HIT)
+                        .addProperty(AttackPhaseProperty.SWING_SOUND, SoundEvents.WITHER_HURT)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(1.0F), 1)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(4.0F), 1)
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(20.0F), 1)
+                        .addProperty(AttackPhaseProperty.SWING_SOUND, SoundEvents.WITHER_HURT, 1)
+                        .addProperty(AttackPhaseProperty.PARTICLE, WOMParticles.ANTITHEUS_PUNCH_HIT)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD, 1)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.2F), 2)
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(20.0F), 2)
+                        .addProperty(AttackPhaseProperty.PARTICLE, WOMParticles.ANTITHEUS_PUNCH_HIT, 2)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE, 2)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.7F)
+                        .addProperty(AttackAnimationProperty.ATTACK_SPEED_FACTOR, 1.0F));
+        AVAnimations.CLONE_ANTITHEUS_ASCENDED_DEATHFALL = builder.nextAccessor("biped/skill/clone_antitheus_ascended_deathfall",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.05F, 0.5F, 0.55F, 0.75F, WOMWeaponColliders.ANTITHEUS_ASCENDED_DEATHFALL, humanoidarmature.get().rootJoint, accessor, humanoidarmature))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.2F))
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10.0F))
+                        .addProperty(AttackPhaseProperty.EXTRA_DAMAGE, Set.of(ExtraDamageInstance.SWEEPING_EDGE_ENCHANTMENT.create()))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.2F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                        .addProperty(AttackPhaseProperty.PARTICLE, WOMParticles.ANTITHEUS_PUNCH_HIT)
+                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT_HARD.get())
+                        .addProperty(StaticAnimationProperty.POSE_MODIFIER, null)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.9F)
+                        .addProperty(ActionAnimationProperty.MOVE_VERTICAL, true)
+                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, false)
+                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
+                        .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.0F, 0.75F)));
+        AVAnimations.CLONE_ANTITHEUS_ASCENDED_BLINK = builder.nextAccessor("biped/skill/clone_antitheus_ascended_blink", (accessor) -> (new BasicMultipleAttackAnimation(0.05F, 0.3F, 0.4F, 0.4F, WOMWeaponColliders.ANTITHEUS_ASCENDED_BLINK, humanoidarmature.get().rootJoint, accessor, humanoidarmature))
+                .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.6F))
+                .addProperty(AttackPhaseProperty.EXTRA_DAMAGE, Set.of(ExtraDamageInstance.SWEEPING_EDGE_ENCHANTMENT.create()))
+                .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(10.0F))
+                .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.4F))
+                .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                .addProperty(AttackPhaseProperty.PARTICLE, WOMParticles.ANTITHEUS_HIT_REVERSE)
+                .addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH_SHARP.get())
+                .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLADE_HIT.get())
+                .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.9F)
+                .addProperty(WomAnimationProperty.ANTI_STUN_MULTIPLYER, 0.0F)
+                .addProperty(StaticAnimationProperty.POSE_MODIFIER, null)
+                .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
+                .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
+                .addEvents(AnimationEvent.InTimeEvent.create(0.05F, (entitypatch, self, params) -> {
+                    if (entitypatch instanceof PlayerPatch) {
+                        entitypatch.getOriginal().level().playSound((Player)entitypatch.getOriginal(), entitypatch.getOriginal(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.PLAYERS, 0.7F, 0.7F);
+                        entitypatch.getOriginal().level().playSound((Player)entitypatch.getOriginal(), entitypatch.getOriginal(), EpicFightSounds.WHOOSH_BIG.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+                    }
+
+                }, Side.CLIENT)));
+        AVAnimations.CLONE_ANTITHEUS_ASCENDED_BLACKHOLE = builder.nextAccessor("biped/skill/clone_antitheus_ascended_blackhole", (accessor) -> (new BasicMultipleAttackAnimation(0.05F, 1.45F, 1.5F, 1.7F, WOMWeaponColliders.PLUNDER_PERDITION, humanoidarmature.get().rootJoint, accessor, humanoidarmature))
+                .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.2F))
+                .addProperty(AttackPhaseProperty.EXTRA_DAMAGE, Set.of(ExtraDamageInstance.SWEEPING_EDGE_ENCHANTMENT.create()))
+                .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(30.0F))
+                .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(0.5F))
+                .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                .addProperty(AttackPhaseProperty.SOURCE_TAG, Set.of(EpicFightDamageTypeTags.WEAPON_INNATE))
+                .addProperty(AttackPhaseProperty.PARTICLE, WOMParticles.ANTITHEUS_PUNCH_HIT)
+                .addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH.get())
+                .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLADE_HIT.get())
+                .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.5F)
+                .addProperty(StaticAnimationProperty.POSE_MODIFIER, null)
+                .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
+                .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.0F, 1.7F))
+                .addEvents(AnimationEvent.InTimeEvent.create(0.05F, (entitypatch, self, params) -> entitypatch.getOriginal().level().playSound(null, entitypatch.getOriginal(), WOMSounds.ANTITHEUS_BLACKKHOLE_CHARGEUP.get(), SoundSource.PLAYERS, 2.0F, 1.0F), Side.SERVER), AnimationEvent.InTimeEvent.create(0.05F, (livingEntityPatch, self, params) -> {
+                    Entity entity = livingEntityPatch.getOriginal();
+                    boolean can_add_tag = true;
+
+                    for(String tag : entity.getTags()) {
+                        if (tag.contains("wom_serius_focus:")) {
+                            can_add_tag = false;
+                            break;
+                        }
+                    }
+
+                    if (can_add_tag) {
+                        entity.addTag("wom_serius_focus:18:1.5");
+                    }
+
+                    if (livingEntityPatch instanceof LocalPlayerPatch localplayerpatch) {
+                        if (localplayerpatch.getSkill(SkillSlots.WEAPON_INNATE) != null) {
+                            SkillDataManager SDM = localplayerpatch.getSkill(SkillSlots.WEAPON_INNATE).getDataManager();
+                            SDM.setDataSync(WOMSkillDataKeys.SERIUS_FOCUS.get(), true);
+                            SDM.setDataSync(WOMSkillDataKeys.SERIUS_FOCUS_COOLDOWN.get(), 20);
+                        }
+                    }
+
+                    OpenMatrix4f transformMatrix = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(0.0F), Armatures.BIPED.get().toolL);
+                    transformMatrix.translate(new Vec3f(0.0F, 0.0F, 0.0F));
+                    OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-org.joml.Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F), new Vec3f(0.0F, 1.0F, 0.0F)), transformMatrix, transformMatrix);
+                    int n = 70;
+                    double r = 5.0F;
+
+                    for(int i = 0; i < n; ++i) {
+                        double theta = (Math.PI * 2D) * (new Random()).nextDouble();
+                        double phi = org.joml.Math.acos((double)2.0F * (new Random()).nextDouble() - (double)1.0F);
+                        double x = r * org.joml.Math.sin(phi) * org.joml.Math.cos(theta);
+                        double y = r * org.joml.Math.sin(phi) * org.joml.Math.sin(theta);
+                        double z = r * org.joml.Math.cos(phi);
+                        livingEntityPatch.getOriginal().level().addParticle(ParticleTypes.SMOKE, (double)transformMatrix.m30 + livingEntityPatch.getOriginal().getX() + x, (double)transformMatrix.m31 + livingEntityPatch.getOriginal().getY() + y, (double)transformMatrix.m32 + livingEntityPatch.getOriginal().getZ() + z, (float)(-x * (double)0.15F), (float)(-y * (double)0.15F), (float)(-z * (double)0.15F));
+                    }
+
+                }, Side.CLIENT), AnimationEvent.InTimeEvent.create(1.05F, (livingEntityPatch, self, params) -> {
+                    livingEntityPatch.getOriginal().level().playSound((Player)livingEntityPatch.getOriginal(), livingEntityPatch.getOriginal(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.PLAYERS, 0.7F, 0.7F);
+                    livingEntityPatch.getOriginal().level().playSound((Player)livingEntityPatch.getOriginal(), livingEntityPatch.getOriginal(), EpicFightSounds.WHOOSH_BIG.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+
+                }, Side.CLIENT), AnimationEvent.InTimeEvent.create(1.45F, (livingEntityPatch, self, params) -> {
+                    livingEntityPatch.getOriginal().level().playSound(null, livingEntityPatch.getOriginal(), SoundEvents.WITHER_BREAK_BLOCK, SoundSource.PLAYERS, 1.0F, 0.5F);
+                    OpenMatrix4f transformMatrix = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(0.0F), Armatures.BIPED.get().handR);
+                    OpenMatrix4f CORRECTION = (new OpenMatrix4f()).rotate(-org.joml.Math.toRadians(livingEntityPatch.getOriginal().yRotO + 180.0F), new Vec3f(0.0F, 1.0F, 0.0F));
+                    CORRECTION.translate(new Vec3f(0.0F, 0.0F, -3.5F));
+                    OpenMatrix4f.mul(CORRECTION, transformMatrix, transformMatrix);
+                    if (livingEntityPatch instanceof ServerPlayerPatch) {
+                        SkillContainer skill = ((ServerPlayerPatch)livingEntityPatch).getSkill(SkillSlots.WEAPON_INNATE);
+                        Vec3f vec = new Vec3f((float)((double)transformMatrix.m30 + livingEntityPatch.getOriginal().getX()), (float)((double)transformMatrix.m31 + livingEntityPatch.getOriginal().getY()), (float)((double)transformMatrix.m32 + livingEntityPatch.getOriginal().getZ()));
+                        skill.getDataManager().setDataSync(WOMSkillDataKeys.BLACKHOLE_VEC.get(), vec);
+                    }
+
+                    ((ServerLevel) livingEntityPatch.getOriginal().level()).sendParticles(WOMParticles.ANTITHEUS_BLACKHOLE_START.get(), (double)transformMatrix.m30 + livingEntityPatch.getOriginal().getX(), (double)transformMatrix.m31 + livingEntityPatch.getOriginal().getY(), (double)transformMatrix.m32 + livingEntityPatch.getOriginal().getZ(), 1, 0.0F, 0.0F, 0.0F, 0.0F);
+                    ((ServerLevel) livingEntityPatch.getOriginal().level()).sendParticles(ParticleTypes.LARGE_SMOKE, (double)transformMatrix.m30 + livingEntityPatch.getOriginal().getX(), (double)transformMatrix.m31 + livingEntityPatch.getOriginal().getY(), (double)transformMatrix.m32 + livingEntityPatch.getOriginal().getZ(), 48, 0.0F, 0.0F, 0.0F, 0.5F);
+                }, Side.SERVER), AnimationEvent.InTimeEvent.create(1.45F, (livingEntityPatch, self, params) -> {
+                    OpenMatrix4f transformMatrix = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(0.0F), Armatures.BIPED.get().handR);
+                    OpenMatrix4f CORRECTION = (new OpenMatrix4f()).rotate(-org.joml.Math.toRadians(livingEntityPatch.getOriginal().yRotO + 180.0F), new Vec3f(0.0F, 1.0F, 0.0F));
+                    CORRECTION.translate(new Vec3f(0.0F, 0.0F, -3.5F));
+                    OpenMatrix4f.mul(CORRECTION, transformMatrix, transformMatrix);
+                    Level level = livingEntityPatch.getOriginal().level();
+                    Vec3 FractureCenter = new Vec3((double)transformMatrix.m30 + livingEntityPatch.getOriginal().getX(), (double)transformMatrix.m31 + livingEntityPatch.getOriginal().getY() - (double)2.0F, (double)transformMatrix.m32 + livingEntityPatch.getOriginal().getZ());
+                    LevelUtil.circleSlamFracture(livingEntityPatch.getOriginal(), level, FractureCenter, 4.0F, true, true);
+                }, Side.CLIENT)));
         AVAnimations.ENDER_AEGIS_MOONLESS_AUTO_1 = builder.nextAccessor("biped/combat/ender_aegis_moonless_auto_1",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.05F, accessor, humanoidarmature,
                         new Phase(0.0F, 0.25F, 0.45F, 0.5F, Float.MAX_VALUE, humanoidarmature.get().toolR, null)))
@@ -1646,7 +1830,7 @@ public class AVAnimations {
                                     }
                                 }, Side.SERVER)
                         }));
-        AVAnimations.ENDER_SLAYER_SCYTHE_NAPOLEON_AUTO_3 = builder.nextAccessor("biped/combat/ender_slayer_scythe_napoleon_auto_3",
+        AVAnimations.ENDER_GLAIVE_NAPOLEON_AUTO_3 = builder.nextAccessor("biped/combat/ender_glaive_napoleon_auto_3",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.15F, accessor, humanoidarmature,
                         new Phase(0.0F, 0.15F, 0.35F, 0.39F, 0.39F, humanoidarmature.get().toolR, null),
                         new Phase(0.39F, 0.5F, 0.7F, 0.74F, 0.74F, humanoidarmature.get().toolR, null),
@@ -1679,7 +1863,7 @@ public class AVAnimations {
                                     }
                                 }, Side.SERVER)
                         }));
-        AVAnimations.ENDER_SLAYER_SCYTHE_NAPOLEON_WATERLOW = builder.nextAccessor("biped/combat/ender_slayer_scythe_napoleon_waterlow",
+        AVAnimations.ENDER_GLAIVE_NAPOLEON_WATERLOW = builder.nextAccessor("biped/combat/ender_glaive_napoleon_waterlow",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.1F, accessor, humanoidarmature,
                         new Phase(0.0F, 0.15F, 0.35F, 0.39F, 0.39F, humanoidarmature.get().toolR, null),
                         new Phase(0.39F, 0.4F, 0.6F, 0.64F, 0.64F, humanoidarmature.get().toolR, null),
@@ -1702,7 +1886,7 @@ public class AVAnimations {
                                     }
                                 }, Side.SERVER)
                         }));
-        AVAnimations.ENDER_SLAYER_SCYTHE_ORBIT_MAD_REACH = builder.nextAccessor("biped/combat/ender_slayer_scythe_orbit_mad_reach",
+        AVAnimations.ENDER_GLAIVE_ORBIT_MAD_REACH = builder.nextAccessor("biped/combat/ender_glaive_orbit_mad_reach",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.2F, accessor, humanoidarmature,
                         new Phase(0.0F, 0.25F, 0.4F, 0.5F, Float.MAX_VALUE, humanoidarmature.get().toolR, null)))
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.2F))
@@ -1721,9 +1905,8 @@ public class AVAnimations {
                                 }, Side.SERVER)
                         }));
         AVAnimations.LEGENDARY_SWORD_AUTO_4 = builder.nextAccessor( "biped/combat/legendary_sword_auto_4",
-                (accessor) ->  (new BasicMultipleAttackAnimation(0.15F, accessor, humanoidarmature, new Phase[]{
-                        new Phase(0.0F, 0.2F, 0.4F, 0.45F, 0.45F, humanoidarmature.get().toolR, null),
-                        new Phase(0.45F, 0.55F, 0.7F, 0.7F, Float.MAX_VALUE, InteractionHand.OFF_HAND, humanoidarmature.get().toolL, null)}))
+                (accessor) ->  (new BasicMultipleAttackAnimation(0.15F, accessor, humanoidarmature, new Phase(0.0F, 0.2F, 0.4F, 0.45F, 0.45F, humanoidarmature.get().toolR, null),
+                        new Phase(0.45F, 0.55F, 0.7F, 0.7F, Float.MAX_VALUE, InteractionHand.OFF_HAND, humanoidarmature.get().toolL, null)))
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.6F))
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.0F), 1)
                         .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.5F), 1)
@@ -1736,7 +1919,25 @@ public class AVAnimations {
                                     }
                                 }, Side.SERVER)
                         }));
-
+        AVAnimations.CLONE_ENDERBLASTER_TWOHAND_TOMAHAWK = builder.nextAccessor("biped/combat/clone_enderblaster_twohand_dash",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.05F, accessor, humanoidarmature, new Phase(0.0F, 0.3F, 0.44F, 0.45F, 0.45F, humanoidarmature.get().legL, WOMWeaponColliders.KICK_HUGE),
+                        new Phase(0.45F, 0.5F, 0.6F, 0.65F, Float.MAX_VALUE, humanoidarmature.get().rootJoint, WOMWeaponColliders.TORMENT_AIRSLAM)))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.7F))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.3F), 1)
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.multiplier(5.0F))
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.multiplier(5.0F), 1)
+                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
+                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT.get())
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT, 1)
+                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT_HARD.get(), 1)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE, 1)
+                        .addProperty(StaticAnimationProperty.POSE_MODIFIER, null)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.8F)
+                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
+                        .addEvents(new AnimationEvent[]{
+                                AnimationEvent.InTimeEvent.create(0.45F, reascer.wom.gameasset.ReuseableEvents.GROUND_BODYSCRAPE_LAND, Side.CLIENT)
+                        }));
     }
 
     private static class ReuseableEvents {

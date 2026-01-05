@@ -358,7 +358,7 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
 
         Vec3 look = this.getLookAngle();
         double baseForward = Math.max(1.0, this.getBbWidth() * 0.6);
-        double extraForward = 6.5 * this.getScale();
+        double extraForward = 7.5 * this.getScale();
         double heightOffset = -1.0 * this.getScale();
         Vec3 spawnPos = this.getEyePosition()
                 .add(look.scale(baseForward + extraForward))

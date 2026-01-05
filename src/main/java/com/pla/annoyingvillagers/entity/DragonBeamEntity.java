@@ -424,9 +424,9 @@ public class DragonBeamEntity extends Entity {
             }
             List<LivingEntity> hit = this.raytraceEntities(this.level(), new Vec3(this.getX(), this.getY(), this.getZ()), new Vec3(this.endPosX, this.endPosY, this.endPosZ), false, true, true).entities;
             if (!this.level().isClientSide) {
-
+                
                 for (LivingEntity target : hit) {
-                    target.hurt(damageSources().indirectMagic(this, this.caster), (float) this.power);
+                    target.hurt(damageSources().indirectMagic(this, this.caster.getSummoner()), (float) this.power);
                     target.hurtMarked = true;
                     target.setDeltaMovement(0.0, 0.0, 0.0);
                     target.lerpMotion(0.0, 0.0, 0.0);

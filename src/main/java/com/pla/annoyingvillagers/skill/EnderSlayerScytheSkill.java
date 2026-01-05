@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.skill;
 
+import com.pla.annoyingvillagers.entity.DragonMeteoriteEntity;
 import com.pla.annoyingvillagers.entity.HerobrineDragonEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
@@ -19,12 +20,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import reascer.wom.gameasset.WOMAnimations;
+import reascer.wom.gameasset.animations.weapons.AnimsAgony;
 import yesman.epicfight.skill.Skill;
 import yesman.epicfight.skill.SkillBuilder;
 import yesman.epicfight.skill.SkillCategories;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.entity.eventlistener.PlayerEventListener;
@@ -72,7 +74,7 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
     @Override
     public void executeOnServer(SkillContainer skillContainer, FriendlyByteBuf friendlyByteBuf) {
         if (!skillContainer.isActivated()) {
-            skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.SWORD_SKILL, 0.0F);
+            skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.AGONY_GUARD_HIT_1, 0.0F);
             skillContainer.getExecutor().playSound(AnnoyingVillagersModSounds.SECOND_FORM_RELEASE.get(), 0.0F, 0.0F);
             super.executeOnServer(skillContainer, friendlyByteBuf);
             skillContainer.activate();
@@ -90,8 +92,7 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
                     ServerPlayerPatch serverPlayerPatch = skillContainer.getServerExecutor();
                     Player player = serverPlayerPatch.getOriginal();
 
-                    if (skillContainer.isActivated()
-                            && itemStack.getTag() != null) {
+                    if (skillContainer.isActivated()) {
                         event.setCanceled(true);
                         if (event.getPlayerPatch().getOriginal().getCooldowns().getCooldownPercent(itemStack.getItem(), 0) == 0
                                 && itemStack.getItem() instanceof EnderSlayerScytheItem && player.level() instanceof ServerLevel serverLevel
@@ -117,6 +118,9 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
                                 };
                             }
                         }
+                    } else if (!skillContainer.isActivated() && player.isPassenger() && player.getVehicle() != null && player.getVehicle() instanceof HerobrineDragonEntity) {
+                        event.setCanceled(true);
+                        skillContainer.getExecutor().playAnimationSynchronized(AnimsAgony.AGONY_AUTO_1, 0.0F);
                     }
                 }
         );
@@ -180,6 +184,16 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
     public void cancelOnClient(SkillContainer container, FriendlyByteBuf args) {
         super.cancelOnClient(container, args);
         container.deactivate();
+    }
+
+    @Override
+    public boolean canExecute(SkillContainer container) {
+        ItemStack itemstack = container.getExecutor().getOriginal().getMainHandItem();
+
+        return EpicFightCapabilities.getItemStackCapability(itemstack).getInnateSkill(container.getExecutor(), itemstack) == this
+                && (container.getExecutor().getOriginal().getVehicle() == null
+                || (container.getExecutor().getOriginal().getVehicle() != null && container.getExecutor().getOriginal().getVehicle() instanceof HerobrineDragonEntity))
+                && (!this.isActivated(container) || this.activateType == ActivateType.TOGGLE);
     }
 
     @Override

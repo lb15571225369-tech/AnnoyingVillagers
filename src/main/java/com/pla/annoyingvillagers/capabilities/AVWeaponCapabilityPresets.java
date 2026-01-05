@@ -8,6 +8,8 @@ import com.pla.annoyingvillagers.gameasset.AVSkills;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.Tiers;
@@ -69,12 +71,11 @@ public class AVWeaponCapabilityPresets {
                             AnimsAgony.AGONY_AUTO_2,
                             AnimsAgony.AGONY_AUTO_3,
                             AVAnimations.ENDER_GLAIVE_NAPOLEON_AUSTERLITZ,
-                            AnimsAgony.AGONY_RIPPING_FANGS)
+                            AVAnimations.CLONE_ANTITHEUS_AGRESSION)
                     .newStyleCombo(Styles.MOUNT,
                             Animations.SPEAR_MOUNT_ATTACK)
                     .innateSkill(Styles.TWO_HAND,
                             (itemstack) -> AVSkills.ENDER_GLAIVE)
-                    .comboCancel((style) -> false)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AVAnimations.VALOUR_HOLD_GREATSWORD)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AVAnimations.VALOUR_WALK_GREATSWORD)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.VALOUR_RUN_GREATSWORD)
@@ -149,22 +150,23 @@ public class AVWeaponCapabilityPresets {
                     .swingSound(EpicFightSounds.WHOOSH.get())
                     .canBePlacedOffhand(false)
                     .newStyleCombo(Styles.TWO_HAND,
-                            AVAnimations.ENDER_SLAYER_ANTITHEUS_AUTO_2,
-                            AnimsAgony.AGONY_AUTO_1,
-                            AVAnimations.ENDER_SLAYER_ANTITHEUS_AUTO_4,
-                            AVAnimations.ENDER_SLAYER_SCYTHE_NAPOLEON_WATERLOW,
-                            AVAnimations.ENDER_SLAYER_ANTITHEUS_AGRESSION,
-                            AVAnimations.ENDER_SLAYER_SCYTHE_ORBIT_MAD_REACH,
-                            AVAnimations.ENDER_SLAYER_ANTITHEUS_GUILLOTINE)
-                    .newStyleCombo(Styles.MOUNT,
-                            Animations.SWORD_MOUNT_ATTACK)
+                            AnimsEnderblaster.ENDERBLASTER_TWOHAND_AUTO_3,
+                            WOMAnimations.KICK_AUTO_3,
+                            AnimsEnderblaster.ENDERBLASTER_TWOHAND_AUTO_2,
+                            WOMAnimations.KICK_AUTO_1,
+                            AnimsEnderblaster.ENDERBLASTER_TWOHAND_AUTO_4,
+                            WOMAnimations.KICK_AUTO_2,
+                            AnimsEnderblaster.ENDERBLASTER_TWOHAND_AUTO_1,
+                            AVAnimations.CLONE_ENDERBLASTER_TWOHAND_TOMAHAWK)
                     .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.ENDER_SLAYER_SCYTHE)
                     .innateSkill(Styles.MOUNT, (itemstack) -> AVSkills.ENDER_SLAYER_SCYTHE)
-                    .comboCancel((style) -> false)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.MOUNT, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE)
+                    .livingMotionModifier(Styles.MOUNT, LivingMotions.MOUNT, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE)
+                    .livingMotionModifier(Styles.MOUNT, LivingMotions.IDLE, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AVAnimations.GLOWING_AGONY_GUARD);
 
     public static final Function<Item, Builder> LEGENDARY_SWORD = (item) ->
