@@ -80,12 +80,6 @@ public class HerobrineCommon {
                     && item.getTag() != null && item.getTag().contains("SnakeAnimation")) {
                 return false;
             }
-            if (herobrineMob instanceof ReaperHerobrineEntity reaperHerobrineEntity
-                    && reaperHerobrineEntity.isPassenger()
-                    && reaperHerobrineEntity.getVehicle() instanceof HerobrineDragonEntity herobrineDragonEntity
-                    && herobrineDragonEntity.isRecallActive()) {
-                return false;
-            }
             return herobrineMob.getState() != 0;
         }
         return false;
@@ -93,7 +87,8 @@ public class HerobrineCommon {
 
     public static boolean canCastMeteorite(MobPatch<?> mobpatch) {
         if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
-            if (herobrineMob instanceof ReaperHerobrineEntity reaperHerobrineEntity && reaperHerobrineEntity.getMeteoriteHerobrineDragon() == null) {
+            if (herobrineMob instanceof ReaperHerobrineEntity reaperHerobrineEntity
+                    && (reaperHerobrineEntity.getMeteoriteHerobrineDragon() == null || reaperHerobrineEntity.getMeteoriteHerobrineDragon().isRecallActive())) {
                 return false;
             }
             return herobrineMob.getState() != 0;
@@ -103,7 +98,8 @@ public class HerobrineCommon {
 
     public static boolean canCastThunder(MobPatch<?> mobpatch) {
         if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
-            if (herobrineMob instanceof ReaperHerobrineEntity reaperHerobrineEntity && reaperHerobrineEntity.getThunderHerobrineDragon() == null) {
+            if (herobrineMob instanceof ReaperHerobrineEntity reaperHerobrineEntity
+                    && (reaperHerobrineEntity.getThunderHerobrineDragon() == null || reaperHerobrineEntity.getThunderHerobrineDragon().isRecallActive())) {
                 return false;
             }
             return herobrineMob.getState() != 0;
