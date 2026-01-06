@@ -10,7 +10,6 @@
     "EntityMixin",
     "SkeletonMixin",
     "ZombieMixin",
-    "EnderDragonMixin",
     "GuardSkillMixin",
     "ExplosionMixin",
     "RaiderMixin",

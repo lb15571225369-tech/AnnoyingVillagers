@@ -763,9 +763,11 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
         {
             float pitch = (1 - speed);
             float volume = 0.3f + (1 - speed) * 0.2f;
+            float loudMul = 5.0f;
             pitch *= getVoicePitch();
             volume *= getSoundVolume();
-            level().playLocalSound(getX(), getY(), getZ(), getWingsSound(), SoundSource.VOICE, volume, pitch, true);
+            volume *= loudMul;
+            level().playLocalSound(getX(), getY(), getZ(), getWingsSound(), SoundSource.HOSTILE, volume, pitch, true);
         }
     }
 
