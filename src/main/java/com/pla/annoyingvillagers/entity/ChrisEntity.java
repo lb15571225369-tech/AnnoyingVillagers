@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.entity;
 import javax.annotation.Nullable;
 
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.spawnhandler.ChrisData;
 import com.pla.annoyingvillagers.task.DelayedTask;
@@ -116,13 +117,20 @@ public class ChrisEntity extends AVNpc {
         }
         
         if (this.getEnderPearlCooldown() == 0) {
+            AVNpc entity = this;
+
+            if (entity.getLivingEntityPatch() != null) {
+                entity.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F);
+            }
             CombatBehaviour.throwEnderPearl(this, 180.0F);
-            Entity entity = this;
             if (Math.random() <= 0.2D) {
                 new DelayedTask(20) {
                     @Override
                     public void run() {
                         if (entity.isAlive()) {
+                            if (entity.getLivingEntityPatch() != null) {
+                                entity.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F);
+                            }
                             CombatBehaviour.throwEnderPearl(entity, 90.0F);
                         }
                     }

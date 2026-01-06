@@ -20,41 +20,37 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
-import yesman.epicfight.api.animation.Joint;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
-import yesman.epicfight.api.utils.math.OpenMatrix4f;
-import yesman.epicfight.api.utils.math.Vec3f;
-import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 import java.util.Objects;
 
 public class ThrowingPearlKeyPressedProcedure {
-    public static Vec3 getJointWithTranslation(Entity entity, Vec3f translation, Joint joint) {
-        LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
-        if (livingEntityPatch == null) return null;
+    private static Vec3 getFrontLeftPos(Entity entity) {
+        Vec3 base = (entity instanceof LivingEntity le)
+                ? le.getEyePosition(1.0F)
+                : entity.position().add(0.0, entity.getBbHeight() * 0.85, 0.0);
 
-        float interpolation = 0.0F;
-        OpenMatrix4f m = livingEntityPatch.getArmature()
-                .getBoundTransformFor(livingEntityPatch.getAnimator().getPose(interpolation), joint);
+        base = base.add(0.0, -0.1, 0.0);
 
-        if (translation != null) {
-            OpenMatrix4f tLocal = new OpenMatrix4f().translate(translation);
-            OpenMatrix4f.mul(m, tLocal, m);
+        Vec3 forward = entity.getLookAngle();
+        Vec3 forwardH = new Vec3(forward.x, 0.0, forward.z);
+        if (forwardH.lengthSqr() < 1.0E-6) {
+            forwardH = entity.getForward();
+            forwardH = new Vec3(forwardH.x, 0.0, forwardH.z);
+        }
+        forwardH = forwardH.normalize();
+
+        Vec3 left = new Vec3(0.0, 1.0, 0.0).cross(forwardH);
+        if (left.lengthSqr() < 1.0E-6) {
+            left = new Vec3(1.0, 0.0, 0.0);
+        } else {
+            left = left.normalize();
         }
 
-        float yawRad = (float) -Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F);
-        OpenMatrix4f worldYaw = new OpenMatrix4f().rotate(yawRad, new Vec3f(0.0F, 1.0F, 0.0F));
-        OpenMatrix4f.mul(worldYaw, m, m);
-
-        LivingEntity base = livingEntityPatch.getOriginal();
-        return new Vec3(
-                m.m30 + base.getX(),
-                m.m31 + (base.getY() + (entity.getBbHeight() / 1.8) - 1.0),
-                m.m32 + base.getZ()
-        );
+        return base.add(forwardH.scale(0.35)).add(left.scale(0.25));
     }
 
     public static void execute(LevelAccessor levelaccessor, final Entity entity) {
@@ -80,32 +76,22 @@ public class ThrowingPearlKeyPressedProcedure {
                                 var projectile = new EnchantedEnderPearlEntity(
                                         AnnoyingVillagersModEntities.ENCHANTED_ENDER_PEARL_PROJECTILE.get(), level);
                                 projectile.setOwner(entity);
-                                Vec3 handPos = getJointWithTranslation(
-                                        entity,
-                                        new Vec3f(0.0F, 0.0F, 0.0F),
-                                        Armatures.BIPED.get().toolL
-                                );
+                                Vec3 handPos = getFrontLeftPos(entity);
 
-                                if (handPos != null) {
-                                    projectile.setBaseDamage(0.0D);
-                                    projectile.setKnockback(0);
-                                    projectile.setSilent(true);
-                                    projectile.setPos(handPos.x, handPos.y, handPos.z);
-                                    projectile.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, 1.5F, 0.0F);
-                                    level.addFreshEntity(projectile);
-                                    entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (entity.level().getRandom().nextFloat() * 0.4F + 0.8F));
-                                    stack.hurtAndBreak(1, player, p -> {
-                                    });
+                                projectile.setPos(handPos.x, handPos.y, handPos.z);
+                                projectile.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, 1.5F, 0.0F);
+                                level.addFreshEntity(projectile);
+                                entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (entity.level().getRandom().nextFloat() * 0.4F + 0.8F));
+                                stack.hurtAndBreak(1, player, p -> {
+                                });
 
-                                    new DelayedTask(20) {
-                                        @Override
-                                        public void run() {
-                                            entity.getPersistentData().putBoolean("ender_pearl_used", false);
-                                        }
-                                    };
-                                    return true;
-                                }
-                                return false;
+                                new DelayedTask(20) {
+                                    @Override
+                                    public void run() {
+                                        entity.getPersistentData().putBoolean("ender_pearl_used", false);
+                                    }
+                                };
+                                return true;
                             }
                             return false;
                         }).orElse(false);
@@ -126,33 +112,26 @@ public class ThrowingPearlKeyPressedProcedure {
                     level = entity.level();
                     projectile = new ThrownEnderpearl(EntityType.ENDER_PEARL, level);
                     projectile.setOwner(entity);
-                    Vec3 handPos = getJointWithTranslation(
-                            entity,
-                            new Vec3f(0.0F, 0.0F, 0.0F),
-                            Armatures.BIPED.get().toolL
-                    );
 
-                    if (handPos != null) {
-                        projectile.setPos(handPos.x, handPos.y, handPos.z);
-                        projectile.setPos(entity.getX(), entity.getEyeY() - 0.1D, entity.getZ());
-                        projectile.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, 1.5F, 0.0F);
-                        level.addFreshEntity(projectile);
+                    Vec3 handPos = getFrontLeftPos(entity);
+                    projectile.setPos(handPos.x, handPos.y, handPos.z);
+                    projectile.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, 1.5F, 0.0F);
+                    level.addFreshEntity(projectile);
 
-                        entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (entity.level().getRandom().nextFloat() * 0.4F + 0.8F));
+                    entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (entity.level().getRandom().nextFloat() * 0.4F + 0.8F));
 
-                        new DelayedTask(15) {
-                            @Override
-                            public void run() {
-                                entity.getPersistentData().putBoolean("ender_pearl_used", false);
-                            }
-                        };
-                        Player player2 = (Player) entity;
-                        ItemStack itemStack = new ItemStack(Items.ENDER_PEARL);
+                    new DelayedTask(15) {
+                        @Override
+                        public void run() {
+                            entity.getPersistentData().putBoolean("ender_pearl_used", false);
+                        }
+                    };
+                    Player player2 = (Player) entity;
+                    ItemStack itemStack = new ItemStack(Items.ENDER_PEARL);
 
-                        player2.getInventory().clearOrCountMatchingItems((stack) -> {
-                            return itemStack.getItem() == stack.getItem();
-                        }, 1, player2.inventoryMenu.getCraftSlots());
-                    }
+                    player2.getInventory().clearOrCountMatchingItems((stack) -> {
+                        return itemStack.getItem() == stack.getItem();
+                    }, 1, player2.inventoryMenu.getCraftSlots());
                 }
             }
         }

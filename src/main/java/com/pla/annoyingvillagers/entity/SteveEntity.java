@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
@@ -132,19 +133,33 @@ public class SteveEntity extends AVNpc {
         }
 
         if (damageSource.getEntity() != null && this.getEnderPearlCooldown() == 0) {
+            AVNpc entity = this;
+            if (entity.getLivingEntityPatch() != null) {
+                entity.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F);
+            }
             CombatBehaviour.throwEnderPearl(this, (float) new Random().nextDouble(90.0D, 180.0D));
-            LivingEntity entity = this;
 
             if (Math.random() <= 0.5D) {
-                if (entity.isAlive()) {
-                    CombatBehaviour.throwEnderPearl(entity, 180.0F);
-                }
+                new DelayedTask(20) {
+                    @Override
+                    public void run() {
+                        if (entity.isAlive()) {
+                            if (entity.getLivingEntityPatch() != null) {
+                                entity.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F);
+                            }
+                            CombatBehaviour.throwEnderPearl(entity, 180.0F);
+                        }
+                    }
+                };
             }
 
             if (Math.random() <= 0.3D) {
                 new DelayedTask(20) {
                     public void run() {
                         if (entity.isAlive()) {
+                            if (entity.getLivingEntityPatch() != null) {
+                                entity.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F);
+                            }
                             CombatBehaviour.throwEnderPearl(entity, 90.0F);
                         }
                     }

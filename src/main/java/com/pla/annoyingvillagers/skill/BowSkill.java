@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.skill;
 
 import com.pla.annoyingvillagers.entity.HerobrineDragonEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.item.EnderSlayerScytheItem;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import net.minecraft.network.FriendlyByteBuf;
@@ -50,10 +51,9 @@ public class BowSkill extends WeaponInnateSkill {
         super.onInitiate(container);
         container.getExecutor().getEventListener().addEventListener(
                 PlayerEventListener.EventType.BASIC_ATTACK_EVENT, EVENT_UUID, event -> {
-                    if (event.getPlayerPatch().isLogicalClient()) return;
-                    SkillContainer skillContainer = event.getPlayerPatch().getSkill(this);
-                    ServerPlayerPatch serverPlayerPatch = skillContainer.getServerExecutor();
-                    Player player = serverPlayerPatch.getOriginal();
+                    SkillContainer skillContainer = container.getExecutor().getSkill(AVSkills.BOW);
+                    if (skillContainer == null) return;
+                    Player player = skillContainer.getExecutor().getOriginal();
 
                     if (player.isPassenger() && player.getVehicle() != null && player.getVehicle() instanceof HerobrineDragonEntity) {
                         event.setCanceled(true);

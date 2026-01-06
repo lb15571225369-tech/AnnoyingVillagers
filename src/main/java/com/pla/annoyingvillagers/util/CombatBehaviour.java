@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.util;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.clazz.AVNpc;
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
 import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
@@ -8,6 +9,7 @@ import com.pla.annoyingvillagers.entity.SteveEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -54,29 +56,29 @@ public class CombatBehaviour {
         HEALING_POTION.setCount(1);
     }
 
-    public static Vec3 getJointWithTranslation(Entity entity, Vec3f translation, Joint joint) {
-        LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
-        if (livingEntityPatch == null) return null;
+    private static Vec3 getFrontLeftPos(Entity entity) {
+        Vec3 base = (entity instanceof LivingEntity le)
+                ? le.getEyePosition(1.0F)
+                : entity.position().add(0.0, entity.getBbHeight() * 0.85, 0.0);
 
-        float interpolation = 0.0F;
-        OpenMatrix4f m = livingEntityPatch.getArmature()
-                .getBoundTransformFor(livingEntityPatch.getAnimator().getPose(interpolation), joint);
+        base = base.add(0.0, -0.1, 0.0);
 
-        if (translation != null) {
-            OpenMatrix4f tLocal = new OpenMatrix4f().translate(translation);
-            OpenMatrix4f.mul(m, tLocal, m);
+        Vec3 forward = entity.getLookAngle();
+        Vec3 forwardH = new Vec3(forward.x, 0.0, forward.z);
+        if (forwardH.lengthSqr() < 1.0E-6) {
+            forwardH = entity.getForward();
+            forwardH = new Vec3(forwardH.x, 0.0, forwardH.z);
+        }
+        forwardH = forwardH.normalize();
+
+        Vec3 left = new Vec3(0.0, 1.0, 0.0).cross(forwardH);
+        if (left.lengthSqr() < 1.0E-6) {
+            left = new Vec3(1.0, 0.0, 0.0);
+        } else {
+            left = left.normalize();
         }
 
-        float yawRad = (float) -Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F);
-        OpenMatrix4f worldYaw = new OpenMatrix4f().rotate(yawRad, new Vec3f(0.0F, 1.0F, 0.0F));
-        OpenMatrix4f.mul(worldYaw, m, m);
-
-        LivingEntity base = livingEntityPatch.getOriginal();
-        return new Vec3(
-                m.m30 + base.getX(),
-                m.m31 + (base.getY() + (entity.getBbHeight() / 1.8) - 1.0),
-                m.m32 + base.getZ()
-        );
+        return base.add(forwardH.scale(0.35)).add(left.scale(0.25));
     }
 
     public static void throwEnderPearl(Entity entity, float xRot) {
@@ -92,25 +94,17 @@ public class CombatBehaviour {
             livingEntity.yHeadRotO = livingEntity.getYRot();
         }
 
-        Level level = entity.level();
-        if (!level.isClientSide()) {
-            Vec3 handPos = getJointWithTranslation(
-                    entity,
-                    new Vec3f(0.0F, 0.0F, 0.0F),
-                    Armatures.BIPED.get().toolL
-            );
-
+        if (entity.level() instanceof ServerLevel serverLevel) {
             new DelayedTask(5) {
                 @Override
                 public void run() {
-                    if (handPos != null) {
-                        Projectile projectile = new ThrownEnderpearl(EntityType.ENDER_PEARL, level);
-                        projectile.setOwner(entity);
-                        projectile.setPos(handPos.x, handPos.y, handPos.z);
-                        projectile.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, new Random().nextBoolean() ? 1.0F : 2.0F, 0.0F);
-                        level.addFreshEntity(projectile);
-                        entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (entity.level().getRandom().nextFloat() * 0.4F + 0.8F));
-                    }
+                    Vec3 handPos = getFrontLeftPos(entity);
+                    Projectile projectile = new ThrownEnderpearl(EntityType.ENDER_PEARL, serverLevel);
+                    projectile.setOwner(entity);
+                    projectile.setPos(handPos.x, handPos.y, handPos.z);
+                    projectile.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, new Random().nextBoolean() ? 1.0F : 2.0F, 0.0F);
+                    serverLevel.addFreshEntity(projectile);
+                    entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (entity.level().getRandom().nextFloat() * 0.4F + 0.8F));
                 }
             };
 
