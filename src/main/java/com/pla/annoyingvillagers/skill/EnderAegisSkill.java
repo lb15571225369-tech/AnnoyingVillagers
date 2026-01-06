@@ -47,7 +47,7 @@ public class EnderAegisSkill extends WeaponInnateSkill {
         if (!skillContainer.isActivated() && skillContainer.getStack() < 1) {
             float currentResource = skillContainer.getResource();
             float neededResource = skillContainer.getNeededResource();
-            float addResource = Math.min(20f, neededResource);
+            float addResource = Math.min(10f, neededResource);
             enderAegisSkill.setConsumptionSynchronize(skillContainer, currentResource + addResource);
         } else if (skillContainer.isActivated()) {
             enderAegisSkill.setDurationSynchronize(skillContainer, skillContainer.getRemainDuration() + 40);
@@ -62,11 +62,6 @@ public class EnderAegisSkill extends WeaponInnateSkill {
             super.executeOnServer(skillContainer, friendlyByteBuf);
             skillContainer.activate();
         }
-    }
-
-    @Override
-    public boolean canExecute(SkillContainer container) {
-        return !container.isActivated();
     }
 
     public void executeOnClient(SkillContainer container, FriendlyByteBuf args) {

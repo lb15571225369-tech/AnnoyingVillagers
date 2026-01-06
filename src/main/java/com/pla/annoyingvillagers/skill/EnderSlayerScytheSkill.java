@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.skill;
 
 import com.pla.annoyingvillagers.entity.HerobrineDragonEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.item.EnderSlayerScytheItem;
@@ -20,10 +21,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import reascer.wom.gameasset.animations.weapons.AnimsAgony;
-import yesman.epicfight.skill.Skill;
-import yesman.epicfight.skill.SkillBuilder;
-import yesman.epicfight.skill.SkillCategories;
-import yesman.epicfight.skill.SkillContainer;
+import yesman.epicfight.skill.*;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
@@ -40,34 +38,78 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
         super(builder);
     }
 
-    private static Vec3 findOrbitSpawnPos(ServerLevel level, Player player, HerobrineDragonEntity dragon,
-                                          float rMin, float rMax) {
+    private static Vec3 findOrbitSpawnPos(ServerLevel level, Player player, HerobrineDragonEntity dragon) {
         RandomSource rng = level.getRandom();
+        boolean hasCeiling = level.dimensionType().hasCeiling();
 
-        for (int i = 0; i < 24; i++) {
+        for (int i = 0; i < 32; i++) {
             double ang = rng.nextDouble() * (Math.PI * 2.0);
-            double r = Mth.nextDouble(rng, rMin, rMax);
+            double r = Mth.nextDouble(rng, (float) 20.0, (float) 50.0);
 
             double x = player.getX() + Math.cos(ang) * r;
             double z = player.getZ() + Math.sin(ang) * r;
 
-            BlockPos col = BlockPos.containing(x, 0.0, z);
-            int groundY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, col).getY();
+            if (!hasCeiling) {
+                BlockPos col = BlockPos.containing(x, 0.0, z);
+                int groundY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, col).getY();
 
-            double y = Math.max(player.getY() + 12.0, groundY + 18.0);
-            y += Mth.nextDouble(rng, -2.0, 6.0);
+                double y = Math.max(player.getY() + 12.0, groundY + 18.0);
+                y += Mth.nextDouble(rng, -2.0, 6.0);
 
-            y = Mth.clamp(y, level.getMinBuildHeight() + 6.0, level.getMaxBuildHeight() - 6.0);
+                y = Mth.clamp(y, level.getMinBuildHeight() + 6.0, level.getMaxBuildHeight() - 6.0);
 
-            dragon.moveTo(x, y, z, rng.nextFloat() * 360.0F, 0.0F);
-            AABB box = dragon.getBoundingBox();
+                dragon.moveTo(x, y, z, rng.nextFloat() * 360.0F, 0.0F);
+                AABB box = dragon.getBoundingBox();
 
-            if (level.noCollision(dragon, box) && !level.containsAnyLiquid(box)) {
-                return new Vec3(x, y, z);
+                if (level.noCollision(dragon, box) && !level.containsAnyLiquid(box)) {
+                    return new Vec3(x, y, z);
+                }
+            } else {
+                BlockPos col = BlockPos.containing(x, 0.0, z);
+                int roofAirY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, col).getY();
+
+                double yWanted = player.getY() + 12.0 + Mth.nextDouble(rng, -2.0, 6.0);
+
+                double minY = level.getMinBuildHeight() + 6.0;
+                double maxY = Math.min(level.getMaxBuildHeight() - 2.0, roofAirY - 2.0);
+
+                int yStart = Mth.floor(Mth.clamp(yWanted, minY, maxY));
+                int yMin = Mth.floor(minY);
+
+                for (int y = yStart; y >= yMin && (yStart - y) <= 96; y--) {
+                    dragon.moveTo(x, y, z, rng.nextFloat() * 360.0F, 0.0F);
+                    AABB box = dragon.getBoundingBox();
+
+                    if (level.noCollision(dragon, box) && !level.containsAnyLiquid(box)) {
+                        return new Vec3(x, y, z);
+                    }
+                }
             }
         }
 
-        return player.position().add(0.0, 20.0, 0.0);
+        double fx = player.getX();
+        double fz = player.getZ();
+        double fy = player.getY() + 16.0;
+
+        if (hasCeiling) {
+            BlockPos col = BlockPos.containing(fx, 0.0, fz);
+            int roofAirY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, col).getY();
+            fy = Math.min(fy, roofAirY - 8.0);
+        }
+
+        fy = Mth.clamp(fy, level.getMinBuildHeight() + 6.0, level.getMaxBuildHeight() - 6.0);
+
+        int start = Mth.floor(fy);
+        for (int y = start; y >= level.getMinBuildHeight() + 6 && (start - y) <= 64; y--) {
+            dragon.moveTo(fx, y, fz, rng.nextFloat() * 360.0F, 0.0F);
+            AABB box = dragon.getBoundingBox();
+
+            if (level.noCollision(dragon, box) && !level.containsAnyLiquid(box)) {
+                return new Vec3(fx, y, fz);
+            }
+        }
+
+        return player.position().add(0.0, 8.0, 0.0);
     }
 
     @Override
@@ -176,11 +218,21 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
                         }
                     }
                 });
-    }
 
-    @Override
-    public boolean resourcePredicate(PlayerPatch<?> playerpatch, SkillCastEvent event) {
-        return true;
+        container.getExecutor().getEventListener().addEventListener(
+                PlayerEventListener.EventType.DODGE_SUCCESS_EVENT, EVENT_UUID, (event) -> {
+                    SkillContainer skillContainer = container.getExecutor().getSkill(AVSkills.ENDER_SLAYER_SCYTHE);
+                    if (skillContainer == null) return;
+                    EnderSlayerScytheSkill enderSlayerScytheSkill = (EnderSlayerScytheSkill) skillContainer.getSkill();
+                    if (!skillContainer.isActivated() && skillContainer.getStack() < 1) {
+                        float currentResource = skillContainer.getResource();
+                        float neededResource = skillContainer.getNeededResource();
+                        float addResource = Math.min(10f, neededResource);
+                        enderSlayerScytheSkill.setConsumptionSynchronize(skillContainer, currentResource + addResource);
+                    } else if (skillContainer.isActivated()) {
+                        enderSlayerScytheSkill.setDurationSynchronize(skillContainer, skillContainer.getRemainDuration() + 80);
+                    }
+        });
     }
 
     @Override
@@ -213,6 +265,7 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
     public void onRemoved(SkillContainer container) {
         container.getExecutor().getEventListener().removeListener(PlayerEventListener.EventType.BASIC_ATTACK_EVENT, EVENT_UUID);
         container.getExecutor().getEventListener().removeListener(PlayerEventListener.EventType.SKILL_CAST_EVENT, EVENT_UUID);
+        container.getExecutor().getEventListener().removeListener(PlayerEventListener.EventType.DODGE_SUCCESS_EVENT, EVENT_UUID);
     }
 
     @Override
@@ -249,7 +302,7 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
     private HerobrineDragonEntity spawnBabyEnderDragon(Player player, ServerLevel serverLevel) {
         if (!player.isAlive()) return null;
         HerobrineDragonEntity herobrineDragonEntity = new HerobrineDragonEntity(AnnoyingVillagersModEntities.HEROBRINE_DRAGON.get(), serverLevel);
-        Vec3 spawnPos = findOrbitSpawnPos(serverLevel, player, herobrineDragonEntity, 20.0F, 50.0F);
+        Vec3 spawnPos = findOrbitSpawnPos(serverLevel, player, herobrineDragonEntity);
         herobrineDragonEntity.moveTo(spawnPos.x, spawnPos.y, spawnPos.z, serverLevel.getRandom().nextFloat() * 360.0F, 0.0F);
         herobrineDragonEntity.setSummoner(player);
         herobrineDragonEntity.setSummonerUUID(player.getUUID());

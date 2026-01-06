@@ -1056,6 +1056,8 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
             dragon.setNavigation(true);
 
             double aboveY = Math.max(owner.getY() + 10.0, land.y + 10.0);
+            aboveY = clampYForWorld(serverLevel, land.x, land.z, aboveY);
+            aboveY = findNearestFreeY(serverLevel, land.x, land.z, aboveY, serverLevel.dimensionType().hasCeiling());
             Vec3 above = new Vec3(land.x, aboveY, land.z);
 
             if (stage == 0) {
@@ -1068,16 +1070,19 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
                 return;
             }
 
-            dragon.getMoveControl().setWantedPosition(land.x, land.y, land.z, 1.2D);
-            dragon.aimBodyAndHeadAt(land, 18.0F, 12.0F);
 
-            boolean close = dragon.distanceToSqr(land) < 9.0D;
-            if (close || dragon.onGround()) {
+            double landY = clampYForWorld(serverLevel, land.x, land.z, land.y);
+            Vec3 landFixed = new Vec3(land.x, landY, land.z);
+
+            dragon.getMoveControl().setWantedPosition(landFixed.x, landFixed.y, landFixed.z, 1.2D);
+            dragon.aimBodyAndHeadAt(landFixed, 18.0F, 12.0F);
+
+            if (dragon.distanceToSqr(landFixed) < 9.0D) {
                 dragon.setNoGravity(false);
                 dragon.setDeltaMovement(Vec3.ZERO);
 
-                if (dragon.recallAutoMount && owner instanceof Player p) {
-                    p.startRiding(dragon, true);
+                if (dragon.recallAutoMount && owner instanceof Player player) {
+                    player.startRiding(dragon, true);
                 }
 
                 stop();
@@ -1086,32 +1091,133 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
 
         private Vec3 findLandingPosNearSummoner(ServerLevel level, LivingEntity owner) {
             BlockPos base = owner.blockPosition();
+            boolean hasCeiling = level.dimensionType().hasCeiling();
 
             for (int r = 0; r <= 3; r++) {
                 for (int dx = -r; dx <= r; dx++) {
                     for (int dz = -r; dz <= r; dz++) {
                         BlockPos col = base.offset(dx, 0, dz);
-                        int groundY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, col).getY();
                         double x = col.getX() + 0.5;
-                        double y = groundY + 1.0;
                         double z = col.getZ() + 0.5;
 
-                        AABB movedBox = dragon.getBoundingBox().move(
-                                x - dragon.getX(),
-                                y - dragon.getY(),
-                                z - dragon.getZ()
-                        );
+                        if (!hasCeiling) {
+                            int groundY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, col).getY();
+                            double y = groundY + 1.0;
 
-                        if (level.noCollision(dragon, movedBox) && !level.containsAnyLiquid(movedBox)) {
-                            return new Vec3(x, y, z);
+                            if (canFitAt(level, x, y, z)) {
+                                return new Vec3(x, y, z);
+                            }
+                        } else {
+                            Vec3 found = findCeilingLandingAtColumn(level, owner, x, z);
+                            if (found != null) return found;
                         }
                     }
                 }
             }
 
-            BlockPos col = BlockPos.containing(owner.getX(), 0.0, owner.getZ());
-            int groundY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, col).getY();
-            return new Vec3(owner.getX(), groundY + 1.0, owner.getZ());
+            if (hasCeiling) {
+                Vec3 found = findCeilingLandingAtColumn(level, owner, owner.getX(), owner.getZ());
+                if (found != null) return found;
+
+                double y = clampYForWorld(level, owner.getX(), owner.getZ(), owner.getY() + 1.0);
+                y = findNearestFreeY(level, owner.getX(), owner.getZ(), y, true);
+                return new Vec3(owner.getX(), y, owner.getZ());
+            } else {
+                BlockPos col = BlockPos.containing(owner.getX(), 0.0, owner.getZ());
+                int groundY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, col).getY();
+                return new Vec3(owner.getX(), groundY + 1.0, owner.getZ());
+            }
+        }
+
+        @Nullable
+        private Vec3 findCeilingLandingAtColumn(ServerLevel level, LivingEntity owner, double x, double z) {
+            double minY = level.getMinBuildHeight() + 6.0;
+            int yStart = Mth.floor(owner.getY()) + 8;
+
+            BlockPos col = BlockPos.containing(x, 0.0, z);
+            int roofAirY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, col).getY();
+
+            double maxY = Math.min(level.getMaxBuildHeight() - 2.0, roofAirY - dragon.getBbHeight() - 2.0);
+            if (maxY < minY) maxY = minY;
+
+            yStart = Math.min(yStart, Mth.floor(maxY));
+            yStart = Math.max(yStart, Mth.floor(minY));
+
+            int yMin = Mth.floor(minY);
+
+            for (int y = yStart; y >= yMin && (yStart - y) <= 96; y--) {
+
+                if (!canFitAt(level, x, y, z)) continue;
+                if (!hasGroundBelow(level, x, y, z)) continue;
+
+                return new Vec3(x, y, z);
+            }
+
+            return null;
+        }
+
+        private double clampYForWorld(ServerLevel level, double x, double z, double y) {
+            double min = level.getMinBuildHeight() + 6.0;
+            double max = level.getMaxBuildHeight() - 6.0;
+
+            if (level.dimensionType().hasCeiling()) {
+                BlockPos col = BlockPos.containing(x, 0.0, z);
+                int roofAirY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, col).getY();
+                max = Math.min(max, roofAirY - dragon.getBbHeight() - 2.0);
+            }
+
+            if (max < min) max = min;
+            return Mth.clamp(y, min, max);
+        }
+
+        private boolean canFitAt(ServerLevel level, double x, double y, double z) {
+            AABB movedBox = dragon.getBoundingBox().move(
+                    x - dragon.getX(),
+                    y - dragon.getY(),
+                    z - dragon.getZ()
+            );
+            return level.noCollision(dragon, movedBox) && !level.containsAnyLiquid(movedBox);
+        }
+
+        private boolean hasGroundBelow(ServerLevel level, double x, double y, double z) {
+            AABB box = dragon.getBoundingBox().move(
+                    x - dragon.getX(),
+                    y - dragon.getY(),
+                    z - dragon.getZ()
+            );
+
+            AABB below = box.move(0.0, -0.25, 0.0);
+            return !level.noCollision(dragon, below);
+        }
+
+        private double findNearestFreeY(ServerLevel level, double x, double z, double desiredY, boolean preferDown) {
+            double yClamped = clampYForWorld(level, x, z, desiredY);
+
+            int base = Mth.floor(yClamped);
+            int min = Mth.floor(level.getMinBuildHeight() + 6.0);
+            int max = Mth.floor(level.getMaxBuildHeight() - 2.0);
+
+            if (level.dimensionType().hasCeiling()) {
+                BlockPos col = BlockPos.containing(x, 0.0, z);
+                int roofAirY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, col).getY();
+                max = Math.min(max, Mth.floor(roofAirY - 2.0));
+            }
+
+            base = Mth.clamp(base, min, max);
+
+            for (int step = 0; step <= 64; step++) {
+                int y1 = preferDown ? (base - step) : (base + step);
+                int y2 = preferDown ? (base + step) : (base - step);
+
+                if (y1 >= min && y1 <= max && canFitAt(level, x, y1, z)) {
+                    return y1;
+                }
+                if (step != 0 && y2 >= min && y2 <= max && canFitAt(level, x, y2, z)) {
+                    return y2;
+                }
+            }
+
+            return yClamped;
         }
     }
 
@@ -1286,9 +1392,10 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
                 }
 
                 double catchUpY = computeDesiredY(leaderPosition.x, leaderPosition.z, leaderPosition.y) + 6.0;
-                catchUpY = Mth.clamp(catchUpY, minY(), maxY());
-                Vec3 catchUpTarget = new Vec3(leaderPosition.x, catchUpY, leaderPosition.z);
+                catchUpY = clampYForWorld(leaderPosition.x, leaderPosition.z, catchUpY);
+                catchUpY = findNearestFreeY(leaderPosition.x, leaderPosition.z, catchUpY, hasCeiling(), 24);
 
+                Vec3 catchUpTarget = new Vec3(leaderPosition.x, catchUpY, leaderPosition.z);
                 setMoveTarget(catchUpTarget, baseSpeed * 1.65);
                 return;
             }
@@ -1315,15 +1422,37 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
                 double orbitY = computeDesiredY(orbitX, orbitZ, leaderPosition.y);
                 targetPosition = new Vec3(orbitX, orbitY, orbitZ);
             }
-
             if (!canMoveTo(targetPosition)) {
-                Vec3 liftedTarget = targetPosition.add(0.0, 14.0, 0.0);
-                if (canMoveTo(liftedTarget)) {
-                    targetPosition = liftedTarget;
+                boolean preferDown = hasCeiling();
+
+                double yFixed = findNearestFreeY(targetPosition.x, targetPosition.z, targetPosition.y, preferDown, 32);
+                Vec3 fixed = new Vec3(targetPosition.x, yFixed, targetPosition.z);
+
+                if (canMoveTo(fixed)) {
+                    targetPosition = fixed;
                 } else {
-                    orbitAngleRadians = Mth.nextDouble(dragon.getRandom(), 0.0, TWO_PI);
-                    double fallbackY = Mth.clamp(leaderPosition.y + orbitBaseHeightCurrent + 18.0, minY(), maxY());
-                    targetPosition = new Vec3(leaderPosition.x, fallbackY, leaderPosition.z);
+                    // thử offset dọc (Nether ưu tiên xuống trước)
+                    double[] offs = preferDown
+                            ? new double[]{-6.0, -10.0, -14.0, 6.0, 10.0, 14.0}
+                            : new double[]{6.0, 10.0, 14.0, -6.0, -10.0, -14.0};
+
+                    boolean found = false;
+                    for (double off : offs) {
+                        double yy = clampYForWorld(targetPosition.x, targetPosition.z, targetPosition.y + off);
+                        Vec3 t = new Vec3(targetPosition.x, yy, targetPosition.z);
+                        if (canMoveTo(t)) {
+                            targetPosition = t;
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found) {
+                        orbitAngleRadians = Mth.nextDouble(dragon.getRandom(), 0.0, TWO_PI);
+                        double fallbackY = clampYForWorld(leaderPosition.x, leaderPosition.z, leaderPosition.y + orbitBaseHeightCurrent + 18.0);
+                        fallbackY = findNearestFreeY(leaderPosition.x, leaderPosition.z, fallbackY, preferDown, 32);
+                        targetPosition = new Vec3(leaderPosition.x, fallbackY, leaderPosition.z);
+                    }
                 }
             }
 
@@ -1362,23 +1491,64 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
         }
 
         private double computeDesiredY(double x, double z, double leaderY) {
-            BlockPos columnPos = BlockPos.containing(x, 0.0, z);
-            int groundY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, columnPos).getY();
-
-            double y = Math.max(leaderY + orbitBaseHeightCurrent, groundY + 10.0);
+            double y = leaderY + orbitBaseHeightCurrent;
 
             y += Math.sin(verticalWavePhase) * verticalWaveAmplitude;
             y += yJitterCurrent;
+            y = clampYForWorld(x, z, y);
+            y = findNearestFreeY(x, z, y, hasCeiling(), 24);
 
-            return Mth.clamp(y, minY(), maxY());
+            return y;
+        }
+
+        private boolean hasCeiling() {
+            return level.dimensionType().hasCeiling();
         }
 
         private double minY() {
             return level.getMinBuildHeight() + 6.0;
         }
 
-        private double maxY() {
-            return level.getMaxBuildHeight() - 6.0;
+        private double maxY(double x, double z) {
+            double max = level.getMaxBuildHeight() - 6.0;
+
+            if (hasCeiling()) {
+                BlockPos col = BlockPos.containing(x, 0.0, z);
+                int roofAirY = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, col).getY();
+
+                max = Math.min(max, roofAirY - dragon.getBbHeight() - 2.0);
+            }
+
+            if (max < minY()) max = minY();
+            return max;
+        }
+
+        private double clampYForWorld(double x, double z, double y) {
+            return Mth.clamp(y, minY(), maxY(x, z));
+        }
+
+        private double findNearestFreeY(double x, double z, double desiredY, boolean preferDown, int maxSteps) {
+            double yClamped = clampYForWorld(x, z, desiredY);
+
+            int base = Mth.floor(yClamped);
+            int min = Mth.floor(minY());
+            int max = Mth.floor(maxY(x, z));
+
+            base = Mth.clamp(base, min, max);
+
+            for (int step = 0; step <= maxSteps; step++) {
+                int y1 = preferDown ? (base - step) : (base + step);
+                int y2 = preferDown ? (base + step) : (base - step);
+
+                if (y1 >= min && y1 <= max && canMoveTo(new Vec3(x, (double) y1, z))) {
+                    return (double) y1;
+                }
+                if (step != 0 && y2 >= min && y2 <= max && canMoveTo(new Vec3(x, (double) y2, z))) {
+                    return (double) y2;
+                }
+            }
+
+            return yClamped;
         }
 
         private boolean canMoveTo(Vec3 pos) {
