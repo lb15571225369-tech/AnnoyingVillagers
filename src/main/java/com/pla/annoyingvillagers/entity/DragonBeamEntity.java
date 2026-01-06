@@ -3,6 +3,8 @@ package com.pla.annoyingvillagers.entity;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.client.emitterinfo.DragonBeamParticleEmitterInfo;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
+import com.pla.annoyingvillagers.util.ScreenShakeUtil;
 import mod.chloeprime.aaaparticles.api.common.AAALevel;
 import mod.chloeprime.aaaparticles.api.common.ParticleEmitterInfo;
 import net.minecraft.core.BlockPos;
@@ -14,7 +16,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -36,6 +38,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +71,6 @@ public class DragonBeamEntity extends Entity {
     public float prevPitch;
     private Vec3 targetPos;
     @OnlyIn(Dist.CLIENT)
-    private Vec3[] attractorPos;
     private boolean renderBeam = false;
     private boolean playSound = false;
 
@@ -77,10 +79,6 @@ public class DragonBeamEntity extends Entity {
         this.on = true;
         this.blockSide = null;
         this.noCulling = true;
-        if (pLevel.isClientSide) {
-            this.attractorPos = new Vec3[]{new Vec3(0.0, 0.0, 0.0)};
-        }
-
     }
 
     public DragonBeamEntity(EntityType<? extends DragonBeamEntity> type, Level world, HerobrineDragonEntity caster, LivingEntity target, double x, double y, double z, int duration, int pow) {
@@ -128,17 +126,17 @@ public class DragonBeamEntity extends Entity {
         return this.entityData.get(TARGET);
     }
 
-    protected void readAdditionalSaveData(CompoundTag compoundTag) {
+    protected void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
     }
 
-    protected void addAdditionalSaveData(CompoundTag compoundTag) {
+    protected void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
     }
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
-    public PushReaction getPistonPushReaction() {
+    public @NotNull PushReaction getPistonPushReaction() {
         return PushReaction.IGNORE;
     }
 
@@ -283,7 +281,7 @@ public class DragonBeamEntity extends Entity {
         return (this.target != null && this.target.isAlive()) || this.targetPos != null;
     }
 
-    public void push(Entity entityIn) {
+    public void push(@NotNull Entity entityIn) {
     }
 
     public boolean isPickable() {
@@ -296,6 +294,19 @@ public class DragonBeamEntity extends Entity {
 
     public boolean shouldRenderAtSqrDistance(double distance) {
         return distance < 1024.0;
+    }
+
+    private static float wrapRad(float a) {
+        float twoPi = (float)(Math.PI * 2.0);
+        a = a % twoPi;
+        if (a >= Math.PI) a -= twoPi;
+        if (a < -Math.PI) a += twoPi;
+        return a;
+    }
+
+    private static float lerpAngleRad(float a, float b) {
+        float diff = wrapRad(b - a);
+        return a + diff * (float) 0.85;
     }
 
     public void tick() {
@@ -332,6 +343,19 @@ public class DragonBeamEntity extends Entity {
             this.setPos(mouth.x, mouth.y, mouth.z);
         }
 
+        if (this.level() instanceof ServerLevel serverLevel
+                && this.tickCount >= 50) {
+            Vec3 center = (this.blockSide != null)
+                    ? new Vec3(this.collidePosX, this.collidePosY, this.collidePosZ)
+                    : (this.targetPos != null ? this.targetPos : this.position());
+
+            ScreenShakeUtil.applyScreenShake(serverLevel, center, 24.0, 4, 6);
+            if (this.caster != null && this.caster.getPassengers().contains(this.caster.getSummoner()) && this.caster.getSummoner() instanceof Player) {
+                center = new Vec3(this.caster.getSummoner().getX(), this.caster.getSummoner().getY(), this.caster.getSummoner().getZ());
+                ScreenShakeUtil.applyScreenShake(serverLevel, center, 24.0, 4, 6);
+            }
+        }
+
         if (this.target != null && this.target.isAlive()) {
             Vec3 from = new Vec3(this.getX(), this.getY(), this.getZ());
             Vec3 to = target.getEyePosition(1.0F);
@@ -341,7 +365,7 @@ public class DragonBeamEntity extends Entity {
             float targetYaw = yawTowards(from, to);
             float targetPitch = pitchTowards(from, to);
 
-            float interpolatedYaw = Mth.lerp(0.85f, this.getYaw(), targetYaw);
+            float interpolatedYaw = lerpAngleRad(this.getYaw(), targetYaw);
             float interpolatedPitch = Mth.lerp(0.85f, this.getPitch(), targetPitch);
 
             this.setYaw(interpolatedYaw);
@@ -389,13 +413,6 @@ public class DragonBeamEntity extends Entity {
                 double radius = (2.0F * this.caster.getBbWidth());
                 double yaw = (double) (this.random.nextFloat() * 2.0F) * Math.PI;
                 double pitch = (double) (this.random.nextFloat() * 2.0F) * Math.PI;
-                double ox = radius * Math.sin(yaw) * Math.sin(pitch);
-                double var10000 = radius * Math.cos(pitch);
-                double oz = radius * Math.cos(yaw) * Math.sin(pitch);
-                double rootX = this.caster.getX();
-                double rootY = this.caster.getY() + (double) (this.caster.getBbHeight() / 2.0F) + 0.30000001192092896;
-                double rootZ = this.caster.getZ();
-                this.attractorPos[0] = new Vec3(rootX, rootY, rootZ);
             }
         }
 
@@ -416,11 +433,7 @@ public class DragonBeamEntity extends Entity {
         if (this.isRenderable() && this.tickCount >= 50) {
             if (!playSound) {
                 playSound = true;
-                if (!this.level().isClientSide()) {
-                    this.level().playSound((Player) null, new BlockPos((int) targetPos.x, (int) targetPos.y, (int) targetPos.z), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "dragon_breath"))), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.05D, 0.5D), (float) Mth.nextDouble(RandomSource.create(), 0.8D, 1.1D));
-                } else {
-                    this.level().playLocalSound(targetPos.x, targetPos.y, targetPos.z, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "dragon_breath"))), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.05D, 0.5D), (float) Mth.nextDouble(RandomSource.create(), 0.8D, 1.1D), false);
-                }
+                this.playSound(AnnoyingVillagersModSounds.DRAGON_BREATH.get(), 5.0F, 1.0F);
             }
             List<LivingEntity> hit = this.raytraceEntities(this.level(), new Vec3(this.getX(), this.getY(), this.getZ()), new Vec3(this.endPosX, this.endPosY, this.endPosZ), false, true, true).entities;
             if (!this.level().isClientSide) {

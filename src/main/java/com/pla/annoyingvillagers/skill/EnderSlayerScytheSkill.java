@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.skill;
 
-import com.pla.annoyingvillagers.entity.DragonMeteoriteEntity;
 import com.pla.annoyingvillagers.entity.HerobrineDragonEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
@@ -97,13 +96,20 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
                         if (event.getPlayerPatch().getOriginal().getCooldowns().getCooldownPercent(itemStack.getItem(), 0) == 0
                                 && itemStack.getItem() instanceof EnderSlayerScytheItem && player.level() instanceof ServerLevel serverLevel
                                 && player.getPersistentData().contains("DragonUUID")) {
-                            Entity entity = serverLevel.getEntity(player.getPersistentData().getUUID("DragonUUID"));
+                            UUID dragonId = player.getPersistentData().getUUID("DragonUUID");
+                            Entity entity = serverLevel.getEntity(dragonId);
+
+                            if (entity == null) {
+                                player.getPersistentData().remove("DragonUUID");
+                                return;
+                            }
+
                             LivingEntity target = player.getLastHurtMob();
                             if (target == null || !target.isAlive()) {
                                 target = player.getLastHurtByMob();
                             }
                             if (target == null || !target.isAlive()) {
-                                target = HerobrineDragonEntity.getNearestLivingEntity(player.level(), player, 40.0D);
+                                target = HerobrineDragonEntity.getNearestLivingEntity(player.level(), player, 48.0D);
                             }
                             if (entity instanceof HerobrineDragonEntity herobrineDragonEntity && target != null && target.isAlive()) {
                                 skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_TOP, 0.0F);
@@ -140,7 +146,14 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
                         if (event.getPlayerPatch().getOriginal().getCooldowns().getCooldownPercent(itemStack.getItem(), 0) == 0
                                 && itemStack.getItem() instanceof EnderSlayerScytheItem && player.level() instanceof ServerLevel serverLevel
                                 && player.getPersistentData().contains("DragonUUID")) {
-                            Entity entity = serverLevel.getEntity(player.getPersistentData().getUUID("DragonUUID"));
+                            UUID dragonId = player.getPersistentData().getUUID("DragonUUID");
+                            Entity entity = serverLevel.getEntity(dragonId);
+
+                            if (entity == null) {
+                                player.getPersistentData().remove("DragonUUID");
+                                return;
+                            }
+
                             LivingEntity target = player.getLastHurtMob();
                             if (target == null || !target.isAlive()) {
                                 target = player.getLastHurtByMob();
@@ -156,7 +169,7 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
                                     public void run() {
                                         herobrineDragonEntity.shootMeteoriteAtTarget(finalTarget);
                                         ItemCooldowns cooldowns = event.getPlayerPatch().getOriginal().getCooldowns();
-                                        cooldowns.addCooldown(itemStack.getItem(), 40);
+                                        cooldowns.addCooldown(itemStack.getItem(), 20);
                                     }
                                 };
                             }
@@ -216,6 +229,14 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
         ItemStack main = player.getMainHandItem();
         if (!(main.getItem() instanceof EnderSlayerScytheItem)) {
             return;
+        }
+
+        if (player.getPersistentData().contains("DragonUUID")) {
+            UUID id = player.getPersistentData().getUUID("DragonUUID");
+            Entity entity = serverLevel.getEntity(id);
+            if (!(entity instanceof HerobrineDragonEntity) || entity.isRemoved()) {
+                player.getPersistentData().remove("DragonUUID");
+            }
         }
 
         if (!player.getPersistentData().contains("DragonUUID")) {

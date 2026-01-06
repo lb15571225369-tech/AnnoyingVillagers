@@ -195,26 +195,24 @@ public class SpecialAttackOnKeyPressedProcedure {
             }
             if (holdingItem.getItem().equals(AnnoyingVillagersModItems.ENDER_SLAYER_SCYTHE.get())) {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
-                    boolean success = false;
                     PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
                     if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
                         SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.ENDER_SLAYER_SCYTHE);
                         if (skillContainer != null
-                                && entity.getPersistentData().contains("DragonUUID")
                                 && entity.level() instanceof ServerLevel serverLevel
                                 && entity.onGround()
                                 && skillContainer.getSkill() instanceof EnderSlayerScytheSkill) {
-                            Entity dragon = serverLevel.getEntity(player.getPersistentData().getUUID("DragonUUID"));
-                            if (dragon instanceof HerobrineDragonEntity herobrineDragonEntity && herobrineDragonEntity.getPassengers().isEmpty()) {
-                                herobrineDragonEntity.recallAndLand(true);
-                                success = true;
+                            if (entity.getPersistentData().contains("DragonUUID")) {
+                                Entity dragon = serverLevel.getEntity(player.getPersistentData().getUUID("DragonUUID"));
+
+                                if (dragon instanceof HerobrineDragonEntity herobrineDragonEntity && herobrineDragonEntity.getPassengers().isEmpty()) {
+                                    livingEntityPatch.playAnimationSynchronized(AVAnimations.SWORD_SKILL, 0.0F);
+                                    herobrineDragonEntity.recallAndLand(true);
+                                }
+                            } else {
+                                livingEntityPatch.playAnimationSynchronized(WOMAnimations.KICK_AUTO_2, 0.0F);
                             }
                         }
-                    }
-                    if (success) {
-                        livingEntityPatch.playAnimationSynchronized(AVAnimations.SWORD_SKILL, 0.0F);
-                    } else {
-
                     }
                     player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
                     return;

@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.entity;
 
 import com.pla.annoyingvillagers.init.*;
 import com.pla.annoyingvillagers.task.DelayedTask;
+import com.pla.annoyingvillagers.util.ScreenShakeUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
@@ -181,6 +182,7 @@ public class DragonMeteoriteEntity extends PathfinderMob {
 
             if (this.onGround() || this.isInWall() || (posToAim != null && this.position().distanceToSqr(posToAim) < 1.0D)) {
                 serverLevel.explode(null, d0, d1, d2, new Random().nextFloat(2.0F, 4.0F), Level.ExplosionInteraction.MOB);
+                ScreenShakeUtil.applyScreenShake(serverLevel, this.position(), 24.0, 60, 6);
 
                 RandomSource randomSource = serverLevel.getRandom();
                 BlockState endfireState = AnnoyingVillagersModBlocks.END_FIRE.get().defaultBlockState();
@@ -225,8 +227,6 @@ public class DragonMeteoriteEntity extends PathfinderMob {
                     entity.setDeltaMovement(entity.getDeltaMovement().add(push));
                     entity.hurt(damageSource, 24.0F);
                     entity.hasImpulse = true;
-
-                    entity.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.SCREEN_SHAKE.get(), 2, 4, false, false));
                 }
 
                 this.playSound(SoundEvents.GENERIC_EXPLODE, 5.0F, 0.0F);

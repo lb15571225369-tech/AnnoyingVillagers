@@ -669,5 +669,14 @@
         "stream": false
       }
     ]
+  },
+  "entity.dragon.thunder_shoot": {
+    "sounds": [
+      {
+        "name": "annoyingvillagers:entity/dragon/thunder_shoot",
+        "stream": false
+      }
+    ],
+    "subtitle": "subtitles.entity.dragon.thunder_shoot"
   }
 }

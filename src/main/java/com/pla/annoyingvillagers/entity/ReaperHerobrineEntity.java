@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.entity;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
@@ -109,6 +108,11 @@ public class ReaperHerobrineEntity extends HerobrineMob {
                 );
             }
         }
+    }
+
+    @Override
+    public boolean canChangeDimensions() {
+        return false;
     }
 
     @Override

@@ -155,7 +155,6 @@ public class AVWeaponCapabilityPresets {
                             AnimsEnderblaster.ENDERBLASTER_TWOHAND_AUTO_2,
                             WOMAnimations.KICK_AUTO_1,
                             AnimsEnderblaster.ENDERBLASTER_TWOHAND_AUTO_4,
-                            WOMAnimations.KICK_AUTO_2,
                             AnimsEnderblaster.ENDERBLASTER_TWOHAND_AUTO_1,
                             AVAnimations.CLONE_ENDERBLASTER_TWOHAND_TOMAHAWK)
                     .innateSkill(Styles.TWO_HAND, (itemstack) -> AVSkills.ENDER_SLAYER_SCYTHE)
