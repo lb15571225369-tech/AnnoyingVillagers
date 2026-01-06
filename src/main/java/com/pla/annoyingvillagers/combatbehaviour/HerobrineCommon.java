@@ -64,6 +64,10 @@ public class HerobrineCommon {
                     && item.getTag() != null && item.getTag().contains("SnakeAnimation")) {
                 return false;
             }
+            if (herobrineMob instanceof ReaperHerobrineEntity reaperHerobrineEntity
+                    && reaperHerobrineEntity.getThunderHerobrineDragon() == null) {
+                return false;
+            }
             return herobrineMob.getState() == 0;
         }
         return false;
@@ -74,6 +78,32 @@ public class HerobrineCommon {
             ItemStack item = herobrineMob.getMainHandItem();
             if (herobrineMob instanceof SwordsmanHerobrineEntity
                     && item.getTag() != null && item.getTag().contains("SnakeAnimation")) {
+                return false;
+            }
+            if (herobrineMob instanceof ReaperHerobrineEntity reaperHerobrineEntity
+                    && reaperHerobrineEntity.isPassenger()
+                    && reaperHerobrineEntity.getVehicle() instanceof HerobrineDragonEntity herobrineDragonEntity
+                    && herobrineDragonEntity.isRecallActive()) {
+                return false;
+            }
+            return herobrineMob.getState() != 0;
+        }
+        return false;
+    }
+
+    public static boolean canCastMeteorite(MobPatch<?> mobpatch) {
+        if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
+            if (herobrineMob instanceof ReaperHerobrineEntity reaperHerobrineEntity && reaperHerobrineEntity.getMeteoriteHerobrineDragon() == null) {
+                return false;
+            }
+            return herobrineMob.getState() != 0;
+        }
+        return false;
+    }
+
+    public static boolean canCastThunder(MobPatch<?> mobpatch) {
+        if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
+            if (herobrineMob instanceof ReaperHerobrineEntity reaperHerobrineEntity && reaperHerobrineEntity.getThunderHerobrineDragon() == null) {
                 return false;
             }
             return herobrineMob.getState() != 0;
@@ -241,6 +271,11 @@ public class HerobrineCommon {
                 };
             } else if (herobrineMob instanceof SledgehammerHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
                 ObsidianSledgehammerItem.triggerCircleWhenGroundHits(mobpatch, true);
+            } else if (herobrineMob instanceof ReaperHerobrineEntity reaperHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
+                HerobrineDragonEntity herobrineDragonEntity = reaperHerobrineEntity.getThunderHerobrineDragon();
+                if (herobrineDragonEntity != null) {
+                    herobrineDragonEntity.shootThunderBreathAtTarget(herobrineMob.getTarget());
+                }
             }
         }
     }
@@ -284,6 +319,11 @@ public class HerobrineCommon {
                 };
             } else if (herobrineMob instanceof SledgehammerHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
                 ObsidianSledgehammerItem.triggerCircleWhenGroundHits(mobpatch, false);
+            } else if (herobrineMob instanceof ReaperHerobrineEntity reaperHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
+                HerobrineDragonEntity herobrineDragonEntity = reaperHerobrineEntity.getMeteoriteHerobrineDragon();
+                if (herobrineDragonEntity != null) {
+                    herobrineDragonEntity.shootMeteoriteAtTarget(herobrineMob.getTarget());
+                }
             }
         }
     }
@@ -373,6 +413,21 @@ public class HerobrineCommon {
                     mobpatch.playAnimationSynchronized(AnimsAgony.AGONY_RIPPING_FANGS, 0.0F);
                 }
             };
+        }
+    }
+
+    public static void mountOrDismountDragon(MobPatch<?> mobpatch) {
+        Entity entity = mobpatch.getOriginal();
+        if (entity instanceof HerobrineMob herobrineMob && herobrineMob instanceof ReaperHerobrineEntity reaperHerobrineEntity) {
+            if (reaperHerobrineEntity.isPassenger()) {
+                reaperHerobrineEntity.stopRiding();
+            } else {
+                if (reaperHerobrineEntity.getThunderHerobrineDragon() != null) {
+                    reaperHerobrineEntity.getThunderHerobrineDragon().recallAndLand(true);
+                } else if (reaperHerobrineEntity.getMeteoriteHerobrineDragon() != null) {
+                    reaperHerobrineEntity.getMeteoriteHerobrineDragon().recallAndLand(true);
+                }
+            }
         }
     }
 }

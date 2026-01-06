@@ -38,11 +38,8 @@ import com.pla.annoyingvillagers.animations.*;
 import com.pla.annoyingvillagers.util.BowFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -59,18 +56,13 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import reascer.wom.animation.WomAnimationProperty;
-import reascer.wom.animation.attacks.AntitheusShootAttackAnimation;
 import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
 import reascer.wom.animation.attacks.SpecialAttackAnimation;
 import reascer.wom.animation.attacks.UltimateAttackAnimation;
-import reascer.wom.gameasset.ReuseableEvents;
 import reascer.wom.gameasset.WOMAnimations;
-import reascer.wom.gameasset.WOMSkills;
 import reascer.wom.gameasset.WOMSounds;
-import reascer.wom.gameasset.animations.weapons.AnimsSolar;
 import reascer.wom.gameasset.colliders.WOMWeaponColliders;
 import reascer.wom.particle.WOMParticles;
-import reascer.wom.skill.WOMSkillDataKeys;
 import reascer.wom.world.damagesources.WOMExtraDamageInstance;
 import yesman.epicfight.api.animation.AnimationManager;
 import yesman.epicfight.api.animation.Joint;
@@ -83,27 +75,20 @@ import yesman.epicfight.api.animation.property.AnimationProperty.AttackPhaseProp
 import yesman.epicfight.api.animation.property.AnimationProperty.StaticAnimationProperty;
 import yesman.epicfight.api.animation.types.*;
 import yesman.epicfight.api.animation.types.AttackAnimation.Phase;
-import yesman.epicfight.api.collider.Collider;
 import yesman.epicfight.api.utils.HitEntityList.Priority;
 import yesman.epicfight.api.utils.LevelUtil;
 import yesman.epicfight.api.utils.TimePairList;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.api.utils.math.ValueModifier;
 import yesman.epicfight.api.utils.math.Vec3f;
-import yesman.epicfight.client.world.capabilites.entitypatch.player.LocalPlayerPatch;
 import yesman.epicfight.gameasset.Animations.ReusableSources;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.gameasset.ColliderPreset;
 import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.model.armature.HumanoidArmature;
 import yesman.epicfight.particle.EpicFightParticles;
-import yesman.epicfight.skill.SkillContainer;
-import yesman.epicfight.skill.SkillDataKey;
-import yesman.epicfight.skill.SkillDataManager;
-import yesman.epicfight.skill.SkillSlots;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
-import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.damagesource.EpicFightDamageTypeTags;
 import yesman.epicfight.world.damagesource.ExtraDamageInstance;
 import yesman.epicfight.world.damagesource.StunType;
@@ -1352,14 +1337,6 @@ public class AVAnimations {
                         entity.addTag("wom_serius_focus:18:1.5");
                     }
 
-                    if (livingEntityPatch instanceof LocalPlayerPatch localplayerpatch) {
-                        if (localplayerpatch.getSkill(SkillSlots.WEAPON_INNATE) != null) {
-                            SkillDataManager SDM = localplayerpatch.getSkill(SkillSlots.WEAPON_INNATE).getDataManager();
-                            SDM.setDataSync(WOMSkillDataKeys.SERIUS_FOCUS.get(), true);
-                            SDM.setDataSync(WOMSkillDataKeys.SERIUS_FOCUS_COOLDOWN.get(), 20);
-                        }
-                    }
-
                     OpenMatrix4f transformMatrix = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(0.0F), Armatures.BIPED.get().toolL);
                     transformMatrix.translate(new Vec3f(0.0F, 0.0F, 0.0F));
                     OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-org.joml.Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F), new Vec3f(0.0F, 1.0F, 0.0F)), transformMatrix, transformMatrix);
@@ -1385,11 +1362,6 @@ public class AVAnimations {
                     OpenMatrix4f CORRECTION = (new OpenMatrix4f()).rotate(-org.joml.Math.toRadians(livingEntityPatch.getOriginal().yRotO + 180.0F), new Vec3f(0.0F, 1.0F, 0.0F));
                     CORRECTION.translate(new Vec3f(0.0F, 0.0F, -3.5F));
                     OpenMatrix4f.mul(CORRECTION, transformMatrix, transformMatrix);
-                    if (livingEntityPatch instanceof ServerPlayerPatch) {
-                        SkillContainer skill = ((ServerPlayerPatch)livingEntityPatch).getSkill(SkillSlots.WEAPON_INNATE);
-                        Vec3f vec = new Vec3f((float)((double)transformMatrix.m30 + livingEntityPatch.getOriginal().getX()), (float)((double)transformMatrix.m31 + livingEntityPatch.getOriginal().getY()), (float)((double)transformMatrix.m32 + livingEntityPatch.getOriginal().getZ()));
-                        skill.getDataManager().setDataSync(WOMSkillDataKeys.BLACKHOLE_VEC.get(), vec);
-                    }
 
                     ((ServerLevel) livingEntityPatch.getOriginal().level()).sendParticles(WOMParticles.ANTITHEUS_BLACKHOLE_START.get(), (double)transformMatrix.m30 + livingEntityPatch.getOriginal().getX(), (double)transformMatrix.m31 + livingEntityPatch.getOriginal().getY(), (double)transformMatrix.m32 + livingEntityPatch.getOriginal().getZ(), 1, 0.0F, 0.0F, 0.0F, 0.0F);
                     ((ServerLevel) livingEntityPatch.getOriginal().level()).sendParticles(ParticleTypes.LARGE_SMOKE, (double)transformMatrix.m30 + livingEntityPatch.getOriginal().getX(), (double)transformMatrix.m31 + livingEntityPatch.getOriginal().getY(), (double)transformMatrix.m32 + livingEntityPatch.getOriginal().getZ(), 48, 0.0F, 0.0F, 0.0F, 0.5F);

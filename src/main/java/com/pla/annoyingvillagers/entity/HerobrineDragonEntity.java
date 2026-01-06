@@ -47,6 +47,7 @@ import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.FlyingAnimal;
+import net.minecraft.world.entity.boss.enderdragon.EndCrystal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -160,8 +161,17 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
         this.entityData.define(DATA_CONTROL_LOCKED, false);
     }
 
-    private boolean isControlLocked() { return this.entityData.get(DATA_CONTROL_LOCKED); }
-    private void setControlLocked(boolean locked) { this.entityData.set(DATA_CONTROL_LOCKED, locked); }
+    private boolean isControlLocked() {
+        return this.entityData.get(DATA_CONTROL_LOCKED);
+    }
+
+    private void setControlLocked(boolean locked) {
+        this.entityData.set(DATA_CONTROL_LOCKED, locked);
+    }
+
+    private boolean shouldApplyControlLocked() {
+        return this.summoner instanceof Player;
+    }
 
     @Override
     public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> data)
@@ -375,6 +385,7 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
         dragonMeteoriteEntity.moveTo(spawnPos.x, spawnPos.y, spawnPos.z, 0F, 0F);
         dragonMeteoriteEntity.setPosToAim(new Vec3(target.getX(), target.getY(0.5D), target.getZ()));
         dragonMeteoriteEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+        dragonMeteoriteEntity.setOwner(this);
         serverLevel.addFreshEntity(dragonMeteoriteEntity);
 
         this.playSound(SoundEvents.ENDER_DRAGON_SHOOT, 2.0F, 1.0F);
@@ -424,8 +435,10 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
         if (this.level() instanceof ServerLevel serverLevel)
         {
             if (breathHoverTimeToLiveTicks > 0) {
-                if (!isControlLocked()) {
-                    setControlLocked(true);
+                if (shouldApplyControlLocked()) {
+                    if (!isControlLocked()) setControlLocked(true);
+                } else {
+                    if (isControlLocked()) setControlLocked(false);
                 }
                 breathHoverTimeToLiveTicks--;
 
@@ -811,7 +824,7 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
     public LivingEntity getControllingPassenger()
     {
         Entity rider = getFirstPassenger();
-        return rider instanceof LivingEntity livingEntity ? livingEntity : null;
+        return (rider instanceof Player player) ? player : null;
     }
 
     @Override
@@ -1225,7 +1238,7 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
     public void die(@NotNull DamageSource source) {
         if (this.level() instanceof ServerLevel) {
             if (this.summoner != null && this.summoner instanceof Player player && player.isAlive()) {
-                player.getCooldowns().addCooldown(AnnoyingVillagersModItems.ENDER_SLAYER_SCYTHE.get(), 200);
+                player.getCooldowns().addCooldown(AnnoyingVillagersModItems.ENDER_SLAYER_SCYTHE.get(), 3600);
                 if (player.getPersistentData().contains("DragonUUID")
                         && this.getUUID().equals(player.getPersistentData().getUUID("DragonUUID"))) {
                     player.getPersistentData().remove("DragonUUID");
@@ -1290,15 +1303,35 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
             setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
         }
 
-        private LivingEntity resolveLeader() {
-            LivingEntity summoner = dragon.getSummoner();
-            if (summoner != null) return summoner;
-            return dragon.getOwner();
+        @Nullable
+        private LivingEntity resolveOrbitCenter(HerobrineDragonEntity herobrineDragonEntity) {
+            LivingEntity livingEntity = herobrineDragonEntity.getSummoner();
+            if (livingEntity == null) return herobrineDragonEntity.getOwner();
+
+            if (!(livingEntity instanceof Player)
+                    && (herobrineDragonEntity.hasPassenger(livingEntity)
+                    || (livingEntity.getVehicle() instanceof HerobrineDragonEntity herobrineDragon
+                    && !herobrineDragon.getUUID().equals(herobrineDragonEntity.getUUID())))) {
+                LivingEntity target = null;
+
+                if (livingEntity instanceof Mob mob) {
+                    target = mob.getTarget();
+                }
+                if (target == null || !target.isAlive()) target = livingEntity.getLastHurtMob();
+                if (target == null || !target.isAlive()) target = livingEntity.getLastHurtByMob();
+
+                if (target == null) {
+                    livingEntity.stopRiding();
+                }
+                return target;
+            }
+
+            return livingEntity;
         }
 
         @Override
         public boolean canUse() {
-            LivingEntity resolved = resolveLeader();
+            LivingEntity resolved = resolveOrbitCenter(dragon);
             if (resolved == null) return false;
             if (!resolved.isAlive()) return false;
             if (resolved.isSpectator()) return false;
@@ -1315,7 +1348,7 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
 
         @Override
         public boolean canContinueToUse() {
-            LivingEntity resolved = resolveLeader();
+            LivingEntity resolved = resolveOrbitCenter(dragon);
             if (resolved == null) return false;
             if (!resolved.isAlive()) return false;
             if (resolved.isSpectator()) return false;

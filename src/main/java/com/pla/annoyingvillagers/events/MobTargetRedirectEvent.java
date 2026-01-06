@@ -1,16 +1,22 @@
 package com.pla.annoyingvillagers.events;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.clazz.AVNpc;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
+import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
 import com.pla.annoyingvillagers.entity.*;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 
 @Mod.EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class MobTargetHealingHerobrineEvent {
+public class MobTargetRedirectEvent {
     @SubscribeEvent
     public static void onLivingTick(LivingEvent.LivingTickEvent event) {
         LivingEntity livingEntity = event.getEntity();
@@ -45,6 +51,15 @@ public class MobTargetHealingHerobrineEvent {
                     && lowShadowHerobrineCloneEntity.getPossessedByEntity() != null) {
                 if (!lowShadowHerobrineCloneEntity.isAlive()) {
                     mob.setTarget(lowShadowHerobrineCloneEntity.getPossessedByEntity());
+                }
+            }
+
+            if (mob.getTarget() instanceof ReaperHerobrineEntity reaperHerobrineEntity
+                    && reaperHerobrineEntity.isPassenger() && reaperHerobrineEntity.getVehicle() instanceof HerobrineDragonEntity herobrineDragonEntity) {
+                mob.setTarget(herobrineDragonEntity);
+                LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(mob, LivingEntityPatch.class);
+                if (livingEntityPatch != null && (mob instanceof AVNpc || mob instanceof PlayerNpcEntity)) {
+                    CombatCommon.swapToBow((MobPatch<?>) livingEntityPatch);
                 }
             }
         }

@@ -15,6 +15,7 @@ import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.network.ClientboundLitePortalFx;
 import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.spawnhandler.HerobrineMobData;
+import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
@@ -36,6 +37,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.boss.enderdragon.EndCrystal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
@@ -675,6 +677,39 @@ public class HerobrineMob extends Monster {
             demoniacVoltageReaver.enchant(Enchantments.SWEEPING_EDGE, 5);
             demoniacVoltageReaver.enchant(Enchantments.KNOCKBACK, 3);
             this.setItemInHand(InteractionHand.MAIN_HAND, demoniacVoltageReaver);
+        }
+        if (this instanceof SledgehammerHerobrineEntity) {
+            ItemStack obsidianSledgehammer = new ItemStack(AnnoyingVillagersModItems.OBSIDIAN_SLEDGEHAMMER.get());
+            obsidianSledgehammer.enchant(Enchantments.SHARPNESS, 5);
+            obsidianSledgehammer.enchant(Enchantments.SWEEPING_EDGE, 5);
+            obsidianSledgehammer.enchant(Enchantments.KNOCKBACK, 3);
+            this.setItemInHand(InteractionHand.MAIN_HAND, obsidianSledgehammer);
+        }
+        if (this instanceof GlaiveHerobrineEntity) {
+            ItemStack enderGlaive = new ItemStack(AnnoyingVillagersModItems.ENDER_GLAIVE.get());
+            enderGlaive.enchant(Enchantments.SHARPNESS, 5);
+            enderGlaive.enchant(Enchantments.SWEEPING_EDGE, 5);
+            enderGlaive.enchant(Enchantments.KNOCKBACK, 3);
+            this.setItemInHand(InteractionHand.MAIN_HAND, enderGlaive);
+        }
+        if (this instanceof ReaperHerobrineEntity reaperHerobrineEntity) {
+            ItemStack enderSlayerScythe = new ItemStack(AnnoyingVillagersModItems.ENDER_SLAYER_SCYTHE.get());
+            enderSlayerScythe.enchant(Enchantments.SHARPNESS, 5);
+            enderSlayerScythe.enchant(Enchantments.SWEEPING_EDGE, 5);
+            enderSlayerScythe.enchant(Enchantments.KNOCKBACK, 3);
+            this.setItemInHand(InteractionHand.MAIN_HAND, enderSlayerScythe);
+
+            if (reaperHerobrineEntity.getThunderHerobrineDragon() == null && reaperHerobrineEntity.getThunderHerobrineDragonUUID() == null) {
+                reaperHerobrineEntity.summonEnderDragon(0);
+            }
+
+            if (reaperHerobrineEntity.getMeteoriteHerobrineDragon() == null && reaperHerobrineEntity.getMeteoriteHerobrineDragonUUID() == null) {
+                reaperHerobrineEntity.summonEnderDragon(1);
+            }
+
+            if (reaperHerobrineEntity.getHealingHerobrineDragon() == null && reaperHerobrineEntity.getHealingHerobrineDragonUUID() == null) {
+                reaperHerobrineEntity.summonEnderDragon(2);
+            }
         }
         this.state = 2;
     }

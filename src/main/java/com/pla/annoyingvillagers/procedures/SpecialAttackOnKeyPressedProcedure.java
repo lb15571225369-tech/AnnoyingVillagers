@@ -62,6 +62,7 @@ public class SpecialAttackOnKeyPressedProcedure {
 
         PlayerPatch<?> playerpatch = EpicFightCapabilities.getEntityPatch(entity, PlayerPatch.class);
         LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+        if (livingEntityPatch == null) return;
         AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
         if (EpicfightUtil.isLongHitAnimation(dynamicAnimation)) {
             return;

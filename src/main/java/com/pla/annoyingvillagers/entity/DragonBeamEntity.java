@@ -39,6 +39,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.animation.types.GuardAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 import java.util.ArrayList;
 import java.util.List;

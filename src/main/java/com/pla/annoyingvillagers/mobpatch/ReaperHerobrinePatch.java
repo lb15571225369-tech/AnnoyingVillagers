@@ -2,9 +2,10 @@ package com.pla.annoyingvillagers.mobpatch;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
-import com.pla.annoyingvillagers.combatbehaviour.HerobrineEnderGlaive;
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.combatbehaviour.HerobrineEnderSlayerScythe;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -14,11 +15,16 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
 import net.shelmarow.combat_evolution.ai.iml.CustomExecuteEntity;
 import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
+import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.animations.weapons.AnimsEnderblaster;
 import yesman.epicfight.api.animation.AnimationManager.AnimationAccessor;
 import yesman.epicfight.api.animation.Animator;
 import yesman.epicfight.api.animation.LivingMotions;
+import yesman.epicfight.api.animation.types.AttackAnimation;
+import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.animation.types.GuardAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.AttackResult;
 import yesman.epicfight.api.utils.AttackResult.ResultType;
 import yesman.epicfight.gameasset.Animations;
@@ -32,6 +38,8 @@ import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
 import yesman.epicfight.world.damagesource.EpicFightDamageSource;
 import yesman.epicfight.world.damagesource.StunType;
 
+import java.util.Objects;
+import java.util.Random;
 import java.util.Set;
 
 public class ReaperHerobrinePatch extends CEHumanoidPatch implements CustomExecuteEntity {
@@ -78,6 +86,30 @@ public class ReaperHerobrinePatch extends CEHumanoidPatch implements CustomExecu
                                 Styles.TWO_HAND, HerobrineEnderSlayerScythe.ENDER_SLAYER_SCYTHE,
                                 Styles.MOUNT, HerobrineEnderSlayerScythe.ENDER_SLAYER_SCYTHE
                         ));
+    }
+
+    @Override
+    public AttackResult tryHurt(DamageSource damageSource, float amount) {
+        AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(this.getAnimator().getPlayerFor(null)).getAnimation();
+        if (!this.getOriginal().isPassenger()
+                && (dynamicAnimation.isEmpty()
+                || (!(dynamicAnimation.get() instanceof AttackAnimation)
+                && !(dynamicAnimation.get() instanceof GuardAnimation)
+                && !EpicfightUtil.isLongHitAnimation(dynamicAnimation)))) {
+            if (new Random().nextFloat() <= 0.2F) {
+                float chance = new Random().nextFloat();
+                if (chance <= 0.25F) {
+                    this.playAnimationSynchronized(WOMAnimations.ENDERSTEP_BACKWARD, 0.0F);
+                } else if (chance <= 0.5F) {
+                    this.playAnimationSynchronized(WOMAnimations.ENDERSTEP_FORWARD, 0.0F);
+                } else if (chance <= 0.75F) {
+                    this.playAnimationSynchronized(WOMAnimations.ENDERSTEP_RIGHT, 0.0F);
+                } else {
+                    this.playAnimationSynchronized(WOMAnimations.ENDERSTEP_RIGHT, 0.0F);
+                }
+            }
+        }
+        return super.tryHurt(damageSource, amount);
     }
 
     public void playGuardBreakSound() {

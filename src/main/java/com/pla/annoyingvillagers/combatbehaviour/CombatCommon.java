@@ -139,6 +139,10 @@ public class CombatCommon {
         return mobpatch.getOriginal().onGround() && !mobpatch.getOriginal().isPassenger();
     }
 
+    public static boolean isNotRiding(MobPatch<?> mobpatch) {
+        return !mobpatch.getOriginal().isPassenger();
+    }
+
     public static boolean canAttackWhileNotHealing(MobPatch<?> mobpatch) {
         if (mobpatch.getOriginal() instanceof PlayerNpcEntity playerNpcEntity) {
             return !playerNpcEntity.isHealing();
@@ -198,6 +202,10 @@ public class CombatCommon {
             return !AVNpc.isHealing();
         }
         return false;
+    }
+
+    public static boolean isTargetingHerobrineDragon(MobPatch<?> mobpatch) {
+        return mobpatch.getOriginal().getTarget() instanceof HerobrineDragonEntity;
     }
 
     public static boolean canThrowEnderPearl(MobPatch<?> mobpatch) {

@@ -123,7 +123,7 @@ public class HerobrineEnderGlaive {
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(AnimsAgony.AGONY_RIPPING_FANGS, 0.0F)
+                                            .animationBehavior(AVAnimations.CLONE_ANTITHEUS_AGRESSION, 0.0F)
                             )
             )
             .newBehaviorRoot(

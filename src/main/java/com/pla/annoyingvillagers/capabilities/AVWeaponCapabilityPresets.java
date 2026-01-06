@@ -163,9 +163,9 @@ public class AVWeaponCapabilityPresets {
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE)
-                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.MOUNT, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE)
-                    .livingMotionModifier(Styles.MOUNT, LivingMotions.MOUNT, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE)
-                    .livingMotionModifier(Styles.MOUNT, LivingMotions.IDLE, AnimsEnderblaster.ENDERBLASTER_TWOHAND_IDLE)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.MOUNT, Animations.BIPED_MOUNT)
+                    .livingMotionModifier(Styles.MOUNT, LivingMotions.MOUNT, Animations.BIPED_MOUNT)
+                    .livingMotionModifier(Styles.MOUNT, LivingMotions.IDLE, Animations.BIPED_MOUNT)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AVAnimations.GLOWING_AGONY_GUARD);
 
     public static final Function<Item, Builder> LEGENDARY_SWORD = (item) ->

@@ -66,6 +66,7 @@ import java.util.Random;
 
 public class DragonMeteoriteEntity extends PathfinderMob {
     private Vec3 posToAim;
+    private HerobrineDragonEntity owner;
 
     private boolean motionInited = false;
     private double xd = 0.0;
@@ -77,9 +78,12 @@ public class DragonMeteoriteEntity extends PathfinderMob {
         this.motionInited = false;
     }
 
-    @Nullable
-    public Vec3 getPosToAim() {
-        return posToAim;
+    public HerobrineDragonEntity getOwner() {
+        return owner;
+    }
+
+    public void setOwner(HerobrineDragonEntity owner) {
+        this.owner = owner;
     }
 
     public DragonMeteoriteEntity(SpawnEntity spawnEntity, Level level) {
@@ -249,7 +253,11 @@ public class DragonMeteoriteEntity extends PathfinderMob {
                             .add(0.0D, 0.35D * falloff, 0.0D);
 
                     entity.setDeltaMovement(entity.getDeltaMovement().add(push));
-                    entity.hurt(damageSource, 24.0F);
+                    if (this.owner != null && this.owner.getSummoner() != null) {
+                        entity.hurt(damageSources().indirectMagic(this, this.owner.getSummoner()), 24.0F);
+                    } else {
+                        entity.hurt(damageSource, 24.0F);
+                    }
                     entity.hasImpulse = true;
                 }
 
