@@ -7,7 +7,6 @@ import net.shelmarow.combat_evolution.ai.CECombatBehaviors.BehaviorRoot;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors.Builder;
 import net.shelmarow.combat_evolution.ai.condition.HealthCheck;
 import reascer.wom.gameasset.WOMAnimations;
-import reascer.wom.gameasset.animations.weapons.AnimsRuine;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 
@@ -142,7 +141,7 @@ public class HerobrineDemoniacVoltageReaver {
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(HerobrineCommon::canChangeToSecondForm)
                                             .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(AVAnimations.APPLY_IMBUEMENT, 0.0F)
+                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_CONVERT, 0.0F)
                                             .addExBehavior(HerobrineCommon::changeToSecondForm)
                             )
             )
@@ -156,7 +155,7 @@ public class HerobrineDemoniacVoltageReaver {
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 5.0D)
                                             .custom(HerobrineCommon::canPlaySecondFormAnimation)
-                                            .animationBehavior(AVAnimations.MOB_SNAKE_BLADE, 0.0F)
+                                            .animationBehavior(AVAnimations.SNAKE_BLADE_GUARD, 0.0F)
                                             .addExBehavior(HerobrineCommon::playSecondFormGuardAnimation)
                             )
             )
@@ -170,7 +169,7 @@ public class HerobrineDemoniacVoltageReaver {
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 5.0D)
                                             .custom(HerobrineCommon::canPlaySecondFormAnimation)
-                                            .animationBehavior(AVAnimations.MOB_SNAKE_BLADE, 0.0F)
+                                            .animationBehavior(AVAnimations.SNAKE_BLADE_GUARD, 0.0F)
                                             .addExBehavior(HerobrineCommon::playSecondFormAnimation)
                             )
             )

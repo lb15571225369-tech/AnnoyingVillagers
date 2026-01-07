@@ -80,6 +80,7 @@ public class HerobrineCommon {
                     && item.getTag() != null && item.getTag().contains("SnakeAnimation")) {
                 return false;
             }
+            AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] herobrine state is {}", herobrineMob.getState());
             return herobrineMob.getState() != 0;
         }
         return false;
@@ -205,6 +206,7 @@ public class HerobrineCommon {
         if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
             herobrineMob.setState(1);
             herobrineMob.setSecondFormHitLeft(new Random().nextInt(2, 3));
+            AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] changeToSecondForm called");
             if (herobrineMob instanceof AegisHerobrineEntity || herobrineMob instanceof SwordsmanHerobrineEntity
                     || herobrineMob instanceof SledgehammerHerobrineEntity || herobrineMob instanceof ReaperHerobrineEntity
                     || herobrineMob instanceof GlaiveHerobrineEntity) {

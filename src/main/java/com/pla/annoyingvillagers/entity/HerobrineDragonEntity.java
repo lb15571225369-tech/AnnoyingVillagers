@@ -1094,8 +1094,8 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
                 dragon.setNoGravity(false);
                 dragon.setDeltaMovement(Vec3.ZERO);
 
-                if (dragon.recallAutoMount && owner instanceof Player player) {
-                    player.startRiding(dragon, true);
+                if (dragon.recallAutoMount) {
+                    owner.startRiding(dragon, true);
                 }
 
                 stop();

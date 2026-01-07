@@ -77,8 +77,8 @@ public class EscapeUtil {
                         || targetDynamicAnimation == AVAnimations.ENDER_AEGIS_NAPOLEON_RELOAD_1;
             }
             if (herobrineMob instanceof SwordsmanHerobrineEntity) {
-                return (herobrineMob.getState() > 0 && targetDynamicAnimation == AVAnimations.MOB_SNAKE_BLADE)
-                        || targetDynamicAnimation == AVAnimations.APPLY_IMBUEMENT;
+                return (herobrineMob.getState() > 0 && targetDynamicAnimation == AVAnimations.SNAKE_BLADE_GUARD)
+                        || targetDynamicAnimation == WOMAnimations.TORMENT_BERSERK_CONVERT;
             }
             if (herobrineMob instanceof GlaiveHerobrineEntity) {
                 return (herobrineMob.getState() > 0 && targetDynamicAnimation == AVAnimations.AGONY_GUARD_HIT_1)

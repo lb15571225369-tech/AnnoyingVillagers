@@ -1,7 +1,6 @@
 package com.pla.annoyingvillagers.procedures;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.entity.BabyEnderDragonEntity;
 import com.pla.annoyingvillagers.entity.HerobrineDragonEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
@@ -38,7 +37,6 @@ import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.Armatures;
-import yesman.epicfight.skill.Skill;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
@@ -207,7 +205,7 @@ public class SpecialAttackOnKeyPressedProcedure {
                                 Entity dragon = serverLevel.getEntity(player.getPersistentData().getUUID("DragonUUID"));
 
                                 if (dragon instanceof HerobrineDragonEntity herobrineDragonEntity && herobrineDragonEntity.getPassengers().isEmpty()) {
-                                    livingEntityPatch.playAnimationSynchronized(AVAnimations.SWORD_SKILL, 0.0F);
+                                    livingEntityPatch.playAnimationSynchronized(AVAnimations.POSE_UP, 0.0F);
                                     herobrineDragonEntity.recallAndLand(true);
                                 }
                             } else {

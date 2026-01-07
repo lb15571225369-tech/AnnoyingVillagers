@@ -5,16 +5,37 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.item.DemoniacVoltageReaverItem;
 import com.pla.annoyingvillagers.util.SnakeBladeHit;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import yesman.epicfight.api.animation.AnimationPlayer;
+import yesman.epicfight.api.animation.types.AttackAnimation;
+import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.animation.types.EntityState;
+import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.api.utils.AttackResult;
+import yesman.epicfight.gameasset.EpicFightSounds;
+import yesman.epicfight.particle.EpicFightParticles;
+import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.skill.Skill;
 import yesman.epicfight.skill.SkillBuilder;
 import yesman.epicfight.skill.SkillCategories;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
+import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
+import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.entity.eventlistener.PlayerEventListener;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class DemoniacVoltageReaverSkill extends WeaponInnateSkill {
@@ -63,7 +84,7 @@ public class DemoniacVoltageReaverSkill extends WeaponInnateSkill {
                         && item.getItem() instanceof DemoniacVoltageReaverItem
                         && item.getTag() != null) {
                     event.setCanceled(true);
-                    container.getExecutor().playAnimationSynchronized(AVAnimations.SNAKE_BLADE, 0.0F);
+                    container.getExecutor().playAnimationSynchronized(AVAnimations.SNAKE_BLADE_GUARD, 0.0F);
                     if (!item.getTag().getBoolean("SnakeAnimation")) {
                         this.getResourceType().consumer
                                 .consume(container, serverPlayerPatch, this.getDefaultConsumptionAmount(serverPlayerPatch));
@@ -79,11 +100,24 @@ public class DemoniacVoltageReaverSkill extends WeaponInnateSkill {
                 event.setCanceled(true);
             }
         });
+        container.getExecutor().getEventListener().addEventListener(PlayerEventListener.EventType.TAKE_DAMAGE_EVENT_ATTACK, EVENT_UUID, (pre) -> {
+            if (pre.getPlayerPatch().isLogicalClient()) return;
+
+            final PlayerPatch<?> playerPatch = pre.getPlayerPatch();
+            AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(playerPatch.getAnimator().getPlayerFor(null)).getAnimation();
+            if (dynamicAnimation == null) return;
+
+            if (dynamicAnimation == AVAnimations.SNAKE_BLADE_GUARD) {
+                pre.setCanceled(true);
+                pre.setResult(AttackResult.ResultType.BLOCKED);
+            }
+        });
     }
 
     @Override
     public void onRemoved(SkillContainer container) {
         container.getExecutor().getEventListener().removeListener(PlayerEventListener.EventType.SKILL_CAST_EVENT, EVENT_UUID);
+        container.getExecutor().getEventListener().removeListener(PlayerEventListener.EventType.TAKE_DAMAGE_EVENT_ATTACK, EVENT_UUID);
     }
 
     @Override

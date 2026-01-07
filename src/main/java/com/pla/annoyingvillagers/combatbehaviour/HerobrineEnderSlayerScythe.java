@@ -7,7 +7,6 @@ import net.shelmarow.combat_evolution.ai.CECombatBehaviors.BehaviorRoot;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors.Builder;
 import net.shelmarow.combat_evolution.ai.condition.HealthCheck;
 import reascer.wom.gameasset.WOMAnimations;
-import reascer.wom.gameasset.animations.weapons.AnimsAgony;
 import reascer.wom.gameasset.animations.weapons.AnimsEnderblaster;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
@@ -169,7 +168,7 @@ public class HerobrineEnderSlayerScythe {
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(2.0D, 90.0D)
-                                            .animationBehavior(AVAnimations.SWORD_SKILL, 0.0F)
+                                            .animationBehavior(AVAnimations.POSE_UP, 0.0F)
                                             .addExBehavior(HerobrineCommon::mountOrDismountDragon)
                             )
             )

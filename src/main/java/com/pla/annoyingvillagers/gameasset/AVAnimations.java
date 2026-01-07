@@ -135,7 +135,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> LEGENDARY_SWORD_GUARD;
     public static AnimationManager.AnimationAccessor<GuardAnimation> LEGENDARY_SWORD_GUARD_HIT;
     public static AnimationManager.AnimationAccessor<GuardAnimation> LEGENDARY_SWORD_GUARD_PARRY;
-    public static AnimationManager.AnimationAccessor<ActionAnimation> SWORD_SKILL;
+    public static AnimationManager.AnimationAccessor<ActionAnimation> POSE_UP;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> DAGGER_AUTO1;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> DAGGER_AUTO2;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> DAGGER_AUTO3;
@@ -148,7 +148,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> KNIFE_IDLE;
     public static AnimationManager.AnimationAccessor<MovementAnimation> KNIFE_RUN;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> KNIFE_ATTACK;
-    public static AnimationManager.AnimationAccessor<ActionAnimation> KNIFE_CHECK;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> KNIFE_CHECK;
     public static AnimationManager.AnimationAccessor<StaticAnimation> CARRY;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> FIST_LEFT;
     public static AnimationManager.AnimationAccessor<LongHitAnimation> KNOCKDOWN_FORWARD;
@@ -213,7 +213,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> LOW_CLONE_ESCAPE;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_AEGIS_BULL_CHARGE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> SNAKE_BLADE;
-    public static AnimationManager.AnimationAccessor<ActionAnimation> MOB_SNAKE_BLADE;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> SNAKE_BLADE_GUARD;
     public static AnimationManager.AnimationAccessor<StaticAnimation> IDLE_BREAK;
     public static AnimationManager.AnimationAccessor<ActionAnimation> PLACE_BLOCK;
     public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> SLEDGE_HAMMER_INNATE_DASH;
@@ -229,9 +229,9 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> YELLOW_NAPOLEON_AUSTERLITZ_SHOOT;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> MOB_RAVANGER_CHARGE;
     public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> ENDER_AEGIS_NAPOLEON_RELOAD_1;
-    public static AnimationManager.AnimationAccessor<ActionAnimation> CASTING_ONE_HAND_TOP;
-    public static AnimationManager.AnimationAccessor<ActionAnimation> CASTING_ONE_HAND_INWARD;
-    public static AnimationManager.AnimationAccessor<ActionAnimation> CASTING_ONE_HAND_BUFF;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> CASTING_ONE_HAND_TOP;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> CASTING_ONE_HAND_INWARD;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> CASTING_ONE_HAND_BUFF;
     public static AnimationManager.AnimationAccessor<StaticAnimation> CHANTING_ONE_HAND_FRONT;
     public static AnimationManager.AnimationAccessor<StaticAnimation> VALOUR_HOLD_GREATSWORD;
     public static AnimationManager.AnimationAccessor<MovementAnimation> VALOUR_WALK_GREATSWORD;
@@ -300,9 +300,11 @@ public class AVAnimations {
         AVAnimations.EATING_ELITE_4 = builder.nextAccessor("biped/other/eating_elite_4",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
         AVAnimations.SNAKE_BLADE = builder.nextAccessor("biped/other/snake_blade",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
-        AVAnimations.MOB_SNAKE_BLADE = builder.nextAccessor("biped/other/mob_snake_blade",
-                (accessor) -> new ActionAnimation(0.0F, accessor, humanoidarmature));
+                (accessor) -> new StaticAnimation(true, accessor, humanoidarmature)
+                        .addState(EntityState.CAN_BASIC_ATTACK, false));
+        AVAnimations.SNAKE_BLADE_GUARD = builder.nextAccessor("biped/other/snake_blade_guard",
+                (accessor) -> new StaticAnimation(false, accessor, humanoidarmature)
+                        .addState(EntityState.CAN_BASIC_ATTACK, false));
         AVAnimations.IDLE_BREAK = builder.nextAccessor("biped/other/idle_break",
                 (accessor) -> new StaticAnimation(false, accessor, humanoidarmature));
         AVAnimations.PLACE_BLOCK = builder.nextAccessor("biped/other/place_block",
@@ -582,8 +584,9 @@ public class AVAnimations {
                 (accessor) -> new GuardAnimation(0.05F, accessor, humanoidarmature));
         AVAnimations.LEGENDARY_SWORD_GUARD_PARRY = builder.nextAccessor("biped/combat/legendary_sword_guard_parry",
                 (accessor) -> new GuardAnimation(0.05F, accessor, humanoidarmature));
-        AVAnimations.SWORD_SKILL = builder.nextAccessor("biped/combat/sword_skill",
-                (accessor) -> (new ActionAnimation(0.0F, 1.85F, accessor, humanoidarmature)).addProperty(ActionAnimationProperty.MOVE_VERTICAL, true));
+        AVAnimations.POSE_UP = builder.nextAccessor("biped/other/pose_up",
+                (accessor) -> (new ActionAnimation(0.0F, 1.85F, accessor, humanoidarmature))
+                        .addProperty(ActionAnimationProperty.MOVE_VERTICAL, true));
         AVAnimations.DAGGER_AUTO1 = builder.nextAccessor("biped/combat/dagger_auto1",
                 (accessor) -> new BasicAttackAnimation(0.08F, 0.05F, 0.15F, 0.2F, null, humanoidarmature.get().toolR, accessor, humanoidarmature));
         AVAnimations.DAGGER_AUTO2 = builder.nextAccessor("biped/combat/dagger_auto2",
@@ -616,7 +619,8 @@ public class AVAnimations {
                         .addState(EntityState.LOCKON_ROTATE, false)
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
         AVAnimations.KNIFE_CHECK = builder.nextAccessor("biped/other/knife_check",
-                (accessor) -> new ActionAnimation(0.0F, accessor, humanoidarmature));
+                (accessor) -> new StaticAnimation(false, accessor, humanoidarmature)
+                        .addState(EntityState.CAN_BASIC_ATTACK, false));
         AVAnimations.CARRY = builder.nextAccessor("biped/other/carry",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
         AVAnimations.FIST_LEFT = builder.nextAccessor("biped/combat/fist_left",
@@ -1551,13 +1555,17 @@ public class AVAnimations {
                                 }, Side.SERVER)
                         }));
         AVAnimations.CASTING_ONE_HAND_TOP = builder.nextAccessor("biped/other/casting_one_hand_top",
-                (accessor) -> new ActionAnimation(0.0F, accessor, humanoidarmature));
+                (accessor) -> new StaticAnimation(false, accessor, humanoidarmature)
+                        .addState(EntityState.CAN_BASIC_ATTACK, false));
         AVAnimations.CASTING_ONE_HAND_INWARD = builder.nextAccessor("biped/other/casting_one_hand_inward",
-                (accessor) -> new ActionAnimation(0.0F, accessor, humanoidarmature));
+                (accessor) -> new StaticAnimation(false, accessor, humanoidarmature)
+                        .addState(EntityState.CAN_BASIC_ATTACK, false));
         AVAnimations.CASTING_ONE_HAND_BUFF = builder.nextAccessor("biped/other/casting_one_hand_buff",
-                (accessor) -> new ActionAnimation(0.0F, accessor, humanoidarmature));
+                (accessor) -> new StaticAnimation(false, accessor, humanoidarmature)
+                        .addState(EntityState.CAN_BASIC_ATTACK, false));
         AVAnimations.CHANTING_ONE_HAND_FRONT = builder.nextAccessor("biped/other/chanting_one_hand_front",
-                (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
+                (accessor) -> new StaticAnimation(true, accessor, humanoidarmature)
+                        .addState(EntityState.CAN_BASIC_ATTACK, false));
         AVAnimations.VALOUR_HOLD_GREATSWORD = builder.nextAccessor("biped/living/valour_hold_greatsword",
                 (accessor) -> new StaticAnimation(true, accessor, Armatures.BIPED));
         AVAnimations.VALOUR_RUN_GREATSWORD = builder.nextAccessor("biped/living/valour_run_greatsword",
@@ -1765,13 +1773,11 @@ public class AVAnimations {
                         .addProperty(AnimationProperty.ActionAnimationProperty.STOP_MOVEMENT, false)
                         .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, true)
                         .addProperty(AnimationProperty.ActionAnimationProperty.AFFECT_SPEED, true)
-                        .addEvents(new AnimationEvent[]{
-                                AnimationEvent.InTimeEvent.create(1.5F, (livingEntityPatch, self, p) -> {
-                                    if (!livingEntityPatch.isLogicalClient()) {
-                                        livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
-                                    }
-                                }, Side.SERVER)
-                        }));
+                        .addEvents(AnimationEvent.InTimeEvent.create(1.5F, (livingEntityPatch, self, p) -> {
+                            if (!livingEntityPatch.isLogicalClient()) {
+                                livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
+                            }
+                        }, Side.SERVER)));
 
         AVAnimations.AGONY_GUARD_HIT_1 = builder.nextAccessor("biped/skill/agony_guard_hit1",
                 (accessor) -> (new ActionAnimation(0.05F, 0.5F, accessor, humanoidarmature))
