@@ -22,8 +22,10 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.boss.enderdragon.EndCrystal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -80,7 +82,6 @@ public class HerobrineCommon {
                     && item.getTag() != null && item.getTag().contains("SnakeAnimation")) {
                 return false;
             }
-            AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] herobrine state is {}", herobrineMob.getState());
             return herobrineMob.getState() != 0;
         }
         return false;
@@ -90,6 +91,18 @@ public class HerobrineCommon {
         if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
             if (herobrineMob instanceof ReaperHerobrineEntity reaperHerobrineEntity
                     && (reaperHerobrineEntity.getMeteoriteHerobrineDragon() == null || reaperHerobrineEntity.getMeteoriteHerobrineDragon().isRecallActive())) {
+                return false;
+            }
+            return herobrineMob.getState() != 0;
+        }
+        return false;
+    }
+
+    public static boolean canRespawnCrystal(MobPatch<?> mobpatch) {
+        if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
+            if (herobrineMob instanceof ReaperHerobrineEntity reaperHerobrineEntity
+                    && (reaperHerobrineEntity.getHealingHerobrineDragon() == null
+                    || !reaperHerobrineEntity.getHealingHerobrineDragon().getPassengers().isEmpty())) {
                 return false;
             }
             return herobrineMob.getState() != 0;
@@ -206,7 +219,6 @@ public class HerobrineCommon {
         if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
             herobrineMob.setState(1);
             herobrineMob.setSecondFormHitLeft(new Random().nextInt(2, 3));
-            AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] changeToSecondForm called");
             if (herobrineMob instanceof AegisHerobrineEntity || herobrineMob instanceof SwordsmanHerobrineEntity
                     || herobrineMob instanceof SledgehammerHerobrineEntity || herobrineMob instanceof ReaperHerobrineEntity
                     || herobrineMob instanceof GlaiveHerobrineEntity) {
@@ -218,7 +230,9 @@ public class HerobrineCommon {
     public static void playSecondFormAnimation(MobPatch<?> mobpatch) {
         if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
             ItemStack item = herobrineMob.getMainHandItem();
-            herobrineMob.setSecondFormHitLeft(herobrineMob.getSecondFormHitLeft() - 1);
+            if (herobrineMob.getState() < 2) {
+                herobrineMob.setSecondFormHitLeft(herobrineMob.getSecondFormHitLeft() - 1);
+            }
             if (herobrineMob instanceof AegisHerobrineEntity && herobrineMob.level() instanceof ServerLevel serverLevel) {
                 new DelayedTask(10) {
                     @Override
@@ -280,7 +294,9 @@ public class HerobrineCommon {
 
     public static void playSecondFormSpecialAnimation(MobPatch<?> mobpatch) {
         if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
-            herobrineMob.setSecondFormHitLeft(herobrineMob.getSecondFormHitLeft() - 1);
+            if (herobrineMob.getState() < 2) {
+                herobrineMob.setSecondFormHitLeft(herobrineMob.getSecondFormHitLeft() - 1);
+            }
             if (herobrineMob instanceof GlaiveHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
                 herobrineMob.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 40, 3));
                 new DelayedTask(14) {
@@ -329,7 +345,9 @@ public class HerobrineCommon {
     public static void playSecondFormGuardAnimation(MobPatch<?> mobpatch) {
         if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
             ItemStack item = herobrineMob.getMainHandItem();
-            herobrineMob.setSecondFormHitLeft(herobrineMob.getSecondFormHitLeft() - 1);
+            if (herobrineMob.getState() < 2) {
+                herobrineMob.setSecondFormHitLeft(herobrineMob.getSecondFormHitLeft() - 1);
+            }
             if (herobrineMob instanceof SwordsmanHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
                 if (herobrineMob.getTarget() != null) {
                     herobrineMob.getLookControl().setLookAt(herobrineMob.getTarget() , 30.0F, 30.0F);
@@ -340,6 +358,22 @@ public class HerobrineCommon {
             }
         }
     }
+
+    public static void respawnCrystal(MobPatch<?> mobpatch) {
+        if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
+            if (herobrineMob instanceof ReaperHerobrineEntity reaperHerobrineEntity && herobrineMob.level() instanceof ServerLevel serverLevel) {
+                if (reaperHerobrineEntity.getHealingHerobrineDragon() != null
+                        && reaperHerobrineEntity.getHealingHerobrineDragon().isAlive()
+                        && reaperHerobrineEntity.getHealingHerobrineDragon().getPassengers().isEmpty()) {
+                    EndCrystal endCrystal = new EndCrystal(EntityType.END_CRYSTAL, serverLevel);
+                    endCrystal.moveTo(reaperHerobrineEntity.getHealingHerobrineDragon().getX(), reaperHerobrineEntity.getHealingHerobrineDragon().getY(), reaperHerobrineEntity.getHealingHerobrineDragon().getZ());
+                    serverLevel.addFreshEntity(endCrystal);
+                    endCrystal.startRiding(reaperHerobrineEntity.getHealingHerobrineDragon(), true);
+                }
+            }
+        }
+    }
+
 
     public static void jump(MobPatch<?> mobpatch) {
         Entity entity = mobpatch.getOriginal();

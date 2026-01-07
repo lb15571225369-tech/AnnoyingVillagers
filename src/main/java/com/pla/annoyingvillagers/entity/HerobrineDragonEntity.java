@@ -14,6 +14,7 @@
 
 package com.pla.annoyingvillagers.entity;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.client.animation.DragonAnimator;
 import com.pla.annoyingvillagers.client.engine.MountCameraManager;
 import com.pla.annoyingvillagers.client.engine.MountControlsMessenger;
@@ -110,6 +111,9 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
     private boolean recallActive = false;
     private boolean recallAutoMount = false;
     private Vec3 recallLandPos = null;
+
+    @Nullable
+    public EndCrystal nearestCrystal;
 
     private static final EntityDataAccessor<Boolean> DATA_CONTROL_LOCKED = SynchedEntityData.defineId(HerobrineDragonEntity.class, EntityDataSerializers.BOOLEAN);
 
@@ -428,12 +432,50 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
                 || cat == CapabilityItem.WeaponCategories.NOT_WEAPON;
     }
 
+    private void checkCrystals() {
+        if (this.getFirstPassenger() != null && this.getFirstPassenger() instanceof EndCrystal) {
+            return;
+        }
+        if (this.nearestCrystal != null) {
+            if (this.nearestCrystal.isRemoved()) {
+                this.nearestCrystal = null;
+            } else if (this.tickCount % 10 == 0 && this.getHealth() < this.getMaxHealth()) {
+                this.setHealth(this.getHealth() + 1.0F);
+            }
+        }
+
+        if (this.random.nextInt(10) == 0) {
+            List<EndCrystal> list = this.level().getEntitiesOfClass(EndCrystal.class, this.getBoundingBox().inflate((double)32.0F));
+            EndCrystal endcrystalTemp = null;
+            double d0 = Double.MAX_VALUE;
+
+            for(EndCrystal endCrystal : list) {
+                double d1 = endCrystal.distanceToSqr(this);
+                if (d1 < d0) {
+                    d0 = d1;
+                    endcrystalTemp = endCrystal;
+                }
+            }
+
+            if (endcrystalTemp == null && this.nearestCrystal != null) {
+                this.nearestCrystal.setBeamTarget(null);
+            }
+            this.nearestCrystal = endcrystalTemp;
+        }
+
+    }
+
     @Override
     public void tick()
     {
         super.tick();
         if (this.level() instanceof ServerLevel serverLevel)
         {
+            this.checkCrystals();
+            if (this.nearestCrystal != null && !this.nearestCrystal.isRemoved()) {
+                this.nearestCrystal.setBeamTarget(this.blockPosition());
+            }
+
             if (breathHoverTimeToLiveTicks > 0) {
                 if (shouldApplyControlLocked()) {
                     if (!isControlLocked()) setControlLocked(true);
@@ -888,6 +930,15 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
     public int getMaxDeathTime()
     {
         return 120;
+    }
+
+    @Override
+    public void remove(@NotNull RemovalReason pReason) {
+        if (this.getFirstPassenger() instanceof EndCrystal endCrystal
+                && this.level() instanceof ServerLevel serverLevel) {
+            endCrystal.hurt(serverLevel.damageSources().generic(), 1.0F);
+        }
+        super.remove(pReason);
     }
 
     @Override

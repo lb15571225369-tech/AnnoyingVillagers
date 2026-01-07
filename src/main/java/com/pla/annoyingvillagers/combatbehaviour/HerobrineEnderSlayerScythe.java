@@ -205,6 +205,21 @@ public class HerobrineEnderSlayerScythe {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
+                            .weight(25)
+                            .maxCooldown(900)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(2.0D, 90.0D)
+                                            .custom(HerobrineCommon::canPlaySecondFormAnimation)
+                                            .custom(HerobrineCommon::canRespawnCrystal)
+                                            .animationBehavior(AVAnimations.CASTING_ONE_HAND_INWARD, 0.0F)
+                                            .addExBehavior(HerobrineCommon::respawnCrystal)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
                             .weight(30.0D)
                             .addFirstBehavior(
                                     Behavior.builder()

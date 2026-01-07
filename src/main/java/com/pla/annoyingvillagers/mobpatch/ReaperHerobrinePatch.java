@@ -96,7 +96,7 @@ public class ReaperHerobrinePatch extends CEHumanoidPatch implements CustomExecu
                 || (!(dynamicAnimation.get() instanceof AttackAnimation)
                 && !(dynamicAnimation.get() instanceof GuardAnimation)
                 && !EpicfightUtil.isLongHitAnimation(dynamicAnimation)))) {
-            if (new Random().nextFloat() <= 0.2F) {
+            if (new Random().nextFloat() <= 0.3F) {
                 float chance = new Random().nextFloat();
                 if (chance <= 0.25F) {
                     this.playAnimationSynchronized(WOMAnimations.ENDERSTEP_BACKWARD, 0.0F);
