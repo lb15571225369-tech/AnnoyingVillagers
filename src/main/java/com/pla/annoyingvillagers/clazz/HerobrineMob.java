@@ -59,6 +59,8 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.shelmarow.combat_evolution.effect.CECommonEffect;
+import net.shelmarow.combat_evolution.effect.CEMobEffects;
 import org.jetbrains.annotations.NotNull;
 import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.particle.EpicFightParticles;
@@ -723,6 +725,9 @@ public class HerobrineMob extends Monster {
         this.floatOnAnyFluid();
         this.checkInsideBlocks();
         if (!this.level().isClientSide) {
+            if (this.state == 2) {
+                this.addEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 3, 3));
+            }
             if (this.healingCooldown > 0) this.healingCooldown = this.healingCooldown - 1;
 
             if (this instanceof HerobrineCloneEntity || this instanceof HerobrineChrisEntity) {

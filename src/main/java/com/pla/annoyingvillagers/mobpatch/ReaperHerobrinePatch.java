@@ -38,6 +38,7 @@ import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
 import yesman.epicfight.world.damagesource.EpicFightDamageSource;
 import yesman.epicfight.world.damagesource.StunType;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
@@ -86,6 +87,17 @@ public class ReaperHerobrinePatch extends CEHumanoidPatch implements CustomExecu
                                 Styles.TWO_HAND, HerobrineEnderSlayerScythe.ENDER_SLAYER_SCYTHE,
                                 Styles.MOUNT, HerobrineEnderSlayerScythe.ENDER_SLAYER_SCYTHE
                         ));
+
+        this.guardHitMotions.put(WeaponCategories.SPEAR,
+                ImmutableMap.of(
+                        Styles.TWO_HAND, List.of(
+                                Animations.SPEAR_GUARD_HIT
+                        ),
+                        Styles.MOUNT, List.of(
+                                Animations.SPEAR_GUARD_HIT
+                        )
+                )
+        );
     }
 
     @Override
@@ -146,14 +158,9 @@ public class ReaperHerobrinePatch extends CEHumanoidPatch implements CustomExecu
     public void onGuardHit(DamageSource damageSource) {
         super.onGuardHit(damageSource);
         if (this.getOriginal().level() instanceof ServerLevel serverLevel) {
-            this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
             EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, this.getOriginal(), damageSource.getEntity());
         }
         // More logic when blocking damage success
-    }
-
-    @Override
-    public void playGuardHitAnimation(DamageSource damageSource, boolean canCounter) {
     }
 
     public AnimationAccessor<? extends StaticAnimation> getHitAnimation(StunType stuntype) {

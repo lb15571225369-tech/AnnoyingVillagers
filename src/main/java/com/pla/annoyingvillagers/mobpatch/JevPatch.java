@@ -110,13 +110,8 @@ public class JevPatch extends CEHumanoidPatch implements CustomExecuteEntity {
     public void onGuardHit(DamageSource damageSource) {
         super.onGuardHit(damageSource);
         if (this.getOriginal().level() instanceof ServerLevel serverLevel) {
-            this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
             EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, this.getOriginal(), damageSource.getEntity());
         }
-    }
-
-    @Override
-    public void playGuardHitAnimation(DamageSource damageSource, boolean canCounter) {
     }
 
     public AnimationAccessor<? extends StaticAnimation> getHitAnimation(StunType stuntype) {

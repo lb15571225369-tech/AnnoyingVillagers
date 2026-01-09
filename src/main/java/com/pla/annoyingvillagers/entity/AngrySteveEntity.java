@@ -19,6 +19,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -33,6 +34,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.shelmarow.combat_evolution.effect.CEMobEffects;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -315,6 +317,14 @@ public class AngrySteveEntity extends AVNpc {
         this.setUnableToDamageCooldown(60);
         if (this.getLivingEntityPatch() != null) {
             this.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.GUARD_BREAK_ATTACK, 0.0F);
+        }
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (!this.level().isClientSide()) {
+            this.addEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 3, 3));
         }
     }
 

@@ -32,6 +32,7 @@ import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
 import yesman.epicfight.world.damagesource.EpicFightDamageSource;
 import yesman.epicfight.world.damagesource.StunType;
 
+import java.util.List;
 import java.util.Set;
 
 public class ChrisPatch extends CEHumanoidPatch implements CustomExecuteEntity {
@@ -124,6 +125,19 @@ public class ChrisPatch extends CEHumanoidPatch implements CustomExecuteEntity {
                                 Styles.ONE_HAND, NpcSword.AV_SWORD,
                                 Styles.TWO_HAND, NpcSword.AV_DUAL_SWORD
                         ));
+        
+        this.guardHitMotions.put(WeaponCategories.SWORD,
+                ImmutableMap.of(
+                        Styles.ONE_HAND, List.of(
+                                Animations.SWORD_GUARD_ACTIVE_HIT1,
+                                Animations.SWORD_GUARD_ACTIVE_HIT2,
+                                Animations.SWORD_GUARD_ACTIVE_HIT3
+                        ),
+                        Styles.TWO_HAND, List.of(
+                                Animations.SWORD_DUAL_GUARD_HIT
+                        )
+                )
+        );
     }
 
     public void playGuardBreakSound() {
@@ -160,13 +174,8 @@ public class ChrisPatch extends CEHumanoidPatch implements CustomExecuteEntity {
     public void onGuardHit(DamageSource damageSource) {
         super.onGuardHit(damageSource);
         if (this.getOriginal().level() instanceof ServerLevel serverLevel) {
-            this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
             EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, this.getOriginal(), damageSource.getEntity());
         }
-    }
-
-    @Override
-    public void playGuardHitAnimation(DamageSource damageSource, boolean canCounter) {
     }
 
     public AnimationAccessor<? extends StaticAnimation> getHitAnimation(StunType stuntype) {

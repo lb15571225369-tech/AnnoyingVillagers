@@ -31,6 +31,7 @@ import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
 import yesman.epicfight.world.damagesource.EpicFightDamageSource;
 import yesman.epicfight.world.damagesource.StunType;
 
+import java.util.List;
 import java.util.Set;
 
 public class AngryStevePatch extends CEHumanoidPatch implements CustomExecuteEntity {
@@ -113,6 +114,14 @@ public class AngryStevePatch extends CEHumanoidPatch implements CustomExecuteEnt
                         ImmutableMap.of(
                                 Styles.TWO_HAND, AngrySteveLegendarySword.LEGENDARY_SWORD
                         ));
+        
+        this.guardHitMotions.put(WeaponCategories.GREATSWORD,
+                ImmutableMap.of(
+                        Styles.TWO_HAND, List.of(
+                                Animations.GREATSWORD_GUARD_HIT
+                        )
+                )
+        );
     }
 
     public void playGuardBreakSound() {
@@ -149,13 +158,8 @@ public class AngryStevePatch extends CEHumanoidPatch implements CustomExecuteEnt
     public void onGuardHit(DamageSource damageSource) {
         super.onGuardHit(damageSource);
         if (this.getOriginal().level() instanceof ServerLevel serverLevel) {
-            this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
             EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, this.getOriginal(), damageSource.getEntity());
         }
-    }
-
-    @Override
-    public void playGuardHitAnimation(DamageSource damageSource, boolean canCounter) {
     }
 
     public AnimationAccessor<? extends StaticAnimation> getHitAnimation(StunType stuntype) {

@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.mobpatch;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 
+import java.util.List;
 import java.util.Set;
 
 import com.pla.annoyingvillagers.combatbehaviour.*;
@@ -144,6 +145,105 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
                         ImmutableMap.of(
                                 Styles.TWO_HAND, PlayerNpcTachi.TACHI
                         ));
+
+        this.guardHitMotions.put(WeaponCategories.SWORD,
+                ImmutableMap.of(
+                        Styles.ONE_HAND, List.of(
+                                Animations.SWORD_GUARD_ACTIVE_HIT1,
+                                Animations.SWORD_GUARD_ACTIVE_HIT2,
+                                Animations.SWORD_GUARD_ACTIVE_HIT3
+                        ),
+                        Styles.TWO_HAND, List.of(
+                                Animations.SWORD_DUAL_GUARD_HIT
+                        )
+                )
+        );
+        this.guardHitMotions.put(WeaponCategories.LONGSWORD,
+                ImmutableMap.of(
+                        Styles.ONE_HAND, List.of(
+                                Animations.LONGSWORD_GUARD_ACTIVE_HIT1,
+                                Animations.LONGSWORD_GUARD_ACTIVE_HIT2
+                        ),
+                        Styles.TWO_HAND, List.of(
+                                Animations.LONGSWORD_GUARD_HIT
+                        )
+                )
+        );
+        this.guardHitMotions.put(WeaponCategories.AXE,
+                ImmutableMap.of(
+                        Styles.ONE_HAND, List.of(
+                                Animations.SWORD_GUARD_ACTIVE_HIT1,
+                                Animations.SWORD_GUARD_ACTIVE_HIT2,
+                                Animations.SWORD_GUARD_ACTIVE_HIT3
+                        ),
+                        Styles.TWO_HAND, List.of(
+                                Animations.SWORD_DUAL_GUARD_HIT
+                        )
+                )
+        );
+        this.guardHitMotions.put(WeaponCategories.GREATSWORD,
+                ImmutableMap.of(
+                        Styles.TWO_HAND, List.of(
+                                Animations.GREATSWORD_GUARD_HIT
+                        )
+                )
+        );
+        this.guardHitMotions.put(WeaponCategories.SPEAR,
+                ImmutableMap.of(
+                        Styles.ONE_HAND, List.of(
+                                Animations.SPEAR_GUARD_HIT
+                        ),
+                        Styles.TWO_HAND, List.of(
+                                Animations.SPEAR_GUARD_HIT
+                        )
+                )
+        );
+        this.guardHitMotions.put(WeaponCategories.TRIDENT,
+                ImmutableMap.of(
+                        Styles.ONE_HAND, List.of(
+                                Animations.SPEAR_GUARD_HIT
+                        ),
+                        Styles.TWO_HAND, List.of(
+                                Animations.SPEAR_GUARD_HIT
+                        )
+                )
+        );
+        this.guardHitMotions.put(WeaponCategories.UCHIGATANA,
+                ImmutableMap.of(
+                        Styles.OCHS, List.of(
+                                Animations.SWORD_GUARD_ACTIVE_HIT1,
+                                Animations.SWORD_GUARD_ACTIVE_HIT2,
+                                Animations.SWORD_GUARD_ACTIVE_HIT3
+                        ),
+                        Styles.TWO_HAND, List.of(
+                                Animations.SWORD_DUAL_GUARD_HIT
+                        )
+                )
+        );
+        this.guardHitMotions.put(WeaponCategories.DAGGER,
+                ImmutableMap.of(
+                        Styles.ONE_HAND, List.of(
+                                Animations.SWORD_GUARD_ACTIVE_HIT1,
+                                Animations.SWORD_GUARD_ACTIVE_HIT2,
+                                Animations.SWORD_GUARD_ACTIVE_HIT3
+                        ),
+                        Styles.TWO_HAND, List.of(
+                                Animations.SWORD_DUAL_GUARD_HIT
+                        )
+                )
+        );
+        this.guardHitMotions.put(WeaponCategories.TACHI,
+                ImmutableMap.of(
+                        Styles.ONE_HAND, List.of(
+                                Animations.SWORD_GUARD_ACTIVE_HIT1,
+                                Animations.SWORD_GUARD_ACTIVE_HIT2,
+                                Animations.SWORD_GUARD_ACTIVE_HIT3
+                        ),
+                        Styles.TWO_HAND, List.of(
+                                Animations.SWORD_DUAL_GUARD_HIT
+                        )
+                )
+        );
     }
 
     @Override
@@ -187,13 +287,8 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
     public void onGuardHit(DamageSource damageSource) {
         super.onGuardHit(damageSource);
         if (this.getOriginal().level() instanceof ServerLevel serverLevel) {
-            this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
             EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, this.getOriginal(), damageSource.getEntity());
         }
-    }
-
-    @Override
-    public void playGuardHitAnimation(DamageSource damageSource, boolean canCounter) {
     }
 
     public AnimationAccessor<? extends StaticAnimation> getHitAnimation(StunType stuntype) {

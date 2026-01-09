@@ -30,6 +30,7 @@ import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
 import yesman.epicfight.world.damagesource.EpicFightDamageSource;
 import yesman.epicfight.world.damagesource.StunType;
 
+import java.util.List;
 import java.util.Set;
 
 public class GlaiveHerobrinePatch extends CEHumanoidPatch implements CustomExecuteEntity {
@@ -66,6 +67,14 @@ public class GlaiveHerobrinePatch extends CEHumanoidPatch implements CustomExecu
                         ImmutableMap.of(
                                 Styles.TWO_HAND, HerobrineEnderGlaive.ENDER_GLAIVE
                         ));
+
+        this.guardHitMotions.put(WeaponCategories.SPEAR,
+                ImmutableMap.of(
+                        Styles.ONE_HAND, List.of(
+                                Animations.SPEAR_GUARD_HIT
+                        )
+                )
+        );
     }
 
     public void playGuardBreakSound() {
@@ -102,14 +111,9 @@ public class GlaiveHerobrinePatch extends CEHumanoidPatch implements CustomExecu
     public void onGuardHit(DamageSource damageSource) {
         super.onGuardHit(damageSource);
         if (this.getOriginal().level() instanceof ServerLevel serverLevel) {
-            this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
             EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, this.getOriginal(), damageSource.getEntity());
         }
         // More logic when blocking damage success
-    }
-
-    @Override
-    public void playGuardHitAnimation(DamageSource damageSource, boolean canCounter) {
     }
 
     public AnimationAccessor<? extends StaticAnimation> getHitAnimation(StunType stuntype) {

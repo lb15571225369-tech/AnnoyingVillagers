@@ -29,6 +29,7 @@ import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
 import yesman.epicfight.world.damagesource.EpicFightDamageSource;
 import yesman.epicfight.world.damagesource.StunType;
 
+import java.util.List;
 import java.util.Set;
 
 public class VillagerScoutPatch extends CEHumanoidPatch implements CustomExecuteEntity {
@@ -121,6 +122,19 @@ public class VillagerScoutPatch extends CEHumanoidPatch implements CustomExecute
                                         Pair.of(LivingMotions.AIM, Animations.BIPED_BOW_AIM),
                                         Pair.of(LivingMotions.SHOT, Animations.BIPED_BOW_SHOT)
                                 )));
+
+        this.guardHitMotions.put(WeaponCategories.SWORD,
+                ImmutableMap.of(
+                        Styles.ONE_HAND, List.of(
+                                Animations.SWORD_GUARD_ACTIVE_HIT1,
+                                Animations.SWORD_GUARD_ACTIVE_HIT2,
+                                Animations.SWORD_GUARD_ACTIVE_HIT3
+                        ),
+                        Styles.TWO_HAND, List.of(
+                                Animations.SWORD_DUAL_GUARD_HIT
+                        )
+                )
+        );
     }
 
     public void playGuardBreakSound() {
@@ -149,10 +163,6 @@ public class VillagerScoutPatch extends CEHumanoidPatch implements CustomExecute
         // More logic when player block success
     }
 
-    @Override
-    public void playGuardHitAnimation(DamageSource damageSource, boolean canCounter) {
-    }
-
     public void onAttackParried(DamageSource damageSource, LivingEntityPatch<?> livingEntityPatch) {
         // More logic when player parry success
     }
@@ -161,7 +171,6 @@ public class VillagerScoutPatch extends CEHumanoidPatch implements CustomExecute
     public void onGuardHit(DamageSource damageSource) {
         super.onGuardHit(damageSource);
         if (this.getOriginal().level() instanceof ServerLevel serverLevel) {
-            this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
             EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, this.getOriginal(), damageSource.getEntity());
         }
     }
