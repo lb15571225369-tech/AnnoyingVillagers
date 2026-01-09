@@ -416,7 +416,7 @@ public class LowShadowHerobrineCloneEntity extends Monster {
                     new DelayedTask(10) {
                         @Override
                         public void run() {
-                            HerobrineUtil.spawnObsidian3x3x3AtBody(serverLevel, entity, AnnoyingVillagersModBlocks.CRYING_OBSIDIAN_BLOCK.get().defaultBlockState());
+                            HerobrineUtil.spawnObsidianPatternAtBody(serverLevel, entity, AnnoyingVillagersModBlocks.CRYING_OBSIDIAN_BLOCK.get().defaultBlockState());
                             entity.discard();
                         }
                     };

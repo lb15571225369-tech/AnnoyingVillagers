@@ -21,6 +21,7 @@ import java.util.Set;
 public class EscapeUtil {
     private static final Set<String> DANGEROUS_ANIMATIONS = Set.of(
             "annoyingvillagers:biped/skill/ender_aegis_bull_charge",
+            "annoyingvillagers:biped/combat/yellow_torment_charged_attack_3",
             "efn:biped/ng_greatsword/ng_great_charge1ing",
             "efn:biped/ng_greatsword/ng_great_charge1max",
             "efn:biped/ng_greatsword/ng_great_charge1max_2",

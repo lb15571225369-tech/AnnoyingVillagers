@@ -8,15 +8,14 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.item.*;
 import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
 import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
-import com.pla.annoyingvillagers.skill.EnderGlaiveSkill;
-import com.pla.annoyingvillagers.skill.EnderSlayerScytheSkill;
-import com.pla.annoyingvillagers.skill.ObsidianSledgeHammerSkill;
-import com.pla.annoyingvillagers.skill.WoopieTheSwordSkill;
+import com.pla.annoyingvillagers.skill.*;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -27,6 +26,7 @@ import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -37,6 +37,7 @@ import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.Armatures;
+import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
@@ -242,15 +243,33 @@ public class SpecialAttackOnKeyPressedProcedure {
             }
             if (holdingItem.getItem().equals(AnnoyingVillagersModItems.LEGENDARY_SWORD.get())) {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {
-                    LivingEntity livingEntity = (LivingEntity) entity;
-                    livingEntity.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 60, 2));
-                    livingEntityPatch.playAnimationSynchronized(AnimsNapoleon.NAPOLEON_WATERLOW_SHOOT, 0.0F);
-                    new DelayedTask(20) {
-                        @Override
-                        public void run() {
-                            livingEntityPatch.playAnimationSynchronized(AVAnimations.LEGENDARY_SWORD_WAKE_UP_ATTACK, 0.0F);
+                    boolean success = false;
+
+                    PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+                    if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
+                        SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.LEGENDARY_SWORD);
+                        if (skillContainer != null && skillContainer.getSkill() instanceof LegendarySwordSkill legendarySwordSkill && player.level() instanceof ServerLevel serverLevel) {
+                            if (skillContainer.getStack() >= 1) {
+                                livingEntityPatch.playAnimationSynchronized(AVAnimations.YELLOW_TORMENT_CHARGED_ATTACK_3, 0.0F);
+                                legendarySwordSkill.getResourceType().consumer
+                                        .consume(skillContainer, serverPlayerPatch, legendarySwordSkill.getDefaultConsumptionAmount(serverPlayerPatch));
+                                success = true;
+                            }
                         }
-                    };
+                    }
+
+                    if (!success) {
+                        LivingEntity livingEntity = (LivingEntity) entity;
+                        livingEntity.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 60, 2));
+                        livingEntityPatch.playAnimationSynchronized(AnimsNapoleon.NAPOLEON_WATERLOW_SHOOT, 0.0F);
+                        new DelayedTask(20) {
+                            @Override
+                            public void run() {
+                                livingEntityPatch.playAnimationSynchronized(AVAnimations.LEGENDARY_SWORD_WAKE_UP_ATTACK, 0.0F);
+                            }
+                        };
+                    }
+
                     player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
                     return;
                 }

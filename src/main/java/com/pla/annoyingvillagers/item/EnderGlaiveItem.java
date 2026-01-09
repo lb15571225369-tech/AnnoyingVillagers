@@ -59,7 +59,7 @@ public class EnderGlaiveItem extends SwordItem {
 
                 float currentResource = skillContainer.getResource();
                 float neededResource = skillContainer.getNeededResource();
-                float addResource = Math.min(5.0F, neededResource);
+                float addResource = Math.min(2.0F, neededResource);
                 enderGlaiveSkill.setConsumptionSynchronize(skillContainer, currentResource + addResource);
             }
         }

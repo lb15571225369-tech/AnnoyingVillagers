@@ -4,10 +4,14 @@ import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 
@@ -73,26 +77,73 @@ public class HerobrineUtil {
         }
     }
 
-    public static void spawnObsidian3x3x3AtBody(ServerLevel level, Entity entity,
-                                                BlockState state) {
+    private static final class Pattern2D {
+        final int w, h;
+        final int[][] cells;
+        Pattern2D(int w, int h, int[][] cells) { this.w = w; this.h = h; this.cells = cells; }
+        int centerX() { return w / 2; } // integer center (works fine for w=2 as well)
+    }
+
+    private static final Pattern2D[] OBSIDIAN_PATTERNS = new Pattern2D[] {
+            new Pattern2D(1, 3, new int[][] { {0,0},{0,1},{0,2} }),
+            new Pattern2D(2, 3, new int[][] { {0,0},{0,1},{0,2},{1,2} }),
+            new Pattern2D(2, 3, new int[][] { {1,0},{1,1},{1,2},{0,1} }),
+            new Pattern2D(3, 3, new int[][] { {0,0},{1,0},{2,0},{1,1},{1,2} }),
+            new Pattern2D(3, 3, new int[][] { {0,2},{1,2},{2,2},{1,1},{1,0} }),
+            new Pattern2D(3, 3, new int[][] { {1,1},{1,2},{1,0},{0,1},{2,1} }),
+            new Pattern2D(3, 4, new int[][] { {1,0},{1,1},{1,2},{1,3},{0,2},{2,2} }),
+            new Pattern2D(2, 2, new int[][] { {0,0},{1,0},{0,1},{1,1} }),
+            new Pattern2D(3, 3, new int[][] { {0,0},{0,1},{1,1},{2,1},{0,2},{1,2} }),
+            new Pattern2D(3, 3, new int[][] { {0,0},{1,0},{1,1},{1,2},{2,2} }),
+            new Pattern2D(3, 2, new int[][] { {0,0},{1,0},{2,0},{0,1} }),
+    };
+
+    private static boolean hasGroundWithin(ServerLevel level, Entity e, int maxDown) {
+        Vec3 start = new Vec3(e.getX(), e.getBoundingBox().minY + 1.0E-3D, e.getZ());
+        Vec3 end = start.add(0.0D, -maxDown, 0.0D);
+
+        BlockHitResult hit = level.clip(new ClipContext(
+                start, end,
+                ClipContext.Block.COLLIDER,
+                ClipContext.Fluid.NONE,
+                e
+        ));
+        return hit.getType() != HitResult.Type.MISS;
+    }
+
+    public static void spawnObsidianPatternAtBody(ServerLevel level, Entity entity, BlockState state) {
         if (level == null || entity == null) return;
+        if (!hasGroundWithin(level, entity, 3)) return;
 
         int minY = level.getMinBuildHeight();
         int maxY = level.getMaxBuildHeight() - 1;
 
-        int cy = Mth.clamp(Mth.floor(entity.getY() + entity.getBbHeight() * 0.5D + 1.0D), minY, maxY);
-        BlockPos center = BlockPos.containing(entity.getX(), cy, entity.getZ());
+        BlockPos feet = BlockPos.containing(entity.getX(), entity.getBoundingBox().minY, entity.getZ());
 
-        for (int dy = -1; dy <= 1; dy++) {
-            int y = cy + dy;
+        var rand = level.getRandom();
+        Pattern2D pat = OBSIDIAN_PATTERNS[rand.nextInt(OBSIDIAN_PATTERNS.length)];
+
+        Direction face = Direction.Plane.HORIZONTAL.getRandomDirection(rand);
+        boolean mirror = rand.nextBoolean();
+        BlockPos origin = feet.relative(face);
+
+        Direction side = mirror ? face.getCounterClockWise() : face.getClockWise();
+        int cx = pat.centerX();
+
+        for (int[] c : pat.cells) {
+            int localX = c[0] - cx;
+            int localY = c[1];
+
+            int y = origin.getY() + localY;
             if (y < minY || y > maxY) continue;
 
-            for (int dx = -1; dx <= 1; dx++) {
-                for (int dz = -1; dz <= 1; dz++) {
-                    if (dx == 0 && dy == 0 && dz == 0) continue;
-                    placeIfReplaceable(level, center.offset(dx, dy, dz), state);
-                }
-            }
+            BlockPos p = origin.offset(
+                    side.getStepX() * localX,
+                    localY,
+                    side.getStepZ() * localX
+            );
+
+            placeIfReplaceable(level, p, state);
         }
     }
 }

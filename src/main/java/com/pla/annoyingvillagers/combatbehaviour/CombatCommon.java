@@ -30,7 +30,9 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.shelmarow.combat_evolution.execution.ExecutionHandler;
 import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
 import net.shelmarow.combat_evolution.tickTask.TickTaskManager;
@@ -523,10 +525,44 @@ public class CombatCommon {
         if (mob instanceof SteveEntity || mob instanceof AngrySteveEntity) {
             new DelayedTask(1) {
                 @Override public void run() {
-                    placeRandomFrontWall(mobpatch);
+                    if (isGroundWithin(mob, 3.0)) {
+                        placeRandomFrontWall(mobpatch);
+                    }
                 }
             };
         }
+    }
+
+    private static boolean isGroundWithin(Entity e, double maxGap) {
+        Level level = e.level();
+        AABB bb = e.getBoundingBox();
+        double feetY = bb.minY;
+
+        int x = Mth.floor(e.getX());
+        int z = Mth.floor(e.getZ());
+        int startY = Mth.floor(feetY - 1.0e-4);
+
+        int maxSteps = Mth.ceil(maxGap) + 2;
+
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(x, startY, z);
+
+        for (int i = 0; i <= maxSteps; i++) {
+            pos.setY(startY - i);
+
+            BlockState state = level.getBlockState(pos);
+            if (state.isAir()) continue;
+            VoxelShape shape = state.getCollisionShape(level, pos);
+            if (shape.isEmpty()) continue;
+
+            double topY = pos.getY() + shape.max(Direction.Axis.Y);
+            double gap = feetY - topY;
+
+            if (gap >= -1.0e-3 && gap <= maxGap + 1.0e-3) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static void performEatingAnimation(MobPatch<?> mobpatch) {

@@ -369,7 +369,20 @@ public class AngrySteveLegendarySword {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(30.0D)
-                            .maxCooldown(40)
+                            .maxCooldown(100)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(AnimsNapoleon.NAPOLEON_WATERLOW_SHOOT, 0.0F)
+                                            .addExBehavior(AngrySteveLegendarySword::legendarySwordSpecialAttack)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                            .weight(20.0D)
+                            .maxCooldown (200)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -377,12 +390,17 @@ public class AngrySteveLegendarySword {
                                             .animationBehavior(AnimsAgony.AGONY_RISING_EAGLE, 0.0F)
                                             .addExBehavior(AngrySteveLegendarySword::legendarySwordHeavyAttack)
                             )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                            .weight(10.0D)
+                            .maxCooldown (400)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(AnimsNapoleon.NAPOLEON_WATERLOW_SHOOT, 0.0F)
-                                            .addExBehavior(AngrySteveLegendarySword::legendarySwordSpecialAttack)
+                                            .withinDistance(5.0D, 10.0D)
+                                            .animationBehavior(AVAnimations.YELLOW_TORMENT_CHARGED_ATTACK_3, 0.0F)
                             )
             )
             .newBehaviorRoot(

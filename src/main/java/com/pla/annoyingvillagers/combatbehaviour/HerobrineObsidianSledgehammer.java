@@ -179,7 +179,7 @@ public class HerobrineObsidianSledgehammer {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .withinDistance(2.0D, 8.0D)
+                                            .withinDistance(0.0D, 8.0D)
                                             .custom(HerobrineCommon::canPlaySecondFormAnimation)
                                             .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
                                             .addExBehavior(HerobrineCommon::playSecondFormAnimation)
@@ -193,19 +193,19 @@ public class HerobrineObsidianSledgehammer {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .withinDistance(2.0D, 8.0D)
+                                            .withinDistance(0.0D, 8.0D)
                                             .custom(HerobrineCommon::canPlaySecondFormAnimation)
-                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
+                                            .animationBehavior(AVAnimations.LEGENDARY_SWORD_AUTO_4, 0.0F)
                                             .addExBehavior(HerobrineCommon::playSecondFormSpecialAnimation)
                                             .addNextBehavior(
                                                     Behavior.builder()
                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                                            .withinDistance(0.0D, 5.0D)
+                                                            .withinDistance(0.0D, 8.0D)
                                                             .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .withinDistance(0.0D, 8.0D)
                                                                             .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
                                                             )
                                             )
