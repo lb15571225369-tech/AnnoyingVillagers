@@ -132,7 +132,7 @@ public class CombatCommon {
         LivingEntity attacker = mobpatch.getOriginal();
         LivingEntity victim = mobpatch.getOriginal().getTarget();
         if (victim != null) {
-            return ExecutionHandler.isExecutingTarget(attacker, victim);
+            return !ExecutionHandler.isExecutingTarget(attacker, victim);
         }
         return false;
     }
