@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.combatbehaviour;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.AVNpc;
 import com.pla.annoyingvillagers.entity.*;
