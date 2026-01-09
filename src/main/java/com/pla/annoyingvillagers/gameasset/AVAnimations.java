@@ -1,26 +1,31 @@
 /*
- * Annoying Villagers — Unified Attribution & License Notice
+ * Annoying Villagers - Unified Attribution & License Notice
  *
  * This file may include or adapt code/assets from third-party projects listed below.
  * Keep this notice and all upstream notices.
  *
- * [1] EpicACG — author: dfdyz — License: GPL-3.0
+ * [1] EpicACG - author: dfdyz - License: GPL-3.0
  *     - Portions of this file are adapted from the EpicACG mod.
  *     - See: licenses/GPL-3.0.txt and https://www.gnu.org/licenses/gpl-3.0.html
  *
- * [2] Epic Fight — Valour Guard — author: namelesslk — License: LGPL-2.1
+ * [2] Epic Fight - Valour Guard - author: namelesslk - License: LGPL-2.1
  *     - Derived assets (e.g., animations).
  *     - See: licenses/LGPL-2.1.txt
  *
- * [3] Epic Fight x Iron's Spells: Enhanced Animations — author: YukamiNeeSan — License: MIT
+ * [3] Epic Fight x Iron's Spells: Enhanced Animations - author: YukamiNeeSan - License: MIT
  *     - Derived assets/data used with attribution.
  *     - Source: https://www.curseforge.com/minecraft/mc-mods/epic-fight-x-irons-spells-enhanced-animations
  *     - See: licenses/MIT-YukamiNeeSan.txt
  *
- * [4] Tactical Imbuements — author: m3tte — License: MIT
+ * [4] Tactical Imbuements - author: m3tte - License: MIT
  *     - Code and/or assets referenced/derived.
  *     - Source: https://www.curseforge.com/minecraft/mc-mods/tactical-imbuements
  *     - See: licenses/MIT-TacticalImbuements.txt
+ *
+ * [5] Epic Fight - Infernal Gainer - author: reascer - License: GNU
+ *     - Code and/or assets referenced/derived.
+ *     - Source: https://www.curseforge.com/minecraft/mc-mods/epic-fight-infernal-gainer
+ *     - See: http://www.gnu.org/licenses
  *
  * Notes:
  * - Where GPL-3.0/LGPL-2.1 applies, provide the corresponding license texts and
@@ -38,11 +43,9 @@ import com.pla.annoyingvillagers.animations.*;
 import com.pla.annoyingvillagers.util.BowFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -62,15 +65,15 @@ import reascer.wom.animation.WomAnimationProperty;
 import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
 import reascer.wom.animation.attacks.SpecialAttackAnimation;
 import reascer.wom.animation.attacks.UltimateAttackAnimation;
-import reascer.wom.gameasset.ReuseableEvents;
 import reascer.wom.gameasset.WOMAnimations;
-import reascer.wom.gameasset.WOMSkills;
 import reascer.wom.gameasset.WOMSounds;
 import reascer.wom.gameasset.colliders.WOMWeaponColliders;
 import reascer.wom.particle.WOMParticles;
 import reascer.wom.world.damagesources.WOMExtraDamageInstance;
 import yesman.epicfight.api.animation.AnimationManager;
 import yesman.epicfight.api.animation.Joint;
+import yesman.epicfight.api.animation.Keyframe;
+import yesman.epicfight.api.animation.TransformSheet;
 import yesman.epicfight.api.animation.property.AnimationEvent;
 import yesman.epicfight.api.animation.property.AnimationEvent.Side;
 import yesman.epicfight.api.animation.property.AnimationProperty;
@@ -78,6 +81,7 @@ import yesman.epicfight.api.animation.property.AnimationProperty.ActionAnimation
 import yesman.epicfight.api.animation.property.AnimationProperty.AttackAnimationProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.AttackPhaseProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.StaticAnimationProperty;
+import yesman.epicfight.api.animation.property.MoveCoordFunctions;
 import yesman.epicfight.api.animation.types.*;
 import yesman.epicfight.api.animation.types.AttackAnimation.Phase;
 import yesman.epicfight.api.utils.HitEntityList.Priority;
@@ -86,15 +90,13 @@ import yesman.epicfight.api.utils.TimePairList;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.api.utils.math.ValueModifier;
 import yesman.epicfight.api.utils.math.Vec3f;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.Animations.ReusableSources;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.gameasset.ColliderPreset;
-import yesman.epicfight.gameasset.EpicFightSkills;
 import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.model.armature.HumanoidArmature;
 import yesman.epicfight.particle.EpicFightParticles;
-import yesman.epicfight.skill.Skill;
-import yesman.epicfight.skill.SkillSlots;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.damagesource.EpicFightDamageTypeTags;
@@ -264,7 +266,6 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> CLONE_ANTITHEUS_AUTO_4;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> CLONE_ANTITHEUS_AGRESSION;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> CLONE_ANTITHEUS_GUILLOTINE;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> CLONE_ANTITHEUS_IDLE;
     public static AnimationManager.AnimationAccessor<UltimateAttackAnimation> CLONE_ANTITHEUS_ASCENSION;
     public static AnimationManager.AnimationAccessor<UltimateAttackAnimation> CLONE_ANTITHEUS_LAPSE;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> CLONE_ANTITHEUS_ASCENDED_DEATHFALL;
@@ -276,6 +277,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> LEGENDARY_SWORD_AUTO_4;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> CLONE_ENDERBLASTER_TWOHAND_TOMAHAWK;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> YELLOW_TORMENT_CHARGED_ATTACK_3;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> CLONE_ENDERBLASTER_ONEHAND_DASH;
 
     @SubscribeEvent
     public static void registerAnimations(AnimationManager.AnimationRegistryEvent event) {
@@ -2002,6 +2004,48 @@ public class AVAnimations {
                                             Double.longBitsToDouble(entity.getId()), 0.0F, 0.0F
                                     );
                         }, Side.CLIENT)}));
+        AVAnimations.CLONE_ENDERBLASTER_ONEHAND_DASH = builder.nextAccessor("biped/combat/clone_enderblaster_onehand_dash",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.05F, accessor, humanoidarmature,
+                        new Phase(0.0F, 0.15F, 0.2F, 0.45F, 0.45F, humanoidarmature.get().legL, WOMWeaponColliders.KICK_HUGE),
+                        new Phase(0.45F, 0.45F, 0.75F, 1.0F, Float.MAX_VALUE, humanoidarmature.get().legL, WOMWeaponColliders.KICK_HUGE)))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.4F))
+                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
+                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT.get())
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(4.0F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.6F), 1)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.0F), 1)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE, 1)
+                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT, 1)
+                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT_HARD.get(), 1)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.8F)
+                        .addProperty(StaticAnimationProperty.POSE_MODIFIER, null)
+                        .addProperty(ActionAnimationProperty.COORD_SET_TICK,
+                                (self, entitypatch, transformSheet) -> {
+                    LivingEntity attackTarget = entitypatch.getTarget();
+                    if (!(Boolean) self.getRealAnimation().get().getProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE).orElse(false) && attackTarget != null) {
+                        TransformSheet transform = self.getTransfroms().get("Root").copyAll();
+                        Keyframe[] keyframes = transform.getKeyframes();
+                        int startFrame = 0;
+                        int endFrame = transform.getKeyframes().length - 1;
+                        Vec3f keyLast = keyframes[endFrame].transform().translation();
+                        Vec3 pos = entitypatch.getOriginal().getEyePosition();
+                        Vec3 targetpos = attackTarget.position().add(attackTarget.getDeltaMovement().scale(1.5F));
+                        float horizontalDistance = org.joml.Math.max((float) targetpos.subtract(pos).horizontalDistance() - (attackTarget.getBbWidth() + entitypatch.getOriginal().getBbWidth()), 0.0F);
+                        Vec3f worldPosition = new Vec3f(keyLast.x, 0.0F, -horizontalDistance);
+                        float scale = org.joml.Math.min(worldPosition.length() / keyLast.length(), 1.5F);
+
+                        for(int i = startFrame; i <= endFrame; ++i) {
+                            Vec3f translation = keyframes[i].transform().translation();
+                            translation.z *= scale;
+                        }
+
+                        transformSheet.readFrom(transform);
+                    } else if (transformSheet != null) {
+                        transformSheet.readFrom(self.getTransfroms().get("Root"));
+                    }
+
+                }));
     }
 
     private static class ReuseableEvents {

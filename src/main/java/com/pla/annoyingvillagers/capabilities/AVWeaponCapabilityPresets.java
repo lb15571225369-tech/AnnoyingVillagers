@@ -71,7 +71,7 @@ public class AVWeaponCapabilityPresets {
                             AnimsAgony.AGONY_AUTO_2,
                             AnimsAgony.AGONY_AUTO_3,
                             AVAnimations.ENDER_GLAIVE_NAPOLEON_AUSTERLITZ,
-                            AVAnimations.CLONE_ANTITHEUS_AGRESSION)
+                            AnimsAgony.AGONY_AIR_ATTACK_4)
                     .newStyleCombo(Styles.MOUNT,
                             Animations.SPEAR_MOUNT_ATTACK)
                     .innateSkill(Styles.TWO_HAND,

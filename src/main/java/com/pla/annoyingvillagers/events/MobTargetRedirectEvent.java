@@ -62,6 +62,11 @@ public class MobTargetRedirectEvent {
                     CombatCommon.swapToBow((MobPatch<?>) livingEntityPatch);
                 }
             }
+
+            if (mob.getTarget() instanceof HerobrineDragonEntity herobrineDragonEntity
+                    && herobrineDragonEntity.getSummoner() instanceof ReaperHerobrineEntity reaperHerobrineEntity && !reaperHerobrineEntity.isPassenger()) {
+                mob.setTarget(reaperHerobrineEntity);
+            }
         }
     }
 }

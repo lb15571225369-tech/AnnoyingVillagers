@@ -59,6 +59,15 @@ public class HerobrineCommon {
         return false;
     }
 
+    public static boolean canMountOrDismountDragon(MobPatch<?> mobpatch) {
+        if (mobpatch.getOriginal() instanceof ReaperHerobrineEntity reaperHerobrineEntity) {
+            return reaperHerobrineEntity.getHealingHerobrineDragon() != null
+                    || reaperHerobrineEntity.getThunderHerobrineDragon() != null
+                    || reaperHerobrineEntity.getMeteoriteHerobrineDragon() != null;
+        }
+        return false;
+    }
+
     public static boolean canChangeToSecondForm(MobPatch<?> mobpatch) {
         if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
             ItemStack item = herobrineMob.getMainHandItem();
