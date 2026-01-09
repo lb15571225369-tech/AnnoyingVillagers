@@ -11,6 +11,8 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import org.jetbrains.annotations.NotNull;
 
 public class ModelObsidianSledgehammerHit<T extends ObsidianSledgehammerHitEntity> extends HierarchicalModel<ObsidianSledgehammerHitEntity> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "modelobsidiansledgehammerhit"), "main");
@@ -34,26 +36,23 @@ public class ModelObsidianSledgehammerHit<T extends ObsidianSledgehammerHitEntit
     }
 
     @Override
-    public ModelPart root() {
+    public @NotNull ModelPart root() {
         return this.root;
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 
     @Override
-    public void setupAnim(ObsidianSledgehammerHitEntity e, float limbSwing, float limbSwingAmount,
+    public void setupAnim(@NotNull ObsidianSledgehammerHitEntity obsidianSledgehammerHitEntity, float limbSwing, float limbSwingAmount,
                           float ageInTicks, float netHeadYaw, float headPitch) {
         root().getAllParts().forEach(ModelPart::resetPose);
 
-        float pt = Minecraft.getInstance().getFrameTime();
-        float prog = e.prevactivateProgress + (e.activateProgress - e.prevactivateProgress) * pt;
-        float t = net.minecraft.util.Mth.clamp(prog / 10f, 0f, 1f);
-
-        float depth = 17f;
-        float yOff = depth * (1f - t);
+        float frameTime = Minecraft.getInstance().getFrameTime();
+        float progress = obsidianSledgehammerHitEntity.prevActivateProgress + (obsidianSledgehammerHitEntity.activateProgress - obsidianSledgehammerHitEntity.prevActivateProgress) * frameTime;
+        float yOff = 17.0F * (1.0F - Mth.clamp(progress / 10.0F, 0F, 1.0F));
 
         this.root.setPos(this.root.x, this.root.y + yOff, this.root.z);
     }

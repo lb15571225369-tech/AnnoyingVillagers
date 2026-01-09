@@ -114,7 +114,7 @@ public class HerobrineObsidianSledgehammer {
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 8.0D)
-                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -150,7 +150,7 @@ public class HerobrineObsidianSledgehammer {
                                                     Behavior.builder()
                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                             .withinDistance(0.0D, 8.0D)
-                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                            .animationBehavior(WOMAnimations.TORMENT_AIRSLAM, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -347,7 +347,7 @@ public class HerobrineObsidianSledgehammer {
                                                                     Behavior.builder()
                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                             .withinDistance(0.0D, 8.0D)
-                                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_AIRSLAM, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -366,7 +366,7 @@ public class HerobrineObsidianSledgehammer {
                                                     Behavior.builder()
                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                             .withinDistance(0.0D, 8.0D)
-                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -469,7 +469,7 @@ public class HerobrineObsidianSledgehammer {
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 8.0D)
-                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -612,7 +612,7 @@ public class HerobrineObsidianSledgehammer {
                                                     Behavior.builder()
                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                             .withinDistance(0.0D, 8.0D)
-                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_AIRSLAM, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -642,7 +642,7 @@ public class HerobrineObsidianSledgehammer {
                                                     Behavior.builder()
                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                             .withinDistance(0.0D, 8.0D)
-                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -676,7 +676,7 @@ public class HerobrineObsidianSledgehammer {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 8.0D)
-                                                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                                                            .animationBehavior(WOMAnimations.TORMENT_AIRSLAM, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -701,7 +701,7 @@ public class HerobrineObsidianSledgehammer {
                                                                     Behavior.builder()
                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                             .withinDistance(0.0D, 8.0D)
-                                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                                            .animationBehavior(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)

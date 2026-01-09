@@ -32,6 +32,9 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import yesman.epicfight.gameasset.EpicFightSounds;
+import yesman.epicfight.particle.EpicFightParticles;
+import yesman.epicfight.particle.HitParticleType;
 
 import java.util.Objects;
 import java.util.Random;
@@ -276,16 +279,10 @@ public class HerobrineWardenEntity extends Warden {
 
     @Override
     public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
-        if (!this.level().isClientSide() && !pSource.is(DamageTypes.IN_WALL)) {
-            try {
-                Objects.requireNonNull(this.getServer()).getCommands().getDispatcher().execute(
-                        "playsound epicfight:entity.hit.clash neutral @p",
-                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                this.getServer().getCommands().getDispatcher().execute(
-                        "execute at @s run particle epicfight:hit_blade ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
-                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException ignored) {
-            }
+        if (!this.level().isClientSide() && !pSource.is(DamageTypes.IN_WALL) && this.level() instanceof ServerLevel serverLevel) {
+            this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
+            EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO,
+                    this, pSource.getEntity());
         }
         return false;
     }

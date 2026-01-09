@@ -5,6 +5,7 @@ import com.pla.annoyingvillagers.entity.SnakeBladeEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModCapabilities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,31 +15,42 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import yesman.epicfight.api.utils.math.OpenMatrix4f;
+import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
-import yesman.epicfight.api.utils.math.OpenMatrix4f;
-import yesman.epicfight.api.utils.math.Vec3f;
-
 
 import java.util.Random;
 import java.util.UUID;
 
 public class SnakeBladeHit {
-    public static boolean process(ItemStack stack, LivingEntity playerIn) {
-        if(stack.is(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER.get())) {
-            Level worldIn = playerIn.level();
+    public static boolean process(ItemStack stack, LivingEntity attacker) {
+        if (stack.is(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER.get())) {
+            Level level = attacker.level();
             Entity closestValid = null;
-            Vec3 playerEyes = playerIn.getEyePosition(1.0F);
-            worldIn.clip(new ClipContext(playerEyes, playerEyes.add(playerIn.getLookAngle().scale(16.0D)), ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, playerIn));
-            for (Entity entity : worldIn.getEntitiesOfClass(LivingEntity.class, playerIn.getBoundingBox().inflate(16.0D))) {
-                if (!entity.equals(playerIn) && !playerIn.isAlliedTo(entity) && !entity.isAlliedTo(playerIn) && (entity instanceof Mob || entity instanceof Player) && playerIn.hasLineOfSight(entity)) {
-                    if (closestValid == null || playerIn.distanceTo(entity) < playerIn.distanceTo(closestValid)) {
+
+            Vec3 attackerEyes = attacker.getEyePosition(1.0F);
+            level.clip(new ClipContext(
+                    attackerEyes,
+                    attackerEyes.add(attacker.getLookAngle().scale(16.0D)),
+                    ClipContext.Block.VISUAL,
+                    ClipContext.Fluid.NONE,
+                    attacker
+            ));
+
+            for (Entity entity : level.getEntitiesOfClass(LivingEntity.class, attacker.getBoundingBox().inflate(16.0D))) {
+                if (!entity.equals(attacker)
+                        && !attacker.isAlliedTo(entity)
+                        && !entity.isAlliedTo(attacker)
+                        && (entity instanceof Mob || entity instanceof Player)
+                        && attacker.hasLineOfSight(entity)) {
+                    if (closestValid == null || attacker.distanceTo(entity) < attacker.distanceTo(closestValid)) {
                         closestValid = entity;
                     }
                 }
             }
-            return launchSnakeBladeAt(playerIn, closestValid, stack);
+            return launchSnakeBladeAt(attacker, closestValid, stack);
         }
         return false;
     }
@@ -46,14 +58,14 @@ public class SnakeBladeHit {
     public static boolean processGuard(ItemStack stack, LivingEntity entityToGuard) {
         if (!stack.is(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER.get())) return false;
 
-        Level worldIn = entityToGuard.level();
+        Level level = entityToGuard.level();
         SnakeBladeCapability.ISnakeBladeCapability snakeBladeCapability =
                 AnnoyingVillagersModCapabilities.getCapability(entityToGuard, AnnoyingVillagersModCapabilities.SNAKE_BLADE_CAPABILITY);
 
         if (snakeBladeCapability != null) {
-            if (canLaunchTentacles(worldIn, entityToGuard)) {
-                retractFarFragments(worldIn, entityToGuard);
-                if (!worldIn.isClientSide) {
+            if (canLaunchSnakeBlades(level, entityToGuard)) {
+                retractFarFragments(level, entityToGuard);
+                if (!level.isClientSide) {
                     return launchSnakeBladeAt(entityToGuard, stack);
                 }
             }
@@ -61,27 +73,29 @@ public class SnakeBladeHit {
         return false;
     }
 
-    public static boolean launchSnakeBladeAt(LivingEntity playerIn, Entity closestValid, ItemStack stack) {
-        Level worldIn = playerIn.level();
-        SnakeBladeCapability.ISnakeBladeCapability snakeBladeCapability = AnnoyingVillagersModCapabilities.getCapability(playerIn, AnnoyingVillagersModCapabilities.SNAKE_BLADE_CAPABILITY);
+    public static boolean launchSnakeBladeAt(LivingEntity attacker, Entity closestValid, ItemStack stack) {
+        Level level = attacker.level();
+        SnakeBladeCapability.ISnakeBladeCapability snakeBladeCapability =
+                AnnoyingVillagersModCapabilities.getCapability(attacker, AnnoyingVillagersModCapabilities.SNAKE_BLADE_CAPABILITY);
+
         if (snakeBladeCapability != null) {
-            if (canLaunchTentacles(worldIn, playerIn)) {
-                retractFarFragments(worldIn, playerIn);
-                if (!worldIn.isClientSide) {
+            if (canLaunchSnakeBlades(level, attacker)) {
+                retractFarFragments(level, attacker);
+                if (!level.isClientSide) {
                     if (closestValid != null) {
-                        SnakeBladeEntity segment = AnnoyingVillagersModEntities.SNAKE_BLADE.get().create(worldIn);
-                        if (segment != null) {
+                        SnakeBladeEntity snakeBladeEntity = AnnoyingVillagersModEntities.SNAKE_BLADE.get().create(level);
+                        if (snakeBladeEntity != null) {
                             if (stack.hasFoil()) {
-                                segment.setEnchanted(true);
+                                snakeBladeEntity.setEnchanted(true);
                             }
-                            segment.copyPosition(playerIn);
-                            worldIn.addFreshEntity(segment);
-                            segment.setCreatorEntityUUID(playerIn.getUUID());
-                            segment.setFromEntityID(playerIn.getId());
-                            segment.setToEntityID(closestValid.getId());
-                            segment.copyPosition(playerIn);
-                            segment.setProgress(0.0F);
-                            setLastFragment(playerIn, segment);
+                            snakeBladeEntity.copyPosition(attacker);
+                            level.addFreshEntity(snakeBladeEntity);
+                            snakeBladeEntity.setCreatorEntityUUID(attacker.getUUID());
+                            snakeBladeEntity.setFromEntityID(attacker.getId());
+                            snakeBladeEntity.setToEntityID(closestValid.getId());
+                            snakeBladeEntity.copyPosition(attacker);
+                            snakeBladeEntity.setProgress(0.0F);
+                            setLastFragment(attacker, snakeBladeEntity);
                             return true;
                         }
                         return false;
@@ -92,26 +106,26 @@ public class SnakeBladeHit {
         return false;
     }
 
-    public static boolean launchSnakeBladeAt(LivingEntity playerIn, ItemStack stack) {
-        Level worldIn = playerIn.level();
-        SnakeBladeEntity segment = AnnoyingVillagersModEntities.SNAKE_BLADE.get().create(worldIn);
-        if (segment == null) return false;
+    public static boolean launchSnakeBladeAt(LivingEntity attacker, ItemStack stack) {
+        Level level = attacker.level();
+        SnakeBladeEntity snakeBladeEntity = AnnoyingVillagersModEntities.SNAKE_BLADE.get().create(level);
+        if (snakeBladeEntity == null) return false;
 
         if (stack.hasFoil()) {
-            segment.setEnchanted(true);
+            snakeBladeEntity.setEnchanted(true);
         }
 
-        segment.setCreatorEntityUUID(playerIn.getUUID());
-        segment.setFromEntityID(playerIn.getId());
-        segment.setToEntityID(-1);
-        segment.setProgress(0.0F);
-        segment.setGuardDirection("forward_left");
+        snakeBladeEntity.setCreatorEntityUUID(attacker.getUUID());
+        snakeBladeEntity.setFromEntityID(attacker.getId());
+        snakeBladeEntity.setToEntityID(-1);
+        snakeBladeEntity.setProgress(0.0F);
+        snakeBladeEntity.setGuardDirection("forward_left");
 
-        Vec3 spawn = guardTargetFor(playerIn, "forward_left");
-        segment.setPos(spawn.x, spawn.y, spawn.z);
+        Vec3 spawn = guardTargetFor(attacker, "forward_left");
+        snakeBladeEntity.setPos(spawn.x, spawn.y, spawn.z);
 
-        worldIn.addFreshEntity(segment);
-        setLastFragment(playerIn, segment);
+        level.addFreshEntity(snakeBladeEntity);
+        setLastFragment(attacker, snakeBladeEntity);
         return true;
     }
 
@@ -158,10 +172,20 @@ public class SnakeBladeHit {
         }
     }
 
-    public static void setLastFragment(LivingEntity entity, SnakeBladeEntity tendon) {
-        SnakeBladeCapability.ISnakeBladeCapability TentacleCapability = AnnoyingVillagersModCapabilities.getCapability(entity, AnnoyingVillagersModCapabilities.SNAKE_BLADE_CAPABILITY);
-        if (TentacleCapability != null) {
-            TentacleCapability.setHasSnakeBlade(tendon != null);
+    public static void setLastFragment(LivingEntity entity, SnakeBladeEntity snakeBladeEntity) {
+        SnakeBladeCapability.ISnakeBladeCapability snakeBladeCapability =
+                AnnoyingVillagersModCapabilities.getCapability(entity, AnnoyingVillagersModCapabilities.SNAKE_BLADE_CAPABILITY);
+
+        if (snakeBladeCapability != null) {
+            snakeBladeCapability.setHasSnakeBlade(snakeBladeEntity != null);
+
+            if (snakeBladeEntity != null) {
+                snakeBladeCapability.setLastSnakeBladeID(snakeBladeEntity.getId());
+                snakeBladeCapability.setLastSnakeBladeUUID(snakeBladeEntity.getUUID());
+            } else {
+                snakeBladeCapability.setLastSnakeBladeID(-1);
+                snakeBladeCapability.setLastSnakeBladeUUID(null);
+            }
         }
     }
 
@@ -173,7 +197,7 @@ public class SnakeBladeHit {
         }
     }
 
-    public static boolean canLaunchTentacles(Level level, LivingEntity livingEntity) {
+    public static boolean canLaunchSnakeBlades(Level level, LivingEntity livingEntity) {
         SnakeBladeEntity last = getLastFragment(livingEntity);
         if (last != null) {
             return last.isRemoved();
@@ -181,32 +205,35 @@ public class SnakeBladeHit {
         return true;
     }
 
-
     public static SnakeBladeEntity getLastFragment(LivingEntity livingEntity) {
-        SnakeBladeCapability.ISnakeBladeCapability snakeBladeCapability = AnnoyingVillagersModCapabilities.getCapability(livingEntity, AnnoyingVillagersModCapabilities.SNAKE_BLADE_CAPABILITY);
-        if (snakeBladeCapability != null) {
-            UUID uuid = snakeBladeCapability.getLastSnakeBladeUUID();
-            int id = snakeBladeCapability.getLastSnakeBladeID();
-            if (!livingEntity.level().isClientSide) {
-                if (uuid != null) {
-                    Entity entity = livingEntity.level().getEntity(id);
-                    if (entity == null || !entity.isAlive() || !(entity instanceof SnakeBladeEntity)) {
-                        return null;
-                    }
-                    return (SnakeBladeEntity) entity;
-                }
-            } else {
-                if (id != -1) {
-                    Entity entity = livingEntity.level().getEntity(id);
-                    if (entity == null || !entity.isAlive() || !(entity instanceof SnakeBladeEntity)) {
-                        return null;
-                    }
-                    return (SnakeBladeEntity) entity;
-                }
+        SnakeBladeCapability.ISnakeBladeCapability snakeBladeCapability =
+                AnnoyingVillagersModCapabilities.getCapability(livingEntity, AnnoyingVillagersModCapabilities.SNAKE_BLADE_CAPABILITY);
+
+        if (snakeBladeCapability == null) return null;
+
+        UUID uuid = snakeBladeCapability.getLastSnakeBladeUUID();
+        int id = snakeBladeCapability.getLastSnakeBladeID();
+        Level level = livingEntity.level();
+
+        Entity found = null;
+
+        if (!level.isClientSide) {
+            if (uuid != null && level instanceof ServerLevel serverLevel) {
+                found = serverLevel.getEntity(uuid);
             }
+            if (found == null && id != -1) {
+                found = level.getEntity(id);
+            }
+        } else {
+            if (id != -1) {
+                found = level.getEntity(id);
+            }
+        }
+
+        if (!(found instanceof SnakeBladeEntity snakeBladeEntity) || !found.isAlive()) {
             return null;
         }
-        return null;
+        return snakeBladeEntity;
     }
 
     public static Vec3 getToolTipPos(Entity ent, float partialTicks, float handToTip) {

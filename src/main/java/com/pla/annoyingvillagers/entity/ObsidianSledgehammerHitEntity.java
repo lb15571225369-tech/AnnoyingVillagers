@@ -1,9 +1,5 @@
 package com.pla.annoyingvillagers.entity;
 
-import java.util.UUID;
-
-import javax.annotation.Nullable;
-
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.block.CryingObsidianSpikeBlock;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
@@ -32,8 +28,9 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.NotNull;
 import reascer.wom.world.entity.mob.EnderHand;
-import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
@@ -41,116 +38,130 @@ import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.damagesource.StunType;
 
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+
 public class ObsidianSledgehammerHitEntity extends Entity {
+    private static final EntityDataAccessor<Boolean> ACTIVATE =
+            SynchedEntityData.defineId(ObsidianSledgehammerHitEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> DAMAGE =
+            SynchedEntityData.defineId(ObsidianSledgehammerHitEntity.class, EntityDataSerializers.FLOAT);
+
+    private static final float MAX_PROGRESS = 10.0F;
+    private static final float RISE_SPEED = 3.0F;
+
     private int warmupDelayTicks;
     private boolean sentSpikeEvent;
     private int lifeTicks = 34;
     private boolean clientSideAttackStarted;
+
     private LivingEntity caster;
     private UUID casterUuid;
-    private static final EntityDataAccessor<Boolean> ACTIVATE = SynchedEntityData.defineId(ObsidianSledgehammerHitEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(ObsidianSledgehammerHitEntity.class, EntityDataSerializers.FLOAT);
-    public float activateProgress;
-    public float prevactivateProgress;
-    private static final float MAX_PROGRESS   = 10f;
-    private static final float RISE_SPEED     = 3.0f;
-    private static final float RETRACT_SPEED  = 3.0f;
 
-    public ObsidianSledgehammerHitEntity(EntityType<? extends ObsidianSledgehammerHitEntity> type, Level world) {
-        super(type, world);
+    public float activateProgress;
+    public float prevActivateProgress;
+
+    public ObsidianSledgehammerHitEntity(EntityType<? extends ObsidianSledgehammerHitEntity> type, Level level) {
+        super(type, level);
     }
 
-    public ObsidianSledgehammerHitEntity(Level worldIn, double x, double y, double z, float rotation, int delay, float damage, LivingEntity casterIn) {
-        this(AnnoyingVillagersModEntities.OBSIDIAN_SLEDGEHAMMER_HIT.get(), worldIn);
+    public ObsidianSledgehammerHitEntity(Level level, double x, double y, double z, float rotation, int delay, float damage, LivingEntity caster) {
+        this(AnnoyingVillagersModEntities.OBSIDIAN_SLEDGEHAMMER_HIT.get(), level);
         this.warmupDelayTicks = delay;
-        this.setCaster(casterIn);
+        this.setCaster(caster);
         this.setDamage(damage);
-        this.setYRot(rotation * (180F / (float)Math.PI));
+        this.setYRot(rotation * (180F / (float) Math.PI));
         this.setPos(x, y, z);
     }
 
+    @Override
     protected void defineSynchedData() {
-        this.entityData.define(ACTIVATE, Boolean.valueOf(false));
-        this.entityData.define(DAMAGE, 0F);
+        this.entityData.define(ACTIVATE, false);
+        this.entityData.define(DAMAGE, 0.0F);
     }
 
     public float getDamage() {
-        return entityData.get(DAMAGE);
+        return this.entityData.get(DAMAGE);
     }
 
     public void setDamage(float damage) {
-        entityData.set(DAMAGE, damage);
+        this.entityData.set(DAMAGE, damage);
     }
 
-    public void setCaster(@Nullable LivingEntity pLivingEntity) {
-        this.caster = pLivingEntity;
-        this.casterUuid = pLivingEntity == null ? null : pLivingEntity.getUUID();
+    public void setCaster(@Nullable LivingEntity caster) {
+        this.caster = caster;
+        this.casterUuid = caster == null ? null : caster.getUUID();
     }
 
     @Nullable
     public LivingEntity getCaster() {
-        if (this.caster == null && this.casterUuid != null && this.level() instanceof ServerLevel) {
-            Entity entity = ((ServerLevel)this.level()).getEntity(this.casterUuid);
-            if (entity instanceof LivingEntity) {
-                this.caster = (LivingEntity)entity;
+        if (this.caster == null && this.casterUuid != null && this.level() instanceof ServerLevel serverLevel) {
+            Entity entity = serverLevel.getEntity(this.casterUuid);
+            if (entity instanceof LivingEntity living) {
+                this.caster = living;
             }
         }
-
         return this.caster;
     }
 
-    protected void readAdditionalSaveData(CompoundTag compound) {
-        this.warmupDelayTicks = compound.getInt("Warmup");
-        if (compound.hasUUID("Owner")) {
-            this.casterUuid = compound.getUUID("Owner");
+    @Override
+    protected void readAdditionalSaveData(CompoundTag tag) {
+        this.warmupDelayTicks = tag.getInt("Warmup");
+        if (tag.hasUUID("Owner")) {
+            this.casterUuid = tag.getUUID("Owner");
         }
-        this.setDamage(compound.getFloat("damage"));
+        this.setDamage(tag.getFloat("damage"));
     }
 
-    protected void addAdditionalSaveData(CompoundTag compound) {
-        compound.putInt("Warmup", this.warmupDelayTicks);
+    @Override
+    protected void addAdditionalSaveData(CompoundTag tag) {
+        tag.putInt("Warmup", this.warmupDelayTicks);
         if (this.casterUuid != null) {
-            compound.putUUID("Owner", this.casterUuid);
+            tag.putUUID("Owner", this.casterUuid);
         }
-        compound.putFloat("damage", this.getDamage());
+        tag.putFloat("damage", this.getDamage());
     }
 
     private void tryPlaceCryingSpikeOnVictim() {
-        if (this.level() instanceof ServerLevel) {
-            AABB box = this.getBoundingBox().inflate(0.2D, 0.0D, 0.2D);
-            LivingEntity caster = this.getCaster();
-            var victims = this.level().getEntitiesOfClass(LivingEntity.class, box,
-                    e -> e.isAlive() && e != caster);
+        if (!(this.level() instanceof ServerLevel)) return;
 
-            if (victims.isEmpty()) return;
+        AABB box = this.getBoundingBox().inflate(0.2D, 0.0D, 0.2D);
+        LivingEntity caster = this.getCaster();
 
-            BlockPos base = BlockPos.containing(this.getX(), this.getY(), this.getZ());
-            BlockPos placePos = base;
-            if (!this.level().isEmptyBlock(placePos) && this.level().isEmptyBlock(base.above())) {
-                placePos = base.above();
-            }
+        List<LivingEntity> victims = this.level().getEntitiesOfClass(
+                LivingEntity.class,
+                box,
+                e -> e.isAlive() && e != caster
+        );
 
-            boolean fromPlayer = caster instanceof Player;
-            BlockState state = AnnoyingVillagersModBlocks.CRYING_OBSIDIAN_SPIKE_BLOCK.get()
-                    .defaultBlockState()
-                    .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, fromPlayer);
+        if (victims.isEmpty()) return;
 
-            if (this.level().setBlock(placePos, state, 3)) {
-                if (fromPlayer) {
-                    Player player = (Player) caster;
-                    state.getBlock()
-                            .setPlacedBy(this.level(), placePos, state, player, ItemStack.EMPTY);
-                }
-            }
+        BlockPos base = BlockPos.containing(this.getX(), this.getY(), this.getZ());
+        BlockPos placePos = base;
+
+        if (!this.level().isEmptyBlock(placePos) && this.level().isEmptyBlock(base.above())) {
+            placePos = base.above();
+        }
+
+        boolean fromPlayer = caster instanceof Player;
+        BlockState state = AnnoyingVillagersModBlocks.CRYING_OBSIDIAN_SPIKE_BLOCK.get()
+                .defaultBlockState()
+                .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, fromPlayer);
+
+        if (this.level().setBlock(placePos, state, 3) && fromPlayer && caster instanceof Player player) {
+            state.getBlock().setPlacedBy(this.level(), placePos, state, player, ItemStack.EMPTY);
         }
     }
 
+    @Override
     public void tick() {
         super.tick();
-        prevactivateProgress = activateProgress;
+        this.prevActivateProgress = this.activateProgress;
 
-        if (isActivate() && this.activateProgress > 0F) {
-            this.activateProgress--;
+        if (this.isActivate() && this.activateProgress > 0.0F) {
+            this.activateProgress -= 1.0F;
         }
 
         if (this.lifeTicks == 20) {
@@ -160,32 +171,41 @@ public class ObsidianSledgehammerHitEntity extends Entity {
         if (this.level().isClientSide) {
             if (this.clientSideAttackStarted) {
                 --this.lifeTicks;
-                if (!isActivate() && this.activateProgress < MAX_PROGRESS) {
+                if (!this.isActivate() && this.activateProgress < MAX_PROGRESS) {
                     this.activateProgress = Math.min(MAX_PROGRESS, this.activateProgress + RISE_SPEED);
                 }
             }
-        } else if (--this.warmupDelayTicks < 0) {
-            if (this.warmupDelayTicks == -10) {
-                if(isActivate()) {
-                    this.setActivate(false);
-                }
+            return;
+        }
+
+        LivingEntity caster = this.getCaster();
+
+        if (--this.warmupDelayTicks < 0) {
+            if (this.warmupDelayTicks == -10 && this.isActivate()) {
+                this.setActivate(false);
             }
+
             if (this.warmupDelayTicks < -10 && this.warmupDelayTicks > -30) {
-                for(LivingEntity livingentity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.2D, 0.0D, 0.2D))) {
-                    if (livingentity instanceof EnderHand || !livingentity.isAlive()) continue;
-                    this.damage(livingentity);
-                    if (this.tickCount % 20 == 0 && this.level() instanceof ServerLevel serverLevel
-                    && livingentity != caster && !livingentity.isAlliedTo(caster)) {
-                        EnderHand enderHand = new EnderHand(serverLevel, new Vec3(this.getX(), this.getY(), this.getZ()), caster, livingentity);
+                AABB box = this.getBoundingBox().inflate(0.2D, 0.0D, 0.2D);
+                for (LivingEntity target : this.level().getEntitiesOfClass(LivingEntity.class, box)) {
+                    if (!target.isAlive() || target instanceof EnderHand) continue;
+
+                    this.damage(target);
+
+                    if (this.tickCount % 20 == 0
+                            && this.level() instanceof ServerLevel serverLevel
+                            && caster != null
+                            && target != caster
+                            && !target.isAlliedTo(caster)) {
+                        EnderHand enderHand = new EnderHand(serverLevel, new Vec3(this.getX(), this.getY(), this.getZ()), caster, target);
                         serverLevel.addFreshEntity(enderHand);
                         increaseSkillPoint(caster, 2.0F);
                     }
                 }
             }
 
-
             if (!this.sentSpikeEvent) {
-                this.level().broadcastEntityEvent(this, (byte)4);
+                this.level().broadcastEntityEvent(this, (byte) 4);
                 this.sentSpikeEvent = true;
             }
 
@@ -194,82 +214,91 @@ public class ObsidianSledgehammerHitEntity extends Entity {
                 this.discard();
             }
         }
-
     }
 
     public void increaseSkillPoint(Entity entity, float value) {
-        if (entity instanceof Player player) {
-            PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
-            if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
-                SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.OBSIDIAN_SLEDGEHAMMER);
-                if (skillContainer == null) return;
-                ObsidianSledgeHammerSkill obsidianSledgeHammerSkill = (ObsidianSledgeHammerSkill) skillContainer.getSkill();
+        if (!(entity instanceof Player player)) return;
 
-                float currentResource = skillContainer.getResource();
-                float neededResource = skillContainer.getNeededResource();
-                float addResource = Math.min(value, neededResource);
-                obsidianSledgeHammerSkill.setConsumptionSynchronize(skillContainer, currentResource + addResource);
-            }
-        }
+        PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+        if (!(playerPatch instanceof ServerPlayerPatch serverPlayerPatch)) return;
+
+        SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.OBSIDIAN_SLEDGEHAMMER);
+        if (skillContainer == null) return;
+
+        ObsidianSledgeHammerSkill skill = (ObsidianSledgeHammerSkill) skillContainer.getSkill();
+
+        float currentResource = skillContainer.getResource();
+        float neededResource = skillContainer.getNeededResource();
+        float addResource = Math.min(value, neededResource);
+
+        skill.setConsumptionSynchronize(skillContainer, currentResource + addResource);
     }
 
     public boolean isActivate() {
         return this.entityData.get(ACTIVATE);
     }
 
-    public void setActivate(boolean Activate) {
-        this.entityData.set(ACTIVATE, Activate);
+    public void setActivate(boolean activate) {
+        this.entityData.set(ACTIVATE, activate);
     }
 
     private void damage(LivingEntity hitEntity) {
-        LivingEntity livingentity = this.getCaster();
-        if (hitEntity.isAlive() && !hitEntity.isInvulnerable()
-                && hitEntity != livingentity && !(hitEntity instanceof EnderHand)) {
-            hitEntity.setDeltaMovement(new Vec3(0.0D, 0.0D, 0.0D));
-            try {
-                this.getServer().getCommands().getDispatcher().execute(
-                        "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
-                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
+        LivingEntity caster = this.getCaster();
 
-            }
-            if (livingentity == null) {
-                hitEntity.hurt(this.level().damageSources().magic(), this.getDamage());
-            } else {
-                if (livingentity.isAlliedTo(hitEntity)) {
-                    return;
-                }
-                hitEntity.hurt(this.level().damageSources().indirectMagic(this, livingentity), this.getDamage());
-            }
-            if (!hitEntity.level().isClientSide() && hitEntity.getServer() != null) {
-                LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(hitEntity, LivingEntityPatch.class);
-                if (livingEntityPatch != null) {
-                    livingEntityPatch.applyStun(StunType.LONG, 40.0F);
-                }
-            }
+        if (!hitEntity.isAlive() || hitEntity.isInvulnerable() || hitEntity instanceof EnderHand) return;
+        if (caster != null && hitEntity == caster) return;
+
+        hitEntity.setDeltaMovement(Vec3.ZERO);
+
+        if (this.level() instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(
+                    EpicFightParticles.HIT_BLUNT.get(),
+                    this.getX(), this.getY() + 1.5, this.getZ() + 0.8,
+                    1,
+                    0.1, 0.1, 0.1,
+                    1
+            );
+        }
+
+        if (caster == null) {
+            hitEntity.hurt(this.level().damageSources().magic(), this.getDamage());
+        } else {
+            if (caster.isAlliedTo(hitEntity)) return;
+            hitEntity.hurt(this.level().damageSources().indirectMagic(this, caster), this.getDamage());
+        }
+
+        LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(hitEntity, LivingEntityPatch.class);
+        if (patch != null) {
+            patch.applyStun(StunType.LONG, 40.0F);
         }
     }
 
     @OnlyIn(Dist.CLIENT)
+    @Override
     public void handleEntityEvent(byte id) {
         super.handleEntityEvent(id);
         if (id == 4) {
             this.clientSideAttackStarted = true;
             if (!this.isSilent()) {
-                this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), AnnoyingVillagersModSounds.OB_PLACE.get(), this.getSoundSource(), 0.5F, this.random.nextFloat() * 0.2F + 0.85F, false);
+                this.level().playLocalSound(
+                        this.getX(), this.getY(), this.getZ(),
+                        AnnoyingVillagersModSounds.OB_PLACE.get(),
+                        this.getSoundSource(),
+                        0.5F,
+                        this.random.nextFloat() * 0.2F + 0.85F,
+                        false
+                );
             }
         }
-
     }
 
+    @Override
     public float getLightLevelDependentMagicValue() {
         return 1.0F;
     }
 
-
-
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }
