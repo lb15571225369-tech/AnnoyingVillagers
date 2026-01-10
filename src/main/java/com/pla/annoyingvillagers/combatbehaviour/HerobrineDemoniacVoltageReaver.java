@@ -80,6 +80,7 @@ public class HerobrineDemoniacVoltageReaver {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(40.0D)
+                            .maxCooldown(20)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -888,29 +889,15 @@ public class HerobrineDemoniacVoltageReaver {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
-                            .weight(10.0D)
+                            .weight(15.0D)
                             .maxCooldown(600)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(HerobrineCommon::canChangeToSecondForm)
-                                            .withinDistance(0.0D, 5.0D)
+                                            .withinDistance(0.0D, 8.0D)
                                             .animationBehavior(WOMAnimations.TORMENT_BERSERK_CONVERT, 0.0F)
                                             .addExBehavior(HerobrineCommon::changeToSecondForm)
-                            )
-            )
-            .newBehaviorRoot(
-                    BehaviorRoot.builder()
-                            .priority(1.0D)
-                            .weight(15)
-                            .maxCooldown(300)
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .withinDistance(0.0D, 5.0D)
-                                            .custom(HerobrineCommon::canPlaySecondFormAnimation)
-                                            .animationBehavior(AVAnimations.SNAKE_BLADE_GUARD, 0.0F)
-                                            .addExBehavior(HerobrineCommon::playSecondFormGuardAnimation)
                             )
             )
             .newBehaviorRoot(
@@ -921,10 +908,24 @@ public class HerobrineDemoniacVoltageReaver {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .withinDistance(0.0D, 5.0D)
+                                            .withinDistance(0.0D, 8.0D)
+                                            .custom(HerobrineCommon::canPlaySecondFormAnimation)
+                                            .animationBehavior(AVAnimations.SNAKE_BLADE, 0.0F)
+                                            .addExBehavior(HerobrineCommon::playSecondFormAnimation)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                            .weight(15)
+                            .maxCooldown(300)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 8.0D)
                                             .custom(HerobrineCommon::canPlaySecondFormAnimation)
                                             .animationBehavior(AVAnimations.SNAKE_BLADE_GUARD, 0.0F)
-                                            .addExBehavior(HerobrineCommon::playSecondFormAnimation)
+                                            .addExBehavior(HerobrineCommon::playSecondFormGuardAnimation)
                             )
             )
             .newBehaviorRoot(

@@ -243,12 +243,8 @@ public class HerobrineCommon {
                 herobrineMob.setSecondFormHitLeft(herobrineMob.getSecondFormHitLeft() - 1);
             }
             if (herobrineMob instanceof SwordsmanHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
-                if (herobrineMob.getTarget() != null) {
-                    herobrineMob.getLookControl().setLookAt(herobrineMob.getTarget() , 30.0F, 30.0F);
-                }
-                if (SnakeBladeHit.process(item, herobrineMob)) {
-                    item.getOrCreateTag().putBoolean("SnakeAnimation", true);
-                }
+                SnakeBladeHit.process(item, herobrineMob);
+                item.getOrCreateTag().putBoolean("SnakeAnimation", true);
             } else if (herobrineMob instanceof SledgehammerHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
                 ObsidianSledgehammerItem.triggerCircleWhenGroundHits(mobpatch, true);
             } else if (herobrineMob instanceof ReaperHerobrineEntity reaperHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
@@ -283,12 +279,8 @@ public class HerobrineCommon {
                 herobrineMob.setSecondFormHitLeft(herobrineMob.getSecondFormHitLeft() - 1);
             }
             if (herobrineMob instanceof SwordsmanHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
-                if (herobrineMob.getTarget() != null) {
-                    herobrineMob.getLookControl().setLookAt(herobrineMob.getTarget() , 30.0F, 30.0F);
-                }
-                if (SnakeBladeHit.processGuard(item, herobrineMob)) {
-                    item.getOrCreateTag().putBoolean("SnakeAnimation", true);
-                }
+                SnakeBladeHit.processGuard(item, herobrineMob);
+                item.getOrCreateTag().putBoolean("SnakeAnimation", true);
             }
         }
     }

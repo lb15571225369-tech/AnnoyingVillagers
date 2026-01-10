@@ -77,6 +77,7 @@ public class HerobrineEnderGlaive {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(40.0D)
+                            .maxCooldown(20)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -820,7 +821,7 @@ public class HerobrineEnderGlaive {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
-                            .weight(10.0D)
+                            .weight(15.0D)
                             .maxCooldown(600)
                             .addFirstBehavior(
                                     Behavior.builder()

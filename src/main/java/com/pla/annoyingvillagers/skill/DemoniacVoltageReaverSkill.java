@@ -48,11 +48,8 @@ public class DemoniacVoltageReaverSkill extends WeaponInnateSkill {
     @Override
     public void executeOnServer(SkillContainer skillContainer, FriendlyByteBuf friendlyByteBuf) {
         Player player = skillContainer.getExecutor().getOriginal();
-        ItemStack item = player.getMainHandItem();
-
-        if (SnakeBladeHit.process(item, player)) {
+        if (SnakeBladeHit.checkNearbyTarget(player)) {
             skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.SNAKE_BLADE, 0.0F);
-            item.getOrCreateTag().putBoolean("SnakeAnimation", true);
             super.executeOnServer(skillContainer, friendlyByteBuf);
         }
     }
@@ -84,13 +81,10 @@ public class DemoniacVoltageReaverSkill extends WeaponInnateSkill {
                         && item.getItem() instanceof DemoniacVoltageReaverItem
                         && item.getTag() != null) {
                     event.setCanceled(true);
-                    container.getExecutor().playAnimationSynchronized(AVAnimations.SNAKE_BLADE_GUARD, 0.0F);
                     if (!item.getTag().getBoolean("SnakeAnimation")) {
+                        container.getExecutor().playAnimationSynchronized(AVAnimations.SNAKE_BLADE_GUARD, 0.0F);
                         this.getResourceType().consumer
                                 .consume(container, serverPlayerPatch, this.getDefaultConsumptionAmount(serverPlayerPatch));
-                        if (!container.getExecutor().isLogicalClient() && SnakeBladeHit.processGuard(item, player)) {
-                            item.getOrCreateTag().putBoolean("SnakeAnimation", true);
-                        }
                     }
                 }
             } else if ((skill.getCategory() == SkillCategories.BASIC_ATTACK) &&

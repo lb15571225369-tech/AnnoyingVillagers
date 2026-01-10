@@ -50,6 +50,7 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.boss.enderdragon.EndCrystal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -830,6 +831,7 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
     {
         if (isInvulnerableTo(src)) return false;
         if (src.getEntity() == summoner) return false;
+        if (src.getEntity() instanceof Projectile) return super.hurt(src, par2 * 0.1F);
         return super.hurt(src, par2);
     }
 

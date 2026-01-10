@@ -65,7 +65,7 @@ public class HerobrineEnderAegis {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(30)
-                            .maxCooldown(120)
+                            .maxCooldown(20)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -78,6 +78,7 @@ public class HerobrineEnderAegis {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(40.0D)
+                            .maxCooldown(80)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -887,13 +888,13 @@ public class HerobrineEnderAegis {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
-                            .weight(10.0D)
+                            .weight(15.0D)
                             .maxCooldown(600)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(HerobrineCommon::canChangeToSecondForm)
-                                            .withinDistance(0.0D, 5.0D)
+                                            .withinDistance(0.0D, 8.0D)
                                             .animationBehavior(AVAnimations.ENDER_AEGIS_NAPOLEON_RELOAD_1, 0.0F)
                                             .addExBehavior(HerobrineCommon::changeToSecondForm)
                             )
@@ -906,7 +907,7 @@ public class HerobrineEnderAegis {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .withinDistance(0.0D, 5.0D)
+                                            .withinDistance(0.0D, 8.0D)
                                             .custom(HerobrineCommon::canPlaySecondFormAnimation)
                                             .animationBehavior(AVAnimations.AEGIS_SHIELD_SHOOT, 0.0F)
                                             .addExBehavior(HerobrineCommon::playSecondFormAnimation)
