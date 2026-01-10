@@ -1,23 +1,19 @@
 package com.pla.annoyingvillagers.entity;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.client.emitterinfo.DragonBeamParticleEmitterInfo;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.util.AAAParticlesUtil;
 import com.pla.annoyingvillagers.util.ScreenShakeUtil;
-import mod.chloeprime.aaaparticles.api.common.AAALevel;
-import mod.chloeprime.aaaparticles.api.common.ParticleEmitterInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -39,6 +35,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +69,9 @@ public class DragonBeamEntity extends Entity {
     @OnlyIn(Dist.CLIENT)
     private boolean renderBeam = false;
     private boolean playSound = false;
+    private static final EntityDataAccessor<Boolean> USE_NO_VFX_THUNDER = SynchedEntityData.defineId(DragonBeamEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Vector3f> THUNDER_START = SynchedEntityData.defineId(DragonBeamEntity.class, EntityDataSerializers.VECTOR3);
+    private static final EntityDataAccessor<Vector3f> THUNDER_STOP = SynchedEntityData.defineId(DragonBeamEntity.class, EntityDataSerializers.VECTOR3);
 
     public DragonBeamEntity(EntityType<? extends DragonBeamEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -115,6 +115,9 @@ public class DragonBeamEntity extends Entity {
         this.entityData.define(DURATION, 0);
         this.entityData.define(CASTER, -1);
         this.entityData.define(TARGET, -1);
+        this.entityData.define(USE_NO_VFX_THUNDER, false);
+        this.entityData.define(THUNDER_START, new Vector3f());
+        this.entityData.define(THUNDER_STOP,  new Vector3f());
     }
 
     public void setTargetID(int id) {
@@ -129,6 +132,29 @@ public class DragonBeamEntity extends Entity {
     }
 
     protected void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
+    }
+
+    public void setUseNoVfxThunder(boolean noVfxThunder) {
+        this.entityData.set(USE_NO_VFX_THUNDER, noVfxThunder);
+    }
+
+    public boolean isSetUseNoVfxThunder() {
+        return this.entityData.get(USE_NO_VFX_THUNDER);
+    }
+
+    public Vec3 getThunderStartVec3() {
+        Vector3f vector3f = this.entityData.get(THUNDER_START);
+        return new Vec3(vector3f.x, vector3f.y, vector3f.z);
+    }
+
+    public Vec3 getThunderStopVec3() {
+        Vector3f vector3f = this.entityData.get(THUNDER_STOP);
+        return new Vec3(vector3f.x, vector3f.y, vector3f.z);
+    }
+
+    public void setThunderStartStop(Vec3 from, Vec3 to) {
+        this.entityData.set(THUNDER_START, new Vector3f((float) from.x, (float) from.y, (float) from.z));
+        this.entityData.set(THUNDER_STOP, new Vector3f((float) to.x, (float) to.y, (float) to.z));
     }
 
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -197,7 +223,7 @@ public class DragonBeamEntity extends Entity {
 
     }
 
-    public DragonBeamHitResult raytraceEntities(Level world, Vec3 from, Vec3 to, boolean stopOnLiquid, boolean ignoreBlockWithoutBoundingBox, boolean returnLastUncollidableBlock) {
+    public DragonBeamHitResult raytraceEntities(Level world, Vec3 from, Vec3 to, boolean ignoreBlockWithoutBoundingBox) {
         DragonBeamHitResult result = new DragonBeamHitResult();
         result.setBlockHit(world.clip(new ClipContext(from, to, Block.COLLIDER, Fluid.NONE, this)));
         result.setBlockHit(world.clip(new ClipContext(from, to, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)));
@@ -211,10 +237,25 @@ public class DragonBeamEntity extends Entity {
             this.blockSide = result.blockHit.getDirection();
 
             if (world.isClientSide) {
-                AAALevel.addParticle(world, false,
-                        new ParticleEmitterInfo(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "dragon_beam_hit"))
-                                .clone()
-                                .position(hitBlock.getX(), hitBlock.getY(), hitBlock.getZ()));
+                if (!ModList.get().isLoaded("aaa_particles")) {
+                    AAAParticlesUtil.sendDragonBeamHit(world, hitBlock);
+                } else {
+                    world.addParticle(
+                            ParticleTypes.EXPLOSION,
+                            true,
+                            hitBlock.getX(), hitBlock.getY() + 1.0D, hitBlock.getZ(),
+                            0, 0, 0);
+                    world.addParticle(
+                            AnnoyingVillagersModParticleTypes.METEORITE_TRAIL.get(),
+                            true,
+                            hitBlock.getX(), hitBlock.getY() + 1.0D, hitBlock.getZ(),
+                            0, 0, 0);
+                    world.addParticle(
+                            ParticleTypes.FLASH,
+                            true,
+                            hitBlock.getX(), hitBlock.getY() + 1.0D, hitBlock.getZ(),
+                            0, 0, 0);
+                }
             }
 
             if (!world.isClientSide) {
@@ -292,7 +333,7 @@ public class DragonBeamEntity extends Entity {
     }
 
     public boolean shouldRenderAtSqrDistance(double distance) {
-        return distance < 1024.0;
+        return true;
     }
 
     private static float wrapRad(float a) {
@@ -408,29 +449,26 @@ public class DragonBeamEntity extends Entity {
                 if (particleCount == 0) {
                     break;
                 }
-
-                double radius = (2.0F * this.caster.getBbWidth());
-                double yaw = (double) (this.random.nextFloat() * 2.0F) * Math.PI;
-                double pitch = (double) (this.random.nextFloat() * 2.0F) * Math.PI;
             }
         }
 
         this.calculateEndPos();
 
-        if (this.isRenderable() && this.level().isClientSide() && !renderBeam && this.tickCount >= 3) {
-            renderBeam = true;
-
+        if (this.isRenderable() && this.level().isClientSide() && !renderBeam) {
             Vec3 from = caster.beamMouthPos(1.0F);
             Vec3 to = target.getEyePosition(1.0F);
 
-            if (ModList.get().isLoaded("aaa_particles")) {
-                AAAParticlesUtil.sendDragonBeam(from, to, this.level(), caster, target);
+            if (!ModList.get().isLoaded("aaa_particles")) {
+                if (this.tickCount >= 3) {
+                    renderBeam = true;
+                    AAAParticlesUtil.sendDragonBeam(from, to, this.level(), caster, target);
+                }
             } else {
-//                this.level().addParticle(
-//                        AnnoyingVillagersModParticleTypes.THUNDER.get(),
-//                        true,
-//                        x, y, z
-//                        69, 1, 0);
+                if (this.tickCount >= 50) {
+                    renderBeam = true;
+                    setUseNoVfxThunder(true);
+                    setThunderStartStop(from, to);
+                }
             }
         }
 
@@ -439,9 +477,8 @@ public class DragonBeamEntity extends Entity {
                 playSound = true;
                 this.playSound(AnnoyingVillagersModSounds.DRAGON_BREATH.get(), 5.0F, 1.0F);
             }
-            List<LivingEntity> hit = this.raytraceEntities(this.level(), new Vec3(this.getX(), this.getY(), this.getZ()), new Vec3(this.endPosX, this.endPosY, this.endPosZ), false, true, true).entities;
+            List<LivingEntity> hit = this.raytraceEntities(this.level(), new Vec3(this.getX(), this.getY(), this.getZ()), new Vec3(this.endPosX, this.endPosY, this.endPosZ), true).entities;
             if (!this.level().isClientSide) {
-                
                 for (LivingEntity target : hit) {
                     target.hurt(damageSources().indirectMagic(this, this.caster.getSummoner()), (float) this.power);
                     target.hurtMarked = true;

@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.client.engine.ThunderRender;
 import com.pla.annoyingvillagers.entity.DragonBeamEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -15,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 @OnlyIn(Dist.CLIENT)
 public class DragonBeamRenderer extends EntityRenderer<DragonBeamEntity> {
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/dragon_beam.png");
+    private final ThunderRender thunderRender = new ThunderRender();
 
     public DragonBeamRenderer(EntityRendererProvider.Context pContext) {
         super(pContext);
@@ -24,7 +26,21 @@ public class DragonBeamRenderer extends EntityRenderer<DragonBeamEntity> {
         return new Vec3(dragonBeam.level().random.nextGaussian() * 0.03, dragonBeam.level().random.nextGaussian() * 0.03, dragonBeam.level().random.nextGaussian() * 0.03);
     }
 
-    public void render(@NotNull DragonBeamEntity beam, float entityYaw, float delta, @NotNull PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int light) {
+    public void render(@NotNull DragonBeamEntity dragonBeamEntity, float entityYaw, float partialTicks, @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight) {
+        super.render(dragonBeamEntity, entityYaw, partialTicks, poseStack, buffer, packedLight);
+        if (dragonBeamEntity.isSetUseNoVfxThunder()) {
+            poseStack.pushPose();
+            Vec3 from = dragonBeamEntity.getThunderStartVec3();
+            Vec3 to = dragonBeamEntity.getThunderStopVec3();
+            ThunderRender.ThunderData bolt = new ThunderRender.ThunderData(ThunderRender.ThunderData.ThunderRenderInfo.ELECTRICITY, from, to, 15)
+                    .size(0.05F * (0.5F + 0.4F * (2.0F - 0.5F)))
+                    .lifespan(4)
+                    .spawn(ThunderRender.ThunderData.SpawnFunction.DEFAULT);
+            thunderRender.update(null, bolt, partialTicks);
+            poseStack.translate(-dragonBeamEntity.getX(), -dragonBeamEntity.getY(), -dragonBeamEntity.getZ());
+            thunderRender.render(partialTicks, poseStack, buffer);
+            poseStack.popPose();
+        }
     }
 
     public @NotNull ResourceLocation getTextureLocation(@NotNull DragonBeamEntity dragonBeam) {
