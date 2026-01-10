@@ -2,7 +2,6 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.block.ObsidianBlock;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
@@ -60,6 +59,9 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import yesman.epicfight.gameasset.EpicFightSounds;
+import yesman.epicfight.particle.EpicFightParticles;
+import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.effect.EpicFightMobEffects;
@@ -74,7 +76,7 @@ public class HerobrineGregEntity extends Monster {
     private boolean summoning = false;
     private int summonTiming = -1;
     private int escapeTiming = -1;
-    private final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
+    private final LivingEntityPatch<?> livingentitypatch = EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
     private int summonTimestamp = -1;
     private boolean combatMode = false;
     private int recallTime;
@@ -412,12 +414,12 @@ public class HerobrineGregEntity extends Monster {
 
             if (this.level().getDayTime() % 24000L == 13001 && this.summonTimestamp == -1) {
                 if (new Random().nextBoolean()) {
-                    this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> " +
+                    Objects.requireNonNull(this.level().getServer()).getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> " +
                             Component.translatable("subtitles.herobrine_prepare_for_fight").getString()), false);
                     this.summonTimestamp = new Random().nextInt(13100, 22200);
                     AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: Greg will summon elites at {}", this.summonTimestamp);
                 } else {
-                    this.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> " +
+                    Objects.requireNonNull(this.level().getServer()).getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> " +
                             Component.translatable("subtitles.herobrine_no_fight")), false);
                 }
             }
@@ -463,12 +465,7 @@ public class HerobrineGregEntity extends Monster {
                 this.escapeTiming = this.escapeTiming - 1;
             }
             if (this.escapeTiming == 60 && this.combatMode) {
-                try {
-                    this.getServer().getCommands().getDispatcher().execute(
-                            "playsound annoyingvillagers:portal_natural neutral @a ~ ~ ~",
-                            this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException e) {
-                }
+                this.playSound(AnnoyingVillagersModSounds.PORTAL_NATURAL.get());
                 if (livingentitypatch != null) {
                     livingentitypatch.playAnimationSynchronized(AVAnimations.PORTAL_SUMMON, 0.0F);
                 }
@@ -612,26 +609,26 @@ public class HerobrineGregEntity extends Monster {
 
     private void spawnHerobrineOffset(String id,
                                       double forwardDist, double lateralDist, double baseY,
-                                      double fx, double fz, double lx, double lz, boolean renderPortal) {
+                                      double fx, double fz, double lx, double lz) {
         double spawnX = this.getX() + fx * forwardDist + lx * lateralDist;
         double spawnZ = this.getZ() + fz * forwardDist + lz * lateralDist;
 
         double lookX = spawnX + fx * 10.0;
         double lookZ = spawnZ + fz * 10.0;
 
-        summonHerobrine(id, spawnX, baseY, spawnZ, lookX, lookZ, renderPortal);
+        summonHerobrine(id, spawnX, baseY, spawnZ, lookX, lookZ, false);
     }
 
-    private void spawnRandomHerobrinesInRadius(String id, int count, int radius, boolean renderPortal) {
+    private void spawnRandomHerobrinesInRadius(String id, int count) {
         if (!(this.level() instanceof ServerLevel sl)) return;
 
         int cx = Mth.floor(this.getX());
         int cz = Mth.floor(this.getZ());
 
         List<BlockPos> candidates = new ArrayList<>();
-        int r2 = radius * radius;
-        for (int dx = -radius; dx <= radius; dx++) {
-            for (int dz = -radius; dz <= radius; dz++) {
+        int r2 = 20 * 20;
+        for (int dx = -20; dx <= 20; dx++) {
+            for (int dz = -20; dz <= 20; dz++) {
                 if (dx == 0 && dz == 0) continue;
                 if (dx * dx + dz * dz > r2) continue;
                 int x = cx + dx;
@@ -664,7 +661,7 @@ public class HerobrineGregEntity extends Monster {
             double lookX = spawnX + fx * 10.0D;
             double lookZ = spawnZ + fz * 10.0D;
 
-            summonHerobrine(id, spawnX, spawnY, spawnZ, lookX, lookZ, renderPortal);
+            summonHerobrine(id, spawnX, spawnY, spawnZ, lookX, lookZ, true);
             spawned++;
         }
     }
@@ -694,7 +691,7 @@ public class HerobrineGregEntity extends Monster {
         } else {
             leftHerobrine = "annoyingvillagers:low_shadow_herobrine_clone";
         }
-        spawnHerobrineOffset(leftHerobrine, 0.0, +side, y, fx, fz, lx, lz, false);
+        spawnHerobrineOffset(leftHerobrine, 0.0, +side, y, fx, fz, lx, lz);
 
         String rightHerobrine;
         if (Math.random() <= 0.5D) {
@@ -702,7 +699,7 @@ public class HerobrineGregEntity extends Monster {
         } else {
             rightHerobrine = "annoyingvillagers:low_shadow_herobrine_clone";
         }
-        spawnHerobrineOffset(rightHerobrine, 0.0, -side, y, fx, fz, lx, lz, false);
+        spawnHerobrineOffset(rightHerobrine, 0.0, -side, y, fx, fz, lx, lz);
 
         // 70% for 2 Herobrines, 30% for 3 Herobrines
         if (Math.random() >= 0.7D) {
@@ -713,7 +710,7 @@ public class HerobrineGregEntity extends Monster {
                 frontHerobrine = "annoyingvillagers:low_shadow_herobrine_clone";
             }
 
-            spawnHerobrineOffset(frontHerobrine, front, 0.0, y, fx, fz, lx, lz, false);
+            spawnHerobrineOffset(frontHerobrine, front, 0.0, y, fx, fz, lx, lz);
         }
     }
 
@@ -737,7 +734,7 @@ public class HerobrineGregEntity extends Monster {
 
         // if low_shadow_herobrine_clone, spawn 10 to 20 low_shadow_herobrine_clone around
         if (herobrineId.equals("annoyingvillagers:low_shadow_herobrine_clone")) {
-            spawnRandomHerobrinesInRadius(herobrineId, new Random().nextInt(10, 20), 20, true);
+            spawnRandomHerobrinesInRadius(herobrineId, new Random().nextInt(10, 20));
         } else {
             double yawRad = Math.toRadians(this.getYRot());
 
@@ -749,7 +746,7 @@ public class HerobrineGregEntity extends Monster {
             double y = this.getY();
             double front = 1.0;
 
-            spawnHerobrineOffset(herobrineId, front, 0.0, y, fx, fz, lx, lz, false);
+            spawnHerobrineOffset(herobrineId, front, 0.0, y, fx, fz, lx, lz);
         }
     }
 
@@ -839,32 +836,32 @@ public class HerobrineGregEntity extends Monster {
             case ONEE_PLUS_1S -> {
                 // Two mobs: left + right around the portal; elite on left, shadow on right (arbitrary)
                 // Left
-                spawnHerobrineOffset(pickRandom(elites, random), centerForward, +side, baseY, fx, fz, lx, lz, false);
+                spawnHerobrineOffset(pickRandom(elites, random), centerForward, +side, baseY, fx, fz, lx, lz);
                 // Right
-                spawnHerobrineOffset("annoyingvillagers:low_shadow_herobrine_clone", centerForward, -side, baseY, fx, fz, lx, lz, false);
+                spawnHerobrineOffset("annoyingvillagers:low_shadow_herobrine_clone", centerForward, -side, baseY, fx, fz, lx, lz);
             }
             case ONEE_PLUS_2S -> {
                 // Three mobs: left (shadow), right (shadow), middle+1 forward (elite)
-                spawnHerobrineOffset("annoyingvillagers:low_shadow_herobrine_clone", centerForward, +side, baseY, fx, fz, lx, lz, false);
-                spawnHerobrineOffset("annoyingvillagers:low_shadow_herobrine_clone", centerForward, -side, baseY, fx, fz, lx, lz, false);
-                spawnHerobrineOffset(pickRandom(elites, random), thirdForward, 0.0, baseY, fx, fz, lx, lz, false);
+                spawnHerobrineOffset("annoyingvillagers:low_shadow_herobrine_clone", centerForward, +side, baseY, fx, fz, lx, lz);
+                spawnHerobrineOffset("annoyingvillagers:low_shadow_herobrine_clone", centerForward, -side, baseY, fx, fz, lx, lz);
+                spawnHerobrineOffset(pickRandom(elites, random), thirdForward, 0.0, baseY, fx, fz, lx, lz);
             }
             case TWO_E -> {
                 // Two elites: left + right
-                spawnHerobrineOffset(pickRandom(elites, random), centerForward, +side, baseY, fx, fz, lx, lz, false);
-                spawnHerobrineOffset(pickRandom(elites, random), centerForward, -side, baseY, fx, fz, lx, lz, false);
+                spawnHerobrineOffset(pickRandom(elites, random), centerForward, +side, baseY, fx, fz, lx, lz);
+                spawnHerobrineOffset(pickRandom(elites, random), centerForward, -side, baseY, fx, fz, lx, lz);
             }
             case TWOE_PLUS_1S -> {
                 // Three mobs: left (shadow), right (elite), middle+1 forward (elite)
-                spawnHerobrineOffset("annoyingvillagers:low_shadow_herobrine_clone", centerForward, +side, baseY, fx, fz, lx, lz, false);
-                spawnHerobrineOffset(pickRandom(elites, random), centerForward, -side, baseY, fx, fz, lx, lz, false);
-                spawnHerobrineOffset(pickRandom(elites, random), thirdForward, 0.0, baseY, fx, fz, lx, lz, false);
+                spawnHerobrineOffset("annoyingvillagers:low_shadow_herobrine_clone", centerForward, +side, baseY, fx, fz, lx, lz);
+                spawnHerobrineOffset(pickRandom(elites, random), centerForward, -side, baseY, fx, fz, lx, lz);
+                spawnHerobrineOffset(pickRandom(elites, random), thirdForward, 0.0, baseY, fx, fz, lx, lz);
             }
             case THREE_E -> {
                 // Three elites: left, right, and middle+1 forward (super rare)
-                spawnHerobrineOffset(pickRandom(elites, random), centerForward, +side, baseY, fx, fz, lx, lz, false);
-                spawnHerobrineOffset(pickRandom(elites, random), centerForward, -side, baseY, fx, fz, lx, lz, false);
-                spawnHerobrineOffset(pickRandom(elites, random), thirdForward, 0.0, baseY, fx, fz, lx, lz, false);
+                spawnHerobrineOffset(pickRandom(elites, random), centerForward, +side, baseY, fx, fz, lx, lz);
+                spawnHerobrineOffset(pickRandom(elites, random), centerForward, -side, baseY, fx, fz, lx, lz);
+                spawnHerobrineOffset(pickRandom(elites, random), thirdForward, 0.0, baseY, fx, fz, lx, lz);
             }
         }
     }
@@ -894,7 +891,7 @@ public class HerobrineGregEntity extends Monster {
         return false;
     }
 
-    public @NotNull SoundEvent getHurtSound(DamageSource damagesource) {
+    public @NotNull SoundEvent getHurtSound(@NotNull DamageSource damagesource) {
         return Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.hurt")));
     }
 
@@ -907,27 +904,21 @@ public class HerobrineGregEntity extends Monster {
         return timeOfDay >= 0 && timeOfDay < 13000;
     }
 
-    public boolean hurt(DamageSource damagesource, float f) {
+    public boolean hurt(@NotNull DamageSource pSource, float f) {
         if (this.summoning || this.escapeTiming >= 0) {
             return false;
         } else if (this.getHealth() == 1 || this.combatMode) {
-            if (!this.level().isClientSide()) {
-                try {
-                    this.getServer().getCommands().getDispatcher().execute(
-                            "playsound epicfight:entity.hit.clash neutral @p",
-                            this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                    this.getServer().getCommands().getDispatcher().execute(
-                            "execute at @s run particle epicfight:hit_blade ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
-                            this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException e) {
-                }
+            if (this.level() instanceof ServerLevel serverLevel) {
+                this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
+                EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO,
+                        this, pSource.getEntity());
             }
             return false;
         }
-        if (damagesource.is(DamageTypes.FELL_OUT_OF_WORLD)) {
-            return super.hurt(damagesource, f);
+        if (pSource.is(DamageTypes.FELL_OUT_OF_WORLD)) {
+            return super.hurt(pSource, f);
         } else {
-            return super.hurt(damagesource, 1.0F);
+            return super.hurt(pSource, 1.0F);
         }
     }
 
@@ -962,7 +953,7 @@ public class HerobrineGregEntity extends Monster {
         }
     }
 
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverlevelaccessor, @NotNull DifficultyInstance difficultyinstance, @NotNull MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
         if (mobspawntype == MobSpawnType.NATURAL || mobspawntype == MobSpawnType.CHUNK_GENERATION) {
             ServerLevel serverLevel = serverlevelaccessor.getLevel();
             GregData gregData = GregData.get(serverLevel);
@@ -979,12 +970,11 @@ public class HerobrineGregEntity extends Monster {
             this.moveTo(spawnPos, this.getYRot(), this.getXRot());
         }
 
-        SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
         ChatUtil.joinGame(this, "Greg");
-        return spawngroupdata1;
+        return super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
     }
 
-    public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
+    public void awardKillScore(@NotNull Entity entity, int i, @NotNull DamageSource damagesource) {
         super.awardKillScore(entity, i, damagesource);
     }
 
@@ -993,7 +983,7 @@ public class HerobrineGregEntity extends Monster {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag pCompound) {
+    public void readAdditionalSaveData(@NotNull CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         setWhiteEye(pCompound.getBoolean("WhiteEye"));
         setUseHerobrineTexture(pCompound.getBoolean("UseHerobrineTexture"));
@@ -1015,7 +1005,7 @@ public class HerobrineGregEntity extends Monster {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag pCompound) {
+    public void addAdditionalSaveData(@NotNull CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putBoolean("WhiteEye", isWhiteEye());
         pCompound.putBoolean("UseHerobrineTexture", isUseHerobrineTexture());
@@ -1039,7 +1029,7 @@ public class HerobrineGregEntity extends Monster {
     public static boolean canSpawn(EntityType<HerobrineGregEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
         ServerLevel serverLevel = level.getLevel();
         int passesDay = (int) (serverLevel.getGameTime() / 24000);
-        if (passesDay != 0 && passesDay % 5 != 0) {
+        if (passesDay % 5 != 0) {
             return false;
         }
         if (GregData.get(serverLevel).isOccupied(serverLevel)) {
@@ -1049,7 +1039,7 @@ public class HerobrineGregEntity extends Monster {
     }
 
     @Override
-    public void remove(RemovalReason reason) {
+    public void remove(@NotNull RemovalReason reason) {
         super.remove(reason);
         if (!level().isClientSide && level() instanceof ServerLevel serverLevel &&
                 (reason == RemovalReason.KILLED || reason == RemovalReason.DISCARDED)) {

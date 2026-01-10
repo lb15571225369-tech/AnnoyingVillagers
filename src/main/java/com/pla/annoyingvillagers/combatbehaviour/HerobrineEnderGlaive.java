@@ -841,7 +841,7 @@ public class HerobrineEnderGlaive {
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(2.0D, 8.0D)
                                             .custom(HerobrineCommon::canPlaySecondFormAnimation)
-                                            .animationBehavior(AnimsAgony.AGONY_AUTO_1, 0.0F)
+                                            .animationBehavior(AVAnimations.ENDER_GLAIVE_AGONY_AUTO_1, 0.0F)
                                             .addExBehavior(HerobrineCommon::playSecondFormAnimation)
                             )
             )

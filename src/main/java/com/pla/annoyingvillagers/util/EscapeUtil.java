@@ -22,6 +22,8 @@ public class EscapeUtil {
     private static final Set<String> DANGEROUS_ANIMATIONS = Set.of(
             "annoyingvillagers:biped/skill/ender_aegis_bull_charge",
             "annoyingvillagers:biped/combat/yellow_torment_charged_attack_3",
+            "annoyingvillagers:biped/skill/ender_glaive_napoleon_shoot_3",
+            "annoyingvillagers:biped/combat/ender_glaive_agony_auto_1",
             "efn:biped/ng_greatsword/ng_great_charge1ing",
             "efn:biped/ng_greatsword/ng_great_charge1max",
             "efn:biped/ng_greatsword/ng_great_charge1max_2",
@@ -80,10 +82,6 @@ public class EscapeUtil {
             if (herobrineMob instanceof SwordsmanHerobrineEntity) {
                 return (herobrineMob.getState() > 0 && targetDynamicAnimation == AVAnimations.SNAKE_BLADE_GUARD)
                         || targetDynamicAnimation == WOMAnimations.TORMENT_BERSERK_CONVERT;
-            }
-            if (herobrineMob instanceof GlaiveHerobrineEntity) {
-                return (herobrineMob.getState() > 0 && targetDynamicAnimation == AVAnimations.AGONY_GUARD_HIT_1)
-                        || targetDynamicAnimation == AnimsAgony.AGONY_AUTO_2 || targetDynamicAnimation == AVAnimations.ENDER_GLAIVE_NAPOLEON_SHOOT_3;
             }
             if (herobrineMob instanceof SledgehammerHerobrineEntity) {
                 return targetDynamicAnimation == WOMAnimations.TORMENT_BERSERK_CONVERT || targetDynamicAnimation == WOMAnimations.TORMENT_DASH;

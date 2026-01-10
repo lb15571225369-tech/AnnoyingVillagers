@@ -90,7 +90,7 @@ public class AnnoyingVillagers {
     @EventBusSubscriber(bus = Bus.MOD)
     public static class initer {
         @SubscribeEvent
-        public static void init(FMLCommonSetupEvent fmlcommonsetupevent) {
+        public static void init(FMLCommonSetupEvent fmlCommonSetupEvent) {
             AnnoyingVillagers.addNetworkMessage(
                     TextboxSetMessage.class,
                     TextboxSetMessage::buffer,

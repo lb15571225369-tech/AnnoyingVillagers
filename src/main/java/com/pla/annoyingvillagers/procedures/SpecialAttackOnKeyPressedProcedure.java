@@ -112,38 +112,6 @@ public class SpecialAttackOnKeyPressedProcedure {
                                 livingEntityPatch.playAnimationSynchronized(AVAnimations.ENDER_GLAIVE_NAPOLEON_SHOOT_3, 0.0F);
                                 enderGlaiveSkill.getResourceType().consumer
                                         .consume(skillContainer, serverPlayerPatch, enderGlaiveSkill.getDefaultConsumptionAmount(serverPlayerPatch));
-                                new DelayedTask(10) {
-                                    @Override
-                                    public void run() {
-                                        Vec3 tipPos = EpicfightUtil.getJointWithTranslation(
-                                                player,
-                                                new Vec3f(0.0F, 0.0F, 0.0F),
-                                                Armatures.BIPED.get().toolR,
-                                                4.3F,
-                                                2.3F
-                                        );
-                                        if (tipPos != null) {
-                                            BlockPos mutePos = BlockPos.containing(tipPos);
-                                            AnnoyingVillagers.PACKET_HANDLER.send(
-                                                    PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player),
-                                                    new ClientboundMuteExplosionAtPos(mutePos, 4)
-                                            );
-                                            player.level().explode(player, tipPos.x, tipPos.y, tipPos.z,
-                                                    2.0F, true, Level.ExplosionInteraction.TNT);
-                                            Vec3 glaivePos = EpicfightUtil.getJointWithTranslation(player, new Vec3f(0, 0, 0),
-                                                    Armatures.BIPED.get().toolR, 1.3F, 2.3F);
-                                            Vec3 explosionPos = EpicfightUtil.getJointWithTranslation(player, new Vec3f(0, 0, 0),
-                                                    Armatures.BIPED.get().toolR, 10.3F, 2.3F);
-                                            AnnoyingVillagers.PACKET_HANDLER.send(
-                                                    PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player),
-                                                    new ClientboundGlaiveExplosionFx(glaivePos, explosionPos)
-                                            );
-                                            if (explosionPos != null) {
-                                                player.level().playSound(null, new BlockPos((int) explosionPos.x, (int) explosionPos.y, (int) explosionPos.z), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_shot"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
-                                            }
-                                        }
-                                    }
-                                };
                                 success = true;
                             }
                         }

@@ -9,6 +9,7 @@ import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class EnderParticle extends TextureSheetParticle {
@@ -27,9 +28,9 @@ public class EnderParticle extends TextureSheetParticle {
         this.lifetime = Math.max(1, 20 + (this.random.nextInt(12) - 6));
         this.gravity = -0.1F;
         this.hasPhysics = false;
-        this.xd = d3 * 1.0D;
-        this.yd = d4 * 1.0D;
-        this.zd = d5 * 1.0D;
+        this.xd = d3;
+        this.yd = d4;
+        this.zd = d5;
         this.setSpriteFromAge(spriteset);
     }
 
@@ -37,14 +38,14 @@ public class EnderParticle extends TextureSheetParticle {
         return 15728880;
     }
 
-    public ParticleRenderType getRenderType() {
+    public @NotNull ParticleRenderType getRenderType() {
         return ParticleRenderType.PARTICLE_SHEET_LIT;
     }
 
     public void tick() {
         super.tick();
         if (!this.removed) {
-            this.setSprite(this.spriteSet.get(this.age / 1 % 8 + 1, 8));
+            this.setSprite(this.spriteSet.get(this.age % 8 + 1, 8));
         }
 
     }
@@ -57,7 +58,7 @@ public class EnderParticle extends TextureSheetParticle {
             this.spriteSet = spriteset;
         }
 
-        public Particle createParticle(SimpleParticleType simpleparticletype, ClientLevel clientlevel, double d0, double d1, double d2, double d3, double d4, double d5) {
+        public Particle createParticle(@NotNull SimpleParticleType simpleparticletype, @NotNull ClientLevel clientlevel, double d0, double d1, double d2, double d3, double d4, double d5) {
             return new EnderParticle(clientlevel, d0, d1, d2, d3, d4, d5, this.spriteSet);
         }
     }

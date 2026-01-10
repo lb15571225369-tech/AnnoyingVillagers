@@ -18,10 +18,9 @@ public class EnderGlaiveExplosionParticleEmitterInfo extends ParticleEmitterInfo
     private float roll = 0f;
     private Vec3 from = null;
     private Vec3 to   = null;
-    private boolean flipForward = true;
 
-    public EnderGlaiveExplosionParticleEmitterInfo(ResourceLocation effek) {
-        super(effek);
+    public EnderGlaiveExplosionParticleEmitterInfo(ResourceLocation resourceLocation) {
+        super(resourceLocation);
     }
 
     public EnderGlaiveExplosionParticleEmitterInfo fromTo(Vec3 from, Vec3 to, ForwardAxis axis, float extraRollRad, boolean flip) {
@@ -29,7 +28,6 @@ public class EnderGlaiveExplosionParticleEmitterInfo extends ParticleEmitterInfo
         this.to = to;
         this.axis = axis;
         this.roll = extraRollRad;
-        this.flipForward = flip;
         return this;
     }
 

@@ -1,12 +1,10 @@
 package com.pla.annoyingvillagers.client.engine;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.network.*;
-import com.pla.annoyingvillagers.client.emitterinfo.EnderGlaiveExplosionParticleEmitterInfo;
-import com.pla.annoyingvillagers.procedures.KickOnKeyPressedProcedure;
-import com.pla.annoyingvillagers.util.EpicfightUtil;
+import com.pla.annoyingvillagers.util.AAAParticlesUtil;
 import mod.chloeprime.aaaparticles.api.common.AAALevel;
 import mod.chloeprime.aaaparticles.api.common.ParticleEmitterInfo;
 import com.pla.annoyingvillagers.util.ExplosionFxMute;
@@ -14,21 +12,10 @@ import com.pla.annoyingvillagers.util.ExplosionFxMute;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import yesman.epicfight.api.animation.types.DynamicAnimation;
-import yesman.epicfight.api.asset.AssetAccessor;
-import yesman.epicfight.gameasset.Animations;
-import yesman.epicfight.world.capabilities.EpicFightCapabilities;
-import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
-import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
-import yesman.epicfight.world.capabilities.item.CapabilityItem;
-
-import java.util.Objects;
+import net.minecraftforge.fml.ModList;
 
 @OnlyIn(Dist.CLIENT)
 public final class ClientPacketHandlers {
@@ -38,11 +25,15 @@ public final class ClientPacketHandlers {
         Level level = Minecraft.getInstance().level;
         if (level == null) return;
 
-        new EnderGlaiveExplosionParticleEmitterInfo(
-                ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_glaive_explosion"))
-                .fromTo(msg.from(), msg.to(),
-                        EnderGlaiveExplosionParticleEmitterInfo.ForwardAxis.PLUS_Z, 0f, true)
-                .spawnInWorld(level, null);
+        if (ModList.get().isLoaded("aaa_particles")) {
+            AAAParticlesUtil.sendEnderGlaiveExplosion(msg.from(), msg.to(), level);
+        } else {
+            level.addParticle(
+                    AnnoyingVillagersModParticleTypes.FIREBALL.get(),
+                    true,
+                    msg.to().x, msg.to().y, msg.to().z,
+                    4 * 1.25F, 1, 0);
+        }
 
         level.playLocalSound(msg.from().x, msg.from().y, msg.from().z, AnnoyingVillagersModSounds.ENDER_SHOT.get(),
                 SoundSource.NEUTRAL, 1.0F, 1.0F, false);

@@ -256,40 +256,6 @@ public class HerobrineCommon {
                 if (SnakeBladeHit.process(item, herobrineMob)) {
                     item.getOrCreateTag().putBoolean("SnakeAnimation", true);
                 }
-            } else if (herobrineMob instanceof GlaiveHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
-                herobrineMob.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 40, 3));
-                new DelayedTask(10) {
-                    @Override
-                    public void run() {
-                        Vec3 tipPos = EpicfightUtil.getJointWithTranslation(
-                                herobrineMob,
-                                new Vec3f(0.0F, 0.0F, 0.0F),
-                                Armatures.BIPED.get().toolR,
-                                4.3F,
-                                2.3F
-                        );
-                        if (tipPos != null) {
-                            BlockPos mutePos = BlockPos.containing(tipPos);
-                            AnnoyingVillagers.PACKET_HANDLER.send(
-                                    PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> herobrineMob),
-                                    new ClientboundMuteExplosionAtPos(mutePos, 4)
-                            );
-                            herobrineMob.level().explode(herobrineMob, tipPos.x, tipPos.y, tipPos.z,
-                                    2.0F, true, Level.ExplosionInteraction.TNT);
-                            Vec3 glaivePos = EpicfightUtil.getJointWithTranslation(herobrineMob, new Vec3f(0, 0, 0),
-                                    Armatures.BIPED.get().toolR, 1.3F, 2.3F);
-                            Vec3 explosionPos = EpicfightUtil.getJointWithTranslation(herobrineMob, new Vec3f(0, 0, 0),
-                                    Armatures.BIPED.get().toolR, 10.3F, 2.3F);
-                            AnnoyingVillagers.PACKET_HANDLER.send(
-                                    PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> herobrineMob),
-                                    new ClientboundGlaiveExplosionFx(glaivePos, explosionPos)
-                            );
-                            if (explosionPos != null) {
-                                herobrineMob.level().playSound(null, new BlockPos((int) explosionPos.x, (int) explosionPos.y, (int) explosionPos.z), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_shot"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
-                            }
-                        }
-                    }
-                };
             } else if (herobrineMob instanceof SledgehammerHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
                 ObsidianSledgehammerItem.triggerCircleWhenGroundHits(mobpatch, true);
             } else if (herobrineMob instanceof ReaperHerobrineEntity reaperHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
@@ -306,41 +272,7 @@ public class HerobrineCommon {
             if (herobrineMob.getState() < 2) {
                 herobrineMob.setSecondFormHitLeft(herobrineMob.getSecondFormHitLeft() - 1);
             }
-            if (herobrineMob instanceof GlaiveHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
-                herobrineMob.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 40, 3));
-                new DelayedTask(14) {
-                    @Override
-                    public void run() {
-                        Vec3 tipPos = EpicfightUtil.getJointWithTranslation(
-                                herobrineMob,
-                                new Vec3f(0.0F, 0.0F, 0.0F),
-                                Armatures.BIPED.get().toolR,
-                                4.3F,
-                                2.3F
-                        );
-                        if (tipPos != null) {
-                            BlockPos mutePos = BlockPos.containing(tipPos);
-                            AnnoyingVillagers.PACKET_HANDLER.send(
-                                    PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> herobrineMob),
-                                    new ClientboundMuteExplosionAtPos(mutePos, 4)
-                            );
-                            herobrineMob.level().explode(herobrineMob, tipPos.x, tipPos.y, tipPos.z,
-                                    2.0F, true, Level.ExplosionInteraction.TNT);
-                            Vec3 glaivePos = EpicfightUtil.getJointWithTranslation(herobrineMob, new Vec3f(0, 0, 0),
-                                    Armatures.BIPED.get().toolR, 1.3F, 2.3F);
-                            Vec3 explosionPos = EpicfightUtil.getJointWithTranslation(herobrineMob, new Vec3f(0, 0, 0),
-                                    Armatures.BIPED.get().toolR, 10.3F, 2.3F);
-                            AnnoyingVillagers.PACKET_HANDLER.send(
-                                    PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> herobrineMob),
-                                    new ClientboundGlaiveExplosionFx(glaivePos, explosionPos)
-                            );
-                            if (explosionPos != null) {
-                                herobrineMob.level().playSound(null, new BlockPos((int) explosionPos.x, (int) explosionPos.y, (int) explosionPos.z), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_shot"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
-                            }
-                        }
-                    }
-                };
-            } else if (herobrineMob instanceof SledgehammerHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
+            if (herobrineMob instanceof SledgehammerHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
                 ObsidianSledgehammerItem.triggerCircleWhenGroundHits(mobpatch, false);
             } else if (herobrineMob instanceof ReaperHerobrineEntity reaperHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
                 HerobrineDragonEntity herobrineDragonEntity = reaperHerobrineEntity.getMeteoriteHerobrineDragon();

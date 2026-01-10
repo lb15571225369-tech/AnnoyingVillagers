@@ -46,8 +46,7 @@ public class ModelObsidianSledgehammerHit<T extends ObsidianSledgehammerHitEntit
     }
 
     @Override
-    public void setupAnim(@NotNull ObsidianSledgehammerHitEntity obsidianSledgehammerHitEntity, float limbSwing, float limbSwingAmount,
-                          float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(@NotNull ObsidianSledgehammerHitEntity obsidianSledgehammerHitEntity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         root().getAllParts().forEach(ModelPart::resetPose);
 
         float frameTime = Minecraft.getInstance().getFrameTime();

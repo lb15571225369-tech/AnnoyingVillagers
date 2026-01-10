@@ -34,18 +34,21 @@
  */
 
 package com.pla.annoyingvillagers.gameasset;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.animations.*;
+import com.pla.annoyingvillagers.animations.BowAttackAnimation;
+import com.pla.annoyingvillagers.animations.HeavyAttackAnimation;
+import com.pla.annoyingvillagers.animations.KickAttackAnimation;
+import com.pla.annoyingvillagers.animations.RushSwordAnimation;
+import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
+import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
 import com.pla.annoyingvillagers.util.BowFunction;
+import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -61,6 +64,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.registries.ForgeRegistries;
 import reascer.wom.animation.WomAnimationProperty;
 import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
 import reascer.wom.animation.attacks.SpecialAttackAnimation;
@@ -81,7 +86,6 @@ import yesman.epicfight.api.animation.property.AnimationProperty.ActionAnimation
 import yesman.epicfight.api.animation.property.AnimationProperty.AttackAnimationProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.AttackPhaseProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.StaticAnimationProperty;
-import yesman.epicfight.api.animation.property.MoveCoordFunctions;
 import yesman.epicfight.api.animation.types.*;
 import yesman.epicfight.api.animation.types.AttackAnimation.Phase;
 import yesman.epicfight.api.utils.HitEntityList.Priority;
@@ -90,7 +94,6 @@ import yesman.epicfight.api.utils.TimePairList;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.api.utils.math.ValueModifier;
 import yesman.epicfight.api.utils.math.Vec3f;
-import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.Animations.ReusableSources;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.gameasset.ColliderPreset;
@@ -102,6 +105,11 @@ import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.damagesource.EpicFightDamageTypeTags;
 import yesman.epicfight.world.damagesource.ExtraDamageInstance;
 import yesman.epicfight.world.damagesource.StunType;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Random;
+import java.util.Set;
 
 @Mod.EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AVAnimations {
@@ -260,6 +268,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<ActionAnimation> APPLY_IMBUEMENT;
     public static AnimationManager.AnimationAccessor<ActionAnimation> AGONY_GUARD_HIT_1;
     public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> ENDER_GLAIVE_NAPOLEON_SHOOT_3;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> ENDER_GLAIVE_AGONY_AUTO_1;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> CLONE_ANTITHEUS_AUTO_1;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> CLONE_ANTITHEUS_AUTO_2;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> CLONE_ANTITHEUS_AUTO_3;
@@ -377,7 +386,7 @@ public class AVAnimations {
                         .addEvents(
                                 new AnimationEvent.InTimeEvent[]{
                                         AnimationEvent.InTimeEvent.create(0.1F, ReusableSources.PLAY_SOUND, Side.SERVER)
-                                .params(EpicFightSounds.WHOOSH.get())})
+                                                .params(EpicFightSounds.WHOOSH.get())})
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
         AVAnimations.LEGENDARY_SWORD_HEAVY_ATTACK = builder.nextAccessor("biped/combat/legendary_sword_heavy_attack",
                 (accessor) -> (new HeavyAttackAnimation(0.05F, 0.05F, 0.5F, 0.7F, 1.2F, WOMWeaponColliders.TORMENT_BERSERK_AIRSLAM, humanoidarmature.get().rootJoint, accessor, humanoidarmature))
@@ -412,7 +421,8 @@ public class AVAnimations {
                                         AnimationEvent.InTimeEvent.create(0.0F, (livingentitypatch, staticanimation, aobject) -> {
                                             if (livingentitypatch instanceof PlayerPatch) {
                                                 ((PlayerPatch<?>) livingentitypatch).setStamina(((PlayerPatch<?>) livingentitypatch).getStamina() - 2.0F);
-                                            }}, Side.CLIENT),
+                                            }
+                                        }, Side.CLIENT),
                                         AnimationEvent.InTimeEvent.create(0.6F, AVAnimations.ReuseableEvents.GROUNDSLAM, Side.CLIENT)}));
         AVAnimations.BLUE_DEMON_START_SKILL = builder.nextAccessor("biped/other/blue_demon_start_skill",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidarmature));
@@ -582,7 +592,7 @@ public class AVAnimations {
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
         AVAnimations.HIT_C = builder.nextAccessor("biped/other/hit_c",
                 (accessor) -> new LongHitAnimation(0.08F, accessor, humanoidarmature));
-        AVAnimations.SPEAR_GUARD_HIT =  builder.nextAccessor("biped/combat/spear_guard_hit",
+        AVAnimations.SPEAR_GUARD_HIT = builder.nextAccessor("biped/combat/spear_guard_hit",
                 (accessor) -> (new GuardAnimation(0.05F, 0.2F, accessor, humanoidarmature))
                         .addEvents(new AnimationEvent.InTimeEvent[]{
                                 AnimationEvent.InTimeEvent.create(0.1F, AVAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT),
@@ -606,11 +616,11 @@ public class AVAnimations {
                 (accessor) -> new BasicAttackAnimation(0.08F, 0.15F, 0.26F, 0.5F, null, humanoidarmature.get().toolR, accessor, humanoidarmature));
         AVAnimations.DAGGER_DUAL_AUTO1 = builder.nextAccessor("biped/combat/dagger_dual_auto1",
                 (accessor) -> new BasicAttackAnimation(0.08F, 0.05F, 0.16F, 0.25F, null, humanoidarmature.get().toolR, accessor, humanoidarmature));
-        AVAnimations.DAGGER_DUAL_AUTO2 =  builder.nextAccessor("biped/combat/dagger_dual_auto2",
+        AVAnimations.DAGGER_DUAL_AUTO2 = builder.nextAccessor("biped/combat/dagger_dual_auto2",
                 (accessor) -> new BasicAttackAnimation(0.08F, 0.0F, 0.11F, 0.16F, InteractionHand.OFF_HAND, null, humanoidarmature.get().toolL, accessor, humanoidarmature));
         AVAnimations.DAGGER_DUAL_AUTO3 = builder.nextAccessor("biped/combat/dagger_dual_auto3",
                 (accessor) -> new BasicAttackAnimation(0.08F, 0.0F, 0.11F, 0.2F, null, humanoidarmature.get().toolR, accessor, humanoidarmature));
-        AVAnimations.DAGGER_DUAL_AUTO4 =  builder.nextAccessor("biped/combat/dagger_dual_auto4",
+        AVAnimations.DAGGER_DUAL_AUTO4 = builder.nextAccessor("biped/combat/dagger_dual_auto4",
                 (accessor) -> new BasicAttackAnimation(0.13F, 0.1F, 0.21F, 0.4F, ColliderPreset.DUAL_DAGGER_DASH, humanoidarmature.get().toolR, accessor, humanoidarmature));
         AVAnimations.CHECK = builder.nextAccessor("biped/other/check",
                 (accessor) -> new StaticAnimation(false, accessor, humanoidarmature));
@@ -1318,8 +1328,8 @@ public class AVAnimations {
                 .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
                 .addEvents(AnimationEvent.InTimeEvent.create(0.05F, (entitypatch, self, params) -> {
                     if (entitypatch instanceof PlayerPatch) {
-                        entitypatch.getOriginal().level().playSound((Player)entitypatch.getOriginal(), entitypatch.getOriginal(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.PLAYERS, 0.7F, 0.7F);
-                        entitypatch.getOriginal().level().playSound((Player)entitypatch.getOriginal(), entitypatch.getOriginal(), EpicFightSounds.WHOOSH_BIG.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+                        entitypatch.getOriginal().level().playSound((Player) entitypatch.getOriginal(), entitypatch.getOriginal(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.PLAYERS, 0.7F, 0.7F);
+                        entitypatch.getOriginal().level().playSound((Player) entitypatch.getOriginal(), entitypatch.getOriginal(), EpicFightSounds.WHOOSH_BIG.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
                     }
 
                 }, Side.CLIENT)));
@@ -1341,7 +1351,7 @@ public class AVAnimations {
                     Entity entity = livingEntityPatch.getOriginal();
                     boolean can_add_tag = true;
 
-                    for(String tag : entity.getTags()) {
+                    for (String tag : entity.getTags()) {
                         if (tag.contains("wom_serius_focus:")) {
                             can_add_tag = false;
                             break;
@@ -1358,18 +1368,18 @@ public class AVAnimations {
                     int n = 70;
                     double r = 5.0F;
 
-                    for(int i = 0; i < n; ++i) {
+                    for (int i = 0; i < n; ++i) {
                         double theta = (Math.PI * 2D) * (new Random()).nextDouble();
-                        double phi = org.joml.Math.acos((double)2.0F * (new Random()).nextDouble() - (double)1.0F);
+                        double phi = org.joml.Math.acos((double) 2.0F * (new Random()).nextDouble() - (double) 1.0F);
                         double x = r * org.joml.Math.sin(phi) * org.joml.Math.cos(theta);
                         double y = r * org.joml.Math.sin(phi) * org.joml.Math.sin(theta);
                         double z = r * org.joml.Math.cos(phi);
-                        livingEntityPatch.getOriginal().level().addParticle(ParticleTypes.SMOKE, (double)transformMatrix.m30 + livingEntityPatch.getOriginal().getX() + x, (double)transformMatrix.m31 + livingEntityPatch.getOriginal().getY() + y, (double)transformMatrix.m32 + livingEntityPatch.getOriginal().getZ() + z, (float)(-x * (double)0.15F), (float)(-y * (double)0.15F), (float)(-z * (double)0.15F));
+                        livingEntityPatch.getOriginal().level().addParticle(ParticleTypes.SMOKE, (double) transformMatrix.m30 + livingEntityPatch.getOriginal().getX() + x, (double) transformMatrix.m31 + livingEntityPatch.getOriginal().getY() + y, (double) transformMatrix.m32 + livingEntityPatch.getOriginal().getZ() + z, (float) (-x * (double) 0.15F), (float) (-y * (double) 0.15F), (float) (-z * (double) 0.15F));
                     }
 
                 }, Side.CLIENT), AnimationEvent.InTimeEvent.create(1.05F, (livingEntityPatch, self, params) -> {
-                    livingEntityPatch.getOriginal().level().playSound((Player)livingEntityPatch.getOriginal(), livingEntityPatch.getOriginal(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.PLAYERS, 0.7F, 0.7F);
-                    livingEntityPatch.getOriginal().level().playSound((Player)livingEntityPatch.getOriginal(), livingEntityPatch.getOriginal(), EpicFightSounds.WHOOSH_BIG.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+                    livingEntityPatch.getOriginal().level().playSound((Player) livingEntityPatch.getOriginal(), livingEntityPatch.getOriginal(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.PLAYERS, 0.7F, 0.7F);
+                    livingEntityPatch.getOriginal().level().playSound((Player) livingEntityPatch.getOriginal(), livingEntityPatch.getOriginal(), EpicFightSounds.WHOOSH_BIG.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
 
                 }, Side.CLIENT), AnimationEvent.InTimeEvent.create(1.45F, (livingEntityPatch, self, params) -> {
                     livingEntityPatch.getOriginal().level().playSound(null, livingEntityPatch.getOriginal(), SoundEvents.WITHER_BREAK_BLOCK, SoundSource.PLAYERS, 1.0F, 0.5F);
@@ -1378,15 +1388,15 @@ public class AVAnimations {
                     CORRECTION.translate(new Vec3f(0.0F, 0.0F, -3.5F));
                     OpenMatrix4f.mul(CORRECTION, transformMatrix, transformMatrix);
 
-                    ((ServerLevel) livingEntityPatch.getOriginal().level()).sendParticles(WOMParticles.ANTITHEUS_BLACKHOLE_START.get(), (double)transformMatrix.m30 + livingEntityPatch.getOriginal().getX(), (double)transformMatrix.m31 + livingEntityPatch.getOriginal().getY(), (double)transformMatrix.m32 + livingEntityPatch.getOriginal().getZ(), 1, 0.0F, 0.0F, 0.0F, 0.0F);
-                    ((ServerLevel) livingEntityPatch.getOriginal().level()).sendParticles(ParticleTypes.LARGE_SMOKE, (double)transformMatrix.m30 + livingEntityPatch.getOriginal().getX(), (double)transformMatrix.m31 + livingEntityPatch.getOriginal().getY(), (double)transformMatrix.m32 + livingEntityPatch.getOriginal().getZ(), 48, 0.0F, 0.0F, 0.0F, 0.5F);
+                    ((ServerLevel) livingEntityPatch.getOriginal().level()).sendParticles(WOMParticles.ANTITHEUS_BLACKHOLE_START.get(), (double) transformMatrix.m30 + livingEntityPatch.getOriginal().getX(), (double) transformMatrix.m31 + livingEntityPatch.getOriginal().getY(), (double) transformMatrix.m32 + livingEntityPatch.getOriginal().getZ(), 1, 0.0F, 0.0F, 0.0F, 0.0F);
+                    ((ServerLevel) livingEntityPatch.getOriginal().level()).sendParticles(ParticleTypes.LARGE_SMOKE, (double) transformMatrix.m30 + livingEntityPatch.getOriginal().getX(), (double) transformMatrix.m31 + livingEntityPatch.getOriginal().getY(), (double) transformMatrix.m32 + livingEntityPatch.getOriginal().getZ(), 48, 0.0F, 0.0F, 0.0F, 0.5F);
                 }, Side.SERVER), AnimationEvent.InTimeEvent.create(1.45F, (livingEntityPatch, self, params) -> {
                     OpenMatrix4f transformMatrix = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(0.0F), Armatures.BIPED.get().handR);
                     OpenMatrix4f CORRECTION = (new OpenMatrix4f()).rotate(-org.joml.Math.toRadians(livingEntityPatch.getOriginal().yRotO + 180.0F), new Vec3f(0.0F, 1.0F, 0.0F));
                     CORRECTION.translate(new Vec3f(0.0F, 0.0F, -3.5F));
                     OpenMatrix4f.mul(CORRECTION, transformMatrix, transformMatrix);
                     Level level = livingEntityPatch.getOriginal().level();
-                    Vec3 FractureCenter = new Vec3((double)transformMatrix.m30 + livingEntityPatch.getOriginal().getX(), (double)transformMatrix.m31 + livingEntityPatch.getOriginal().getY() - (double)2.0F, (double)transformMatrix.m32 + livingEntityPatch.getOriginal().getZ());
+                    Vec3 FractureCenter = new Vec3((double) transformMatrix.m30 + livingEntityPatch.getOriginal().getX(), (double) transformMatrix.m31 + livingEntityPatch.getOriginal().getY() - (double) 2.0F, (double) transformMatrix.m32 + livingEntityPatch.getOriginal().getZ());
                     LevelUtil.circleSlamFracture(livingEntityPatch.getOriginal(), level, FractureCenter, 4.0F, true, true);
                 }, Side.CLIENT)));
         AVAnimations.ENDER_AEGIS_MOONLESS_AUTO_1 = builder.nextAccessor("biped/combat/ender_aegis_moonless_auto_1",
@@ -1411,38 +1421,38 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH_SHARP.get())
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.4F));
 
-        AVAnimations.BOW_AUTO_1 = builder.nextAccessor( "biped/combat/bow_auto1" ,
-                (accessor) -> new BowAttackAnimation(0.1F, 0.0F,0.62F, 0.8333F, 1.2F, InteractionHand.MAIN_HAND, null, humanoidarmature.get().rootJoint, accessor, humanoidarmature)
+        AVAnimations.BOW_AUTO_1 = builder.nextAccessor("biped/combat/bow_auto1",
+                (accessor) -> new BowAttackAnimation(0.1F, 0.0F, 0.62F, 0.8333F, 1.2F, InteractionHand.MAIN_HAND, null, humanoidarmature.get().rootJoint, accessor, humanoidarmature)
                         .addEvents(
                                 AnimationEvent.InTimeEvent.create(0.4F, (livingEntityPatch, assetAccessor, objects) -> BowFunction.bowShoot(livingEntityPatch), AnimationEvent.Side.BOTH)
                         )
-                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (anim,entity,a,b,c) -> 3.0F));
+                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (anim, entity, a, b, c) -> 3.0F));
 
-        AVAnimations.BOW_AUTO_2 = builder.nextAccessor( "biped/combat/bow_auto2" ,
-                (accessor) ->new BowAttackAnimation(0.1F, 0.0F,0.7F, 0.98F, 1.2F, InteractionHand.MAIN_HAND, null, humanoidarmature.get().rootJoint, accessor, humanoidarmature)
+        AVAnimations.BOW_AUTO_2 = builder.nextAccessor("biped/combat/bow_auto2",
+                (accessor) -> new BowAttackAnimation(0.1F, 0.0F, 0.7F, 0.98F, 1.2F, InteractionHand.MAIN_HAND, null, humanoidarmature.get().rootJoint, accessor, humanoidarmature)
                         .addEvents(
                                 AnimationEvent.InTimeEvent.create(0.6F, (livingEntityPatch, assetAccessor, objects) -> BowFunction.bowShoot(livingEntityPatch), AnimationEvent.Side.BOTH)
                         )
-                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (anim,entity,a,b,c) -> 3.0F));
+                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (anim, entity, a, b, c) -> 3.0F));
 
-        AVAnimations.BOW_AUTO_3 = builder.nextAccessor( "biped/combat/bow_auto3" ,
-                (accessor) ->new BowAttackAnimation(0.1F, 0.0F,0.88F, 1.03F, 1.3F, InteractionHand.MAIN_HAND, null, humanoidarmature.get().rootJoint, accessor, humanoidarmature)
-                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (anim,entity,a,b,c) -> 3.0F)
+        AVAnimations.BOW_AUTO_3 = builder.nextAccessor("biped/combat/bow_auto3",
+                (accessor) -> new BowAttackAnimation(0.1F, 0.0F, 0.88F, 1.03F, 1.3F, InteractionHand.MAIN_HAND, null, humanoidarmature.get().rootJoint, accessor, humanoidarmature)
+                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (anim, entity, a, b, c) -> 3.0F)
                         .addEvents(
                                 AnimationEvent.InTimeEvent.create(0.84F, (livingEntityPatch, assetAccessor, objects) -> BowFunction.bowShoot(livingEntityPatch), AnimationEvent.Side.BOTH)
                         ));
 
-        AVAnimations.BOW_AUTO_4 = builder.nextAccessor( "biped/combat/bow_auto4" ,
-                (accessor) ->new BowAttackAnimation(0.05F, 0,2.12F, 2.733F, 1.2F, InteractionHand.MAIN_HAND, null, humanoidarmature.get().rootJoint, accessor, humanoidarmature)
+        AVAnimations.BOW_AUTO_4 = builder.nextAccessor("biped/combat/bow_auto4",
+                (accessor) -> new BowAttackAnimation(0.05F, 0, 2.12F, 2.733F, 1.2F, InteractionHand.MAIN_HAND, null, humanoidarmature.get().rootJoint, accessor, humanoidarmature)
                         .addEvents(
                                 AnimationEvent.InTimeEvent.create(1.2083F, (livingEntityPatch, assetAccessor, objects) -> BowFunction.bowShoot(livingEntityPatch), AnimationEvent.Side.BOTH),
                                 AnimationEvent.InTimeEvent.create(1.7916F, (livingEntityPatch, assetAccessor, objects) -> BowFunction.bowShoot(livingEntityPatch), AnimationEvent.Side.BOTH),
                                 AnimationEvent.InTimeEvent.create(2.0416F, (livingEntityPatch, assetAccessor, objects) -> BowFunction.bowShoot(livingEntityPatch), AnimationEvent.Side.BOTH))
-                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (anim,entity,a,b,c) -> 3.0F));
+                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (anim, entity, a, b, c) -> 3.0F));
 
-        AVAnimations.BOW_AUTO_5 = builder.nextAccessor( "biped/combat/bow_auto5" ,
-                (accessor) ->new BowAttackAnimation(0.02F, 0,0.2F, 1.51F, 1.2F, InteractionHand.MAIN_HAND, null, humanoidarmature.get().rootJoint, accessor, humanoidarmature)
-                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (anim,entity,a,b,c) -> 3.0F)
+        AVAnimations.BOW_AUTO_5 = builder.nextAccessor("biped/combat/bow_auto5",
+                (accessor) -> new BowAttackAnimation(0.02F, 0, 0.2F, 1.51F, 1.2F, InteractionHand.MAIN_HAND, null, humanoidarmature.get().rootJoint, accessor, humanoidarmature)
+                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (anim, entity, a, b, c) -> 3.0F)
                         .addEvents(AnimationEvent.InTimeEvent.create(0.7083F, (livingEntityPatch, assetAccessor, objects) -> BowFunction.bowShoot(livingEntityPatch), AnimationEvent.Side.BOTH)
                         ));
         AVAnimations.YELLOW_SOLAR_AUTO_2 = builder.nextAccessor("biped/combat/yellow_solar_auto_2",
@@ -1508,10 +1518,10 @@ public class AVAnimations {
                         .addProperty(WomAnimationProperty.ANTI_STUN_MULTIPLYER, 1.0F)
                         .addEvents(new AnimationEvent[]{
                                 AnimationEvent.InPeriodEvent.create(0.0F, 0.4F, (entityPatch, self, params) -> {
-                            Level level = entityPatch.getOriginal().level();
-                            LivingEntity entity = entityPatch.getOriginal();
-                            level.addParticle(EpicFightParticles.WHITE_AFTERIMAGE.get(), entity.getX(), entity.getY(), entity.getZ(), Double.longBitsToDouble(entity.getId()), 0.0F, 0.0F);
-                        }, Side.CLIENT),
+                                    Level level = entityPatch.getOriginal().level();
+                                    LivingEntity entity = entityPatch.getOriginal();
+                                    level.addParticle(EpicFightParticles.WHITE_AFTERIMAGE.get(), entity.getX(), entity.getY(), entity.getZ(), Double.longBitsToDouble(entity.getId()), 0.0F, 0.0F);
+                                }, Side.CLIENT),
                                 AnimationEvent.InTimeEvent.create(0.5F, (livingEntityPatch, self, p) -> {
                                     if (!livingEntityPatch.isLogicalClient()) {
                                         livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_DASH, 0.0F);
@@ -1728,32 +1738,32 @@ public class AVAnimations {
                         .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
                         .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
                         .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.0F, 0.3F)).addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, (self, livingEntityPatch, speed, prevElapsedTime, elapsedTime) -> {
-                    if (elapsedTime >= 0.35F && elapsedTime < 0.45F) {
-                        float dpx = (float) livingEntityPatch.getOriginal().getX();
-                        float dpy = (float) livingEntityPatch.getOriginal().getY();
-                        float dpz = (float) livingEntityPatch.getOriginal().getZ();
+                            if (elapsedTime >= 0.35F && elapsedTime < 0.45F) {
+                                float dpx = (float) livingEntityPatch.getOriginal().getX();
+                                float dpy = (float) livingEntityPatch.getOriginal().getY();
+                                float dpz = (float) livingEntityPatch.getOriginal().getZ();
 
-                        for(BlockState block = livingEntityPatch.getOriginal().level().getBlockState(new BlockPos.MutableBlockPos(dpx, dpy, dpz)); (block.getBlock() instanceof BushBlock || block.isAir()) && !block.is(Blocks.VOID_AIR); block = livingEntityPatch.getOriginal().level().getBlockState(new BlockPos.MutableBlockPos(dpx, dpy, dpz))) {
-                            --dpy;
-                        }
+                                for (BlockState block = livingEntityPatch.getOriginal().level().getBlockState(new BlockPos.MutableBlockPos(dpx, dpy, dpz)); (block.getBlock() instanceof BushBlock || block.isAir()) && !block.is(Blocks.VOID_AIR); block = livingEntityPatch.getOriginal().level().getBlockState(new BlockPos.MutableBlockPos(dpx, dpy, dpz))) {
+                                    --dpy;
+                                }
 
-                        float distanceToGround = (float) org.joml.Math.max(org.joml.Math.abs(livingEntityPatch.getOriginal().getY() - (double)dpy) - (double)1.0F, 0.0F);
-                        LivingEntity livingentity = livingEntityPatch.getOriginal();
-                        Vec3f direction = new Vec3f(2.5F, -0.25F, 0.0F);
-                        OpenMatrix4f rotation = (new OpenMatrix4f()).rotate(-org.joml.Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 90.0F), new Vec3f(0.0F, 1.0F, 0.0F));
-                        OpenMatrix4f.transform3v(rotation, direction, direction);
-                        AABB box = AABB.ofSize(livingEntityPatch.getOriginal().getPosition(1.0F), 3.0F, 3.0F, 3.0F);
-                        List<Entity> list = livingEntityPatch.getOriginal().level().getEntities(livingEntityPatch.getOriginal(), box);
-                        if (distanceToGround > 0.5F && list.isEmpty()) {
-                            livingentity.move(MoverType.SELF, direction.toDoubleVector());
-                            return 0.05F;
-                        } else {
-                            return speed;
-                        }
-                    } else {
-                        return speed;
-                    }
-                })
+                                float distanceToGround = (float) org.joml.Math.max(org.joml.Math.abs(livingEntityPatch.getOriginal().getY() - (double) dpy) - (double) 1.0F, 0.0F);
+                                LivingEntity livingentity = livingEntityPatch.getOriginal();
+                                Vec3f direction = new Vec3f(2.5F, -0.25F, 0.0F);
+                                OpenMatrix4f rotation = (new OpenMatrix4f()).rotate(-org.joml.Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 90.0F), new Vec3f(0.0F, 1.0F, 0.0F));
+                                OpenMatrix4f.transform3v(rotation, direction, direction);
+                                AABB box = AABB.ofSize(livingEntityPatch.getOriginal().getPosition(1.0F), 3.0F, 3.0F, 3.0F);
+                                List<Entity> list = livingEntityPatch.getOriginal().level().getEntities(livingEntityPatch.getOriginal(), box);
+                                if (distanceToGround > 0.5F && list.isEmpty()) {
+                                    livingentity.move(MoverType.SELF, direction.toDoubleVector());
+                                    return 0.05F;
+                                } else {
+                                    return speed;
+                                }
+                            } else {
+                                return speed;
+                            }
+                        })
                         .addEvents(AnimationEvent.InTimeEvent.create(0.25F, reascer.wom.gameasset.ReuseableEvents.RUINE_COMET_AIRBURST, Side.CLIENT), AnimationEvent.InTimeEvent.create(0.5F, reascer.wom.gameasset.ReuseableEvents.RUINE_COMET_GROUNDTHRUST, Side.CLIENT))
                         .addEvents(new AnimationEvent[]{
                                 AnimationEvent.InTimeEvent.create(1.0F, (livingEntityPatch, self, p) -> {
@@ -1799,7 +1809,6 @@ public class AVAnimations {
                                         AnimationEvent.InTimeEvent.create(0.3F, reascer.wom.gameasset.ReuseableEvents.FAST_SPINING, Side.CLIENT),
                                         AnimationEvent.InTimeEvent.create(0.4F, reascer.wom.gameasset.ReuseableEvents.FAST_SPINING, Side.CLIENT)
                                 }));
-
         AVAnimations.ENDER_GLAIVE_NAPOLEON_SHOOT_3 = builder.nextAccessor("biped/skill/ender_glaive_napoleon_shoot_3",
                 (accessor) -> (new SpecialAttackAnimation(0.2F, accessor, humanoidarmature, new Phase(0.0F, 0.3F, 0.4F, 0.44F, 0.44F, humanoidarmature.get().toolR, null),
                         new Phase(0.44F, 0.45F, 0.5F, 0.95F, Float.MAX_VALUE, humanoidarmature.get().toolR, null)))
@@ -1812,13 +1821,113 @@ public class AVAnimations {
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.1F)
                         .addProperty(StaticAnimationProperty.POSE_MODIFIER, null)
                         .addProperty(WomAnimationProperty.ANTI_STUN_MULTIPLYER, 1.0F)
-                        .addEvents(new AnimationEvent[]{
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.5F, (livingEntityPatch, self, p) -> {
+                                    Vec3 tipPos = EpicfightUtil.getJointWithTranslation(
+                                            livingEntityPatch.getOriginal(),
+                                            new Vec3f(0.0F, 0.0F, 0.0F),
+                                            Armatures.BIPED.get().toolR,
+                                            4.3F,
+                                            2.3F
+                                    );
+                                    if (tipPos != null) {
+                                        BlockPos mutePos = BlockPos.containing(tipPos);
+                                        AnnoyingVillagers.PACKET_HANDLER.send(
+                                                PacketDistributor.TRACKING_ENTITY_AND_SELF.with(livingEntityPatch::getOriginal),
+                                                new ClientboundMuteExplosionAtPos(mutePos, 4)
+                                        );
+                                        livingEntityPatch.getOriginal().level().explode(livingEntityPatch.getOriginal(), tipPos.x, tipPos.y, tipPos.z,
+                                                2.0F, true, Level.ExplosionInteraction.TNT);
+                                        Vec3 glaivePos = EpicfightUtil.getJointWithTranslation(livingEntityPatch.getOriginal(), new Vec3f(0, 0, 0),
+                                                Armatures.BIPED.get().toolR, 1.3F, 2.3F);
+                                        Vec3 explosionPos = EpicfightUtil.getJointWithTranslation(livingEntityPatch.getOriginal(), new Vec3f(0, 0, 0),
+                                                Armatures.BIPED.get().toolR, 10.3F, 2.3F);
+                                        AnnoyingVillagers.PACKET_HANDLER.send(
+                                                PacketDistributor.TRACKING_ENTITY_AND_SELF.with(livingEntityPatch::getOriginal),
+                                                new ClientboundGlaiveExplosionFx(glaivePos, explosionPos)
+                                        );
+                                        if (explosionPos != null) {
+                                            livingEntityPatch.getOriginal().level().playSound(null, new BlockPos((int) explosionPos.x, (int) explosionPos.y, (int) explosionPos.z), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_shot"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                        }
+                                    }
+                                }, Side.SERVER),
                                 AnimationEvent.InTimeEvent.create(1.5F, (livingEntityPatch, self, p) -> {
                                     if (!livingEntityPatch.isLogicalClient()) {
                                         livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
                                     }
-                                }, Side.SERVER)
-                        }));
+                                }, Side.SERVER))
+        );
+        AVAnimations.ENDER_GLAIVE_AGONY_AUTO_1 = builder.nextAccessor("biped/combat/ender_glaive_agony_auto_1",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.1F, accessor, humanoidarmature,
+                        new Phase(0.0F, 0.15F, 0.25F, 0.3F, 0.3F, humanoidarmature.get().toolR, null),
+                        new Phase(0.3F, 0.55F, 0.65F, 0.7F, Float.MAX_VALUE, humanoidarmature.get().toolR, null)))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.6F))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.4F), 1)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE, 1)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.2F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(0.29F), 1)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6F)
+                        .addProperty(ActionAnimationProperty.COORD_SET_TICK, (self, livingEntityPatch, transformSheet) -> {
+                            LivingEntity attackTarget = livingEntityPatch.getTarget();
+                            if (!(Boolean) self.getRealAnimation().get().getProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE).orElse(false) && attackTarget != null) {
+                                TransformSheet transform = self.getTransfroms().get("Root").copyAll();
+                                Keyframe[] keyframes = transform.getKeyframes();
+                                int startFrame = 0;
+                                int endFrame = transform.getKeyframes().length - 1;
+                                Vec3f keyLast = keyframes[endFrame].transform().translation();
+                                Vec3 pos = livingEntityPatch.getOriginal().getEyePosition();
+                                Vec3 targetPos = attackTarget.position().add(attackTarget.getDeltaMovement().scale(8.0F));
+                                float horizontalDistance = org.joml.Math.max((float) targetPos.subtract(pos).horizontalDistance() - (attackTarget.getBbWidth() + livingEntityPatch.getOriginal().getBbWidth()), 0.0F);
+                                Vec3f worldPosition = new Vec3f(keyLast.x, 0.0F, -horizontalDistance);
+                                float scale = org.joml.Math.min(worldPosition.length() / keyLast.length(), 2.0F);
+
+                                for (int i = startFrame; i <= endFrame; ++i) {
+                                    Vec3f translation = keyframes[i].transform().translation();
+                                    translation.z *= scale;
+                                }
+
+                                transformSheet.readFrom(transform);
+                            } else {
+                                transformSheet.readFrom(self.getTransfroms().get("Root"));
+                            }
+
+                        }).addEvents(
+                                AnimationEvent.InTimeEvent.create(0.3F, (livingEntityPatch, self, p) -> {
+                                    Vec3 tipPos = EpicfightUtil.getJointWithTranslation(
+                                            livingEntityPatch.getOriginal(),
+                                            new Vec3f(0.0F, 0.0F, 0.0F),
+                                            Armatures.BIPED.get().toolR,
+                                            4.3F,
+                                            2.3F
+                                    );
+                                    if (tipPos != null) {
+                                        BlockPos mutePos = BlockPos.containing(tipPos);
+                                        AnnoyingVillagers.PACKET_HANDLER.send(
+                                                PacketDistributor.TRACKING_ENTITY_AND_SELF.with(livingEntityPatch::getOriginal),
+                                                new ClientboundMuteExplosionAtPos(mutePos, 4)
+                                        );
+                                        livingEntityPatch.getOriginal().level().explode(livingEntityPatch.getOriginal(), tipPos.x, tipPos.y, tipPos.z,
+                                                2.0F, true, Level.ExplosionInteraction.TNT);
+                                        Vec3 glaivePos = EpicfightUtil.getJointWithTranslation(livingEntityPatch.getOriginal(), new Vec3f(0, 0, 0),
+                                                Armatures.BIPED.get().toolR, 1.3F, 2.3F);
+                                        Vec3 explosionPos = EpicfightUtil.getJointWithTranslation(livingEntityPatch.getOriginal(), new Vec3f(0, 0, 0),
+                                                Armatures.BIPED.get().toolR, 10.3F, 2.3F);
+                                        AnnoyingVillagers.PACKET_HANDLER.send(
+                                                PacketDistributor.TRACKING_ENTITY_AND_SELF.with(livingEntityPatch::getOriginal),
+                                                new ClientboundGlaiveExplosionFx(glaivePos, explosionPos)
+                                        );
+                                        if (explosionPos != null) {
+                                            livingEntityPatch.getOriginal().level().playSound(null, new BlockPos((int) explosionPos.x, (int) explosionPos.y, (int) explosionPos.z), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_shot"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                        }
+                                    }
+                                }, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(1.5F, (livingEntityPatch, self, p) -> {
+                                    if (!livingEntityPatch.isLogicalClient()) {
+                                        livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
+                                    }
+                                }, Side.SERVER))
+        );
         AVAnimations.ENDER_GLAIVE_NAPOLEON_AUTO_3 = builder.nextAccessor("biped/combat/ender_glaive_napoleon_auto_3",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.15F, accessor, humanoidarmature,
                         new Phase(0.0F, 0.15F, 0.35F, 0.39F, 0.39F, humanoidarmature.get().toolR, null),
@@ -1893,8 +2002,8 @@ public class AVAnimations {
                                     }
                                 }, Side.SERVER)
                         }));
-        AVAnimations.LEGENDARY_SWORD_AUTO_4 = builder.nextAccessor( "biped/combat/legendary_sword_auto_4",
-                (accessor) ->  (new BasicMultipleAttackAnimation(0.15F, accessor, humanoidarmature, new Phase(0.0F, 0.2F, 0.4F, 0.45F, 0.45F, humanoidarmature.get().toolR, null),
+        AVAnimations.LEGENDARY_SWORD_AUTO_4 = builder.nextAccessor("biped/combat/legendary_sword_auto_4",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.15F, accessor, humanoidarmature, new Phase(0.0F, 0.2F, 0.4F, 0.45F, 0.45F, humanoidarmature.get().toolR, null),
                         new Phase(0.45F, 0.55F, 0.7F, 0.7F, Float.MAX_VALUE, InteractionHand.OFF_HAND, humanoidarmature.get().toolL, null)))
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.6F))
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2.0F), 1)
@@ -1947,11 +2056,11 @@ public class AVAnimations {
                                 float dpy = (float) livingEntityPatch.getOriginal().getY();
                                 float dpz = (float) livingEntityPatch.getOriginal().getZ();
 
-                                for(BlockState block = livingEntityPatch.getOriginal().level().getBlockState(new BlockPos.MutableBlockPos(dpx, dpy, dpz)); (block.getBlock() instanceof BushBlock || block.isAir()) && !block.is(Blocks.VOID_AIR); block = livingEntityPatch.getOriginal().level().getBlockState(new BlockPos.MutableBlockPos(dpx, dpy, dpz))) {
+                                for (BlockState block = livingEntityPatch.getOriginal().level().getBlockState(new BlockPos.MutableBlockPos(dpx, dpy, dpz)); (block.getBlock() instanceof BushBlock || block.isAir()) && !block.is(Blocks.VOID_AIR); block = livingEntityPatch.getOriginal().level().getBlockState(new BlockPos.MutableBlockPos(dpx, dpy, dpz))) {
                                     --dpy;
                                 }
 
-                                float distanceToGround = (float) Math.max(Math.abs(livingEntityPatch.getOriginal().getY() - (double)dpy) - (double)1.0F, 0.0F);
+                                float distanceToGround = (float) Math.max(Math.abs(livingEntityPatch.getOriginal().getY() - (double) dpy) - (double) 1.0F, 0.0F);
                                 return 1.0F - (1.0F / (-distanceToGround - 1.0F) + 1.0F);
                             } else {
                                 return speed;
@@ -1969,7 +2078,7 @@ public class AVAnimations {
                                 float referenceYaw = livingEntityPatch.getOriginal().yHeadRot;
                                 double newX = referenceX + offset * (double) org.joml.Math.sin(org.joml.Math.toRadians(referenceYaw));
                                 double newZ = referenceZ - offset * (double) org.joml.Math.cos(org.joml.Math.toRadians(referenceYaw));
-                                BlockPos blockPos = new BlockPos((int)newX, (int)referenceY, (int)newZ);
+                                BlockPos blockPos = new BlockPos((int) newX, (int) referenceY, (int) newZ);
                                 BlockState block = livingEntityPatch.getOriginal().level().getBlockState(blockPos);
                                 if (!block.isCollisionShapeFullBlock(livingEntityPatch.getOriginal().level(), blockPos)) {
                                     livingEntityPatch.getOriginal().teleportTo(newX, referenceY, newZ);
@@ -1983,13 +2092,13 @@ public class AVAnimations {
                             ((ServerLevel) livingEntityPatch.getOriginal().level())
                                     .sendParticles(ParticleTypes.REVERSE_PORTAL,
                                             livingEntityPatch.getOriginal().getX(),
-                                            livingEntityPatch.getOriginal().getY() + (double)1.0F,
+                                            livingEntityPatch.getOriginal().getY() + (double) 1.0F,
                                             livingEntityPatch.getOriginal().getZ(),
                                             60, 0.05, 0.05, 0.05, 0.5F);
                             livingEntityPatch.getOriginal().level().playSound(
                                     null,
                                     livingEntityPatch.getOriginal().xo,
-                                    livingEntityPatch.getOriginal().yo + (double)1.0F,
+                                    livingEntityPatch.getOriginal().yo + (double) 1.0F,
                                     livingEntityPatch.getOriginal().zo,
                                     SoundEvents.ENDERMAN_TELEPORT,
                                     livingEntityPatch.getOriginal().getSoundSource(),
@@ -2022,30 +2131,30 @@ public class AVAnimations {
                         .addProperty(StaticAnimationProperty.POSE_MODIFIER, null)
                         .addProperty(ActionAnimationProperty.COORD_SET_TICK,
                                 (self, entitypatch, transformSheet) -> {
-                    LivingEntity attackTarget = entitypatch.getTarget();
-                    if (!(Boolean) self.getRealAnimation().get().getProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE).orElse(false) && attackTarget != null) {
-                        TransformSheet transform = self.getTransfroms().get("Root").copyAll();
-                        Keyframe[] keyframes = transform.getKeyframes();
-                        int startFrame = 0;
-                        int endFrame = transform.getKeyframes().length - 1;
-                        Vec3f keyLast = keyframes[endFrame].transform().translation();
-                        Vec3 pos = entitypatch.getOriginal().getEyePosition();
-                        Vec3 targetpos = attackTarget.position().add(attackTarget.getDeltaMovement().scale(1.5F));
-                        float horizontalDistance = org.joml.Math.max((float) targetpos.subtract(pos).horizontalDistance() - (attackTarget.getBbWidth() + entitypatch.getOriginal().getBbWidth()), 0.0F);
-                        Vec3f worldPosition = new Vec3f(keyLast.x, 0.0F, -horizontalDistance);
-                        float scale = org.joml.Math.min(worldPosition.length() / keyLast.length(), 1.5F);
+                                    LivingEntity attackTarget = entitypatch.getTarget();
+                                    if (!(Boolean) self.getRealAnimation().get().getProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE).orElse(false) && attackTarget != null) {
+                                        TransformSheet transform = self.getTransfroms().get("Root").copyAll();
+                                        Keyframe[] keyframes = transform.getKeyframes();
+                                        int startFrame = 0;
+                                        int endFrame = transform.getKeyframes().length - 1;
+                                        Vec3f keyLast = keyframes[endFrame].transform().translation();
+                                        Vec3 pos = entitypatch.getOriginal().getEyePosition();
+                                        Vec3 targetpos = attackTarget.position().add(attackTarget.getDeltaMovement().scale(1.5F));
+                                        float horizontalDistance = org.joml.Math.max((float) targetpos.subtract(pos).horizontalDistance() - (attackTarget.getBbWidth() + entitypatch.getOriginal().getBbWidth()), 0.0F);
+                                        Vec3f worldPosition = new Vec3f(keyLast.x, 0.0F, -horizontalDistance);
+                                        float scale = org.joml.Math.min(worldPosition.length() / keyLast.length(), 1.5F);
 
-                        for(int i = startFrame; i <= endFrame; ++i) {
-                            Vec3f translation = keyframes[i].transform().translation();
-                            translation.z *= scale;
-                        }
+                                        for (int i = startFrame; i <= endFrame; ++i) {
+                                            Vec3f translation = keyframes[i].transform().translation();
+                                            translation.z *= scale;
+                                        }
 
-                        transformSheet.readFrom(transform);
-                    } else if (transformSheet != null) {
-                        transformSheet.readFrom(self.getTransfroms().get("Root"));
-                    }
+                                        transformSheet.readFrom(transform);
+                                    } else if (transformSheet != null) {
+                                        transformSheet.readFrom(self.getTransfroms().get("Root"));
+                                    }
 
-                }));
+                                }));
     }
 
     private static class ReuseableEvents {
@@ -2054,33 +2163,33 @@ public class AVAnimations {
 
         private static final AnimationEvent.E0 GROUNDSLAM =
                 (livingentitypatch, staticanimation, aobject) -> {
-            Vec3 vec3 = livingentitypatch.getOriginal().position();
-            OpenMatrix4f openmatrix4f = livingentitypatch.getArmature()
-                    .getBoundTransformFor(livingentitypatch.getAnimator().getPose(1.0F), Armatures.BIPED.get().toolR)
-                    .mulFront(OpenMatrix4f.createTranslation((float) vec3.x, (float) vec3.y, (float) vec3.z)
-                            .mulBack(OpenMatrix4f.createRotatorDeg(180.0F, Vec3f.Y_AXIS)
-                                    .mulBack(livingentitypatch.getModelMatrix(1.0F))));
-            Vec3 vec31 = OpenMatrix4f.transform(openmatrix4f, (new Vec3f(0.0F, -0.0F, -1.4F)).toDoubleVector());
-            Level level = livingentitypatch.getOriginal().level();
-            Vec3 vec32 = getFloor(livingentitypatch, new Vec3f(0.0F, 0.0F, -1.4F), Armatures.BIPED.get().toolR);
-            BlockState blockstate = livingentitypatch.getOriginal().level().getBlockState(new BlockPos(new Vec3i((int)Math.floor(vec32.x), (int)Math.floor(vec32.y), (int)Math.floor(vec32.z))));
+                    Vec3 vec3 = livingentitypatch.getOriginal().position();
+                    OpenMatrix4f openmatrix4f = livingentitypatch.getArmature()
+                            .getBoundTransformFor(livingentitypatch.getAnimator().getPose(1.0F), Armatures.BIPED.get().toolR)
+                            .mulFront(OpenMatrix4f.createTranslation((float) vec3.x, (float) vec3.y, (float) vec3.z)
+                                    .mulBack(OpenMatrix4f.createRotatorDeg(180.0F, Vec3f.Y_AXIS)
+                                            .mulBack(livingentitypatch.getModelMatrix(1.0F))));
+                    Vec3 vec31 = OpenMatrix4f.transform(openmatrix4f, (new Vec3f(0.0F, -0.0F, -1.4F)).toDoubleVector());
+                    Level level = livingentitypatch.getOriginal().level();
+                    Vec3 vec32 = getFloor(livingentitypatch, new Vec3f(0.0F, 0.0F, -1.4F), Armatures.BIPED.get().toolR);
+                    BlockState blockstate = livingentitypatch.getOriginal().level().getBlockState(new BlockPos(new Vec3i((int) Math.floor(vec32.x), (int) Math.floor(vec32.y), (int) Math.floor(vec32.z))));
 
-            level.playLocalSound(vec32.x, vec32.y, vec32.z, blockstate.is(Blocks.WATER) ?
-                    SoundEvents.GENERIC_SPLASH :
-                    EpicFightSounds.SLAM_HEAVY.get(),
-                    SoundSource.BLOCKS,
-                    1.0F, 1.0F, false);
-            vec31 = new Vec3(vec31.x, vec32.y, vec31.z);
-            livingentitypatch.getOriginal().level().addParticle(WOMParticles.WOM_GROUND_SLAM.get(), vec32.x, (int) vec32.y + 1, vec32.z, 1.0D, 50.0D, 1.0D);
-            LevelUtil.circleSlamFracture(livingentitypatch.getOriginal(), level, vec31, 3.5D, true, false);
-        };
+                    level.playLocalSound(vec32.x, vec32.y, vec32.z, blockstate.is(Blocks.WATER) ?
+                                    SoundEvents.GENERIC_SPLASH :
+                                    EpicFightSounds.SLAM_HEAVY.get(),
+                            SoundSource.BLOCKS,
+                            1.0F, 1.0F, false);
+                    vec31 = new Vec3(vec31.x, vec32.y, vec31.z);
+                    livingentitypatch.getOriginal().level().addParticle(WOMParticles.WOM_GROUND_SLAM.get(), vec32.x, (int) vec32.y + 1, vec32.z, 1.0D, 50.0D, 1.0D);
+                    LevelUtil.circleSlamFracture(livingentitypatch.getOriginal(), level, vec31, 3.5D, true, false);
+                };
 
         private static final AnimationEvent.E0 END_ATTACK =
                 (livingentitypatch, staticanimation, aobject) -> {
-            if (livingentitypatch instanceof PlayerPatch) {
-                livingentitypatch.playAnimationSynchronized(AVAnimations.DUAL_END, 0.1F);
-            }
-        };
+                    if (livingentitypatch instanceof PlayerPatch) {
+                        livingentitypatch.playAnimationSynchronized(AVAnimations.DUAL_END, 0.1F);
+                    }
+                };
 
         public static Vec3 getFloor(LivingEntityPatch<?> livingentitypatch, Vec3f vec3f, Joint joint) {
             OpenMatrix4f openmatrix4f = livingentitypatch.getArmature().getBoundTransformFor(livingentitypatch.getAnimator().getPose(1.0F), joint);
