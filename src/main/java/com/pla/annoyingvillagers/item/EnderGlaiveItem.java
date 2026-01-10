@@ -1,7 +1,7 @@
 package com.pla.annoyingvillagers.item;
 
 import com.pla.annoyingvillagers.gameasset.AVSkills;
-import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
+import com.pla.annoyingvillagers.util.HerobrineUtil;
 import com.pla.annoyingvillagers.skill.EnderGlaiveSkill;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
@@ -74,7 +74,7 @@ public class EnderGlaiveItem extends SwordItem {
                 SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.ENDER_GLAIVE);
                 if (skillContainer != null) {
                     if (skillContainer.getStack() >= 1) {
-                        HerobrineWeaponEffectProcedure.execute(level, entity.getX(), entity.getY(), entity.getZ(), entity);
+                        HerobrineUtil.spawnEliteEffect(level, entity.getX(), entity.getY(), entity.getZ(), entity);
                     }
                 }
             }

@@ -5,7 +5,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.item.EnderAegisItem;
-import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
+import com.pla.annoyingvillagers.util.HerobrineUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -50,7 +50,7 @@ public class AegisHerobrineEntity extends HerobrineMob {
             if (this.tickCount % 20 == 0) {
                 ItemStack itemStack = this.getMainHandItem();
                 if (this.getState() > 0) {
-                    HerobrineWeaponEffectProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+                    HerobrineUtil.spawnEliteEffect(this.level(), this.getX(), this.getY(), this.getZ(), this);
                     if (itemStack.getItem() instanceof EnderAegisItem
                             && itemStack.getTag() != null && !itemStack.getTag().getBoolean("SecondForm")) {
                         itemStack.getTag().putBoolean("SecondForm", true);

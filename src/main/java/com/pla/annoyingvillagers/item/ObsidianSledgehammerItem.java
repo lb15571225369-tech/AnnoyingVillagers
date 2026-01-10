@@ -3,7 +3,7 @@ package com.pla.annoyingvillagers.item;
 import com.pla.annoyingvillagers.entity.ObsidianSledgehammerHitEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
-import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
+import com.pla.annoyingvillagers.util.HerobrineUtil;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -97,7 +97,7 @@ public class ObsidianSledgehammerItem extends AxeItem {
         if (mobPatch.getOriginal() == null) return;
 
         if (!mobPatch.getOriginal().level().isClientSide()) {
-            HerobrineWeaponEffectProcedure.execute(mobPatch.getOriginal().level(),
+            HerobrineUtil.spawnEliteEffect(mobPatch.getOriginal().level(),
                     mobPatch.getOriginal().getX(), mobPatch.getOriginal().getY(),
                     mobPatch.getOriginal().getZ(), mobPatch.getOriginal());
         }
@@ -143,7 +143,7 @@ public class ObsidianSledgehammerItem extends AxeItem {
 
         Player player = serverPlayerPatch.getOriginal();
         if (!player.level().isClientSide()) {
-            HerobrineWeaponEffectProcedure.execute(player.level(), player.getX(), player.getY(), player.getZ(), player);
+            HerobrineUtil.spawnEliteEffect(player.level(), player.getX(), player.getY(), player.getZ(), player);
         }
         AnimationPlayer animationPlayer = serverPlayerPatch.getAnimator().getPlayerFor(null);
         if (animationPlayer == null) {
@@ -259,7 +259,7 @@ public class ObsidianSledgehammerItem extends AxeItem {
                 SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.OBSIDIAN_SLEDGEHAMMER);
                 if (skillContainer != null) {
                     if (skillContainer.getStack() >= 1) {
-                        HerobrineWeaponEffectProcedure.execute(level, entity.getX(), entity.getY(), entity.getZ(), entity);
+                        HerobrineUtil.spawnEliteEffect(level, entity.getX(), entity.getY(), entity.getZ(), entity);
                     }
                 }
             }

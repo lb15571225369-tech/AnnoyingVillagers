@@ -1,19 +1,16 @@
 package com.pla.annoyingvillagers.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.DragonBeamEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
+import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class DragonBeamRenderer extends EntityRenderer<DragonBeamEntity> {
@@ -23,18 +20,14 @@ public class DragonBeamRenderer extends EntityRenderer<DragonBeamEntity> {
         super(pContext);
     }
 
-    public Vec3 getRenderOffset(DragonBeamEntity dragonBeam, float p_114484_) {
+    public @NotNull Vec3 getRenderOffset(DragonBeamEntity dragonBeam, float p_114484_) {
         return new Vec3(dragonBeam.level().random.nextGaussian() * 0.03, dragonBeam.level().random.nextGaussian() * 0.03, dragonBeam.level().random.nextGaussian() * 0.03);
     }
 
-    public void render(DragonBeamEntity beam, float entityYaw, float delta, PoseStack poseStack, MultiBufferSource multiBufferSource, int light) {
+    public void render(@NotNull DragonBeamEntity beam, float entityYaw, float delta, @NotNull PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int light) {
     }
 
-    public ResourceLocation getTextureLocation(DragonBeamEntity dragonBeam) {
+    public @NotNull ResourceLocation getTextureLocation(@NotNull DragonBeamEntity dragonBeam) {
         return TEXTURE;
-    }
-
-    public void drawVertex(Matrix4f matrix, Matrix3f normals, VertexConsumer vertexBuilder, float offsetX, float offsetY, float offsetZ, float textureX, float textureY, float alpha, int packedLightIn) {
-        vertexBuilder.vertex(matrix, offsetX, offsetY, offsetZ).color(1.0F, 1.0F, 1.0F, alpha).uv(textureX, textureY).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLightIn).normal(normals, 0.0F, 1.0F, 0.0F).endVertex();
     }
 }

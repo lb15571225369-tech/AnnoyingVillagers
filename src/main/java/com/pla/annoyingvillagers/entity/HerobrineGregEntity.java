@@ -11,7 +11,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
-import com.pla.annoyingvillagers.procedures.HerobrinePortalProcedure;
+import com.pla.annoyingvillagers.util.HerobrinePortalUtil;
 import com.pla.annoyingvillagers.spawnhandler.GregData;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.util.ChatUtil;
@@ -471,12 +471,12 @@ public class HerobrineGregEntity extends Monster {
                 }
                 AnnoyingVillagers.PACKET_HANDLER.send(
                         PacketDistributor.TRACKING_ENTITY.with(() -> this),
-                        new ClientboundHerobrinePortalFx(HerobrinePortalProcedure.finalSurfacePos(this))
+                        new ClientboundHerobrinePortalFx(HerobrinePortalUtil.finalSurfacePos(this))
                 );
             }
             if (this.escapeTiming == 40) {
                 if (this.level() instanceof ServerLevel serverLevel) {
-                    HerobrinePortalProcedure.sinkIntoGround(serverLevel, this, 0.06);
+                    HerobrinePortalUtil.sinkIntoGround(serverLevel, this, 0.06);
                 }
             }
             if (this.escapeTiming == 1) {
@@ -670,7 +670,7 @@ public class HerobrineGregEntity extends Monster {
         this.escapeTiming = 70;
         AnnoyingVillagers.PACKET_HANDLER.send(
                 PacketDistributor.TRACKING_ENTITY.with(() -> this),
-                new ClientboundHerobrinePortalFx(HerobrinePortalProcedure.finalSurfacePos(this))
+                new ClientboundHerobrinePortalFx(HerobrinePortalUtil.finalSurfacePos(this))
         );
 
         double yawRad = Math.toRadians(this.getYRot());
@@ -718,7 +718,7 @@ public class HerobrineGregEntity extends Monster {
         this.escapeTiming = 70;
         AnnoyingVillagers.PACKET_HANDLER.send(
                 PacketDistributor.TRACKING_ENTITY.with(() -> this),
-                new ClientboundHerobrinePortalFx(HerobrinePortalProcedure.finalSurfacePos(this))
+                new ClientboundHerobrinePortalFx(HerobrinePortalUtil.finalSurfacePos(this))
         );
 
         List<String> herobrines = new ArrayList<>();

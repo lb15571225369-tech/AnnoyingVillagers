@@ -6,12 +6,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.network.NetworkEvent;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.procedures.KickOnKeyPressedProcedure;
+import com.pla.annoyingvillagers.event.KickOnKeyPressedEvent;
 
 @EventBusSubscriber(bus = Bus.MOD)
 public class KickMessage {
@@ -38,7 +35,7 @@ public class KickMessage {
         }
 
         ctx.enqueueWork(() -> {
-            KickOnKeyPressedProcedure.execute(sender.level(), sender, msg.strafe);
+            KickOnKeyPressedEvent.execute(sender.level(), sender, msg.strafe);
         });
 
         ctx.setPacketHandled(true);

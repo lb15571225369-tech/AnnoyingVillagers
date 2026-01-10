@@ -1,9 +1,7 @@
 package com.pla.annoyingvillagers.item;
 
 import com.pla.annoyingvillagers.gameasset.AVSkills;
-import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
-import com.pla.annoyingvillagers.skill.EnderAegisSkill;
-import com.pla.annoyingvillagers.skill.EnderSlayerScytheSkill;
+import com.pla.annoyingvillagers.util.HerobrineUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
@@ -56,7 +54,7 @@ public class EnderSlayerScytheItem extends SwordItem {
             if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
                 SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.ENDER_SLAYER_SCYTHE);
                 if (skillContainer != null && skillContainer.isActivated()) {
-                    HerobrineWeaponEffectProcedure.execute(serverLevel, pEntity.getX(), pEntity.getY(), pEntity.getZ(), pEntity);
+                    HerobrineUtil.spawnEliteEffect(serverLevel, pEntity.getX(), pEntity.getY(), pEntity.getZ(), pEntity);
                 }
             }
         }

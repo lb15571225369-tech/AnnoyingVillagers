@@ -6,7 +6,7 @@ import com.pla.annoyingvillagers.client.emitterinfo.TopFollowEmitterInfo;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.item.EnderSlayerScytheItem;
-import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
+import com.pla.annoyingvillagers.util.HerobrineUtil;
 import com.pla.annoyingvillagers.skill.EnderSlayerScytheSkill;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import net.minecraft.nbt.CompoundTag;
@@ -374,7 +374,7 @@ public class BabyEnderDragonEntity extends FlyingMob {
         }
         if (!level().isClientSide) {
             if (shootingState) {
-                HerobrineWeaponEffectProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+                HerobrineUtil.spawnEliteEffect(this.level(), this.getX(), this.getY(), this.getZ(), this);
                 if (breathCooldown > 0) {
                     breathCooldown--;
                 } else if (this.followTarget != null) {
@@ -399,7 +399,7 @@ public class BabyEnderDragonEntity extends FlyingMob {
 
             if (getSummonTicks() > 0) {
                 this.entityData.set(SUMMON_TICKS, getSummonTicks() - 1);
-                HerobrineWeaponEffectProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+                HerobrineUtil.spawnEliteEffect(this.level(), this.getX(), this.getY(), this.getZ(), this);
             }
 
             if (this.followTarget != null && this.followTarget.isAlive()) {

@@ -3,7 +3,7 @@ package com.pla.annoyingvillagers.item;
 import java.util.List;
 
 import com.pla.annoyingvillagers.gameasset.AVSkills;
-import com.pla.annoyingvillagers.procedures.HerobrineWeaponEffectProcedure;
+import com.pla.annoyingvillagers.util.HerobrineUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -62,7 +62,7 @@ public class DemoniacVoltageReaverItem extends SwordItem {
                 SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.DEMONIAC_VOLTAGE_REAVER);
                 if (skillContainer != null) {
                     if (skillContainer.getStack() >= 1) {
-                        HerobrineWeaponEffectProcedure.execute(level, entity.getX(), entity.getY(), entity.getZ(), entity);
+                        HerobrineUtil.spawnEliteEffect(level, entity.getX(), entity.getY(), entity.getZ(), entity);
                         if (itemstack.getTag() != null && !itemstack.getTag().getBoolean("SecondForm")) {
                             itemstack.getTag().putBoolean("SecondForm", true);
                         }

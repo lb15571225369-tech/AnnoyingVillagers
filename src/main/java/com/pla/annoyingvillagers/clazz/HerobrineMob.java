@@ -13,9 +13,10 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.network.ClientboundLitePortalFx;
-import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.spawnhandler.HerobrineMobData;
 import com.pla.annoyingvillagers.util.CommonGoals;
+import com.pla.annoyingvillagers.util.HerobrinePortalUtil;
+import com.pla.annoyingvillagers.util.HerobrineUtil;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -59,7 +60,6 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.shelmarow.combat_evolution.effect.CECommonEffect;
 import net.shelmarow.combat_evolution.effect.CEMobEffects;
 import org.jetbrains.annotations.NotNull;
 import yesman.epicfight.gameasset.EpicFightSounds;
@@ -72,7 +72,7 @@ import yesman.epicfight.world.effect.EpicFightMobEffects;
 
 import java.util.*;
 
-import static com.pla.annoyingvillagers.procedures.HerobrinePortalProcedure.*;
+import static com.pla.annoyingvillagers.util.HerobrinePortalUtil.*;
 
 public class HerobrineMob extends Monster {
     private boolean renderPortal = false;
@@ -753,7 +753,7 @@ public class HerobrineMob extends Monster {
                 if (this.renderPortal) {
                     AnnoyingVillagers.PACKET_HANDLER.send(
                             PacketDistributor.TRACKING_ENTITY.with(() -> this),
-                            new ClientboundHerobrinePortalFx(HerobrinePortalProcedure.finalSurfacePos(this))
+                            new ClientboundHerobrinePortalFx(HerobrinePortalUtil.finalSurfacePos(this))
                     );
                     this.renderPortal = false;
                 }
@@ -785,7 +785,7 @@ public class HerobrineMob extends Monster {
                     );
                     if (this.level() instanceof ServerLevel serverLevel) {
                         this.playSound(AnnoyingVillagersModSounds.PORTAL_NATURAL.get(), 1.0F, 1.0F);
-                        HerobrinePortalProcedure.sinkIntoGround(serverLevel, this, 0.06);
+                        HerobrinePortalUtil.sinkIntoGround(serverLevel, this, 0.06);
                     }
                 }
                 if (remaining <= 0) {
@@ -1082,12 +1082,12 @@ public class HerobrineMob extends Monster {
         }
 
         SpawnGroupData returnSpawnGroupData = super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
-        HerobrineOnInitialSpawnProcedure.execute(serverLevelAccessor, this, recallTicks, mobSpawnType);
+        HerobrineUtil.initialSpawn(serverLevelAccessor, this, recallTicks, mobSpawnType);
         return returnSpawnGroupData;
     }
 
     public void awardKillScore(@NotNull Entity entity, int i, @NotNull DamageSource damagesource) {
         super.awardKillScore(entity, i, damagesource);
-        HerobrineTransfromProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), entity, this);
+        HerobrineUtil.transformHerobrine(this.level(), this.getX(), this.getY(), this.getZ(), entity, this);
     }
 }

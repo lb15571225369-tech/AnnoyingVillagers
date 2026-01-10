@@ -1,0 +1,409 @@
+package com.pla.annoyingvillagers.event;
+
+import com.pla.annoyingvillagers.entity.HerobrineDragonEntity;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.gameasset.AVSkills;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.item.*;
+import com.pla.annoyingvillagers.skill.*;
+import com.pla.annoyingvillagers.task.DelayedTask;
+import com.pla.annoyingvillagers.util.EpicfightUtil;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.LevelAccessor;
+import reascer.wom.gameasset.WOMAnimations;
+import reascer.wom.gameasset.animations.weapons.*;
+import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.skill.SkillContainer;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
+import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
+import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
+import yesman.epicfight.world.effect.EpicFightMobEffects;
+
+import java.util.Objects;
+
+public class SpecialAttackOnKeyPressedEvent {
+    private static final String NBT_SPECIAL_CD = "SpecialAttackCooldown";
+
+    public static void execute(LevelAccessor world, Entity entity) {
+        if (entity == null) return;
+
+        if (entity.getPersistentData().getInt(NBT_SPECIAL_CD) > 0) {
+            return;
+        }
+
+
+        PlayerPatch<?> playerpatch = EpicFightCapabilities.getEntityPatch(entity, PlayerPatch.class);
+        LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+        if (livingEntityPatch == null) return;
+        AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
+        if (EpicfightUtil.isLongHitAnimation(dynamicAnimation)) {
+            return;
+        }
+
+        if (entity instanceof Player player && !player.level().isClientSide() &&
+                !player.getMainHandItem().getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get()) &&
+                !player.getOffhandItem().getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get())) {
+            player.getInventory().items.stream()
+                    .filter(s -> !s.isEmpty() && s.is(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get()))
+                    .findFirst()
+                    .map(stack -> {
+                        if (stack.getItem() instanceof HerobrineEnderEyeItem herobrineEnderEyeItem) {
+                            var cooldowns = player.getCooldowns();
+                            if (cooldowns.isOnCooldown(herobrineEnderEyeItem)) {
+                                return false;
+                            }
+
+                            HerobrineEnderEyeItem.spawnAndShootDarkObPillars((ServerLevel) player.level(), player, 10);
+                            player.getCooldowns().addCooldown(herobrineEnderEyeItem, 40);
+                            stack.hurtAndBreak(5, player, p -> {
+                            });
+                            return true;
+                        }
+                        return false;
+                    });
+        }
+
+        if (entity instanceof Player player) {
+            // Check by item
+            ItemStack holdingItem = player.getMainHandItem();
+            ItemStack offHandItem = player.getOffhandItem();
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.ENDER_AEGIS.get())) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    livingEntityPatch.playAnimationSynchronized(AVAnimations.ENDER_AEGIS_BULL_CHARGE, 0.0F);
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
+                    return;
+                }
+            }
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.ENDER_GLAIVE.get())) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    boolean success = false;
+                    PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+                    if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
+                        SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.ENDER_GLAIVE);
+                        if (skillContainer != null && skillContainer.getSkill() instanceof EnderGlaiveSkill enderGlaiveSkill) {
+                            if (skillContainer.getStack() >= 1) {
+                                livingEntityPatch.playAnimationSynchronized(AVAnimations.ENDER_GLAIVE_NAPOLEON_SHOOT_3, 0.0F);
+                                enderGlaiveSkill.getResourceType().consumer
+                                        .consume(skillContainer, serverPlayerPatch, enderGlaiveSkill.getDefaultConsumptionAmount(serverPlayerPatch));
+                                success = true;
+                            }
+                        }
+                    }
+                    if (!success) {
+                        livingEntityPatch.playAnimationSynchronized(AnimsAgony.AGONY_RISING_EAGLE, 0.0F);
+                        new DelayedTask(10) {
+                            @Override
+                            public void run() {
+                                livingEntityPatch.playAnimationSynchronized(AnimsAgony.AGONY_RIPPING_FANGS, 0.0F);
+                            }
+                        };
+                    }
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
+                    return;
+                }
+            }
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER.get())) {
+                if (!entity.level().isClientSide() && entity.getServer() != null
+                        && holdingItem.getTag() != null && !holdingItem.getTag().getBoolean("SnakeAnimation")) {
+                    livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_CHARGED_ATTACK_1, 0.0F);
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
+                }
+                return;
+            }
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.OBSIDIAN_SLEDGEHAMMER.get())) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    boolean success = false;
+
+                    PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+                    if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
+                        SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.OBSIDIAN_SLEDGEHAMMER);
+                        if (skillContainer != null && skillContainer.getSkill() instanceof ObsidianSledgeHammerSkill obsidianSledgeHammerSkill) {
+                            if (skillContainer.getStack() >= 1) {
+                                livingEntityPatch.playAnimationSynchronized(AVAnimations.LEGENDARY_SWORD_AUTO_4, 0.0F);
+                                ObsidianSledgehammerItem.triggerCircleWhenGroundHits(serverPlayerPatch, false);
+                                obsidianSledgeHammerSkill.getResourceType().consumer
+                                        .consume(skillContainer, serverPlayerPatch, obsidianSledgeHammerSkill.getDefaultConsumptionAmount(serverPlayerPatch));
+                                success = true;
+                            }
+                        }
+                    }
+                    if (!success) {
+                        livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_BERSERK_DASH, 0.0F);
+                    }
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
+                    return;
+                }
+            }
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.ENDER_SLAYER_SCYTHE.get())) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+                    if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
+                        SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.ENDER_SLAYER_SCYTHE);
+                        if (skillContainer != null
+                                && entity.level() instanceof ServerLevel serverLevel
+                                && entity.onGround()
+                                && skillContainer.getSkill() instanceof EnderSlayerScytheSkill) {
+                            if (entity.getPersistentData().contains("DragonUUID")) {
+                                Entity dragon = serverLevel.getEntity(player.getPersistentData().getUUID("DragonUUID"));
+
+                                if (dragon instanceof HerobrineDragonEntity herobrineDragonEntity && herobrineDragonEntity.getPassengers().isEmpty()) {
+                                    livingEntityPatch.playAnimationSynchronized(AVAnimations.POSE_UP, 0.0F);
+                                    herobrineDragonEntity.recallAndLand(true);
+                                }
+                            } else {
+                                livingEntityPatch.playAnimationSynchronized(WOMAnimations.KICK_AUTO_2, 0.0F);
+                            }
+                        }
+                    }
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
+                    return;
+                }
+            }
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get())
+                    || offHandItem.getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get())) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    livingEntityPatch.playAnimationSynchronized(Animations.BIPED_LANDING, 0.0F);
+                    HerobrineEnderEyeItem.startShadowObsidianMachineGun((ServerLevel) player.level(), player);
+                    if (player.getMainHandItem().getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get())) {
+                        player.getMainHandItem().hurtAndBreak(10, player, p -> {
+                        });
+                    } else if (player.getOffhandItem().getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get())) {
+                        player.getOffhandItem().hurtAndBreak(10, player, p -> {
+                        });
+                    }
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
+                    return;
+                }
+            }
+            if (holdingItem.getItem() instanceof BowItem) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    livingEntityPatch.playAnimationSynchronized(AVAnimations.BOW_AUTO_2, 0.0F);
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
+                    return;
+                }
+            }
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.LEGENDARY_SWORD.get())) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    boolean success = false;
+
+                    PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+                    if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
+                        SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.LEGENDARY_SWORD);
+                        if (skillContainer != null && skillContainer.getSkill() instanceof LegendarySwordSkill legendarySwordSkill && player.level() instanceof ServerLevel serverLevel) {
+                            if (skillContainer.getStack() >= 1) {
+                                livingEntityPatch.playAnimationSynchronized(AVAnimations.YELLOW_TORMENT_CHARGED_ATTACK_3, 0.0F);
+                                legendarySwordSkill.getResourceType().consumer
+                                        .consume(skillContainer, serverPlayerPatch, legendarySwordSkill.getDefaultConsumptionAmount(serverPlayerPatch));
+                                success = true;
+                            }
+                        }
+                    }
+
+                    if (!success) {
+                        LivingEntity livingEntity = (LivingEntity) entity;
+                        livingEntity.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 60, 2));
+                        livingEntityPatch.playAnimationSynchronized(AnimsNapoleon.NAPOLEON_WATERLOW_SHOOT, 0.0F);
+                        new DelayedTask(20) {
+                            @Override
+                            public void run() {
+                                livingEntityPatch.playAnimationSynchronized(AVAnimations.LEGENDARY_SWORD_WAKE_UP_ATTACK, 0.0F);
+                            }
+                        };
+                    }
+
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
+                    return;
+                }
+            }
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.WOOPIE_THE_SWORD.get())) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    boolean success = false;
+                    PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+                    if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
+                        SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.WOOPIE_THE_SWORD);
+                        if (skillContainer != null && skillContainer.getStack() == 1
+                                && entity.level() instanceof ServerLevel
+                                && skillContainer.getSkill() instanceof WoopieTheSwordSkill woopieTheSwordSkill) {
+                            success = true;
+                            woopieTheSwordSkill.getResourceType().consumer
+                                    .consume(skillContainer, serverPlayerPatch, woopieTheSwordSkill.getDefaultConsumptionAmount(serverPlayerPatch));
+                        }
+                    }
+                    if (success) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.RUSH_SWORD, 0.0F);
+                    } else {
+                        livingEntityPatch.playAnimationSynchronized(AnimsRuine.RUINE_AUTO_4, 0.0F);
+                    }
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
+                    return;
+                }
+            }
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.HARD_GREATSWORD.get())) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    livingEntityPatch.playAnimationSynchronized(AnimsHerrscher.HERRSCHER_AUTO_2, 0.0F);
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
+                    return;
+                }
+            }
+
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.WOODEN_DOOR.get())) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_CHARGED_ATTACK_2, 0.0F);
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
+                    return;
+                }
+            }
+
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.CRAFTING_TABLE.get())) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    livingEntityPatch.playAnimationSynchronized(WOMAnimations.TORMENT_AIRSLAM, 0.0F);
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
+                    return;
+                }
+            }
+
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.LADDER.get())) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    livingEntityPatch.playAnimationSynchronized(Animations.VINDICATOR_SWING_AXE3, 0.0F);
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
+                    return;
+                }
+            }
+
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.TRAPDOOR.get())) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    livingEntityPatch.playAnimationSynchronized(Animations.VINDICATOR_SWING_AXE2, 0.0F);
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
+                    return;
+                }
+            }
+
+            // Check by categories
+            if (playerpatch == null) return;
+            if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.AXE) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    if (!entity.getPersistentData().contains("AxeCombo")) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.AXE_HEAVY_AUTO_1, 0.0F);
+                        entity.getPersistentData().putDouble("AxeCombo", 1.0);
+                    } else if (entity.getPersistentData().getDouble("AxeCombo") == 1.0) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.AXE_HEAVY_AUTO_2, 0.0F);
+                        entity.getPersistentData().putDouble("AxeCombo", 2.0);
+                    } else if (entity.getPersistentData().getDouble("AxeCombo") == 2.0) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.AXE_FUN_SKILL, 0.0F);
+                        entity.getPersistentData().remove("AxeCombo");
+                    }
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
+                    return;
+                }
+            }
+
+            if ((playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.SWORD
+                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.LONGSWORD
+                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.TACHI
+                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.DAGGER
+                    && (playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.SWORD
+                    || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.TACHI
+                    || playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() == WeaponCategories.AXE))) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    if (!entity.getPersistentData().contains("DualSwordCombo")) {
+                        livingEntityPatch.playAnimationSynchronized(Animations.DAGGER_DUAL_DASH, 0.0F);
+                        entity.getPersistentData().putDouble("DualSwordCombo", 1.0);
+                    } else if (entity.getPersistentData().getDouble("DualSwordCombo") == 1.0) {
+                        livingEntityPatch.playAnimationSynchronized(Animations.LONGSWORD_AUTO2, 0.0F);
+                        entity.getPersistentData().putDouble("DualSwordCombo", 2.0);
+                    } else if (entity.getPersistentData().getDouble("DualSwordCombo") == 2.0) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.DUAL_DANCING_EDGE, 0.0F);
+                        entity.getPersistentData().putDouble("DualSwordCombo", 3.0);
+                    } else if (entity.getPersistentData().getDouble("DualSwordCombo") == 3.0) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.DUAL_SWORD_DANCING_EDGE, 0.0F);
+                        entity.getPersistentData().remove("DualSwordCombo");
+                    }
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
+                    return;
+                }
+            }
+
+            if ((playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.SWORD
+                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.LONGSWORD
+                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.TACHI
+                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.DAGGER
+                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.UCHIGATANA)
+                    && playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.SWORD
+                    && playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.TACHI
+                    && playerpatch.getHoldingItemCapability(InteractionHand.OFF_HAND).getWeaponCategory() != WeaponCategories.AXE) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    if (!entity.getPersistentData().contains("SwordCombo")) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.SWORD_HEAVY_AUTO_1, 0.0F);
+                        entity.getPersistentData().putDouble("SwordCombo", 1.0);
+                    } else if (entity.getPersistentData().getDouble("SwordCombo") == 1.0) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.SWORD_HEAVY_AUTO_2, 0.0F);
+                        entity.getPersistentData().putDouble("SwordCombo", 2.0);
+                    } else if (entity.getPersistentData().getDouble("SwordCombo") == 2.0) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.SWORD_HEAVY_AUTO_3, 0.0F);
+                        entity.getPersistentData().remove("SwordCombo");
+                    }
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 1);
+                    return;
+                }
+            }
+
+            if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.GREATSWORD) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    livingEntityPatch.playAnimationSynchronized(AVAnimations.GIANT_WHIRLWIND, 0.0F);
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
+                    return;
+                }
+            }
+
+            if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.FIST
+                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.NOT_WEAPON
+                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.RANGED) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    if (entity.isSprinting()) {
+                        if (entity.isShiftKeyDown()) {
+                            if (!entity.level().isClientSide() && entity.getServer() != null) {
+                                livingEntityPatch.playAnimationSynchronized(AVAnimations.WHIRLWIND_KICK_LEFT, 0.0F);
+                            }
+                        } else {
+                            if (!entity.level().isClientSide() && entity.getServer() != null) {
+                                livingEntityPatch.playAnimationSynchronized(AVAnimations.WHIRLWIND_KICK, 0.0F);
+                            }
+                        }
+                    } else {
+                        if (!entity.getPersistentData().contains("FistCombo")) {
+                            livingEntityPatch.playAnimationSynchronized(AVAnimations.FIST_LEFT, 0.0F);
+                            entity.getPersistentData().putDouble("FistCombo", 1.0);
+                        } else if (entity.getPersistentData().getDouble("FistCombo") == 1.0) {
+                            livingEntityPatch.playAnimationSynchronized(AVAnimations.FIST_UP, 0.0F);
+                            entity.getPersistentData().putDouble("FistCombo", 2.0);
+                        } else if (entity.getPersistentData().getDouble("FistCombo") == 2.0) {
+                            livingEntityPatch.playAnimationSynchronized(AVAnimations.FIST_DASH, 0.0F);
+                            entity.getPersistentData().remove("FistCombo");
+                        }
+                    }
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 1);
+                    return;
+                }
+            }
+
+            if (playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.SPEAR
+                    || playerpatch.getHoldingItemCapability(InteractionHand.MAIN_HAND).getWeaponCategory() == WeaponCategories.TRIDENT) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    livingEntityPatch.playAnimationSynchronized(AVAnimations.SPEAR_THRUST, 0.0F);
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
+                }
+            }
+        }
+    }
+}

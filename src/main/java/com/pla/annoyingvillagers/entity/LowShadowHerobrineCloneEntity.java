@@ -9,13 +9,10 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.network.ClientboundLitePortalFx;
-import com.pla.annoyingvillagers.procedures.*;
 import com.pla.annoyingvillagers.spawnhandler.HerobrineMobData;
-import com.pla.annoyingvillagers.util.CombatBehaviour;
-import com.pla.annoyingvillagers.util.CommonGoals;
+import com.pla.annoyingvillagers.util.*;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
-import com.pla.annoyingvillagers.util.HerobrineUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -289,7 +286,7 @@ public class LowShadowHerobrineCloneEntity extends Monster {
                     && !this.forEscaping) {
                 if (this.level() instanceof ServerLevel serverLevel) {
                     serverLevel.playSound(null, this.blockPosition(), AnnoyingVillagersModSounds.OBSIDIAN_PLACE.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
-                    HerobrineUtil.spawnObsidianEyeLineStaggered(serverLevel, this, AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().defaultBlockState(), 1);
+                    com.pla.annoyingvillagers.util.HerobrineUtil.spawnObsidianEyeLineStaggered(serverLevel, this, AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().defaultBlockState(), 1);
                 }
             }
         }
@@ -384,7 +381,7 @@ public class LowShadowHerobrineCloneEntity extends Monster {
             BlockPos spawnPos = new BlockPos(blockPos.getX(), surfaceY, blockPos.getZ());
             this.moveTo(spawnPos, this.getYRot(), this.getXRot());
         }
-        HerobrineOnInitialSpawnProcedure.execute(serverLevelAccessor, this, 0, mobSpawnType);
+        HerobrineUtil.initialSpawn(serverLevelAccessor, this, 0, mobSpawnType);
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
 
@@ -396,7 +393,7 @@ public class LowShadowHerobrineCloneEntity extends Monster {
                 if (this.renderPortal) {
                     AnnoyingVillagers.PACKET_HANDLER.send(
                             PacketDistributor.TRACKING_ENTITY.with(() -> this),
-                            new ClientboundHerobrinePortalFx(HerobrinePortalProcedure.finalSurfacePos(this))
+                            new ClientboundHerobrinePortalFx(HerobrinePortalUtil.finalSurfacePos(this))
                     );
                     renderPortal = false;
                 }
@@ -416,7 +413,7 @@ public class LowShadowHerobrineCloneEntity extends Monster {
                     new DelayedTask(10) {
                         @Override
                         public void run() {
-                            HerobrineUtil.spawnObsidianPatternAtBody(serverLevel, entity, AnnoyingVillagersModBlocks.CRYING_OBSIDIAN_BLOCK.get().defaultBlockState());
+                            com.pla.annoyingvillagers.util.HerobrineUtil.spawnObsidianPatternAtBody(serverLevel, entity, AnnoyingVillagersModBlocks.CRYING_OBSIDIAN_BLOCK.get().defaultBlockState());
                             entity.discard();
                         }
                     };

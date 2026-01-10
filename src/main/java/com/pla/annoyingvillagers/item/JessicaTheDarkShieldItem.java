@@ -1,6 +1,6 @@
 package com.pla.annoyingvillagers.item;
 
-import com.pla.annoyingvillagers.events.ShieldRendererEvent;
+import com.pla.annoyingvillagers.event.ShieldRendererEvent;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ShieldItem;

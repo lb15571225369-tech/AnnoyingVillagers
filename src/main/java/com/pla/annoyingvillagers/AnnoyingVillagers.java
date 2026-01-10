@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers;
 
-import java.util.AbstractMap;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -11,7 +10,7 @@ import com.pla.annoyingvillagers.gameasset.AVSkillCategories;
 import com.pla.annoyingvillagers.gameasset.AVSkillSlots;
 import com.pla.annoyingvillagers.init.*;
 import com.pla.annoyingvillagers.network.*;
-import com.pla.annoyingvillagers.events.NpcGearLoadEvent;
+import com.pla.annoyingvillagers.event.NpcGearLoadEvent;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -31,7 +30,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
-import net.minecraftforge.fml.util.thread.SidedThreadGroups;
 import net.minecraftforge.network.NetworkEvent.Context;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;

@@ -9,13 +9,9 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.network.ClientboundLitePortalFx;
-import com.pla.annoyingvillagers.procedures.HerobrinePortalProcedure;
-import com.pla.annoyingvillagers.procedures.HerobrineOnInitialSpawnProcedure;
-import com.pla.annoyingvillagers.util.CombatBehaviour;
-import com.pla.annoyingvillagers.util.CommonGoals;
+import com.pla.annoyingvillagers.util.*;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
-import com.pla.annoyingvillagers.util.HerobrineUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -155,7 +151,7 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
                     && !damageSource.is(DamageTypes.ON_FIRE)) {
                 if (this.level() instanceof ServerLevel serverLevel) {
                     serverLevel.playSound(null, this.blockPosition(), AnnoyingVillagersModSounds.OBSIDIAN_PLACE.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
-                    HerobrineUtil.spawnObsidianEyeLineStaggered(serverLevel, this, AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get().defaultBlockState(), 1);
+                    com.pla.annoyingvillagers.util.HerobrineUtil.spawnObsidianEyeLineStaggered(serverLevel, this, AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get().defaultBlockState(), 1);
                 }
             }
         }
@@ -325,7 +321,7 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
 
     @Override
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverLevelAccessor, @NotNull DifficultyInstance difficultyInstance, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
-        HerobrineOnInitialSpawnProcedure.execute(serverLevelAccessor, this, 0, mobSpawnType);
+        HerobrineUtil.initialSpawn(serverLevelAccessor, this, 0, mobSpawnType);
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
 
@@ -372,7 +368,7 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
                     if (this.renderPortal) {
                         AnnoyingVillagers.PACKET_HANDLER.send(
                                 PacketDistributor.TRACKING_ENTITY.with(() -> this),
-                                new ClientboundHerobrinePortalFx(HerobrinePortalProcedure.finalSurfacePos(this))
+                                new ClientboundHerobrinePortalFx(HerobrinePortalUtil.finalSurfacePos(this))
                         );
                         renderPortal = false;
                     }

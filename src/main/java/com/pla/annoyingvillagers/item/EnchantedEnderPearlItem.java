@@ -1,12 +1,8 @@
 package com.pla.annoyingvillagers.item;
 
 import java.util.List;
-import java.util.Random;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.EnchantedEnderPearlEntity;
-import com.pla.annoyingvillagers.procedures.EnchantedEnderPearlWhenItemUsedProcedure;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
