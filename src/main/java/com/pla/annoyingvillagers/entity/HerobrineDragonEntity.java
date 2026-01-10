@@ -462,7 +462,6 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
             }
             this.nearestCrystal = endcrystalTemp;
         }
-
     }
 
     @Override
@@ -938,6 +937,13 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
                 && this.level() instanceof ServerLevel serverLevel) {
             endCrystal.hurt(serverLevel.damageSources().generic(), 1.0F);
         }
+        if (this.getFirstPassenger() != null && this.getFirstPassenger() instanceof EndCrystal) {
+            return;
+        }
+        if (this.nearestCrystal != null) {
+            this.nearestCrystal.setBeamTarget(null);
+        }
+
         super.remove(pReason);
     }
 

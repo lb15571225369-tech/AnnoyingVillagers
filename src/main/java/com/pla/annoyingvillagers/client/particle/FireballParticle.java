@@ -1,3 +1,19 @@
+/*
+ * This file is part of AnnoyingVillagers.
+ *
+ * Contains code/assets adapted from:
+ *   Explosive Enhancement: Reforged
+ *   Copyright (C) Xylonity
+ *
+ * The original work is licensed under the GNU General Public License v3.0 (GPL-3.0).
+ * This file (and any modifications to the adapted portions) is distributed under the
+ * terms of the GPL-3.0 license. You should have received a copy of the GNU GPL v3.0
+ * along with this project. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Note: Portions of this file include/derive from particle implementation(s)
+ * originating in Explosive Enhancement: Reforged.
+ */
+
 package com.pla.annoyingvillagers.client.particle;
 
 import net.minecraft.client.multiplayer.ClientLevel;

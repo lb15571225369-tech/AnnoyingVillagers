@@ -242,14 +242,7 @@ public class HerobrineCommon {
             if (herobrineMob.getState() < 2) {
                 herobrineMob.setSecondFormHitLeft(herobrineMob.getSecondFormHitLeft() - 1);
             }
-            if (herobrineMob instanceof AegisHerobrineEntity && herobrineMob.level() instanceof ServerLevel serverLevel) {
-                new DelayedTask(10) {
-                    @Override
-                    public void run() {
-                        EnderAegisItem.shieldShoot(serverLevel, herobrineMob);
-                    }
-                };
-            } else if (herobrineMob instanceof SwordsmanHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
+            if (herobrineMob instanceof SwordsmanHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
                 if (herobrineMob.getTarget() != null) {
                     herobrineMob.getLookControl().setLookAt(herobrineMob.getTarget() , 30.0F, 30.0F);
                 }

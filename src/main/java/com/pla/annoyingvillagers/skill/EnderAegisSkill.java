@@ -87,16 +87,7 @@ public class EnderAegisSkill extends WeaponInnateSkill {
                             && itemStack.getTag() != null) {
                         event.setCanceled(true);
                         if (event.getPlayerPatch().getOriginal().getCooldowns().getCooldownPercent(itemStack.getItem(), 0) == 0) {
-                            skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.SHIELD_MAINHAND, 0.0F);
-                            ServerPlayer serverPlayer = event.getPlayerPatch().getOriginal();
-                            new DelayedTask(10) {
-                                @Override
-                                public void run() {
-                                    EnderAegisItem.shieldShoot(serverPlayer.level(), serverPlayer);
-                                    ItemCooldowns cooldowns = event.getPlayerPatch().getOriginal().getCooldowns();
-                                    cooldowns.addCooldown(itemStack.getItem(), 10);
-                                }
-                            };
+                            skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.AEGIS_SHIELD_SHOOT, 0.0F);
                         }
                     }
                 }
@@ -116,7 +107,7 @@ public class EnderAegisSkill extends WeaponInnateSkill {
 
             if (!damageSource.is(DamageTypes.MAGIC) && !damageSource.is(DamageTypes.EXPLOSION)
                     && !damageSource.is(DamageTypes.ON_FIRE) && !damageSource.is(DamageTypes.IN_FIRE) && !damageSource.is(DamageTypes.FALL)
-                    && skillContainer.isActivated() && dynamicAnimation == AVAnimations.SHIELD_MAINHAND && entityState.getLevel() < 3) {
+                    && skillContainer.isActivated() && dynamicAnimation == AVAnimations.AEGIS_SHIELD_SHOOT && entityState.getLevel() < 3) {
                 Entity entity = damageSource.getEntity();
                 if (entity != null) {
                     Vec3 entityPosition = entity.position();

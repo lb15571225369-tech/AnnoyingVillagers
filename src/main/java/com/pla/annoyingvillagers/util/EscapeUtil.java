@@ -24,6 +24,7 @@ public class EscapeUtil {
             "annoyingvillagers:biped/combat/yellow_torment_charged_attack_3",
             "annoyingvillagers:biped/skill/ender_glaive_napoleon_shoot_3",
             "annoyingvillagers:biped/combat/ender_glaive_agony_auto_1",
+            "annoyingvillagers:biped/skill/aegis_shield_shoot",
             "efn:biped/ng_greatsword/ng_great_charge1ing",
             "efn:biped/ng_greatsword/ng_great_charge1max",
             "efn:biped/ng_greatsword/ng_great_charge1max_2",
@@ -74,11 +75,6 @@ public class EscapeUtil {
         if (target == null || targetLivingEntityPatch == null) return false;
         AssetAccessor<? extends DynamicAnimation> targetDynamicAnimation = Objects.requireNonNull(targetLivingEntityPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
         if (target instanceof HerobrineMob herobrineMob) {
-            if (herobrineMob instanceof AegisHerobrineEntity) {
-                return (herobrineMob.getState() > 0 && (targetDynamicAnimation == AVAnimations.AEGIS_SHIELD_SHOOT
-                        || targetDynamicAnimation == AVAnimations.SHIELD_MAINHAND))
-                        || targetDynamicAnimation == AVAnimations.ENDER_AEGIS_NAPOLEON_RELOAD_1;
-            }
             if (herobrineMob instanceof SwordsmanHerobrineEntity) {
                 return (herobrineMob.getState() > 0 && targetDynamicAnimation == AVAnimations.SNAKE_BLADE_GUARD)
                         || targetDynamicAnimation == WOMAnimations.TORMENT_BERSERK_CONVERT;

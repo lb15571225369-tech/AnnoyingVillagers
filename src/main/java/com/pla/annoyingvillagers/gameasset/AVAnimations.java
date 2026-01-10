@@ -40,6 +40,7 @@ import com.pla.annoyingvillagers.animations.BowAttackAnimation;
 import com.pla.annoyingvillagers.animations.HeavyAttackAnimation;
 import com.pla.annoyingvillagers.animations.KickAttackAnimation;
 import com.pla.annoyingvillagers.animations.RushSwordAnimation;
+import com.pla.annoyingvillagers.item.EnderAegisItem;
 import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
 import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
 import com.pla.annoyingvillagers.util.BowFunction;
@@ -56,6 +57,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BushBlock;
@@ -346,7 +348,16 @@ public class AVAnimations {
         AVAnimations.SHIELD_MAINHAND = builder.nextAccessor("biped/living/shield_mainhand",
                 (accessor) -> new StaticAnimation(0.35F, true, accessor, humanoidarmature));
         AVAnimations.AEGIS_SHIELD_SHOOT = builder.nextAccessor("biped/skill/aegis_shield_shoot",
-                (accessor) -> new ActionAnimation(0.35F, accessor, humanoidarmature));
+                (accessor) -> new ActionAnimation(0.35F, accessor, humanoidarmature)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.5F, (livingEntityPatch, self, p) -> {
+                                    EnderAegisItem.shieldShoot(livingEntityPatch.getOriginal().level(), livingEntityPatch.getOriginal());
+                                    if (livingEntityPatch.getOriginal() instanceof Player player) {
+                                        ItemCooldowns cooldowns = player.getCooldowns();
+                                        cooldowns.addCooldown(player.getMainHandItem().getItem(), 10);
+                                    }
+                                }, Side.SERVER)
+        ));
         AVAnimations.SHIELD_OFFHAND = builder.nextAccessor("biped/living/shield_offhand",
                 (accessor) -> new StaticAnimation(0.35F, true, accessor, humanoidarmature));
         AVAnimations.COUNTER = builder.nextAccessor("biped/guard/counter",
