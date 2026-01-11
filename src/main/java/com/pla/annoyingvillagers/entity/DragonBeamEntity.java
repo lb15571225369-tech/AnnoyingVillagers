@@ -40,6 +40,7 @@ import org.joml.Vector3f;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 public class DragonBeamEntity extends Entity {
     public HerobrineDragonEntity caster;
@@ -237,7 +238,7 @@ public class DragonBeamEntity extends Entity {
             this.blockSide = result.blockHit.getDirection();
 
             if (world.isClientSide) {
-                if (!ModList.get().isLoaded("aaa_particles")) {
+                if (ModList.get().isLoaded("aaa_particles")) {
                     AAAParticlesUtil.sendDragonBeamHit(world, hitBlock);
                 } else {
                     world.addParticle(
@@ -262,7 +263,7 @@ public class DragonBeamEntity extends Entity {
                 boolean shouldBreak = true;
 
                 if (this.target != null && this.target.isAlive()) {
-                    double hitDist2    = from.distanceToSqr(hitVec);
+                    double hitDist2 = from.distanceToSqr(hitVec);
                     double targetDist2 = from.distanceToSqr(this.target.getEyePosition(1.0F));
                     shouldBreak = hitDist2 + 1e-6 < targetDist2;
 
@@ -455,19 +456,23 @@ public class DragonBeamEntity extends Entity {
         this.calculateEndPos();
 
         if (this.isRenderable() && this.level().isClientSide() && !renderBeam) {
-            Vec3 from = caster.beamMouthPos(1.0F);
-            Vec3 to = target.getEyePosition(1.0F);
-
-            if (!ModList.get().isLoaded("aaa_particles")) {
+            if (ModList.get().isLoaded("aaa_particles")) {
                 if (this.tickCount >= 3) {
                     renderBeam = true;
-                    AAAParticlesUtil.sendDragonBeam(from, to, this.level(), caster, target);
+                    AAAParticlesUtil.sendDragonBeam(caster.beamMouthPos(1.0F), target.getEyePosition(1.0F), this.level(), caster, target);
                 }
             } else {
+                if (this.tickCount >= 3) {
+                    this.level().addParticle(ParticleTypes.DRAGON_BREATH, true,
+                            caster.beamMouthPos(1.0F).x + new Random().nextDouble(-1, 1),
+                            caster.beamMouthPos(1.0F).y + new Random().nextDouble(-1, 1),
+                            caster.beamMouthPos(1.0F).z + new Random().nextDouble(-1, 1),
+                            0, 0, 0);
+                }
                 if (this.tickCount >= 50) {
                     renderBeam = true;
                     setUseNoVfxThunder(true);
-                    setThunderStartStop(from, to);
+                    setThunderStartStop(caster.beamMouthPos(1.0F), target.getOnPos().getCenter());
                 }
             }
         }

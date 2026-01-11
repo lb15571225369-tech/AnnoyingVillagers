@@ -32,10 +32,11 @@ public class DragonBeamRenderer extends EntityRenderer<DragonBeamEntity> {
             poseStack.pushPose();
             Vec3 from = dragonBeamEntity.getThunderStartVec3();
             Vec3 to = dragonBeamEntity.getThunderStopVec3();
-            ThunderRender.ThunderData bolt = new ThunderRender.ThunderData(ThunderRender.ThunderData.ThunderRenderInfo.ELECTRICITY, from, to, 15)
-                    .size(0.05F * (0.5F + 0.4F * (2.0F - 0.5F)))
+            ThunderRender.ThunderData bolt = new ThunderRender.ThunderData(
+                    ThunderRender.ThunderData.ThunderRenderInfo.ELECTRICITY, from, to, 15)
+                    .size(0.2F)
                     .lifespan(4)
-                    .spawn(ThunderRender.ThunderData.SpawnFunction.DEFAULT);
+                    .spawn(ThunderRender.ThunderData.SpawnFunction.delay(1F));
             thunderRender.update(null, bolt, partialTicks);
             poseStack.translate(-dragonBeamEntity.getX(), -dragonBeamEntity.getY(), -dragonBeamEntity.getZ());
             thunderRender.render(partialTicks, poseStack, buffer);

@@ -57,6 +57,7 @@ import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -724,7 +725,7 @@ public class HerobrineMob extends Monster {
         super.tick();
         this.floatOnAnyFluid();
         this.checkInsideBlocks();
-        if (!this.level().isClientSide) {
+        if (this.level() instanceof ServerLevel serverLevel) {
             if (this.state == 2) {
                 this.addEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 3, 3));
             }
@@ -783,10 +784,8 @@ public class HerobrineMob extends Monster {
                             PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this),
                             new ClientboundHerobrinePortalFx(new Vec3(this.getX(), this.getY(), this.getZ()))
                     );
-                    if (this.level() instanceof ServerLevel serverLevel) {
-                        this.playSound(AnnoyingVillagersModSounds.PORTAL_NATURAL.get(), 1.0F, 1.0F);
-                        HerobrinePortalUtil.sinkIntoGround(serverLevel, this, 0.06);
-                    }
+                    this.playSound(AnnoyingVillagersModSounds.PORTAL_NATURAL.get(), 1.0F, 1.0F);
+                    HerobrinePortalUtil.sinkIntoGround(serverLevel, this, 0.06);
                 }
                 if (remaining <= 0) {
                     Objects.requireNonNull(this.level().getServer()).getPlayerList().broadcastSystemMessage(Component.literal(this.getChatName() + " was sent back to the §4Herobrine Vessel Realm§r"), false);
@@ -883,7 +882,6 @@ public class HerobrineMob extends Monster {
             if (this.sacrificingAnimationCooldown == 50) {
                 this.sacrificing = true;
                 if (this.gregUUID != null) {
-                    ServerLevel serverLevel = (ServerLevel) this.level();
                     Entity entity = serverLevel.getEntity(this.gregUUID);
                     if (entity instanceof HerobrineGregEntity herobrineGregEntity && entity.isAlive()) {
                         if (herobrineGregEntity.getLivingentitypatch() != null) {
@@ -896,7 +894,6 @@ public class HerobrineMob extends Monster {
                 this.sacrificing = true;
                 this.setNoAi(true);
                 if (this.gregUUID != null) {
-                    ServerLevel serverLevel = (ServerLevel) this.level();
                     Entity entity = serverLevel.getEntity(this.gregUUID);
                     if (entity instanceof HerobrineGregEntity herobrineGregEntity && entity.isAlive()) {
                         herobrineGregEntity.setNoAi(false);

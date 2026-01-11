@@ -7,7 +7,6 @@ import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.tuple.Pair;
 import org.joml.Matrix4f;
@@ -235,6 +234,9 @@ public class ThunderRender {
                         float maxDiff = renderInfo.spreadFactor * segmentDiffScale * totalDistance * renderInfo.randomFunction.getRandom(random);
                         Vec3 randVec = findRandomOrthogonalVector(diff, random);
                         perpendicularDist = renderInfo.segmentSpreader.getSegmentAdd(perpendicularDist, randVec, maxDiff, segmentDiffScale, progress);
+                        if (renderInfo.spreadFactor <= 0.0001F) {
+                            perpendicularDist = Vec3.ZERO;
+                        }
                         segmentEnd = start.add(diff.scale(progress)).add(perpendicularDist);
                     }
                     float boltSize = size * (0.5F + (1 - progress) * 0.5F);
@@ -317,7 +319,7 @@ public class ThunderRender {
         }
 
         public interface SpreadFunction {
-            SpreadFunction DEFAULT = (progress) -> Mth.sin((float) (Math.PI * progress));
+            SpreadFunction DEFAULT = (progress) -> 1.0F;
 
             float getMaxSpread(float progress);
         }
@@ -335,8 +337,10 @@ public class ThunderRender {
                     float nextDiff = maxDiff * (1 - memoryFactor);
                     Vec3 cur = randVec.scale(nextDiff);
                     if (progress > 0.5F) {
-                        cur = cur.add(perpendicularDist.scale(-1 * (1 - spreadScale)));
+                        float pull = (1F - spreadScale) * (1F - memoryFactor) * 0.35F; // tune 0.2..0.6
+                        cur = cur.add(perpendicularDist.scale(-pull));
                     }
+
                     return perpendicularDist.add(cur);
                 };
             }
@@ -392,7 +396,14 @@ public class ThunderRender {
             private SegmentSpreader segmentSpreader = SegmentSpreader.DEFAULT;
 
             public static ThunderRenderInfo electricity() {
-                return new ThunderRenderInfo(0.5F, 0.25F, 0.25F, 0.15F, new Vector4f(0.70F, 0.45F, 0.89F, 0.8F), 0.8F);
+            return new ThunderRenderInfo(
+                        0.15F,
+                        0.025F,
+                        0.0F,
+                        0.0F,
+                        new Vector4f(0.85F, 0.55F, 1.0F, 0.85F),
+                        0.8F
+                );
             }
 
             public ThunderRenderInfo() {

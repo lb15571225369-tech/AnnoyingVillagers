@@ -34,4 +34,25 @@ public class AAAParticlesUtil {
                         .clone()
                         .position(hitBlock.getX(), hitBlock.getY(), hitBlock.getZ()));
     }
+
+    public static void sendHerobrinePortal(Level level, double x, double y, double z) {
+        AAALevel.addParticle(level, false,
+                new ParticleEmitterInfo(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "herobrine_portal"))
+                        .clone()
+                        .position(x, y, z));
+    }
+
+    public static void sendLitePortal(Level level, double x, double y, double z) {
+        AAALevel.addParticle(level, false,
+                new ParticleEmitterInfo(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "lite_portal"))
+                        .clone()
+                        .position(x, y, z));
+    }
+
+    public static void sendWoopieWind(Level level, double x, double y, double z) {
+        AAALevel.addParticle(level, false,
+                new ParticleEmitterInfo(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "woopie_sword_wind"))
+                        .clone()
+                        .position(x, y, z));
+    }
 }

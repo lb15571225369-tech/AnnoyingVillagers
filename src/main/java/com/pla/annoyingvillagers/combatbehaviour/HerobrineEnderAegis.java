@@ -78,7 +78,7 @@ public class HerobrineEnderAegis {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(40.0D)
-                            .maxCooldown(80)
+                            .maxCooldown(20)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)

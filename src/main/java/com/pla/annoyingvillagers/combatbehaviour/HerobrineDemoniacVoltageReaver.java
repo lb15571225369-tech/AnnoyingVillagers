@@ -8,7 +8,6 @@ import net.shelmarow.combat_evolution.ai.CECombatBehaviors.Builder;
 import net.shelmarow.combat_evolution.ai.condition.HealthCheck;
 import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.animations.weapons.AnimsAgony;
-import reascer.wom.gameasset.animations.weapons.AnimsEnderblaster;
 import reascer.wom.gameasset.animations.weapons.AnimsRuine;
 import reascer.wom.gameasset.animations.weapons.AnimsSolar;
 import yesman.epicfight.gameasset.Animations;

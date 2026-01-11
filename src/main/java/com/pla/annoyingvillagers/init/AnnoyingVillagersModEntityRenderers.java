@@ -71,9 +71,6 @@ public class AnnoyingVillagersModEntityRenderers {
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.SLEDGEHAMMER_HEROBRINE.get(), SledgehammerHerobrineRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.AEGIS_HEROBRINE.get(), AegisHerobrineRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.DRAGON_BEAM.get(), DragonBeamRenderer::new);
-        registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.BABY_DRAGON_BIG_BEAM.get(), BabyDragonBigBeamRenderer::new);
-        registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.BABY_ENDER_DRAGON.get(), BabyEnderDragonRenderer::new);
-        registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.BABY_DRAGON_BEAM.get(), BabyDragonBeamRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.OBSIDIAN_SLEDGEHAMMER_HIT.get(), ObsidianSledgehammerHitRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.ELITE_HEROBRINE_KNOCKED.get(), EliteHerobrineKnockedRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.ELITE_HEROBRINE_DEAD.get(), EliteHerobrineDeadRenderer::new);
