@@ -145,7 +145,11 @@ public class MobClashBladeMixin {
             boolean ignisFileBall = indirectEntity.getNamespace().equals("cataclysm")
                     && (indirectEntity.getPath().equals("ignis_abyss_fireball") || indirectEntity.getPath().equals("ignis_fireball")
                     || indirectEntity.getPath().equals("flame_jet") || indirectEntity.getPath().equals("flame_strike"));
-            if (isDamageFromGunKnight || ignisFileBall || livingAttackEvent.getSource().is(DamageTypes.EXPLOSION)) {
+            boolean isMeteorite = livingAttackEvent.getSource().getDirectEntity() instanceof DragonMeteoriteEntity
+                    || livingAttackEvent.getSource().getEntity() instanceof DragonMeteoriteEntity
+                    || livingAttackEvent.getSource().getDirectEntity() instanceof ObsidianSledgehammerProjectileEntity
+                    || livingAttackEvent.getSource().getEntity() instanceof ObsidianSledgehammerProjectileEntity;
+            if (isDamageFromGunKnight || ignisFileBall || isMeteorite || livingAttackEvent.getSource().is(DamageTypes.EXPLOSION)) {
                 if (defender instanceof AVNpc AVNpc
                         && AVNpc.getBlockDamage() == null
                         && new Random().nextDouble() <= AVNpc.getPlaceBlockToParryChance()

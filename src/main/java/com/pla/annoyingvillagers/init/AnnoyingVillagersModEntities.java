@@ -79,10 +79,10 @@ public class AnnoyingVillagersModEntities {
 
     public static final RegistryObject<EntityType<SnakeBladeEntity>> SNAKE_BLADE = register("snake_blade", Builder.<SnakeBladeEntity>of(SnakeBladeEntity::new, MobCategory.MISC).sized(0.1F, 0.1F));
     public static final RegistryObject<EntityType<DragonBeamEntity>> DRAGON_BEAM = register("dragon_beam", Builder.<DragonBeamEntity>of(DragonBeamEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20));
-    public static final RegistryObject<EntityType<ObsidianSledgehammerHitEntity>> OBSIDIAN_SLEDGEHAMMER_HIT = register("obsidian_sledgehammer_hit", Builder.<ObsidianSledgehammerHitEntity>of(ObsidianSledgehammerHitEntity::new, MobCategory.MISC).sized(0.6F, 1.95F).clientTrackingRange(6).updateInterval(2).fireImmune());
     public static final RegistryObject<EntityType<BlockProjectileEntity>> BLOCK_PROJECTILE = register("block_projectile", Builder.<BlockProjectileEntity>of(BlockProjectileEntity::new, MobCategory.MISC).sized(0.9F, 0.9F).clientTrackingRange(64).updateInterval(2).fireImmune());
     public static final RegistryObject<EntityType<HerobrineDragonEntity>> HEROBRINE_DRAGON = register("herobrine_dragon", Builder.of(HerobrineDragonEntity::new, MobCategory.CREATURE).sized(HerobrineDragonEntity.BASE_WIDTH, HerobrineDragonEntity.BASE_HEIGHT).clientTrackingRange(10).updateInterval(3));
     public static final RegistryObject<EntityType<DragonMeteoriteEntity>> DRAGON_METEORITE = register("dragon_meteorite", Builder.<DragonMeteoriteEntity>of(DragonMeteoriteEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(2000).setUpdateInterval(3).setCustomClientFactory(DragonMeteoriteEntity::new).fireImmune().sized(1.0F, 1.0F));
+    public static final RegistryObject<EntityType<ObsidianSledgehammerProjectileEntity>> OBSIDIAN_SLEDGEHAMMER_PROJECTILE = register("obsidian_sledgehammer_projectile", Builder.<ObsidianSledgehammerProjectileEntity>of(ObsidianSledgehammerProjectileEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(2000).setUpdateInterval(3).setCustomClientFactory(ObsidianSledgehammerProjectileEntity::new).fireImmune().sized(1.0F, 1.0F));
 
     public static final RegistryObject<EntityType<AlexDeadEntity>> ALEX_DEAD = register("alex_dead", Builder.<AlexDeadEntity>of(AlexDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(AlexDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<SteveDeadEntity>> STEVE_DEAD = register("steve_dead", Builder.<SteveDeadEntity>of(SteveDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(SteveDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
@@ -330,5 +330,6 @@ public class AnnoyingVillagersModEntities {
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.HEROBRINE_WARDEN.get(), HerobrineWardenEntity.createAttributes().build());
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.HEROBRINE_DRAGON.get(), HerobrineDragonEntity.createAttributes().build());
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.DRAGON_METEORITE.get(), DragonMeteoriteEntity.createAttributes().build());
+        entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.OBSIDIAN_SLEDGEHAMMER_PROJECTILE.get(), ObsidianSledgehammerProjectileEntity.createAttributes().build());
     }
 }

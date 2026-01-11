@@ -420,7 +420,7 @@ public class HerobrineGregEntity extends Monster {
                     AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG]: Greg will summon elites at {}", this.summonTimestamp);
                 } else {
                     Objects.requireNonNull(this.level().getServer()).getPlayerList().broadcastSystemMessage(Component.literal("<§5Herobrine§r> " +
-                            Component.translatable("subtitles.herobrine_no_fight")), false);
+                            Component.translatable("subtitles.herobrine_no_fight").getString()), false);
                 }
             }
 

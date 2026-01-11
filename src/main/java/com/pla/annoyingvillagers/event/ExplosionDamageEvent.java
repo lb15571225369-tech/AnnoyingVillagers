@@ -65,6 +65,8 @@ public class ExplosionDamageEvent {
                             float addResource = Math.min(50.0F, neededResource);
                             enderGlaiveSkill.setConsumptionSynchronize(skillContainer, currentResource + addResource);
                         }
+
+                        entity.hurt(entity.level().damageSources().mobAttack(livingEntity), 12.0F);
                     }
                 }
             }

@@ -741,6 +741,18 @@ public class HerobrineEnderGlaive {
                                                     Behavior.builder()
                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                             .withinDistance(0.0D, 8.0D)
+                                                            .animationBehavior(AnimsAgony.AGONY_SKY_DIVE, 0.0F)
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(AnimsAgony.AGONY_RISING_EAGLE, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 8.0D)
                                                             .animationBehavior(AnimsAgony.AGONY_AIR_ATTACK_1, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()

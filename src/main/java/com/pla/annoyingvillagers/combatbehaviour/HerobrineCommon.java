@@ -245,8 +245,6 @@ public class HerobrineCommon {
             if (herobrineMob instanceof SwordsmanHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
                 SnakeBladeHit.process(item, herobrineMob);
                 item.getOrCreateTag().putBoolean("SnakeAnimation", true);
-            } else if (herobrineMob instanceof SledgehammerHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
-                ObsidianSledgehammerItem.triggerCircleWhenGroundHits(mobpatch, true);
             } else if (herobrineMob instanceof ReaperHerobrineEntity reaperHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
                 HerobrineDragonEntity herobrineDragonEntity = reaperHerobrineEntity.getThunderHerobrineDragon();
                 if (herobrineDragonEntity != null) {
@@ -261,9 +259,7 @@ public class HerobrineCommon {
             if (herobrineMob.getState() < 2) {
                 herobrineMob.setSecondFormHitLeft(herobrineMob.getSecondFormHitLeft() - 1);
             }
-            if (herobrineMob instanceof SledgehammerHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
-                ObsidianSledgehammerItem.triggerCircleWhenGroundHits(mobpatch, false);
-            } else if (herobrineMob instanceof ReaperHerobrineEntity reaperHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
+            if (herobrineMob instanceof ReaperHerobrineEntity reaperHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {
                 HerobrineDragonEntity herobrineDragonEntity = reaperHerobrineEntity.getMeteoriteHerobrineDragon();
                 if (herobrineDragonEntity != null) {
                     herobrineDragonEntity.shootMeteoriteAtTarget(herobrineMob.getTarget());

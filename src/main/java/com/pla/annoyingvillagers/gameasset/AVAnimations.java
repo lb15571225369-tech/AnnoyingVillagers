@@ -40,6 +40,9 @@ import com.pla.annoyingvillagers.animations.BowAttackAnimation;
 import com.pla.annoyingvillagers.animations.HeavyAttackAnimation;
 import com.pla.annoyingvillagers.animations.KickAttackAnimation;
 import com.pla.annoyingvillagers.animations.RushSwordAnimation;
+import com.pla.annoyingvillagers.entity.ObsidianSledgehammerProjectileEntity;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.item.EnderAegisItem;
 import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
 import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
@@ -51,12 +54,11 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.level.Level;
@@ -74,9 +76,11 @@ import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
 import reascer.wom.animation.attacks.SpecialAttackAnimation;
 import reascer.wom.animation.attacks.UltimateAttackAnimation;
 import reascer.wom.gameasset.WOMAnimations;
+import reascer.wom.gameasset.WOMSkills;
 import reascer.wom.gameasset.WOMSounds;
 import reascer.wom.gameasset.colliders.WOMWeaponColliders;
 import reascer.wom.particle.WOMParticles;
+import reascer.wom.skill.WOMSkillDataKeys;
 import reascer.wom.world.damagesources.WOMExtraDamageInstance;
 import yesman.epicfight.api.animation.AnimationManager;
 import yesman.epicfight.api.animation.Joint;
@@ -84,13 +88,13 @@ import yesman.epicfight.api.animation.Keyframe;
 import yesman.epicfight.api.animation.TransformSheet;
 import yesman.epicfight.api.animation.property.AnimationEvent;
 import yesman.epicfight.api.animation.property.AnimationEvent.Side;
-import yesman.epicfight.api.animation.property.AnimationProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.ActionAnimationProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.AttackAnimationProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.AttackPhaseProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.StaticAnimationProperty;
 import yesman.epicfight.api.animation.types.*;
 import yesman.epicfight.api.animation.types.AttackAnimation.Phase;
+import yesman.epicfight.api.collider.Collider;
 import yesman.epicfight.api.utils.HitEntityList.Priority;
 import yesman.epicfight.api.utils.LevelUtil;
 import yesman.epicfight.api.utils.TimePairList;
@@ -103,8 +107,11 @@ import yesman.epicfight.gameasset.ColliderPreset;
 import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.model.armature.HumanoidArmature;
 import yesman.epicfight.particle.EpicFightParticles;
+import yesman.epicfight.skill.SkillDataKey;
+import yesman.epicfight.skill.SkillSlots;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
+import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.damagesource.EpicFightDamageTypeTags;
 import yesman.epicfight.world.damagesource.ExtraDamageInstance;
 import yesman.epicfight.world.damagesource.StunType;
@@ -290,6 +297,9 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> CLONE_ENDERBLASTER_TWOHAND_TOMAHAWK;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> YELLOW_TORMENT_CHARGED_ATTACK_3;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> CLONE_ENDERBLASTER_ONEHAND_DASH;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> SLEDGEHAMMER_TORMENT_BERSERK_AUTO_1;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> SLEDGEHAMMER_TORMENT_BERSERK_AUTO_2;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> SLEDGEHAMMER_SOLAR_AUTO_3;
 
     @SubscribeEvent
     public static void registerAnimations(AnimationManager.AnimationRegistryEvent event) {
@@ -447,7 +457,7 @@ public class AVAnimations {
                                                 ((PlayerPatch<?>) livingentitypatch).setStamina(((PlayerPatch<?>) livingentitypatch).getStamina() - 2.0F);
                                             }
                                         }, Side.CLIENT),
-                                        AnimationEvent.InTimeEvent.create(0.6F, AVAnimations.ReuseableEvents.GROUNDSLAM, Side.CLIENT)}));
+                                        AnimationEvent.InTimeEvent.create(0.6F, ReuseableEvents.GROUNDSLAM, Side.CLIENT)}));
         AVAnimations.BLUE_DEMON_START_SKILL = builder.nextAccessor("biped/other/blue_demon_start_skill",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidArmature));
         AVAnimations.BLUE_DEMON_END_SKILL = builder.nextAccessor("biped/other/blue_demon_end_skill",
@@ -619,10 +629,10 @@ public class AVAnimations {
         AVAnimations.SPEAR_GUARD_HIT = builder.nextAccessor("biped/combat/spear_guard_hit",
                 (accessor) -> (new GuardAnimation(0.05F, 0.2F, accessor, humanoidArmature))
                         .addEvents(new AnimationEvent.InTimeEvent[]{
-                                AnimationEvent.InTimeEvent.create(0.1F, AVAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT),
-                                AnimationEvent.InTimeEvent.create(0.2F, AVAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT),
-                                AnimationEvent.InTimeEvent.create(0.3F, AVAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT),
-                                AnimationEvent.InTimeEvent.create(0.4F, AVAnimations.ReuseableEvents.FAST_SPINING, Side.CLIENT)}));
+                                AnimationEvent.InTimeEvent.create(0.1F, ReuseableEvents.FAST_SPINING, Side.CLIENT),
+                                AnimationEvent.InTimeEvent.create(0.2F, ReuseableEvents.FAST_SPINING, Side.CLIENT),
+                                AnimationEvent.InTimeEvent.create(0.3F, ReuseableEvents.FAST_SPINING, Side.CLIENT),
+                                AnimationEvent.InTimeEvent.create(0.4F, ReuseableEvents.FAST_SPINING, Side.CLIENT)}));
         AVAnimations.LEGENDARY_SWORD_GUARD = builder.nextAccessor("biped/combat/legendary_sword_guard",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidArmature));
         AVAnimations.LEGENDARY_SWORD_GUARD_HIT = builder.nextAccessor("biped/combat/legendary_sword_guard_hit",
@@ -952,7 +962,7 @@ public class AVAnimations {
                         .addState(EntityState.LOCKON_ROTATE, false)
                         .addEvents(
                                 new AnimationEvent.InTimeEvent[]{
-                                        AnimationEvent.InTimeEvent.create(2.5F, AVAnimations.ReuseableEvents.END_ATTACK, Side.BOTH)})
+                                        AnimationEvent.InTimeEvent.create(2.5F, ReuseableEvents.END_ATTACK, Side.BOTH)})
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
         AVAnimations.STEP_BACK = builder.nextAccessor("biped/combat/step_backward",
                 (accessor) -> (new ActionAnimation(0.2F, Float.MAX_VALUE, accessor, humanoidArmature))
@@ -1448,36 +1458,36 @@ public class AVAnimations {
         AVAnimations.BOW_AUTO_1 = builder.nextAccessor("biped/combat/bow_auto1",
                 (accessor) -> new BowAttackAnimation(0.1F, 0.0F, 0.62F, 0.8333F, 1.2F, InteractionHand.MAIN_HAND, null, humanoidArmature.get().rootJoint, accessor, humanoidArmature)
                         .addEvents(
-                                AnimationEvent.InTimeEvent.create(0.4F, (livingEntityPatch, assetAccessor, objects) -> BowFunction.bowShoot(livingEntityPatch), AnimationEvent.Side.BOTH)
+                                AnimationEvent.InTimeEvent.create(0.4F, (livingEntityPatch, assetAccessor, objects) -> BowFunction.bowShoot(livingEntityPatch), Side.BOTH)
                         )
-                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (anim, entity, a, b, c) -> 3.0F));
+                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, (anim, entity, a, b, c) -> 3.0F));
 
         AVAnimations.BOW_AUTO_2 = builder.nextAccessor("biped/combat/bow_auto2",
                 (accessor) -> new BowAttackAnimation(0.1F, 0.0F, 0.7F, 0.98F, 1.2F, InteractionHand.MAIN_HAND, null, humanoidArmature.get().rootJoint, accessor, humanoidArmature)
                         .addEvents(
-                                AnimationEvent.InTimeEvent.create(0.6F, (livingEntityPatch, assetAccessor, objects) -> BowFunction.bowShoot(livingEntityPatch), AnimationEvent.Side.BOTH)
+                                AnimationEvent.InTimeEvent.create(0.6F, (livingEntityPatch, assetAccessor, objects) -> BowFunction.bowShoot(livingEntityPatch), Side.BOTH)
                         )
-                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (anim, entity, a, b, c) -> 3.0F));
+                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, (anim, entity, a, b, c) -> 3.0F));
 
         AVAnimations.BOW_AUTO_3 = builder.nextAccessor("biped/combat/bow_auto3",
                 (accessor) -> new BowAttackAnimation(0.1F, 0.0F, 0.88F, 1.03F, 1.3F, InteractionHand.MAIN_HAND, null, humanoidArmature.get().rootJoint, accessor, humanoidArmature)
-                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (anim, entity, a, b, c) -> 3.0F)
+                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, (anim, entity, a, b, c) -> 3.0F)
                         .addEvents(
-                                AnimationEvent.InTimeEvent.create(0.84F, (livingEntityPatch, assetAccessor, objects) -> BowFunction.bowShoot(livingEntityPatch), AnimationEvent.Side.BOTH)
+                                AnimationEvent.InTimeEvent.create(0.84F, (livingEntityPatch, assetAccessor, objects) -> BowFunction.bowShoot(livingEntityPatch), Side.BOTH)
                         ));
 
         AVAnimations.BOW_AUTO_4 = builder.nextAccessor("biped/combat/bow_auto4",
                 (accessor) -> new BowAttackAnimation(0.05F, 0, 2.12F, 2.733F, 1.2F, InteractionHand.MAIN_HAND, null, humanoidArmature.get().rootJoint, accessor, humanoidArmature)
                         .addEvents(
-                                AnimationEvent.InTimeEvent.create(1.2083F, (livingEntityPatch, assetAccessor, objects) -> BowFunction.bowShoot(livingEntityPatch), AnimationEvent.Side.BOTH),
-                                AnimationEvent.InTimeEvent.create(1.7916F, (livingEntityPatch, assetAccessor, objects) -> BowFunction.bowShoot(livingEntityPatch), AnimationEvent.Side.BOTH),
-                                AnimationEvent.InTimeEvent.create(2.0416F, (livingEntityPatch, assetAccessor, objects) -> BowFunction.bowShoot(livingEntityPatch), AnimationEvent.Side.BOTH))
-                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (anim, entity, a, b, c) -> 3.0F));
+                                AnimationEvent.InTimeEvent.create(1.2083F, (livingEntityPatch, assetAccessor, objects) -> BowFunction.bowShoot(livingEntityPatch), Side.BOTH),
+                                AnimationEvent.InTimeEvent.create(1.7916F, (livingEntityPatch, assetAccessor, objects) -> BowFunction.bowShoot(livingEntityPatch), Side.BOTH),
+                                AnimationEvent.InTimeEvent.create(2.0416F, (livingEntityPatch, assetAccessor, objects) -> BowFunction.bowShoot(livingEntityPatch), Side.BOTH))
+                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, (anim, entity, a, b, c) -> 3.0F));
 
         AVAnimations.BOW_AUTO_5 = builder.nextAccessor("biped/combat/bow_auto5",
                 (accessor) -> new BowAttackAnimation(0.02F, 0, 0.2F, 1.51F, 1.2F, InteractionHand.MAIN_HAND, null, humanoidArmature.get().rootJoint, accessor, humanoidArmature)
-                        .addProperty(AnimationProperty.StaticAnimationProperty.PLAY_SPEED_MODIFIER, (anim, entity, a, b, c) -> 3.0F)
-                        .addEvents(AnimationEvent.InTimeEvent.create(0.7083F, (livingEntityPatch, assetAccessor, objects) -> BowFunction.bowShoot(livingEntityPatch), AnimationEvent.Side.BOTH)
+                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, (anim, entity, a, b, c) -> 3.0F)
+                        .addEvents(AnimationEvent.InTimeEvent.create(0.7083F, (livingEntityPatch, assetAccessor, objects) -> BowFunction.bowShoot(livingEntityPatch), Side.BOTH)
                         ));
         AVAnimations.YELLOW_SOLAR_AUTO_2 = builder.nextAccessor("biped/combat/yellow_solar_auto_2",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.05F, 0.65F, 0.8F, 1.0F, null, humanoidArmature.get().toolR, accessor, humanoidArmature))
@@ -1815,9 +1825,9 @@ public class AVAnimations {
 
         AVAnimations.APPLY_IMBUEMENT = builder.nextAccessor("biped/other/apply_imbuement",
                 (accessor) -> (new ActionAnimation(0.1F, accessor, humanoidArmature))
-                        .addProperty(AnimationProperty.ActionAnimationProperty.STOP_MOVEMENT, false)
-                        .addProperty(AnimationProperty.ActionAnimationProperty.CANCELABLE_MOVE, true)
-                        .addProperty(AnimationProperty.ActionAnimationProperty.AFFECT_SPEED, true)
+                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, false)
+                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
+                        .addProperty(ActionAnimationProperty.AFFECT_SPEED, true)
                         .addEvents(AnimationEvent.InTimeEvent.create(1.5F, (livingEntityPatch, self, p) -> {
                             if (!livingEntityPatch.isLogicalClient()) {
                                 livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
@@ -2177,11 +2187,85 @@ public class AVAnimations {
                                     } else if (transformSheet != null) {
                                         transformSheet.readFrom(self.getTransfroms().get("Root"));
                                     }
-
                                 }));
+        AVAnimations.SLEDGEHAMMER_TORMENT_BERSERK_AUTO_1 = builder.nextAccessor("biped/skill/sledgehammer_torment_berserk_auto_1",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.4F, 0.15F, 0.5F, 0.5F, null, humanoidArmature.get().toolR, accessor, humanoidArmature))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.1F))
+                        .addProperty(AttackPhaseProperty.EXTRA_DAMAGE, Set.of(ExtraDamageInstance.SWEEPING_EDGE_ENCHANTMENT.create()))
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.multiplier(9.0F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)
+                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLADE_RUSH_FINISHER.get())
+                        .addProperty(AttackPhaseProperty.PARTICLE, WOMParticles.OVERBLOOD_HIT)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.8F)
+                        .addProperty(AttackAnimationProperty.ATTACK_SPEED_FACTOR, 1.2F)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.35F, ReuseableEvents.SLEDGEHAMMER_SHOOT, Side.SERVER)
+                        )
+        );
+        AVAnimations.SLEDGEHAMMER_TORMENT_BERSERK_AUTO_2 = builder.nextAccessor("biped/skill/sledgehammer_torment_berserk_auto_2",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.4F, 0.15F, 0.5F, 0.5F, null, humanoidArmature.get().toolR, accessor, humanoidArmature))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.1F))
+                        .addProperty(AttackPhaseProperty.EXTRA_DAMAGE, Set.of(ExtraDamageInstance.SWEEPING_EDGE_ENCHANTMENT.create()))
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.multiplier(9.0F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)
+                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLADE_RUSH_FINISHER.get())
+                        .addProperty(AttackPhaseProperty.PARTICLE, WOMParticles.OVERBLOOD_HIT)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 0.8F)
+                        .addProperty(AttackAnimationProperty.ATTACK_SPEED_FACTOR, 1.2F)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.31F, ReuseableEvents.SLEDGEHAMMER_SHOOT, Side.SERVER)
+                        )
+        );
+        AVAnimations.SLEDGEHAMMER_SOLAR_AUTO_3 = builder.nextAccessor("biped/combat/sledgehammer_solar_auto_3",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.05F, 0.4F, 0.75F, 0.85F, null, humanoidArmature.get().toolR, accessor, humanoidArmature))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.0F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(0.3F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLADE_RUSH_FINISHER.get())
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.3F)
+                        .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, false)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.6F, ReuseableEvents.SLEDGEHAMMER_SHOOT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(1.5F, (livingEntityPatch, self, p) -> {
+                                    if (!livingEntityPatch.isLogicalClient()) {
+                                        livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
+                                    }
+                                }, Side.SERVER)
+                        )
+        );
     }
 
     private static class ReuseableEvents {
+        private static final AnimationEvent.E0 SLEDGEHAMMER_SHOOT =
+                (livingEntityPatch, staticanimation, aobject) -> {
+                    if (livingEntityPatch.getOriginal().level() instanceof ServerLevel serverLevel) {
+                        LivingEntity shooterEntity = livingEntityPatch.getOriginal();
+
+                        Vec3 aimPosition = null;
+
+                        if (shooterEntity instanceof Mob mob && mob.getTarget() != null) {
+                            aimPosition = mob.getTarget().getEyePosition(1.0F);
+                        } else if (shooterEntity instanceof Player player) {
+                            Vec3 playerEyePosition = player.getEyePosition(1.0F);
+                            Vec3 playerLookDirection = player.getLookAngle();
+                            double aimDistance = 64.0D;
+                            aimPosition = playerEyePosition.add(playerLookDirection.scale(aimDistance));
+                        }
+
+                        ObsidianSledgehammerProjectileEntity obsidianSledgehammerProjectileEntity = new ObsidianSledgehammerProjectileEntity(AnnoyingVillagersModEntities.OBSIDIAN_SLEDGEHAMMER_PROJECTILE.get(), serverLevel);
+                        Vec3 hammerPos = EpicfightUtil.getJointWithTranslation(livingEntityPatch.getOriginal(), new Vec3f(0, 0, 0),
+                                Armatures.BIPED.get().toolR, 1.0F, 0.0F);
+                        if (hammerPos != null && aimPosition != null) {
+                            obsidianSledgehammerProjectileEntity.moveTo(hammerPos.x, hammerPos.y, hammerPos.z, 0F, 0F);
+                            obsidianSledgehammerProjectileEntity.setPosToAim(new Vec3(aimPosition.x, aimPosition.y, aimPosition.z));
+                            obsidianSledgehammerProjectileEntity.setInvulnerable(true);
+                            obsidianSledgehammerProjectileEntity.playSound(AnnoyingVillagersModSounds.METAL_HIT.get(), 1.0F, 1.0F);
+                            obsidianSledgehammerProjectileEntity.setOwner(shooterEntity);
+                            serverLevel.addFreshEntity(obsidianSledgehammerProjectileEntity);
+                        }
+                    }
+                };
+
         public static final AnimationEvent.E0 FAST_SPINING =
                 (livingentitypatch, staticanimation, aobject) -> livingentitypatch.getOriginal().level().playSound((Player) livingentitypatch.getOriginal(), livingentitypatch.getOriginal(), EpicFightSounds.WHOOSH.get(), SoundSource.NEUTRAL, 0.5F, 1.1F - ((new Random()).nextFloat() - 0.5F) * 0.2F);
 

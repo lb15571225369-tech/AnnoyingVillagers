@@ -291,13 +291,13 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
         }
 
         if (!player.getPersistentData().contains("DragonUUID")) {
-            HerobrineDragonEntity herobrineDragonEntity = spawnBabyEnderDragon(player, serverLevel);
+            HerobrineDragonEntity herobrineDragonEntity = spawnEnderDragon(player, serverLevel);
             if (herobrineDragonEntity != null)
                 player.getPersistentData().putUUID("DragonUUID", herobrineDragonEntity.getUUID());
         }
     }
 
-    private HerobrineDragonEntity spawnBabyEnderDragon(Player player, ServerLevel serverLevel) {
+    private HerobrineDragonEntity spawnEnderDragon(Player player, ServerLevel serverLevel) {
         if (!player.isAlive()) return null;
         HerobrineDragonEntity herobrineDragonEntity = new HerobrineDragonEntity(AnnoyingVillagersModEntities.HEROBRINE_DRAGON.get(), serverLevel);
         Vec3 spawnPos = findOrbitSpawnPos(serverLevel, player, herobrineDragonEntity);

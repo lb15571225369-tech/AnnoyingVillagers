@@ -1,16 +1,18 @@
 package com.pla.annoyingvillagers.skill;
 
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
-import com.pla.annoyingvillagers.item.ObsidianSledgehammerItem;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import reascer.wom.gameasset.WOMAnimations;
+import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.skill.SkillBuilder;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
-import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
+import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
+import yesman.epicfight.world.entity.eventlistener.PlayerEventListener;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class ObsidianSledgeHammerSkill extends WeaponInnateSkill {
@@ -21,19 +23,38 @@ public class ObsidianSledgeHammerSkill extends WeaponInnateSkill {
 
     @Override
     public void executeOnServer(SkillContainer skillContainer, FriendlyByteBuf friendlyByteBuf) {
-        if (!this.isActivated(skillContainer)) {
+        if (!skillContainer.isActivated()) {
+            skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.POSE_UP, 0.0F);
+            skillContainer.getExecutor().playSound(AnnoyingVillagersModSounds.SECOND_FORM_RELEASE.get(), 0.0F, 0.0F);
             super.executeOnServer(skillContainer, friendlyByteBuf);
             skillContainer.activate();
-            ServerPlayerPatch serverPlayerPatch = skillContainer.getServerExecutor();
-            serverPlayerPatch.playAnimationSynchronized(WOMAnimations.TORMENT_DASH, 0.0F);
-            ObsidianSledgehammerItem.triggerCircleWhenGroundHits(serverPlayerPatch, true);
         }
     }
 
     @Override
-    public void cancelOnServer(SkillContainer skillContainer, FriendlyByteBuf friendlyByteBuf) {
-        skillContainer.deactivate();
-        super.cancelOnServer(skillContainer, friendlyByteBuf);
+    public void onInitiate(SkillContainer container) {
+        super.onInitiate(container);
+        container.getExecutor().getEventListener().addEventListener(
+                PlayerEventListener.EventType.BASIC_ATTACK_EVENT, EVENT_UUID, event -> {
+                    if (event.getPlayerPatch().isLogicalClient()) return;
+                    SkillContainer skillContainer = event.getPlayerPatch().getSkill(this);
+                    if (skillContainer.isActivated()) {
+                        event.setCanceled(true);
+                        final PlayerPatch<?> playerPatch = event.getPlayerPatch();
+                        AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(playerPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
+                        if (dynamicAnimation != null && dynamicAnimation == AVAnimations.SLEDGEHAMMER_TORMENT_BERSERK_AUTO_1) {
+                            skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.SLEDGEHAMMER_TORMENT_BERSERK_AUTO_2, 0.0F);
+                        } else {
+                            skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.SLEDGEHAMMER_TORMENT_BERSERK_AUTO_1, 0.0F);
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void cancelOnServer(SkillContainer container, FriendlyByteBuf args) {
+        container.deactivate();
+        super.cancelOnServer(container, args);
     }
 
     public void executeOnClient(SkillContainer container, FriendlyByteBuf args) {
@@ -47,17 +68,7 @@ public class ObsidianSledgeHammerSkill extends WeaponInnateSkill {
     }
 
     @Override
-    public void updateContainer(SkillContainer container) {
-        super.updateContainer(container);
-        Player player = container.getExecutor().getOriginal();
-        ItemStack itemStack = player.getMainHandItem();
-        if (container.getStack() == 1 && itemStack.getTag() != null &&
-                itemStack.getItem() instanceof ObsidianSledgehammerItem && !itemStack.getTag().getBoolean("PlaySound")) {
-            container.getExecutor().playSound(AnnoyingVillagersModSounds.SECOND_FORM_RELEASE.get(), 0.0F, 0.0F);
-            itemStack.getTag().putBoolean("PlaySound", true);
-        } else if (container.getStack() < 1 && itemStack.getTag() != null &&
-                itemStack.getItem() instanceof ObsidianSledgehammerItem && itemStack.getTag().getBoolean("PlaySound")) {
-            itemStack.getTag().remove("PlaySound");
-        }
+    public void onRemoved(SkillContainer container) {
+        container.getExecutor().getEventListener().removeListener(PlayerEventListener.EventType.BASIC_ATTACK_EVENT, EVENT_UUID);
     }
 }

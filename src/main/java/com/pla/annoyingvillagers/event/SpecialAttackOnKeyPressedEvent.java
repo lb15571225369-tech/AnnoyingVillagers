@@ -128,12 +128,9 @@ public class SpecialAttackOnKeyPressedEvent {
                     PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
                     if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
                         SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.OBSIDIAN_SLEDGEHAMMER);
-                        if (skillContainer != null && skillContainer.getSkill() instanceof ObsidianSledgeHammerSkill obsidianSledgeHammerSkill) {
-                            if (skillContainer.getStack() >= 1) {
-                                livingEntityPatch.playAnimationSynchronized(AVAnimations.LEGENDARY_SWORD_AUTO_4, 0.0F);
-                                ObsidianSledgehammerItem.triggerCircleWhenGroundHits(serverPlayerPatch, false);
-                                obsidianSledgeHammerSkill.getResourceType().consumer
-                                        .consume(skillContainer, serverPlayerPatch, obsidianSledgeHammerSkill.getDefaultConsumptionAmount(serverPlayerPatch));
+                        if (skillContainer != null && skillContainer.getSkill() instanceof ObsidianSledgeHammerSkill) {
+                            if (skillContainer.isActivated()) {
+                                livingEntityPatch.playAnimationSynchronized(AVAnimations.SLEDGEHAMMER_SOLAR_AUTO_3, 0.0F);
                                 success = true;
                             }
                         }

@@ -25,7 +25,10 @@
 
 package com.pla.annoyingvillagers.entity;
 
+import com.pla.annoyingvillagers.block.CryingObsidianSpikeBlock;
+import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.init.*;
+import com.pla.annoyingvillagers.skill.ObsidianSledgeHammerSkill;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.ScreenShakeUtil;
 import net.minecraft.core.BlockPos;
@@ -53,7 +56,6 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ThrownPotion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -61,36 +63,45 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import yesman.epicfight.skill.SkillContainer;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
+import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
+import yesman.epicfight.world.damagesource.StunType;
 
 import java.util.Random;
 
-public class DragonMeteoriteEntity extends PathfinderMob {
+public class ObsidianSledgehammerProjectileEntity extends PathfinderMob {
     private Vec3 posToAim;
-    private HerobrineDragonEntity owner;
+    private LivingEntity owner;
 
     private boolean motionInited = false;
     private double xd = 0.0;
     private double yd = 0.0;
     private double zd = 0.0;
 
+    private boolean meteoriteTrailEnabled = false;
+    private static final double meteoriteTrailStartDistanceSquared = 4.0D;
+
     public void setPosToAim(@Nullable Vec3 pos) {
         this.posToAim = pos;
         this.motionInited = false;
     }
 
-    public HerobrineDragonEntity getOwner() {
+    public LivingEntity getOwner() {
         return owner;
     }
 
-    public void setOwner(HerobrineDragonEntity owner) {
+    public void setOwner(LivingEntity owner) {
         this.owner = owner;
     }
 
-    public DragonMeteoriteEntity(SpawnEntity spawnEntity, Level level) {
-        this(AnnoyingVillagersModEntities.DRAGON_METEORITE.get(), level);
+    public ObsidianSledgehammerProjectileEntity(SpawnEntity spawnEntity, Level level) {
+        this(AnnoyingVillagersModEntities.OBSIDIAN_SLEDGEHAMMER_PROJECTILE.get(), level);
     }
 
-    public DragonMeteoriteEntity(EntityType<DragonMeteoriteEntity> entitytype, Level level) {
+    public ObsidianSledgehammerProjectileEntity(EntityType<ObsidianSledgehammerProjectileEntity> entitytype, Level level) {
         super(entitytype, level);
         this.setMaxUpStep(0.6F);
         this.xpReward = 0;
@@ -170,6 +181,14 @@ public class DragonMeteoriteEntity extends PathfinderMob {
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }
 
+    private boolean shouldEnableMeteoriteTrail() {
+        if (this.owner == null) return true;
+
+        double deltaX = this.getX() - this.owner.getX();
+        double deltaZ = this.getZ() - this.owner.getZ();
+        return (deltaX * deltaX + deltaZ * deltaZ) >= meteoriteTrailStartDistanceSquared;
+    }
+
     public void baseTick() {
         super.baseTick();
         if (this.level() instanceof ServerLevel serverLevel) {
@@ -209,28 +228,14 @@ public class DragonMeteoriteEntity extends PathfinderMob {
             }
 
             if (this.onGround() || this.isInWall() || (posToAim != null && this.position().distanceToSqr(posToAim) < 1.0D)) {
-                serverLevel.explode(null, d0, d1, d2, new Random().nextFloat(2.0F, 4.0F), Level.ExplosionInteraction.MOB);
+                serverLevel.explode(null, d0, d1, d2, new Random().nextFloat(2.0F, 4.0F), Level.ExplosionInteraction.NONE);
                 ScreenShakeUtil.applyScreenShake(serverLevel, this.position(), 24.0, 60, 6);
 
-                RandomSource randomSource = serverLevel.getRandom();
-                BlockState endfireState = AnnoyingVillagersModBlocks.END_FIRE.get().defaultBlockState();
+                BlockState cryingObsidianBlock = AnnoyingVillagersModBlocks.CRYING_OBSIDIAN_BLOCK.get()
+                        .defaultBlockState()
+                        .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, this.getOwner() instanceof Player);
 
-                for (int i = 0; i < 25; i++) {
-                    BlockPos pos = BlockPos.containing(d0, d1, d2);
-                    serverLevel.setBlock(pos, endfireState, 3);
-                    FallingBlockEntity fallingBlockEntity = FallingBlockEntity.fall(serverLevel, pos, endfireState);
-                    fallingBlockEntity.time = 1;
-                    fallingBlockEntity.dropItem = false;
-
-                    double vx = Mth.nextDouble(randomSource, -0.15D, 0.15D);
-                    double vy = Mth.nextDouble(randomSource,  0.2D, 0.5D);
-                    double vz = Mth.nextDouble(randomSource, -0.15D, 0.15D);
-
-                    fallingBlockEntity.setDeltaMovement(vx, vy, vz);
-                    fallingBlockEntity.hasImpulse = true;
-                }
-
-                FallingBlockEntity.fall(serverLevel, BlockPos.containing(d0, d1, d2), Blocks.CRYING_OBSIDIAN.defaultBlockState());
+                FallingBlockEntity.fall(serverLevel, BlockPos.containing(d0, d1, d2), cryingObsidianBlock);
                 serverLevel.sendParticles(ParticleTypes.EXPLOSION_EMITTER, d0, d1, d2, 1, 0.0D, 0.0D, 0.0D, 0.0D);
 
                 Vec3 center = new Vec3(d0, d1, d2);
@@ -243,7 +248,7 @@ public class DragonMeteoriteEntity extends PathfinderMob {
                         livingEntity -> livingEntity.isAlive()
                                 && !(livingEntity instanceof DragonMeteoriteEntity)
                                 && !(livingEntity instanceof HerobrineDragonEntity)
-                                && livingEntity != this.getOwner().getSummoner())) {
+                                && livingEntity != this.getOwner())) {
 
                     Vec3 dir = entity.position().subtract(center);
                     double dist = Math.max(0.001D, dir.length());
@@ -254,12 +259,17 @@ public class DragonMeteoriteEntity extends PathfinderMob {
                             .add(0.0D, 0.35D * falloff, 0.0D);
 
                     entity.setDeltaMovement(entity.getDeltaMovement().add(push));
-                    if (this.owner != null && this.owner.getSummoner() != null) {
-                        entity.hurt(damageSources().indirectMagic(this, this.owner.getSummoner()), 24.0F);
+                    if (this.owner != null) {
+                        entity.hurt(damageSources().indirectMagic(this, this.owner), 12.0F);
                     } else {
-                        entity.hurt(damageSource, 24.0F);
+                        entity.hurt(damageSource, 12.0F);
                     }
                     entity.hasImpulse = true;
+                    LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                    if (patch != null) {
+                        patch.applyStun(StunType.LONG, 40.0F);
+                    }
+                    increaseSkillPoint(this.getOwner(), 10.0F);
                 }
 
                 this.playSound(SoundEvents.GENERIC_EXPLODE, 5.0F, 0.0F);
@@ -334,19 +344,38 @@ public class DragonMeteoriteEntity extends PathfinderMob {
                 };
             }
 
-            serverLevel.sendParticles(ParticleTypes.EXPLOSION, d0, d1 + 0.5D, d2, 0, 0.0D, 1.0D, 0.0D, 0.0D);
-            serverLevel.sendParticles(ParticleTypes.FLASH, d0, d1 + 0.5D, d2, 0, 0.0D, 1.0D, 0.0D, 0.0D);
-            serverLevel.sendParticles(AnnoyingVillagersModParticleTypes.METEORITE_TRAIL.get(), d0, d1 + 0.5D, d2,  0, 0.0D, 0.01D, 0.0D, 0.0D);
+            if (!this.meteoriteTrailEnabled && shouldEnableMeteoriteTrail()) {
+                this.meteoriteTrailEnabled = true;
+            }
 
-            for (int i = 0; i < 20; ++i) {
+            if (this.meteoriteTrailEnabled) {
                 serverLevel.sendParticles(
-                        ParticleTypes.CAMPFIRE_COSY_SMOKE,
-                        d0 + Mth.nextDouble(RandomSource.create(), -2.0D, 2.0D),
-                        d1 + Mth.nextDouble(RandomSource.create(), -1.5D, 2.5D),
-                        d2 + Mth.nextDouble(RandomSource.create(), -2.0D, 2.0D),
-                        0, 0.0D, 0.01D, 0.0D, 0.0D);
+                        AnnoyingVillagersModParticleTypes.METEORITE_TRAIL.get(),
+                        d0, d1 + 0.5D, d2,
+                        0,
+                        0.0D, 0.01D, 0.0D,
+                        0.0D
+                );
             }
         }
+    }
+
+    public void increaseSkillPoint(Entity entity, float value) {
+        if (!(entity instanceof Player player)) return;
+
+        PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+        if (!(playerPatch instanceof ServerPlayerPatch serverPlayerPatch)) return;
+
+        SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.OBSIDIAN_SLEDGEHAMMER);
+        if (skillContainer == null) return;
+
+        ObsidianSledgeHammerSkill skill = (ObsidianSledgeHammerSkill) skillContainer.getSkill();
+
+        float currentResource = skillContainer.getResource();
+        float neededResource = skillContainer.getNeededResource();
+        float addResource = Math.min(value, neededResource);
+
+        skill.setConsumptionSynchronize(skillContainer, currentResource + addResource);
     }
 
     public static void init() {}
