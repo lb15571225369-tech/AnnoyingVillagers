@@ -1,68 +1,52 @@
 package com.pla.annoyingvillagers.util;
 
+import com.pla.annoyingvillagers.entity.ShockWaveBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.TickTask;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.phys.Vec3;
-import yesman.epicfight.network.EpicFightNetworkManager;
-import yesman.epicfight.network.server.SPFracture;
-import yesman.epicfight.api.utils.LevelUtil;
-
-import javax.annotation.Nullable;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class ShockwaveUtil {
-    private static void schedule(MinecraftServer server, int delayTicks, Runnable action) {
-        if (delayTicks <= 0) {
-            action.run();
-            return;
-        }
-        server.tell(new TickTask(server.getTickCount() + delayTicks, action));
-    }
+    public static void spawnCircleRing(ServerLevel level, BlockPos centerPos, int radius, LivingEntity owner) {
+        double inner = (radius - 0.5D) * (radius - 0.5D);
+        double outer = (radius + 0.5D) * (radius + 0.5D);
 
-    /**
-     * Expanding fracture shockwave: 4 -> 5 -> 6 -> 7 (each step after stepTicks)
-     * - First pulses: visual only (send SPFracture), no damage
-     * - Last pulse: call circleSlamFracture to apply damage (optional)
-     */
-    public static void expandingShockwave(ServerLevel level, @Nullable LivingEntity caster, Vec3 center,
-                                          int stepTicks, double... radii) {
-        MinecraftServer server = level.getServer();
-        if (server == null) return;
-
-        // Important: fracture origin checks block at (floor x,y,z)
-        // Put center at ground Y (usually caster.getY()).
-        BlockPos bp = BlockPos.containing(center);
-
-        for (int i = 0; i < radii.length; i++) {
-            final int idx = i;
-            final double r = radii[i];
-            final boolean last = (i == radii.length - 1);
-
-            schedule(server, idx * stepTicks, () -> {
-                if (!level.hasChunkAt(bp)) return;
-
-                boolean noSound = (idx != 0);    // only first pulse plays sound
-                boolean noParticle = false;      // keep particles for each pulse
-
-                if (!last) {
-                    // VISUAL ONLY pulse (cheap): client will render fracture via packet
-                    EpicFightNetworkManager.sendToAllPlayerTrackingThisChunkWithSelf(
-                            new SPFracture(center, r, noSound, noParticle),
-                            level.getChunkAt(bp)
-                    );
-                } else {
-                    // FINAL pulse: apply damage + also sends SPFracture internally
-                    // If you want NO damage at all -> set last arg to false
-                    LevelUtil.circleSlamFracture(caster, level, center, r, noSound, noParticle, true);
+        for (int dx = -radius; dx <= radius; dx++) {
+            for (int dz = -radius; dz <= radius; dz++) {
+                double dist2 = (double) dx * dx + (double) dz * dz;
+                if (dist2 >= inner && dist2 <= outer) {
+                    spawnShockWaveBlock(level, centerPos.offset(dx, 0, dz), owner);
                 }
-            });
+            }
         }
     }
 
-    // Convenience preset: 4 -> 5 -> 6 -> 7
-    public static void expandingShockwave_4to7(ServerLevel level, @Nullable LivingEntity caster, Vec3 center) {
-        expandingShockwave(level, caster, center, 2, 4D, 5D, 6D, 7D); // 2 ticks between rings
+    private static void spawnShockWaveBlock(ServerLevel level, BlockPos startPos, LivingEntity owner) {
+        final int BLOCK_SEARCH_DEPTH = 256;
+        final int ENTITY_GROUND_LIFETIME = 10;
+
+        BlockPos pos = startPos;
+        BlockState state = level.getBlockState(pos);
+
+        int minY = level.getMinBuildHeight();
+
+        for (int i = 0; i < BLOCK_SEARCH_DEPTH && pos.getY() > minY && state.getRenderShape() != RenderShape.MODEL; i++) {
+            pos = pos.below();
+            state = level.getBlockState(pos);
+        }
+
+        if (state.getRenderShape() != RenderShape.MODEL) return;
+
+        ShockWaveBlockEntity blockEntity = new ShockWaveBlockEntity(
+                level,
+                pos.getX() + 0.5D,
+                pos.getY() + 1.0D,
+                pos.getZ() + 0.5D,
+                state,
+                ENTITY_GROUND_LIFETIME
+        );
+        blockEntity.setOwnerUuid(owner.getUUID());
+        level.addFreshEntity(blockEntity);
     }
 }

@@ -6,6 +6,7 @@ import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import net.minecraft.core.BlockPos;
@@ -228,34 +229,12 @@ public class HerobrineUtil {
     }
 
     public static void spawnEliteEffect(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) {
-        if (entity != null) {
+        if (entity != null && levelaccessor instanceof ServerLevel serverLevel) {
             if (Math.random() <= 0.3D) {
-                if (!entity.level().isClientSide() && entity.getServer() != null) {
-                    try {
-                        entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:pe ^ ^ ^ 0.4 1.1 0.4 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                    } catch (CommandSyntaxException e) {
-
-                    }
-                }
-
+                serverLevel.addParticle(AnnoyingVillagersModParticleTypes.PE.get(), d0, d1, d2,0.4, 1.1, 0.4);
                 if (Math.random() <= 0.87D) {
-                    if (!entity.level().isClientSide() && entity.getServer() != null) {
-                        try {
-                            entity.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:pe ^ ^ ^ 0.45 1.5 0.3 0 1", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                        } catch (CommandSyntaxException e) {
-
-                        }
-                    }
-
-                    if (levelaccessor instanceof Level) {
-                        Level level = (Level) levelaccessor;
-
-                        if (!level.isClientSide()) {
-                            level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "electify"))), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.05D, 0.4D), (float) Mth.nextDouble(RandomSource.create(), 0.5D, 1.2D));
-                        } else {
-                            level.playLocalSound(d0, d1, d2, (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "electify"))), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.05D, 0.4D), (float) Mth.nextDouble(RandomSource.create(), 0.5D, 1.2D), false);
-                        }
-                    }
+                    serverLevel.addParticle(AnnoyingVillagersModParticleTypes.PE.get(), d0, d1, d2,0.45, 1.5, 0.3);
+                    serverLevel.playSound(entity, entity.blockPosition(), AnnoyingVillagersModSounds.ELECTIFY.get(), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.05D, 0.4D), (float) Mth.nextDouble(RandomSource.create(), 0.5D, 1.2D));
                 }
             }
 

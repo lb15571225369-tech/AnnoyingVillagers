@@ -260,16 +260,16 @@ public class ObsidianSledgehammerProjectileEntity extends PathfinderMob {
 
                     entity.setDeltaMovement(entity.getDeltaMovement().add(push));
                     if (this.owner != null) {
-                        entity.hurt(damageSources().indirectMagic(this, this.owner), 12.0F);
+                        entity.hurt(damageSources().indirectMagic(this, this.owner), 4.0F);
                     } else {
-                        entity.hurt(damageSource, 12.0F);
+                        entity.hurt(damageSource, 4.0F);
                     }
                     entity.hasImpulse = true;
                     LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                     if (patch != null) {
-                        patch.applyStun(StunType.LONG, 40.0F);
+                        patch.applyStun(StunType.LONG, 10.0F);
                     }
-                    increaseSkillPoint(this.getOwner(), 10.0F);
+                    increaseSkillPoint(this.getOwner(), 5.0F);
                 }
 
                 this.playSound(SoundEvents.GENERIC_EXPLODE, 5.0F, 0.0F);

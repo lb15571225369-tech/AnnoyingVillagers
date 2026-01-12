@@ -46,21 +46,24 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.item.EnderAegisItem;
 import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
 import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
+import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.BowFunction;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
+import com.pla.annoyingvillagers.util.ShockwaveUtil;
 import com.pla.annoyingvillagers.util.SnakeBladeHit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemCooldowns;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BushBlock;
@@ -76,11 +79,9 @@ import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
 import reascer.wom.animation.attacks.SpecialAttackAnimation;
 import reascer.wom.animation.attacks.UltimateAttackAnimation;
 import reascer.wom.gameasset.WOMAnimations;
-import reascer.wom.gameasset.WOMSkills;
 import reascer.wom.gameasset.WOMSounds;
 import reascer.wom.gameasset.colliders.WOMWeaponColliders;
 import reascer.wom.particle.WOMParticles;
-import reascer.wom.skill.WOMSkillDataKeys;
 import reascer.wom.world.damagesources.WOMExtraDamageInstance;
 import yesman.epicfight.api.animation.AnimationManager;
 import yesman.epicfight.api.animation.Joint;
@@ -94,7 +95,6 @@ import yesman.epicfight.api.animation.property.AnimationProperty.AttackPhaseProp
 import yesman.epicfight.api.animation.property.AnimationProperty.StaticAnimationProperty;
 import yesman.epicfight.api.animation.types.*;
 import yesman.epicfight.api.animation.types.AttackAnimation.Phase;
-import yesman.epicfight.api.collider.Collider;
 import yesman.epicfight.api.utils.HitEntityList.Priority;
 import yesman.epicfight.api.utils.LevelUtil;
 import yesman.epicfight.api.utils.TimePairList;
@@ -107,11 +107,8 @@ import yesman.epicfight.gameasset.ColliderPreset;
 import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.model.armature.HumanoidArmature;
 import yesman.epicfight.particle.EpicFightParticles;
-import yesman.epicfight.skill.SkillDataKey;
-import yesman.epicfight.skill.SkillSlots;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
-import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.damagesource.EpicFightDamageTypeTags;
 import yesman.epicfight.world.damagesource.ExtraDamageInstance;
 import yesman.epicfight.world.damagesource.StunType;
@@ -452,12 +449,10 @@ public class AVAnimations {
                             }
                         }).addEvents(
                                 new AnimationEvent.InTimeEvent[]{
-                                        AnimationEvent.InTimeEvent.create(0.0F, (livingentitypatch, staticanimation, aobject) -> {
-                                            if (livingentitypatch instanceof PlayerPatch) {
-                                                ((PlayerPatch<?>) livingentitypatch).setStamina(((PlayerPatch<?>) livingentitypatch).getStamina() - 2.0F);
-                                            }
-                                        }, Side.CLIENT),
-                                        AnimationEvent.InTimeEvent.create(0.6F, ReuseableEvents.GROUNDSLAM, Side.CLIENT)}));
+                                        AnimationEvent.InTimeEvent.create(0.6F, ReuseableEvents.LEGENDARY_SWORD_GROUND_SLAM, Side.CLIENT),
+                                        AnimationEvent.InTimeEvent.create(0.6F, ReuseableEvents.SHOCK_WAVE, Side.SERVER)
+                                })
+        );
         AVAnimations.BLUE_DEMON_START_SKILL = builder.nextAccessor("biped/other/blue_demon_start_skill",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidArmature));
         AVAnimations.BLUE_DEMON_END_SKILL = builder.nextAccessor("biped/other/blue_demon_end_skill",
@@ -2043,14 +2038,14 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2.0F), 1)
                         .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(2.5F), 1)
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.05F)
-                        .addEvents(AnimationEvent.InTimeEvent.create(0.45F, ReuseableEvents.GROUNDSLAM, Side.CLIENT))
-                        .addEvents(new AnimationEvent[]{
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.45F, ReuseableEvents.LEGENDARY_SWORD_GROUND_SLAM, Side.CLIENT),
                                 AnimationEvent.InTimeEvent.create(1.2F, (livingEntityPatch, self, p) -> {
                                     if (!livingEntityPatch.isLogicalClient()) {
                                         livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
                                     }
                                 }, Side.SERVER)
-                        }));
+                        ));
         AVAnimations.CLONE_ENDERBLASTER_TWOHAND_TOMAHAWK = builder.nextAccessor("biped/combat/clone_enderblaster_twohand_dash",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.05F, accessor, humanoidArmature, new Phase(0.0F, 0.3F, 0.44F, 0.45F, 0.45F, humanoidArmature.get().legL, WOMWeaponColliders.KICK_HUGE),
                         new Phase(0.45F, 0.5F, 0.6F, 0.65F, Float.MAX_VALUE, humanoidArmature.get().rootJoint, WOMWeaponColliders.TORMENT_AIRSLAM)))
@@ -2101,7 +2096,9 @@ public class AVAnimations {
                             }
                         }).addEvents(
                                 AnimationEvent.InTimeEvent.create(0.35F, reascer.wom.gameasset.ReuseableEvents.AIRBURST_JUMP, Side.CLIENT),
-                                AnimationEvent.InTimeEvent.create(1.15F, reascer.wom.gameasset.ReuseableEvents.TORMENT_GROUNDSLAM, Side.CLIENT))
+                                AnimationEvent.InTimeEvent.create(1.15F, reascer.wom.gameasset.ReuseableEvents.TORMENT_GROUNDSLAM, Side.CLIENT),
+                                AnimationEvent.InTimeEvent.create(1.15F, ReuseableEvents.SHOCK_WAVE, Side.SERVER)
+                        )
                         .addEvents(new AnimationEvent[]{AnimationEvent.InTimeEvent.create(0.1F, (livingEntityPatch, self, params) -> {
                             LivingEntity target = livingEntityPatch.getOriginal().getLastHurtMob();
                             if (target != null && target.distanceTo(livingEntityPatch.getOriginal()) < 30.0F) {
@@ -2269,27 +2266,47 @@ public class AVAnimations {
         public static final AnimationEvent.E0 FAST_SPINING =
                 (livingentitypatch, staticanimation, aobject) -> livingentitypatch.getOriginal().level().playSound((Player) livingentitypatch.getOriginal(), livingentitypatch.getOriginal(), EpicFightSounds.WHOOSH.get(), SoundSource.NEUTRAL, 0.5F, 1.1F - ((new Random()).nextFloat() - 0.5F) * 0.2F);
 
-        private static final AnimationEvent.E0 GROUNDSLAM =
-                (livingentitypatch, staticanimation, aobject) -> {
-                    Vec3 vec3 = livingentitypatch.getOriginal().position();
-                    OpenMatrix4f openmatrix4f = livingentitypatch.getArmature()
-                            .getBoundTransformFor(livingentitypatch.getAnimator().getPose(1.0F), Armatures.BIPED.get().toolR)
+        private static final AnimationEvent.E0 SHOCK_WAVE =
+                (livingEntityPatch, staticAnimation, aobject) -> {
+
+                    Vec3 legendarySwordPos = EpicfightUtil.getJointWithTranslation(livingEntityPatch.getOriginal(), new Vec3f(0, 0, 0),
+                            Armatures.BIPED.get().toolR, 1.5F, 0.0F);
+                    final int MAX_SHOCKWAVE_RADIUS = 6;
+                    final int TICKS_BETWEEN_LAYERS = 2;
+                    for (int radius = 1; radius <= MAX_SHOCKWAVE_RADIUS; radius++) {
+                        int delayTicks = (radius - 1) * TICKS_BETWEEN_LAYERS;
+                        int ringRadius = radius;
+
+                        BlockPos finalVec = BlockPos.containing(legendarySwordPos);
+                        new DelayedTask(delayTicks) {
+                            @Override
+                            public void run() {
+                                ShockwaveUtil.spawnCircleRing((ServerLevel) livingEntityPatch.getOriginal().level(), finalVec, ringRadius, livingEntityPatch.getOriginal());
+                            }
+                        };
+                    }
+                };
+
+        private static final AnimationEvent.E0 LEGENDARY_SWORD_GROUND_SLAM =
+                (livingEntityPatch, staticAnimation, aobject) -> {
+                    Vec3 vec3 = livingEntityPatch.getOriginal().position();
+                    OpenMatrix4f openmatrix4f = livingEntityPatch.getArmature()
+                            .getBoundTransformFor(livingEntityPatch.getAnimator().getPose(1.0F), Armatures.BIPED.get().toolR)
                             .mulFront(OpenMatrix4f.createTranslation((float) vec3.x, (float) vec3.y, (float) vec3.z)
                                     .mulBack(OpenMatrix4f.createRotatorDeg(180.0F, Vec3f.Y_AXIS)
-                                            .mulBack(livingentitypatch.getModelMatrix(1.0F))));
-                    Vec3 vec31 = OpenMatrix4f.transform(openmatrix4f, (new Vec3f(0.0F, -0.0F, -1.4F)).toDoubleVector());
-                    Level level = livingentitypatch.getOriginal().level();
-                    Vec3 vec32 = getFloor(livingentitypatch, new Vec3f(0.0F, 0.0F, -1.4F), Armatures.BIPED.get().toolR);
-                    BlockState blockstate = livingentitypatch.getOriginal().level().getBlockState(new BlockPos(new Vec3i((int) Math.floor(vec32.x), (int) Math.floor(vec32.y), (int) Math.floor(vec32.z))));
+                                            .mulBack(livingEntityPatch.getModelMatrix(1.0F))));
+                    vec3 = OpenMatrix4f.transform(openmatrix4f, (new Vec3f(0.0F, -0.0F, -1.4F)).toDoubleVector());
+                    Level level = livingEntityPatch.getOriginal().level();
+                    Vec3 vec32 = getFloor(livingEntityPatch, new Vec3f(0.0F, 0.0F, -1.4F), Armatures.BIPED.get().toolR);
+                    BlockState blockstate = livingEntityPatch.getOriginal().level().getBlockState(new BlockPos(new Vec3i((int) Math.floor(vec32.x), (int) Math.floor(vec32.y), (int) Math.floor(vec32.z))));
 
                     level.playLocalSound(vec32.x, vec32.y, vec32.z, blockstate.is(Blocks.WATER) ?
                                     SoundEvents.GENERIC_SPLASH :
                                     EpicFightSounds.SLAM_HEAVY.get(),
                             SoundSource.BLOCKS,
                             1.0F, 1.0F, false);
-                    vec31 = new Vec3(vec31.x, vec32.y, vec31.z);
-                    livingentitypatch.getOriginal().level().addParticle(WOMParticles.WOM_GROUND_SLAM.get(), vec32.x, (int) vec32.y + 1, vec32.z, 1.0D, 50.0D, 1.0D);
-                    LevelUtil.circleSlamFracture(livingentitypatch.getOriginal(), level, vec31, 3.5D, true, false);
+                    livingEntityPatch.getOriginal().level().addParticle(WOMParticles.WOM_GROUND_SLAM.get(), vec32.x, (int) vec32.y + 1, vec32.z, 1.0D, 50.0D, 1.0D);
+                    LevelUtil.circleSlamFracture(livingEntityPatch.getOriginal(), level, vec3, 3.5D, true, false);
                 };
 
         private static final AnimationEvent.E0 END_ATTACK =

@@ -726,7 +726,13 @@ public class HerobrineMob extends Monster {
         this.floatOnAnyFluid();
         this.checkInsideBlocks();
         if (this.level() instanceof ServerLevel serverLevel) {
-            if (this.state == 2) {
+            if (this.state == 2 && (this instanceof AegisHerobrineEntity
+                    || this instanceof SledgehammerHerobrineEntity
+                    || this instanceof SwordsmanHerobrineEntity
+                    || this instanceof ReaperHerobrineEntity
+                    || this instanceof GlaiveHerobrineEntity
+                    || this instanceof NullEntity
+                    || this instanceof ShadowHerobrineEntity)) {
                 this.addEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 3, 3));
             }
             if (this.healingCooldown > 0) this.healingCooldown = this.healingCooldown - 1;
