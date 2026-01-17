@@ -167,6 +167,21 @@ public class SpecialAttackOnKeyPressedEvent {
                     return;
                 }
             }
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.NULL_WEAPON.get())) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+                    if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
+                        SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.NULL_WEAPON);
+                        if (skillContainer != null && skillContainer.getSkill() instanceof NullWeaponSkill && !skillContainer.isActivated()) {
+                            livingEntityPatch.playAnimationSynchronized(AVAnimations.CLONE_ANTITHEUS_SHOOT, 0.0F);
+                        } else {
+                            livingEntityPatch.playAnimationSynchronized(AVAnimations.CLONE_ANTITHEUS_ASCENDED_BLACKHOLE, 0.0F);
+                        }
+                    }
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
+                    return;
+                }
+            }
             if (holdingItem.getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get())
                     || offHandItem.getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get())) {
                 if (!entity.level().isClientSide() && entity.getServer() != null) {

@@ -748,15 +748,15 @@ public class CombatCommon {
     }
 
     public static void swapToBlock(MobPatch<?> mobpatch) {
-        Entity entity = mobpatch.getOriginal();
-        if (entity instanceof LivingEntity livingEntity) {
+        LivingEntity entity = mobpatch.getOriginal();
+        if (entity instanceof PlayerNpcEntity || entity instanceof AVNpc) {
             double chance = new Random().nextDouble(0.0, 1.0);
             if (chance <= 0.33) {
-                livingEntity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.COBBLESTONE));
+                entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.COBBLESTONE));
             } else if (chance <= 0.66) {
-                livingEntity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.MOSSY_COBBLESTONE));
+                entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.MOSSY_COBBLESTONE));
             } else {
-                livingEntity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.OAK_PLANKS));
+                entity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.OAK_PLANKS));
             }
         }
     }

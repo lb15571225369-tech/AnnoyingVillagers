@@ -228,13 +228,30 @@ public class HerobrineUtil {
         }
     }
 
-    public static void spawnEliteEffect(LevelAccessor levelaccessor, double d0, double d1, double d2, Entity entity) {
-        if (entity != null && levelaccessor instanceof ServerLevel serverLevel) {
+    public static void spawnEliteEffect(Level level, double x, double y, double z, Entity entity) {
+        if (entity != null && level instanceof ServerLevel serverLevel) {
             if (Math.random() <= 0.3D) {
-                serverLevel.addParticle(AnnoyingVillagersModParticleTypes.PE.get(), d0, d1, d2,0.4, 1.1, 0.4);
+                serverLevel.sendParticles(
+                        AnnoyingVillagersModParticleTypes.PE.get(),
+                        x, y, z,
+                        1,
+                        0.4D, 1.1D, 0.4D,
+                        0.0D
+                );
                 if (Math.random() <= 0.87D) {
-                    serverLevel.addParticle(AnnoyingVillagersModParticleTypes.PE.get(), d0, d1, d2,0.45, 1.5, 0.3);
-                    serverLevel.playSound(entity, entity.blockPosition(), AnnoyingVillagersModSounds.ELECTIFY.get(), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.05D, 0.4D), (float) Mth.nextDouble(RandomSource.create(), 0.5D, 1.2D));
+                    serverLevel.sendParticles(
+                            AnnoyingVillagersModParticleTypes.PE.get(),
+                            x, y, z,
+                            1,
+                            0.45D, 1.5D, 0.3D,
+                            0.0D
+                    );
+                    serverLevel.playSound(
+                            null
+                            , x, y, z, AnnoyingVillagersModSounds.ELECTIFY.get(),
+                            SoundSource.NEUTRAL,
+                            (float) Mth.nextDouble(RandomSource.create(), 0.05D, 0.4D),
+                            (float) Mth.nextDouble(RandomSource.create(), 0.5D, 1.2D));
                 }
             }
 

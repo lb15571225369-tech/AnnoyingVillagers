@@ -9,7 +9,7 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 
 public class NullSwordEntity extends NullWeapon {
     public NullSwordEntity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.NULL_SWORD.get(), level);
+        this(AnnoyingVillagersModEntities.NULL_SWORD.get(), level);
     }
 
     public NullSwordEntity(EntityType<NullSwordEntity> entitytype, Level level) {

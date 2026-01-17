@@ -38,7 +38,7 @@ public class ExplosionDamageEvent {
             if (livingEntityPatch == null) return;
             AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
             if (livingEntity.getMainHandItem().getItem() instanceof EnderGlaiveItem
-                    && (dynamicAnimation == AVAnimations.ENDER_GLAIVE_AGONY_AUTO_1 || dynamicAnimation == AVAnimations.ENDER_GLAIVE_NAPOLEON_AUTO_3)) {
+                    && (dynamicAnimation == AVAnimations.ENDER_GLAIVE_AGONY_AUTO_1 || dynamicAnimation == AVAnimations.ENDER_GLAIVE_NAPOLEON_SHOOT_3)) {
                 SkillContainer skillContainer = null;
                 if (livingEntityPatch instanceof ServerPlayerPatch serverPlayerPatch) {
                     skillContainer = serverPlayerPatch.getSkill(AVSkills.ENDER_GLAIVE);

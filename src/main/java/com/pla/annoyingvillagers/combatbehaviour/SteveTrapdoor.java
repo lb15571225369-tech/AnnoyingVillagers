@@ -119,6 +119,7 @@ public class SteveTrapdoor {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(40.0D)
+                            .maxCooldown(20)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
@@ -143,6 +144,43 @@ public class SteveTrapdoor {
                                                             )
                                             )
                             )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(Animations.SWORD_DUAL_AUTO1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 3.0D)
+                                                            .animationBehavior(Animations.LONGSWORD_AUTO2, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 4.0D)
+                                                                            .animationBehavior(Animations.SWORD_DUAL_AUTO2, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 4.0D)
+                                                                                            .animationBehavior(Animations.SWORD_DUAL_DASH, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                                            .animationBehavior(AVAnimations.KICK_RUSH, 0.0F)
+                                                                                                            .addNextBehavior(
+                                                                                                                    Behavior.builder()
+                                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                                                            .animationBehavior(Animations.BIPED_STEP_RIGHT, 0.0F)
+                                                                                                            )
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
             )
             .newBehaviorRoot(
                     BehaviorRoot.builder()

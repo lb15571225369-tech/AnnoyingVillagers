@@ -30,6 +30,7 @@ import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.init.*;
 import com.pla.annoyingvillagers.skill.ObsidianSledgeHammerSkill;
 import com.pla.annoyingvillagers.task.DelayedTask;
+import com.pla.annoyingvillagers.util.HerobrineUtil;
 import com.pla.annoyingvillagers.util.ScreenShakeUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -81,6 +82,8 @@ public class ObsidianSledgehammerProjectileEntity extends PathfinderMob {
     private double yd = 0.0;
     private double zd = 0.0;
 
+    private boolean shouldStun = false;
+
     private boolean meteoriteTrailEnabled = false;
     private static final double meteoriteTrailStartDistanceSquared = 4.0D;
 
@@ -95,6 +98,10 @@ public class ObsidianSledgehammerProjectileEntity extends PathfinderMob {
 
     public void setOwner(LivingEntity owner) {
         this.owner = owner;
+    }
+
+    public void setShouldStun(boolean shouldStun) {
+        this.shouldStun = shouldStun;
     }
 
     public ObsidianSledgehammerProjectileEntity(SpawnEntity spawnEntity, Level level) {
@@ -117,6 +124,7 @@ public class ObsidianSledgehammerProjectileEntity extends PathfinderMob {
             tag.putDouble("AimY", posToAim.y);
             tag.putDouble("AimZ", posToAim.z);
         }
+        tag.putBoolean("ShouldStun", shouldStun);
     }
 
     @Override
@@ -128,6 +136,7 @@ public class ObsidianSledgehammerProjectileEntity extends PathfinderMob {
             this.posToAim = null;
         }
         this.motionInited = false;
+        this.shouldStun = tag.getBoolean("ShouldStun");
     }
 
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -259,15 +268,18 @@ public class ObsidianSledgehammerProjectileEntity extends PathfinderMob {
                             .add(0.0D, 0.35D * falloff, 0.0D);
 
                     entity.setDeltaMovement(entity.getDeltaMovement().add(push));
+                    float damage = shouldStun ? 8.0F : 4.0F;
                     if (this.owner != null) {
-                        entity.hurt(damageSources().indirectMagic(this, this.owner), 4.0F);
+                        entity.hurt(damageSources().indirectMagic(this, this.owner), damage);
                     } else {
-                        entity.hurt(damageSource, 4.0F);
+                        entity.hurt(damageSource, damage);
                     }
                     entity.hasImpulse = true;
-                    LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
-                    if (patch != null) {
-                        patch.applyStun(StunType.LONG, 10.0F);
+                    if (this.shouldStun) {
+                        LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                        if (patch != null) {
+                            patch.applyStun(StunType.LONG, 20.0F);
+                        }
                     }
                     increaseSkillPoint(this.getOwner(), 5.0F);
                 }
@@ -324,6 +336,10 @@ public class ObsidianSledgehammerProjectileEntity extends PathfinderMob {
                     ++d4;
                 }
                 ++d3;
+            }
+
+            if (this.shouldStun) {
+                HerobrineUtil.spawnEliteEffect(this.level(), this.getX(), this.getY(), this.getZ(), this);
             }
 
             if (this.isInWaterOrBubble()) {

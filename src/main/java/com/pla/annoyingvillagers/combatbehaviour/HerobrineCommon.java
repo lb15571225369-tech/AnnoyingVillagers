@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.combatbehaviour;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
+import com.pla.annoyingvillagers.clazz.NullWeapon;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
@@ -55,6 +56,13 @@ public class HerobrineCommon {
     public static boolean canPerformHealing(MobPatch<?> mobpatch) {
         if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
             return !herobrineMob.isSacrificing() && !herobrineMob.isHealing() && herobrineMob.getHealingCooldown() == 0;
+        }
+        return false;
+    }
+
+    public static boolean canSpinning(MobPatch<?> mobpatch) {
+        if (mobpatch.getOriginal() instanceof NullWeapon nullWeapon) {
+            return nullWeapon.isSpinning();
         }
         return false;
     }
@@ -367,6 +375,13 @@ public class HerobrineCommon {
                     mobpatch.playAnimationSynchronized(AnimsAgony.AGONY_RIPPING_FANGS, 0.0F);
                 }
             };
+        }
+    }
+
+    public static void performSpinning(MobPatch<?> mobpatch) {
+        Entity entity = mobpatch.getOriginal();
+        if (entity instanceof NullWeapon nullWeapon) {
+            nullWeapon.setSpinning(false);
         }
     }
 

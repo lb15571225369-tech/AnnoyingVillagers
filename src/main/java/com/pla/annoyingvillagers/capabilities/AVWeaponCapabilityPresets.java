@@ -8,8 +8,6 @@ import com.pla.annoyingvillagers.gameasset.AVSkills;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.Tiers;
@@ -167,6 +165,28 @@ public class AVWeaponCapabilityPresets {
                     .livingMotionModifier(Styles.MOUNT, LivingMotions.MOUNT, Animations.BIPED_MOUNT)
                     .livingMotionModifier(Styles.MOUNT, LivingMotions.IDLE, Animations.BIPED_MOUNT)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AVAnimations.GLOWING_AGONY_GUARD);
+
+    public static final Function<Item, CapabilityItem.Builder> NULL_WEAPON = (item) ->
+            WeaponCapability.builder().category(WeaponCategories.SWORD)
+                    .styleProvider((livingEntityPatch) -> Styles.TWO_HAND)
+                    .collider(ColliderPreset.FIST)
+                    .hitSound(EpicFightSounds.BLUNT_HIT_HARD.get())
+                    .canBePlacedOffhand(false)
+                    .newStyleCombo(Styles.TWO_HAND,
+                            AnimsAgony.AGONY_AIR_ATTACK_1,
+                            WOMAnimations.ANTITHEUS_ASCENDED_AUTO_1,
+                            WOMAnimations.ANTITHEUS_ASCENDED_AUTO_2,
+                            WOMAnimations.ANTITHEUS_ASCENDED_AUTO_3,
+                            AnimsAgony.AGONY_AIR_ATTACK_4,
+                            AnimsAgony.AGONY_AIR_ATTACK_3,
+                            AVAnimations.CLONE_ANTITHEUS_ASCENDED_DEATHFALL)
+                    .innateSkill(Styles.TWO_HAND,
+                            (itemstack) -> AVSkills.NULL_WEAPON)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, AVAnimations.CLONE_ANTITHEUS_ASCENDED_IDLE)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, WOMAnimations.ANTITHEUS_ASCENDED_WALK)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, WOMAnimations.ANTITHEUS_ASCENDED_RUN)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, WOMAnimations.ANTITHEUS_ASCENDED_RUN)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AVAnimations.NULL_GUARD);
 
     public static final Function<Item, Builder> LEGENDARY_SWORD = (item) ->
             WeaponCapability.builder()
@@ -495,7 +515,6 @@ public class AVWeaponCapabilityPresets {
                             AnimsRuine.RUINE_AUTO_2,
                             AnimsRuine.RUINE_AUTO_3,
                             AnimsRuine.RUINE_CHATIMENT,
-                            AVAnimations.RUSH_SWORD,
                             Animations.LONGSWORD_DASH,
                             Animations.LONGSWORD_AIR_SLASH)
                     .innateSkill(Styles.ONE_HAND,
@@ -672,6 +691,7 @@ public class AVWeaponCapabilityPresets {
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "demoniac_voltage_reaver"), AVWeaponCapabilityPresets.DEMONIAC_VOLTAGE_REAVER);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "obsidian_sledgehammer"), AVWeaponCapabilityPresets.OBSIDIAN_SLEDGEHAMMER);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_slayer_scythe"), AVWeaponCapabilityPresets.ENDER_SLAYER_SCYTHE);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "null_weapon"), AVWeaponCapabilityPresets.NULL_WEAPON);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "legendary_sword"), AVWeaponCapabilityPresets.LEGENDARY_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "woopie_the_sword"), AVWeaponCapabilityPresets.WOOPIE_THE_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "hard_greatsword"), AVWeaponCapabilityPresets.HARD_GREATSWORD);

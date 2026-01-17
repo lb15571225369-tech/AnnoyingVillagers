@@ -6,9 +6,14 @@ import java.util.Random;
 import java.util.UUID;
 import javax.annotation.Nullable;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.entity.NullEntity;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.item.NullWeaponItem;
+import com.pla.annoyingvillagers.skill.NullWeaponSkill;
+import com.pla.annoyingvillagers.task.DelayedTask;
+import com.pla.annoyingvillagers.util.TeamUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -16,9 +21,9 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -31,26 +36,37 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import reascer.wom.world.entity.mob.EnderHand;
+import yesman.epicfight.skill.SkillContainer;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
+import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
+import yesman.epicfight.world.capabilities.item.CapabilityItem;
+import yesman.epicfight.world.capabilities.item.WeaponCapability;
 
 public class NullWeapon extends Monster {
     protected UUID nullUUID;
     protected NullEntity nullEntity;
 
-    protected long returnGameTime = -1L;
     protected UUID playerUUID;
     protected Player player;
     protected String weapon;
+    private boolean spinning = false;
 
     private int releaseCooldown = 0;
 
@@ -64,9 +80,33 @@ public class NullWeapon extends Monster {
         this.releaseCooldown = 1;
     }
 
+    public void setSpinning(boolean spinning) {
+        this.spinning = spinning;
+    }
+
+    public boolean isSpinning() {
+        return spinning;
+    }
+
     public void releaseForAWhile() {
         this.releaseCooldown = new Random().nextInt(100, 200);
         this.released = true;
+    }
+
+    public void setReleased(boolean released) {
+        this.released = released;
+        if (released) {
+            final LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
+            if (livingEntityPatch != null) {
+                livingEntityPatch.playAnimationSynchronized(AVAnimations.GLOWING_AGONY_GUARD, 0.0F);
+                new DelayedTask(100) {
+                    @Override
+                    public void run() {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
+                    }
+                };
+            }
+        }
     }
 
     public void setWeapon(String weapon) {
@@ -118,10 +158,6 @@ public class NullWeapon extends Monster {
         return nullEntity;
     }
 
-    public void setReturnGameTime(long returnGameTime) {
-        this.returnGameTime = returnGameTime;
-    }
-
     protected NullWeapon(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         this.setMaxUpStep(4.0F);
@@ -135,7 +171,7 @@ public class NullWeapon extends Monster {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
-    protected @NotNull PathNavigation createNavigation(Level level) {
+    protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
         return new FlyingPathNavigation(this, level);
     }
 
@@ -174,7 +210,7 @@ public class NullWeapon extends Monster {
         });
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, NullEntity.class, 6.0F));
         this.goalSelector.addGoal(5, new FloatGoal(this));
-        this.targetSelector.addGoal(6, new HurtByTargetGoal(this, new Class[0]));
+        this.targetSelector.addGoal(6, new HurtByTargetGoal(this));
         this.goalSelector.addGoal(7, new Goal() {
             {
                 this.setFlags(EnumSet.of(Flag.MOVE));
@@ -190,6 +226,7 @@ public class NullWeapon extends Monster {
 
             public void start() {
                 LivingEntity livingentity = NullWeapon.this.getTarget();
+                if (livingentity == null) return;
                 Vec3 vec3 = livingentity.getEyePosition(1.0F);
 
                 NullWeapon.this.moveControl.setWantedPosition(vec3.x, vec3.y, vec3.z, 2.0D);
@@ -197,7 +234,7 @@ public class NullWeapon extends Monster {
 
             public void tick() {
                 LivingEntity livingentity = NullWeapon.this.getTarget();
-
+                if (livingentity == null) return;
                 if (NullWeapon.this.getBoundingBox().intersects(livingentity.getBoundingBox())) {
                     NullWeapon.this.doHurtTarget(livingentity);
                 } else {
@@ -215,7 +252,7 @@ public class NullWeapon extends Monster {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
+    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putString("Weapon", weapon);
         if (nullUUID != null) {
@@ -224,13 +261,12 @@ public class NullWeapon extends Monster {
         if (playerUUID != null) {
             tag.putUUID("OwnerUUID", playerUUID);
         }
-        tag.putLong("ReturnTime", returnGameTime);
         tag.putBoolean("Released", released);
         tag.putInt("ReleaseCooldown", releaseCooldown);
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
+    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.hasUUID("NullUUID")) {
             nullUUID = tag.getUUID("NullUUID");
@@ -239,12 +275,11 @@ public class NullWeapon extends Monster {
             playerUUID = tag.getUUID("OwnerUUID");
         }
         weapon = tag.getString("Weapon");
-        returnGameTime = tag.getLong("ReturnTime");
         released = tag.getBoolean("Released");
         releaseCooldown = tag.getInt("ReleaseCooldown");
     }
 
-    public MobType getMobType() {
+    public @NotNull MobType getMobType() {
         return MobType.UNDEFINED;
     }
 
@@ -256,85 +291,34 @@ public class NullWeapon extends Monster {
         return -0.35D;
     }
 
-    public SoundEvent getHurtSound(DamageSource damagesource) {
-        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("", "")));
+    public @NotNull SoundEvent getHurtSound(@NotNull DamageSource damagesource) {
+        return Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("", "")));
     }
 
-    public SoundEvent getDeathSound() {
-        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("", "")));
+    public @NotNull SoundEvent getDeathSound() {
+        return Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("", "")));
     }
 
-    public boolean causeFallDamage(float f, float f1, DamageSource damagesource) {
+    public boolean causeFallDamage(float f, float f1, @NotNull DamageSource damagesource) {
         return false;
     }
 
-    public boolean hurt(DamageSource damagesource, float f) {
-        if (!this.level().isClientSide() && !damagesource.is(DamageTypes.IN_WALL)) {
-            try {
-                this.getServer().getCommands().getDispatcher().execute(
-                        "playsound epicfight:entity.hit.clash neutral @p",
-                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                this.getServer().getCommands().getDispatcher().execute(
-                        "execute at @s run particle epicfight:hit_blade ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
-                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
-            }
-        }
+    public boolean hurt(@NotNull DamageSource damagesource, float f) {
         return false;
     }
 
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverlevelaccessor, DifficultyInstance difficultyinstance, MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
-        SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
-
-        if (!this.level().isClientSide() && this.getServer() != null && this.player == null) {
-            try {
-                this.getServer().getCommands().getDispatcher().execute(
-                        "team add herobrine",
-                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
-
-            }
-        }
-
-        if (!this.level().isClientSide() && this.getServer() != null && this.player == null) {
-            try {
-                this.getServer().getCommands().getDispatcher().execute(
-                        "team modify herobrine friendlyFire false",
-                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
-
-            }
-        }
-
-        if (!this.level().isClientSide() && this.getServer() != null && this.player == null) {
-            try {
-                this.getServer().getCommands().getDispatcher().execute(
-                        "team join herobrine @s",
-                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
-
-            }
-        }
-
-        if (!this.level().isClientSide() && this.getServer() != null) {
-            try {
-                this.getServer().getCommands().getDispatcher().execute(
-                        "data merge entity @s {Invulnerable:1b}",
-                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
-
-            }
-        }
-
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverlevelaccessor, @NotNull DifficultyInstance difficultyinstance, @NotNull MobSpawnType mobspawntype, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
+        TeamUtil.addOrJoinTeam(this, "herobrine");
         this.setItemSlot(EquipmentSlot.LEGS, ItemStack.EMPTY);
         this.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
         this.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
         this.setItemSlot(EquipmentSlot.FEET, ItemStack.EMPTY);
         this.setItemSlot(EquipmentSlot.OFFHAND, ItemStack.EMPTY);
-        return spawngroupdata1;
+        this.setInvulnerable(true);
+        return super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
     }
 
-    protected void checkFallDamage(double d0, boolean flag, BlockState blockstate, BlockPos blockpos) {}
+    protected void checkFallDamage(double d0, boolean flag, @NotNull BlockState blockstate, @NotNull BlockPos blockpos) {}
 
     public void setNoGravity(boolean flag) {
         super.setNoGravity(true);
@@ -345,8 +329,26 @@ public class NullWeapon extends Monster {
         this.setNoGravity(true);
     }
 
+    public void increaseSkillPoint(Entity entity, float value) {
+        if (!(entity instanceof Player pEntity)) return;
+
+        PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(pEntity, PlayerPatch.class);
+        if (!(playerPatch instanceof ServerPlayerPatch serverPlayerPatch)) return;
+
+        SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.NULL_WEAPON);
+        if (skillContainer == null) return;
+
+        NullWeaponSkill skill = (NullWeaponSkill) skillContainer.getSkill();
+
+        float currentResource = skillContainer.getResource();
+        float neededResource = skillContainer.getNeededResource();
+        float addResource = Math.min(value, neededResource);
+
+        skill.setConsumptionSynchronize(skillContainer, currentResource + addResource);
+    }
+
     @Override
-    public boolean doHurtTarget(Entity pEntity) {
+    public boolean doHurtTarget(@NotNull Entity pEntity) {
         if (pEntity instanceof Player hurtPlayer && this.playerUUID != null && this.playerUUID.equals(hurtPlayer.getUUID())) {
             return false;
         }
@@ -355,25 +357,81 @@ public class NullWeapon extends Monster {
         }
 
         if (this.player != null) {
-            ItemStack stack = this.getMainHandItem();
-            if (!stack.isEmpty()) {
-                stack.hurtAndBreak(1, this, (e) -> {
-                    e.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-                });
+            float f = (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+            float f1 = (float)this.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
+            if (pEntity instanceof LivingEntity) {
+                f += EnchantmentHelper.getDamageBonus(this.getMainHandItem(), ((LivingEntity)pEntity).getMobType());
+                f1 += (float)EnchantmentHelper.getKnockbackBonus(this);
             }
-        }
 
-        LivingEntity attacker;
-        if (player != null) {
-            attacker = player;
-        } else if (nullEntity != null) {
-            attacker = nullEntity;
+            int i = EnchantmentHelper.getFireAspect(this);
+            if (i > 0) {
+                pEntity.setSecondsOnFire(i * 4);
+            }
+
+            boolean flag = pEntity.hurt(this.damageSources().playerAttack(this.player), f);
+            increaseSkillPoint(this.player, 5.0F);
+            if (flag) {
+                if (f1 > 0.0F && pEntity instanceof LivingEntity) {
+                    ((LivingEntity)pEntity).knockback(f1 * 0.5F, Mth.sin(this.getYRot() * ((float)Math.PI / 180F)), -Mth.cos(this.getYRot() * ((float)Math.PI / 180F)));
+                    this.setDeltaMovement(this.getDeltaMovement().multiply(0.6, 1.0F, 0.6));
+                }
+                this.doEnchantDamageEffects(this, pEntity);
+                this.setLastHurtMob(pEntity);
+            }
+
+            return flag;
+        } else if (this.nullEntity != null) {
+            float f = (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+            float f1 = (float)this.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
+            if (pEntity instanceof LivingEntity) {
+                f += EnchantmentHelper.getDamageBonus(this.getMainHandItem(), ((LivingEntity)pEntity).getMobType());
+                f1 += (float)EnchantmentHelper.getKnockbackBonus(this);
+            }
+
+            int i = EnchantmentHelper.getFireAspect(this);
+            if (i > 0) {
+                pEntity.setSecondsOnFire(i * 4);
+            }
+
+            boolean flag = pEntity.hurt(this.damageSources().mobAttack(this.nullEntity), f);
+            if (flag) {
+                if (f1 > 0.0F && pEntity instanceof LivingEntity) {
+                    ((LivingEntity)pEntity).knockback(f1 * 0.5F, Mth.sin(this.getYRot() * ((float)Math.PI / 180F)), -Mth.cos(this.getYRot() * ((float)Math.PI / 180F)));
+                    this.setDeltaMovement(this.getDeltaMovement().multiply(0.6, 1.0F, 0.6));
+                }
+                this.doEnchantDamageEffects(this, pEntity);
+                this.setLastHurtMob(pEntity);
+            }
+
+            return flag;
         } else {
-            attacker = this;
+            return super.doHurtTarget(pEntity);
         }
+    }
 
-        DamageSource source = this.damageSources().mobAttack(attacker);
-        return pEntity.hurt(source, (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+    private static boolean isAllowedHeldCategory(Player p) {
+        ItemStack main = p.getMainHandItem();
+
+        if (main.getItem() instanceof NullWeaponItem) return true;
+
+        CapabilityItem cap = EpicFightCapabilities.getItemStackCapability(main);
+        if (!(cap instanceof WeaponCapability weaponCap)) return true;
+
+        var cat = weaponCap.getWeaponCategory();
+        return cat == CapabilityItem.WeaponCategories.FIST
+                || cat == CapabilityItem.WeaponCategories.RANGED
+                || cat == CapabilityItem.WeaponCategories.NOT_WEAPON;
+    }
+
+    private static boolean hasNullSword(Player p) {
+        for (ItemStack s : p.getInventory().items) {
+            if (s.getItem() instanceof NullWeaponItem) return true;
+        }
+        for (ItemStack s : p.getInventory().offhand) {
+            if (s.getItem() instanceof NullWeaponItem) return true;
+        }
+        return false;
     }
 
     @Override
@@ -434,36 +492,69 @@ public class NullWeapon extends Monster {
                 nullUUID = null;
             }
             if (player == null && playerUUID != null) {
-                this.player = ((ServerLevel) level()).getPlayerByUUID(playerUUID);
+                this.player = level().getPlayerByUUID(playerUUID);
             }
             if (player != null && !player.isAlive()) {
                 this.remove(RemovalReason.KILLED);
             }
-        }
-
-        if (!this.level().isClientSide && this.nullEntity == null && this.player != null) {
-            if (this.returnGameTime > 0 && ((ServerLevel)this.level()).getGameTime() >= this.returnGameTime) {
-                this.remove(RemovalReason.KILLED);
+            if (player != null && player.isAlive()) {
+                if (!hasNullSword(player) || !isAllowedHeldCategory(player)) {
+                    this.remove(RemovalReason.KILLED);
+                }
             }
         }
-        if (this.releaseCooldown > 0) {
-            this.releaseCooldown = this.releaseCooldown - 1;
-        }
-        if (this.releaseCooldown == 0 && this.released) {
+
+        if (this.getTarget() == null && this.released) {
             this.released = false;
         }
     }
 
+    public static LivingEntity getNearestLivingEntity(Level level, Entity sourceEntity, double range) {
+        AABB searchBox = sourceEntity.getBoundingBox().inflate(range);
+
+        return level.getNearestEntity(
+                level.getEntitiesOfClass(LivingEntity.class, searchBox,
+                        e -> e != sourceEntity
+                                && !(e instanceof NullWeapon)
+                                && !(e instanceof EnderHand)
+                                && !e.isAlliedTo(sourceEntity)
+                                && e.isAlive()),
+                TargetingConditions.DEFAULT,
+                (LivingEntity) sourceEntity,
+                sourceEntity.getX(), sourceEntity.getY(), sourceEntity.getZ()
+        );
+    }
+
+    public void processTeleportByPlayer() {
+        if (player == null) return;
+        if (!this.isReleased()) {
+            this.moveTo(player.getX() + new Random().nextDouble(-4, 4), player.getY() + new Random().nextDouble(-2, 2), player.getZ() + new Random().nextDouble(-4, 4));
+        } else if (this.isReleased() && (player.getLastHurtByMob() != null || player.getLastHurtMob() != null)) {
+            LivingEntity target = player.getLastHurtByMob() != null ? player.getLastHurtByMob() : (player.getLastHurtMob() != null ? player.getLastHurtMob() : null);
+            if (target == null) {
+                target = NullWeapon.getNearestLivingEntity(player.level(), player, 12.0D);
+            }
+            if (target != null && target.isAlive()) {
+                this.moveTo(target.getX() + new Random().nextDouble(-4, 4), target.getY() + new Random().nextDouble(-2, 2), target.getZ() + new Random().nextDouble(-4, 4));
+            } else {
+                this.stopRelease();
+            }
+        }
+    }
+
+    public void summonNullWeaponForPlayer(String uuidNbt, ServerLevel serverLevel, Player summoner) {
+        this.moveTo(summoner.getX() + new Random().nextDouble(-4, 4), summoner.getY() + new Random().nextDouble(-2, 2), summoner.getZ() + new Random().nextDouble(-4, 4));
+        this.player = summoner;
+        this.playerUUID = summoner.getUUID();
+        this.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+        serverLevel.addFreshEntity(this);
+        summoner.getPersistentData().putUUID(uuidNbt, this.getUUID());
+    }
+
     @Override
-    public void remove(RemovalReason pReason) {
+    public void remove(@NotNull RemovalReason pReason) {
         if (this.level() instanceof ServerLevel serverLevel && pReason.equals(RemovalReason.KILLED)) {
             if (this.player != null) {
-                boolean added = this.player.getInventory().add(this.getMainHandItem());
-                if (!added) {
-                    var item = new ItemEntity(serverLevel, player.getX(), player.getY() + 0.5, player.getZ(), this.getMainHandItem());
-                    item.setPickUpDelay(10);
-                    serverLevel.addFreshEntity(item);
-                }
                 switch (this.weapon) {
                     case "sword" -> {
                         this.player.getPersistentData().remove("NullSwordUUID");

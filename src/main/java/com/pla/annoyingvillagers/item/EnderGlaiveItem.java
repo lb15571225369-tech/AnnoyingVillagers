@@ -66,7 +66,7 @@ public class EnderGlaiveItem extends SwordItem {
         return super.hurtEnemy(pStack, pTarget, pAttacker);
     }
 
-    public void inventoryTick(ItemStack itemstack, Level level, Entity entity, int i, boolean flag) {
+    public void inventoryTick(@NotNull ItemStack itemstack, @NotNull Level level, @NotNull Entity entity, int i, boolean flag) {
         super.inventoryTick(itemstack, level, entity, i, flag);
         if (flag && entity instanceof Player player) {
             PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);

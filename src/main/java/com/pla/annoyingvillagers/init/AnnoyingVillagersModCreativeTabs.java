@@ -72,6 +72,7 @@ public class AnnoyingVillagersModCreativeTabs {
                         pOutput.accept(AnnoyingVillagersModItems.DEMONIAC_VOLTAGE_REAVER.get());
                         pOutput.accept(AnnoyingVillagersModItems.OBSIDIAN_SLEDGEHAMMER.get());
                         pOutput.accept(AnnoyingVillagersModItems.ENDER_AEGIS.get());
+                        pOutput.accept(AnnoyingVillagersModItems.NULL_WEAPON.get());
                         pOutput.accept(AnnoyingVillagersModItems.LEGENDARY_SWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.HARD_GREATSWORD.get());
                         pOutput.accept(AnnoyingVillagersModItems.NULL_SWORD.get());

@@ -120,7 +120,7 @@ public class MobClashBladeMixin {
                     && (playerNpcEntity.getItemInHand(InteractionHand.MAIN_HAND).getItem()
                     .equals(playerNpcEntity.getMainWeaponItem().getItem())
                     || playerNpcEntity.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof BowItem)
-                    && playerNpcEntity.isHealing()) {
+                    && !playerNpcEntity.isHealing()) {
                 playerNpcEntity.setBlockDamage(projectile);
                 CombatCommon.swapToBlock((MobPatch<?>) defenderLivingEntityPatch);
                 cir.setReturnValue(true);

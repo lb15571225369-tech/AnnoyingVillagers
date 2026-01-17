@@ -124,6 +124,7 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> RUBY_GREATSWORD = AnnoyingVillagersModItems.REGISTRY.register("ruby_greatsword", RubyGreatSwordItem::new);
     public static final RegistryObject<Item> RED_DIAMOND_SWORD = AnnoyingVillagersModItems.REGISTRY.register("red_diamond_sword", RedDiamondSwordItem::new);
     public static final RegistryObject<Item> PURPLE_GEM_LONG_SWORD = AnnoyingVillagersModItems.REGISTRY.register("purple_gem_long_sword", PurpleGemLongSwordItem::new);
+    public static final RegistryObject<Item> NULL_WEAPON = AnnoyingVillagersModItems.REGISTRY.register("null_weapon", NullWeaponItem::new);
     public static final RegistryObject<Item> NULL_SWORD = AnnoyingVillagersModItems.REGISTRY.register("null_sword", NullSwordItem::new);
     public static final RegistryObject<Item> NULL_AXE = AnnoyingVillagersModItems.REGISTRY.register("null_axe", NullAxeItem::new);
     public static final RegistryObject<Item> NULL_PICKAXE = AnnoyingVillagersModItems.REGISTRY.register("null_pickaxe", NullPickaxeItem::new);

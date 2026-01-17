@@ -267,6 +267,11 @@ public class AnnoyingVillagersModEntities {
         entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.GLAIVE_HEROBRINE.get(), (entity) -> GlaiveHerobrinePatch::new);
         entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.SLEDGEHAMMER_HEROBRINE.get(), (entity) -> SledgehammerHerobrinePatch::new);
         entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.REAPER_HEROBRINE.get(), (entity) -> ReaperHerobrinePatch::new);
+        entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.NULL_SWORD.get(), (entity) -> NullWeaponPatch::new);
+        entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.NULL_AXE.get(), (entity) -> NullWeaponPatch::new);
+        entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.NULL_PICKAXE.get(), (entity) -> NullWeaponPatch::new);
+        entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.NULL_SHOVEL.get(), (entity) -> NullWeaponPatch::new);
+        entityPatchRegistryEvent.getTypeEntry().put(AnnoyingVillagersModEntities.NULL_HOE.get(), (entity) -> NullWeaponPatch::new);
     }
 
     @SubscribeEvent
