@@ -27,14 +27,14 @@ We reserve all rights. The points below outline what you can, cannot and must do
 contents of this repository.
 
 ### You CAN
-* Use this mod in a modpack.
+* Use this mod in a mod pack.
 * Make videos and showcases about this mod.
-* Write your own code that uses this code as a dependency (such as addons or datapacks).
-* Use any assets from the mod due to it is from community.
+* Write your own code that uses this code as a dependency (such as addons or data packs).
 
 ### You CANNOT
 * Redistribute the mod.
 * Use or copy any part of the code for your own projects without explicit permission.
+* Assets and epicfight animations from this mod mostly not made by me so do not take it, you should find the original source to get it to avoid licensing problems.
 
 ### Disclaimer
 <sub> 
