@@ -2,19 +2,18 @@ package com.pla.annoyingvillagers.entity;
 
 import java.util.*;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.clazz.NullWeapon;
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.procedures.NullOnHurtProcedure;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
+import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
@@ -24,27 +23,28 @@ import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.monster.WitherSkeleton;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.utils.NameManager;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
-import yesman.epicfight.api.animation.types.LongHitAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
-import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.api.utils.math.OpenMatrix4f;
+import yesman.epicfight.api.utils.math.Vec3f;
+import yesman.epicfight.gameasset.Armatures;
+import yesman.epicfight.gameasset.EpicFightSounds;
+import yesman.epicfight.particle.EpicFightParticles;
+import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 public class NullEntity extends HerobrineMob {
     private NullWeapon nullSwordEntity;
     private UUID nullSwordUUID;
-    private int witherSkeletonSummonCooldown = 0;
 
     private NullWeapon nullAxeEntity;
     private UUID nullAxeUUID;
@@ -58,26 +58,22 @@ public class NullEntity extends HerobrineMob {
     private NullWeapon nullHoeEntity;
     private UUID nullHoeUUID;
 
-    private WitherSkeleton firstWitherSkeleton;
+    private NullSkeletonEntity firstWitherSkeleton;
     private UUID firstWitherSkeletonUuid;
 
-    private WitherSkeleton secondWitherSkeleton;
+    private NullSkeletonEntity secondWitherSkeleton;
     private UUID secondWitherSkeletonUuid;
 
-    private WitherSkeleton thirdWitherSkeleton;
+    private NullSkeletonEntity thirdWitherSkeleton;
     private UUID thirdWitherSkeletonUuid;
 
-    final LivingEntityPatch<?> livingentitypatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
+    final LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
 
     public boolean isAvailableWitherSkeletonSlot() {
         return firstWitherSkeletonUuid == null || secondWitherSkeletonUuid == null || thirdWitherSkeletonUuid == null;
     }
 
-    public int getWitherSkeletonSummonCooldown() {
-        return witherSkeletonSummonCooldown;
-    }
-
-    public void claimWitherSkeletonSlot(WitherSkeleton witherSkeleton) {
+    public void claimWitherSkeletonSlot(NullSkeletonEntity witherSkeleton) {
         if (firstWitherSkeletonUuid == null) {
             firstWitherSkeletonUuid = witherSkeleton.getUUID();
             firstWitherSkeleton = witherSkeleton;
@@ -91,7 +87,6 @@ public class NullEntity extends HerobrineMob {
     }
 
     private boolean spawnNullWeapon = false;
-    private boolean wasShooting = false;
 
     public NullWeapon getNullSwordEntity() {
         return nullSwordEntity;
@@ -113,8 +108,33 @@ public class NullEntity extends HerobrineMob {
         return nullHoeEntity;
     }
 
-    public NullEntity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.NULL.get(), level);
+    public void setNullWeapon(String slot, NullWeapon nullWeapon) {
+        switch (slot) {
+            case "sword" -> {
+                this.nullSwordUUID = nullWeapon.getUUID();
+                this.nullSwordEntity = nullWeapon;
+            }
+            case "pickaxe" -> {
+                this.nullPickaxeUUID = nullWeapon.getUUID();
+                this.nullPickaxeEntity = nullWeapon;
+            }
+            case "axe" -> {
+                this.nullAxeUUID = nullWeapon.getUUID();
+                this.nullAxeEntity = nullWeapon;
+            }
+            case "hoe" -> {
+                this.nullHoeUUID = nullWeapon.getUUID();
+                this.nullHoeEntity = nullWeapon;
+            }
+            default -> {
+                this.nullShovelUUID = nullWeapon.getUUID();
+                this.nullShovelEntity = nullWeapon;
+            }
+        }
+    }
+
+    public NullEntity(SpawnEntity spawnEntity, Level level) {
+        this(AnnoyingVillagersModEntities.NULL.get(), level);
     }
 
     public NullEntity(EntityType<NullEntity> entitytype, Level level) {
@@ -125,14 +145,74 @@ public class NullEntity extends HerobrineMob {
         this.setPersistenceRequired();
         this.moveControl = new FlyingMoveControl(this, 10, true);
         this.setChatName("§5Null§r");
-    }
-
-    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
+        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.NULL_WEAPON.get()));
     }
 
     protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
         return new FlyingPathNavigation(this, level);
+    }
+
+    public void releaseRandomWeapons(int stack) {
+        if (stack <= 0) return;
+        List<NullWeapon> weapons = new ArrayList<>(5);
+
+        if (this.nullSwordEntity != null) weapons.add(this.nullSwordEntity);
+        if (this.nullAxeEntity != null) weapons.add(this.nullAxeEntity);
+        if (this.nullPickaxeEntity != null) weapons.add(this.nullPickaxeEntity);
+        if (this.nullShovelEntity != null) weapons.add(this.nullShovelEntity);
+        if (this.nullHoeEntity != null) weapons.add(this.nullHoeEntity);
+
+        if (weapons.isEmpty()) return;
+        Collections.shuffle(weapons, new Random());
+        for (int i = 0; i < Math.min(stack, weapons.size()); i++) {
+            weapons.get(i).setReleased(true);
+        }
+    }
+
+    public void randomlyParryWithWeapon(ServerLevel serverLevel, Entity attacker) {
+        List<NullWeapon> weapons = new ArrayList<>(5);
+        if (this.nullSwordEntity != null && !this.nullSwordEntity.isReleased()) weapons.add(this.nullSwordEntity);
+        if (this.nullAxeEntity != null && !this.nullAxeEntity.isReleased()) weapons.add(this.nullAxeEntity);
+        if (this.nullPickaxeEntity != null && !this.nullPickaxeEntity.isReleased()) weapons.add(this.nullPickaxeEntity);
+        if (this.nullShovelEntity != null && !this.nullShovelEntity.isReleased()) weapons.add(this.nullShovelEntity);
+        if (this.nullHoeEntity != null && !this.nullHoeEntity.isReleased()) weapons.add(this.nullHoeEntity);
+
+        if (weapons.isEmpty()) return;
+        NullWeapon chosen = weapons.get(this.getRandom().nextInt(weapons.size()));
+        chosen.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
+        chosen.moveTo(this.getX(), this.getY(), this.getZ());
+        chosen.spinfor5seconds();
+        EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel,
+                HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, this, attacker);
+    }
+
+
+    public void setSpinningToAllWeaponsAvailable(boolean spinning) {
+        setSpinningIfAvailable(this.nullSwordEntity, spinning);
+        setSpinningIfAvailable(this.nullAxeEntity, spinning);
+        setSpinningIfAvailable(this.nullPickaxeEntity, spinning);
+        setSpinningIfAvailable(this.nullShovelEntity, spinning);
+        setSpinningIfAvailable(this.nullHoeEntity, spinning);
+    }
+
+    public void setSpinningToAllWeaponsAvailableFor5seconds() {
+        setSpinningFor5SecondsIfAvailable(this.nullSwordEntity);
+        setSpinningFor5SecondsIfAvailable(this.nullAxeEntity);
+        setSpinningFor5SecondsIfAvailable(this.nullPickaxeEntity);
+        setSpinningFor5SecondsIfAvailable(this.nullShovelEntity);
+        setSpinningFor5SecondsIfAvailable(this.nullHoeEntity);
+    }
+
+    private static void setSpinningIfAvailable(NullWeapon weapon, boolean spinning) {
+        if (weapon == null) return;
+        if (weapon.isReleased()) return;
+        weapon.setSpinning(spinning);
+    }
+
+    private static void setSpinningFor5SecondsIfAvailable(NullWeapon weapon) {
+        if (weapon == null) return;
+        if (weapon.isReleased()) weapon.stopRelease();
+        weapon.spinfor5seconds();
     }
 
     @Override
@@ -163,7 +243,6 @@ public class NullEntity extends HerobrineMob {
             tag.putUUID("ThirdWitherSkeletonUuid", thirdWitherSkeletonUuid);
         }
         tag.putBoolean("SpawnNullWeapon", spawnNullWeapon);
-        tag.putInt("WitherSkeletonSummonCooldown", witherSkeletonSummonCooldown);
     }
 
     @Override
@@ -194,57 +273,24 @@ public class NullEntity extends HerobrineMob {
             thirdWitherSkeletonUuid = tag.getUUID("ThirdWitherSkeletonUuid");
         }
         spawnNullWeapon = tag.getBoolean("SpawnNullWeapon");
-        witherSkeletonSummonCooldown = tag.getInt("WitherSkeletonSummonCooldown");
     }
 
     private void initialSpawn() {
-        if (this.level() instanceof ServerLevel levelaccessor) {
-            ServerLevel serverlevel = (ServerLevel) levelaccessor;
+        if (this.level() instanceof ServerLevel serverLevel) {
+            NullWeapon nullSwordEntity = new NullSwordEntity(AnnoyingVillagersModEntities.NULL_SWORD.get(), serverLevel);
+            nullSwordEntity.summonNullWeaponForNullEntity(serverLevel, this, "sword");
 
-            NullWeapon nullSwordEntity = new NullSwordEntity((EntityType) AnnoyingVillagersModEntities.NULL_SWORD.get(), serverlevel);
-            nullSwordEntity.moveTo(this.getX() + new Random().nextDouble(1.0D, 10.0D), this.getY() + new Random().nextDouble(1.0D, 10.0D), this.getZ() + new Random().nextDouble(1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-            nullSwordEntity.finalizeSpawn(levelaccessor, levelaccessor.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
-            levelaccessor.addFreshEntity(nullSwordEntity);
-            this.nullSwordUUID = nullSwordEntity.getUUID();
-            this.nullSwordEntity = nullSwordEntity;
-            nullSwordEntity.setNullEntity(this);
-            nullSwordEntity.setNullUUID(this.getUUID());
+            NullWeapon nullAxeEntity = new NullAxeEntity(AnnoyingVillagersModEntities.NULL_AXE.get(), serverLevel);
+            nullAxeEntity.summonNullWeaponForNullEntity(serverLevel, this, "axe");
 
-            NullWeapon nullAxeEntity = new NullAxeEntity((EntityType) AnnoyingVillagersModEntities.NULL_AXE.get(), serverlevel);
-            nullAxeEntity.moveTo(this.getX() + new Random().nextDouble(1.0D, 10.0D), this.getY() + new Random().nextDouble(1.0D, 10.0D), this.getZ() + new Random().nextDouble(1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-            nullAxeEntity.finalizeSpawn(levelaccessor, levelaccessor.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
-            levelaccessor.addFreshEntity(nullAxeEntity);
-            this.nullAxeUUID = nullAxeEntity.getUUID();
-            this.nullAxeEntity = nullAxeEntity;
-            nullAxeEntity.setNullEntity(this);
-            nullAxeEntity.setNullUUID(this.getUUID());
+            NullWeapon nullPickaxeEntity = new NullPickaxeEntity(AnnoyingVillagersModEntities.NULL_PICKAXE.get(), serverLevel);
+            nullPickaxeEntity.summonNullWeaponForNullEntity(serverLevel, this, "pickaxe");
 
-            NullWeapon nullPickaxeEntity = new NullPickaxeEntity((EntityType) AnnoyingVillagersModEntities.NULL_PICKAXE.get(), serverlevel);
-            nullPickaxeEntity.moveTo(this.getX() + new Random().nextDouble(1.0D, 10.0D), this.getY() + new Random().nextDouble(1.0D, 10.0D), this.getZ() + new Random().nextDouble(1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-            nullPickaxeEntity.finalizeSpawn(levelaccessor, levelaccessor.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
-            levelaccessor.addFreshEntity(nullPickaxeEntity);
-            this.nullPickaxeUUID = nullPickaxeEntity.getUUID();
-            this.nullPickaxeEntity = nullPickaxeEntity;
-            nullPickaxeEntity.setNullEntity(this);
-            nullPickaxeEntity.setNullUUID(this.getUUID());
+            NullWeapon nullShovelEntity = new NullShovelEntity(AnnoyingVillagersModEntities.NULL_SHOVEL.get(), serverLevel);
+            nullShovelEntity.summonNullWeaponForNullEntity(serverLevel, this, "shovel");
 
-            NullWeapon nullShovelEntity = new NullShovelEntity((EntityType) AnnoyingVillagersModEntities.NULL_SHOVEL.get(), serverlevel);
-            nullShovelEntity.moveTo(this.getX() + new Random().nextDouble(1.0D, 10.0D), this.getY() + new Random().nextDouble(1.0D, 10.0D), this.getZ() + new Random().nextDouble(1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-            nullShovelEntity.finalizeSpawn(levelaccessor, levelaccessor.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
-            levelaccessor.addFreshEntity(nullShovelEntity);
-            this.nullShovelUUID = nullShovelEntity.getUUID();
-            this.nullShovelEntity = nullShovelEntity;
-            nullShovelEntity.setNullEntity(this);
-            nullShovelEntity.setNullUUID(this.getUUID());
-
-            NullWeapon nullHoeEntity = new NullHoeEntity((EntityType) AnnoyingVillagersModEntities.NULL_HOE.get(), serverlevel);
-            nullHoeEntity.moveTo(this.getX() + new Random().nextDouble(1.0D, 10.0D), this.getY() + new Random().nextDouble(1.0D, 10.0D), this.getZ() + new Random().nextDouble(1.0D, 10.0D), levelaccessor.getRandom().nextFloat() * 360.0F, 0.0F);
-            nullHoeEntity.finalizeSpawn(levelaccessor, levelaccessor.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
-            levelaccessor.addFreshEntity(nullHoeEntity);
-            this.nullHoeUUID = nullHoeEntity.getUUID();
-            this.nullHoeEntity = nullHoeEntity;
-            nullHoeEntity.setNullEntity(this);
-            nullHoeEntity.setNullUUID(this.getUUID());
+            NullWeapon nullHoeEntity = new NullHoeEntity(AnnoyingVillagersModEntities.NULL_HOE.get(), serverLevel);
+            nullHoeEntity.summonNullWeaponForNullEntity(serverLevel, this, "hoe");
         }
     }
 
@@ -256,7 +302,10 @@ public class NullEntity extends HerobrineMob {
             if (!spawnNullWeapon) {
                 this.spawnNullWeapon = true;
                 initialSpawn();
+            } else if (this.tickCount == 20 && this.getLivingEntityPatch() != null) {
+                this.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.CLONE_ANTITHEUS_ASCENSION, 0.0F);
             }
+
             if (nullSwordEntity == null && nullSwordUUID != null) {
                 Entity entity = ((ServerLevel) this.level()).getEntity(nullSwordUUID);
                 if (entity instanceof NullWeapon nullSword) {
@@ -300,7 +349,7 @@ public class NullEntity extends HerobrineMob {
 
             if (firstWitherSkeleton == null && firstWitherSkeletonUuid != null) {
                 Entity entity = ((ServerLevel) this.level()).getEntity(firstWitherSkeletonUuid);
-                if (entity instanceof WitherSkeleton witherSkeleton) {
+                if (entity instanceof NullSkeletonEntity witherSkeleton) {
                     this.firstWitherSkeleton = witherSkeleton;
                 } else {
                     this.firstWitherSkeletonUuid = null;
@@ -308,7 +357,7 @@ public class NullEntity extends HerobrineMob {
             }
             if (secondWitherSkeleton == null && secondWitherSkeletonUuid != null) {
                 Entity entity = ((ServerLevel) this.level()).getEntity(secondWitherSkeletonUuid);
-                if (entity instanceof WitherSkeleton witherSkeleton) {
+                if (entity instanceof NullSkeletonEntity witherSkeleton) {
                     this.secondWitherSkeleton = witherSkeleton;
                 } else {
                     this.secondWitherSkeletonUuid = null;
@@ -316,159 +365,41 @@ public class NullEntity extends HerobrineMob {
             }
             if (thirdWitherSkeleton == null && thirdWitherSkeletonUuid != null) {
                 Entity entity = ((ServerLevel) this.level()).getEntity(thirdWitherSkeletonUuid);
-                if (entity instanceof WitherSkeleton witherSkeleton) {
+                if (entity instanceof NullSkeletonEntity witherSkeleton) {
                     this.thirdWitherSkeleton = witherSkeleton;
                 } else {
                     this.thirdWitherSkeletonUuid = null;
                 }
             }
-            if (witherSkeletonSummonCooldown > 0) {
-                witherSkeletonSummonCooldown = witherSkeletonSummonCooldown - 1;
-            }
+
             if (firstWitherSkeleton != null && !firstWitherSkeleton.isAlive()) {
                 firstWitherSkeleton = null;
                 firstWitherSkeletonUuid = null;
-                if (witherSkeletonSummonCooldown == 0) {
-                    witherSkeletonSummonCooldown = 1200;
-                }
             }
             if (secondWitherSkeleton != null && !secondWitherSkeleton.isAlive()) {
                 secondWitherSkeleton = null;
                 secondWitherSkeletonUuid = null;
-                if (witherSkeletonSummonCooldown == 0) {
-                    witherSkeletonSummonCooldown = 1200;
-                }
             }
             if (thirdWitherSkeleton != null && !thirdWitherSkeleton.isAlive()) {
                 thirdWitherSkeleton = null;
                 thirdWitherSkeletonUuid = null;
-                if (witherSkeletonSummonCooldown == 0) {
-                    witherSkeletonSummonCooldown = 1200;
-                }
             }
 
-            String animId = currentEfAnimIdOrNull(this);
-            boolean shootingNow = isShooting(animId);
-            if (shootingNow && !wasShooting && this.getTarget() != null) {
-                double d0 = this.getTarget().getX();
-                double d1 = this.getTarget().getY();
-                double d2 = this.getTarget().getZ();
-                double chance = Math.random();
-                if (chance <= 0.2D && this.nullSwordEntity != null && !this.nullSwordEntity.isReleased()) {
-                    this.nullSwordEntity.releaseForAWhile();
-                    this.nullSwordEntity.moveTo(d0, d1, d2);
-                } else if (chance <= 0.4D && this.nullAxeEntity != null && !this.nullAxeEntity.isReleased()) {
-                    this.nullAxeEntity.releaseForAWhile();
-                    this.nullAxeEntity.moveTo(d0, d1, d2);
-                } else if (chance <= 0.6D && this.nullPickaxeEntity != null && !this.nullPickaxeEntity.isReleased()) {
-                    this.nullPickaxeEntity.releaseForAWhile();
-                    this.nullPickaxeEntity.moveTo(d0, d1, d2);
-                } else if (chance <= 0.8D && this.nullShovelEntity != null && !this.nullShovelEntity.isReleased()) {
-                    this.nullShovelEntity.releaseForAWhile();
-                    this.nullShovelEntity.moveTo(d0, d1, d2);
-                } else if (this.nullHoeEntity != null && !this.nullHoeEntity.isReleased()) {
-                    this.nullHoeEntity.releaseForAWhile();
-                    this.nullHoeEntity.moveTo(d0, d1, d2);
+            if (this.tickCount % 10 == 0 && this.tickCount >= 20) {
+                if (nullSwordEntity != null) {
+                    nullSwordEntity.processTeleportByNullEntity();
                 }
-            }
-            wasShooting = shootingNow;
-
-            if (this.tickCount % 20 == 0) {
-                AssetAccessor<? extends DynamicAnimation> dynamicanimation = livingentitypatch.getAnimator().getPlayerFor(null).getAnimation();
-                if (this.nullSwordEntity != null) {
-                   if (!this.nullSwordEntity.isReleased()) {
-                        this.nullSwordEntity.moveTo(getRandomPosition(this.getX(), -4, 4), getRandomPosition(this.getY(), -2, 2), getRandomPosition(this.getZ(), -4, 4));
-                    } else if (this.nullSwordEntity.isReleased()) {
-                       if ((this.getTarget() != null && !(dynamicanimation instanceof LongHitAnimation) && dynamicanimation != Animations.BIPED_COMMON_NEUTRALIZED && dynamicanimation != Animations.BIPED_KNOCKDOWN) || livingentitypatch.isStunned()) {
-                           this.nullSwordEntity.stopRelease();
-                       } else {
-                           LivingEntity target = this.getTarget();
-                           if (target != null && target.isAlive()) {
-                               if (this.isSacrificing()) {
-                                   this.nullSwordEntity.stopRelease();
-                               }
-                               this.nullSwordEntity.moveTo(getRandomPosition(target.getX(), -4, 4), getRandomPosition(target.getY(), -2, 2), getRandomPosition(target.getZ(), -4, 4));
-                           } else {
-                               this.nullSwordEntity.stopRelease();
-                           }
-                       }
-                    }
+                if (nullAxeEntity != null) {
+                    nullAxeEntity.processTeleportByNullEntity();
                 }
-                if (this.nullAxeEntity != null) {
-                    if (!this.nullAxeEntity.isReleased()) {
-                        this.nullAxeEntity.moveTo(getRandomPosition(this.getX(), -4, 4), getRandomPosition(this.getY(), -2, 2), getRandomPosition(this.getZ(), -4, 4));
-                    } else if (this.nullAxeEntity.isReleased()) {
-                        if ((this.getTarget() != null && !(dynamicanimation instanceof LongHitAnimation) && dynamicanimation != Animations.BIPED_COMMON_NEUTRALIZED && dynamicanimation != Animations.BIPED_KNOCKDOWN ) || livingentitypatch.isStunned()) {
-                            this.nullAxeEntity.stopRelease();
-                        } else {
-                            LivingEntity target = this.getTarget();
-                            if (target != null && target.isAlive()) {
-                                if (this.isSacrificing()) {
-                                    this.nullAxeEntity.stopRelease();
-                                }
-                                this.nullAxeEntity.moveTo(getRandomPosition(target.getX(), -4, 4), getRandomPosition(target.getY(), -2, 2), getRandomPosition(target.getZ(), -4, 4));
-                            } else {
-                                this.nullAxeEntity.stopRelease();
-                            }
-                        }
-                    }
+                if (nullPickaxeEntity != null) {
+                    nullPickaxeEntity.processTeleportByNullEntity();
                 }
-                if (this.nullPickaxeEntity != null) {
-                    if (!this.nullPickaxeEntity.isReleased()) {
-                        this.nullPickaxeEntity.moveTo(getRandomPosition(this.getX(), -4, 4), getRandomPosition(this.getY(), -2, 2), getRandomPosition(this.getZ(), -4, 4));
-                    } else if (this.nullPickaxeEntity.isReleased()) {
-                        if ((this.getTarget() != null && !(dynamicanimation instanceof LongHitAnimation) && dynamicanimation != Animations.BIPED_COMMON_NEUTRALIZED && dynamicanimation != Animations.BIPED_KNOCKDOWN) || livingentitypatch.isStunned()) {
-                            this.nullPickaxeEntity.stopRelease();
-                        } else {
-                            LivingEntity target = this.getTarget();
-                            if (target != null && target.isAlive()) {
-                                if (this.isSacrificing()) {
-                                    this.nullPickaxeEntity.stopRelease();
-                                }
-                                this.nullPickaxeEntity.moveTo(getRandomPosition(target.getX(), -4, 4), getRandomPosition(target.getY(), -2, 2), getRandomPosition(target.getZ(), -4, 4));
-                            } else {
-                                this.nullPickaxeEntity.stopRelease();
-                            }
-                        }
-                    }
+                if (nullHoeEntity != null) {
+                    nullHoeEntity.processTeleportByNullEntity();
                 }
-                if (this.nullShovelEntity != null) {
-                    if (!this.nullShovelEntity.isReleased()) {
-                        this.nullShovelEntity.moveTo(getRandomPosition(this.getX(), -4, 4), getRandomPosition(this.getY(), -2, 2), getRandomPosition(this.getZ(), -4, 4));
-                    } else if (this.nullShovelEntity.isReleased()) {
-                        if (this.getTarget() != null && !(dynamicanimation instanceof LongHitAnimation) && dynamicanimation != Animations.BIPED_COMMON_NEUTRALIZED && dynamicanimation != Animations.BIPED_KNOCKDOWN) {
-                            this.nullShovelEntity.stopRelease();
-                        } else {
-                            LivingEntity target = this.getTarget();
-                            if (target != null && target.isAlive()) {
-                                if (this.isSacrificing()) {
-                                    this.nullShovelEntity.stopRelease();
-                                }
-                                this.nullShovelEntity.moveTo(getRandomPosition(target.getX(), -4, 4), getRandomPosition(target.getY(), -2, 2), getRandomPosition(target.getZ(), -4, 4));
-                            } else {
-                                this.nullShovelEntity.stopRelease();
-                            }
-                        }
-                    }
-                }
-                if (this.nullHoeEntity != null) {
-                    if (!this.nullHoeEntity.isReleased()) {
-                        this.nullShovelEntity.moveTo(getRandomPosition(this.getX(), -4, 4), getRandomPosition(this.getY(), -2, 2), getRandomPosition(this.getZ(), -4, 4));
-                    } else if (this.nullHoeEntity.isReleased()) {
-                        if (this.getTarget() != null && !(dynamicanimation instanceof LongHitAnimation) && dynamicanimation != Animations.BIPED_COMMON_NEUTRALIZED && dynamicanimation != Animations.BIPED_KNOCKDOWN) {
-                            this.nullHoeEntity.stopRelease();
-                        } else {
-                            LivingEntity target = this.getTarget();
-                            if (target != null && target.isAlive()) {
-                                if (this.isSacrificing()) {
-                                    this.nullHoeEntity.stopRelease();
-                                }
-                                this.nullHoeEntity.moveTo(getRandomPosition(target.getX(), -4, 4), getRandomPosition(target.getY(), -2, 2), getRandomPosition(target.getZ(), -4, 4));
-                            } else {
-                                this.nullHoeEntity.stopRelease();
-                            }
-                        }
-                    }
+                if (nullShovelEntity != null) {
+                    nullShovelEntity.processTeleportByNullEntity();
                 }
             }
         }
@@ -490,99 +421,55 @@ public class NullEntity extends HerobrineMob {
             }
 
             public void start() {
-                LivingEntity livingentity = NullEntity.this.getTarget();
-                Vec3 vec3 = livingentity.getEyePosition(1.0F);
-
-                NullEntity.this.moveControl.setWantedPosition(vec3.x, vec3.y, vec3.z, 1.0D);
+                LivingEntity livingEntity = NullEntity.this.getTarget();
+                if (livingEntity != null) {
+                    Vec3 vec3 = livingEntity.getEyePosition(1.0F);
+                    NullEntity.this.moveControl.setWantedPosition(vec3.x, vec3.y, vec3.z, 1.0D);
+                }
             }
 
             public void tick() {
-                LivingEntity livingentity = NullEntity.this.getTarget();
+                LivingEntity livingEntity = NullEntity.this.getTarget();
 
-                if (NullEntity.this.getBoundingBox().intersects(livingentity.getBoundingBox())) {
-                    NullEntity.this.doHurtTarget(livingentity);
-                } else {
-                    double d0 = NullEntity.this.distanceToSqr(livingentity);
-
-                    if (d0 < 16.0D) {
-                        Vec3 vec3 = livingentity.getEyePosition(1.0F);
-
-                        NullEntity.this.moveControl.setWantedPosition(vec3.x, vec3.y, vec3.z, 5.0D);
+                if (livingEntity != null) {
+                    if (NullEntity.this.getBoundingBox().intersects(livingEntity.getBoundingBox())) {
+                        NullEntity.this.doHurtTarget(livingEntity);
+                    } else {
+                        double d0 = NullEntity.this.distanceToSqr(livingEntity);
+                        if (d0 < 16.0D) {
+                            Vec3 vec3 = livingEntity.getEyePosition(1.0F);
+                            NullEntity.this.moveControl.setWantedPosition(vec3.x, vec3.y, vec3.z, 5.0D);
+                        }
                     }
                 }
             }
         });
     }
 
-    public @NotNull MobType getMobType() {
-        return MobType.UNDEAD;
-    }
-
-    public boolean removeWhenFarAway(double d0) {
-        return false;
-    }
-
-    public double getMyRidingOffset() {
-        return -0.35D;
-    }
-
-    public @NotNull SoundEvent getHurtSound(@NotNull DamageSource damagesource) {
-        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.hurt")));
-    }
-
-    public @NotNull SoundEvent getDeathSound() {
-        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.death")));
-    }
-
     public boolean causeFallDamage(float f, float f1, @NotNull DamageSource damagesource) {
         return false;
     }
 
-    private static String currentEfAnimIdOrNull(LivingEntity self) {
-        try {
-            var patch = EpicFightCapabilities
-                    .getEntityPatch(self, LivingEntityPatch.class);
-            if (patch == null) return null;
-
-            var player = patch.getAnimator().getPlayerFor(null);
-            if (player == null) return null;
-
-            var anim = player.getAnimation();
-            if (anim == null) return null;
-            try {
-                var m = anim.getClass().getMethod("getLocation");
-                var rl = (net.minecraft.resources.ResourceLocation) m.invoke(anim);
-                return rl != null ? rl.getPath().toLowerCase(java.util.Locale.ROOT) : null;
-            } catch (Exception ignored) {
-                return anim.toString().toLowerCase(java.util.Locale.ROOT);
+    public boolean hurt(@NotNull DamageSource damageSource, float f) {
+        if (damageSource.is(DamageTypes.FALL)) return false;
+        if (damageSource.is(DamageTypes.CACTUS)) return false;
+        if (damageSource.is(DamageTypes.WITHER)) return false;
+        if (damageSource.is(DamageTypes.DROWN)) return false;
+        if (damageSource.is(DamageTypes.WITHER_SKULL)) return false;
+        if (damageSource.is(DamageTypes.DRAGON_BREATH)) return false;
+        if (damageSource.is(DamageTypes.ON_FIRE)) return false;
+        if (damageSource.is(DamageTypes.IN_FIRE)) return false;
+        if (damageSource.getDirectEntity() instanceof AbstractArrow) return false;
+        if (new Random().nextFloat() <= (this.getState() == 2 ? 0.5F : 0.25F)) {
+            if (this.level() instanceof ServerLevel serverLevel) {
+                randomlyParryWithWeapon(serverLevel, damageSource.getEntity());
             }
-        } catch (Throwable t) {
-            return null;
+            return false;
         }
+        return super.hurt(damageSource, f);
     }
 
-    private static boolean isShooting(String id) {
-        if (id == null) return false;
-        return id.contains("biped/skill/antitheus_shoot") || id.endsWith("/antitheus_shoot") || id.contains("antitheus_shoot");
-    }
-
-    public boolean hurt(@NotNull DamageSource damagesource, float f) {
-        if (!this.isSacrificing()) {
-            NullOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, damagesource.getEntity());
-        }
-        if (damagesource.is(DamageTypes.FALL)) return false;
-        if (damagesource.is(DamageTypes.CACTUS)) return false;
-        if (damagesource.is(DamageTypes.WITHER)) return false;
-        if (damagesource.is(DamageTypes.DROWN)) return false;
-        if (damagesource.is(DamageTypes.WITHER_SKULL)) return false;
-        if (damagesource.is(DamageTypes.DRAGON_BREATH)) return false;
-        if (damagesource.is(DamageTypes.ON_FIRE)) return false;
-        if (damagesource.is(DamageTypes.IN_FIRE)) return false;
-        if (damagesource.getDirectEntity() instanceof AbstractArrow) return false;
-        return super.hurt(damagesource, f);
-    }
-
-    public void die(DamageSource damagesource) {
+    public void die(@NotNull DamageSource damagesource) {
         super.die(damagesource);
         if (this.level() instanceof ServerLevel serverLevel) {
             if (this.nullSwordEntity != null) {
@@ -620,26 +507,149 @@ public class NullEntity extends HerobrineMob {
 
     public void baseTick() {
         super.baseTick();
-        if (!this.level().isClientSide() && this.getServer() != null) {
-            try {
-                this.getServer().getCommands().getDispatcher().execute(
-                        "execute as @s at @s run particle annoyingvillagers:null ~ ~0.8 ~ 0.2 0.2 0.2 0.07 50 force",
-                        this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
+        if (this.level() instanceof ServerLevel) {
+            if (this.getTarget() == null) {
+                this.getNavigation().stop();
+                this.setDeltaMovement(Vec3.ZERO);
+                return;
+            }
+            AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
+            if (!EpicfightUtil.isLongHitAnimation(dynamicAnimation)) {
+                this.setDeltaMovement(new Vec3(this.getLookAngle().x * 0.2D, this.getLookAngle().y * 0.2D, this.getLookAngle().z * 0.2D));
+            }
+        } else {
+            byte b0 = 3;
+            float f = 1.0F / (float) (b0 - 1);
+            float f1 = 0.0F;
+            OpenMatrix4f openmatrix4f;
+            int i;
+            int j;
+            OpenMatrix4f openmatrix4f1;
+            for (j = 0; j < b0; ++j) {
+                openmatrix4f = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(f1), Armatures.BIPED.get().toolL);
+                openmatrix4f.translate(new Vec3f(0.0F, 0.0F, 0.0F));
+                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f, openmatrix4f);
 
+                for (i = 0; i < 1; ++i) {
+                    livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f.m30 + livingEntityPatch.getOriginal().getX(), (double) openmatrix4f.m31 + livingEntityPatch.getOriginal().getY(), (double) openmatrix4f.m32 + livingEntityPatch.getOriginal().getZ(), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
+                }
+
+                for (i = 0; i < 1; ++i) {
+                    livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f.m30 + livingEntityPatch.getOriginal().getX(), (double) openmatrix4f.m31 + livingEntityPatch.getOriginal().getY(), (double) openmatrix4f.m32 + livingEntityPatch.getOriginal().getZ(), 0.0D, 0.0D, 0.0D);
+                }
+                f1 += f;
+            }
+
+            f1 = 0.0F;
+
+            for (i = 0; i < b0; ++i) {
+                openmatrix4f1 = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(f1), Armatures.BIPED.get().toolR);
+                openmatrix4f1.translate(new Vec3f(0.0F, 0.0F, 1.8F));
+                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
+                openmatrix4f1.translate(new Vec3f(0.0F, 0.0F, -((new Random()).nextFloat() * 4.0F)));
+                livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + livingEntityPatch.getOriginal().getX(), (double) openmatrix4f1.m31 + livingEntityPatch.getOriginal().getY(), (double) openmatrix4f1.m32 + livingEntityPatch.getOriginal().getZ(), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
+                livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + livingEntityPatch.getOriginal().getX(), (double) openmatrix4f1.m31 + livingEntityPatch.getOriginal().getY(), (double) openmatrix4f1.m32 + livingEntityPatch.getOriginal().getZ(), 0.0D, 0.0D, 0.0D);
+                f1 += f;
+            }
+
+            for (i = 0; i < 14; ++i) {
+                livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), livingEntityPatch.getOriginal().getX(), livingEntityPatch.getOriginal().getY() + 0.029999999329447746D, livingEntityPatch.getOriginal().getZ(), ((new Random()).nextFloat() - 0.5F) * 0.65F, ((new Random()).nextFloat() - 0.5F) * 0.05F, ((new Random()).nextFloat() - 0.5F) * 0.65F);
+            }
+
+            f = 1.0F;
+            f1 = 0.0F;
+
+            for (i = 0; i < b0; ++i) {
+                openmatrix4f1 = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(f1), Armatures.BIPED.get().head);
+                openmatrix4f1.translate(new Vec3f(0.0F, 0.0F, 0.0F));
+                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
+                livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + livingEntityPatch.getOriginal().getX() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m31 + livingEntityPatch.getOriginal().getY() + (double) (((new Random()).nextFloat() + 0.1F) * 0.55F), (double) openmatrix4f1.m32 + livingEntityPatch.getOriginal().getZ() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 1.0F) * 0.55F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
+                f1 += f;
+            }
+
+            f1 = 0.0F;
+
+            for (i = 0; i < b0; ++i) {
+                openmatrix4f1 = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(f1), Armatures.BIPED.get().chest);
+                openmatrix4f1.translate(new Vec3f(0.0F, 0.0F, 0.0F));
+                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
+                livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + livingEntityPatch.getOriginal().getX() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m31 + livingEntityPatch.getOriginal().getY() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m32 + livingEntityPatch.getOriginal().getZ() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 1.0F) * 0.55F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
+                f1 += f;
+            }
+
+            f1 = 0.0F;
+
+            for (i = 0; i < b0; ++i) {
+                openmatrix4f1 = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(f1), Armatures.BIPED.get().armL);
+                openmatrix4f1.translate(new Vec3f(0.0F, 0.0F, 0.0F));
+                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
+                livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + livingEntityPatch.getOriginal().getX() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m31 + livingEntityPatch.getOriginal().getY() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m32 + livingEntityPatch.getOriginal().getZ() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 1.0F) * 0.55F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
+                f1 += f;
+            }
+
+            f1 = 0.0F;
+
+            for (i = 0; i < b0; ++i) {
+                openmatrix4f1 = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(f1), Armatures.BIPED.get().armR);
+                openmatrix4f1.translate(new Vec3f(0.0F, 0.0F, 0.0F));
+                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
+                livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + livingEntityPatch.getOriginal().getX() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m31 + livingEntityPatch.getOriginal().getY() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m32 + livingEntityPatch.getOriginal().getZ() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 1.0F) * 0.55F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
+                f1 += f;
+            }
+
+            f1 = 0.0F;
+
+            for (i = 0; i < b0; ++i) {
+                openmatrix4f1 = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(f1), Armatures.BIPED.get().torso);
+                openmatrix4f1.translate(new Vec3f(0.0F, 0.0F, 0.0F));
+                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
+                livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + livingEntityPatch.getOriginal().getX() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m31 + livingEntityPatch.getOriginal().getY() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m32 + livingEntityPatch.getOriginal().getZ() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 1.0F) * 0.55F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
+                f1 += f;
+            }
+
+            f1 = 0.0F;
+
+            for (i = 0; i < b0; ++i) {
+                openmatrix4f1 = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(f1), Armatures.BIPED.get().thighL);
+                openmatrix4f1.translate(new Vec3f(0.0F, 0.0F, 0.0F));
+                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
+                livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + livingEntityPatch.getOriginal().getX() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m31 + livingEntityPatch.getOriginal().getY() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m32 + livingEntityPatch.getOriginal().getZ() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 1.0F) * 0.55F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
+                f1 += f;
+            }
+
+            f1 = 0.0F;
+
+            for (i = 0; i < b0; ++i) {
+                openmatrix4f1 = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(f1), Armatures.BIPED.get().thighR);
+                openmatrix4f1.translate(new Vec3f(0.0F, 0.0F, 0.0F));
+                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
+                livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + livingEntityPatch.getOriginal().getX() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m31 + livingEntityPatch.getOriginal().getY() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m32 + livingEntityPatch.getOriginal().getZ() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 1.0F) * 0.55F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
+                f1 += f;
+            }
+
+            f1 = 0.0F;
+
+            for (i = 0; i < b0; ++i) {
+                openmatrix4f1 = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(f1), Armatures.BIPED.get().legL);
+                openmatrix4f1.translate(new Vec3f(0.0F, 0.0F, 0.0F));
+                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
+                livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + livingEntityPatch.getOriginal().getX() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m31 + livingEntityPatch.getOriginal().getY() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m32 + livingEntityPatch.getOriginal().getZ() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 1.0F) * 0.55F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
+                f1 += f;
+            }
+
+            f1 = 0.0F;
+
+            for (i = 0; i < b0; ++i) {
+                openmatrix4f1 = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(f1), Armatures.BIPED.get().legR);
+                openmatrix4f1.translate(new Vec3f(0.0F, 0.0F, 0.0F));
+                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
+                livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + livingEntityPatch.getOriginal().getX() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m31 + livingEntityPatch.getOriginal().getY() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m32 + livingEntityPatch.getOriginal().getZ() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 1.0F) * 0.55F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
+                f1 += f;
             }
         }
-        AssetAccessor<? extends DynamicAnimation> dynamicanimation = livingentitypatch.getAnimator().getPlayerFor(null).getAnimation();
-        if (this.getTarget() != null && (!(dynamicanimation instanceof LongHitAnimation) && dynamicanimation != Animations.BIPED_COMMON_NEUTRALIZED && dynamicanimation != Animations.BIPED_KNOCKDOWN || !livingentitypatch.isStunned())) {
-            this.setDeltaMovement(new Vec3(this.getLookAngle().x * 0.2D, this.getLookAngle().y * 0.2D, this.getLookAngle().z * 0.2D));
-        }
     }
 
-    private double getRandomPosition(double original, int min, int max) {
-        return original + (double) new Random().nextDouble(min, max);
-    }
-
-    protected void checkFallDamage(double d0, boolean flag, BlockState blockstate, BlockPos blockpos) {}
+    protected void checkFallDamage(double d0, boolean flag, @NotNull BlockState blockstate, @NotNull BlockPos blockpos) {}
 
     public void setNoGravity(boolean flag) {
         super.setNoGravity(true);

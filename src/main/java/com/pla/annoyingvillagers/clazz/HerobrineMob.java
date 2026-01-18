@@ -7,10 +7,7 @@ import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.block.ObsidianBlock;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
+import com.pla.annoyingvillagers.init.*;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.network.ClientboundLitePortalFx;
 import com.pla.annoyingvillagers.spawnhandler.HerobrineMobData;
@@ -712,6 +709,38 @@ public class HerobrineMob extends Monster {
                 reaperHerobrineEntity.summonEnderDragon(2);
             }
         }
+        if (this instanceof NullEntity nullEntity) {
+            if (nullEntity.getNullSwordEntity() != null) {
+                ItemStack nullSword = new ItemStack(AnnoyingVillagersModItems.NULL_SWORD.get());
+                nullSword.enchant(Enchantments.SHARPNESS, 5);
+                nullSword.enchant(Enchantments.SWEEPING_EDGE, 5);
+                nullEntity.getNullSwordEntity().setItemInHand(InteractionHand.MAIN_HAND, nullSword);
+            }
+            if (nullEntity.getNullAxeEntity() != null) {
+                ItemStack nullAxe = new ItemStack(AnnoyingVillagersModItems.NULL_AXE.get());
+                nullAxe.enchant(Enchantments.SMITE, 5);
+                nullAxe.enchant(Enchantments.FIRE_ASPECT, 2);
+                nullEntity.getNullAxeEntity().setItemInHand(InteractionHand.MAIN_HAND, nullAxe);
+            }
+            if (nullEntity.getNullPickaxeEntity() != null) {
+                ItemStack nullPickaxe = new ItemStack(AnnoyingVillagersModItems.NULL_PICKAXE.get());
+                nullPickaxe.enchant(Enchantments.BLOCK_EFFICIENCY, 5);
+                nullPickaxe.enchant(Enchantments.UNBREAKING, 3);
+                nullEntity.getNullPickaxeEntity().setItemInHand(InteractionHand.MAIN_HAND, nullPickaxe);
+            }
+            if (nullEntity.getNullShovelEntity() != null) {
+                ItemStack nullShovel = new ItemStack(AnnoyingVillagersModItems.NULL_SHOVEL.get());
+                nullShovel.enchant(Enchantments.UNBREAKING, 5);
+                nullShovel.enchant(Enchantments.MENDING, 1);
+                nullEntity.getNullShovelEntity().setItemInHand(InteractionHand.MAIN_HAND, nullShovel);
+            }
+            if (nullEntity.getNullHoeEntity() != null) {
+                ItemStack nullHoe = new ItemStack(AnnoyingVillagersModItems.NULL_HOE.get());
+                nullHoe.enchant(Enchantments.KNOCKBACK, 5);
+                nullHoe.enchant(Enchantments.BLOCK_EFFICIENCY, 1);
+                nullEntity.getNullHoeEntity().setItemInHand(InteractionHand.MAIN_HAND, nullHoe);
+            }
+        }
         this.state = 2;
     }
 
@@ -734,6 +763,15 @@ public class HerobrineMob extends Monster {
                     || this instanceof NullEntity
                     || this instanceof ShadowHerobrineEntity)) {
                 this.addEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 3, 3));
+                if (this instanceof NullEntity || this instanceof ShadowHerobrineEntity) {
+                    if (new Random().nextBoolean()) {
+                        serverLevel.sendParticles(
+                                AnnoyingVillagersModParticleTypes.FULL_COWL.get(),
+                                this.getX(), this.getY(), this.getZ(),
+                                1, 0.3D, 1.2D, 0.3D, 0D
+                        );
+                    }
+                }
             }
             if (this.healingCooldown > 0) this.healingCooldown = this.healingCooldown - 1;
 
@@ -766,15 +804,14 @@ public class HerobrineMob extends Monster {
                 }
                 if (this.initialSpawn) {
                     this.setNoAi(true);
-                    final LivingEntityPatch<?> livingentitypatch = EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
-                    if (livingentitypatch != null && !this.level().isClientSide()) {
+                    if (livingEntityPatch != null && !this.level().isClientSide()) {
                         if (this instanceof ReaperHerobrineEntity || this instanceof GlaiveHerobrineEntity) {
-                            livingentitypatch.playAnimationSynchronized(AVAnimations.GLOWING_AGONY_GUARD, 0.0F);
+                            livingEntityPatch.playAnimationSynchronized(AVAnimations.GLOWING_AGONY_GUARD, 0.0F);
                         } else if (this instanceof AegisHerobrineEntity aegisHerobrineEntity) {
                             // For some reason the block animation can't be played inside finalize spawn
                             aegisHerobrineEntity.getPersistentData().putBoolean("init_animation", true);
                         } else if (!(this instanceof SledgehammerHerobrineEntity) && !(this instanceof SwordsmanHerobrineEntity)) {
-                            livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_ANIMATE, 0.0F);
+                            livingEntityPatch.playAnimationSynchronized(AVAnimations.HEROBRINE_ANIMATE, 0.0F);
                         }
                     }
                     this.initialSpawn = false;
@@ -871,8 +908,12 @@ public class HerobrineMob extends Monster {
                 this.sacrificingAnimationCooldown = this.sacrificingAnimationCooldown - 1;
             }
             if (this.sacrificingAnimationCooldown == 60) {
-                this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
-                this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+                if (this instanceof NullEntity nullEntity) {
+                    nullEntity.setSpinningToAllWeaponsAvailableFor5seconds();
+                } else {
+                    this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+                    this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+                }
                 if (this.livingEntityPatch != null) {
                     this.livingEntityPatch.playAnimationSynchronized(AVAnimations.HEROBRINE_STAGE_CHANGE, 0.0F);
                 }
@@ -951,6 +992,9 @@ public class HerobrineMob extends Monster {
                 this.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 5, 3, false, false));
                 if (this.livingEntityPatch != null) {
                     this.livingEntityPatch.playAnimationSynchronized(AVAnimations.HEROBRINE_STAGE_CHANGE, 0.0F);
+                }
+                if (this instanceof NullEntity nullEntity && this.tickCount % 100 == 0) {
+                    nullEntity.setSpinningToAllWeaponsAvailableFor5seconds();
                 }
             }
             if (this.secondFormHitLeft == 0 && this.state == 1) {

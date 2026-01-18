@@ -81,6 +81,11 @@ public class NullWeapon extends Monster {
         this.releaseCooldown = 1;
     }
 
+    public void releaseForAWhile() {
+        this.releaseCooldown = new Random().nextInt(300, 600);
+        this.released = true;
+    }
+
     public void setSpinning(boolean spinning) {
         this.spinning = spinning;
     }
@@ -89,24 +94,23 @@ public class NullWeapon extends Monster {
         return spinning;
     }
 
-    public void releaseForAWhile() {
-        this.releaseCooldown = new Random().nextInt(100, 200);
-        this.released = true;
-    }
-
     public void setReleased(boolean released) {
         this.released = released;
         if (released) {
-            final LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
-            if (livingEntityPatch != null) {
-                livingEntityPatch.playAnimationSynchronized(AVAnimations.GLOWING_AGONY_GUARD, 0.0F);
-                new DelayedTask(100) {
-                    @Override
-                    public void run() {
-                        livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
-                    }
-                };
-            }
+            spinfor5seconds();
+        }
+    }
+
+    public void spinfor5seconds() {
+        final LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
+        if (livingEntityPatch != null) {
+            livingEntityPatch.playAnimationSynchronized(AVAnimations.GLOWING_AGONY_GUARD, 0.0F);
+            new DelayedTask(100) {
+                @Override
+                public void run() {
+                    livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
+                }
+            };
         }
     }
 
@@ -508,6 +512,13 @@ public class NullWeapon extends Monster {
         if (this.getTarget() == null && this.released) {
             this.released = false;
         }
+
+        if (this.releaseCooldown > 0) {
+            this.releaseCooldown = this.releaseCooldown - 1;
+        }
+        if (this.releaseCooldown == 0 && this.released) {
+            this.released = false;
+        }
     }
 
     public static LivingEntity getNearestLivingEntity(Level level, Entity sourceEntity, double range) {
@@ -538,6 +549,23 @@ public class NullWeapon extends Monster {
             if (target != null && target.isAlive()) {
                 this.moveTo(target.getX() + new Random().nextDouble(-4, 4), target.getY() + new Random().nextDouble(-2, 2), target.getZ() + new Random().nextDouble(-4, 4));
             } else {
+                this.released = false;
+            }
+        }
+    }
+
+    public void processTeleportByNullEntity() {
+        if (nullEntity == null) return;
+        if (!this.isReleased()) {
+            this.moveTo(nullEntity.getX() + new Random().nextDouble(-4, 4), nullEntity.getY() + new Random().nextDouble(-2, 2), nullEntity.getZ() + new Random().nextDouble(-4, 4));
+        } else if (this.isReleased() && (nullEntity.getLastHurtByMob() != null || nullEntity.getLastHurtMob() != null)) {
+            LivingEntity target = nullEntity.getTarget() != null ? nullEntity.getTarget() : (nullEntity.getLastHurtByMob() != null ? nullEntity.getLastHurtByMob() : (nullEntity.getLastHurtMob() != null ? nullEntity.getLastHurtMob() : null));
+            if (target == null) {
+                target = NullWeapon.getNearestLivingEntity(nullEntity.level(), nullEntity, 12.0D);
+            }
+            if (target != null && target.isAlive()) {
+                this.moveTo(target.getX() + new Random().nextDouble(-4, 4), target.getY() + new Random().nextDouble(-2, 2), target.getZ() + new Random().nextDouble(-4, 4));
+            } else {
                 this.stopRelease();
             }
         }
@@ -545,11 +573,21 @@ public class NullWeapon extends Monster {
 
     public void summonNullWeaponForPlayer(String uuidNbt, ServerLevel serverLevel, Player summoner) {
         this.moveTo(summoner.getX() + new Random().nextDouble(-4, 4), summoner.getY() + new Random().nextDouble(-2, 2), summoner.getZ() + new Random().nextDouble(-4, 4));
-        this.player = summoner;
         this.playerUUID = summoner.getUUID();
+        this.player = summoner;
         this.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
         serverLevel.addFreshEntity(this);
         summoner.getPersistentData().putUUID(uuidNbt, this.getUUID());
+    }
+
+    public void summonNullWeaponForNullEntity(ServerLevel serverLevel, NullEntity summoner, String toolName) {
+        this.moveTo(summoner.getX() + new Random().nextDouble(-4, 4), summoner.getY() + new Random().nextDouble(-2, 2), summoner.getZ() + new Random().nextDouble(-4, 4));
+        this.nullUUID = summoner.getUUID();
+        this.nullEntity = summoner;
+        this.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+        serverLevel.addFreshEntity(this);
+        summoner.setNullWeapon(toolName, this);
+        spinfor5seconds();
     }
 
     @Override

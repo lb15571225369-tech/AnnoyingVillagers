@@ -171,5 +171,8 @@ public class AnnoyingVillagersModEntityRenderers {
         add.addPatchedEntityRenderer(AnnoyingVillagersModEntities.NULL_SKELETON.get(),
                 (entitytype) -> (new PHumanoidRenderer<>(Meshes.SKELETON, add.getContext(), entitytype))
                         .initLayerLast(add.getContext(), entitytype));
+        add.addPatchedEntityRenderer(AnnoyingVillagersModEntities.NULL.get(),
+                (entitytype) -> (new PHumanoidRenderer<>(Meshes.BIPED, add.getContext(), entitytype))
+                        .initLayerLast(add.getContext(), entitytype));
     }
 }

@@ -60,6 +60,7 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -307,6 +308,9 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<AntitheusShootAttackAnimation> CLONE_ANTITHEUS_SHOOT;
     public static AnimationManager.AnimationAccessor<StaticAnimation> CLONE_ANTITHEUS_ASCENDED_IDLE;
     public static AnimationManager.AnimationAccessor<UltimateAttackAnimation> NULL_SKELETON_ANTITHEUS_ASCENSION;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> NULL_ANTITHEUS_ASCENDED_AUTO_1;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> NULL_ANTITHEUS_ASCENDED_AUTO_2;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> NULL_ANTITHEUS_ASCENDED_AUTO_3;
 
     @SubscribeEvent
     public static void registerAnimations(AnimationManager.AnimationRegistryEvent event) {
@@ -1358,6 +1362,9 @@ public class AVAnimations {
                                                 null, null
                                         );
                                         serverLevel.addFreshEntity(nullSkeletonEntity);
+                                        if (owner instanceof NullEntity nullEntity) {
+                                            nullEntity.claimWitherSkeletonSlot(nullSkeletonEntity);
+                                        }
                                         LivingEntityPatch<?> nullSkeletonPatch = EpicFightCapabilities.getEntityPatch(nullSkeletonEntity, LivingEntityPatch.class);
                                         if (nullSkeletonPatch != null) {
                                             nullSkeletonPatch.playAnimationSynchronized(AVAnimations.CLONE_ANTITHEUS_LAPSE, 0.0F);
@@ -1404,14 +1411,14 @@ public class AVAnimations {
                         .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
                         .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.0F, 0.75F))
                         .addEvents(new AnimationEvent[]{AnimationEvent.InTimeEvent.create(0.05F, (livingEntityPatch, assetaccessor, animationparameters) -> {
-                            livingEntityPatch.getOriginal().level().playSound((Player) livingEntityPatch.getOriginal(), livingEntityPatch.getOriginal(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.PLAYERS, 0.7F, 0.7F);
-                            livingEntityPatch.getOriginal().level().playSound((Player) livingEntityPatch.getOriginal(), livingEntityPatch.getOriginal(), EpicFightSounds.WHOOSH_BIG.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+                            livingEntityPatch.getOriginal().level().playSound(null, livingEntityPatch.getOriginal().blockPosition(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.NEUTRAL, 0.7F, 0.7F);
+                            livingEntityPatch.getOriginal().level().playSound(null, livingEntityPatch.getOriginal().blockPosition(), EpicFightSounds.WHOOSH_BIG.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
 
                         }, Side.CLIENT), AnimationEvent.InTimeEvent.create(0.35F, (livingEntityPatch, assetaccessor, animationparameters) -> {
                             livingEntityPatch.getOriginal().resetFallDistance();
                         }, Side.SERVER), AnimationEvent.InTimeEvent.create(0.45F, (livingEntityPatch, assetaccessor, animationparameters) -> {
-                            livingEntityPatch.getOriginal().level().playSound((Player) livingEntityPatch.getOriginal(), livingEntityPatch.getOriginal(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.PLAYERS, 0.7F, 0.7F);
-                            livingEntityPatch.getOriginal().level().playSound((Player) livingEntityPatch.getOriginal(), livingEntityPatch.getOriginal(), EpicFightSounds.WHOOSH_BIG.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+                            livingEntityPatch.getOriginal().level().playSound(null, livingEntityPatch.getOriginal().blockPosition(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.NEUTRAL, 0.7F, 0.7F);
+                            livingEntityPatch.getOriginal().level().playSound(null, livingEntityPatch.getOriginal().blockPosition(), EpicFightSounds.WHOOSH_BIG.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
 
                             float f = (float) livingEntityPatch.getOriginal().getX();
                             float f1 = (float) livingEntityPatch.getOriginal().getY();
@@ -1426,8 +1433,8 @@ public class AVAnimations {
                         }, Side.CLIENT), AnimationEvent.InTimeEvent.create(0.5F, (livingEntityPatch, assetaccessor, animationparameters) -> {
                             livingEntityPatch.getOriginal().resetFallDistance();
                         }, Side.SERVER), AnimationEvent.InTimeEvent.create(0.55F, (livingEntityPatch, assetaccessor, animationparameters) -> {
-                            livingEntityPatch.getOriginal().level().playSound((Player) livingEntityPatch.getOriginal(), livingEntityPatch.getOriginal(), SoundEvents.WITHER_SHOOT, SoundSource.PLAYERS, 0.7F, 0.5F);
-                            livingEntityPatch.getOriginal().level().playSound((Player) livingEntityPatch.getOriginal(), livingEntityPatch.getOriginal(), EpicFightSounds.BLUNT_HIT_HARD.get(), SoundSource.PLAYERS, 0.7F, 0.7F);
+                            livingEntityPatch.getOriginal().level().playSound(null, livingEntityPatch.getOriginal().blockPosition(), SoundEvents.WITHER_SHOOT, SoundSource.NEUTRAL, 0.7F, 0.5F);
+                            livingEntityPatch.getOriginal().level().playSound(null, livingEntityPatch.getOriginal().blockPosition(), EpicFightSounds.BLUNT_HIT_HARD.get(), SoundSource.NEUTRAL, 0.7F, 0.7F);
 
                             float f = (float) livingEntityPatch.getOriginal().getX();
                             float f1 = (float) livingEntityPatch.getOriginal().getY();
@@ -1475,8 +1482,8 @@ public class AVAnimations {
                 .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
                 .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
                 .addEvents(AnimationEvent.InTimeEvent.create(0.05F, (entitypatch, self, params) -> {
-                    entitypatch.getOriginal().level().playSound((Player) entitypatch.getOriginal(), entitypatch.getOriginal(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.NEUTRAL, 0.7F, 0.7F);
-                    entitypatch.getOriginal().level().playSound((Player) entitypatch.getOriginal(), entitypatch.getOriginal(), EpicFightSounds.WHOOSH_BIG.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                    entitypatch.getOriginal().level().playSound(null, entitypatch.getOriginal().blockPosition(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.NEUTRAL, 0.7F, 0.7F);
+                    entitypatch.getOriginal().level().playSound(null, entitypatch.getOriginal().blockPosition(), EpicFightSounds.WHOOSH_BIG.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
 
                 }, Side.CLIENT)));
         AVAnimations.CLONE_ANTITHEUS_ASCENDED_BLACKHOLE = builder.nextAccessor("biped/skill/clone_antitheus_ascended_blackhole", (accessor) -> (new BasicMultipleAttackAnimation(0.05F, 1.45F, 1.5F, 1.7F, WOMWeaponColliders.PLUNDER_PERDITION, humanoidArmature.get().rootJoint, accessor, humanoidArmature))
@@ -1493,7 +1500,7 @@ public class AVAnimations {
                 .addProperty(StaticAnimationProperty.POSE_MODIFIER, null)
                 .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
                 .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.0F, 1.7F))
-                .addEvents(AnimationEvent.InTimeEvent.create(0.05F, (livingEntityPatch, self, params) -> livingEntityPatch.getOriginal().level().playSound(null, livingEntityPatch.getOriginal(), WOMSounds.ANTITHEUS_BLACKKHOLE_CHARGEUP.get(), SoundSource.PLAYERS, 2.0F, 1.0F), Side.SERVER), AnimationEvent.InTimeEvent.create(0.05F, (livingEntityPatch, self, params) -> {
+                .addEvents(AnimationEvent.InTimeEvent.create(0.05F, (livingEntityPatch, self, params) -> livingEntityPatch.getOriginal().level().playSound(null, livingEntityPatch.getOriginal().blockPosition(), WOMSounds.ANTITHEUS_BLACKKHOLE_CHARGEUP.get(), SoundSource.PLAYERS, 2.0F, 1.0F), Side.SERVER), AnimationEvent.InTimeEvent.create(0.05F, (livingEntityPatch, self, params) -> {
                     OpenMatrix4f transformMatrix = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(0.0F), Armatures.BIPED.get().toolL);
                     transformMatrix.translate(new Vec3f(0.0F, 0.0F, 0.0F));
                     OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-org.joml.Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F), new Vec3f(0.0F, 1.0F, 0.0F)), transformMatrix, transformMatrix);
@@ -1510,8 +1517,8 @@ public class AVAnimations {
                     }
 
                 }, Side.CLIENT), AnimationEvent.InTimeEvent.create(1.05F, (livingEntityPatch, self, params) -> {
-                    livingEntityPatch.getOriginal().level().playSound((Player) livingEntityPatch.getOriginal(), livingEntityPatch.getOriginal(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.PLAYERS, 0.7F, 0.7F);
-                    livingEntityPatch.getOriginal().level().playSound((Player) livingEntityPatch.getOriginal(), livingEntityPatch.getOriginal(), EpicFightSounds.WHOOSH_BIG.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+                    livingEntityPatch.getOriginal().level().playSound(null, livingEntityPatch.getOriginal().blockPosition(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.NEUTRAL, 0.7F, 0.7F);
+                    livingEntityPatch.getOriginal().level().playSound(null, livingEntityPatch.getOriginal().blockPosition(), EpicFightSounds.WHOOSH_BIG.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
 
                 }, Side.CLIENT), AnimationEvent.InTimeEvent.create(1.45F, (livingEntityPatch, self, params) -> {
                     if (!(livingEntityPatch.getOriginal().level() instanceof ServerLevel serverLevel)) return;
@@ -1532,8 +1539,8 @@ public class AVAnimations {
                     CORRECTION.translate(new Vec3f(0.0F, 0.0F, -3.5F));
                     OpenMatrix4f.mul(CORRECTION, transformMatrix, transformMatrix);
 
-                    ((ServerLevel) livingEntityPatch.getOriginal().level()).sendParticles(WOMParticles.ANTITHEUS_BLACKHOLE_START.get(), (double) transformMatrix.m30 + livingEntityPatch.getOriginal().getX(), (double) transformMatrix.m31 + livingEntityPatch.getOriginal().getY(), (double) transformMatrix.m32 + livingEntityPatch.getOriginal().getZ(), 1, 0.0F, 0.0F, 0.0F, 0.0F);
-                    ((ServerLevel) livingEntityPatch.getOriginal().level()).sendParticles(ParticleTypes.LARGE_SMOKE, (double) transformMatrix.m30 + livingEntityPatch.getOriginal().getX(), (double) transformMatrix.m31 + livingEntityPatch.getOriginal().getY(), (double) transformMatrix.m32 + livingEntityPatch.getOriginal().getZ(), 48, 0.0F, 0.0F, 0.0F, 0.5F);
+                    serverLevel.sendParticles(WOMParticles.ANTITHEUS_BLACKHOLE_START.get(), (double) transformMatrix.m30 + livingEntityPatch.getOriginal().getX(), (double) transformMatrix.m31 + livingEntityPatch.getOriginal().getY(), (double) transformMatrix.m32 + livingEntityPatch.getOriginal().getZ(), 1, 0.0F, 0.0F, 0.0F, 0.0F);
+                    serverLevel.sendParticles(ParticleTypes.LARGE_SMOKE, (double) transformMatrix.m30 + livingEntityPatch.getOriginal().getX(), (double) transformMatrix.m31 + livingEntityPatch.getOriginal().getY(), (double) transformMatrix.m32 + livingEntityPatch.getOriginal().getZ(), 48, 0.0F, 0.0F, 0.0F, 0.5F);
                 }, Side.SERVER), AnimationEvent.InTimeEvent.create(1.45F, (livingEntityPatch, self, params) -> {
                     OpenMatrix4f transformMatrix = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(0.0F), Armatures.BIPED.get().handR);
                     OpenMatrix4f CORRECTION = (new OpenMatrix4f()).rotate(-org.joml.Math.toRadians(livingEntityPatch.getOriginal().yRotO + 180.0F), new Vec3f(0.0F, 1.0F, 0.0F));
@@ -2360,6 +2367,65 @@ public class AVAnimations {
                         .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false));
         AVAnimations.CLONE_ANTITHEUS_ASCENDED_IDLE = builder.nextAccessor("biped/living/clone_antitheus_ascended_idle",
                 (accessor) -> new StaticAnimation(0.1F, true, accessor, humanoidArmature));
+        AVAnimations.NULL_ANTITHEUS_ASCENDED_AUTO_1 = builder.nextAccessor("biped/skill/null_antitheus_ascended_auto_1",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.05F, 0.3F, 0.4F, 0.4F, WOMWeaponColliders.ANTITHEUS_ASCENDED_PUNCHES, humanoidArmature.get().rootJoint, accessor, humanoidArmature))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.9F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(0.7F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE)
+                        .addProperty(AttackPhaseProperty.PARTICLE, WOMParticles.ANTITHEUS_PUNCH_HIT)
+                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT_HARD.get())
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.9F)
+                        .addProperty(StaticAnimationProperty.POSE_MODIFIER, null)
+                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
+                        .addEvents(new AnimationEvent[]{
+                                AnimationEvent.InTimeEvent.create(0.05F, (livingEntityPatch, self, params) -> livingEntityPatch.getOriginal().level().playSound(null, livingEntityPatch.getOriginal().blockPosition(), EpicFightSounds.WHOOSH_BIG.get(), SoundSource.NEUTRAL, 1.0F, 1.0F), Side.CLIENT)
+                        }));
+        AVAnimations.NULL_ANTITHEUS_ASCENDED_AUTO_2 = builder.nextAccessor("biped/skill/null_antitheus_ascended_auto_2",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.05F, accessor, humanoidArmature,
+                        new Phase(0.0F, 0.3F, 0.4F, 0.5F, 0.5F, humanoidArmature.get().rootJoint, WOMWeaponColliders.ANTITHEUS_ASCENDED_PUNCHES),
+                        new Phase(0.5F, 0.6F, 0.7F, 0.7F, Float.MAX_VALUE, humanoidArmature.get().rootJoint, WOMWeaponColliders.ANTITHEUS_ASCENDED_PUNCHES)))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.7F))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.7F), 1)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(0.7F), 1)
+                        .addProperty(AttackPhaseProperty.PARTICLE, WOMParticles.ANTITHEUS_PUNCH_HIT)
+                        .addProperty(AttackPhaseProperty.PARTICLE, WOMParticles.ANTITHEUS_PUNCH_HIT, 1)
+                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT_HARD.get())
+                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT_HARD.get(), 1)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE, 1)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.9F)
+                        .addProperty(StaticAnimationProperty.POSE_MODIFIER, null)
+                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
+                        .addEvents(
+                                new AnimationEvent[]{
+                                        AnimationEvent.InTimeEvent.create(0.05F, (livingEntityPatch, self, params) -> {
+                                            livingEntityPatch.getOriginal().level().playSound(null, livingEntityPatch.getOriginal().blockPosition(), EpicFightSounds.WHOOSH_BIG.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                }, Side.CLIENT)}));
+        AVAnimations.NULL_ANTITHEUS_ASCENDED_AUTO_3 = builder.nextAccessor("biped/skill/null_antitheus_ascended_auto_3",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.05F, accessor, humanoidArmature,
+                        new Phase(0.0F, 0.2F, 0.3F, 0.35F, 0.35F, humanoidArmature.get().rootJoint, WOMWeaponColliders.ANTITHEUS_ASCENDED_PUNCHES),
+                        new Phase(0.35F, 0.4F, 0.5F, 0.55F, 0.55F, humanoidArmature.get().rootJoint, WOMWeaponColliders.ANTITHEUS_ASCENDED_PUNCHES),
+                        new Phase(0.55F, 0.7F, 0.8F, 0.85F, Float.MAX_VALUE, humanoidArmature.get().rootJoint, WOMWeaponColliders.ANTITHEUS_ASCENDED_PUNCHES)))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.6F)).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.6F), 1)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.9F), 2)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(0.7F), 2)
+                        .addProperty(AttackPhaseProperty.PARTICLE, WOMParticles.ANTITHEUS_PUNCH_HIT)
+                        .addProperty(AttackPhaseProperty.PARTICLE, WOMParticles.ANTITHEUS_PUNCH_HIT, 1)
+                        .addProperty(AttackPhaseProperty.PARTICLE, WOMParticles.ANTITHEUS_PUNCH_HIT, 2)
+                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT_HARD.get())
+                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT_HARD.get(), 1)
+                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT_HARD.get(), 2)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD, 0)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD, 1)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE, 2)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.9F)
+                        .addProperty(StaticAnimationProperty.POSE_MODIFIER, null)
+                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
+                        .addEvents(
+                                new AnimationEvent[]{
+                                        AnimationEvent.InTimeEvent.create(0.05F, (livingEntityPatch, self, params) -> {
+                                            livingEntityPatch.getOriginal().level().playSound(null, livingEntityPatch.getOriginal().blockPosition(), EpicFightSounds.WHOOSH_BIG.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                                            }, Side.CLIENT)}));
     }
 
     private static @NotNull Vec3 getVec3(LivingEntity owner) {

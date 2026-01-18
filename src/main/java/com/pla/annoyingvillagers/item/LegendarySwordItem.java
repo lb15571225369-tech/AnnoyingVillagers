@@ -64,7 +64,7 @@ public class LegendarySwordItem extends SwordItem {
 
                 float currentResource = skillContainer.getResource();
                 float neededResource = skillContainer.getNeededResource();
-                float addResource = Math.min(4.0F, neededResource);
+                float addResource = Math.min(2.0F, neededResource);
                 legendarySwordSkill.setConsumptionSynchronize(skillContainer, currentResource + addResource);
             }
         }

@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.entity;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
@@ -33,6 +34,7 @@ import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 import java.util.UUID;
 
 public class NullSkeletonEntity extends AbstractSkeleton {
@@ -188,6 +190,12 @@ public class NullSkeletonEntity extends AbstractSkeleton {
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverLevelAccessor, @NotNull DifficultyInstance difficultyInstance, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawngroupdata, @Nullable CompoundTag compoundtag) {
         if (this.nullEntity != null) {
             TeamUtil.addOrJoinTeam(this, "herobrine");
+        }
+        try {
+            Objects.requireNonNull(this.getServer()).getCommands().getDispatcher().execute(
+                    "data merge entity @s {CanPickUpLoot: 1b}",
+                    this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+        } catch (CommandSyntaxException ignored) {
         }
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawngroupdata, compoundtag);
     }

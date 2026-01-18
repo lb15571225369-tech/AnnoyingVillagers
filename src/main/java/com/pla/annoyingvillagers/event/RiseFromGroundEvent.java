@@ -27,9 +27,9 @@ public class RiseFromGroundEvent {
         if (tag.getBoolean(HerobrinePortalUtil.NBT_RISING)) {
 
             double targetY = tag.getDouble(HerobrinePortalUtil.NBT_TARGET_Y);
-            double speed   = tag.getDouble(HerobrinePortalUtil.NBT_SPEED);
-            int    ticks   = tag.getInt(HerobrinePortalUtil.NBT_TICKS);
-            int    max     = tag.getInt(HerobrinePortalUtil.NBT_MAX_TICKS);
+            double speed = tag.getDouble(HerobrinePortalUtil.NBT_SPEED);
+            int ticks = tag.getInt(HerobrinePortalUtil.NBT_TICKS);
+            int max = tag.getInt(HerobrinePortalUtil.NBT_MAX_TICKS);
 
             double ny = entity.getY() + speed;
             if (ny >= targetY || ticks > max) {
@@ -43,8 +43,8 @@ public class RiseFromGroundEvent {
         }
 
         if (tag.getBoolean(HerobrinePortalUtil.NBT_SINKING)) {
-            double speed   = tag.getDouble(HerobrinePortalUtil.NBT_SINK_SPEED);
-            int    ticks   = tag.getInt(HerobrinePortalUtil.NBT_SINK_TICKS);
+            double speed = tag.getDouble(HerobrinePortalUtil.NBT_SINK_SPEED);
+            int ticks = tag.getInt(HerobrinePortalUtil.NBT_SINK_TICKS);
 
             entity.setPos(entity.getX(), entity.getY() - speed, entity.getZ());
             tag.putInt(HerobrinePortalUtil.NBT_SINK_TICKS, ticks + 1);

@@ -38,7 +38,7 @@ import java.util.Set;
 
 public class LowHerobrineClonePatch extends CEHumanoidPatch implements CustomExecuteEntity {
     public LowHerobrineClonePatch() {
-        super(Factions.NEUTRAL);
+        super(Factions.UNDEAD);
     }
 
     public void initAnimator(Animator animator) {

@@ -2,13 +2,25 @@ package com.pla.annoyingvillagers.combatbehaviour;
 
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors;
-import net.shelmarow.combat_evolution.ai.condition.HealthCheck;
 import reascer.wom.gameasset.animations.weapons.AnimsHerrscher;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 
 public class NullSkeletonSword {
     public static final CECombatBehaviors.Builder<MobPatch<?>> AV_SWORD = CECombatBehaviors.builder()
+            .newBehaviorRoot(
+                    CECombatBehaviors.BehaviorRoot.builder()
+                            .priority(2.0D)
+                            .weight(1000.0D)
+                            .maxCooldown (0)
+                            .addFirstBehavior(
+                                    CECombatBehaviors.Behavior.builder()
+                                            .custom(CombatCommon::canExecute)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(Animations.BIPED_SNEAK, 0.0F)
+                                            .addExBehavior(CombatCommon::performExecute)
+                            )
+            )
             .newBehaviorRoot(
                     CECombatBehaviors.BehaviorRoot.builder()
                             .priority(1.0D)

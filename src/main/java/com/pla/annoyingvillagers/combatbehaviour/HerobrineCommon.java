@@ -40,10 +40,7 @@ import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 import yesman.epicfight.world.effect.EpicFightMobEffects;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 import java.util.function.BiFunction;
 
 import static com.pla.annoyingvillagers.combatbehaviour.CombatCommon.getIntegerIntegerBiFunction;
@@ -66,6 +63,7 @@ public class HerobrineCommon {
         }
         return false;
     }
+
 
     public static boolean canMountOrDismountDragon(MobPatch<?> mobpatch) {
         if (mobpatch.getOriginal() instanceof ReaperHerobrineEntity reaperHerobrineEntity) {
@@ -111,6 +109,13 @@ public class HerobrineCommon {
                 return false;
             }
             return herobrineMob.getState() != 0;
+        }
+        return false;
+    }
+
+    public static boolean canSummonNullSkeleton(MobPatch<?> mobpatch) {
+        if (mobpatch.getOriginal() instanceof NullEntity nullEntity) {
+            return nullEntity.isAvailableWitherSkeletonSlot();
         }
         return false;
     }
@@ -241,6 +246,14 @@ public class HerobrineCommon {
                     || herobrineMob instanceof GlaiveHerobrineEntity) {
                 herobrineMob.playSound(AnnoyingVillagersModSounds.SECOND_FORM_RELEASE.get(), 1.0F, 1.0F);
             }
+        }
+    }
+
+    public static void releaseWeapon(MobPatch<?> mobpatch) {
+        if (mobpatch.getOriginal() instanceof NullEntity nullEntity) {
+            nullEntity.releaseRandomWeapons((nullEntity.getState() < 2
+                    ? new Random().nextInt(1, 3)
+                    : new Random().nextInt(3, 5)));
         }
     }
 
@@ -382,6 +395,12 @@ public class HerobrineCommon {
         Entity entity = mobpatch.getOriginal();
         if (entity instanceof NullWeapon nullWeapon) {
             nullWeapon.setSpinning(false);
+        }
+    }
+
+    public static void performGuardWeaponSpinning(MobPatch<?> mobpatch) {
+        if (mobpatch.getOriginal() instanceof NullEntity nullEntity) {
+            nullEntity.setSpinningToAllWeaponsAvailable(true);
         }
     }
 

@@ -2,10 +2,8 @@ package com.pla.annoyingvillagers.mobpatch;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
-import com.pla.annoyingvillagers.combatbehaviour.NpcBow;
-import com.pla.annoyingvillagers.combatbehaviour.NpcFist;
-import com.pla.annoyingvillagers.combatbehaviour.NpcSword;
-import com.pla.annoyingvillagers.combatbehaviour.NullSkeletonSword;
+import com.pla.annoyingvillagers.combatbehaviour.HerobrineNullWeapon;
+import com.pla.annoyingvillagers.combatbehaviour.NullWeaponSword;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -16,6 +14,7 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
 import net.shelmarow.combat_evolution.ai.iml.CustomExecuteEntity;
 import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
+import reascer.wom.gameasset.WOMAnimations;
 import yesman.epicfight.api.animation.AnimationManager.AnimationAccessor;
 import yesman.epicfight.api.animation.Animator;
 import yesman.epicfight.api.animation.LivingMotions;
@@ -36,8 +35,8 @@ import yesman.epicfight.world.damagesource.StunType;
 import java.util.List;
 import java.util.Set;
 
-public class NullSkeletonPatch extends CEHumanoidPatch implements CustomExecuteEntity {
-    public NullSkeletonPatch() {
+public class NullPatch extends CEHumanoidPatch implements CustomExecuteEntity {
+    public NullPatch() {
         super(Factions.UNDEAD);
     }
 
@@ -55,28 +54,26 @@ public class NullSkeletonPatch extends CEHumanoidPatch implements CustomExecuteE
         this.weaponLivingMotions
                 .put(WeaponCategories.SWORD,
                         ImmutableMap.of(
-                                Styles.ONE_HAND,
+                                Styles.TWO_HAND,
                                 Set.of(
-                                        Pair.of(LivingMotions.BLOCK, Animations.SWORD_GUARD),
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
-                                        Pair.of(LivingMotions.RUN, AVAnimations.BIPED_RUN_ESWORD),
-                                        Pair.of(LivingMotions.CHASE, AVAnimations.BIPED_RUN_ESWORD),
-                                        Pair.of(LivingMotions.DEATH, Animations.GREATSWORD_GUARD_BREAK)
+                                        Pair.of(LivingMotions.BLOCK, AVAnimations.NULL_GUARD),
+                                        Pair.of(LivingMotions.IDLE, AVAnimations.CLONE_ANTITHEUS_ASCENDED_IDLE),
+                                        Pair.of(LivingMotions.WALK, WOMAnimations.ANTITHEUS_ASCENDED_WALK),
+                                        Pair.of(LivingMotions.RUN, WOMAnimations.ANTITHEUS_ASCENDED_RUN),
+                                        Pair.of(LivingMotions.CHASE, WOMAnimations.ANTITHEUS_ASCENDED_RUN),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
                                 )
                         ));
         this.weaponAttackMotions
                 .put(WeaponCategories.SWORD,
                         ImmutableMap.of(
-                                Styles.ONE_HAND, NullSkeletonSword.AV_SWORD
+                                Styles.TWO_HAND, HerobrineNullWeapon.NULL_WEAPON
                         ));
         
         this.guardHitMotions.put(WeaponCategories.SWORD,
                 ImmutableMap.of(
-                        Styles.ONE_HAND, List.of(
-                                Animations.SWORD_GUARD_ACTIVE_HIT1,
-                                Animations.SWORD_GUARD_ACTIVE_HIT2,
-                                Animations.SWORD_GUARD_ACTIVE_HIT3
+                        Styles.TWO_HAND, List.of(
+                                Animations.SWORD_GUARD_ACTIVE_HIT1
                         )
                 )
         );

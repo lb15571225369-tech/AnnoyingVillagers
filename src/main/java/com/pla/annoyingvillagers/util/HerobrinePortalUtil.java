@@ -1,8 +1,8 @@
 package com.pla.annoyingvillagers.util;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.entity.ShadowHerobrineEntity;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -17,26 +17,21 @@ public class HerobrinePortalUtil {
     public static final int SHINK_TIME_START = 40;
     public static final String NBT_RISING = "rising";
     public static final String NBT_TARGET_Y = "rise_target_y";
-    public static final String NBT_SPEED    = "rise_speed";
-    public static final String NBT_TICKS    = "rise_ticks";
+    public static final String NBT_SPEED = "rise_speed";
+    public static final String NBT_TICKS = "rise_ticks";
     public static final String NBT_MAX_TICKS= "rise_max_ticks";
 
-    public static final String NBT_SINKING       = "sinking";
+    public static final String NBT_SINKING = "sinking";
     public static final String NBT_SINK_TARGET_Y = "sink_target_y";
-    public static final String NBT_SINK_SPEED    = "sink_speed";
-    public static final String NBT_SINK_TICKS    = "sink_ticks";
+    public static final String NBT_SINK_SPEED = "sink_speed";
+    public static final String NBT_SINK_TICKS = "sink_ticks";
     public static final String NBT_SINK_MAX_TICKS= "sink_max_ticks";
 
     public static void spawnHerobrine(LivingEntity livingEntity) {
         if (livingEntity.level() instanceof ServerLevel serverLevel) {
             if (livingEntity instanceof HerobrineMob herobrineMob) {
                 if (herobrineMob.getGregUUID() == null) {
-                    try {
-                        herobrineMob.getServer().getCommands().getDispatcher().execute(
-                                "playsound annoyingvillagers:portal_natural neutral @a ~ ~ ~",
-                                herobrineMob.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                    } catch (CommandSyntaxException e) {
-                    }
+                    herobrineMob.playSound(AnnoyingVillagersModSounds.PORTAL_NATURAL.get(), 1.0F, 1.0F);
                 }
                 if (herobrineMob instanceof ShadowHerobrineEntity shadowHerobrineEntity) {
                     shadowHerobrineEntity.spawnDarkObEntities();

@@ -14,7 +14,6 @@
     "ExplosionMixin",
     "RaiderMixin",
     "MixinPHumanoidRenderer",
-    "WitherSkeletonMixin",
     "ItemRendererMixin",
     "RenderBuffersMixin",
     "VillagerMixin",

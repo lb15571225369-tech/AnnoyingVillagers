@@ -737,4 +737,37 @@ each combo should be 5 to 10 element has at least 1 to 3 animation from group 1,
 The combo chain should be like example first animation from group 1 -> any from group 2 or 3 or 4 or 5 -> second animation from group 1 or any from group 2 or 3 or 4 or 5 -> third animation from group 1 or any from group 2 or 3 or 4 or 5
 help me create 15 different moves, and please generate into one code block to let me copy everything in a button
 
+== NULL ==
+help me mix there movement
+group 1
+AnimsAgony.AGONY_AIR_ATTACK_1
+AnimsAgony.AGONY_AIR_ATTACK_2
+AnimsAgony.AGONY_AIR_ATTACK_3
+AnimsAgony.AGONY_AIR_ATTACK_4
 
+group 2
+AVAnimations.NULL_ANTITHEUS_ASCENDED_AUTO_1
+AVAnimations.NULL_ANTITHEUS_ASCENDED_AUTO_2
+AVAnimations.NULL_ANTITHEUS_ASCENDED_AUTO_3
+AVAnimations.CLONE_ANTITHEUS_ASCENDED_BLACKHOLE
+
+group 3
+AVAnimations.CLONE_ANTITHEUS_SHOOT
+AVAnimations.CLONE_ANTITHEUS_ASCENDED_BLINK
+AVAnimations.CLONE_ANTITHEUS_ASCENDED_DEATHFALL
+
+group 4
+Animations.SHADOWSTEP_FORWARD
+Animations.SHADOWSTEP_BACKWARD
+Animations.SHADOWSTEP_RIGHT
+Animations.SHADOWSTEP_LEFT
+
+help me mix into a combo chain like this
+
+all of element should has
+.custom(CombatCommon::canPerformNormalAttackLogic)
+.withinDistance(0.0D, 4.0D)
+
+each combo should be 5 to 10 element has at least 1 to 3 animation from group 1, no need to follow the order, 1 to 3 animation from group 2, 1 from group 3, 1 from group 4, 1 from group 5 follow the tab rule from the code I sent, no need to create new function or clean code, no comment, for .withinDistance(0.0D, 3.0D) begin of the chain can be 0 3 next can be 0 4 but next should be increased to 0 5, 0 5 and next should be 0 6 this is max
+The combo chain should be like example any animation from group 1 -> any from group 2 or 3 or 4 or 5 -> any animation from group 1 or group 2 or 3 or 4 or 5 -> any animation from group 1 or group 2 or 3 or 4 or 5 ->...
+help me create 25 different moves, and please generate into one code block to let me copy everything in a button
