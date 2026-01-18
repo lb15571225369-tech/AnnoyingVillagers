@@ -10,6 +10,7 @@ import com.pla.annoyingvillagers.task.DelayedTask;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.level.ExplosionEvent;
 import net.minecraft.world.entity.LivingEntity;
@@ -45,7 +46,8 @@ public class ExplosionDamageEvent {
                 }
                 for (Entity entity : detonate.getAffectedEntities()) {
                     if (entity.isAlive() && entity != detonate.getExplosion().getIndirectSourceEntity()
-                            && entity instanceof LivingEntity livingExploded && !(entity instanceof EnderHand)) {
+                            && entity instanceof LivingEntity livingExploded && !(entity instanceof EnderHand)
+                            && (entity instanceof Player player && !player.isCreative())) {
                         LivingEntityPatch<?> explodedPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                         if (explodedPatch != null) {
                             explodedPatch.playAnimationSynchronized(AVAnimations.GUARD_BREAK_ATTACK, 0.0F);
@@ -78,7 +80,8 @@ public class ExplosionDamageEvent {
                 }
                 for (Entity entity : detonate.getAffectedEntities()) {
                     if (entity.isAlive() && entity != detonate.getExplosion().getIndirectSourceEntity()
-                            && entity instanceof LivingEntity livingExploded && !(entity instanceof EnderHand)) {
+                            && entity instanceof LivingEntity livingExploded && !(entity instanceof EnderHand)
+                            && (entity instanceof Player player && !player.isCreative())) {
                         LivingEntityPatch<?> explodedPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                         if (explodedPatch != null) {
                             explodedPatch.playAnimationSynchronized(AVAnimations.LONGEST_HIT, 0.0F);

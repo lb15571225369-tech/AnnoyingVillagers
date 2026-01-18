@@ -336,47 +336,49 @@ public class HerobrineCommon {
         final Mob mob = mobpatch.getOriginal();
         if (!(mob.level() instanceof ServerLevel serverLevel)) return;
         CombatCommon.performEscapeRunAway(mobpatch);
-        new DelayedTask(1) {
-            @Override public void run() {
-                mobpatch.playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F);
-                if (!mob.isAlive()) return;
+        if (mob.tickCount % 10 == 0) {
+            new DelayedTask(1) {
+                @Override
+                public void run() {
+                    if (!mob.isAlive()) return;
 
-                mobpatch.playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_INWARD, 0.0F);
+                    mobpatch.playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_INWARD, 0.0F);
 
-                final LivingEntity target = mob.getTarget();
-                final Direction dir = (target != null)
-                        ? Direction.getNearest(target.getX() - mob.getX(), 0.0D, target.getZ() - mob.getZ())
-                        : mob.getDirection();
+                    final LivingEntity target = mob.getTarget();
+                    final Direction dir = (target != null)
+                            ? Direction.getNearest(target.getX() - mob.getX(), 0.0D, target.getZ() - mob.getZ())
+                            : mob.getDirection();
 
-                final Random random = new Random();
-                final int dist = 1 + random.nextInt(3);
+                    final Random random = new Random();
+                    final int dist = 1 + random.nextInt(3);
 
-                final int rot = random.nextInt(4);
-                final BiFunction<Integer, Integer, int[]> toWorld = getIntegerIntegerBiFunction(mob, rot);
-                final int lateral = random.nextInt(3) - 1;
-                final int[] dxz = toWorld.apply(lateral, 0);
+                    final int rot = random.nextInt(4);
+                    final BiFunction<Integer, Integer, int[]> toWorld = getIntegerIntegerBiFunction(mob, rot);
+                    final int lateral = random.nextInt(3) - 1;
+                    final int[] dxz = toWorld.apply(lateral, 0);
 
-                BlockPos baseXZ = mob.blockPosition().relative(dir, dist).offset(dxz[0], 0, dxz[1]);
-                int surfaceY = serverLevel.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, baseXZ).getY();
-                BlockPos spawnPos = new BlockPos(baseXZ.getX(), surfaceY, baseXZ.getZ());
+                    BlockPos baseXZ = mob.blockPosition().relative(dir, dist).offset(dxz[0], 0, dxz[1]);
+                    int surfaceY = serverLevel.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, baseXZ).getY();
+                    BlockPos spawnPos = new BlockPos(baseXZ.getX(), surfaceY, baseXZ.getZ());
 
-                LowShadowHerobrineCloneEntity clone =
-                        new LowShadowHerobrineCloneEntity(AnnoyingVillagersModEntities.LOW_SHADOW_HEROBRINE_CLONE.get(), serverLevel);
+                    LowShadowHerobrineCloneEntity clone =
+                            new LowShadowHerobrineCloneEntity(AnnoyingVillagersModEntities.LOW_SHADOW_HEROBRINE_CLONE.get(), serverLevel);
 
-                float yaw = dir.toYRot();
-                clone.moveTo(spawnPos.getX() + 0.5D, spawnPos.getY(), spawnPos.getZ() + 0.5D, yaw, 0.0F);
-                clone.setRenderPortal(false);
+                    float yaw = dir.toYRot();
+                    clone.moveTo(spawnPos.getX() + 0.5D, spawnPos.getY(), spawnPos.getZ() + 0.5D, yaw, 0.0F);
+                    clone.setRenderPortal(false);
 
-                clone.setForEscaping(true);
-                clone.setNoAi(true);
-                if (mob instanceof HerobrineMob herobrineMob) {
-                    clone.setPossessedByEntity(herobrineMob);
-                    clone.setPossessedByUuid(herobrineMob.getUUID());
+                    clone.setForEscaping(true);
+                    clone.setNoAi(true);
+                    if (mob instanceof HerobrineMob herobrineMob) {
+                        clone.setPossessedByEntity(herobrineMob);
+                        clone.setPossessedByUuid(herobrineMob.getUUID());
+                    }
+
+                    serverLevel.addFreshEntity(clone);
                 }
-
-                serverLevel.addFreshEntity(clone);
-            }
-        };
+            };
+        }
     }
 
     public static void performAgonySpecialAttack(MobPatch<?> mobpatch) {

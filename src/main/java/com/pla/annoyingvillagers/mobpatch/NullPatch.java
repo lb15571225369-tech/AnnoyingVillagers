@@ -57,10 +57,10 @@ public class NullPatch extends CEHumanoidPatch implements CustomExecuteEntity {
                                 Styles.TWO_HAND,
                                 Set.of(
                                         Pair.of(LivingMotions.BLOCK, AVAnimations.NULL_GUARD),
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_CREATIVE_IDLE),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_CREATIVE_IDLE),
-                                        Pair.of(LivingMotions.RUN, Animations.BIPED_CREATIVE_IDLE),
-                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_CREATIVE_IDLE),
+                                        Pair.of(LivingMotions.IDLE, AVAnimations.CLONE_ANTITHEUS_ASCENDED_IDLE),
+                                        Pair.of(LivingMotions.WALK, WOMAnimations.ANTITHEUS_ASCENDED_WALK),
+                                        Pair.of(LivingMotions.RUN, WOMAnimations.ANTITHEUS_ASCENDED_RUN),
+                                        Pair.of(LivingMotions.CHASE, WOMAnimations.ANTITHEUS_ASCENDED_RUN),
                                         Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
                                 )
                         ));
@@ -73,7 +73,7 @@ public class NullPatch extends CEHumanoidPatch implements CustomExecuteEntity {
         this.guardHitMotions.put(WeaponCategories.SWORD,
                 ImmutableMap.of(
                         Styles.TWO_HAND, List.of(
-                                Animations.SWORD_GUARD_ACTIVE_HIT1
+                                Animations.GREATSWORD_GUARD_HIT
                         )
                 )
         );

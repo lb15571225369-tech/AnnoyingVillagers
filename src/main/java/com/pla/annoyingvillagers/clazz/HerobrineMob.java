@@ -54,7 +54,6 @@ import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -434,8 +433,10 @@ public class HerobrineMob extends Monster {
 
         this.sacrificingAnimationCooldown = 80;
         this.setNoAi(true);
-        this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
-        this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+        if (!(this instanceof NullEntity)) {
+            this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+            this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+        }
         this.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 80, 2));
 
         if (this.gregUUID != null) {
@@ -1071,9 +1072,6 @@ public class HerobrineMob extends Monster {
         if (random.nextFloat() < 0.3f) {
             mob.setItemSlot(EquipmentSlot.FEET, randomDamage(new ItemStack(AnnoyingVillagersModItems.BROKEN_DIAMOND_BOOTS.get())));
         }
-    }
-
-    private void summonLowForSacrificing(ServerLevel server, Vec3 pos) {
     }
 
     private void summonLowCloneAt(ServerLevel server, Vec3 pos, int bindSlot) {

@@ -235,30 +235,6 @@ public class NullSkeletonEntity extends AbstractSkeleton {
             }
 
             return flag;
-        } else if (this.nullEntity != null) {
-            float f = (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE);
-            float f1 = (float)this.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
-            if (pEntity instanceof LivingEntity) {
-                f += EnchantmentHelper.getDamageBonus(this.getMainHandItem(), ((LivingEntity)pEntity).getMobType());
-                f1 += (float)EnchantmentHelper.getKnockbackBonus(this);
-            }
-
-            int i = EnchantmentHelper.getFireAspect(this);
-            if (i > 0) {
-                pEntity.setSecondsOnFire(i * 4);
-            }
-
-            boolean flag = pEntity.hurt(this.damageSources().mobAttack(this.nullEntity), f);
-            if (flag) {
-                if (f1 > 0.0F && pEntity instanceof LivingEntity) {
-                    ((LivingEntity)pEntity).knockback(f1 * 0.5F, Mth.sin(this.getYRot() * ((float)Math.PI / 180F)), -Mth.cos(this.getYRot() * ((float)Math.PI / 180F)));
-                    this.setDeltaMovement(this.getDeltaMovement().multiply(0.6, 1.0F, 0.6));
-                }
-                this.doEnchantDamageEffects(this, pEntity);
-                this.setLastHurtMob(pEntity);
-            }
-
-            return flag;
         } else {
             return super.doHurtTarget(pEntity);
         }
