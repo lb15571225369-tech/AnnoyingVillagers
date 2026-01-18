@@ -1,13 +1,11 @@
 package com.pla.annoyingvillagers.skill;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.clazz.NullWeapon;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
-import com.pla.annoyingvillagers.item.DemoniacVoltageReaverItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
@@ -15,7 +13,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import yesman.epicfight.api.utils.AttackResult;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.api.utils.math.Vec3f;
@@ -63,7 +60,6 @@ public class NullWeaponSkill extends WeaponInnateSkill {
                 );
                 List<String> shuffledKeys = new ArrayList<>(weaponKeys);
                 Collections.shuffle(shuffledKeys, new Random());
-                AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] stack is {}", stack);
 
                 for (int i = 0; i < stack; i++) {
                     String key = shuffledKeys.get(i);
@@ -392,7 +388,7 @@ public class NullWeaponSkill extends WeaponInnateSkill {
         ServerLevel serverLevel = (ServerLevel) player.level();
         CompoundTag data = player.getPersistentData();
 
-        if (player.tickCount >= 40 && player.tickCount % 20 == 0) {
+        if (player.tickCount >= 40 && player.tickCount % 10 == 0) {
             ensureWeapon(serverLevel, player, data, "NullSwordUUID", AnnoyingVillagersModEntities.NULL_SWORD.get(), NullSwordEntity.class);
             ensureWeapon(serverLevel, player, data, "NullAxeUUID", AnnoyingVillagersModEntities.NULL_AXE.get(), NullAxeEntity.class);
             ensureWeapon(serverLevel, player, data, "NullPickaxeUUID", AnnoyingVillagersModEntities.NULL_PICKAXE.get(), NullPickaxeEntity.class);

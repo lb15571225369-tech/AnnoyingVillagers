@@ -1,8 +1,10 @@
 package com.pla.annoyingvillagers.event;
 
 import com.pla.annoyingvillagers.entity.HerobrineDragonEntity;
+import com.pla.annoyingvillagers.entity.NullSkeletonEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.item.*;
 import com.pla.annoyingvillagers.skill.*;
@@ -13,21 +15,26 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.phys.Vec3;
 import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.animations.weapons.*;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
+import yesman.epicfight.world.damagesource.StunType;
 import yesman.epicfight.world.effect.EpicFightMobEffects;
 
 import java.util.Objects;
@@ -175,7 +182,7 @@ public class SpecialAttackOnKeyPressedEvent {
                         if (skillContainer != null && skillContainer.getSkill() instanceof NullWeaponSkill && !skillContainer.isActivated()) {
                             livingEntityPatch.playAnimationSynchronized(AVAnimations.CLONE_ANTITHEUS_SHOOT, 0.0F);
                         } else {
-                            livingEntityPatch.playAnimationSynchronized(AVAnimations.CLONE_ANTITHEUS_ASCENDED_BLACKHOLE, 0.0F);
+                            livingEntityPatch.playAnimationSynchronized(AVAnimations.NULL_SKELETON_ANTITHEUS_ASCENSION, 0.0F);
                         }
                     }
                     player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);

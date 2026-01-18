@@ -40,11 +40,14 @@ import com.pla.annoyingvillagers.animations.BowAttackAnimation;
 import com.pla.annoyingvillagers.animations.HeavyAttackAnimation;
 import com.pla.annoyingvillagers.animations.KickAttackAnimation;
 import com.pla.annoyingvillagers.animations.RushSwordAnimation;
+import com.pla.annoyingvillagers.entity.NullEntity;
+import com.pla.annoyingvillagers.entity.NullSkeletonEntity;
 import com.pla.annoyingvillagers.entity.ObsidianSledgehammerProjectileEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.item.EnderAegisItem;
+import com.pla.annoyingvillagers.item.NullWeaponItem;
 import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
 import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
 import com.pla.annoyingvillagers.task.DelayedTask;
@@ -59,6 +62,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
@@ -73,6 +77,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 import reascer.wom.animation.WomAnimationProperty;
 import reascer.wom.animation.attacks.AntitheusShootAttackAnimation;
 import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
@@ -107,6 +112,7 @@ import yesman.epicfight.gameasset.ColliderPreset;
 import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.model.armature.HumanoidArmature;
 import yesman.epicfight.particle.EpicFightParticles;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.damagesource.EpicFightDamageTypeTags;
@@ -300,6 +306,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> SLEDGEHAMMER_SOLAR_AUTO_3;
     public static AnimationManager.AnimationAccessor<AntitheusShootAttackAnimation> CLONE_ANTITHEUS_SHOOT;
     public static AnimationManager.AnimationAccessor<StaticAnimation> CLONE_ANTITHEUS_ASCENDED_IDLE;
+    public static AnimationManager.AnimationAccessor<UltimateAttackAnimation> NULL_SKELETON_ANTITHEUS_ASCENSION;
 
     @SubscribeEvent
     public static void registerAnimations(AnimationManager.AnimationRegistryEvent event) {
@@ -1308,6 +1315,56 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE, 1)
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.7F)
                         .addProperty(AttackAnimationProperty.ATTACK_SPEED_FACTOR, 1.0F));
+        AVAnimations.NULL_SKELETON_ANTITHEUS_ASCENSION = builder.nextAccessor("biped/skill/null_skeleton_antitheus_ascension",
+                (accessor) -> (new UltimateAttackAnimation(0.1F, accessor, humanoidArmature,
+                        new Phase(0.0F, 0.5F, 0.6F, 0.65F, 0.65F, (humanoidArmature.get()).rootJoint, WOMWeaponColliders.PLUNDER_PERDITION),
+                        new Phase(0.65F, 1.75F, 2.05F, 2.8F, Float.MAX_VALUE, humanoidArmature.get().rootJoint, WOMWeaponColliders.PLUNDER_PERDITION)))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.setter(1.0F)).addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.setter(4.0F))
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(20.0F))
+                        .addProperty(AttackPhaseProperty.PARTICLE, WOMParticles.ANTITHEUS_PUNCH_HIT)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.2F), 1)
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.setter(20.0F), 1)
+                        .addProperty(AttackPhaseProperty.PARTICLE, WOMParticles.ANTITHEUS_PUNCH_HIT, 1)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE, 1)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.7F)
+                        .addProperty(AttackAnimationProperty.ATTACK_SPEED_FACTOR, 1.0F)
+                        .addEvents(new AnimationEvent[]{
+                                AnimationEvent.InTimeEvent.create(1.5F, (livingEntityPatch, self, p) -> {
+                                    if (livingEntityPatch.getOriginal().level() instanceof ServerLevel serverLevel) {
+                                        NullSkeletonEntity nullSkeletonEntity = new NullSkeletonEntity(AnnoyingVillagersModEntities.NULL_SKELETON.get(), serverLevel);
+                                        LivingEntity owner = livingEntityPatch.getOriginal();
+                                        Vec3 forward = getVec3(owner);
+
+                                        double dist = 2.0D;
+                                        Vec3 spawnPos = owner.position().add(forward.scale(dist));
+
+                                        nullSkeletonEntity.moveTo(
+                                                spawnPos.x,
+                                                spawnPos.y,
+                                                spawnPos.z,
+                                                owner.getYRot(),
+                                                owner.getXRot()
+                                        );
+                                        if (owner instanceof Player player) {
+                                            nullSkeletonEntity.setPlayer(player);
+                                        } else if (owner instanceof NullEntity nullEntity) {
+                                            nullSkeletonEntity.setNullEntity(nullEntity);
+                                        }
+
+                                        nullSkeletonEntity.finalizeSpawn(serverLevel,
+                                                serverLevel.getCurrentDifficultyAt(nullSkeletonEntity.blockPosition()),
+                                                MobSpawnType.MOB_SUMMONED,
+                                                null, null
+                                        );
+                                        serverLevel.addFreshEntity(nullSkeletonEntity);
+                                        LivingEntityPatch<?> nullSkeletonPatch = EpicFightCapabilities.getEntityPatch(nullSkeletonEntity, LivingEntityPatch.class);
+                                        if (nullSkeletonPatch != null) {
+                                            nullSkeletonPatch.playAnimationSynchronized(AVAnimations.CLONE_ANTITHEUS_LAPSE, 0.0F);
+                                        }
+                                    }
+                                }, Side.SERVER)
+                        }));
         AVAnimations.CLONE_ANTITHEUS_LAPSE = builder.nextAccessor("biped/skill/clone_antitheus_lapse",
                 (accessor) -> (new UltimateAttackAnimation(0.1F, accessor, humanoidArmature,
                         new Phase(0.0F, 0.65F, 0.75F, 0.8F, 0.8F, humanoidArmature.get().rootJoint, WOMWeaponColliders.PLUNDER_PERDITION),
@@ -1437,20 +1494,6 @@ public class AVAnimations {
                 .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
                 .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.0F, 1.7F))
                 .addEvents(AnimationEvent.InTimeEvent.create(0.05F, (livingEntityPatch, self, params) -> livingEntityPatch.getOriginal().level().playSound(null, livingEntityPatch.getOriginal(), WOMSounds.ANTITHEUS_BLACKKHOLE_CHARGEUP.get(), SoundSource.PLAYERS, 2.0F, 1.0F), Side.SERVER), AnimationEvent.InTimeEvent.create(0.05F, (livingEntityPatch, self, params) -> {
-                    Entity entity = livingEntityPatch.getOriginal();
-                    boolean can_add_tag = true;
-
-                    for (String tag : entity.getTags()) {
-                        if (tag.contains("wom_serius_focus:")) {
-                            can_add_tag = false;
-                            break;
-                        }
-                    }
-
-                    if (can_add_tag) {
-                        entity.addTag("wom_serius_focus:18:1.5");
-                    }
-
                     OpenMatrix4f transformMatrix = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(0.0F), Armatures.BIPED.get().toolL);
                     transformMatrix.translate(new Vec3f(0.0F, 0.0F, 0.0F));
                     OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-org.joml.Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F), new Vec3f(0.0F, 1.0F, 0.0F)), transformMatrix, transformMatrix);
@@ -1471,9 +1514,21 @@ public class AVAnimations {
                     livingEntityPatch.getOriginal().level().playSound((Player) livingEntityPatch.getOriginal(), livingEntityPatch.getOriginal(), EpicFightSounds.WHOOSH_BIG.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
 
                 }, Side.CLIENT), AnimationEvent.InTimeEvent.create(1.45F, (livingEntityPatch, self, params) -> {
-                    livingEntityPatch.getOriginal().level().playSound(null, livingEntityPatch.getOriginal(), SoundEvents.WITHER_BREAK_BLOCK, SoundSource.PLAYERS, 1.0F, 0.5F);
-                    OpenMatrix4f transformMatrix = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(0.0F), Armatures.BIPED.get().handR);
-                    OpenMatrix4f CORRECTION = (new OpenMatrix4f()).rotate(-org.joml.Math.toRadians(livingEntityPatch.getOriginal().yRotO + 180.0F), new Vec3f(0.0F, 1.0F, 0.0F));
+                    if (!(livingEntityPatch.getOriginal().level() instanceof ServerLevel serverLevel)) return;
+
+                    livingEntityPatch.getOriginal().level().playSound(
+                            null,
+                            livingEntityPatch.getOriginal(),
+                            SoundEvents.WITHER_BREAK_BLOCK,
+                            SoundSource.PLAYERS,
+                            1.0F, 0.5F
+                    );
+
+                    OpenMatrix4f transformMatrix = livingEntityPatch.getArmature()
+                            .getBoundTransformFor(livingEntityPatch.getAnimator().getPose(0.0F), Armatures.BIPED.get().handR);
+
+                    OpenMatrix4f CORRECTION = new OpenMatrix4f()
+                            .rotate(-org.joml.Math.toRadians(livingEntityPatch.getOriginal().yRotO + 180.0F), new Vec3f(0.0F, 1.0F, 0.0F));
                     CORRECTION.translate(new Vec3f(0.0F, 0.0F, -3.5F));
                     OpenMatrix4f.mul(CORRECTION, transformMatrix, transformMatrix);
 
@@ -2305,6 +2360,17 @@ public class AVAnimations {
                         .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false));
         AVAnimations.CLONE_ANTITHEUS_ASCENDED_IDLE = builder.nextAccessor("biped/living/clone_antitheus_ascended_idle",
                 (accessor) -> new StaticAnimation(0.1F, true, accessor, humanoidArmature));
+    }
+
+    private static @NotNull Vec3 getVec3(LivingEntity owner) {
+        Vec3 look = owner.getLookAngle();
+        Vec3 forward = new Vec3(look.x, 0.0D, look.z);
+        if (forward.lengthSqr() < 1.0E-6D) {
+            float yawRad = (float) Math.toRadians(owner.getYRot());
+            forward = new Vec3(-Mth.sin(yawRad), 0.0D, Mth.cos(yawRad));
+        }
+        forward = forward.normalize();
+        return forward;
     }
 
     private static class ReuseableEvents {

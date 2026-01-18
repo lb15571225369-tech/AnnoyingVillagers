@@ -8,8 +8,8 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 
 public class NullPickaxeEntity extends NullWeapon {
-    public NullPickaxeEntity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.NULL_PICKAXE.get(), level);
+    public NullPickaxeEntity(SpawnEntity spawnEntity, Level level) {
+        this(AnnoyingVillagersModEntities.NULL_PICKAXE.get(), level);
     }
 
     public NullPickaxeEntity(EntityType<NullPickaxeEntity> entitytype, Level level) {

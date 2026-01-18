@@ -8,8 +8,8 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 
 public class NullShovelEntity extends NullWeapon {
-    public NullShovelEntity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.NULL_SHOVEL.get(), level);
+    public NullShovelEntity(SpawnEntity spawnEntity, Level level) {
+        this(AnnoyingVillagersModEntities.NULL_SHOVEL.get(), level);
     }
 
     public NullShovelEntity(EntityType<NullShovelEntity> entitytype, Level level) {

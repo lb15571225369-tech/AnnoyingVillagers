@@ -8,8 +8,8 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 
 public class NullHoeEntity extends NullWeapon {
-    public NullHoeEntity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.NULL_HOE.get(), level);
+    public NullHoeEntity(SpawnEntity spawnEntity, Level level) {
+        this(AnnoyingVillagersModEntities.NULL_HOE.get(), level);
     }
 
     public NullHoeEntity(EntityType<NullHoeEntity> entitytype, Level level) {

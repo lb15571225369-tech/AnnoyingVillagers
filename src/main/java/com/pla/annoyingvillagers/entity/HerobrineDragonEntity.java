@@ -14,7 +14,6 @@
 
 package com.pla.annoyingvillagers.entity;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.client.animation.DragonAnimator;
 import com.pla.annoyingvillagers.client.engine.MountCameraManager;
 import com.pla.annoyingvillagers.client.engine.MountControlsMessenger;
@@ -520,11 +519,10 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
                 if (!(entity instanceof Player) && entity instanceof LivingEntity livingEntity) {
                     summoner = livingEntity;
                 } else {
-                    var server = serverLevel.getServer();
-                    var serverPlayer = server.getPlayerList().getPlayer(summonerUUID);
+                    Player player = serverLevel.getPlayerByUUID(summonerUUID);
 
-                    if (serverPlayer != null) {
-                        summoner = serverPlayer;
+                    if (player != null) {
+                        summoner = player;
                     }
                 }
             }

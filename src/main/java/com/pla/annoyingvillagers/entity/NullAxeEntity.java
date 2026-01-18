@@ -8,8 +8,8 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 
 public class NullAxeEntity extends NullWeapon {
-    public NullAxeEntity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.NULL_AXE.get(), level);
+    public NullAxeEntity(SpawnEntity spawnEntity, Level level) {
+        this(AnnoyingVillagersModEntities.NULL_AXE.get(), level);
     }
 
     public NullAxeEntity(EntityType<NullAxeEntity> entitytype, Level level) {

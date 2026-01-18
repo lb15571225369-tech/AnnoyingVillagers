@@ -177,6 +177,7 @@ public class AVWeaponCapabilityPresets {
                             WOMAnimations.ANTITHEUS_ASCENDED_AUTO_1,
                             WOMAnimations.ANTITHEUS_ASCENDED_AUTO_2,
                             WOMAnimations.ANTITHEUS_ASCENDED_AUTO_3,
+                            AVAnimations.CLONE_ANTITHEUS_ASCENDED_BLACKHOLE,
                             AnimsAgony.AGONY_AIR_ATTACK_4,
                             AnimsAgony.AGONY_AIR_ATTACK_3,
                             AVAnimations.CLONE_ANTITHEUS_ASCENDED_DEATHFALL)

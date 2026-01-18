@@ -65,6 +65,7 @@ public class NullWeapon extends Monster {
 
     protected UUID playerUUID;
     protected Player player;
+
     protected String weapon;
     private boolean spinning = false;
 
@@ -553,7 +554,7 @@ public class NullWeapon extends Monster {
 
     @Override
     public void remove(@NotNull RemovalReason pReason) {
-        if (this.level() instanceof ServerLevel serverLevel && pReason.equals(RemovalReason.KILLED)) {
+        if (this.level() instanceof ServerLevel serverLevel) {
             if (this.player != null) {
                 switch (this.weapon) {
                     case "sword" -> {
