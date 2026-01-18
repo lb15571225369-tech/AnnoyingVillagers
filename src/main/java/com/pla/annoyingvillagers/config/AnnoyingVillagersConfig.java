@@ -15,6 +15,7 @@ public class AnnoyingVillagersConfig {
     public static ForgeConfigSpec.ConfigValue<Double> MOB_GUARD_BREAK_WAKE_UP_MIN_CHANCE;
     public static ForgeConfigSpec.ConfigValue<Double> MOB_GUARD_BREAK_WAKE_UP_MAX_CHANCE;
     public static ForgeConfigSpec.ConfigValue<Boolean> TURN_ON_NPC_CHAT;
+    public static ForgeConfigSpec.ConfigValue<Boolean> ARROW_CAN_BREAK_BLOCK;
 
     static {
         HEROBRINE_POSSESS_RATE = BUILDER.comment(
@@ -47,6 +48,9 @@ public class AnnoyingVillagersConfig {
         TURN_ON_NPC_CHAT = BUILDER.comment(
                         "Turn on all chatting for NPC")
                 .define("turnOnNpcChat", true);
+        ARROW_CAN_BREAK_BLOCK = BUILDER.comment(
+                        "Make arrow can break block")
+                .define("arrowCanBreakBlock", true);
         SPEC = BUILDER.build();
     }
 }

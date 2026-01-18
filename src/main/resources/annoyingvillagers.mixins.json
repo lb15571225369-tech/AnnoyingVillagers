@@ -24,7 +24,8 @@
     "AbstractArrowMixin",
     "ItemCooldownsMixin",
     "EnsureSafeFlyingVehicleMixin",
-    "BasicAttackMixin"
+    "BasicAttackMixin",
+    "AbstractArrowBreakMixin"
   ],
   "client": [
     "client.ModelPartMixin"
