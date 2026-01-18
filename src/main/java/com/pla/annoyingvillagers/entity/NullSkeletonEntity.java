@@ -11,6 +11,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -22,6 +23,7 @@ import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -201,6 +203,68 @@ public class NullSkeletonEntity extends AbstractSkeleton {
     }
 
     @Override
+    public boolean doHurtTarget(@NotNull Entity pEntity) {
+        if (pEntity instanceof Player hurtPlayer && this.playerUUID != null && this.playerUUID.equals(hurtPlayer.getUUID())) {
+            return false;
+        }
+        if (pEntity instanceof NullEntity hurtNull && this.nullUUID != null && this.nullUUID.equals(hurtNull.getUUID())) {
+            return false;
+        }
+
+        if (this.player != null) {
+            float f = (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+            float f1 = (float)this.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
+            if (pEntity instanceof LivingEntity) {
+                f += EnchantmentHelper.getDamageBonus(this.getMainHandItem(), ((LivingEntity)pEntity).getMobType());
+                f1 += (float)EnchantmentHelper.getKnockbackBonus(this);
+            }
+
+            int i = EnchantmentHelper.getFireAspect(this);
+            if (i > 0) {
+                pEntity.setSecondsOnFire(i * 4);
+            }
+
+            boolean flag = pEntity.hurt(this.damageSources().playerAttack(this.player), f);
+            if (flag) {
+                if (f1 > 0.0F && pEntity instanceof LivingEntity) {
+                    ((LivingEntity)pEntity).knockback(f1 * 0.5F, Mth.sin(this.getYRot() * ((float)Math.PI / 180F)), -Mth.cos(this.getYRot() * ((float)Math.PI / 180F)));
+                    this.setDeltaMovement(this.getDeltaMovement().multiply(0.6, 1.0F, 0.6));
+                }
+                this.doEnchantDamageEffects(this, pEntity);
+                this.setLastHurtMob(pEntity);
+            }
+
+            return flag;
+        } else if (this.nullEntity != null) {
+            float f = (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+            float f1 = (float)this.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
+            if (pEntity instanceof LivingEntity) {
+                f += EnchantmentHelper.getDamageBonus(this.getMainHandItem(), ((LivingEntity)pEntity).getMobType());
+                f1 += (float)EnchantmentHelper.getKnockbackBonus(this);
+            }
+
+            int i = EnchantmentHelper.getFireAspect(this);
+            if (i > 0) {
+                pEntity.setSecondsOnFire(i * 4);
+            }
+
+            boolean flag = pEntity.hurt(this.damageSources().mobAttack(this.nullEntity), f);
+            if (flag) {
+                if (f1 > 0.0F && pEntity instanceof LivingEntity) {
+                    ((LivingEntity)pEntity).knockback(f1 * 0.5F, Mth.sin(this.getYRot() * ((float)Math.PI / 180F)), -Mth.cos(this.getYRot() * ((float)Math.PI / 180F)));
+                    this.setDeltaMovement(this.getDeltaMovement().multiply(0.6, 1.0F, 0.6));
+                }
+                this.doEnchantDamageEffects(this, pEntity);
+                this.setLastHurtMob(pEntity);
+            }
+
+            return flag;
+        } else {
+            return super.doHurtTarget(pEntity);
+        }
+    }
+
+    @Override
     public void tick() {
         super.tick();
         if (this.level() instanceof ServerLevel serverLevel) {
@@ -277,17 +341,6 @@ public class NullSkeletonEntity extends AbstractSkeleton {
         if (player != null && pSource.getEntity() == player) return false;
         if (nullEntity != null && pSource.getEntity() == nullEntity) return false;
         return super.hurt(pSource, pAmount);
-    }
-
-    @Override
-    public boolean doHurtTarget(@NotNull Entity pEntity) {
-        if (pEntity instanceof Player hurtPlayer && this.playerUUID != null && this.playerUUID.equals(hurtPlayer.getUUID())) {
-            return false;
-        }
-        if (pEntity instanceof NullEntity hurtNull && this.nullUUID != null && this.nullUUID.equals(hurtNull.getUUID())) {
-            return false;
-        }
-        return super.doHurtTarget(pEntity);
     }
 
     @Override

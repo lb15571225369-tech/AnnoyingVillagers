@@ -34,12 +34,12 @@ public class AVWeaponCapabilityPresets {
     public static final Function<Item, Builder> ENDER_AEGIS = (item) ->
             WeaponCapability.builder()
                     .category(WeaponCategories.SWORD)
-                    .styleProvider((livingEntityPatch) -> Styles.ONE_HAND)
+                    .styleProvider((livingEntityPatch) -> Styles.TWO_HAND)
                     .canBePlacedOffhand(false)
                     .collider(ColliderPreset.SWORD)
                     .swingSound(AVSounds.SWORD_WHOOSH.get())
                     .hitSound(EpicFightSounds.BLADE_HIT.get())
-                    .newStyleCombo(Styles.ONE_HAND,
+                    .newStyleCombo(Styles.TWO_HAND,
                             AnimsHerrscher.HERRSCHER_AUTO_1,
                             AnimsHerrscher.HERRSCHER_AUTO_2,
                             AnimsHerrscher.HERRSCHER_AUTO_3,
@@ -48,12 +48,12 @@ public class AVWeaponCapabilityPresets {
                             AnimsSolar.SOLAR_QUEMADURA,
                             AnimsSolar.SOLAR_OBSCURIDAD_IMPACTO,
                             AnimsSolar.SOLAR_HORNO)
-                    .innateSkill(Styles.ONE_HAND, (stack) -> AVSkills.ENDER_AEGIS)
-                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
-                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, Animations.BIPED_RUN)
-                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.CHASE, Animations.BIPED_RUN)
-                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
-                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, Animations.BIPED_BLOCK)
+                    .innateSkill(Styles.TWO_HAND, (stack) -> AVSkills.ENDER_AEGIS)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, Animations.BIPED_RUN)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, Animations.BIPED_RUN)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
+                    .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, Animations.BIPED_BLOCK)
                     .weaponCombinationPredicator((patch) -> true);
 
     public static final Function<Item, CapabilityItem.Builder> ENDER_GLAIVE = (item) ->

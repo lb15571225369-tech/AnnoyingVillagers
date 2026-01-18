@@ -53,7 +53,7 @@ public class AegisHerobrinePatch extends CEHumanoidPatch implements CustomExecut
         this.weaponLivingMotions
                 .put(WeaponCategories.SWORD,
                         ImmutableMap.of(
-                                Styles.ONE_HAND,
+                                Styles.TWO_HAND,
                                 Set.of(
                                         Pair.of(LivingMotions.BLOCK, Animations.BIPED_BLOCK),
                                         Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
@@ -66,7 +66,7 @@ public class AegisHerobrinePatch extends CEHumanoidPatch implements CustomExecut
         this.weaponAttackMotions
                 .put(WeaponCategories.SWORD,
                         ImmutableMap.of(
-                                Styles.ONE_HAND, HerobrineEnderAegis.ENDER_AEGIS
+                                Styles.TWO_HAND, HerobrineEnderAegis.ENDER_AEGIS
                         ));
 
         this.guardHitMotions.put(WeaponCategories.SWORD,

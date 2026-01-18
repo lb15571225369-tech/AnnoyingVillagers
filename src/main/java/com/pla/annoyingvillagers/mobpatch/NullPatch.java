@@ -42,11 +42,11 @@ public class NullPatch extends CEHumanoidPatch implements CustomExecuteEntity {
 
     public void initAnimator(Animator animator) {
         super.initAnimator(animator);
-        animator.addLivingAnimation(LivingMotions.BLOCK, Animations.BIPED_BLOCK);
-        animator.addLivingAnimation(LivingMotions.IDLE, Animations.BIPED_IDLE);
-        animator.addLivingAnimation(LivingMotions.WALK, Animations.BIPED_WALK);
-        animator.addLivingAnimation(LivingMotions.RUN, Animations.BIPED_RUN);
-        animator.addLivingAnimation(LivingMotions.CHASE, Animations.BIPED_RUN);
+        animator.addLivingAnimation(LivingMotions.BLOCK, AVAnimations.NULL_GUARD);
+        animator.addLivingAnimation(LivingMotions.IDLE, Animations.BIPED_CREATIVE_IDLE);
+        animator.addLivingAnimation(LivingMotions.WALK, Animations.BIPED_CREATIVE_IDLE);
+        animator.addLivingAnimation(LivingMotions.RUN, Animations.BIPED_CREATIVE_IDLE);
+        animator.addLivingAnimation(LivingMotions.CHASE, Animations.BIPED_CREATIVE_IDLE);
         animator.addLivingAnimation(LivingMotions.DEATH, Animations.BIPED_DEATH);
     }
 
@@ -57,10 +57,10 @@ public class NullPatch extends CEHumanoidPatch implements CustomExecuteEntity {
                                 Styles.TWO_HAND,
                                 Set.of(
                                         Pair.of(LivingMotions.BLOCK, AVAnimations.NULL_GUARD),
-                                        Pair.of(LivingMotions.IDLE, AVAnimations.CLONE_ANTITHEUS_ASCENDED_IDLE),
-                                        Pair.of(LivingMotions.WALK, WOMAnimations.ANTITHEUS_ASCENDED_WALK),
-                                        Pair.of(LivingMotions.RUN, WOMAnimations.ANTITHEUS_ASCENDED_RUN),
-                                        Pair.of(LivingMotions.CHASE, WOMAnimations.ANTITHEUS_ASCENDED_RUN),
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_CREATIVE_IDLE),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_CREATIVE_IDLE),
+                                        Pair.of(LivingMotions.RUN, Animations.BIPED_CREATIVE_IDLE),
+                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_CREATIVE_IDLE),
                                         Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
                                 )
                         ));

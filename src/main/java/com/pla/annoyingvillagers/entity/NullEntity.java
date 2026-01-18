@@ -39,8 +39,6 @@ import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.particle.HitParticleType;
-import yesman.epicfight.world.capabilities.EpicFightCapabilities;
-import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 public class NullEntity extends HerobrineMob {
     private NullWeapon nullSwordEntity;
@@ -66,8 +64,6 @@ public class NullEntity extends HerobrineMob {
 
     private NullSkeletonEntity thirdWitherSkeleton;
     private UUID thirdWitherSkeletonUuid;
-
-    final LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
 
     public boolean isAvailableWitherSkeletonSlot() {
         return firstWitherSkeletonUuid == null || secondWitherSkeletonUuid == null || thirdWitherSkeletonUuid == null;
@@ -513,7 +509,7 @@ public class NullEntity extends HerobrineMob {
                 this.setDeltaMovement(Vec3.ZERO);
                 return;
             }
-            AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
+            AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(this.getLivingEntityPatch().getAnimator().getPlayerFor(null)).getAnimation();
             if (!EpicfightUtil.isLongHitAnimation(dynamicAnimation)) {
                 this.setDeltaMovement(new Vec3(this.getLookAngle().x * 0.2D, this.getLookAngle().y * 0.2D, this.getLookAngle().z * 0.2D));
             }
@@ -526,16 +522,16 @@ public class NullEntity extends HerobrineMob {
             int j;
             OpenMatrix4f openmatrix4f1;
             for (j = 0; j < b0; ++j) {
-                openmatrix4f = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(f1), Armatures.BIPED.get().toolL);
+                openmatrix4f = this.getLivingEntityPatch().getArmature().getBoundTransformFor(this.getLivingEntityPatch().getAnimator().getPose(f1), Armatures.BIPED.get().toolL);
                 openmatrix4f.translate(new Vec3f(0.0F, 0.0F, 0.0F));
-                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f, openmatrix4f);
+                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(this.getLivingEntityPatch().getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f, openmatrix4f);
 
                 for (i = 0; i < 1; ++i) {
-                    livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f.m30 + livingEntityPatch.getOriginal().getX(), (double) openmatrix4f.m31 + livingEntityPatch.getOriginal().getY(), (double) openmatrix4f.m32 + livingEntityPatch.getOriginal().getZ(), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
+                    this.getLivingEntityPatch().getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f.m30 + this.getLivingEntityPatch().getOriginal().getX(), (double) openmatrix4f.m31 + this.getLivingEntityPatch().getOriginal().getY(), (double) openmatrix4f.m32 + this.getLivingEntityPatch().getOriginal().getZ(), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
                 }
 
                 for (i = 0; i < 1; ++i) {
-                    livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f.m30 + livingEntityPatch.getOriginal().getX(), (double) openmatrix4f.m31 + livingEntityPatch.getOriginal().getY(), (double) openmatrix4f.m32 + livingEntityPatch.getOriginal().getZ(), 0.0D, 0.0D, 0.0D);
+                    this.getLivingEntityPatch().getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f.m30 + this.getLivingEntityPatch().getOriginal().getX(), (double) openmatrix4f.m31 + this.getLivingEntityPatch().getOriginal().getY(), (double) openmatrix4f.m32 + this.getLivingEntityPatch().getOriginal().getZ(), 0.0D, 0.0D, 0.0D);
                 }
                 f1 += f;
             }
@@ -543,107 +539,107 @@ public class NullEntity extends HerobrineMob {
             f1 = 0.0F;
 
             for (i = 0; i < b0; ++i) {
-                openmatrix4f1 = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(f1), Armatures.BIPED.get().toolR);
+                openmatrix4f1 = this.getLivingEntityPatch().getArmature().getBoundTransformFor(this.getLivingEntityPatch().getAnimator().getPose(f1), Armatures.BIPED.get().toolR);
                 openmatrix4f1.translate(new Vec3f(0.0F, 0.0F, 1.8F));
-                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
+                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(this.getLivingEntityPatch().getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
                 openmatrix4f1.translate(new Vec3f(0.0F, 0.0F, -((new Random()).nextFloat() * 4.0F)));
-                livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + livingEntityPatch.getOriginal().getX(), (double) openmatrix4f1.m31 + livingEntityPatch.getOriginal().getY(), (double) openmatrix4f1.m32 + livingEntityPatch.getOriginal().getZ(), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
-                livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + livingEntityPatch.getOriginal().getX(), (double) openmatrix4f1.m31 + livingEntityPatch.getOriginal().getY(), (double) openmatrix4f1.m32 + livingEntityPatch.getOriginal().getZ(), 0.0D, 0.0D, 0.0D);
+                this.getLivingEntityPatch().getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + this.getLivingEntityPatch().getOriginal().getX(), (double) openmatrix4f1.m31 + this.getLivingEntityPatch().getOriginal().getY(), (double) openmatrix4f1.m32 + this.getLivingEntityPatch().getOriginal().getZ(), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
+                this.getLivingEntityPatch().getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + this.getLivingEntityPatch().getOriginal().getX(), (double) openmatrix4f1.m31 + this.getLivingEntityPatch().getOriginal().getY(), (double) openmatrix4f1.m32 + this.getLivingEntityPatch().getOriginal().getZ(), 0.0D, 0.0D, 0.0D);
                 f1 += f;
             }
 
             for (i = 0; i < 14; ++i) {
-                livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), livingEntityPatch.getOriginal().getX(), livingEntityPatch.getOriginal().getY() + 0.029999999329447746D, livingEntityPatch.getOriginal().getZ(), ((new Random()).nextFloat() - 0.5F) * 0.65F, ((new Random()).nextFloat() - 0.5F) * 0.05F, ((new Random()).nextFloat() - 0.5F) * 0.65F);
+                this.getLivingEntityPatch().getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), this.getLivingEntityPatch().getOriginal().getX(), this.getLivingEntityPatch().getOriginal().getY() + 0.029999999329447746D, this.getLivingEntityPatch().getOriginal().getZ(), ((new Random()).nextFloat() - 0.5F) * 0.65F, ((new Random()).nextFloat() - 0.5F) * 0.05F, ((new Random()).nextFloat() - 0.5F) * 0.65F);
             }
 
             f = 1.0F;
             f1 = 0.0F;
 
             for (i = 0; i < b0; ++i) {
-                openmatrix4f1 = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(f1), Armatures.BIPED.get().head);
+                openmatrix4f1 = this.getLivingEntityPatch().getArmature().getBoundTransformFor(this.getLivingEntityPatch().getAnimator().getPose(f1), Armatures.BIPED.get().head);
                 openmatrix4f1.translate(new Vec3f(0.0F, 0.0F, 0.0F));
-                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
-                livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + livingEntityPatch.getOriginal().getX() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m31 + livingEntityPatch.getOriginal().getY() + (double) (((new Random()).nextFloat() + 0.1F) * 0.55F), (double) openmatrix4f1.m32 + livingEntityPatch.getOriginal().getZ() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 1.0F) * 0.55F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
+                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(this.getLivingEntityPatch().getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
+                this.getLivingEntityPatch().getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + this.getLivingEntityPatch().getOriginal().getX() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m31 + this.getLivingEntityPatch().getOriginal().getY() + (double) (((new Random()).nextFloat() + 0.1F) * 0.55F), (double) openmatrix4f1.m32 + this.getLivingEntityPatch().getOriginal().getZ() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 1.0F) * 0.55F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
                 f1 += f;
             }
 
             f1 = 0.0F;
 
             for (i = 0; i < b0; ++i) {
-                openmatrix4f1 = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(f1), Armatures.BIPED.get().chest);
+                openmatrix4f1 = this.getLivingEntityPatch().getArmature().getBoundTransformFor(this.getLivingEntityPatch().getAnimator().getPose(f1), Armatures.BIPED.get().chest);
                 openmatrix4f1.translate(new Vec3f(0.0F, 0.0F, 0.0F));
-                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
-                livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + livingEntityPatch.getOriginal().getX() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m31 + livingEntityPatch.getOriginal().getY() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m32 + livingEntityPatch.getOriginal().getZ() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 1.0F) * 0.55F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
+                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(this.getLivingEntityPatch().getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
+                this.getLivingEntityPatch().getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + this.getLivingEntityPatch().getOriginal().getX() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m31 + this.getLivingEntityPatch().getOriginal().getY() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m32 + this.getLivingEntityPatch().getOriginal().getZ() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 1.0F) * 0.55F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
                 f1 += f;
             }
 
             f1 = 0.0F;
 
             for (i = 0; i < b0; ++i) {
-                openmatrix4f1 = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(f1), Armatures.BIPED.get().armL);
+                openmatrix4f1 = this.getLivingEntityPatch().getArmature().getBoundTransformFor(this.getLivingEntityPatch().getAnimator().getPose(f1), Armatures.BIPED.get().armL);
                 openmatrix4f1.translate(new Vec3f(0.0F, 0.0F, 0.0F));
-                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
-                livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + livingEntityPatch.getOriginal().getX() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m31 + livingEntityPatch.getOriginal().getY() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m32 + livingEntityPatch.getOriginal().getZ() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 1.0F) * 0.55F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
+                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(this.getLivingEntityPatch().getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
+                this.getLivingEntityPatch().getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + this.getLivingEntityPatch().getOriginal().getX() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m31 + this.getLivingEntityPatch().getOriginal().getY() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m32 + this.getLivingEntityPatch().getOriginal().getZ() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 1.0F) * 0.55F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
                 f1 += f;
             }
 
             f1 = 0.0F;
 
             for (i = 0; i < b0; ++i) {
-                openmatrix4f1 = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(f1), Armatures.BIPED.get().armR);
+                openmatrix4f1 = this.getLivingEntityPatch().getArmature().getBoundTransformFor(this.getLivingEntityPatch().getAnimator().getPose(f1), Armatures.BIPED.get().armR);
                 openmatrix4f1.translate(new Vec3f(0.0F, 0.0F, 0.0F));
-                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
-                livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + livingEntityPatch.getOriginal().getX() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m31 + livingEntityPatch.getOriginal().getY() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m32 + livingEntityPatch.getOriginal().getZ() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 1.0F) * 0.55F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
+                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(this.getLivingEntityPatch().getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
+                this.getLivingEntityPatch().getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + this.getLivingEntityPatch().getOriginal().getX() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m31 + this.getLivingEntityPatch().getOriginal().getY() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m32 + this.getLivingEntityPatch().getOriginal().getZ() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 1.0F) * 0.55F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
                 f1 += f;
             }
 
             f1 = 0.0F;
 
             for (i = 0; i < b0; ++i) {
-                openmatrix4f1 = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(f1), Armatures.BIPED.get().torso);
+                openmatrix4f1 = this.getLivingEntityPatch().getArmature().getBoundTransformFor(this.getLivingEntityPatch().getAnimator().getPose(f1), Armatures.BIPED.get().torso);
                 openmatrix4f1.translate(new Vec3f(0.0F, 0.0F, 0.0F));
-                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
-                livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + livingEntityPatch.getOriginal().getX() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m31 + livingEntityPatch.getOriginal().getY() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m32 + livingEntityPatch.getOriginal().getZ() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 1.0F) * 0.55F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
+                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(this.getLivingEntityPatch().getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
+                this.getLivingEntityPatch().getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + this.getLivingEntityPatch().getOriginal().getX() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m31 + this.getLivingEntityPatch().getOriginal().getY() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m32 + this.getLivingEntityPatch().getOriginal().getZ() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 1.0F) * 0.55F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
                 f1 += f;
             }
 
             f1 = 0.0F;
 
             for (i = 0; i < b0; ++i) {
-                openmatrix4f1 = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(f1), Armatures.BIPED.get().thighL);
+                openmatrix4f1 = this.getLivingEntityPatch().getArmature().getBoundTransformFor(this.getLivingEntityPatch().getAnimator().getPose(f1), Armatures.BIPED.get().thighL);
                 openmatrix4f1.translate(new Vec3f(0.0F, 0.0F, 0.0F));
-                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
-                livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + livingEntityPatch.getOriginal().getX() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m31 + livingEntityPatch.getOriginal().getY() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m32 + livingEntityPatch.getOriginal().getZ() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 1.0F) * 0.55F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
+                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(this.getLivingEntityPatch().getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
+                this.getLivingEntityPatch().getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + this.getLivingEntityPatch().getOriginal().getX() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m31 + this.getLivingEntityPatch().getOriginal().getY() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m32 + this.getLivingEntityPatch().getOriginal().getZ() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 1.0F) * 0.55F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
                 f1 += f;
             }
 
             f1 = 0.0F;
 
             for (i = 0; i < b0; ++i) {
-                openmatrix4f1 = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(f1), Armatures.BIPED.get().thighR);
+                openmatrix4f1 = this.getLivingEntityPatch().getArmature().getBoundTransformFor(this.getLivingEntityPatch().getAnimator().getPose(f1), Armatures.BIPED.get().thighR);
                 openmatrix4f1.translate(new Vec3f(0.0F, 0.0F, 0.0F));
-                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
-                livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + livingEntityPatch.getOriginal().getX() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m31 + livingEntityPatch.getOriginal().getY() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m32 + livingEntityPatch.getOriginal().getZ() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 1.0F) * 0.55F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
+                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(this.getLivingEntityPatch().getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
+                this.getLivingEntityPatch().getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + this.getLivingEntityPatch().getOriginal().getX() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m31 + this.getLivingEntityPatch().getOriginal().getY() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m32 + this.getLivingEntityPatch().getOriginal().getZ() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 1.0F) * 0.55F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
                 f1 += f;
             }
 
             f1 = 0.0F;
 
             for (i = 0; i < b0; ++i) {
-                openmatrix4f1 = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(f1), Armatures.BIPED.get().legL);
+                openmatrix4f1 = this.getLivingEntityPatch().getArmature().getBoundTransformFor(this.getLivingEntityPatch().getAnimator().getPose(f1), Armatures.BIPED.get().legL);
                 openmatrix4f1.translate(new Vec3f(0.0F, 0.0F, 0.0F));
-                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
-                livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + livingEntityPatch.getOriginal().getX() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m31 + livingEntityPatch.getOriginal().getY() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m32 + livingEntityPatch.getOriginal().getZ() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 1.0F) * 0.55F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
+                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(this.getLivingEntityPatch().getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
+                this.getLivingEntityPatch().getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + this.getLivingEntityPatch().getOriginal().getX() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m31 + this.getLivingEntityPatch().getOriginal().getY() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m32 + this.getLivingEntityPatch().getOriginal().getZ() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 1.0F) * 0.55F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
                 f1 += f;
             }
 
             f1 = 0.0F;
 
             for (i = 0; i < b0; ++i) {
-                openmatrix4f1 = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(f1), Armatures.BIPED.get().legR);
+                openmatrix4f1 = this.getLivingEntityPatch().getArmature().getBoundTransformFor(this.getLivingEntityPatch().getAnimator().getPose(f1), Armatures.BIPED.get().legR);
                 openmatrix4f1.translate(new Vec3f(0.0F, 0.0F, 0.0F));
-                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
-                livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + livingEntityPatch.getOriginal().getX() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m31 + livingEntityPatch.getOriginal().getY() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m32 + livingEntityPatch.getOriginal().getZ() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 1.0F) * 0.55F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
+                OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(this.getLivingEntityPatch().getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f1, openmatrix4f1);
+                this.getLivingEntityPatch().getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) openmatrix4f1.m30 + this.getLivingEntityPatch().getOriginal().getX() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m31 + this.getLivingEntityPatch().getOriginal().getY() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), (double) openmatrix4f1.m32 + this.getLivingEntityPatch().getOriginal().getZ() + (double) (((new Random()).nextFloat() - 0.5F) * 0.55F), ((new Random()).nextFloat() - 0.5F) * 0.15F, ((new Random()).nextFloat() - 1.0F) * 0.55F, ((new Random()).nextFloat() - 0.5F) * 0.15F);
                 f1 += f;
             }
         }
