@@ -6,16 +6,21 @@ import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
+import com.pla.annoyingvillagers.item.EnderSlayerScytheItem;
+import com.pla.annoyingvillagers.item.NullWeaponItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
-import yesman.epicfight.api.animation.types.AttackAnimation;
+import reascer.wom.gameasset.WOMAnimations;
+import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.AttackResult;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.api.utils.math.Vec3f;
@@ -31,7 +36,6 @@ import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
-import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.entity.eventlistener.PlayerEventListener;
 import yesman.epicfight.world.entity.eventlistener.SkillCastEvent;
 
@@ -40,6 +44,29 @@ import java.util.*;
 public class NullWeaponSkill extends WeaponInnateSkill {
     private static final UUID EVENT_UUID = UUID.fromString("08b6bf0d-2fbe-4b7a-87da-ad4c4ebb9597");
     private static final String NBT_SPENT_STACKS = "AV_NullWeaponSpentStacks";
+    public static final List<String> NULL_WEAPON_KEYS = List.of(
+            "NullSwordUUID",
+            "NullAxeUUID",
+            "NullPickaxeUUID",
+            "NullHoeUUID",
+            "NullShovelUUID"
+    );
+
+    public static NullWeapon pickRandomNullWeapon(ServerLevel serverLevel, CompoundTag data, RandomSource rand) {
+        List<NullWeapon> candidates = new ArrayList<>();
+
+        for (String key : NULL_WEAPON_KEYS) {
+            if (!data.hasUUID(key)) continue;
+
+            Entity entity = serverLevel.getEntity(data.getUUID(key));
+            if (entity instanceof NullWeapon nullWeapon && nullWeapon.isAlive() && !nullWeapon.isRemoved()) {
+                candidates.add(nullWeapon);
+            }
+        }
+
+        if (candidates.isEmpty()) return null;
+        return candidates.get(rand.nextInt(candidates.size()));
+    }
 
     public NullWeaponSkill(SkillBuilder<? extends WeaponInnateSkill> builder) {
         super(builder);
@@ -113,6 +140,23 @@ public class NullWeaponSkill extends WeaponInnateSkill {
     @Override
     public void onInitiate(SkillContainer container) {
         super.onInitiate(container);
+        container.getExecutor().getEventListener().addEventListener(
+                PlayerEventListener.EventType.BASIC_ATTACK_EVENT, EVENT_UUID, event -> {
+                    if (event.getPlayerPatch().isLogicalClient()) return;
+                    SkillContainer skillContainer = event.getPlayerPatch().getSkill(this);
+                    if (!skillContainer.isActivated()) {
+                        event.setCanceled(true);
+                        final PlayerPatch<?> playerPatch = event.getPlayerPatch();
+                        AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(playerPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
+                        if (dynamicAnimation != null && dynamicAnimation == WOMAnimations.ANTITHEUS_ASCENDED_AUTO_2) {
+                            skillContainer.getExecutor().playAnimationSynchronized(WOMAnimations.ANTITHEUS_ASCENDED_AUTO_3, 0.0F);
+                        } else if (dynamicAnimation != null && dynamicAnimation == WOMAnimations.ANTITHEUS_ASCENDED_AUTO_1) {
+                            skillContainer.getExecutor().playAnimationSynchronized(WOMAnimations.ANTITHEUS_ASCENDED_AUTO_2, 0.0F);
+                        } else {
+                            skillContainer.getExecutor().playAnimationSynchronized(WOMAnimations.ANTITHEUS_ASCENDED_AUTO_1, 0.0F);
+                        }
+                    }
+                });
         container.getExecutor().getEventListener().addEventListener(PlayerEventListener.EventType.TAKE_DAMAGE_EVENT_ATTACK, EVENT_UUID, (pre) -> {
             DamageSource damageSource = pre.getDamageSource();
             if (!damageSource.is(DamageTypes.MAGIC)
@@ -127,55 +171,23 @@ public class NullWeaponSkill extends WeaponInnateSkill {
                 if (player.level() instanceof ServerLevel serverLevel) {
                     CompoundTag data = player.getPersistentData();
                     if (new Random().nextFloat() > (container.isActivated() ? 0.5F : 0.25F)) return;
-                    boolean parried = false;
-                    NullWeapon nullWeapon = null;
+                    NullWeapon nullWeapon = pickRandomNullWeapon(serverLevel, data, player.getRandom());
 
-                    if (data.contains("NullSwordUUID") && Math.random() <= 0.5D) {
-                        Entity entity = serverLevel.getEntity(data.getUUID("NullSwordUUID"));
-                        if (entity instanceof NullSwordEntity nullSwordEntity) {
-                            parried = true;
-                            nullSwordEntity.moveTo(player.getX(), player.getY(), player.getZ());
-                            nullWeapon = nullSwordEntity;
-                        }
-                    }
-                    if (data.contains("NullAxeUUID") && Math.random() <= 0.5D && !parried) {
-                        Entity entity = serverLevel.getEntity(data.getUUID("NullAxeUUID"));
-                        if (entity instanceof NullAxeEntity nullAxeEntity) {
-                            parried = true;
-                            nullAxeEntity.moveTo(player.getX(), player.getY(), player.getZ());
-                            nullWeapon = nullAxeEntity;
-                        }
-                    }
-                    if (data.contains("NullPickaxeUUID") && Math.random() <= 0.5D && !parried) {
-                        Entity entity = serverLevel.getEntity(data.getUUID("NullPickaxeUUID"));
-                        parried = true;
-                        if (entity instanceof NullPickaxeEntity nullPickaxeEntity) {
-                            nullPickaxeEntity.moveTo(player.getX(), player.getY(), player.getZ());
-                            nullWeapon = nullPickaxeEntity;
-                        }
-                    }
-                    if (data.contains("NullHoeUUID") && Math.random() <= 0.5D && !parried) {
-                        Entity entity = serverLevel.getEntity(data.getUUID("NullHoeUUID"));
-                        if (entity instanceof NullHoeEntity nullHoeEntity) {
-                            parried = true;
-                            nullHoeEntity.moveTo(player.getX(), player.getY(), player.getZ());
-                            nullWeapon = nullHoeEntity;
-                        }
-                    }
-                    if (data.contains("NullShovelUUID") && Math.random() <= 0.5D && !parried) {
-                        Entity entity = serverLevel.getEntity(data.getUUID("NullShovelUUID"));
-                        if (entity instanceof NullShovelEntity nullShovelEntity) {
-                            nullShovelEntity.moveTo(player.getX(), player.getY(), player.getZ());
-                            nullWeapon = nullShovelEntity;
-                        }
-                    }
-
-                    if (parried && nullWeapon != null) {
+                    if (nullWeapon != null) {
+                        nullWeapon.moveTo(player.getX(), player.getY(), player.getZ(), nullWeapon.getYRot(), nullWeapon.getXRot());
                         pre.setCanceled(true);
                         pre.setResult(AttackResult.ResultType.BLOCKED);
+
                         pre.getPlayerPatch().playSound(EpicFightSounds.CLASH.get(), -0.05F, 0.1F);
                         nullWeapon.spinfor5seconds();
-                        EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, player, pre.getDamageSource().getEntity());
+
+                        EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(
+                                serverLevel,
+                                HitParticleType.FRONT_OF_EYES,
+                                HitParticleType.ZERO,
+                                player,
+                                pre.getDamageSource().getEntity()
+                        );
                     }
                 }
             }
@@ -213,6 +225,7 @@ public class NullWeaponSkill extends WeaponInnateSkill {
     public void onRemoved(SkillContainer container) {
         container.getExecutor().getEventListener().removeListener(PlayerEventListener.EventType.TAKE_DAMAGE_EVENT_ATTACK, EVENT_UUID);
         container.getExecutor().getEventListener().removeListener(PlayerEventListener.EventType.SKILL_CAST_EVENT, EVENT_UUID);
+        container.getExecutor().getEventListener().removeListener(PlayerEventListener.EventType.BASIC_ATTACK_EVENT, EVENT_UUID);
     }
 
     @Override
@@ -404,45 +417,12 @@ public class NullWeaponSkill extends WeaponInnateSkill {
         CompoundTag data = player.getPersistentData();
 
         if (player.tickCount >= 40 && player.tickCount % 10 == 0) {
-            ensureWeapon(serverLevel, player, data, "NullSwordUUID", AnnoyingVillagersModEntities.NULL_SWORD.get(), NullSwordEntity.class);
-            ensureWeapon(serverLevel, player, data, "NullAxeUUID", AnnoyingVillagersModEntities.NULL_AXE.get(), NullAxeEntity.class);
-            ensureWeapon(serverLevel, player, data, "NullPickaxeUUID", AnnoyingVillagersModEntities.NULL_PICKAXE.get(), NullPickaxeEntity.class);
-            ensureWeapon(serverLevel, player, data, "NullShovelUUID", AnnoyingVillagersModEntities.NULL_SHOVEL.get(), NullShovelEntity.class);
-            ensureWeapon(serverLevel, player, data, "NullHoeUUID", AnnoyingVillagersModEntities.NULL_HOE.get(), NullHoeEntity.class);
-
-            if (!data.hasUUID("NullSwordUUID") && player.isAlive()) {
-                NullWeapon nullWeapon = AnnoyingVillagersModEntities.NULL_SWORD.get().create(serverLevel);
-                if (nullWeapon != null) {
-                    nullWeapon.summonNullWeaponForPlayer("NullSwordUUID", serverLevel, player);
-                }
-            }
-
-            if (!data.hasUUID("NullAxeUUID") && player.isAlive()) {
-                NullWeapon nullWeapon = AnnoyingVillagersModEntities.NULL_AXE.get().create(serverLevel);
-                if (nullWeapon != null) {
-                    nullWeapon.summonNullWeaponForPlayer("NullAxeUUID", serverLevel, player);
-                }
-            }
-
-            if (!data.hasUUID("NullPickaxeUUID") && player.isAlive()) {
-                NullWeapon nullWeapon = AnnoyingVillagersModEntities.NULL_PICKAXE.get().create(serverLevel);
-                if (nullWeapon != null) {
-                    nullWeapon.summonNullWeaponForPlayer("NullPickaxeUUID", serverLevel, player);
-                }
-            }
-
-            if (!data.hasUUID("NullShovelUUID") && player.isAlive()) {
-                NullWeapon nullWeapon = AnnoyingVillagersModEntities.NULL_SHOVEL.get().create(serverLevel);
-                if (nullWeapon != null) {
-                    nullWeapon.summonNullWeaponForPlayer("NullShovelUUID", serverLevel, player);
-                }
-            }
-
-            if (!data.hasUUID("NullHoeUUID") && player.isAlive()) {
-                NullHoeEntity nullHoeEntity = AnnoyingVillagersModEntities.NULL_HOE.get().create(serverLevel);
-                if (nullHoeEntity != null) {
-                    nullHoeEntity.summonNullWeaponForPlayer("NullHoeUUID", serverLevel, player);
-                }
+            if (container.getExecutor().getOriginal().getMainHandItem().getItem() instanceof NullWeaponItem) {
+                ensureWeapon(serverLevel, player, data, "NullSwordUUID", AnnoyingVillagersModEntities.NULL_SWORD.get(), NullSwordEntity.class);
+                ensureWeapon(serverLevel, player, data, "NullAxeUUID", AnnoyingVillagersModEntities.NULL_AXE.get(), NullAxeEntity.class);
+                ensureWeapon(serverLevel, player, data, "NullPickaxeUUID", AnnoyingVillagersModEntities.NULL_PICKAXE.get(), NullPickaxeEntity.class);
+                ensureWeapon(serverLevel, player, data, "NullShovelUUID", AnnoyingVillagersModEntities.NULL_SHOVEL.get(), NullShovelEntity.class);
+                ensureWeapon(serverLevel, player, data, "NullHoeUUID", AnnoyingVillagersModEntities.NULL_HOE.get(), NullHoeEntity.class);
             }
 
             teleportWeapon("NullSwordUUID", serverLevel, data);

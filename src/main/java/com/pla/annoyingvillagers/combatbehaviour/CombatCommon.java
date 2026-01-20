@@ -113,7 +113,7 @@ public class CombatCommon {
 
         LivingEntityPatch<?> victimEntityPatch = EpicFightCapabilities.getEntityPatch(victim, LivingEntityPatch.class);
         if (victimEntityPatch != null
-                && (attacker instanceof PlayerNpcEntity || attacker instanceof AVNpc || attacker instanceof HerobrineMob)) {
+                && (attacker instanceof PlayerNpcEntity || attacker instanceof AVNpc || attacker instanceof HerobrineMob || attacker instanceof NullSkeletonEntity)) {
             AssetAccessor<? extends StaticAnimation> currentAnimation =
                     Objects.requireNonNull(victimEntityPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
 
@@ -130,6 +130,9 @@ public class CombatCommon {
     public static boolean canPerformNormalAttackLogic(MobPatch<?> mobpatch) {
         LivingEntity attacker = mobpatch.getOriginal();
         LivingEntity victim = mobpatch.getOriginal().getTarget();
+        if (attacker instanceof NullEntity nullEntity) {
+            return nullEntity.getState() == 2;
+        }
         if (attacker instanceof SwordsmanHerobrineEntity swordsmanHerobrineEntity
                 && swordsmanHerobrineEntity.getMainHandItem().getTag() != null
                 && swordsmanHerobrineEntity.getMainHandItem().getTag().contains("SnakeAnimation")) {

@@ -54,11 +54,13 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.entity.projectile.ThrownPotion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
@@ -198,6 +200,78 @@ public class ObsidianSledgehammerProjectileEntity extends PathfinderMob {
         return (deltaX * deltaX + deltaZ * deltaZ) >= meteoriteTrailStartDistanceSquared;
     }
 
+    private @Nullable EntityHitResult findEntityHit(ServerLevel serverLevel, Vec3 start, Vec3 end) {
+        Vec3 motion = end.subtract(start);
+        AABB inflate = this.getBoundingBox().expandTowards(motion).inflate(0.3D);
+
+        return ProjectileUtil.getEntityHitResult(
+                serverLevel,
+                this,
+                start,
+                end,
+                inflate,
+                e -> e instanceof LivingEntity livingEntity
+                        && livingEntity.isAlive()
+                        && livingEntity != this
+                        && livingEntity != this.owner
+                        && !(livingEntity instanceof DragonMeteoriteEntity)
+        );
+    }
+
+    private void explode(ServerLevel serverLevel, double d0, double d1, double d2) {
+        serverLevel.explode(null, d0, d1, d2, new Random().nextFloat(2.0F, 4.0F), Level.ExplosionInteraction.NONE);
+        ScreenShakeUtil.applyScreenShake(serverLevel, this.position(), 24.0, 60, 6);
+
+        BlockState cryingObsidianBlock = AnnoyingVillagersModBlocks.CRYING_OBSIDIAN_BLOCK.get()
+                .defaultBlockState()
+                .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, this.getOwner() instanceof Player);
+
+        FallingBlockEntity.fall(serverLevel, BlockPos.containing(d0, d1, d2), cryingObsidianBlock);
+        serverLevel.sendParticles(ParticleTypes.EXPLOSION_EMITTER, d0, d1, d2, 1, 0.0D, 0.0D, 0.0D, 0.0D);
+
+        Vec3 center = new Vec3(d0, d1, d2);
+        AABB box = new AABB(center, center).inflate(10.0D);
+
+        var damageTypeReg = serverLevel.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE);
+        DamageSource damageSource = new DamageSource(damageTypeReg.getHolderOrThrow(DamageTypes.EXPLOSION), this);
+
+        for (LivingEntity entity : serverLevel.getEntitiesOfClass(LivingEntity.class, box,
+                livingEntity -> livingEntity.isAlive()
+                        && !(livingEntity instanceof DragonMeteoriteEntity)
+                        && !(livingEntity instanceof HerobrineDragonEntity)
+                        && livingEntity != this.getOwner())) {
+
+            Vec3 dir = entity.position().subtract(center);
+            double dist = Math.max(0.001D, dir.length());
+            double falloff = 1.0D - Math.min(dist / 10.0D, 1.0D);
+
+            Vec3 push = dir.scale(1.0D / dist)
+                    .scale(1.2D * falloff)
+                    .add(0.0D, 0.35D * falloff, 0.0D);
+
+            entity.setDeltaMovement(entity.getDeltaMovement().add(push));
+            float damage = shouldStun ? 8.0F : 4.0F;
+            if (this.owner != null) {
+                entity.hurt(damageSources().indirectMagic(this, this.owner), damage);
+            } else {
+                entity.hurt(damageSource, damage);
+            }
+            entity.hasImpulse = true;
+            if (this.shouldStun) {
+                LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                if (patch != null) {
+                    patch.applyStun(StunType.LONG, 20.0F);
+                }
+            }
+            increaseSkillPoint(this.getOwner(), 5.0F);
+        }
+
+        this.playSound(SoundEvents.GENERIC_EXPLODE, 5.0F, 0.0F);
+        this.playSound(SoundEvents.FIREWORK_ROCKET_TWINKLE_FAR, 6.0F, 0.0F);
+        this.playSound(SoundEvents.LIGHTNING_BOLT_THUNDER, 10.0F, 0.0F);
+        this.discard();
+    }
+
     public void baseTick() {
         super.baseTick();
         if (this.level() instanceof ServerLevel serverLevel) {
@@ -217,7 +291,6 @@ public class ObsidianSledgehammerProjectileEntity extends PathfinderMob {
 
                     double dist = dir.length();
                     if (dist > 1.0E-4) {
-                        // tốc độ tổng – chỉnh tuỳ ý
                         double speed = 1.8D;
 
                         Vec3 vel = dir.scale(speed / dist);
@@ -236,58 +309,19 @@ public class ObsidianSledgehammerProjectileEntity extends PathfinderMob {
                 motionInited = true;
             }
 
+            Vec3 start = this.position();
+            Vec3 end = start.add(xd, yd, zd);
+
+            EntityHitResult entityHitResult = findEntityHit(serverLevel, start, end);
+            if (entityHitResult != null) {
+                Vec3 hitPos = entityHitResult.getLocation();
+                this.setPos(hitPos.x, hitPos.y, hitPos.z);
+                explode(serverLevel, hitPos.x, hitPos.y, hitPos.z);
+                return;
+            }
+
             if (this.onGround() || this.isInWall() || (posToAim != null && this.position().distanceToSqr(posToAim) < 1.0D)) {
-                serverLevel.explode(null, d0, d1, d2, new Random().nextFloat(2.0F, 4.0F), Level.ExplosionInteraction.NONE);
-                ScreenShakeUtil.applyScreenShake(serverLevel, this.position(), 24.0, 60, 6);
-
-                BlockState cryingObsidianBlock = AnnoyingVillagersModBlocks.CRYING_OBSIDIAN_BLOCK.get()
-                        .defaultBlockState()
-                        .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, this.getOwner() instanceof Player);
-
-                FallingBlockEntity.fall(serverLevel, BlockPos.containing(d0, d1, d2), cryingObsidianBlock);
-                serverLevel.sendParticles(ParticleTypes.EXPLOSION_EMITTER, d0, d1, d2, 1, 0.0D, 0.0D, 0.0D, 0.0D);
-
-                Vec3 center = new Vec3(d0, d1, d2);
-                AABB box = new AABB(center, center).inflate(10.0D);
-
-                var damageTypeReg = serverLevel.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE);
-                DamageSource damageSource = new DamageSource(damageTypeReg.getHolderOrThrow(DamageTypes.EXPLOSION), this);
-
-                for (LivingEntity entity : serverLevel.getEntitiesOfClass(LivingEntity.class, box,
-                        livingEntity -> livingEntity.isAlive()
-                                && !(livingEntity instanceof DragonMeteoriteEntity)
-                                && !(livingEntity instanceof HerobrineDragonEntity)
-                                && livingEntity != this.getOwner())) {
-
-                    Vec3 dir = entity.position().subtract(center);
-                    double dist = Math.max(0.001D, dir.length());
-                    double falloff = 1.0D - Math.min(dist / 10.0D, 1.0D);
-
-                    Vec3 push = dir.scale(1.0D / dist)
-                            .scale(1.2D * falloff)
-                            .add(0.0D, 0.35D * falloff, 0.0D);
-
-                    entity.setDeltaMovement(entity.getDeltaMovement().add(push));
-                    float damage = shouldStun ? 8.0F : 4.0F;
-                    if (this.owner != null) {
-                        entity.hurt(damageSources().indirectMagic(this, this.owner), damage);
-                    } else {
-                        entity.hurt(damageSource, damage);
-                    }
-                    entity.hasImpulse = true;
-                    if (this.shouldStun) {
-                        LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
-                        if (patch != null) {
-                            patch.applyStun(StunType.LONG, 20.0F);
-                        }
-                    }
-                    increaseSkillPoint(this.getOwner(), 5.0F);
-                }
-
-                this.playSound(SoundEvents.GENERIC_EXPLODE, 5.0F, 0.0F);
-                this.playSound(SoundEvents.FIREWORK_ROCKET_TWINKLE_FAR, 6.0F, 0.0F);
-                this.playSound(SoundEvents.LIGHTNING_BOLT_THUNDER, 10.0F, 0.0F);
-                this.discard();
+                explode(serverLevel, d0, d1, d2);
             }
 
             this.setNoGravity(true);

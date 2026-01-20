@@ -94,6 +94,14 @@ public enum ProjectileBreakableBlocks {
     private static boolean neverBreak(BlockState s) {
         return !s.is(Blocks.BEDROCK)
                 && !s.is(Blocks.OBSIDIAN)
-                && !s.is(Blocks.CRYING_OBSIDIAN);
+                && !s.is(Blocks.CRYING_OBSIDIAN)
+                && !isSurfaceGrassLike(s);
+    }
+
+    private static boolean isSurfaceGrassLike(BlockState s) {
+        return s.is(Blocks.GRASS_BLOCK)
+                || s.is(Blocks.PODZOL)
+                || s.is(Blocks.MYCELIUM)
+                || s.is(Blocks.DIRT_PATH);
     }
 }

@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.entity;
 
 import java.util.*;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.clazz.NullWeapon;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
@@ -62,23 +63,17 @@ public class NullEntity extends HerobrineMob {
     private NullSkeletonEntity secondWitherSkeleton;
     private UUID secondWitherSkeletonUuid;
 
-    private NullSkeletonEntity thirdWitherSkeleton;
-    private UUID thirdWitherSkeletonUuid;
-
     public boolean isAvailableWitherSkeletonSlot() {
-        return firstWitherSkeletonUuid == null || secondWitherSkeletonUuid == null || thirdWitherSkeletonUuid == null;
+        return firstWitherSkeletonUuid == null || secondWitherSkeletonUuid == null;
     }
 
     public void claimWitherSkeletonSlot(NullSkeletonEntity witherSkeleton) {
         if (firstWitherSkeletonUuid == null) {
             firstWitherSkeletonUuid = witherSkeleton.getUUID();
             firstWitherSkeleton = witherSkeleton;
-        } else if (secondWitherSkeletonUuid == null) {
+        } else {
             secondWitherSkeletonUuid = witherSkeleton.getUUID();
             secondWitherSkeleton = witherSkeleton;
-        } else {
-            thirdWitherSkeletonUuid = witherSkeleton.getUUID();
-            thirdWitherSkeleton = witherSkeleton;
         }
     }
 
@@ -161,7 +156,8 @@ public class NullEntity extends HerobrineMob {
         if (weapons.isEmpty()) return;
         Collections.shuffle(weapons, new Random());
         for (int i = 0; i < Math.min(stack, weapons.size()); i++) {
-            weapons.get(i).setReleased(true);
+            weapons.get(i).releaseForAWhile();
+            AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] weapon is released {}", weapons.get(i).getDisplayName().getString());
         }
     }
 
@@ -235,9 +231,6 @@ public class NullEntity extends HerobrineMob {
         if (secondWitherSkeletonUuid != null) {
             tag.putUUID("SecondWitherSkeletonUuid", secondWitherSkeletonUuid);
         }
-        if (thirdWitherSkeletonUuid != null) {
-            tag.putUUID("ThirdWitherSkeletonUuid", thirdWitherSkeletonUuid);
-        }
         tag.putBoolean("SpawnNullWeapon", spawnNullWeapon);
     }
 
@@ -264,9 +257,6 @@ public class NullEntity extends HerobrineMob {
         }
         if (tag.hasUUID("SecondWitherSkeletonUuid")) {
             secondWitherSkeletonUuid = tag.getUUID("SecondWitherSkeletonUuid");
-        }
-        if (tag.hasUUID("ThirdWitherSkeletonUuid")) {
-            thirdWitherSkeletonUuid = tag.getUUID("ThirdWitherSkeletonUuid");
         }
         spawnNullWeapon = tag.getBoolean("SpawnNullWeapon");
     }
@@ -359,14 +349,6 @@ public class NullEntity extends HerobrineMob {
                     this.secondWitherSkeletonUuid = null;
                 }
             }
-            if (thirdWitherSkeleton == null && thirdWitherSkeletonUuid != null) {
-                Entity entity = ((ServerLevel) this.level()).getEntity(thirdWitherSkeletonUuid);
-                if (entity instanceof NullSkeletonEntity witherSkeleton) {
-                    this.thirdWitherSkeleton = witherSkeleton;
-                } else {
-                    this.thirdWitherSkeletonUuid = null;
-                }
-            }
 
             if (firstWitherSkeleton != null && !firstWitherSkeleton.isAlive()) {
                 firstWitherSkeleton = null;
@@ -375,10 +357,6 @@ public class NullEntity extends HerobrineMob {
             if (secondWitherSkeleton != null && !secondWitherSkeleton.isAlive()) {
                 secondWitherSkeleton = null;
                 secondWitherSkeletonUuid = null;
-            }
-            if (thirdWitherSkeleton != null && !thirdWitherSkeleton.isAlive()) {
-                thirdWitherSkeleton = null;
-                thirdWitherSkeletonUuid = null;
             }
 
             if (this.tickCount % 10 == 0 && this.tickCount >= 20) {
@@ -504,13 +482,11 @@ public class NullEntity extends HerobrineMob {
     public void baseTick() {
         super.baseTick();
         if (this.level() instanceof ServerLevel) {
-            if (this.getTarget() == null) {
+            AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(this.getLivingEntityPatch().getAnimator().getPlayerFor(null)).getAnimation();
+            if (this.getTarget() == null || EpicfightUtil.isLongHitAnimation(dynamicAnimation) || this.getLivingEntityPatch().isStunned()) {
                 this.getNavigation().stop();
                 this.setDeltaMovement(Vec3.ZERO);
-                return;
-            }
-            AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(this.getLivingEntityPatch().getAnimator().getPlayerFor(null)).getAnimation();
-            if (!EpicfightUtil.isLongHitAnimation(dynamicAnimation)) {
+            } else {
                 this.setDeltaMovement(new Vec3(this.getLookAngle().x * 0.2D, this.getLookAngle().y * 0.2D, this.getLookAngle().z * 0.2D));
             }
         } else {

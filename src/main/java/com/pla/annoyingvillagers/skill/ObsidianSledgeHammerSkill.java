@@ -3,7 +3,6 @@ package com.pla.annoyingvillagers.skill;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import net.minecraft.network.FriendlyByteBuf;
-import reascer.wom.gameasset.WOMAnimations;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.skill.SkillBuilder;

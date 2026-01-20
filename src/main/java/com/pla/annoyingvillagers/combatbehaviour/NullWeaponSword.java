@@ -29,7 +29,7 @@ public class NullWeaponSword {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(40.0D)
-                            .maxCooldown(20)
+                            .maxCooldown(80)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
