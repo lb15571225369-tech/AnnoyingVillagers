@@ -25,6 +25,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -138,7 +139,7 @@ public class HerobrineUtil {
                     lowShadowHerobrineCloneEntity.setPossessedByUuid(herobrineMob.getUUID());
                 }
             }
-            mob.finalizeSpawn(serverLevel, world.getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
+            mob.finalizeSpawn(serverLevel, world.getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
             serverLevel.addFreshEntity(possessed);
         }
     }
@@ -286,7 +287,7 @@ public class HerobrineUtil {
         final int w, h;
         final int[][] cells;
         Pattern2D(int w, int h, int[][] cells) { this.w = w; this.h = h; this.cells = cells; }
-        int centerX() { return w / 2; } // integer center (works fine for w=2 as well)
+        int centerX() { return w / 2; }
     }
 
     private static final Pattern2D[] OBSIDIAN_PATTERNS = new Pattern2D[] {
@@ -349,6 +350,174 @@ public class HerobrineUtil {
             );
 
             placeIfReplaceable(level, p, state);
+        }
+    }
+
+    private static void setBlockKeepFromEyeForward(ServerLevel level, Vec3 eye, Vec3 fwd, int forwardBlocks, BlockState state) {
+        Vec3 target = eye.add(fwd.scale(forwardBlocks));
+        BlockPos pos = BlockPos.containing(target);
+
+        if (!level.isLoaded(pos)) return;
+        if (level.getBlockState(pos).isAir()) {
+            level.setBlock(pos, state, Block.UPDATE_ALL);
+        }
+    }
+
+    public static void summonObsidianBlocksInfrontOf(ServerLevel level, LivingEntity caster, BlockState obsidianState, int amount) {
+        if (level == null || caster == null) return;
+        final Vec3 eye = caster.getEyePosition(1.0F);
+        final Vec3 fwd = caster.getLookAngle();
+
+        for (int i = 1; i <= amount; i++) {
+            int forwardBlock = i + 1;
+            new DelayedTask(i) {
+                @Override public void run() {
+                    if (!caster.isAlive()) return;
+                    setBlockKeepFromEyeForward(level, eye, fwd, forwardBlock, obsidianState);
+                }
+            };
+        }
+    }
+
+    public static void summonObsidianWall(ServerLevel level, LivingEntity caster, BlockState obsidianState) {
+        if (level == null || caster == null) return;
+
+        final Vec3 eye = caster.getEyePosition(1.0F);
+        final Vec3 fwd = caster.getLookAngle().normalize();
+
+        Vec3 left = new Vec3(fwd.z, 0.0D, -fwd.x);
+        if (left.lengthSqr() < 1.0E-6D) left = new Vec3(1.0D, 0.0D, 0.0D);
+        else left = left.normalize();
+
+        final Vec3 up = fwd.cross(left).normalize();
+        final BlockPos p1 = BlockPos.containing(
+                eye.add(left.scale(-2)).add(up.scale(-1)).add(fwd.scale(3))
+        );
+        final BlockPos p2 = BlockPos.containing(
+                eye.add(left.scale( 2)).add(up.scale( 2)).add(fwd.scale(3))
+        );
+
+        if (!caster.isAlive()) return;
+
+        int minX = Math.min(p1.getX(), p2.getX());
+        int minY = Math.min(p1.getY(), p2.getY());
+        int minZ = Math.min(p1.getZ(), p2.getZ());
+        int maxX = Math.max(p1.getX(), p2.getX());
+        int maxY = Math.max(p1.getY(), p2.getY());
+        int maxZ = Math.max(p1.getZ(), p2.getZ());
+
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        for (int x = minX; x <= maxX; x++) {
+            for (int y = minY; y <= maxY; y++) {
+                for (int z = minZ; z <= maxZ; z++) {
+                    pos.set(x, y, z);
+                    if (!level.isLoaded(pos)) continue;
+                    if (level.getBlockState(pos).isAir()) {
+                        level.setBlock(pos, obsidianState, Block.UPDATE_ALL);
+                    }
+                }
+            }
+        }
+    }
+
+    private static void placePillarWorldOffsets(ServerLevel level, Vec3 eye, int dx, int dz, BlockState state) {
+        for (int dy = -1; dy <= 1; dy++) {
+            BlockPos pos = BlockPos.containing(eye.x + dx, eye.y + dy, eye.z + dz);
+            if (!level.isLoaded(pos)) continue;
+            if (level.getBlockState(pos).isAir()) {
+                level.setBlock(pos, state, Block.UPDATE_ALL);
+            }
+        }
+    }
+
+    private static void placeSingleWorldOffset(ServerLevel level, Vec3 eye, int dx, int dy, int dz, BlockState state) {
+        BlockPos pos = BlockPos.containing(eye.x + dx, eye.y + dy, eye.z + dz);
+        if (!level.isLoaded(pos)) return;
+        if (level.getBlockState(pos).isAir()) {
+            level.setBlock(pos, state, Block.UPDATE_ALL);
+        }
+    }
+
+    public static void summonObsidianCross(ServerLevel level, LivingEntity caster, BlockState obsidianState) {
+        if (level == null || caster == null) return;
+
+        new DelayedTask(2) {
+            @Override public void run() {
+                if (!caster.isAlive()) return;
+                Vec3 eye = caster.getEyePosition(1.0F);
+
+                placePillarWorldOffsets(level, eye, 0,  3, obsidianState);
+                placePillarWorldOffsets(level, eye, 0, -3, obsidianState);
+
+                placePillarWorldOffsets(level, eye,  3, 0, obsidianState);
+                placePillarWorldOffsets(level, eye, -3, 0, obsidianState);
+            }
+        };
+
+        new DelayedTask(4) {
+            @Override public void run() {
+                if (!caster.isAlive()) return;
+                Vec3 eye = caster.getEyePosition(1.0F);
+
+                placeSingleWorldOffset(level, eye, 0, 2,  3, obsidianState);
+                placeSingleWorldOffset(level, eye, 0, 2, -3, obsidianState);
+                placeSingleWorldOffset(level, eye, 3, 2,  0, obsidianState);
+                placeSingleWorldOffset(level, eye,-3, 2,  0, obsidianState);
+            }
+        };
+
+        new DelayedTask(6) {
+            @Override public void run() {
+                if (!caster.isAlive()) return;
+                Vec3 eye = caster.getEyePosition(1.0F);
+
+                int[] dist = {5, 7};
+                for (int d : dist) {
+                    placePillarWorldOffsets(level, eye, 0,  d, obsidianState);
+                    placePillarWorldOffsets(level, eye, 0, -d, obsidianState);
+                    placePillarWorldOffsets(level, eye,  d, 0, obsidianState);
+                    placePillarWorldOffsets(level, eye, -d, 0, obsidianState);
+                }
+            }
+        };
+
+        new DelayedTask(8) {
+            @Override public void run() {
+                if (!caster.isAlive()) return;
+                Vec3 eye = caster.getEyePosition(1.0F);
+
+                int[] dists = {5, 7};
+                for (int d : dists) {
+                    placeSingleWorldOffset(level, eye, 0, 2,  d, obsidianState);
+                    placeSingleWorldOffset(level, eye, 0, 2, -d, obsidianState);
+                    placeSingleWorldOffset(level, eye,  d, 2, 0, obsidianState);
+                    placeSingleWorldOffset(level, eye, -d, 2, 0, obsidianState);
+                }
+            }
+        };
+    }
+
+    public static void summonObsidianPillar(ServerLevel level, LivingEntity caster, BlockState obsidianState) {
+        if (level == null || caster == null) return;
+
+        final Vec3 eye = caster.getEyePosition(1.0F);
+        final Vec3 fwd = caster.getLookAngle().normalize();
+
+        final BlockPos base = BlockPos.containing(eye.add(fwd.scale(1.0D))).below(1);
+        for (int delay = 1; delay <= 12; delay++) {
+            final int yOffset = delay - 1;
+
+            new DelayedTask(delay) {
+                @Override public void run() {
+                    if (!caster.isAlive()) return;
+
+                    BlockPos pos = base.above(yOffset);
+                    if (!level.isLoaded(pos)) return;
+                    if (level.getBlockState(pos).isAir()) {
+                        level.setBlock(pos, obsidianState, Block.UPDATE_ALL);
+                    }
+                }
+            };
         }
     }
 }

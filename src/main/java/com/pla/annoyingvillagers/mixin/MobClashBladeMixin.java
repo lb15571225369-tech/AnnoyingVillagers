@@ -79,7 +79,7 @@ public class MobClashBladeMixin {
         }
 
         if (defender instanceof SwordsmanHerobrineEntity
-                && defenderDynamicAnimation == AVAnimations.APPLY_IMBUEMENT) {
+                && defenderDynamicAnimation == WOMAnimations.TORMENT_BERSERK_CONVERT) {
             cir.setReturnValue(true);
             return;
         }

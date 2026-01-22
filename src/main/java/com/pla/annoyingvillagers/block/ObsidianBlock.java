@@ -76,43 +76,42 @@ public class ObsidianBlock extends Block implements EntityBlock {
         return base.setValue(FROM_PLAYER, blockPlaceContext.getPlayer() != null);
     }
 
-    public void appendHoverText(ItemStack itemstack, BlockGetter blockgetter, List<Component> list, TooltipFlag tooltipflag) {
+    public void appendHoverText(@NotNull ItemStack itemstack, BlockGetter blockgetter, @NotNull List<Component> list, @NotNull TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, blockgetter, list, tooltipflag);
         list.add(Component.translatable("tooltip.annoyingvillagers.obsidian"));
     }
 
-    public int getLightBlock(BlockState blockstate, BlockGetter blockgetter, BlockPos blockpos) {
+    public int getLightBlock(@NotNull BlockState blockstate, @NotNull BlockGetter blockgetter, @NotNull BlockPos blockpos) {
         return 15;
     }
 
-    public VoxelShape getVisualShape(BlockState blockstate, BlockGetter blockgetter, BlockPos blockpos, CollisionContext collisioncontext) {
+    public @NotNull VoxelShape getVisualShape(@NotNull BlockState blockstate, @NotNull BlockGetter blockgetter, @NotNull BlockPos blockpos, @NotNull CollisionContext collisioncontext) {
         return Shapes.empty();
     }
 
-    public VoxelShape getShape(BlockState blockstate, BlockGetter blockgetter, BlockPos blockpos, CollisionContext collisioncontext) {
+    public @NotNull VoxelShape getShape(@NotNull BlockState blockstate, @NotNull BlockGetter blockgetter, @NotNull BlockPos blockpos, @NotNull CollisionContext collisioncontext) {
         return box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 17.0D);
     }
 
-    public List<ItemStack> getDrops(BlockState blockstate, LootParams.Builder builder) {
+    public @NotNull List<ItemStack> getDrops(@NotNull BlockState blockstate, LootParams.@NotNull Builder builder) {
         List<ItemStack> list = super.getDrops(blockstate, builder);
 
         return !list.isEmpty() ? list : Collections.singletonList(new ItemStack(this, 1));
     }
 
     @Override
-    public void tick(BlockState blockstate, ServerLevel serverlevel, BlockPos blockpos, RandomSource random) {
+    public void tick(@NotNull BlockState blockstate, @NotNull ServerLevel serverlevel, @NotNull BlockPos blockpos, @NotNull RandomSource random) {
         super.tick(blockstate, serverlevel, blockpos, random);
         ObsidianBlockOnTickProcedure.execute(serverlevel, blockpos.getX(), blockpos.getY(), blockpos.getZ());
-        serverlevel.scheduleTick(blockpos, this, 25);
     }
 
-    public void onPlace(BlockState blockstate, Level level, BlockPos blockpos, BlockState blockstate1, boolean flag) {
+    public void onPlace(@NotNull BlockState blockstate, @NotNull Level level, @NotNull BlockPos blockpos, @NotNull BlockState blockstate1, boolean flag) {
         super.onPlace(blockstate, level, blockpos, blockstate1, flag);
         level.scheduleTick(blockpos, this, 25);
         ObsidianBlockPlaceBlockProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ());
     }
 
-    public void entityInside(BlockState blockstate, Level level, BlockPos blockpos, Entity entity) {
+    public void entityInside(@NotNull BlockState blockstate, @NotNull Level level, @NotNull BlockPos blockpos, @NotNull Entity entity) {
         super.entityInside(blockstate, level, blockpos, entity);
         if (entity.tickCount % 5 == 0) {
             ObsidianWhenEntityInsideBlockOnCollisionProcedure.execute(level, (double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), entity);
@@ -120,7 +119,7 @@ public class ObsidianBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+    public void setPlacedBy(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, LivingEntity placer, @NotNull ItemStack stack) {
         super.setPlacedBy(level, pos, state, placer, stack);
         if (!level.isClientSide) {
             var blockEntity = level.getBlockEntity(pos);
@@ -133,7 +132,7 @@ public class ObsidianBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+    public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
         return new ObsidianBlockEntity(pPos, pState);
     }
 }

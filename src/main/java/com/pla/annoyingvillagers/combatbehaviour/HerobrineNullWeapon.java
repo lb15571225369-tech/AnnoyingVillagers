@@ -864,7 +864,7 @@ public class HerobrineNullWeapon {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(40)
-                            .maxCooldown(20)
+                            .maxCooldown(100)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .withinDistance(2.0D, 15.0D)
