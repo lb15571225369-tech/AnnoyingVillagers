@@ -21,7 +21,6 @@ public class AVSkills {
     public static Skill OBSIDIAN_SLEDGEHAMMER;
     public static Skill ENDER_SLAYER_SCYTHE;
     public static Skill NULL_WEAPON;
-    public static Skill BOW;
     public static Skill LEGENDARY_SWORD;
     public static Skill WOOPIE_THE_SWORD;
     public static Skill HARD_GREAT_SWORD;
@@ -40,7 +39,6 @@ public class AVSkills {
         AVSkills.OBSIDIAN_SLEDGEHAMMER = modRegistry.build("obsidian_sledgehammer", ObsidianSledgeHammerSkill::new, WeaponInnateSkill.createWeaponInnateBuilder().setActivateType(Skill.ActivateType.DURATION));
         AVSkills.ENDER_SLAYER_SCYTHE = modRegistry.build("ender_slayer_scythe", EnderSlayerScytheSkill::new, WeaponInnateSkill.createWeaponInnateBuilder().setActivateType(Skill.ActivateType.DURATION));
         AVSkills.NULL_WEAPON = modRegistry.build("null_weapon", NullWeaponSkill::new, WeaponInnateSkill.createWeaponInnateBuilder().setActivateType(Skill.ActivateType.DURATION));
-        AVSkills.BOW = modRegistry.build("bow", BowSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
         AVSkills.LEGENDARY_SWORD = modRegistry.build("legendary_sword", LegendarySwordSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
         AVSkills.WOOPIE_THE_SWORD = modRegistry.build("woopie_the_sword", WoopieTheSwordSkill::new, WeaponInnateSkill.createWeaponInnateBuilder());
         AVSkills.HARD_GREAT_SWORD = modRegistry.build("hard_greatsword", HardGreatSwordSkill::new, WeaponInnateSkill.createWeaponInnateBuilder().setActivateType(Skill.ActivateType.DURATION));

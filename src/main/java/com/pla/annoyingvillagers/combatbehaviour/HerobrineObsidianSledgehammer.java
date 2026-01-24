@@ -72,7 +72,7 @@ public class HerobrineObsidianSledgehammer {
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(7.0D, 48.0D)
-                                            .animationBehavior(WOMAnimations.MOB_ENDERSTEP_OBSCURIS, 0.0F)
+                                            .animationBehavior(AVAnimations.HEROBRINE_MOB_ENDERSTEP_OBSCURIS, 0.0F)
                                             .addExBehavior(HerobrineCommon::giveSlowFalling)
                             )
             )

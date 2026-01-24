@@ -35,6 +35,7 @@ import com.pla.annoyingvillagers.animations.BowAttackAnimation;
 import com.pla.annoyingvillagers.animations.HeavyAttackAnimation;
 import com.pla.annoyingvillagers.animations.KickAttackAnimation;
 import com.pla.annoyingvillagers.animations.RushSwordAnimation;
+import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.entity.NullEntity;
 import com.pla.annoyingvillagers.entity.NullSkeletonEntity;
 import com.pla.annoyingvillagers.entity.ObsidianSledgehammerProjectileEntity;
@@ -49,6 +50,7 @@ import com.pla.annoyingvillagers.util.BowFunction;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
 import com.pla.annoyingvillagers.util.ShockwaveUtil;
 import com.pla.annoyingvillagers.util.SnakeBladeHit;
+import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
@@ -76,6 +78,7 @@ import reascer.wom.animation.WomAnimationProperty;
 import reascer.wom.animation.attacks.AntitheusShootAttackAnimation;
 import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
 import reascer.wom.animation.attacks.SpecialAttackAnimation;
+import reascer.wom.gameasset.ReuseableEvents;
 import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.WOMSounds;
 import reascer.wom.gameasset.colliders.WOMWeaponColliders;
@@ -126,6 +129,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> SHIELD_MAINHAND;
     public static AnimationManager.AnimationAccessor<ActionAnimation> AEGIS_SHIELD_SHOOT;
     public static AnimationManager.AnimationAccessor<StaticAnimation> SHIELD_OFFHAND;
+
 
     // Animation from EpicFight Infernal Gainer
     public static AnimationManager.AnimationAccessor<KickAttackAnimation> KICK_C;
@@ -311,6 +315,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> NULL_ANTITHEUS_ASCENDED_AUTO_1;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> NULL_ANTITHEUS_ASCENDED_AUTO_2;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> NULL_ANTITHEUS_ASCENDED_AUTO_3;
+    public static AnimationManager.AnimationAccessor<DodgeAnimation> HEROBRINE_MOB_ENDERSTEP_OBSCURIS;
 
     @SubscribeEvent
     public static void registerAnimations(AnimationManager.AnimationRegistryEvent event) {
@@ -2366,9 +2371,45 @@ public class AVAnimations {
                         .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, true)
                         .addEvents(
                                 new AnimationEvent[]{
-                                        AnimationEvent.InTimeEvent.create(0.05F, (livingEntityPatch, self, params) -> {
-                                            livingEntityPatch.getOriginal().level().playSound(null, livingEntityPatch.getOriginal().blockPosition(), EpicFightSounds.WHOOSH_BIG.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
-                                            }, Side.CLIENT)}));
+                                        AnimationEvent.InTimeEvent.create(0.05F, (livingEntityPatch, self, params) -> livingEntityPatch.getOriginal().level().playSound(null, livingEntityPatch.getOriginal().blockPosition(), EpicFightSounds.WHOOSH_BIG.get(), SoundSource.NEUTRAL, 1.0F, 1.0F), Side.CLIENT)}));
+        HEROBRINE_MOB_ENDERSTEP_OBSCURIS = builder.nextAccessor("biped/wom_clone/herobrine_mob_ender_obscuris",
+                (accessor) -> (new DodgeAnimation(0.05F, accessor, 0.6F, 1.65F, humanoidArmature))
+                        .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.0F, 0.15F))
+                        .addEvents(new AnimationEvent[]{
+                                AnimationEvent.InTimeEvent.create(0.1F, reascer.wom.gameasset.ReuseableEvents.ENDER_STEP, Side.BOTH),
+                                AnimationEvent.InTimeEvent.create(0.3F, (livingEntityPatch, self, params) -> {
+                                    if (!livingEntityPatch.isLogicalClient()) {
+                                        Entity entity = livingEntityPatch.getOriginal();
+                                        if (entity instanceof HerobrineMob herobrineMob && herobrineMob.getTarget() != null) {
+                                            LivingEntity target = herobrineMob.getTarget();
+                                            if (target != null) {
+                                                double offset = 2.0F;
+                                                double referenceX = target.getX();
+                                                double referenceY = target.getY();
+                                                double referenceZ = target.getZ();
+                                                float referenceYaw = target.yHeadRot;
+                                                double newX = referenceX + offset * (double) org.joml.Math.sin(org.joml.Math.toRadians(referenceYaw));
+                                                double newZ = referenceZ - offset * (double) org.joml.Math.cos(org.joml.Math.toRadians(referenceYaw));
+                                                double newY = referenceY;
+
+                                                for(BlockState block = herobrineMob.level().getBlockState(new BlockPos.MutableBlockPos(newX, referenceY, newZ)); !(block.getBlock() instanceof BushBlock) && !block.isAir() || block.is(Blocks.VOID_AIR); block = herobrineMob.level().getBlockState(new BlockPos.MutableBlockPos(newX, referenceY, newZ))) {
+                                                    --offset;
+                                                    newX = referenceX + offset * (double) org.joml.Math.sin(org.joml.Math.toRadians(referenceYaw));
+                                                    newZ = referenceZ - offset * (double) org.joml.Math.cos(org.joml.Math.toRadians(referenceYaw));
+                                                    newY = referenceY;
+                                                }
+
+                                                entity.teleportTo(newX, newY, newZ);
+                                                entity.setDeltaMovement(target.getDeltaMovement());
+                                                entity.lookAt(EntityAnchorArgument.Anchor.EYES, target.position());
+                                            }
+                                        }
+
+                                        ((ServerLevel)entity.level()).sendParticles(ParticleTypes.REVERSE_PORTAL, entity.getX(), entity.getY() + (double)1.0F, entity.getZ(), 60, 0.05, 0.05, 0.05, (double)0.5F);
+                                        entity.level().playSound((Player)null, entity.xo, entity.yo + (double)1.0F, entity.zo, SoundEvents.ENDERMAN_TELEPORT, entity.getSoundSource(), 2.0F, 1.0F - ((new Random()).nextFloat() - 0.5F) * 0.2F);
+                                    }
+                                }, Side.BOTH)
+                        }));
     }
 
     private static @NotNull Vec3 getVec3(LivingEntity owner) {

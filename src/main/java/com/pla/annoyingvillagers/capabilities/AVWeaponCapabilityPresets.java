@@ -655,7 +655,6 @@ public class AVWeaponCapabilityPresets {
                             AVAnimations.BOW_AUTO_1,
                             AVAnimations.BOW_AUTO_3,
                             AVAnimations.BOW_AUTO_5)
-                    .innateSkill(Styles.ONE_HAND, (itemstack) -> AVSkills.BOW)
                     .livingMotionModifier(CapabilityItem.Styles.ONE_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
                     .livingMotionModifier(CapabilityItem.Styles.ONE_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
                     .livingMotionModifier(CapabilityItem.Styles.ONE_HAND, LivingMotions.RUN,  Animations.BIPED_RUN)
