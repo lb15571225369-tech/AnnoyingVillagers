@@ -1,13 +1,13 @@
 package com.pla.annoyingvillagers.entity;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.block.DarkObUpBlock;
 import com.pla.annoyingvillagers.block.ShadowObsidianBlock;
 import com.pla.annoyingvillagers.blockentity.DarkObUpBlockEntity;
+import com.pla.annoyingvillagers.blockentity.ObsidianBlockEntity;
 import com.pla.annoyingvillagers.blockentity.ShadowObsidianBlockEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.util.HerobrineUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -16,8 +16,7 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
@@ -28,12 +27,13 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraftforge.registries.ForgeRegistries;
-import yesman.epicfight.gameasset.Animations;
+import org.jetbrains.annotations.NotNull;
+import yesman.epicfight.particle.EpicFightParticles;
+import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.damagesource.StunType;
 
-import java.util.Objects;
 import java.util.UUID;
 
 public class BlockProjectileEntity extends ThrowableProjectile {
@@ -97,7 +97,7 @@ public class BlockProjectileEntity extends ThrowableProjectile {
     }
 
     @Override
-    protected void onHitEntity(EntityHitResult result) {
+    protected void onHitEntity(@NotNull EntityHitResult result) {
         super.onHitEntity(result);
         if (this.notReadyForShoot) return;
         Entity target = result.getEntity();
@@ -111,30 +111,25 @@ public class BlockProjectileEntity extends ThrowableProjectile {
 
         if (blockDamage) return;
 
-        if (!target.level().isClientSide() && target.getServer() != null) {
-            try {
-                target.getServer().getCommands().getDispatcher().execute(
-                        "execute at @s run particle epicfight:hit_blunt ^ ^1.5 ^0.8 0.1 0.1 0.1 1 1",
-                        target.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-            } catch (CommandSyntaxException e) {
+        if (target.level() instanceof ServerLevel serverLevel) {
+            EpicFightParticles.HIT_BLUNT.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO, this, target);
+            serverLevel.playSound(
+                    null,
+                    this.getX(), this.getY(), this.getZ(),
+                    AnnoyingVillagersModSounds.OBSIDIAN_HIT.get(),
+                    SoundSource.BLOCKS,
+                    1.0F, 1.0F
+            );
 
+            if (this.getOwner() == null) {
+                target.hurt(target.level().damageSources().generic(), 2.0F);
+            } else {
+                target.hurt(target.level().damageSources().indirectMagic(this, this.getOwner()), 2.0F);
             }
-        }
 
-        if (!target.level().isClientSide()) {
-            target.level().playSound((Player) null, new BlockPos((int) this.getX(), (int) this.getY(), (int) this.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "obsidian_hit"))), SoundSource.BLOCKS, 1.0F, (float) (0.5 + Math.random() * 0.5));
-        } else {
-            target.level().playLocalSound(this.getX(), this.getY(), this.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "obsidian_hit"))), SoundSource.BLOCKS, 1.0F, (float) (0.5 + Math.random() * 0.5), false);
-        }
-        if (this.getOwner() == null) {
-            target.hurt(target.level().damageSources().generic(), 2.0F);
-        } else {
-            target.hurt(target.level().damageSources().indirectMagic(this, this.getOwner()), 2.0F);
-        }
-        if (!target.level().isClientSide() && target.getServer() != null) {
-            LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(target, LivingEntityPatch.class);
+            LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(target, LivingEntityPatch.class);
             if (livingEntityPatch != null) {
-                livingEntityPatch.playAnimationSynchronized(Animations.BIPED_HIT_LONG, 0.0F);
+                livingEntityPatch.applyStun(StunType.LONG, 20.0F);
             }
 
             if (target instanceof LivingEntity livingEntity) {
@@ -147,7 +142,7 @@ public class BlockProjectileEntity extends ThrowableProjectile {
     }
 
     @Override
-    protected void onHitBlock(BlockHitResult result) {
+    protected void onHitBlock(@NotNull BlockHitResult result) {
         if (this.notReadyForShoot) return;
         BlockPos pos = result.getBlockPos();
         BlockState hitState = level().getBlockState(pos);
@@ -185,7 +180,10 @@ public class BlockProjectileEntity extends ThrowableProjectile {
                 level().setBlockAndUpdate(placePos, placeState);
                 BlockEntity blockEntity = level().getBlockEntity(placePos);
                 if (owner != null) {
-                    if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
+                    if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
+                        obsidianBlockEntity.setOwner(owner);
+                        blockEntity.setChanged();
+                    } else if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
                         shadowObsidianBlockEntity.setOwner(owner);
                         blockEntity.setChanged();
                     } else if (blockEntity instanceof DarkObUpBlockEntity darkObUpBlockEntity) {
@@ -223,7 +221,7 @@ public class BlockProjectileEntity extends ThrowableProjectile {
     }
 
     @Override
-    public EntityDimensions getDimensions(Pose pose) {
+    public @NotNull EntityDimensions getDimensions(@NotNull Pose pose) {
         return EntityDimensions.fixed(0.9F, 0.9F);
     }
 

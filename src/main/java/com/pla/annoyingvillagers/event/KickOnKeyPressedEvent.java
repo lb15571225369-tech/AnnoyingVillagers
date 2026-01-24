@@ -1,6 +1,8 @@
 package com.pla.annoyingvillagers.event;
 
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.item.ObsidianWeaponItem;
+import com.pla.annoyingvillagers.item.ShadowObsidianWeaponItem;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -43,11 +45,35 @@ public class KickOnKeyPressedEvent {
                 }
 
                 if (entity.getPersistentData().getInt(NBT_KICK_CD) != 0) return;
-                entity.getPersistentData().putInt(NBT_KICK_CD, 3);
-
                 boolean sneaking = entity.isShiftKeyDown();
                 boolean sprinting = entity.isSprinting();
 
+                // Kick by weapon
+                if (((LivingEntity) entity).getMainHandItem().getItem() instanceof ObsidianWeaponItem
+                        || ((LivingEntity) entity).getMainHandItem().getItem() instanceof ShadowObsidianWeaponItem) {
+                    entity.getPersistentData().putInt(NBT_KICK_CD, 1);
+                    double combo = entity.getPersistentData().contains(NBT_KICK_COMBO)
+                            ? entity.getPersistentData().getDouble(NBT_KICK_COMBO)
+                            : 0.0;
+
+                    if (combo == 0.0) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.OBSIDIAN_STRONG_KICK, 0.0F);
+                        entity.getPersistentData().putDouble(NBT_KICK_COMBO, 1);
+                    } else if (combo == 1.0) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.OBSIDIAN_KICK_AUTO_3, 0.0F);
+                        entity.getPersistentData().putDouble(NBT_KICK_COMBO, 2);
+                    } else if (combo == 2.0) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.OBSIDIAN_KICK_AUTO_1, 0.0F);
+                        entity.getPersistentData().putDouble(NBT_KICK_COMBO, 3);
+                    } else {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.OBSIDIAN_KICK_AUTO_3, 0.0F);
+                        entity.getPersistentData().remove(NBT_KICK_COMBO);
+                    }
+                    return;
+                }
+
+                // Default kick
+                entity.getPersistentData().putInt(NBT_KICK_CD, 3);
                 if (sneaking) {
                     if (sprinting && isFistPlayer(entity)) {
                         livingEntityPatch.playAnimationSynchronized(AVAnimations.KICK_COMBO, 0.0F);

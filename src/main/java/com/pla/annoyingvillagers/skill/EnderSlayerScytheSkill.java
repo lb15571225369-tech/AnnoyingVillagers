@@ -15,6 +15,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -164,9 +165,15 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
                                 };
                             }
                         }
-                    } else if (!skillContainer.isActivated() && player.isPassenger() && player.getVehicle() != null && player.getVehicle() instanceof HerobrineDragonEntity) {
+                    } else if (!skillContainer.isActivated() && player.isPassenger()
+                            && player.getVehicle() != null
+                            && player.getVehicle() instanceof HerobrineDragonEntity) {
                         event.setCanceled(true);
-                        skillContainer.getExecutor().playAnimationSynchronized(AnimsAgony.AGONY_AUTO_1, 0.0F);
+                        if (player.getMainHandItem().getItem() instanceof BowItem) {
+                            skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.BOW_AUTO_1, 0.0F);
+                        } else {
+                            skillContainer.getExecutor().playAnimationSynchronized(AnimsAgony.AGONY_AUTO_1, 0.0F);
+                        }
                     }
                 }
         );

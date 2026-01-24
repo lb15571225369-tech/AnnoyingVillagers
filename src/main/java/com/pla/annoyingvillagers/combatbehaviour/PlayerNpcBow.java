@@ -98,12 +98,6 @@ public class PlayerNpcBow {
                                     Behavior.builder()
                                             .custom(CombatCommon::isNotRiding)
                                             .withinDistance(7.0D, 14.0D)
-                                            .animationBehavior(AVAnimations.BOW_AUTO_4, 0.0F)
-                            )
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .custom(CombatCommon::isNotRiding)
-                                            .withinDistance(7.0D, 14.0D)
                                             .animationBehavior(AVAnimations.BOW_AUTO_5, 0.0F)
                             )
             )
@@ -117,12 +111,6 @@ public class PlayerNpcBow {
                                             .custom(CombatCommon::isNotRiding)
                                             .withinDistance(7.0D, 14.0D)
                                             .animationBehavior(AVAnimations.BOW_AUTO_3, 0.0F)
-                            )
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .custom(CombatCommon::isNotRiding)
-                                            .withinDistance(7.0D, 14.0D)
-                                            .animationBehavior(AVAnimations.BOW_AUTO_4, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
@@ -178,13 +166,6 @@ public class PlayerNpcBow {
                                             .custom(CombatCommon::isNotRiding)
                                             .withinDistance(7.0D, 80.0D)
                                             .animationBehavior(AVAnimations.BOW_AUTO_3, 0.0F)
-                            )
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .custom(CombatCommon::isTargetingHerobrineDragon)
-                                            .custom(CombatCommon::isNotRiding)
-                                            .withinDistance(7.0D, 80.0D)
-                                            .animationBehavior(AVAnimations.BOW_AUTO_4, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()

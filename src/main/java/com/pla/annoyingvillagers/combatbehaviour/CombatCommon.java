@@ -121,7 +121,7 @@ public class CombatCommon {
                 ExecutionTypeManager.Type executionType = ExecutionHandler.getExecutionType(mobPatch, victimEntityPatch);
                 Level level = attacker.level();
                 Vec3 frontPos = calculateExecutionPosition(victim, executionType.offset());
-                return ExecutionHandler.canStandHere(level, frontPos, attacker);
+                return ExecutionHandler.canStandHere(level, frontPos, attacker) != null;
             }
         }
         return false;

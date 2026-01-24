@@ -1,5 +1,5 @@
 {
-	"type": "epicfight:fist",
+	"type": "annoyingvillagers:obsidian_weapon",
 	"attributes": {
 		"common": {
 			"armor_negation":10.0,

@@ -2,6 +2,8 @@ package com.pla.annoyingvillagers.util;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.blockentity.ObsidianBlockEntity;
+import com.pla.annoyingvillagers.blockentity.ShadowObsidianBlockEntity;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.*;
@@ -26,12 +28,16 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
+import yesman.epicfight.api.animation.Joint;
+import yesman.epicfight.api.utils.math.Vec3f;
+import yesman.epicfight.gameasset.Armatures;
 
 import java.util.Objects;
 import java.util.Random;
@@ -353,27 +359,57 @@ public class HerobrineUtil {
         }
     }
 
-    private static void setBlockKeepFromEyeForward(ServerLevel level, Vec3 eye, Vec3 fwd, int forwardBlocks, BlockState state) {
-        Vec3 target = eye.add(fwd.scale(forwardBlocks));
-        BlockPos pos = BlockPos.containing(target);
-
-        if (!level.isLoaded(pos)) return;
-        if (level.getBlockState(pos).isAir()) {
-            level.setBlock(pos, state, Block.UPDATE_ALL);
-        }
-    }
-
-    public static void summonObsidianBlocksInfrontOf(ServerLevel level, LivingEntity caster, BlockState obsidianState, int amount) {
+    public static void summonObsidianBlocksInfrontOf(ServerLevel level, LivingEntity caster, BlockState obsidianState, int amount, Joint joint) {
         if (level == null || caster == null) return;
-        final Vec3 eye = caster.getEyePosition(1.0F);
-        final Vec3 fwd = caster.getLookAngle();
+        final int[] anchorY = { Integer.MIN_VALUE };
 
         for (int i = 1; i <= amount; i++) {
-            int forwardBlock = i + 1;
+            final int forwardBlock = i + 1;
+
             new DelayedTask(i) {
-                @Override public void run() {
+                @Override
+                public void run() {
                     if (!caster.isAlive()) return;
-                    setBlockKeepFromEyeForward(level, eye, fwd, forwardBlock, obsidianState);
+                    final Vec3 eyeNow = caster.getEyePosition(1.0F);
+                    final Vec3 dirNow = caster.getLookAngle().normalize();
+
+                    Vec3 placeVec;
+
+                    if (forwardBlock == 2) {
+                        Vec3 jointVec = EpicfightUtil.getJointWithTranslation(
+                                caster, new Vec3f(0, 0, 0),
+                                joint, 0.0F, 0.0F
+                        );
+                        if (jointVec == null) return;
+                        placeVec = jointVec.add(dirNow.scale(1.0D));
+
+                        BlockPos firstPos = BlockPos.containing(placeVec);
+                        anchorY[0] = firstPos.getY();
+                    } else {
+                        if (anchorY[0] == Integer.MIN_VALUE) return;
+                        Vec3 target = eyeNow.add(dirNow.scale(forwardBlock));
+                        placeVec = new Vec3(target.x, anchorY[0] + 0.5D, target.z);
+                    }
+
+                    BlockPos pos = BlockPos.containing(placeVec);
+                    if (!level.isLoaded(pos)) return;
+
+                    if (level.getBlockState(pos).isAir()) {
+                        level.setBlock(pos, obsidianState, Block.UPDATE_ALL);
+                        BlockEntity blockEntity = level.getBlockEntity(pos);
+                        if (caster instanceof Player) {
+                            if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
+                                obsidianBlockEntity.setOwner(caster.getUUID());
+                                obsidianBlockEntity.setChanged();
+                                level.sendBlockUpdated(pos, obsidianState, obsidianState, 3);
+                            }
+                            if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
+                                shadowObsidianBlockEntity.setOwner(caster.getUUID());
+                                shadowObsidianBlockEntity.setChanged();
+                                level.sendBlockUpdated(pos, obsidianState, obsidianState, 3);
+                            }
+                        }
+                    }
                 }
             };
         }
@@ -414,27 +450,66 @@ public class HerobrineUtil {
                     if (!level.isLoaded(pos)) continue;
                     if (level.getBlockState(pos).isAir()) {
                         level.setBlock(pos, obsidianState, Block.UPDATE_ALL);
+                        BlockEntity blockEntity = level.getBlockEntity(pos);
+                        if (caster instanceof Player) {
+                            if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
+                                obsidianBlockEntity.setOwner(caster.getUUID());
+                                obsidianBlockEntity.setChanged();
+                                level.sendBlockUpdated(pos, obsidianState, obsidianState, 3);
+                            }
+                            if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
+                                shadowObsidianBlockEntity.setOwner(caster.getUUID());
+                                shadowObsidianBlockEntity.setChanged();
+                                level.sendBlockUpdated(pos, obsidianState, obsidianState, 3);
+                            }
+                        }
                     }
                 }
             }
         }
     }
 
-    private static void placePillarWorldOffsets(ServerLevel level, Vec3 eye, int dx, int dz, BlockState state) {
+    private static void placePillarWorldOffsets(ServerLevel level, Vec3 eye, int dx, int dz, BlockState state, LivingEntity caster) {
         for (int dy = -1; dy <= 1; dy++) {
             BlockPos pos = BlockPos.containing(eye.x + dx, eye.y + dy, eye.z + dz);
             if (!level.isLoaded(pos)) continue;
             if (level.getBlockState(pos).isAir()) {
                 level.setBlock(pos, state, Block.UPDATE_ALL);
+                BlockEntity blockEntity = level.getBlockEntity(pos);
+                if (caster instanceof Player) {
+                    if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
+                        obsidianBlockEntity.setOwner(caster.getUUID());
+                        obsidianBlockEntity.setChanged();
+                        level.sendBlockUpdated(pos, state, state, 3);
+                    }
+                    if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
+                        shadowObsidianBlockEntity.setOwner(caster.getUUID());
+                        shadowObsidianBlockEntity.setChanged();
+                        level.sendBlockUpdated(pos, state, state, 3);
+                    }
+                }
             }
         }
     }
 
-    private static void placeSingleWorldOffset(ServerLevel level, Vec3 eye, int dx, int dy, int dz, BlockState state) {
+    private static void placeSingleWorldOffset(ServerLevel level, Vec3 eye, int dx, int dy, int dz, BlockState state, LivingEntity caster) {
         BlockPos pos = BlockPos.containing(eye.x + dx, eye.y + dy, eye.z + dz);
         if (!level.isLoaded(pos)) return;
         if (level.getBlockState(pos).isAir()) {
             level.setBlock(pos, state, Block.UPDATE_ALL);
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (caster instanceof Player) {
+                if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
+                    obsidianBlockEntity.setOwner(caster.getUUID());
+                    obsidianBlockEntity.setChanged();
+                    level.sendBlockUpdated(pos, state, state, 3);
+                }
+                if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
+                    shadowObsidianBlockEntity.setOwner(caster.getUUID());
+                    shadowObsidianBlockEntity.setChanged();
+                    level.sendBlockUpdated(pos, state, state, 3);
+                }
+            }
         }
     }
 
@@ -446,11 +521,11 @@ public class HerobrineUtil {
                 if (!caster.isAlive()) return;
                 Vec3 eye = caster.getEyePosition(1.0F);
 
-                placePillarWorldOffsets(level, eye, 0,  3, obsidianState);
-                placePillarWorldOffsets(level, eye, 0, -3, obsidianState);
+                placePillarWorldOffsets(level, eye, 0,  3, obsidianState, caster);
+                placePillarWorldOffsets(level, eye, 0, -3, obsidianState, caster);
 
-                placePillarWorldOffsets(level, eye,  3, 0, obsidianState);
-                placePillarWorldOffsets(level, eye, -3, 0, obsidianState);
+                placePillarWorldOffsets(level, eye,  3, 0, obsidianState, caster);
+                placePillarWorldOffsets(level, eye, -3, 0, obsidianState, caster);
             }
         };
 
@@ -459,10 +534,10 @@ public class HerobrineUtil {
                 if (!caster.isAlive()) return;
                 Vec3 eye = caster.getEyePosition(1.0F);
 
-                placeSingleWorldOffset(level, eye, 0, 2,  3, obsidianState);
-                placeSingleWorldOffset(level, eye, 0, 2, -3, obsidianState);
-                placeSingleWorldOffset(level, eye, 3, 2,  0, obsidianState);
-                placeSingleWorldOffset(level, eye,-3, 2,  0, obsidianState);
+                placeSingleWorldOffset(level, eye, 0, 2,  3, obsidianState, caster);
+                placeSingleWorldOffset(level, eye, 0, 2, -3, obsidianState, caster);
+                placeSingleWorldOffset(level, eye, 3, 2,  0, obsidianState, caster);
+                placeSingleWorldOffset(level, eye,-3, 2,  0, obsidianState, caster);
             }
         };
 
@@ -473,10 +548,10 @@ public class HerobrineUtil {
 
                 int[] dist = {5, 7};
                 for (int d : dist) {
-                    placePillarWorldOffsets(level, eye, 0,  d, obsidianState);
-                    placePillarWorldOffsets(level, eye, 0, -d, obsidianState);
-                    placePillarWorldOffsets(level, eye,  d, 0, obsidianState);
-                    placePillarWorldOffsets(level, eye, -d, 0, obsidianState);
+                    placePillarWorldOffsets(level, eye, 0,  d, obsidianState, caster);
+                    placePillarWorldOffsets(level, eye, 0, -d, obsidianState, caster);
+                    placePillarWorldOffsets(level, eye,  d, 0, obsidianState, caster);
+                    placePillarWorldOffsets(level, eye, -d, 0, obsidianState, caster);
                 }
             }
         };
@@ -488,10 +563,10 @@ public class HerobrineUtil {
 
                 int[] dists = {5, 7};
                 for (int d : dists) {
-                    placeSingleWorldOffset(level, eye, 0, 2,  d, obsidianState);
-                    placeSingleWorldOffset(level, eye, 0, 2, -d, obsidianState);
-                    placeSingleWorldOffset(level, eye,  d, 2, 0, obsidianState);
-                    placeSingleWorldOffset(level, eye, -d, 2, 0, obsidianState);
+                    placeSingleWorldOffset(level, eye, 0, 2,  d, obsidianState, caster);
+                    placeSingleWorldOffset(level, eye, 0, 2, -d, obsidianState, caster);
+                    placeSingleWorldOffset(level, eye,  d, 2, 0, obsidianState, caster);
+                    placeSingleWorldOffset(level, eye, -d, 2, 0, obsidianState, caster);
                 }
             }
         };
@@ -503,7 +578,11 @@ public class HerobrineUtil {
         final Vec3 eye = caster.getEyePosition(1.0F);
         final Vec3 fwd = caster.getLookAngle().normalize();
 
-        final BlockPos base = BlockPos.containing(eye.add(fwd.scale(1.0D))).below(1);
+        Vec3 ahead = eye.add(fwd.scale(2.0D));
+        Vec3 bodyLevelAhead = new Vec3(ahead.x, caster.getY(), ahead.z);
+
+        final BlockPos base = BlockPos.containing(bodyLevelAhead).below(1);
+
         for (int delay = 1; delay <= 12; delay++) {
             final int yOffset = delay - 1;
 
@@ -513,8 +592,22 @@ public class HerobrineUtil {
 
                     BlockPos pos = base.above(yOffset);
                     if (!level.isLoaded(pos)) return;
+
                     if (level.getBlockState(pos).isAir()) {
                         level.setBlock(pos, obsidianState, Block.UPDATE_ALL);
+                        BlockEntity blockEntity = level.getBlockEntity(pos);
+                        if (caster instanceof Player) {
+                            if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
+                                obsidianBlockEntity.setOwner(caster.getUUID());
+                                obsidianBlockEntity.setChanged();
+                                level.sendBlockUpdated(pos, obsidianState, obsidianState, 3);
+                            }
+                            if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
+                                shadowObsidianBlockEntity.setOwner(caster.getUUID());
+                                shadowObsidianBlockEntity.setChanged();
+                                level.sendBlockUpdated(pos, obsidianState, obsidianState, 3);
+                            }
+                        }
                     }
                 }
             };

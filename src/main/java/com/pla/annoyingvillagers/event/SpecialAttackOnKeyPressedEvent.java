@@ -1,10 +1,8 @@
 package com.pla.annoyingvillagers.event;
 
 import com.pla.annoyingvillagers.entity.HerobrineDragonEntity;
-import com.pla.annoyingvillagers.entity.NullSkeletonEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.item.*;
 import com.pla.annoyingvillagers.skill.*;
@@ -15,26 +13,21 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.phys.Vec3;
 import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.animations.weapons.*;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
-import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.gameasset.Animations;
-import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
-import yesman.epicfight.world.damagesource.StunType;
 import yesman.epicfight.world.effect.EpicFightMobEffects;
 
 import java.util.Objects;
@@ -186,6 +179,52 @@ public class SpecialAttackOnKeyPressedEvent {
                         }
                     }
                     player.getPersistentData().putInt(NBT_SPECIAL_CD, 3);
+                    return;
+                }
+            }
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.OBSIDIAN_WEAPON.get())) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    boolean success = false;
+                    PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+                    if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
+                        SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.OBSIDIAN_WEAPON);
+                        if (skillContainer != null && skillContainer.getStack() == 1
+                                && entity.level() instanceof ServerLevel
+                                && skillContainer.getSkill() instanceof ObsidianWeaponSkill obsidianWeaponSkill) {
+                            success = true;
+                            obsidianWeaponSkill.getResourceType().consumer
+                                    .consume(skillContainer, serverPlayerPatch, obsidianWeaponSkill.getDefaultConsumptionAmount(serverPlayerPatch));
+                        }
+                    }
+                    if (success) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.OBSIDIAN_ANTITHEUS_ASCENDED_DEATHFALL, 0.0F);
+                    } else {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.OBSIDIAN_FIST_DASH, 0.0F);
+                    }
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
+                    return;
+                }
+            }
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get())) {
+                if (!entity.level().isClientSide() && entity.getServer() != null) {
+                    boolean success = false;
+                    PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+                    if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
+                        SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.OBSIDIAN_WEAPON);
+                        if (skillContainer != null && skillContainer.getStack() == 1
+                                && entity.level() instanceof ServerLevel
+                                && skillContainer.getSkill() instanceof ObsidianWeaponSkill obsidianWeaponSkill) {
+                            success = true;
+                            obsidianWeaponSkill.getResourceType().consumer
+                                    .consume(skillContainer, serverPlayerPatch, obsidianWeaponSkill.getDefaultConsumptionAmount(serverPlayerPatch));
+                        }
+                    }
+                    if (success) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.OBSIDIAN_ANTITHEUS_ASCENDED_DEATHFALL, 0.0F);
+                    } else {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.OBSIDIAN_FIST_DASH, 0.0F);
+                    }
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
                     return;
                 }
             }

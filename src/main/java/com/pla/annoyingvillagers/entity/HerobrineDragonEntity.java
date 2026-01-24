@@ -427,8 +427,7 @@ public class HerobrineDragonEntity extends TamableAnimal implements FlyingAnimal
         if (!(cap instanceof WeaponCapability weaponCap)) return true;
 
         var cat = weaponCap.getWeaponCategory();
-        return cat == CapabilityItem.WeaponCategories.FIST
-                || cat == CapabilityItem.WeaponCategories.RANGED
+        return cat == CapabilityItem.WeaponCategories.RANGED
                 || cat == CapabilityItem.WeaponCategories.NOT_WEAPON;
     }
 
