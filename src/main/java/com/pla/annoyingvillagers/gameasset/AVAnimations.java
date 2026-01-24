@@ -394,9 +394,9 @@ public class AVAnimations {
                         ));
         AVAnimations.OBSIDIAN_ZOMBIE_ATTACK3 = builder.nextAccessor("biped/epicfight_clone/obsidian_zombie_attack3",
                 (accessor) -> new AttackAnimation(0.1F, 0.5F, 0.5F, 0.6F, 1.15F, ColliderPreset.HEAD, Armatures.BIPED.get().head, accessor, Armatures.BIPED)
-                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 2.0F)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 3.0F)
                         .addEvents(
-                                AnimationEvent.InTimeEvent.create(0.5F, ReuseableEvents.SUMMON_OBSIDIAN_WALL, Side.SERVER)
+                                AnimationEvent.InTimeEvent.create(0.65F, ReuseableEvents.SUMMON_OBSIDIAN_WALL, Side.SERVER)
                         ));
 
         // Animation from EpicFight Infernal Gainer

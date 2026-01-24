@@ -2,7 +2,6 @@ package com.pla.annoyingvillagers.client.engine;
 
 import com.google.gson.JsonElement;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import net.minecraft.client.Minecraft;
@@ -13,7 +12,6 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import reascer.wom.gameasset.animations.weapons.AnimsNapoleon;
 import yesman.epicfight.api.animation.AnimationPlayer;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.EntityState;
@@ -26,9 +24,9 @@ import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import java.util.Objects;
 
 @OnlyIn(Dist.CLIENT)
-public class RenderObsidianWeapon extends RenderItemBase {
+public class RenderShadowObsidianWeapon extends RenderItemBase {
 
-    public RenderObsidianWeapon(JsonElement json) {
+    public RenderShadowObsidianWeapon(JsonElement json) {
         super(json);
     }
 
@@ -72,7 +70,7 @@ public class RenderObsidianWeapon extends RenderItemBase {
                 Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, livingEntityPatch.getOriginal().level(), 0);
                 poseStack.popPose();
             } else {
-                itemstack = new ItemStack(AnnoyingVillagersModItems.OBSIDIAN_WEAPON.get());
+                itemstack = new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get());
                 poseStack.pushPose();
                 MathUtils.mulStack(poseStack, openmatrix4f);
                 Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, livingEntityPatch.getOriginal().level(), 0);

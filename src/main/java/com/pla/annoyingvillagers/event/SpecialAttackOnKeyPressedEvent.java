@@ -188,7 +188,7 @@ public class SpecialAttackOnKeyPressedEvent {
                     PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
                     if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
                         SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.OBSIDIAN_WEAPON);
-                        if (skillContainer != null && skillContainer.getStack() == 1
+                        if (skillContainer != null && skillContainer.getStack() >= 1
                                 && entity.level() instanceof ServerLevel
                                 && skillContainer.getSkill() instanceof ObsidianWeaponSkill obsidianWeaponSkill) {
                             success = true;
@@ -211,7 +211,7 @@ public class SpecialAttackOnKeyPressedEvent {
                     PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
                     if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
                         SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.OBSIDIAN_WEAPON);
-                        if (skillContainer != null && skillContainer.getStack() == 1
+                        if (skillContainer != null && skillContainer.getStack() >= 1
                                 && entity.level() instanceof ServerLevel
                                 && skillContainer.getSkill() instanceof ObsidianWeaponSkill obsidianWeaponSkill) {
                             success = true;
