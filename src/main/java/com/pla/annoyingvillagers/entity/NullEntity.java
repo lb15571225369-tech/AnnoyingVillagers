@@ -32,6 +32,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.utils.NameManager;
+import yesman.epicfight.api.animation.Pose;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
@@ -157,7 +158,6 @@ public class NullEntity extends HerobrineMob {
         Collections.shuffle(weapons, new Random());
         for (int i = 0; i < Math.min(stack, weapons.size()); i++) {
             weapons.get(i).releaseForAWhile();
-            AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] weapon is released {}", weapons.get(i).getDisplayName().getString());
         }
     }
 
@@ -490,6 +490,12 @@ public class NullEntity extends HerobrineMob {
                 this.setDeltaMovement(new Vec3(this.getLookAngle().x * 0.2D, this.getLookAngle().y * 0.2D, this.getLookAngle().z * 0.2D));
             }
         } else {
+            if (this.getLivingEntityPatch() == null) return;
+            if (this.getLivingEntityPatch().getAnimator() == null) return;
+            if (this.getLivingEntityPatch().getArmature() == null) return;
+            if (Armatures.BIPED.get() == null || Armatures.BIPED.get().toolL == null) return;
+            if (this.getLivingEntityPatch().getOriginal() == null) return;
+
             byte b0 = 3;
             float f = 1.0F / (float) (b0 - 1);
             float f1 = 0.0F;
@@ -498,7 +504,20 @@ public class NullEntity extends HerobrineMob {
             int j;
             OpenMatrix4f openmatrix4f1;
             for (j = 0; j < b0; ++j) {
-                openmatrix4f = this.getLivingEntityPatch().getArmature().getBoundTransformFor(this.getLivingEntityPatch().getAnimator().getPose(f1), Armatures.BIPED.get().toolL);
+                Pose pose;
+                try {
+                    pose = this.getLivingEntityPatch().getAnimator().getPose(f1);
+                } catch (Throwable t) {
+                    return;
+                }
+                if (pose == null) return;
+                openmatrix4f = this.getLivingEntityPatch().getArmature()
+                        .getBoundTransformFor(pose, Armatures.BIPED.get().toolL);
+                if (openmatrix4f == null) {
+                    f1 += f;
+                    continue;
+                }
+                openmatrix4f = new OpenMatrix4f(openmatrix4f);
                 openmatrix4f.translate(new Vec3f(0.0F, 0.0F, 0.0F));
                 OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-((float) Math.toRadians(this.getLivingEntityPatch().getOriginal().yBodyRotO + 180.0F)), new Vec3f(0.0F, 1.0F, 0.0F)), openmatrix4f, openmatrix4f);
 

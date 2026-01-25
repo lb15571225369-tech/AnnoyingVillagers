@@ -34,6 +34,26 @@ public class NpcBow {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(2.0D)
+                            .weight(100.0D)
+                            .maxCooldown(0)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::isRiding)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(AVAnimations.KNIFE_CHECK, 0.0F)
+                                            .addExBehavior(CombatCommon::swapToMelee)
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::isRiding)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(AVAnimations.KNIFE_CHECK, 0.0F)
+                                            .addExBehavior(CombatCommon::swapToMelee)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(2.0D)
                             .weight(70.0D)
                             .maxCooldown (0)
                             .addFirstBehavior(

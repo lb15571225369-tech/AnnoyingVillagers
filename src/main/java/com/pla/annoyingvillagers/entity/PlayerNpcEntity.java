@@ -185,7 +185,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
             try {
                 this.target = PlayerNpcTarget.valueOf(name);
             } catch (IllegalArgumentException e) {
-                this.target = PlayerNpcTarget.MOSNTER_HUNTER;
+                this.target = PlayerNpcTarget.MONSTER_HUNTER;
             }
         }
         if (tag.contains("MainHandItem", Tag.TAG_COMPOUND)) {
@@ -497,7 +497,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
             }
         }
 
-        this.target = PlayerNpcTarget.values()[new Random().nextInt(PlayerNpcTarget.values().length)];
+        this.target = PlayerNpcTarget.randomByWeight(this.getRandom());
         if (this.target != null) {
             switch (this.target) {
                 case HOSTILE_HUNTER -> {
@@ -506,7 +506,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
                 case VILLAGER_HUNTER -> {
                     villagerHunterPlayerMob();
                 }
-                case MOSNTER_HUNTER -> {
+                case MONSTER_HUNTER -> {
                     monsterHunterPlayerMob();
                 }
                 case PLAYER_HUNTER -> {
@@ -516,6 +516,11 @@ public class PlayerNpcEntity extends PlayerMobEntity {
                     animalHunterPlayerMob();
                 }
                 default -> {
+                    CommonGoals.runAwayFromHerobrineGoals(this, 20.0F);
+                    CommonGoals.runAwayFromVillagerArmyGoals(this);
+                    if (!(this.getTarget() instanceof Player)) {
+                        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Player.class, 20.0F, 1.2D, 1.8D));
+                    }
                 }
             }
         }

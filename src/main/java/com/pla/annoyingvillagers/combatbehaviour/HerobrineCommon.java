@@ -251,7 +251,6 @@ public class HerobrineCommon {
 
     public static void releaseWeapon(MobPatch<?> mobpatch) {
         if (mobpatch.getOriginal() instanceof NullEntity nullEntity) {
-            AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] releaseWeapon for null");
             nullEntity.releaseRandomWeapons((nullEntity.getState() < 2
                     ? new Random().nextInt(1, 3)
                     : new Random().nextInt(3, 5)));

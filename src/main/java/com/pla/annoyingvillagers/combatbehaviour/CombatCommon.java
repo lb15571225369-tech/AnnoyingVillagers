@@ -152,6 +152,10 @@ public class CombatCommon {
         return !mobpatch.getOriginal().isPassenger();
     }
 
+    public static boolean isRiding(MobPatch<?> mobpatch) {
+        return mobpatch.getOriginal().isPassenger();
+    }
+
     public static boolean canAttackWhileNotHealing(MobPatch<?> mobpatch) {
         if (mobpatch.getOriginal() instanceof PlayerNpcEntity playerNpcEntity) {
             return !playerNpcEntity.isHealing();

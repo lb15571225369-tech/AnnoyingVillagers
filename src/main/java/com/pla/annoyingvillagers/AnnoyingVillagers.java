@@ -4,13 +4,16 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import com.mojang.serialization.Codec;
 import com.pla.annoyingvillagers.client.engine.SpriteArrowsCommonEntrypoint;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersSpawnConfig;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVSkillCategories;
 import com.pla.annoyingvillagers.gameasset.AVSkillSlots;
 import com.pla.annoyingvillagers.init.*;
 import com.pla.annoyingvillagers.network.*;
 import com.pla.annoyingvillagers.event.NpcGearLoadEvent;
+import com.pla.annoyingvillagers.world.AVMobSpawnBiomeModifier;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -19,9 +22,11 @@ import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -33,6 +38,7 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.network.NetworkEvent.Context;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
+import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -66,6 +72,11 @@ public class AnnoyingVillagers {
         AVSounds.SOUNDS.register(modEventBus);
         MinecraftForge.EVENT_BUS.register(new NpcGearLoadEvent());
         context.registerConfig(ModConfig.Type.COMMON, AnnoyingVillagersConfig.SPEC, "annoyingvillagers-server.toml");
+        DeferredRegister<Codec<? extends BiomeModifier>> biomeModifiers =
+                DeferredRegister.create(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, MODID);
+        biomeModifiers.register(modEventBus);
+        biomeModifiers.register("av_mob_spawns", AVMobSpawnBiomeModifier::makeCodec);
+        context.registerConfig(ModConfig.Type.COMMON, AnnoyingVillagersSpawnConfig.SPEC, "annoyingvillagers-spawns.toml");
         AVSkillSlots.ENUM_MANAGER.registerEnumCls("annoyingvillagers", AVSkillSlots.class);
         AVSkillCategories.ENUM_MANAGER.registerEnumCls("annoyingvillagers", AVSkillCategories.class);
 
