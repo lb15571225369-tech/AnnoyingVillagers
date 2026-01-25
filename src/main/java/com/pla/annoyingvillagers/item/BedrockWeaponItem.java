@@ -1,12 +1,7 @@
 package com.pla.annoyingvillagers.item;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
-import net.minecraft.core.BlockPos;
+import com.pla.annoyingvillagers.util.ArmorUtil;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
@@ -18,13 +13,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
-import net.minecraftforge.registries.ForgeRegistries;
-import yesman.epicfight.gameasset.Animations;
-import yesman.epicfight.world.capabilities.EpicFightCapabilities;
-import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Random;
 
 public class BedrockWeaponItem extends SwordItem {
     public BedrockWeaponItem() {
@@ -38,7 +30,7 @@ public class BedrockWeaponItem extends SwordItem {
             }
 
             public float getAttackDamageBonus() {
-                return 10.0F;
+                return 0.0F;
             }
 
             public int getLevel() {
@@ -49,32 +41,22 @@ public class BedrockWeaponItem extends SwordItem {
                 return 0;
             }
 
-            public Ingredient getRepairIngredient() {
-                return Ingredient.of(new ItemStack[]{new ItemStack(Blocks.BEDROCK)});
+            public @NotNull Ingredient getRepairIngredient() {
+                return Ingredient.of(new ItemStack(Blocks.BEDROCK));
             }
         }, 3, 0.5F, (new Properties()).fireResistant());
     }
 
     @Override
-    public boolean hurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
-        if (Math.random() <= 0.2D) {
-            if (!pTarget.level().isClientSide()) {
-                pTarget.level().playSound(null, new BlockPos((int) pTarget.getX(), (int) pTarget.getY(), (int) pTarget.getZ()), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "obsidian_hit"))), SoundSource.BLOCKS, 1.0F, (float) (0.5 + Math.random() * 0.5));
-            } else {
-                pTarget.level().playLocalSound(pTarget.getX(), pTarget.getY(), pTarget.getZ(), (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "obsidian_hit"))), SoundSource.BLOCKS, 1.0F, (float) (0.5 + Math.random() * 0.5), false);
-            }
-            if (!pTarget.level().isClientSide() && pTarget.getServer() != null) {
-                LivingEntityPatch<?> livingEntityPatch = (LivingEntityPatch) EpicFightCapabilities.getEntityPatch(pTarget, LivingEntityPatch.class);
-                if (livingEntityPatch != null) {
-                    livingEntityPatch.playAnimationSynchronized(Animations.BIPED_HIT_LONG, 0.0F);
-                }
-            }
+    public boolean hurtEnemy(@NotNull ItemStack pStack, @NotNull LivingEntity pTarget, @NotNull LivingEntity pAttacker) {
+        if (!pAttacker.level().isClientSide()) {
+            ArmorUtil.damageArmor(pTarget, new Random().nextInt(1, 3));
         }
         return super.hurtEnemy(pStack, pTarget, pAttacker);
     }
 
     @Override
-    public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
+    public void appendHoverText(@NotNull ItemStack itemstack, Level level, @NotNull List<Component> list, @NotNull TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
         list.add(Component.translatable("tooltip.annoyingvillagers.bedrock_weapon"));
     }
@@ -85,12 +67,12 @@ public class BedrockWeaponItem extends SwordItem {
     }
 
     @Override
-    public float getDestroySpeed(ItemStack stack, BlockState state) {
-        return 50.0F;
+    public float getDestroySpeed(@NotNull ItemStack stack, @NotNull BlockState state) {
+        return 30.0F;
     }
 
     @Override
-    public boolean canPerformAction(ItemStack stack, ToolAction action) {
+    public boolean canPerformAction(@NotNull ItemStack stack, @NotNull ToolAction action) {
         return action == ToolActions.PICKAXE_DIG
                 || action == ToolActions.AXE_DIG
                 || action == ToolActions.SHOVEL_DIG

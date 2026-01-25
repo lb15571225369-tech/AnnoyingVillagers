@@ -1,5 +1,5 @@
 {
-	"type": "epicfight:fist",
+	"type": "annoyingvillagers:bedrock_weapon",
 	"attributes": {
 		"common": {
 			"armor_negation":20.0,

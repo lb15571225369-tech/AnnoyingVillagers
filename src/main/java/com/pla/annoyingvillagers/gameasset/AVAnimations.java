@@ -239,7 +239,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> DUAL_TACHI_GUARD;
     public static AnimationManager.AnimationAccessor<GuardAnimation> DUAL_TACHI_GUARD_HIT;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> WHIRLWIND_KICK_LEFT;
-    public static AnimationManager.AnimationAccessor<KickAttackAnimation> SUPER_PUNCH;
+    public static AnimationManager.AnimationAccessor<AttackAnimation> SUPER_PUNCH;
     public static AnimationManager.AnimationAccessor<StaticAnimation> LAY_IDLE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> PUSH_UP_IDLE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> SIT_IDLE;
@@ -964,7 +964,7 @@ public class AVAnimations {
                                         AnimationEvent.InTimeEvent.create(0.23F, ReusableSources.PLAY_SOUND, Side.SERVER).params(EpicFightSounds.WHOOSH.get())})
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
         AVAnimations.SUPER_PUNCH = builder.nextAccessor("biped/pugilist_steve/super_punch",
-                (accessor) -> (new KickAttackAnimation(0.05F, 1.0F, 1.25F, 1.4F, Float.MAX_VALUE, ColliderPreset.BIPED_BODY_COLLIDER, humanoidArmature.get().toolR, accessor, humanoidArmature))
+                (accessor) -> (new AttackAnimation(0.05F, 1.0F, 1.25F, 1.4F, Float.MAX_VALUE, ColliderPreset.SWORD, humanoidArmature.get().toolR, accessor, humanoidArmature))
                         .addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH.get())
                         .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.AIR_BURST)
                         .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT_HARD.get())

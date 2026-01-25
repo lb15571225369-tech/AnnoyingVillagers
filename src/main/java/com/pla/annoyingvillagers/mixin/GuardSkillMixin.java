@@ -1,6 +1,8 @@
 package com.pla.annoyingvillagers.mixin;
 
+import com.pla.annoyingvillagers.item.BedrockWeaponItem;
 import com.pla.annoyingvillagers.item.EnderAegisItem;
+import com.pla.annoyingvillagers.skill.BedrockWeaponSkill;
 import com.pla.annoyingvillagers.skill.EnderAegisSkill;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -24,11 +26,15 @@ public abstract class GuardSkillMixin {
         if (!(player instanceof ServerPlayer serverPlayer)) return;
 
         ItemStack main = serverPlayer.getMainHandItem();
-        if (!(main.getItem() instanceof EnderAegisItem)) return;
-        if (main.hasTag() && Objects.requireNonNull(main.getTag()).getBoolean("SecondForm")) {
-            EnderAegisItem.shieldShoot(serverPlayer.level(), serverPlayer);
-        } else {
-            EnderAegisSkill.onParry((ServerPlayerPatch) playerpatch);
+        if (main.getItem() instanceof EnderAegisItem) {
+            if (main.hasTag() && Objects.requireNonNull(main.getTag()).getBoolean("SecondForm")) {
+                EnderAegisItem.shieldShoot(serverPlayer.level(), serverPlayer);
+            } else {
+                EnderAegisSkill.onParry((ServerPlayerPatch) playerpatch);
+            }
+        }
+        if (main.getItem() instanceof BedrockWeaponItem) {
+            BedrockWeaponSkill.onParry((ServerPlayerPatch) playerpatch);
         }
     }
 }

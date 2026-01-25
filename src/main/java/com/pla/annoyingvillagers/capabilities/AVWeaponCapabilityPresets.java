@@ -211,6 +211,27 @@ public class AVWeaponCapabilityPresets {
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.CHASE, AVAnimations.OLD_MOONLESS_RUN)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.BLOCK, AVAnimations.FIST_GUARD);
 
+    public static final Function<Item, CapabilityItem.Builder> BEDROCK_WEAPON = (item) ->
+            WeaponCapability.builder().category(WeaponCategories.SWORD)
+                    .styleProvider((livingEntityPatch) -> Styles.ONE_HAND)
+                    .collider(ColliderPreset.TOOLS)
+                    .hitSound(EpicFightSounds.BLUNT_HIT_HARD.get())
+                    .newStyleCombo(Styles.ONE_HAND,
+                            Animations.FIST_AUTO1,
+                            Animations.FIST_AUTO2,
+                            Animations.FIST_AUTO3,
+                            Animations.FIST_AIR_SLASH,
+                            WOMAnimations.STRONG_PUNCH,
+                            Animations.FIST_DASH,
+                            WOMAnimations.STRONG_KICK)
+                    .innateSkill(Styles.ONE_HAND,
+                            (itemstack) -> AVSkills.BEDROCK_WEAPON)
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, AVAnimations.OLD_MOONLESS_RUN)
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.CHASE, AVAnimations.OLD_MOONLESS_RUN)
+                    .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, AnimsMoonless.MOONLESS_GUARD);
+
     public static final Function<Item, Builder> LEGENDARY_SWORD = (item) ->
             WeaponCapability.builder()
                     .category(WeaponCategories.GREATSWORD)
@@ -715,6 +736,7 @@ public class AVWeaponCapabilityPresets {
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "ender_slayer_scythe"), AVWeaponCapabilityPresets.ENDER_SLAYER_SCYTHE);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "null_weapon"), AVWeaponCapabilityPresets.NULL_WEAPON);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "obsidian_weapon"), AVWeaponCapabilityPresets.OBSIDIAN_WEAPON);
+        weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "bedrock_weapon"), AVWeaponCapabilityPresets.BEDROCK_WEAPON);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "legendary_sword"), AVWeaponCapabilityPresets.LEGENDARY_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "woopie_the_sword"), AVWeaponCapabilityPresets.WOOPIE_THE_SWORD);
         weaponcapabilitypresetregistryevent.getTypeEntry().put(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "hard_greatsword"), AVWeaponCapabilityPresets.HARD_GREATSWORD);
