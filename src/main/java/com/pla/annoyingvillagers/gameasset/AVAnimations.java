@@ -35,7 +35,8 @@ import com.pla.annoyingvillagers.animations.BowAttackAnimation;
 import com.pla.annoyingvillagers.animations.HeavyAttackAnimation;
 import com.pla.annoyingvillagers.animations.KickAttackAnimation;
 import com.pla.annoyingvillagers.animations.RushSwordAnimation;
-import com.pla.annoyingvillagers.block.CryingObsidianSpikeBlock;
+import com.pla.annoyingvillagers.block.ObsidianBlock;
+import com.pla.annoyingvillagers.block.ShadowObsidianBlock;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.entity.BlockProjectileEntity;
 import com.pla.annoyingvillagers.entity.NullEntity;
@@ -1642,16 +1643,16 @@ public class AVAnimations {
                 .addEvents(AnimationEvent.InTimeEvent.create(0.05F, (livingEntityPatch, self, params) -> livingEntityPatch.getOriginal().level().playSound(null, livingEntityPatch.getOriginal().blockPosition(), WOMSounds.ANTITHEUS_BLACKKHOLE_CHARGEUP.get(), SoundSource.PLAYERS, 2.0F, 1.0F), Side.SERVER), AnimationEvent.InTimeEvent.create(0.05F, (livingEntityPatch, self, params) -> {
                     OpenMatrix4f transformMatrix = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(0.0F), Armatures.BIPED.get().toolL);
                     transformMatrix.translate(new Vec3f(0.0F, 0.0F, 0.0F));
-                    OpenMatrix4f.mul((new OpenMatrix4f()).rotate(-org.joml.Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F), new Vec3f(0.0F, 1.0F, 0.0F)), transformMatrix, transformMatrix);
+                    OpenMatrix4f.mul((new OpenMatrix4f()).rotate((float) -Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 180.0F), new Vec3f(0.0F, 1.0F, 0.0F)), transformMatrix, transformMatrix);
                     int n = 70;
                     double r = 5.0F;
 
                     for (int i = 0; i < n; ++i) {
                         double theta = (Math.PI * 2D) * (new Random()).nextDouble();
-                        double phi = org.joml.Math.acos((double) 2.0F * (new Random()).nextDouble() - (double) 1.0F);
-                        double x = r * org.joml.Math.sin(phi) * org.joml.Math.cos(theta);
-                        double y = r * org.joml.Math.sin(phi) * org.joml.Math.sin(theta);
-                        double z = r * org.joml.Math.cos(phi);
+                        double phi = Math.acos((double) 2.0F * (new Random()).nextDouble() - (double) 1.0F);
+                        double x = r * Math.sin(phi) * Math.cos(theta);
+                        double y = r * Math.sin(phi) * Math.sin(theta);
+                        double z = r * Math.cos(phi);
                         livingEntityPatch.getOriginal().level().addParticle(AnnoyingVillagersModParticleTypes.NULL.get(), (double) transformMatrix.m30 + livingEntityPatch.getOriginal().getX() + x, (double) transformMatrix.m31 + livingEntityPatch.getOriginal().getY() + y, (double) transformMatrix.m32 + livingEntityPatch.getOriginal().getZ() + z, (float) (-x * (double) 0.15F), (float) (-y * (double) 0.15F), (float) (-z * (double) 0.15F));
                     }
 
@@ -1674,7 +1675,7 @@ public class AVAnimations {
                             .getBoundTransformFor(livingEntityPatch.getAnimator().getPose(0.0F), Armatures.BIPED.get().handR);
 
                     OpenMatrix4f CORRECTION = new OpenMatrix4f()
-                            .rotate(-org.joml.Math.toRadians(livingEntityPatch.getOriginal().yRotO + 180.0F), new Vec3f(0.0F, 1.0F, 0.0F));
+                            .rotate((float) -Math.toRadians(livingEntityPatch.getOriginal().yRotO + 180.0F), new Vec3f(0.0F, 1.0F, 0.0F));
                     CORRECTION.translate(new Vec3f(0.0F, 0.0F, -3.5F));
                     OpenMatrix4f.mul(CORRECTION, transformMatrix, transformMatrix);
 
@@ -1682,7 +1683,7 @@ public class AVAnimations {
                     serverLevel.sendParticles(ParticleTypes.LARGE_SMOKE, (double) transformMatrix.m30 + livingEntityPatch.getOriginal().getX(), (double) transformMatrix.m31 + livingEntityPatch.getOriginal().getY(), (double) transformMatrix.m32 + livingEntityPatch.getOriginal().getZ(), 48, 0.0F, 0.0F, 0.0F, 0.5F);
                 }, Side.SERVER), AnimationEvent.InTimeEvent.create(1.45F, (livingEntityPatch, self, params) -> {
                     OpenMatrix4f transformMatrix = livingEntityPatch.getArmature().getBoundTransformFor(livingEntityPatch.getAnimator().getPose(0.0F), Armatures.BIPED.get().handR);
-                    OpenMatrix4f CORRECTION = (new OpenMatrix4f()).rotate(-org.joml.Math.toRadians(livingEntityPatch.getOriginal().yRotO + 180.0F), new Vec3f(0.0F, 1.0F, 0.0F));
+                    OpenMatrix4f CORRECTION = (new OpenMatrix4f()).rotate((float) -Math.toRadians(livingEntityPatch.getOriginal().yRotO + 180.0F), new Vec3f(0.0F, 1.0F, 0.0F));
                     CORRECTION.translate(new Vec3f(0.0F, 0.0F, -3.5F));
                     OpenMatrix4f.mul(CORRECTION, transformMatrix, transformMatrix);
                     Level level = livingEntityPatch.getOriginal().level();
@@ -1967,10 +1968,10 @@ public class AVAnimations {
                                     --dpy;
                                 }
 
-                                float distanceToGround = (float) org.joml.Math.max(org.joml.Math.abs(livingEntityPatch.getOriginal().getY() - (double) dpy) - (double) 1.0F, 0.0F);
+                                float distanceToGround = (float) Math.max(Math.abs(livingEntityPatch.getOriginal().getY() - (double) dpy) - (double) 1.0F, 0.0F);
                                 LivingEntity livingentity = livingEntityPatch.getOriginal();
                                 Vec3f direction = new Vec3f(2.5F, -0.25F, 0.0F);
-                                OpenMatrix4f rotation = (new OpenMatrix4f()).rotate(-org.joml.Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 90.0F), new Vec3f(0.0F, 1.0F, 0.0F));
+                                OpenMatrix4f rotation = (new OpenMatrix4f()).rotate((float) -Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 90.0F), new Vec3f(0.0F, 1.0F, 0.0F));
                                 OpenMatrix4f.transform3v(rotation, direction, direction);
                                 AABB box = AABB.ofSize(livingEntityPatch.getOriginal().getPosition(1.0F), 3.0F, 3.0F, 3.0F);
                                 List<Entity> list = livingEntityPatch.getOriginal().level().getEntities(livingEntityPatch.getOriginal(), box);
@@ -2087,9 +2088,9 @@ public class AVAnimations {
                                 Vec3f keyLast = keyframes[endFrame].transform().translation();
                                 Vec3 pos = livingEntityPatch.getOriginal().getEyePosition();
                                 Vec3 targetPos = attackTarget.position().add(attackTarget.getDeltaMovement().scale(8.0F));
-                                float horizontalDistance = org.joml.Math.max((float) targetPos.subtract(pos).horizontalDistance() - (attackTarget.getBbWidth() + livingEntityPatch.getOriginal().getBbWidth()), 0.0F);
+                                float horizontalDistance = Math.max((float) targetPos.subtract(pos).horizontalDistance() - (attackTarget.getBbWidth() + livingEntityPatch.getOriginal().getBbWidth()), 0.0F);
                                 Vec3f worldPosition = new Vec3f(keyLast.x, 0.0F, -horizontalDistance);
-                                float scale = org.joml.Math.min(worldPosition.length() / keyLast.length(), 2.0F);
+                                float scale = Math.min(worldPosition.length() / keyLast.length(), 2.0F);
 
                                 for (int i = startFrame; i <= endFrame; ++i) {
                                     Vec3f translation = keyframes[i].transform().translation();
@@ -2255,8 +2256,8 @@ public class AVAnimations {
                                 double referenceY = target.getY();
                                 double referenceZ = target.getZ();
                                 float referenceYaw = livingEntityPatch.getOriginal().yHeadRot;
-                                double newX = referenceX + offset * (double) org.joml.Math.sin(org.joml.Math.toRadians(referenceYaw));
-                                double newZ = referenceZ - offset * (double) org.joml.Math.cos(org.joml.Math.toRadians(referenceYaw));
+                                double newX = referenceX + offset * (double) Math.sin(Math.toRadians(referenceYaw));
+                                double newZ = referenceZ - offset * (double) Math.cos(Math.toRadians(referenceYaw));
                                 BlockPos blockPos = new BlockPos((int) newX, (int) referenceY, (int) newZ);
                                 BlockState block = livingEntityPatch.getOriginal().level().getBlockState(blockPos);
                                 if (!block.isCollisionShapeFullBlock(livingEntityPatch.getOriginal().level(), blockPos)) {
@@ -2319,9 +2320,9 @@ public class AVAnimations {
                                         Vec3f keyLast = keyframes[endFrame].transform().translation();
                                         Vec3 pos = entitypatch.getOriginal().getEyePosition();
                                         Vec3 targetpos = attackTarget.position().add(attackTarget.getDeltaMovement().scale(1.5F));
-                                        float horizontalDistance = org.joml.Math.max((float) targetpos.subtract(pos).horizontalDistance() - (attackTarget.getBbWidth() + entitypatch.getOriginal().getBbWidth()), 0.0F);
+                                        float horizontalDistance = Math.max((float) targetpos.subtract(pos).horizontalDistance() - (attackTarget.getBbWidth() + entitypatch.getOriginal().getBbWidth()), 0.0F);
                                         Vec3f worldPosition = new Vec3f(keyLast.x, 0.0F, -horizontalDistance);
-                                        float scale = org.joml.Math.min(worldPosition.length() / keyLast.length(), 1.5F);
+                                        float scale = Math.min(worldPosition.length() / keyLast.length(), 1.5F);
 
                                         for (int i = startFrame; i <= endFrame; ++i) {
                                             Vec3f translation = keyframes[i].transform().translation();
@@ -2461,25 +2462,75 @@ public class AVAnimations {
                                         if (entity instanceof HerobrineMob herobrineMob && herobrineMob.getTarget() != null) {
                                             LivingEntity target = herobrineMob.getTarget();
                                             if (target != null) {
-                                                double offset = 2.0F;
+                                                double offset = 2.0D;
+
                                                 double referenceX = target.getX();
                                                 double referenceY = target.getY();
                                                 double referenceZ = target.getZ();
                                                 float referenceYaw = target.yHeadRot;
-                                                double newX = referenceX + offset * (double) org.joml.Math.sin(org.joml.Math.toRadians(referenceYaw));
-                                                double newZ = referenceZ - offset * (double) org.joml.Math.cos(org.joml.Math.toRadians(referenceYaw));
+
+                                                double sin = Math.sin(Math.toRadians(referenceYaw));
+                                                double cos = Math.cos(Math.toRadians(referenceYaw));
+                                                double newX = referenceX + offset * sin;
+                                                double newZ = referenceZ - offset * cos;
                                                 double newY = referenceY;
 
-                                                for (BlockState block = herobrineMob.level().getBlockState(new BlockPos.MutableBlockPos(newX, referenceY, newZ)); !(block.getBlock() instanceof BushBlock) && !block.isAir() || block.is(Blocks.VOID_AIR); block = herobrineMob.level().getBlockState(new BlockPos.MutableBlockPos(newX, referenceY, newZ))) {
-                                                    --offset;
-                                                    newX = referenceX + offset * (double) org.joml.Math.sin(org.joml.Math.toRadians(referenceYaw));
-                                                    newZ = referenceZ - offset * (double) org.joml.Math.cos(org.joml.Math.toRadians(referenceYaw));
-                                                    newY = referenceY;
+                                                ServerLevel serverLevel = (ServerLevel) entity.level();
+                                                int baseY = target.blockPosition().getY();
+                                                int minY = serverLevel.getMinBuildHeight() + 1;
+                                                int maxY = serverLevel.getMaxBuildHeight() - 2;
+                                                baseY = Mth.clamp(baseY, minY, maxY);
+
+                                                BlockPos.MutableBlockPos mpos = new BlockPos.MutableBlockPos();
+                                                boolean found = false;
+                                                for (int tries = 0; tries < 10 && offset > 0.25D; tries++) {
+                                                    newX = referenceX + offset * sin;
+                                                    newZ = referenceZ - offset * cos;
+
+                                                    mpos.set(Mth.floor(newX), baseY, Mth.floor(newZ));
+                                                    if (!serverLevel.isLoaded(mpos)) {
+                                                        offset -= 0.25D;
+                                                        continue;
+                                                    }
+                                                    int scan = 0;
+                                                    while (scan++ < 12 && mpos.getY() > minY) {
+                                                        BlockPos belowPos = mpos.below();
+                                                        BlockState below = serverLevel.getBlockState(belowPos);
+
+                                                        if (below.isFaceSturdy(serverLevel, belowPos, net.minecraft.core.Direction.UP) && !below.is(Blocks.VOID_AIR)) {
+                                                            break;
+                                                        }
+                                                        mpos.move(0, -1, 0);
+                                                    }
+
+                                                    BlockPos belowPos = mpos.below();
+                                                    BlockState below = serverLevel.getBlockState(belowPos);
+                                                    BlockState feet  = serverLevel.getBlockState(mpos);
+                                                    BlockState head  = serverLevel.getBlockState(mpos.above());
+
+                                                    boolean solidBelow = below.isFaceSturdy(serverLevel, belowPos, net.minecraft.core.Direction.UP) && !below.is(Blocks.VOID_AIR);
+                                                    boolean freeFeet = feet.isAir() || feet.getBlock() instanceof BushBlock;
+                                                    boolean freeHead = head.isAir() || head.getBlock() instanceof BushBlock;
+
+                                                    if (solidBelow && freeFeet && freeHead) {
+                                                        newX = mpos.getX() + 0.5D;
+                                                        newY = mpos.getY();
+                                                        newZ = mpos.getZ() + 0.5D;
+                                                        if (serverLevel.noCollision(entity,
+                                                                entity.getBoundingBox().move(newX - entity.getX(), newY - entity.getY(), newZ - entity.getZ()))) {
+                                                            found = true;
+                                                            break;
+                                                        }
+                                                    }
+
+                                                    offset -= 0.25D;
                                                 }
 
-                                                entity.teleportTo(newX, newY, newZ);
-                                                entity.setDeltaMovement(target.getDeltaMovement());
-                                                entity.lookAt(EntityAnchorArgument.Anchor.EYES, target.position());
+                                                if (found) {
+                                                    entity.teleportTo(newX, newY, newZ);
+                                                    entity.setDeltaMovement(target.getDeltaMovement());
+                                                    entity.lookAt(EntityAnchorArgument.Anchor.EYES, target.position());
+                                                }
                                             }
                                         }
 
@@ -2631,11 +2682,11 @@ public class AVAnimations {
                         if (weapon instanceof ShadowObsidianWeaponItem) {
                             obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
                                     .defaultBlockState()
-                                    .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, livingEntity instanceof Player);
+                                    .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
                         } else {
                             obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
                                     .defaultBlockState()
-                                    .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, livingEntity instanceof Player);
+                                    .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
                         }
                         HerobrineUtil.summonObsidianBlocksInfrontOf(serverLevel, livingEntity, obsidian, 2, Armatures.BIPED.get().legR);
                     }
@@ -2649,11 +2700,11 @@ public class AVAnimations {
                         if (weapon instanceof ShadowObsidianWeaponItem) {
                             obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
                                     .defaultBlockState()
-                                    .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, livingEntity instanceof Player);
+                                    .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
                         } else {
                             obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
                                     .defaultBlockState()
-                                    .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, livingEntity instanceof Player);
+                                    .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
                         }
                         HerobrineUtil.summonObsidianBlocksInfrontOf(serverLevel, livingEntity, obsidian, 2, Armatures.BIPED.get().legL);
                     }
@@ -2667,11 +2718,11 @@ public class AVAnimations {
                         if (weapon instanceof ShadowObsidianWeaponItem) {
                             obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
                                     .defaultBlockState()
-                                    .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, livingEntity instanceof Player);
+                                    .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
                         } else {
                             obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
                                     .defaultBlockState()
-                                    .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, livingEntity instanceof Player);
+                                    .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
                         }
                         HerobrineUtil.summonObsidianBlocksInfrontOf(serverLevel, livingEntity, obsidian, 2, Armatures.BIPED.get().toolR);
                     }
@@ -2685,11 +2736,11 @@ public class AVAnimations {
                         if (weapon instanceof ShadowObsidianWeaponItem) {
                             obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
                                     .defaultBlockState()
-                                    .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, livingEntity instanceof Player);
+                                    .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
                         } else {
                             obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
                                     .defaultBlockState()
-                                    .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, livingEntity instanceof Player);
+                                    .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
                         }
                         HerobrineUtil.summonObsidianBlocksInfrontOf(serverLevel, livingEntity, obsidian, 2, Armatures.BIPED.get().toolL);
                     }
@@ -2703,11 +2754,11 @@ public class AVAnimations {
                         if (weapon instanceof ShadowObsidianWeaponItem) {
                             obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
                                     .defaultBlockState()
-                                    .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, livingEntity instanceof Player);
+                                    .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
                         } else {
                             obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
                                     .defaultBlockState()
-                                    .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, livingEntity instanceof Player);
+                                    .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
                         }
                         HerobrineUtil.summonObsidianBlocksInfrontOf(serverLevel, livingEntity, obsidian, 3, Armatures.BIPED.get().toolR);
                     }
@@ -2721,11 +2772,11 @@ public class AVAnimations {
                         if (weapon instanceof ShadowObsidianWeaponItem) {
                             obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
                                     .defaultBlockState()
-                                    .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, livingEntity instanceof Player);
+                                    .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
                         } else {
                             obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
                                     .defaultBlockState()
-                                    .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, livingEntity instanceof Player);
+                                    .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
                         }
                         HerobrineUtil.summonObsidianBlocksInfrontOf(serverLevel, livingEntity, obsidian, 3, Armatures.BIPED.get().toolL);
                     }
@@ -2739,11 +2790,11 @@ public class AVAnimations {
                         if (weapon instanceof ShadowObsidianWeaponItem) {
                             obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
                                     .defaultBlockState()
-                                    .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, livingEntity instanceof Player);
+                                    .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
                         } else {
                             obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
                                     .defaultBlockState()
-                                    .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, livingEntity instanceof Player);
+                                    .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
                         }
                         HerobrineUtil.summonObsidianBlocksInfrontOf(serverLevel, livingEntity, obsidian, 6, Armatures.BIPED.get().toolR);
                     }
@@ -2757,11 +2808,11 @@ public class AVAnimations {
                         if (weapon instanceof ShadowObsidianWeaponItem) {
                             obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
                                     .defaultBlockState()
-                                    .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, livingEntity instanceof Player);
+                                    .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
                         } else {
                             obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
                                     .defaultBlockState()
-                                    .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, livingEntity instanceof Player);
+                                    .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
                         }
                         HerobrineUtil.summonObsidianBlocksInfrontOf(serverLevel, livingEntity, obsidian, 6, Armatures.BIPED.get().legR);
                     }
@@ -2775,11 +2826,11 @@ public class AVAnimations {
                         if (weapon instanceof ShadowObsidianWeaponItem) {
                             obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
                                     .defaultBlockState()
-                                    .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, livingEntity instanceof Player);
+                                    .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
                         } else {
                             obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
                                     .defaultBlockState()
-                                    .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, livingEntity instanceof Player);
+                                    .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
                         }
                         HerobrineUtil.summonObsidianPillar(serverLevel, livingEntity, obsidian);
                     }
@@ -2793,11 +2844,11 @@ public class AVAnimations {
                         if (weapon instanceof ShadowObsidianWeaponItem) {
                             obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
                                     .defaultBlockState()
-                                    .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, livingEntity instanceof Player);
+                                    .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
                         } else {
                             obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
                                     .defaultBlockState()
-                                    .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, livingEntity instanceof Player);
+                                    .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
                         }
                         HerobrineUtil.summonObsidianWall(serverLevel, livingEntity, obsidian);
                     }
@@ -2812,11 +2863,11 @@ public class AVAnimations {
                         if (weapon instanceof ShadowObsidianWeaponItem) {
                             obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
                                     .defaultBlockState()
-                                    .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, livingEntity instanceof Player);
+                                    .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
                         } else {
                             obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
                                     .defaultBlockState()
-                                    .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, livingEntity instanceof Player);
+                                    .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
                         }
                         HerobrineUtil.summonObsidianCross(serverLevel, livingEntity, obsidian);
                     }
@@ -2831,11 +2882,11 @@ public class AVAnimations {
                         if (weapon instanceof ShadowObsidianWeaponItem) {
                             obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
                                     .defaultBlockState()
-                                    .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, livingEntity instanceof Player);
+                                    .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
                         } else {
                             obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
                                     .defaultBlockState()
-                                    .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, livingEntity instanceof Player);
+                                    .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
                         }
                         LivingEntity attacker = livingEntityPatch.getOriginal();
                         Vec3 to = attacker.getEyePosition().add(attacker.getLookAngle().scale(16.0));

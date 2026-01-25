@@ -221,7 +221,7 @@ public class ShadowHerobrineEntity extends HerobrineMob {
 
     public void spawnDarkObEntities() {
         if (this.level() instanceof ServerLevel serverLevel) {
-            BlockState block = AnnoyingVillagersModBlocks.DARKOB.get().defaultBlockState();
+            BlockState block = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_SHORT_PILLAR.get().defaultBlockState();
 
             if (this.darkObUp == null) {
                 BlockProjectileEntity darkObbyUp = new BlockProjectileEntity(

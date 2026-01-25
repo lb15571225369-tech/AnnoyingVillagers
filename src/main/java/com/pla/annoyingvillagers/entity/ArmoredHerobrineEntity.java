@@ -151,7 +151,7 @@ public class ArmoredHerobrineEntity extends HerobrineMob {
             to = this.getEyePosition().add(this.getLookAngle().scale(16.0));
         }
 
-        BlockState block = AnnoyingVillagersModBlocks.DARKOB.get().defaultBlockState();
+        BlockState block = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_SHORT_PILLAR.get().defaultBlockState();
         BlockProjectileEntity throwingObsidian = new BlockProjectileEntity(
                 this.level(),
                 this,

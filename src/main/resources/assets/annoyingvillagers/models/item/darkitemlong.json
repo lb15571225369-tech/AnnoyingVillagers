@@ -1,7 +1,0 @@
-{
-  "parent": "annoyingvillagers:custom/daerk_ob_item",
-  "textures": {
-    "0": "annoyingvillagers:block/dark_ob",
-    "particle": "annoyingvillagers:block/dark_ob"
-  }
-}

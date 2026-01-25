@@ -1,8 +1,8 @@
 package com.pla.annoyingvillagers.entity;
 
-import com.pla.annoyingvillagers.block.DarkObUpBlock;
+import com.pla.annoyingvillagers.block.ShadowObsidianLongPillarBlock;
 import com.pla.annoyingvillagers.block.ShadowObsidianBlock;
-import com.pla.annoyingvillagers.blockentity.DarkObUpBlockEntity;
+import com.pla.annoyingvillagers.blockentity.ShadowObsidianLongPillarBlockEntity;
 import com.pla.annoyingvillagers.blockentity.ObsidianBlockEntity;
 import com.pla.annoyingvillagers.blockentity.ShadowObsidianBlockEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
@@ -163,10 +163,10 @@ public class BlockProjectileEntity extends ThrowableProjectile {
                 UUID owner = this.playerUUID;
 
                 BlockState placeState;
-                if (getCarriedBlock().is(AnnoyingVillagersModBlocks.DARKOB.get())) {
-                    placeState = AnnoyingVillagersModBlocks.DARK_OB_UP.get().defaultBlockState();
-                     if (owner != null && placeState.hasProperty(DarkObUpBlock.FROM_PLAYER)) {
-                         placeState = placeState.setValue(DarkObUpBlock.FROM_PLAYER, true);
+                if (getCarriedBlock().is(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_SHORT_PILLAR.get())) {
+                    placeState = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_LONG_PILLAR.get().defaultBlockState();
+                     if (owner != null && placeState.hasProperty(ShadowObsidianLongPillarBlock.FROM_PLAYER)) {
+                         placeState = placeState.setValue(ShadowObsidianLongPillarBlock.FROM_PLAYER, true);
                      }
                 } else if (getCarriedBlock().is(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get())) {
                     placeState = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().defaultBlockState();
@@ -186,8 +186,8 @@ public class BlockProjectileEntity extends ThrowableProjectile {
                     } else if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
                         shadowObsidianBlockEntity.setOwner(owner);
                         blockEntity.setChanged();
-                    } else if (blockEntity instanceof DarkObUpBlockEntity darkObUpBlockEntity) {
-                        darkObUpBlockEntity.setOwner(owner);
+                    } else if (blockEntity instanceof ShadowObsidianLongPillarBlockEntity shadowObsidianLongPillarBlockEntity) {
+                        shadowObsidianLongPillarBlockEntity.setOwner(owner);
                         blockEntity.setChanged();
                     }
                 }

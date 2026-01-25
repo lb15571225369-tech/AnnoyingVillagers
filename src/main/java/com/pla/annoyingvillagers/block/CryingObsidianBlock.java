@@ -1,9 +1,7 @@
 package com.pla.annoyingvillagers.block;
 
-import com.pla.annoyingvillagers.blockentity.ObsidianBlockEntity;
-import com.pla.annoyingvillagers.gameasset.AVSkills;
+import com.pla.annoyingvillagers.blockentity.CryingObsidianBlockEntity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
-import com.pla.annoyingvillagers.skill.ObsidianWeaponSkill;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.HerobrineUtil;
 import net.minecraft.core.BlockPos;
@@ -38,11 +36,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.particle.HitParticleType;
-import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
-import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
-import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.damagesource.StunType;
 
 import java.util.Collections;
@@ -167,38 +162,20 @@ public class CryingObsidianBlock extends Block implements EntityBlock {
         }
     }
 
-    public void increaseSkillPoint(Entity entity, float value) {
-        if (!(entity instanceof Player pEntity)) return;
-
-        PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(pEntity, PlayerPatch.class);
-        if (!(playerPatch instanceof ServerPlayerPatch serverPlayerPatch)) return;
-
-        SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.OBSIDIAN_WEAPON);
-        if (skillContainer == null) return;
-
-        ObsidianWeaponSkill skill = (ObsidianWeaponSkill) skillContainer.getSkill();
-
-        float currentResource = skillContainer.getResource();
-        float neededResource = skillContainer.getNeededResource();
-        float addResource = Math.min(value, neededResource);
-
-        skill.setConsumptionSynchronize(skillContainer, currentResource + addResource);
-    }
-
     public void entityInside(@NotNull BlockState blockState, @NotNull Level level, @NotNull BlockPos blockPos, @NotNull Entity entity) {
         super.entityInside(blockState, level, blockPos, entity);
         if (entity.tickCount % 5 == 0) {
-            if (entity instanceof Player && level.getBlockEntity(blockPos) instanceof ObsidianBlockEntity obsidianBlockEntity) {
-                UUID owner = obsidianBlockEntity.getOwner();
+            if (entity instanceof Player && level.getBlockEntity(blockPos) instanceof CryingObsidianBlockEntity cryingObsidianBlockEntity) {
+                UUID owner = cryingObsidianBlockEntity.getOwner();
                 if (owner != null && owner.equals(entity.getUUID())) {
                     return;
                 }
             }
 
             boolean fromPlayer =
-                    blockState.getBlock() instanceof ObsidianBlock
-                            && blockState.hasProperty(ObsidianBlock.FROM_PLAYER)
-                            && blockState.getValue(ObsidianBlock.FROM_PLAYER);
+                    blockState.getBlock() instanceof CryingObsidianBlock
+                            && blockState.hasProperty(CryingObsidianBlock.FROM_PLAYER)
+                            && blockState.getValue(CryingObsidianBlock.FROM_PLAYER);
 
             if (!fromPlayer && HerobrineUtil.isHerobrineFaction(entity)) {
                 return;
@@ -218,10 +195,10 @@ public class CryingObsidianBlock extends Block implements EntityBlock {
                         1.0F, 1.0F
                 );
                 entity.hurt(entity.level().damageSources().generic(), 1.0F);
-                if (level.getBlockEntity(blockPos) instanceof ObsidianBlockEntity obsidianBlockEntity) {
-                    UUID owner = obsidianBlockEntity.getOwner();
+                if (level.getBlockEntity(blockPos) instanceof CryingObsidianBlockEntity cryingObsidianBlockEntity) {
+                    UUID owner = cryingObsidianBlockEntity.getOwner();
                     if (owner != null && serverLevel.getEntity(owner) instanceof Player player) {
-                        increaseSkillPoint(player, 1.0F);
+                        // increase skill point
                     }
                 }
                 entity.setDeltaMovement(new Vec3(entity.getLookAngle().x * -2.0D, 0.4D, entity.getLookAngle().z * -2.0D));
@@ -232,7 +209,7 @@ public class CryingObsidianBlock extends Block implements EntityBlock {
                             if (entity.level() instanceof ServerLevel) {
                                 LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                                 if (livingEntityPatch != null) {
-                                    livingEntityPatch.applyStun(StunType.LONG, 20.0F);
+                                    livingEntityPatch.applyStun(StunType.LONG, 10.0F);
                                 }
                             }
                         }
@@ -245,7 +222,7 @@ public class CryingObsidianBlock extends Block implements EntityBlock {
                                 if (entity.level() instanceof ServerLevel) {
                                     LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                                     if (livingEntityPatch != null) {
-                                        livingEntityPatch.applyStun(StunType.KNOCKDOWN, 20.0F);
+                                        livingEntityPatch.applyStun(StunType.KNOCKDOWN, 10.0F);
                                     }
                                 }
                             }
@@ -261,8 +238,8 @@ public class CryingObsidianBlock extends Block implements EntityBlock {
         super.setPlacedBy(level, pos, state, placer, stack);
         if (!level.isClientSide) {
             var blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
-                obsidianBlockEntity.setOwner(placer instanceof Player ? placer.getUUID() : null);
+            if (blockEntity instanceof CryingObsidianBlockEntity cryingObsidianBlockEntity) {
+                cryingObsidianBlockEntity.setOwner(placer instanceof Player ? placer.getUUID() : null);
                 blockEntity.setChanged();
                 level.sendBlockUpdated(pos, state, state, 3);
             }
@@ -271,6 +248,6 @@ public class CryingObsidianBlock extends Block implements EntityBlock {
 
     @Override
     public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
-        return new ObsidianBlockEntity(pPos, pState);
+        return new CryingObsidianBlockEntity(pPos, pState);
     }
 }

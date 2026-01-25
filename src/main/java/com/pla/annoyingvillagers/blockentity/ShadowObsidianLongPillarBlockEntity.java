@@ -5,15 +5,16 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-public class CryingObsidianSpikeBlockEntity extends BlockEntity {
+public class ShadowObsidianLongPillarBlockEntity extends BlockEntity {
     private @Nullable UUID owner;
 
-    public CryingObsidianSpikeBlockEntity(BlockPos pos, BlockState state) {
-        super(AnnoyingVillagersModBlockEntities.CRYING_OBSIDIAN_SPIKE_BLOCK.get(), pos, state);
+    public ShadowObsidianLongPillarBlockEntity(BlockPos pos, BlockState state) {
+        super(AnnoyingVillagersModBlockEntities.SHADOW_OBSIDIAN_LONG_PILLAR.get(), pos, state);
     }
 
     public void setOwner(@Nullable UUID id) {
@@ -27,19 +28,19 @@ public class CryingObsidianSpikeBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
+    protected void saveAdditional(@NotNull CompoundTag tag) {
         super.saveAdditional(tag);
         if (owner != null) tag.putUUID("Owner", owner);
     }
 
     @Override
-    public void load(CompoundTag tag) {
+    public void load(@NotNull CompoundTag tag) {
         super.load(tag);
         owner = tag.hasUUID("Owner") ? tag.getUUID("Owner") : null;
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
+    public @NotNull CompoundTag getUpdateTag() {
         CompoundTag tag = super.getUpdateTag();
         if (owner != null) tag.putUUID("Owner", owner);
         return tag;

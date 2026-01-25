@@ -25,7 +25,7 @@
 
 package com.pla.annoyingvillagers.entity;
 
-import com.pla.annoyingvillagers.block.CryingObsidianSpikeBlock;
+import com.pla.annoyingvillagers.block.CryingObsidianBlock;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.init.*;
 import com.pla.annoyingvillagers.skill.ObsidianSledgeHammerSkill;
@@ -224,7 +224,7 @@ public class ObsidianSledgehammerProjectileEntity extends PathfinderMob {
 
         BlockState cryingObsidianBlock = AnnoyingVillagersModBlocks.CRYING_OBSIDIAN_BLOCK.get()
                 .defaultBlockState()
-                .setValue(CryingObsidianSpikeBlock.FROM_PLAYER, this.getOwner() instanceof Player);
+                .setValue(CryingObsidianBlock.FROM_PLAYER, this.getOwner() instanceof Player);
 
         FallingBlockEntity.fall(serverLevel, BlockPos.containing(d0, d1, d2), cryingObsidianBlock);
         serverLevel.sendParticles(ParticleTypes.EXPLOSION_EMITTER, d0, d1, d2, 1, 0.0D, 0.0D, 0.0D, 0.0D);

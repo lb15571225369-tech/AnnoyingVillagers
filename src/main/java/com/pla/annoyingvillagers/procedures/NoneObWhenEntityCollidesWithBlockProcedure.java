@@ -54,7 +54,7 @@ public class NoneObWhenEntityCollidesWithBlockProcedure {
                     if (!entity.level().isClientSide() && entity.getServer() != null) {
                         try {
                             entity.getServer().getCommands().getDispatcher().execute(
-                                    "execute as @s at @s anchored eyes run setblock ^ ^ ^-1 annoyingvillagers:darkob",
+                                    "execute as @s at @s anchored eyes run setblock ^ ^ ^-1 annoyingvillagers:darkob`",
                                     entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                             );
                         } catch (CommandSyntaxException e) {

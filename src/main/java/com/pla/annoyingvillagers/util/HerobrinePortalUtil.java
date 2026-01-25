@@ -51,9 +51,7 @@ public class HerobrinePortalUtil {
     }
 
     public static <T extends LivingEntity> void spawnRising(ServerLevel level, T entity, double x, double z, double speedPerTick) {
-        BlockPos top = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, new BlockPos((int) x, 0, (int) z));
-        double groundY = top.getY();
-
+        double groundY = entity.getY();
         double startY = groundY - 2.0;
         entity.moveTo(x, startY, z, entity.getYRot(), entity.getXRot());
 
@@ -73,8 +71,7 @@ public class HerobrinePortalUtil {
     }
 
     public static <T extends LivingEntity> void sinkIntoGround(ServerLevel level, T entity, double speedPerTick) {
-        BlockPos top = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, entity.blockPosition());
-        double groundY = top.getY();
+        double groundY = entity.getY();
         double targetY = groundY - 1.2;
 
         entity.noPhysics = true;

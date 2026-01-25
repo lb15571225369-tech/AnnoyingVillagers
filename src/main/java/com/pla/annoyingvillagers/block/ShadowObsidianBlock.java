@@ -196,9 +196,9 @@ public class ShadowObsidianBlock extends Block implements EntityBlock {
             }
 
             boolean fromPlayer =
-                    blockState.getBlock() instanceof ObsidianBlock
-                            && blockState.hasProperty(ObsidianBlock.FROM_PLAYER)
-                            && blockState.getValue(ObsidianBlock.FROM_PLAYER);
+                    blockState.getBlock() instanceof ShadowObsidianBlock
+                            && blockState.hasProperty(ShadowObsidianBlock.FROM_PLAYER)
+                            && blockState.getValue(ShadowObsidianBlock.FROM_PLAYER);
 
             if (!fromPlayer && HerobrineUtil.isHerobrineFaction(entity)) {
                 return;
@@ -232,7 +232,7 @@ public class ShadowObsidianBlock extends Block implements EntityBlock {
                             if (entity.level() instanceof ServerLevel) {
                                 LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                                 if (livingEntityPatch != null) {
-                                    livingEntityPatch.applyStun(StunType.LONG, 20.0F);
+                                    livingEntityPatch.applyStun(StunType.LONG, 10.0F);
                                 }
                             }
                         }
@@ -245,7 +245,7 @@ public class ShadowObsidianBlock extends Block implements EntityBlock {
                                 if (entity.level() instanceof ServerLevel) {
                                     LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                                     if (livingEntityPatch != null) {
-                                        livingEntityPatch.applyStun(StunType.KNOCKDOWN, 20.0F);
+                                        livingEntityPatch.applyStun(StunType.KNOCKDOWN, 10.0F);
                                     }
                                 }
                             }

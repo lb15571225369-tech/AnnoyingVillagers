@@ -228,7 +228,7 @@ public class ObsidianBlock extends Block implements EntityBlock {
                             if (entity.level() instanceof ServerLevel) {
                                 LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                                 if (livingEntityPatch != null) {
-                                    livingEntityPatch.applyStun(StunType.LONG, 20.0F);
+                                    livingEntityPatch.applyStun(StunType.LONG, 10.0F);
                                 }
                             }
                         }
@@ -241,7 +241,7 @@ public class ObsidianBlock extends Block implements EntityBlock {
                                 if (entity.level() instanceof ServerLevel) {
                                     LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                                     if (livingEntityPatch != null) {
-                                        livingEntityPatch.applyStun(StunType.KNOCKDOWN, 20.0F);
+                                        livingEntityPatch.applyStun(StunType.KNOCKDOWN, 10.0F);
                                     }
                                 }
                             }

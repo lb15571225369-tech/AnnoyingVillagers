@@ -1,8 +1,0 @@
-{
-  "parent": "annoyingvillagers:custom/crying_obsidian_spike",
-  "render_type": "minecraft:cutout",
-  "textures": {
-    "1": "annoyingvillagers:block/obsidian_sledgehammer_spike",
-    "particle": "annoyingvillagers:block/obsidian_sledgehammer_spike"
-  }
-}

@@ -1,5 +1,5 @@
 {
-  "parent": "annoyingvillagers:block/darkob",
+  "parent": "annoyingvillagers:block/shadow_obsidian_middle_pillar",
   "display": {
     "thirdperson": {
       "rotation": [

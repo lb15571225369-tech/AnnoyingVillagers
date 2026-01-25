@@ -1,7 +1,7 @@
 {
   "parent": "annoyingvillagers:custom/shadow_obsidian_sword",
   "textures": {
-    "1": "annoyingvillagers:block/dark_obsidian",
-    "particle": "annoyingvillagers:block/dark_obsidian"
+    "1": "annoyingvillagers:block/shadow_obsidian",
+    "particle": "annoyingvillagers:block/shadow_obsidian"
   }
 }

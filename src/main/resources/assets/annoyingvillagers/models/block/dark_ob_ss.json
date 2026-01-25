@@ -1,9 +1,0 @@
-{
-  "parent": "annoyingvillagers:custom/dark_ob_ss",
-  "render_type": "minecraft:cutout",
-  "textures": {
-    "all": "annoyingvillagers:block/dark_ob",
-    "particle": "annoyingvillagers:block/dark_ob",
-    "1": "annoyingvillagers:block/dark_ob"
-  }
-}

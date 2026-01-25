@@ -145,13 +145,10 @@ public class AnnoyingVillagersModItems {
 
     // Item not shown in creative tab
     public static final RegistryObject<Item> ENCHANT_BED = block(AnnoyingVillagersModBlocks.ENCHANT_BED, null);
-    public static final RegistryObject<Item> DARK_OB_SS = block(AnnoyingVillagersModBlocks.DARK_OB_SS, null);
+    public static final RegistryObject<Item> SHADOW_OBSIDIAN_SHORT_PILLAR = block(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_SHORT_PILLAR, null);
+    public static final RegistryObject<Item> SHADOW_OBSIDIAN_MIDDLE_PILLAR = block(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_MIDDLE_PILLAR, null);
+    public static final RegistryObject<Item> SHADOW_OBSIDIAN_LONG_PILLAR = block(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_LONG_PILLAR, null);
     public static final RegistryObject<Item> NONEOB = block(AnnoyingVillagersModBlocks.NONEOB, null);
-    public static final RegistryObject<Item> DARKOB = block(AnnoyingVillagersModBlocks.DARKOB, null);
-    public static final RegistryObject<Item> DARKOBITEM = AnnoyingVillagersModItems.REGISTRY.register("darkobitem", DarkOBItem::new);
-    public static final RegistryObject<Item> DARKITEMLONG = AnnoyingVillagersModItems.REGISTRY.register("darkitemlong", DarkOBLongItem::new);
-    public static final RegistryObject<Item> DARK_OB_UP = block(AnnoyingVillagersModBlocks.DARK_OB_UP, null);
-    public static final RegistryObject<Item> DARK_OB_FAR = AnnoyingVillagersModItems.REGISTRY.register("dark_ob_far", DarkOBFarItem::new);
     public static final RegistryObject<Item> HEAVY_ATTACK_LEGENDARY_SWORD = AnnoyingVillagersModItems.REGISTRY.register("heavy_attack_legendary_sword", HeavyAttackLegendarySwordItem::new);
 
     public static final RegistryObject<Item> HARD_GREATSWORD_SKILL = AnnoyingVillagersModItems.REGISTRY.register("hard_greatsword_skill", HardGreatSwordSkillItem::new);

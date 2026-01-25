@@ -36,7 +36,7 @@ public class HerobrineEnderEyeItem extends Item {
     }
 
     public static void spawnAndShootDarkObPillars(ServerLevel level, LivingEntity shooter, int delayTicks) {
-        BlockState block = Objects.requireNonNull(AnnoyingVillagersModBlocks.DARKOB.get()).defaultBlockState();
+        BlockState block = Objects.requireNonNull(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_SHORT_PILLAR.get()).defaultBlockState();
 
         final double lateral = 2.0;
         final double sideY   = 0.0;

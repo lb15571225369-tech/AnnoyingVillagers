@@ -172,12 +172,8 @@ public class CombatCommon {
             if (entity instanceof AVNpc AVNpc
                     && new Random().nextDouble() <= AVNpc.getPlaceBlockToParryChance()) {
                 return true;
-            } else if (entity instanceof PlayerNpcEntity playerNpcEntity
-                    && new Random().nextDouble() <= playerNpcEntity.getPlaceBlockToParryChance()) {
-                return true;
-            } else {
-                return true;
-            }
+            } else return entity instanceof PlayerNpcEntity playerNpcEntity
+                    && new Random().nextDouble() <= playerNpcEntity.getPlaceBlockToParryChance();
         }
         return false;
     }
