@@ -4,6 +4,10 @@ import javax.annotation.Nullable;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.block.ObsidianBlock;
+import com.pla.annoyingvillagers.blockentity.CryingObsidianBlockEntity;
+import com.pla.annoyingvillagers.blockentity.ObsidianBlockEntity;
+import com.pla.annoyingvillagers.blockentity.ShadowObsidianBlockEntity;
+import com.pla.annoyingvillagers.clazz.HerobrineObsidianBlock;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
@@ -48,6 +52,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
@@ -376,12 +382,27 @@ public class HerobrineGregEntity extends Monster {
                 FluidState fluidState = this.level().getFluidState(lastFeetPos);
                 if (!fluidState.isEmpty()) {
                     int replace = fluidState.is(FluidTags.WATER) ? 1 : (fluidState.is(FluidTags.LAVA) ? 2 : 0);
+                    BlockState state = block.defaultBlockState().setValue(HerobrineObsidianBlock.REPLACE_BY_LIQUID, replace);
                     this.level().setBlockAndUpdate(
                             lastFeetPos,
-                            block
-                                    .defaultBlockState()
-                                    .setValue(ObsidianBlock.REPLACE_BY_LIQUID, replace)
+                            state
                     );
+                    BlockEntity blockEntity = this.level().getBlockEntity(lastFeetPos);
+                    if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
+                        obsidianBlockEntity.setOwner(this.getUUID());
+                        obsidianBlockEntity.setChanged();
+                        this.level().sendBlockUpdated(lastFeetPos, state, state, 3);
+                    }
+                    if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
+                        shadowObsidianBlockEntity.setOwner(this.getUUID());
+                        shadowObsidianBlockEntity.setChanged();
+                        this.level().sendBlockUpdated(lastFeetPos, state, state, 3);
+                    }
+                    if (blockEntity instanceof CryingObsidianBlockEntity cryingObsidianBlockEntity) {
+                        cryingObsidianBlockEntity.setOwner(this.getUUID());
+                        cryingObsidianBlockEntity.setChanged();
+                        this.level().sendBlockUpdated(lastFeetPos, state, state, 3);
+                    }
                 }
             }
             lastFeetPos = feet;

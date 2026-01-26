@@ -1,34 +1,25 @@
 package com.pla.annoyingvillagers.block;
 
 import com.pla.annoyingvillagers.blockentity.ShadowObsidianLongPillarBlockEntity;
+import com.pla.annoyingvillagers.clazz.HerobrineObsidianBlock;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
-import com.pla.annoyingvillagers.skill.ObsidianWeaponSkill;
-import com.pla.annoyingvillagers.util.HerobrineUtil;
+import com.pla.annoyingvillagers.skill.ShadowObsidianPillarSkill;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -43,12 +34,8 @@ import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 import yesman.epicfight.world.damagesource.StunType;
 
 import java.util.Random;
-import java.util.UUID;
 
-public class ShadowObsidianLongPillarBlock extends Block implements EntityBlock {
-    public static final BooleanProperty FROM_PLAYER = BooleanProperty.create("from_player");
-    public static final IntegerProperty REPLACE_BY_LIQUID = IntegerProperty.create("replace_by_liquid", 0, 2);
-
+public class ShadowObsidianLongPillarBlock extends HerobrineObsidianBlock implements EntityBlock {
     public ShadowObsidianLongPillarBlock() {
         super(Properties.of()
                 .sound(SoundType.STONE)
@@ -59,58 +46,15 @@ public class ShadowObsidianLongPillarBlock extends Block implements EntityBlock 
                 .emissiveRendering((blockstate, blockgetter, blockpos) -> true)
                 .isRedstoneConductor((blockstate, blockgetter, blockpos) -> false)
                 .dynamicShape());
-        this.registerDefaultState(
-                this.stateDefinition.any()
-                        .setValue(FROM_PLAYER, Boolean.FALSE)
-                        .setValue(REPLACE_BY_LIQUID, 0)
-        );
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FROM_PLAYER, REPLACE_BY_LIQUID);
-    }
-
-    @Override
-    public BlockState getStateForPlacement(@NotNull BlockPlaceContext blockPlaceContext) {
-        BlockState base = super.getStateForPlacement(blockPlaceContext);
-        if (base == null) base = this.defaultBlockState();
-        return base.setValue(FROM_PLAYER, blockPlaceContext.getPlayer() != null);
-    }
-
-    public boolean propagatesSkylightDown(@NotNull BlockState blockstate, @NotNull BlockGetter blockgetter, @NotNull BlockPos blockpos) {
-        return true;
-    }
-
-    public int getLightBlock(@NotNull BlockState blockstate, @NotNull BlockGetter blockgetter, @NotNull BlockPos blockpos) {
-        return 0;
-    }
-
-    public @NotNull VoxelShape getVisualShape(@NotNull BlockState blockstate, @NotNull BlockGetter blockgetter, @NotNull BlockPos blockpos, @NotNull CollisionContext collisioncontext) {
-        return Shapes.empty();
     }
 
     public @NotNull VoxelShape getShape(@NotNull BlockState blockstate, @NotNull BlockGetter blockgetter, @NotNull BlockPos blockpos, @NotNull CollisionContext collisioncontext) {
         return Shapes.or(box(6.0D, 0.0D, 12.0D, 10.0D, 16.0D, 16.0D), box(6.0D, 16.0D, 12.0D, 10.0D, 32.0D, 16.0D), box(6.0D, -16.0D, 12.0D, 10.0D, 0.0D, 16.0D));
     }
 
-    public void onPlace(@NotNull BlockState blockstate, @NotNull Level level, @NotNull BlockPos blockPos, @NotNull BlockState blockstate1, boolean flag) {
-        super.onPlace(blockstate, level, blockPos, blockstate1, flag);
-        level.scheduleTick(blockPos, this, 20);
-        if (level instanceof ServerLevel serverLevel) {
-            serverLevel.playSound(
-                    null,
-                    blockPos.getX(), blockPos.getY(), blockPos.getZ(),
-                    AnnoyingVillagersModSounds.OB_PLACE.get(),
-                    SoundSource.BLOCKS,
-                    new Random().nextFloat(0.2F, 0.6F), 1.0F
-            );
-        }
-    }
-
     @Override
-    public void tick(@NotNull BlockState blockState, @NotNull ServerLevel serverLevel, @NotNull BlockPos blockPos, @NotNull RandomSource randomSource) {
-        super.tick(blockState, serverLevel, blockPos, randomSource);
+    public void customPlaceSound(ServerLevel serverLevel, BlockPos blockPos) {
+        super.customPlaceSound(serverLevel, blockPos);
         serverLevel.playSound(
                 null,
                 blockPos.getX(), blockPos.getY(), blockPos.getZ(),
@@ -118,17 +62,18 @@ public class ShadowObsidianLongPillarBlock extends Block implements EntityBlock 
                 SoundSource.BLOCKS,
                 new Random().nextFloat(0.2F, 0.6F), 1.0F
         );
-        BlockState current = serverLevel.getBlockState(blockPos);
-        int replace = 0;
-        if (current.getBlock() instanceof ObsidianBlock && current.hasProperty(ObsidianBlock.REPLACE_BY_LIQUID)) {
-            replace = current.getValue(ObsidianBlock.REPLACE_BY_LIQUID);
-        }
-        BlockState replacement = switch (replace) {
-            case 1 -> Blocks.WATER.defaultBlockState();
-            case 2 -> Blocks.LAVA.defaultBlockState();
-            default -> Blocks.AIR.defaultBlockState();
-        };
-        serverLevel.setBlock(blockPos, replacement, 3);
+    }
+
+    @Override
+    public void customTickSound(ServerLevel serverLevel, BlockPos blockPos) {
+        super.customTickSound(serverLevel, blockPos);
+        serverLevel.playSound(
+                null,
+                blockPos.getX(), blockPos.getY(), blockPos.getZ(),
+                AnnoyingVillagersModSounds.OB_PLACE.get(),
+                SoundSource.BLOCKS,
+                new Random().nextFloat(0.2F, 0.6F), 1.0F
+        );
     }
 
     public void increaseSkillPoint(Entity entity, float value) {
@@ -137,10 +82,10 @@ public class ShadowObsidianLongPillarBlock extends Block implements EntityBlock 
         PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(pEntity, PlayerPatch.class);
         if (!(playerPatch instanceof ServerPlayerPatch serverPlayerPatch)) return;
 
-        SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.OBSIDIAN_WEAPON);
+        SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.SHADOW_OBSIDIAN_PILLAR);
         if (skillContainer == null) return;
 
-        ObsidianWeaponSkill skill = (ObsidianWeaponSkill) skillContainer.getSkill();
+        ShadowObsidianPillarSkill skill = (ShadowObsidianPillarSkill) skillContainer.getSkill();
 
         float currentResource = skillContainer.getResource();
         float neededResource = skillContainer.getNeededResource();
@@ -149,72 +94,41 @@ public class ShadowObsidianLongPillarBlock extends Block implements EntityBlock 
         skill.setConsumptionSynchronize(skillContainer, currentResource + addResource);
     }
 
-    public void entityInside(@NotNull BlockState blockState, @NotNull Level level, @NotNull BlockPos blockPos, @NotNull Entity entity) {
-        super.entityInside(blockState, level, blockPos, entity);
-        if (entity instanceof Player && level.getBlockEntity(blockPos) instanceof ShadowObsidianLongPillarBlockEntity shadowObsidianMiddlePillarBlockEntity) {
-            UUID owner = shadowObsidianMiddlePillarBlockEntity.getOwner();
-            if (owner != null && owner.equals(entity.getUUID())) {
-                return;
-            }
-        }
-
-        boolean fromPlayer =
-                blockState.getBlock() instanceof ShadowObsidianShortPillarBlock
-                        && blockState.hasProperty(ShadowObsidianShortPillarBlock.FROM_PLAYER)
-                        && blockState.getValue(ShadowObsidianShortPillarBlock.FROM_PLAYER);
-
-        if (!fromPlayer && HerobrineUtil.isHerobrineFaction(entity)) {
-            return;
-        }
-
-        if (entity instanceof Player && fromPlayer && level.getServer() != null && !level.getServer().isPvpAllowed()) {
-            return;
-        }
-
-        if (entity.level() instanceof ServerLevel serverLevel) {
-            serverLevel.sendParticles(
-                    AnnoyingVillagersModParticleTypes.SPARK.get(),
-                    entity.getX(), entity.getY() + 1.5, entity.getZ() + 0.8,
-                    5,
-                    0, 0, 0,
-                    0.1
-            );
-            entity.hurt(entity.level().damageSources().generic(), 1.0F);
-            entity.setDeltaMovement(new Vec3(0.0D, 0.0D, 0.0D));
-            if (Math.random() <= 0.2D && entity.tickCount % 10 == 0) {
-                if (entity instanceof LivingEntity livingEntity) {
-                    float strength = 1.0F;
-                    double dx = blockPos.getX() - entity.getX();
-                    double dz = blockPos.getZ() - entity.getZ();
-                    livingEntity.knockback(strength, dx, dz);
-                }
-            }
-            if (entity.level() instanceof ServerLevel && entity instanceof Mob mob) {
-                LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
-                if (livingEntityPatch != null) {
-                    livingEntityPatch.applyStun(StunType.SHORT, 2.0F);
-                }
-                mob.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 2, 8, false, false));
-            }
-            if (level.getBlockEntity(blockPos) instanceof ShadowObsidianLongPillarBlockEntity shadowObsidianMiddlePillarBlockEntity) {
-                UUID owner = shadowObsidianMiddlePillarBlockEntity.getOwner();
-                if (owner != null && serverLevel.getEntity(owner) instanceof Player player) {
-                    increaseSkillPoint(player, 1.0F);
-                }
-            }
-        }
-    }
-
     @Override
-    public void setPlacedBy(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, LivingEntity placer, @NotNull ItemStack stack) {
-        super.setPlacedBy(level, pos, state, placer, stack);
-        if (!level.isClientSide) {
-            var blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof ShadowObsidianLongPillarBlockEntity shadowObsidianLongPillarBlockEntity) {
-                shadowObsidianLongPillarBlockEntity.setOwner(placer instanceof Player ? placer.getUUID() : null);
-                blockEntity.setChanged();
-                level.sendBlockUpdated(pos, state, state, 3);
+    public void customHurtLogic(Entity entity, Entity owner, ServerLevel serverLevel, BlockPos blockPos) {
+        super.customHurtLogic(entity, owner, serverLevel, blockPos);
+        serverLevel.sendParticles(
+                AnnoyingVillagersModParticleTypes.SPARK.get(),
+                entity.getX(), entity.getY() + 1.5, entity.getZ() + 0.8,
+                5,
+                0, 0, 0,
+                0.1
+        );
+        if (owner != null) {
+            if (owner instanceof Player player) {
+                entity.hurt(entity.level().damageSources().playerAttack(player), 1.0F);
+                increaseSkillPoint(player, 1.0F);
+            } else {
+                entity.hurt(entity.level().damageSources().mobAttack((LivingEntity) owner), 1.0F);
             }
+        } else {
+            entity.hurt(entity.level().damageSources().generic(), 1.0F);
+        }
+        entity.setDeltaMovement(new Vec3(0.0D, 0.0D, 0.0D));
+        if (Math.random() <= 0.2D && entity.tickCount % 10 == 0) {
+            if (entity instanceof LivingEntity livingEntity) {
+                float strength = 1.0F;
+                double dx = blockPos.getX() - entity.getX();
+                double dz = blockPos.getZ() - entity.getZ();
+                livingEntity.knockback(strength, dx, dz);
+            }
+        }
+        if (entity instanceof Mob mob) {
+            LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+            if (livingEntityPatch != null) {
+                livingEntityPatch.applyStun(StunType.SHORT, 2.0F);
+            }
+            mob.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 2, 8, false, false));
         }
     }
 

@@ -226,7 +226,13 @@ public class ObsidianSledgehammerProjectileEntity extends PathfinderMob {
                 .defaultBlockState()
                 .setValue(CryingObsidianBlock.FROM_PLAYER, this.getOwner() instanceof Player);
 
-        FallingBlockEntity.fall(serverLevel, BlockPos.containing(d0, d1, d2), cryingObsidianBlock);
+        FallingBlockEntity falling = FallingBlockEntity.fall(serverLevel, BlockPos.containing(d0, d1, d2), cryingObsidianBlock);
+        Entity owner = this.getOwner();
+        if (owner != null) {
+            CompoundTag tileData = new CompoundTag();
+            tileData.putUUID("Owner", owner.getUUID());
+            falling.blockData = tileData;
+        }
         serverLevel.sendParticles(ParticleTypes.EXPLOSION_EMITTER, d0, d1, d2, 1, 0.0D, 0.0D, 0.0D, 0.0D);
 
         Vec3 center = new Vec3(d0, d1, d2);

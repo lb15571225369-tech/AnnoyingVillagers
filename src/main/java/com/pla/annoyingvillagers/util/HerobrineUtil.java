@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.util;
 
+import com.pla.annoyingvillagers.blockentity.CryingObsidianBlockEntity;
 import com.pla.annoyingvillagers.blockentity.ObsidianBlockEntity;
 import com.pla.annoyingvillagers.blockentity.ShadowObsidianBlockEntity;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
@@ -53,9 +54,25 @@ public class HerobrineUtil {
                 || e instanceof EliteHerobrineKnockedEntity;
     }
 
-    private static void placeIfReplaceable(ServerLevel level, BlockPos pos, BlockState state) {
+    private static void placeIfReplaceable(ServerLevel level, BlockPos pos, BlockState state, Entity herobrine) {
         if (level.getBlockState(pos).canBeReplaced()) {
             level.setBlockAndUpdate(pos, state);
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
+                obsidianBlockEntity.setOwner(herobrine.getUUID());
+                obsidianBlockEntity.setChanged();
+                level.sendBlockUpdated(pos, state, state, 3);
+            }
+            if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
+                shadowObsidianBlockEntity.setOwner(herobrine.getUUID());
+                shadowObsidianBlockEntity.setChanged();
+                level.sendBlockUpdated(pos, state, state, 3);
+            }
+            if (blockEntity instanceof CryingObsidianBlockEntity cryingObsidianBlockEntity) {
+                cryingObsidianBlockEntity.setOwner(herobrine.getUUID());
+                cryingObsidianBlockEntity.setChanged();
+                level.sendBlockUpdated(pos, state, state, 3);
+            }
         }
     }
 
@@ -275,7 +292,7 @@ public class HerobrineUtil {
             final BlockPos pos = sequence[i];
             new DelayedTask(i * Math.max(1, tickGap)) {
                 @Override public void run() {
-                    placeIfReplaceable(level, pos, state);
+                    placeIfReplaceable(level, pos, state, entity);
                 }
             };
         }
@@ -347,7 +364,7 @@ public class HerobrineUtil {
                     side.getStepZ() * localX
             );
 
-            placeIfReplaceable(level, p, state);
+            placeIfReplaceable(level, p, state, entity);
         }
     }
 
@@ -389,17 +406,15 @@ public class HerobrineUtil {
                     if (level.getBlockState(pos).isAir()) {
                         level.setBlock(pos, obsidianState, Block.UPDATE_ALL);
                         BlockEntity blockEntity = level.getBlockEntity(pos);
-                        if (caster instanceof Player) {
-                            if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
-                                obsidianBlockEntity.setOwner(caster.getUUID());
-                                obsidianBlockEntity.setChanged();
-                                level.sendBlockUpdated(pos, obsidianState, obsidianState, 3);
-                            }
-                            if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
-                                shadowObsidianBlockEntity.setOwner(caster.getUUID());
-                                shadowObsidianBlockEntity.setChanged();
-                                level.sendBlockUpdated(pos, obsidianState, obsidianState, 3);
-                            }
+                        if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
+                            obsidianBlockEntity.setOwner(caster.getUUID());
+                            obsidianBlockEntity.setChanged();
+                            level.sendBlockUpdated(pos, obsidianState, obsidianState, 3);
+                        }
+                        if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
+                            shadowObsidianBlockEntity.setOwner(caster.getUUID());
+                            shadowObsidianBlockEntity.setChanged();
+                            level.sendBlockUpdated(pos, obsidianState, obsidianState, 3);
                         }
                     }
                 }
@@ -443,17 +458,15 @@ public class HerobrineUtil {
                     if (level.getBlockState(pos).isAir()) {
                         level.setBlock(pos, obsidianState, Block.UPDATE_ALL);
                         BlockEntity blockEntity = level.getBlockEntity(pos);
-                        if (caster instanceof Player) {
-                            if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
-                                obsidianBlockEntity.setOwner(caster.getUUID());
-                                obsidianBlockEntity.setChanged();
-                                level.sendBlockUpdated(pos, obsidianState, obsidianState, 3);
-                            }
-                            if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
-                                shadowObsidianBlockEntity.setOwner(caster.getUUID());
-                                shadowObsidianBlockEntity.setChanged();
-                                level.sendBlockUpdated(pos, obsidianState, obsidianState, 3);
-                            }
+                        if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
+                            obsidianBlockEntity.setOwner(caster.getUUID());
+                            obsidianBlockEntity.setChanged();
+                            level.sendBlockUpdated(pos, obsidianState, obsidianState, 3);
+                        }
+                        if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
+                            shadowObsidianBlockEntity.setOwner(caster.getUUID());
+                            shadowObsidianBlockEntity.setChanged();
+                            level.sendBlockUpdated(pos, obsidianState, obsidianState, 3);
                         }
                     }
                 }
@@ -468,17 +481,15 @@ public class HerobrineUtil {
             if (level.getBlockState(pos).isAir()) {
                 level.setBlock(pos, state, Block.UPDATE_ALL);
                 BlockEntity blockEntity = level.getBlockEntity(pos);
-                if (caster instanceof Player) {
-                    if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
-                        obsidianBlockEntity.setOwner(caster.getUUID());
-                        obsidianBlockEntity.setChanged();
-                        level.sendBlockUpdated(pos, state, state, 3);
-                    }
-                    if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
-                        shadowObsidianBlockEntity.setOwner(caster.getUUID());
-                        shadowObsidianBlockEntity.setChanged();
-                        level.sendBlockUpdated(pos, state, state, 3);
-                    }
+                if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
+                    obsidianBlockEntity.setOwner(caster.getUUID());
+                    obsidianBlockEntity.setChanged();
+                    level.sendBlockUpdated(pos, state, state, 3);
+                }
+                if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
+                    shadowObsidianBlockEntity.setOwner(caster.getUUID());
+                    shadowObsidianBlockEntity.setChanged();
+                    level.sendBlockUpdated(pos, state, state, 3);
                 }
             }
         }
@@ -490,17 +501,15 @@ public class HerobrineUtil {
         if (level.getBlockState(pos).isAir()) {
             level.setBlock(pos, state, Block.UPDATE_ALL);
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (caster instanceof Player) {
-                if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
-                    obsidianBlockEntity.setOwner(caster.getUUID());
-                    obsidianBlockEntity.setChanged();
-                    level.sendBlockUpdated(pos, state, state, 3);
-                }
-                if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
-                    shadowObsidianBlockEntity.setOwner(caster.getUUID());
-                    shadowObsidianBlockEntity.setChanged();
-                    level.sendBlockUpdated(pos, state, state, 3);
-                }
+            if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
+                obsidianBlockEntity.setOwner(caster.getUUID());
+                obsidianBlockEntity.setChanged();
+                level.sendBlockUpdated(pos, state, state, 3);
+            }
+            if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
+                shadowObsidianBlockEntity.setOwner(caster.getUUID());
+                shadowObsidianBlockEntity.setChanged();
+                level.sendBlockUpdated(pos, state, state, 3);
             }
         }
     }
@@ -588,17 +597,15 @@ public class HerobrineUtil {
                     if (level.getBlockState(pos).isAir()) {
                         level.setBlock(pos, obsidianState, Block.UPDATE_ALL);
                         BlockEntity blockEntity = level.getBlockEntity(pos);
-                        if (caster instanceof Player) {
-                            if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
-                                obsidianBlockEntity.setOwner(caster.getUUID());
-                                obsidianBlockEntity.setChanged();
-                                level.sendBlockUpdated(pos, obsidianState, obsidianState, 3);
-                            }
-                            if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
-                                shadowObsidianBlockEntity.setOwner(caster.getUUID());
-                                shadowObsidianBlockEntity.setChanged();
-                                level.sendBlockUpdated(pos, obsidianState, obsidianState, 3);
-                            }
+                        if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
+                            obsidianBlockEntity.setOwner(caster.getUUID());
+                            obsidianBlockEntity.setChanged();
+                            level.sendBlockUpdated(pos, obsidianState, obsidianState, 3);
+                        }
+                        if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
+                            shadowObsidianBlockEntity.setOwner(caster.getUUID());
+                            shadowObsidianBlockEntity.setChanged();
+                            level.sendBlockUpdated(pos, obsidianState, obsidianState, 3);
                         }
                     }
                 }

@@ -165,9 +165,9 @@ public class BlockProjectileEntity extends ThrowableProjectile {
                 BlockState placeState;
                 if (getCarriedBlock().is(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_SHORT_PILLAR.get())) {
                     placeState = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_LONG_PILLAR.get().defaultBlockState();
-                     if (owner != null && placeState.hasProperty(ShadowObsidianLongPillarBlock.FROM_PLAYER)) {
-                         placeState = placeState.setValue(ShadowObsidianLongPillarBlock.FROM_PLAYER, true);
-                     }
+                    if (owner != null && placeState.hasProperty(ShadowObsidianLongPillarBlock.FROM_PLAYER)) {
+                        placeState = placeState.setValue(ShadowObsidianLongPillarBlock.FROM_PLAYER, true);
+                    }
                 } else if (getCarriedBlock().is(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get())) {
                     placeState = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().defaultBlockState();
                     if (owner != null && placeState.hasProperty(ShadowObsidianBlock.FROM_PLAYER)) {

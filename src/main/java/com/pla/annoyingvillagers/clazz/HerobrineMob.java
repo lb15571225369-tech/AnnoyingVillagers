@@ -5,6 +5,9 @@ import javax.annotation.Nullable;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.block.ObsidianBlock;
+import com.pla.annoyingvillagers.blockentity.CryingObsidianBlockEntity;
+import com.pla.annoyingvillagers.blockentity.ObsidianBlockEntity;
+import com.pla.annoyingvillagers.blockentity.ShadowObsidianBlockEntity;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.*;
@@ -36,6 +39,7 @@ import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -43,6 +47,8 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Fluid;
@@ -644,12 +650,27 @@ public class HerobrineMob extends Monster {
                 FluidState fluidState = this.level().getFluidState(lastFeetPos);
                 if (!fluidState.isEmpty()) {
                     int replace = fluidState.is(FluidTags.WATER) ? 1 : (fluidState.is(FluidTags.LAVA) ? 2 : 0);
+                    BlockState state = block.defaultBlockState().setValue(HerobrineObsidianBlock.REPLACE_BY_LIQUID, replace);
                     this.level().setBlockAndUpdate(
                             lastFeetPos,
-                            block
-                                    .defaultBlockState()
-                                    .setValue(ObsidianBlock.REPLACE_BY_LIQUID, replace)
+                            state
                     );
+                    BlockEntity blockEntity = this.level().getBlockEntity(lastFeetPos);
+                    if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
+                        obsidianBlockEntity.setOwner(this.getUUID());
+                        obsidianBlockEntity.setChanged();
+                        this.level().sendBlockUpdated(lastFeetPos, state, state, 3);
+                    }
+                    if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
+                        shadowObsidianBlockEntity.setOwner(this.getUUID());
+                        shadowObsidianBlockEntity.setChanged();
+                        this.level().sendBlockUpdated(lastFeetPos, state, state, 3);
+                    }
+                    if (blockEntity instanceof CryingObsidianBlockEntity cryingObsidianBlockEntity) {
+                        cryingObsidianBlockEntity.setOwner(this.getUUID());
+                        cryingObsidianBlockEntity.setChanged();
+                        this.level().sendBlockUpdated(lastFeetPos, state, state, 3);
+                    }
                 }
             }
             lastFeetPos = feet;
