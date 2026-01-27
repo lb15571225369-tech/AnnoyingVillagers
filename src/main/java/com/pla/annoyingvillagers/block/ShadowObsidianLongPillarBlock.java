@@ -7,6 +7,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.skill.ShadowObsidianPillarSkill;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -15,17 +16,21 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
@@ -36,6 +41,8 @@ import yesman.epicfight.world.damagesource.StunType;
 import java.util.Random;
 
 public class ShadowObsidianLongPillarBlock extends HerobrineObsidianBlock implements EntityBlock {
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+
     public ShadowObsidianLongPillarBlock() {
         super(Properties.of()
                 .sound(SoundType.STONE)
@@ -46,6 +53,32 @@ public class ShadowObsidianLongPillarBlock extends HerobrineObsidianBlock implem
                 .emissiveRendering((blockstate, blockgetter, blockpos) -> true)
                 .isRedstoneConductor((blockstate, blockgetter, blockpos) -> false)
                 .dynamicShape());
+        super.registerDefaultState(
+                super.getStateDefinition().any().setValue(FACING, Direction.NORTH)
+        );
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(FACING);
+    }
+
+    @Override
+    public BlockState rotate(BlockState state, Rotation rotation) {
+        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
+    }
+
+    @Override
+    public BlockState mirror(BlockState state, Mirror mirror) {
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
+    }
+
+    @Override
+    public BlockState getStateForPlacement(@NotNull BlockPlaceContext blockPlaceContext) {
+        BlockState state = super.getStateForPlacement(blockPlaceContext);
+        if (state == null) state = this.defaultBlockState();
+        return state.setValue(FACING, blockPlaceContext.getHorizontalDirection().getOpposite());
     }
 
     public @NotNull VoxelShape getShape(@NotNull BlockState blockstate, @NotNull BlockGetter blockgetter, @NotNull BlockPos blockpos, @NotNull CollisionContext collisioncontext) {
@@ -104,10 +137,17 @@ public class ShadowObsidianLongPillarBlock extends HerobrineObsidianBlock implem
                 0, 0, 0,
                 0.1
         );
+        if (entity instanceof Mob mob) {
+            LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+            if (livingEntityPatch != null && !livingEntityPatch.isStunned()) {
+                livingEntityPatch.applyStun(StunType.SHORT, 1.0F);
+            }
+            mob.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 2, 8, false, false));
+        }
         if (owner != null) {
             if (owner instanceof Player player) {
                 entity.hurt(entity.level().damageSources().playerAttack(player), 1.0F);
-                increaseSkillPoint(player, 1.0F);
+                increaseSkillPoint(player, 0.2F);
             } else {
                 entity.hurt(entity.level().damageSources().mobAttack((LivingEntity) owner), 1.0F);
             }
@@ -122,13 +162,6 @@ public class ShadowObsidianLongPillarBlock extends HerobrineObsidianBlock implem
                 double dz = blockPos.getZ() - entity.getZ();
                 livingEntity.knockback(strength, dx, dz);
             }
-        }
-        if (entity instanceof Mob mob) {
-            LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
-            if (livingEntityPatch != null) {
-                livingEntityPatch.applyStun(StunType.SHORT, 2.0F);
-            }
-            mob.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 2, 8, false, false));
         }
     }
 

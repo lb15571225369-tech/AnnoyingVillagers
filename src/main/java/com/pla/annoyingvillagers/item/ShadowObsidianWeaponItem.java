@@ -37,7 +37,7 @@ public class ShadowObsidianWeaponItem extends SwordItem {
             }
 
             public @NotNull Ingredient getRepairIngredient() {
-                return Ingredient.of(new ItemStack(AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()));
+                return Ingredient.of(new ItemStack(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()));
             }
         }, 3, 0.5F, (new Properties()).fireResistant());
     }

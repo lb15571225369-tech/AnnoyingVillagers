@@ -235,6 +235,29 @@ public class SpecialAttackOnKeyPressedEvent {
                     return;
                 }
             }
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get())) {
+                if (entity.level() instanceof ServerLevel) {
+                    boolean success = false;
+                    PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(player, PlayerPatch.class);
+                    if (playerPatch instanceof ServerPlayerPatch serverPlayerPatch) {
+                        SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.SHADOW_OBSIDIAN_PILLAR);
+                        if (skillContainer != null && skillContainer.getStack() >= 1
+                                && entity.level() instanceof ServerLevel
+                                && skillContainer.getSkill() instanceof ShadowObsidianPillarSkill shadowObsidianPillarSkill) {
+                            success = true;
+                            shadowObsidianPillarSkill.getResourceType().consumer
+                                    .consume(skillContainer, serverPlayerPatch, shadowObsidianPillarSkill.getDefaultConsumptionAmount(serverPlayerPatch));
+                        }
+                    }
+                    if (success) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.OBSIDIAN_ANTITHEUS_ASCENDED_DEATHFALL, 0.0F);
+                    } else {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.OBSIDIAN_INFERNAL_AUTO_2, 0.0F);
+                    }
+                    player.getPersistentData().putInt(NBT_SPECIAL_CD, 2);
+                    return;
+                }
+            }
             if (holdingItem.getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get())
                     || offHandItem.getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get())) {
                 if (entity.level() instanceof ServerLevel) {

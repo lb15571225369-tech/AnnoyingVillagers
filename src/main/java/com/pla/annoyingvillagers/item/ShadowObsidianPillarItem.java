@@ -1,10 +1,11 @@
 package com.pla.annoyingvillagers.item;
 
-import com.pla.annoyingvillagers.procedures.ShadowObsidianPillarItemOnUseProcedure;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.procedures.ShadowObsidianPillarSpecialAttackProcedure;
+import com.pla.annoyingvillagers.util.HerobrineUtil;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -12,7 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
@@ -28,15 +28,15 @@ public class ShadowObsidianPillarItem extends SwordItem {
             }
 
             public float getSpeed() {
-                return 4.0F;
+                return 50.0F;
             }
 
             public float getAttackDamageBonus() {
-                return 8.0F;
+                return 2.0F;
             }
 
             public int getLevel() {
-                return 4;
+                return 1;
             }
 
             public int getEnchantmentValue() {
@@ -44,16 +44,23 @@ public class ShadowObsidianPillarItem extends SwordItem {
             }
 
             public @NotNull Ingredient getRepairIngredient() {
-                return Ingredient.of();
+                return Ingredient.of(new ItemStack(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()));
             }
-        }, 3, -1.0F, (new Properties()));
+        }, 3, 0.5F, (new Properties()).fireResistant());
     }
 
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand interactionhand) {
-        ItemStack stack = player.getItemInHand(interactionhand);
-        ShadowObsidianPillarItemOnUseProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, stack, interactionhand);
-        return InteractionResultHolder.success(stack);
-    }
+//    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand interactionhand) {
+//        ItemStack stack = player.getItemInHand(interactionhand);
+////        ShadowObsidianPillarItemOnUseProcedure.execute(level, player.getX(), player.getY(), player.getZ(), player, stack, interactionhand);
+//        if (level instanceof ServerLevel serverLevel) {
+//            if (player.isShiftKeyDown()) {
+//                HerobrineUtil.summonShadowObsidianLongPillarDefense(serverLevel, player);
+//            } else {
+//                HerobrineUtil.summonShadowObsidianLongPillarShootToward(serverLevel, player);
+//            }
+//        }
+//        return InteractionResultHolder.success(stack);
+//    }
 
     @Override
     public void appendHoverText(@NotNull ItemStack itemstack, Level level, @NotNull List<Component> list, @NotNull TooltipFlag tooltipflag) {

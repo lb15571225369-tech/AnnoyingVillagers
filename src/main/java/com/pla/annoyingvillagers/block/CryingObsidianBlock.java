@@ -24,6 +24,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.util.ForgeSoundType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
@@ -135,7 +136,7 @@ public class CryingObsidianBlock extends HerobrineObsidianBlock implements Entit
                 public void run() {
                     if (entity.level() instanceof ServerLevel) {
                         LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
-                        if (livingEntityPatch != null) {
+                        if (livingEntityPatch != null && !livingEntityPatch.isStunned()) {
                             livingEntityPatch.applyStun(StunType.LONG, 10.0F);
                         }
                     }
@@ -148,7 +149,7 @@ public class CryingObsidianBlock extends HerobrineObsidianBlock implements Entit
                     public void run() {
                         if (entity.level() instanceof ServerLevel) {
                             LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
-                            if (livingEntityPatch != null) {
+                            if (livingEntityPatch != null && !livingEntityPatch.isStunned()) {
                                 livingEntityPatch.applyStun(StunType.KNOCKDOWN, 10.0F);
                             }
                         }

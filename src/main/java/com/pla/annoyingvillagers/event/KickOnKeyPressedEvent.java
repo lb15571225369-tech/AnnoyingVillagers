@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.event;
 
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.item.ObsidianWeaponItem;
+import com.pla.annoyingvillagers.item.ShadowObsidianPillarItem;
 import com.pla.annoyingvillagers.item.ShadowObsidianWeaponItem;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.world.InteractionHand;
@@ -50,7 +51,8 @@ public class KickOnKeyPressedEvent {
 
                 // Kick by weapon
                 if (((LivingEntity) entity).getMainHandItem().getItem() instanceof ObsidianWeaponItem
-                        || ((LivingEntity) entity).getMainHandItem().getItem() instanceof ShadowObsidianWeaponItem) {
+                        || ((LivingEntity) entity).getMainHandItem().getItem() instanceof ShadowObsidianWeaponItem
+                        || ((LivingEntity) entity).getMainHandItem().getItem() instanceof ShadowObsidianPillarItem) {
                     entity.getPersistentData().putInt(NBT_KICK_CD, 1);
                     double combo = entity.getPersistentData().contains(NBT_KICK_COMBO)
                             ? entity.getPersistentData().getDouble(NBT_KICK_COMBO)
@@ -65,8 +67,11 @@ public class KickOnKeyPressedEvent {
                     } else if (combo == 2.0) {
                         livingEntityPatch.playAnimationSynchronized(AVAnimations.OBSIDIAN_KICK_AUTO_1, 0.0F);
                         entity.getPersistentData().putDouble(NBT_KICK_COMBO, 3);
+                    } else if (combo == 3.0) {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.OBSIDIAN_KICK_AUTO_1, 0.0F);
+                        entity.getPersistentData().putDouble(NBT_KICK_COMBO, 4);
                     } else {
-                        livingEntityPatch.playAnimationSynchronized(AVAnimations.OBSIDIAN_KICK_AUTO_3, 0.0F);
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.OBSIDIAN_WHIRLWIND_KICK, 0.0F);
                         entity.getPersistentData().remove(NBT_KICK_COMBO);
                     }
                     return;

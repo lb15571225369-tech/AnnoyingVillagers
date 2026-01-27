@@ -1,11 +1,12 @@
 package com.pla.annoyingvillagers.util;
 
-import com.pla.annoyingvillagers.blockentity.CryingObsidianBlockEntity;
-import com.pla.annoyingvillagers.blockentity.ObsidianBlockEntity;
-import com.pla.annoyingvillagers.blockentity.ShadowObsidianBlockEntity;
+import com.pla.annoyingvillagers.blockentity.*;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
+import com.pla.annoyingvillagers.clazz.HerobrineObsidianBlock;
+import com.pla.annoyingvillagers.clazz.ProjectileBreakableBlocks;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.*;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
@@ -19,6 +20,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -26,6 +29,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -54,26 +58,45 @@ public class HerobrineUtil {
                 || e instanceof EliteHerobrineKnockedEntity;
     }
 
-    private static void placeIfReplaceable(ServerLevel level, BlockPos pos, BlockState state, Entity herobrine) {
-        if (level.getBlockState(pos).canBeReplaced()) {
-            level.setBlockAndUpdate(pos, state);
-            BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
-                obsidianBlockEntity.setOwner(herobrine.getUUID());
-                obsidianBlockEntity.setChanged();
-                level.sendBlockUpdated(pos, state, state, 3);
-            }
-            if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
-                shadowObsidianBlockEntity.setOwner(herobrine.getUUID());
-                shadowObsidianBlockEntity.setChanged();
-                level.sendBlockUpdated(pos, state, state, 3);
-            }
-            if (blockEntity instanceof CryingObsidianBlockEntity cryingObsidianBlockEntity) {
-                cryingObsidianBlockEntity.setOwner(herobrine.getUUID());
-                cryingObsidianBlockEntity.setChanged();
-                level.sendBlockUpdated(pos, state, state, 3);
+    private static void placeIfReplaceable(ServerLevel level, BlockPos pos, BlockState state, Entity ownerEntity) {
+        if (!level.isLoaded(pos)) return;
+
+        BlockState existingState = level.getBlockState(pos);
+        if (!existingState.canBeReplaced()) {
+            ProjectileBreakableBlocks rule = ProjectileBreakableBlocks.find(existingState);
+            if (rule == null) return;
+            boolean requiresTool = existingState.requiresCorrectToolForDrops();
+            boolean destroyed = level.destroyBlock(pos, true, ownerEntity);
+            if (!destroyed) return;
+            if (requiresTool) {
+                Item item = existingState.getBlock().asItem();
+                if (item != Items.AIR) {
+                    Block.popResource(level, pos, new ItemStack(item));
+                }
             }
         }
+        if (!level.getBlockState(pos).canBeReplaced()) return;
+
+        level.setBlockAndUpdate(pos, state);
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (blockEntity == null) return;
+
+        if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
+            obsidianBlockEntity.setOwner(ownerEntity.getUUID());
+        } else if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
+            shadowObsidianBlockEntity.setOwner(ownerEntity.getUUID());
+        } else if (blockEntity instanceof CryingObsidianBlockEntity cryingObsidianBlockEntity) {
+            cryingObsidianBlockEntity.setOwner(ownerEntity.getUUID());
+        } else if (blockEntity instanceof ShadowObsidianShortPillarBlockEntity shadowObsidianShortPillarBlockEntity) {
+            shadowObsidianShortPillarBlockEntity.setOwner(ownerEntity.getUUID());
+        } else if (blockEntity instanceof ShadowObsidianMiddlePillarBlockEntity shadowObsidianMiddlePillarBlockEntity) {
+            shadowObsidianMiddlePillarBlockEntity.setOwner(ownerEntity.getUUID());
+        } else if (blockEntity instanceof ShadowObsidianLongPillarBlockEntity shadowObsidianLongPillarBlockEntity) {
+            shadowObsidianLongPillarBlockEntity.setOwner(ownerEntity.getUUID());
+        }
+
+        blockEntity.setChanged();
+        level.sendBlockUpdated(pos, state, state, 3);
     }
 
     private static Basis basisFromEntity(Entity e) {
@@ -368,19 +391,29 @@ public class HerobrineUtil {
         }
     }
 
-    public static void summonObsidianBlocksInfrontOf(ServerLevel level, LivingEntity caster, BlockState obsidianState, int amount, Joint joint) {
+    public static void summonObsidianBlocksInfrontOf(ServerLevel level,
+                                                     LivingEntity caster,
+                                                     BlockState obsidianState,
+                                                     int amount,
+                                                     Joint joint) {
         if (level == null || caster == null) return;
+
+        final Vec3[] lockedEye = { null };
+        final Vec3[] lockedDir = { null };
         final int[] anchorY = { Integer.MIN_VALUE };
 
         for (int i = 1; i <= amount; i++) {
             final int forwardBlock = i + 1;
 
             new DelayedTask(i) {
-                @Override
-                public void run() {
+                @Override public void run() {
                     if (!caster.isAlive()) return;
-                    final Vec3 eyeNow = caster.getEyePosition(1.0F);
-                    final Vec3 dirNow = caster.getLookAngle().normalize();
+                    if (caster.level() != level) return;
+
+                    if (lockedDir[0] == null) {
+                        lockedEye[0] = caster.getEyePosition(1.0F);
+                        lockedDir[0] = caster.getLookAngle().normalize();
+                    }
 
                     Vec3 placeVec;
 
@@ -390,33 +423,17 @@ public class HerobrineUtil {
                                 joint, 0.0F, 0.0F
                         );
                         if (jointVec == null) return;
-                        placeVec = jointVec.add(dirNow.scale(1.0D));
 
-                        BlockPos firstPos = BlockPos.containing(placeVec);
-                        anchorY[0] = firstPos.getY();
+                        placeVec = jointVec.add(lockedDir[0].scale(1.0D));
+                        anchorY[0] = BlockPos.containing(placeVec).getY();
                     } else {
                         if (anchorY[0] == Integer.MIN_VALUE) return;
-                        Vec3 target = eyeNow.add(dirNow.scale(forwardBlock));
+
+                        Vec3 target = lockedEye[0].add(lockedDir[0].scale(forwardBlock));
                         placeVec = new Vec3(target.x, anchorY[0] + 0.5D, target.z);
                     }
 
-                    BlockPos pos = BlockPos.containing(placeVec);
-                    if (!level.isLoaded(pos)) return;
-
-                    if (level.getBlockState(pos).isAir()) {
-                        level.setBlock(pos, obsidianState, Block.UPDATE_ALL);
-                        BlockEntity blockEntity = level.getBlockEntity(pos);
-                        if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
-                            obsidianBlockEntity.setOwner(caster.getUUID());
-                            obsidianBlockEntity.setChanged();
-                            level.sendBlockUpdated(pos, obsidianState, obsidianState, 3);
-                        }
-                        if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
-                            shadowObsidianBlockEntity.setOwner(caster.getUUID());
-                            shadowObsidianBlockEntity.setChanged();
-                            level.sendBlockUpdated(pos, obsidianState, obsidianState, 3);
-                        }
-                    }
+                    placeIfReplaceable(level, BlockPos.containing(placeVec), obsidianState, caster);
                 }
             };
         }
@@ -454,21 +471,7 @@ public class HerobrineUtil {
             for (int y = minY; y <= maxY; y++) {
                 for (int z = minZ; z <= maxZ; z++) {
                     pos.set(x, y, z);
-                    if (!level.isLoaded(pos)) continue;
-                    if (level.getBlockState(pos).isAir()) {
-                        level.setBlock(pos, obsidianState, Block.UPDATE_ALL);
-                        BlockEntity blockEntity = level.getBlockEntity(pos);
-                        if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
-                            obsidianBlockEntity.setOwner(caster.getUUID());
-                            obsidianBlockEntity.setChanged();
-                            level.sendBlockUpdated(pos, obsidianState, obsidianState, 3);
-                        }
-                        if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
-                            shadowObsidianBlockEntity.setOwner(caster.getUUID());
-                            shadowObsidianBlockEntity.setChanged();
-                            level.sendBlockUpdated(pos, obsidianState, obsidianState, 3);
-                        }
-                    }
+                    placeIfReplaceable(level, pos, obsidianState, caster);
                 }
             }
         }
@@ -477,41 +480,13 @@ public class HerobrineUtil {
     private static void placePillarWorldOffsets(ServerLevel level, Vec3 eye, int dx, int dz, BlockState state, LivingEntity caster) {
         for (int dy = -1; dy <= 1; dy++) {
             BlockPos pos = BlockPos.containing(eye.x + dx, eye.y + dy, eye.z + dz);
-            if (!level.isLoaded(pos)) continue;
-            if (level.getBlockState(pos).isAir()) {
-                level.setBlock(pos, state, Block.UPDATE_ALL);
-                BlockEntity blockEntity = level.getBlockEntity(pos);
-                if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
-                    obsidianBlockEntity.setOwner(caster.getUUID());
-                    obsidianBlockEntity.setChanged();
-                    level.sendBlockUpdated(pos, state, state, 3);
-                }
-                if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
-                    shadowObsidianBlockEntity.setOwner(caster.getUUID());
-                    shadowObsidianBlockEntity.setChanged();
-                    level.sendBlockUpdated(pos, state, state, 3);
-                }
-            }
+            placeIfReplaceable(level, pos, state, caster);
         }
     }
 
     private static void placeSingleWorldOffset(ServerLevel level, Vec3 eye, int dx, int dy, int dz, BlockState state, LivingEntity caster) {
         BlockPos pos = BlockPos.containing(eye.x + dx, eye.y + dy, eye.z + dz);
-        if (!level.isLoaded(pos)) return;
-        if (level.getBlockState(pos).isAir()) {
-            level.setBlock(pos, state, Block.UPDATE_ALL);
-            BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
-                obsidianBlockEntity.setOwner(caster.getUUID());
-                obsidianBlockEntity.setChanged();
-                level.sendBlockUpdated(pos, state, state, 3);
-            }
-            if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
-                shadowObsidianBlockEntity.setOwner(caster.getUUID());
-                shadowObsidianBlockEntity.setChanged();
-                level.sendBlockUpdated(pos, state, state, 3);
-            }
-        }
+        placeIfReplaceable(level, pos, state, caster);
     }
 
     public static void summonObsidianCross(ServerLevel level, LivingEntity caster, BlockState obsidianState) {
@@ -573,6 +548,40 @@ public class HerobrineUtil {
         };
     }
 
+    private static void placePillarWorldOffsetsHeight(ServerLevel level, Vec3 eye,
+                                                      int dx, int dz,
+                                                      int minDy, int maxDy,
+                                                      BlockState state, LivingEntity caster) {
+        for (int dy = minDy; dy <= maxDy; dy++) {
+            BlockPos pos = BlockPos.containing(eye.x + dx, eye.y + dy, eye.z + dz);
+            placeIfReplaceable(level, pos, state, caster);
+        }
+    }
+
+    public static void summonObsidianSmallCross(ServerLevel level, LivingEntity caster, BlockState obsidianState) {
+        if (level == null || caster == null) return;
+
+        new DelayedTask(2) {
+            @Override public void run() {
+                if (!caster.isAlive()) return;
+                if (caster.level() != level) return;
+
+                Vec3 eye = caster.getEyePosition(1.0F);
+
+                boolean isLongPillar = obsidianState.is(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_LONG_PILLAR.get());
+                int minDy = -1;
+                int maxDy = isLongPillar ? -1 : 0;
+                int d = 3;
+
+                placePillarWorldOffsetsHeight(level, eye, 0,  d, minDy, maxDy, obsidianState, caster);
+                placePillarWorldOffsetsHeight(level, eye, 0, -d, minDy, maxDy, obsidianState, caster);
+
+                placePillarWorldOffsetsHeight(level, eye,  d, 0, minDy, maxDy, obsidianState, caster);
+                placePillarWorldOffsetsHeight(level, eye, -d, 0, minDy, maxDy, obsidianState, caster);
+            }
+        };
+    }
+
     public static void summonObsidianPillar(ServerLevel level, LivingEntity caster, BlockState obsidianState) {
         if (level == null || caster == null) return;
 
@@ -592,24 +601,253 @@ public class HerobrineUtil {
                     if (!caster.isAlive()) return;
 
                     BlockPos pos = base.above(yOffset);
-                    if (!level.isLoaded(pos)) return;
-
-                    if (level.getBlockState(pos).isAir()) {
-                        level.setBlock(pos, obsidianState, Block.UPDATE_ALL);
-                        BlockEntity blockEntity = level.getBlockEntity(pos);
-                        if (blockEntity instanceof ObsidianBlockEntity obsidianBlockEntity) {
-                            obsidianBlockEntity.setOwner(caster.getUUID());
-                            obsidianBlockEntity.setChanged();
-                            level.sendBlockUpdated(pos, obsidianState, obsidianState, 3);
-                        }
-                        if (blockEntity instanceof ShadowObsidianBlockEntity shadowObsidianBlockEntity) {
-                            shadowObsidianBlockEntity.setOwner(caster.getUUID());
-                            shadowObsidianBlockEntity.setChanged();
-                            level.sendBlockUpdated(pos, obsidianState, obsidianState, 3);
-                        }
-                    }
+                    placeIfReplaceable(level, pos, obsidianState, caster);
                 }
             };
         }
+    }
+
+    public static void summonShadowObsidianShortPillarShootToward(ServerLevel level, Entity ownerEntity, int maxDistance, Joint joint) {
+        if (level == null || ownerEntity == null) return;
+
+        BlockState baseState = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_SHORT_PILLAR.get()
+                .defaultBlockState()
+                .setValue(HerobrineObsidianBlock.FROM_PLAYER, ownerEntity instanceof Player)
+                .setValue(BlockStateProperties.HORIZONTAL_FACING, ownerEntity.getDirection());
+
+        summonPillarsTowardJoint(level, ownerEntity, baseState, Math.max(2, maxDistance), joint);
+    }
+
+    public static void summonShadowObsidianMiddlePillarShootToward(ServerLevel level, Entity ownerEntity, Joint joint) {
+        if (level == null || ownerEntity == null) return;
+
+        BlockState baseState = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_MIDDLE_PILLAR.get()
+                .defaultBlockState()
+                .setValue(HerobrineObsidianBlock.FROM_PLAYER, ownerEntity instanceof Player)
+                .setValue(BlockStateProperties.HORIZONTAL_FACING, ownerEntity.getDirection());
+        summonPillarsTowardJoint(level, ownerEntity, baseState, 10, joint);
+    }
+
+    private static void summonPillarsTowardJoint(ServerLevel level,
+                                                 Entity ownerEntity,
+                                                 BlockState blockState,
+                                                 int maxDistance,
+                                                 Joint joint) {
+        final Vec3[] lockedDir = { null };
+        final Vec3[] lockedJoint = { null };
+        final Direction[] lockedFacing = { null };
+        final int[] anchorY = { Integer.MIN_VALUE };
+
+        for (int dist = 2; dist <= maxDistance + 1; dist++) {
+            final int d = dist;
+
+            new DelayedTask(d) {
+                @Override public void run() {
+                    if (!ownerEntity.isAlive()) return;
+                    if (ownerEntity.level() != level) return;
+                    if (lockedDir[0] == null) {
+                        lockedDir[0] = ownerEntity.getLookAngle().normalize();
+                        lockedFacing[0] = ownerEntity.getDirection();
+
+                        lockedJoint[0] = EpicfightUtil.getJointWithTranslation(
+                                ownerEntity, new Vec3f(0, 0, 0),
+                                joint, 0.0F, 0.0F
+                        );
+                        if (lockedJoint[0] == null) return;
+                    }
+
+                    BlockState stateNow = blockState;
+                    if (stateNow.hasProperty(BlockStateProperties.HORIZONTAL_FACING) && lockedFacing[0] != null) {
+                        stateNow = stateNow.setValue(BlockStateProperties.HORIZONTAL_FACING, lockedFacing[0]);
+                    }
+
+                    Vec3 raw = lockedJoint[0].add(lockedDir[0].scale(d));
+
+                    if (d == 2) {
+                        anchorY[0] = BlockPos.containing(raw).getY();
+                    } else if (anchorY[0] == Integer.MIN_VALUE) {
+                        return;
+                    }
+
+                    Vec3 placeVec = (d == 2)
+                            ? raw
+                            : new Vec3(raw.x, anchorY[0] + 0.5D, raw.z);
+
+                    placeIfReplaceable(level, BlockPos.containing(placeVec), stateNow, ownerEntity);
+                }
+            };
+        }
+    }
+
+    public static void summonShadowObsidianLongPillarDefense(ServerLevel level, Entity ownerEntity) {
+        if (level == null || ownerEntity == null) return;
+
+        if (!ownerEntity.isAlive()) return;
+        if (ownerEntity.level() != level) return;
+
+        BlockState longPillarState = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_LONG_PILLAR.get()
+                .defaultBlockState()
+                .setValue(HerobrineObsidianBlock.FROM_PLAYER, ownerEntity instanceof Player)
+                .setValue(BlockStateProperties.HORIZONTAL_FACING, ownerEntity.getDirection());
+        Vec3 origin = ownerEntity.getEyePosition(1.0F);
+        Vec3 forward = ownerEntity.getLookAngle().normalize();
+        Vec3 worldUp = new Vec3(0.0D, 1.0D, 0.0D);
+        Vec3 left = forward.cross(worldUp);
+        if (left.lengthSqr() < 1.0E-6D) {
+            Direction facing = ownerEntity.getDirection();
+            Direction leftDir = facing.getCounterClockWise();
+            left = new Vec3(leftDir.getStepX(), 0.0D, leftDir.getStepZ());
+        } else {
+            left = left.normalize();
+        }
+
+        Vec3 up = left.cross(forward).normalize();
+        int[][] localOffsets = {
+                { 0, -1, 2},
+                {-1, -1, 2},
+                { 1, -1, 2},
+                {-2, -1, 2},
+                { 2, -1, 2},
+
+                { 0, -1, 3},
+                {-1, -1, 3},
+                { 1, -1, 3},
+        };
+
+        for (int[] o : localOffsets) {
+            int dx = o[0];
+            int dy = o[1];
+            int dz = o[2];
+
+            Vec3 target = origin
+                    .add(left.scale(dx))
+                    .add(up.scale(dy))
+                    .add(forward.scale(dz));
+
+            BlockPos pos = BlockPos.containing(target);
+            if (level.getBlockState(pos).isAir()) {
+                placeIfReplaceable(level, pos, longPillarState, ownerEntity);
+            }
+        }
+    }
+
+    public static void summonShadowObsidianLongPillarDefenseWide(ServerLevel level, Entity ownerEntity) {
+        int startDistance = 2;
+        int depth = 5;
+        int maxHalfWidth = 4;
+        int dy = -1;
+        int startDelay = 2;
+        if (level == null || ownerEntity == null) return;
+        if (!ownerEntity.isAlive()) return;
+        if (ownerEntity.level() != level) return;
+        BlockState longPillarState = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_LONG_PILLAR.get()
+                .defaultBlockState()
+                .setValue(HerobrineObsidianBlock.FROM_PLAYER, ownerEntity instanceof Player)
+                .setValue(BlockStateProperties.HORIZONTAL_FACING, ownerEntity.getDirection());
+
+        final Vec3 origin = ownerEntity.getEyePosition(1.0F);
+        Vec3 look = ownerEntity.getLookAngle();
+        Vec3 forward = new Vec3(look.x, 0.0D, look.z);
+        if (forward.lengthSqr() < 1.0E-6D) {
+            Direction dir = ownerEntity.getDirection();
+            forward = new Vec3(dir.getStepX(), 0.0D, dir.getStepZ());
+        } else {
+            forward = forward.normalize();
+        }
+
+        final Vec3 worldUp = new Vec3(0.0D, 1.0D, 0.0D);
+        final Vec3 left = forward.cross(worldUp).normalize();
+        for (int dz = startDistance; dz < startDistance + depth; dz++) {
+            final int fdz = dz;
+            final int halfWidth = Math.max(0, maxHalfWidth - (fdz - startDistance));
+
+            final int rowDelay = startDelay + (fdz - startDistance);
+
+            for (int dx = -halfWidth; dx <= halfWidth; dx++) {
+                final int fdx = dx;
+
+                Vec3 finalForward = forward;
+                new DelayedTask(rowDelay) {
+                    @Override
+                    public void run() {
+                        if (!ownerEntity.isAlive()) return;
+                        if (ownerEntity.level() != level) return;
+
+                        Vec3 target = origin
+                                .add(left.scale(fdx))
+                                .add(worldUp.scale(dy))
+                                .add(finalForward.scale(fdz));
+
+                        BlockPos pos = BlockPos.containing(target);
+                        placeIfReplaceable(level, pos, longPillarState, ownerEntity);
+                    }
+                };
+            }
+        }
+    }
+
+    public static void summonShadowObsidianLongPillarShootToward(ServerLevel level, Entity ownerEntity) {
+        if (level == null || ownerEntity == null) return;
+
+        BlockState baseState = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_LONG_PILLAR.get()
+                .defaultBlockState()
+                .setValue(HerobrineObsidianBlock.FROM_PLAYER, ownerEntity instanceof Player)
+                .setValue(BlockStateProperties.HORIZONTAL_FACING, ownerEntity.getDirection());
+
+        final Vec3[] lockedEye = { null };
+        final Basis[] lockedBasis = { null };
+        final Direction[] lockedFacing = { null };
+
+        scheduleLocalEyesForwardLine(level, ownerEntity, baseState, 2, 1,  1,  lockedEye, lockedBasis, lockedFacing);
+        scheduleLocalEyesForwardLine(level, ownerEntity, baseState, 3, 2,  3,  lockedEye, lockedBasis, lockedFacing);
+        scheduleLocalEyesForwardLine(level, ownerEntity, baseState, 4, 4,  5,  lockedEye, lockedBasis, lockedFacing);
+        scheduleLocalEyesForwardLine(level, ownerEntity, baseState, 5, 6,  7,  lockedEye, lockedBasis, lockedFacing);
+        scheduleLocalEyesForwardLine(level, ownerEntity, baseState, 6, 8,  9,  lockedEye, lockedBasis, lockedFacing);
+        scheduleLocalEyesForwardLine(level, ownerEntity, baseState, 7, 10, 11, lockedEye, lockedBasis, lockedFacing);
+        scheduleLocalEyesForwardLine(level, ownerEntity, baseState, 8, 12, 13, lockedEye, lockedBasis, lockedFacing);
+        scheduleLocalEyesForwardLine(level, ownerEntity, baseState, 9, 14, 15, lockedEye, lockedBasis, lockedFacing);
+        scheduleLocalEyesForwardLine(level, ownerEntity, baseState, 10, 16, 17, lockedEye, lockedBasis, lockedFacing);
+        scheduleLocalEyesForwardLine(level, ownerEntity, baseState, 11, 18, 25, lockedEye, lockedBasis, lockedFacing);
+    }
+
+    private static void scheduleLocalEyesForwardLine(ServerLevel level,
+                                                     Entity ownerEntity,
+                                                     BlockState baseState,
+                                                     int delayTicks,
+                                                     int zStart,
+                                                     int zEnd,
+                                                     Vec3[] lockedEye,
+                                                     Basis[] lockedBasis,
+                                                     Direction[] lockedFacing) {
+        new DelayedTask(delayTicks) {
+            @Override public void run() {
+                if (!ownerEntity.isAlive()) return;
+                if (ownerEntity.level() != level) return;
+                if (lockedEye[0] == null) {
+                    lockedEye[0] = ownerEntity.getEyePosition(1.0F);
+                    lockedBasis[0] = basisFromEntity(ownerEntity);
+                    lockedFacing[0] = ownerEntity.getDirection();
+                }
+
+                BlockState stateNow = baseState;
+                if (stateNow.hasProperty(BlockStateProperties.HORIZONTAL_FACING) && lockedFacing[0] != null) {
+                    stateNow = stateNow.setValue(BlockStateProperties.HORIZONTAL_FACING, lockedFacing[0]);
+                }
+
+                Basis basis = lockedBasis[0];
+                Vec3 eye = lockedEye[0];
+
+                int from = Math.min(zStart, zEnd);
+                int to = Math.max(zStart, zEnd);
+
+                for (int z = from; z <= to; z++) {
+                    Vec3 world = eye
+                            .add(basis.up().scale(-1.0))
+                            .add(basis.fwd().scale(z));
+
+                    placeIfReplaceable(level, BlockPos.containing(world), stateNow, ownerEntity);
+                }
+            }
+        };
     }
 }

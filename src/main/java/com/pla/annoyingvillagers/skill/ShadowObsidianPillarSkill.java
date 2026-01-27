@@ -24,7 +24,7 @@ public class ShadowObsidianPillarSkill extends WeaponInnateSkill {
         if (!this.isActivated(skillContainer)) {
             super.executeOnServer(skillContainer, friendlyByteBuf);
             skillContainer.activate();
-            skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.POSE_UP, 0.0F);
+            skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.OBSIDIAN_BIPED_LANDING, 0.0F);
         }
     }
 

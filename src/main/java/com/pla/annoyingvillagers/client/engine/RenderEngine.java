@@ -15,5 +15,6 @@ public class RenderEngine {
         add.addItemRenderer(ResourceLocation.tryBuild(AnnoyingVillagers.MODID, "hard_greatsword"), RenderHardGreatSword::new);
         add.addItemRenderer(ResourceLocation.tryBuild(AnnoyingVillagers.MODID, "obsidian_weapon"), RenderObsidianWeapon::new);
         add.addItemRenderer(ResourceLocation.tryBuild(AnnoyingVillagers.MODID, "shadow_obsidian_weapon"), RenderShadowObsidianWeapon::new);
+        add.addItemRenderer(ResourceLocation.tryBuild(AnnoyingVillagers.MODID, "shadow_obsidian_pillar"), RenderShadowObsidianPillar::new);
     }
 }

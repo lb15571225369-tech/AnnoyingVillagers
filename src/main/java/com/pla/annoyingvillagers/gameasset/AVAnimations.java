@@ -47,6 +47,8 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.item.EnderAegisItem;
+import com.pla.annoyingvillagers.item.ObsidianWeaponItem;
+import com.pla.annoyingvillagers.item.ShadowObsidianPillarItem;
 import com.pla.annoyingvillagers.item.ShadowObsidianWeaponItem;
 import com.pla.annoyingvillagers.network.ClientboundGlaiveExplosionFx;
 import com.pla.annoyingvillagers.network.ClientboundMuteExplosionAtPos;
@@ -58,6 +60,7 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -70,6 +73,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -81,6 +85,7 @@ import reascer.wom.animation.WomAnimationProperty;
 import reascer.wom.animation.attacks.AntitheusShootAttackAnimation;
 import reascer.wom.animation.attacks.BasicMultipleAttackAnimation;
 import reascer.wom.animation.attacks.SpecialAttackAnimation;
+import reascer.wom.gameasset.ReuseableEvents;
 import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.WOMSounds;
 import reascer.wom.gameasset.colliders.WOMWeaponColliders;
@@ -92,6 +97,7 @@ import yesman.epicfight.api.animation.Keyframe;
 import yesman.epicfight.api.animation.TransformSheet;
 import yesman.epicfight.api.animation.property.AnimationEvent;
 import yesman.epicfight.api.animation.property.AnimationEvent.Side;
+import yesman.epicfight.api.animation.property.AnimationProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.ActionAnimationProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.AttackAnimationProperty;
 import yesman.epicfight.api.animation.property.AnimationProperty.AttackPhaseProperty;
@@ -140,6 +146,10 @@ public class AVAnimations {
     // Animation from EpicFight Infernal Gainer
     public static AnimationManager.AnimationAccessor<KickAttackAnimation> KICK_C;
     public static AnimationManager.AnimationAccessor<KickAttackAnimation> KICK_COMBO;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> INFERNAL_AUTO_1;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> INFERNAL_AUTO_2;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> INFERNAL_AUTO_3;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> OBSIDIAN_INFERNAL_AUTO_2;
 
     // Animation from EpicFight ACG
     public static AnimationManager.AnimationAccessor<BowAttackAnimation> BOW_AUTO_1;
@@ -161,7 +171,6 @@ public class AVAnimations {
     // Animation from Pugilist Steve Annoying Villagers 1.18.2
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> COUNTER;
     public static AnimationManager.AnimationAccessor<StaticAnimation> FIST_GUARD;
-    public static AnimationManager.AnimationAccessor<StaticAnimation> NULL_GUARD;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> FIST_DASH;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> WHIRLWIND_KICK;
     public static AnimationManager.AnimationAccessor<HeavyAttackAnimation> LEGENDARY_SWORD_HEAVY_ATTACK;
@@ -257,7 +266,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> AXE_FUN_SKILL;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> LEGENDARY_SWORD_AUTO_4;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> OBSIDIAN_FIST_DASH;
-    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> OBSIDIAN_WHIRLWIND_KICK;
+    public static AnimationManager.AnimationAccessor<KickAttackAnimation> OBSIDIAN_WHIRLWIND_KICK;
 
     // Animation made by me
     public static AnimationManager.AnimationAccessor<StaticAnimation> PORTAL_SUMMON;
@@ -330,6 +339,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<KickAttackAnimation> OBSIDIAN_KICK_AUTO_3;
     public static AnimationManager.AnimationAccessor<KickAttackAnimation> OBSIDIAN_KICK_AUTO_1;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> OBSIDIAN_STRONG_PUNCH;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> OBSIDIAN_ENDERBLASTER_TWOHAND_TISHNAW;
 
     @SubscribeEvent
     public static void registerAnimations(AnimationManager.AnimationRegistryEvent event) {
@@ -395,7 +405,7 @@ public class AVAnimations {
                         ));
         AVAnimations.OBSIDIAN_ZOMBIE_ATTACK3 = builder.nextAccessor("biped/epicfight_clone/obsidian_zombie_attack3",
                 (accessor) -> new AttackAnimation(0.1F, 0.5F, 0.5F, 0.6F, 1.15F, ColliderPreset.HEAD, Armatures.BIPED.get().head, accessor, Armatures.BIPED)
-                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 3.0F)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.5F)
                         .addEvents(
                                 AnimationEvent.InTimeEvent.create(0.65F, ReuseableEvents.SUMMON_OBSIDIAN_WALL, Side.SERVER)
                         ));
@@ -443,6 +453,35 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD, 3)
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG, 4)
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
+        AVAnimations.INFERNAL_AUTO_1 = builder.nextAccessor("biped/epicfight_infernal_gainer/infernal_auto_1",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.1F, 0.3F, 0.4F, 0.5F, ColliderPreset.FIST, humanoidArmature.get().toolL, accessor, humanoidArmature))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.0F))
+                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.4F));
+        AVAnimations.INFERNAL_AUTO_2 = builder.nextAccessor("biped/epicfight_infernal_gainer/infernal_auto_2",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.2F, 0.1F, 0.2F, 0.25F, ColliderPreset.FIST, humanoidArmature.get().toolR, accessor, humanoidArmature))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.0F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.5F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.4F));
+        AVAnimations.INFERNAL_AUTO_3 = builder.nextAccessor("biped/epicfight_infernal_gainer/infernal_auto_3",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.05F, 0.35F, 0.45F, 0.5F, ColliderPreset.FIST, humanoidArmature.get().legL, accessor, humanoidArmature)
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.0F))
+                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.4F)));
+        AVAnimations.OBSIDIAN_INFERNAL_AUTO_2 = builder.nextAccessor("biped/epicfight_infernal_gainer/obsidian_infernal_auto_2",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.2F, 0.1F, 0.2F, 0.25F, ColliderPreset.FIST, humanoidArmature.get().toolR, accessor, humanoidArmature))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.0F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.5F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 5.4F)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.1F, ReuseableEvents.SUMMON_OBSIDIAN_WALL, Side.SERVER)
+                        ));
 
         // Animation from EpicFight ACG
         AVAnimations.BOW_AUTO_1 = builder.nextAccessor("biped/epic_agc/bow_auto1",
@@ -520,9 +559,7 @@ public class AVAnimations {
         AVAnimations.SLIGHT_IDLE = builder.nextAccessor("biped/pugilist_steve/slight",
                 (accessor) -> new StaticAnimation(true, accessor, humanoidArmature));
         AVAnimations.FIST_GUARD = builder.nextAccessor("biped/pugilist_steve/fist_guard",
-                (accessor) -> new StaticAnimation(false, accessor, humanoidArmature));
-        AVAnimations.NULL_GUARD = builder.nextAccessor("biped/pugilist_steve/null_guard",
-                (accessor) -> new StaticAnimation(false, accessor, humanoidArmature));
+                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature));
         AVAnimations.FIST_DASH = builder.nextAccessor("biped/pugilist_steve/fist_dash",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.15F, 0.25F, 0.45F, 0.7F, 0.95F, ColliderPreset.BIPED_BODY_COLLIDER, humanoidArmature.get().toolR, accessor, humanoidArmature))
                         .addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH.get())
@@ -1192,7 +1229,7 @@ public class AVAnimations {
                                 AnimationEvent.InTimeEvent.create(0.6F, ReuseableEvents.THROW_OBSIDIAN, Side.SERVER)
                         ));
         AVAnimations.OBSIDIAN_WHIRLWIND_KICK = builder.nextAccessor("biped/pugilist_steve/obsidian_whirlwind_kick",
-                (accessor) -> (new BasicMultipleAttackAnimation(0.2F, 0.29F, 0.45F, 0.85F, 1.8F, ColliderPreset.BIPED_BODY_COLLIDER, humanoidArmature.get().legR, accessor, humanoidArmature)).addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
+                (accessor) -> (new KickAttackAnimation(0.2F, 0.29F, 0.45F, 0.85F, 1.8F, ColliderPreset.BIPED_BODY_COLLIDER, humanoidArmature.get().legR, accessor, humanoidArmature)).addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
                         .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.AIR_BURST).addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH.get())
                         .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT_HARD.get()).addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.5F))
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN)
@@ -2256,8 +2293,8 @@ public class AVAnimations {
                                 double referenceY = target.getY();
                                 double referenceZ = target.getZ();
                                 float referenceYaw = livingEntityPatch.getOriginal().yHeadRot;
-                                double newX = referenceX + offset * (double) Math.sin(Math.toRadians(referenceYaw));
-                                double newZ = referenceZ - offset * (double) Math.cos(Math.toRadians(referenceYaw));
+                                double newX = referenceX + offset * Math.sin(Math.toRadians(referenceYaw));
+                                double newZ = referenceZ - offset * Math.cos(Math.toRadians(referenceYaw));
                                 BlockPos blockPos = new BlockPos((int) newX, (int) referenceY, (int) newZ);
                                 BlockState block = livingEntityPatch.getOriginal().level().getBlockState(blockPos);
                                 if (!block.isCollisionShapeFullBlock(livingEntityPatch.getOriginal().level(), blockPos)) {
@@ -2554,7 +2591,7 @@ public class AVAnimations {
                         .addProperty(ActionAnimationProperty.STOP_MOVEMENT, false)
                         .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
                         .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.0F, 0.75F))
-                        .addEvents(new AnimationEvent[]{AnimationEvent.InTimeEvent.create(0.05F, (livingEntityPatch, assetaccessor, animationparameters) -> {
+                        .addEvents(AnimationEvent.InTimeEvent.create(0.05F, (livingEntityPatch, assetaccessor, animationparameters) -> {
                             livingEntityPatch.getOriginal().level().playSound(null, livingEntityPatch.getOriginal().blockPosition(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.NEUTRAL, 0.7F, 0.7F);
                             livingEntityPatch.getOriginal().level().playSound(null, livingEntityPatch.getOriginal().blockPosition(), EpicFightSounds.WHOOSH_BIG.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
 
@@ -2603,7 +2640,7 @@ public class AVAnimations {
 
                         }, Side.CLIENT), AnimationEvent.InTimeEvent.create(0.55F, (livingEntityPatch, assetaccessor, animationparameters) -> {
                             livingEntityPatch.getOriginal().resetFallDistance();
-                        }, Side.SERVER)})
+                        }, Side.SERVER))
                         .addEvents(
                                 AnimationEvent.InTimeEvent.create(0.5F, ReuseableEvents.SUMMON_OBSIDIAN_CROSS, Side.SERVER)
                         )
@@ -2656,7 +2693,62 @@ public class AVAnimations {
                         .addEvents(
                                 AnimationEvent.InTimeEvent.create(0.1F, ReuseableEvents.SUMMON_3_OBSIDIAN_HAND_LEFT, Side.SERVER)
                         ));
+        AVAnimations.OBSIDIAN_ENDERBLASTER_TWOHAND_TISHNAW = builder.nextAccessor("biped/wom_clone/obsidian_enderblaster_twohand_tishnaw",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.05F, 0.3F, 0.5F, 0.65F, WOMWeaponColliders.KICK_HUGE, humanoidArmature.get().legR, accessor, humanoidArmature))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.65F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(3.2F))
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.multiplier(4.0F))
+                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
+                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT.get())
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                        .addProperty(AttackAnimationProperty.EXTRA_COLLIDERS, 20)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 4.0F)
+                        .addProperty(StaticAnimationProperty.POSE_MODIFIER, null)
+                        .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true)
+                        .addProperty(ActionAnimationProperty.MOVE_VERTICAL, true)
+                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, false)
+                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
+                        .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(new float[]{0.0F, 0.3F})).addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, (self, livingEntityPatch, speed, prevElapsedTime, elapsedTime) -> {
+                            if (elapsedTime >= 0.35F && elapsedTime < 0.45F) {
+                                float dpx = (float) livingEntityPatch.getOriginal().getX();
+                                float dpy = (float) livingEntityPatch.getOriginal().getY();
+                                float dpz = (float) livingEntityPatch.getOriginal().getZ();
 
+                                for(BlockState block = livingEntityPatch.getOriginal().level().getBlockState(new BlockPos.MutableBlockPos(dpx, dpy, dpz)); (block.getBlock() instanceof BushBlock || block.isAir()) && !block.is(Blocks.VOID_AIR); block = livingEntityPatch.getOriginal().level().getBlockState(new BlockPos.MutableBlockPos(dpx, dpy, dpz))) {
+                                    --dpy;
+                                }
+
+                                float distanceToGround = (float) org.joml.Math.max(org.joml.Math.abs(livingEntityPatch.getOriginal().getY() - (double)dpy) - (double)1.0F, 0.0F);
+                                LivingEntity livingentity = livingEntityPatch.getOriginal();
+                                Vec3f direction = new Vec3f(2.5F, -0.25F, 0.0F);
+                                OpenMatrix4f rotation = (new OpenMatrix4f()).rotate(-org.joml.Math.toRadians(livingEntityPatch.getOriginal().yBodyRotO + 90.0F), new Vec3f(0.0F, 1.0F, 0.0F));
+                                OpenMatrix4f.transform3v(rotation, direction, direction);
+                                AABB box = AABB.ofSize(livingEntityPatch.getOriginal().getPosition(1.0F), 3.0F, 3.0F, 3.0F);
+                                List<Entity> list = livingEntityPatch.getOriginal().level().getEntities(livingEntityPatch.getOriginal(), box);
+                                if (distanceToGround > 0.5F && list.isEmpty()) {
+                                    livingentity.move(MoverType.SELF, direction.toDoubleVector());
+                                    return 0.05F;
+                                } else {
+                                    return speed;
+                                }
+                            } else {
+                                return 1.0F;
+                            }
+                        })
+                        .addEvents(
+                                new AnimationEvent[]{
+                                        AnimationEvent.InTimeEvent.create(0.3F, (livingEntityPatch, self, params) -> {
+                                            LivingEntity entity = livingEntityPatch.getOriginal();
+                                            livingEntityPatch.getOriginal().level()
+                                                    .addParticle(EpicFightParticles.WHITE_AFTERIMAGE.get(),
+                                                            entity.getX(), entity.getY(), entity.getZ(),
+                                                            Double.longBitsToDouble(entity.getId()), 0.0F, 0.0F
+                                                    );
+                                        }, Side.CLIENT),
+                                        AnimationEvent.InTimeEvent.create(0.5F, reascer.wom.gameasset.ReuseableEvents.GROUND_BODYSCRAPE_LAND, Side.CLIENT),
+                                        AnimationEvent.InTimeEvent.create(0.5F, ReuseableEvents.SUMMON_OBSIDIAN_SMALL_CROSS, Side.SERVER)
+                                })
+        );
     }
 
     private static @NotNull Vec3 getVec3(LivingEntity owner) {
@@ -2678,17 +2770,21 @@ public class AVAnimations {
                     LivingEntity livingEntity = livingEntityPatch.getOriginal();
                     if (livingEntity.level() instanceof ServerLevel serverLevel) {
                         Item weapon = livingEntity.getMainHandItem().getItem();
-                        BlockState obsidian;
-                        if (weapon instanceof ShadowObsidianWeaponItem) {
-                            obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
-                                    .defaultBlockState()
-                                    .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
-                        } else {
-                            obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
-                                    .defaultBlockState()
-                                    .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                        if (weapon instanceof ShadowObsidianWeaponItem || weapon instanceof ObsidianWeaponItem) {
+                            BlockState obsidian;
+                            if (weapon instanceof ShadowObsidianWeaponItem) {
+                                obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
+                                        .defaultBlockState()
+                                        .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                            } else {
+                                obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
+                                        .defaultBlockState()
+                                        .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                            }
+                            HerobrineUtil.summonObsidianBlocksInfrontOf(serverLevel, livingEntity, obsidian, 2, Armatures.BIPED.get().legR);
+                        } else if (weapon instanceof ShadowObsidianPillarItem) {
+                            HerobrineUtil.summonShadowObsidianShortPillarShootToward(serverLevel, livingEntity, 3, Armatures.BIPED.get().legR);
                         }
-                        HerobrineUtil.summonObsidianBlocksInfrontOf(serverLevel, livingEntity, obsidian, 2, Armatures.BIPED.get().legR);
                     }
                 };
         private static final AnimationEvent.E0 SUMMON_2_OBSIDIAN_LEG_LEFT =
@@ -2696,17 +2792,21 @@ public class AVAnimations {
                     LivingEntity livingEntity = livingEntityPatch.getOriginal();
                     if (livingEntity.level() instanceof ServerLevel serverLevel) {
                         Item weapon = livingEntity.getMainHandItem().getItem();
-                        BlockState obsidian;
-                        if (weapon instanceof ShadowObsidianWeaponItem) {
-                            obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
-                                    .defaultBlockState()
-                                    .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
-                        } else {
-                            obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
-                                    .defaultBlockState()
-                                    .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                        if (weapon instanceof ShadowObsidianWeaponItem || weapon instanceof ObsidianWeaponItem) {
+                            BlockState obsidian;
+                            if (weapon instanceof ShadowObsidianWeaponItem) {
+                                obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
+                                        .defaultBlockState()
+                                        .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                            } else {
+                                obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
+                                        .defaultBlockState()
+                                        .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                            }
+                            HerobrineUtil.summonObsidianBlocksInfrontOf(serverLevel, livingEntity, obsidian, 2, Armatures.BIPED.get().legL);
+                        } else if (weapon instanceof ShadowObsidianPillarItem) {
+                            HerobrineUtil.summonShadowObsidianShortPillarShootToward(serverLevel, livingEntity, 3, Armatures.BIPED.get().legL);
                         }
-                        HerobrineUtil.summonObsidianBlocksInfrontOf(serverLevel, livingEntity, obsidian, 2, Armatures.BIPED.get().legL);
                     }
                 };
         private static final AnimationEvent.E0 SUMMON_2_OBSIDIAN_HAND_RIGHT =
@@ -2714,17 +2814,21 @@ public class AVAnimations {
                     LivingEntity livingEntity = livingEntityPatch.getOriginal();
                     if (livingEntity.level() instanceof ServerLevel serverLevel) {
                         Item weapon = livingEntity.getMainHandItem().getItem();
-                        BlockState obsidian;
-                        if (weapon instanceof ShadowObsidianWeaponItem) {
-                            obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
-                                    .defaultBlockState()
-                                    .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
-                        } else {
-                            obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
-                                    .defaultBlockState()
-                                    .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                        if (weapon instanceof ShadowObsidianWeaponItem || weapon instanceof ObsidianWeaponItem) {
+                            BlockState obsidian;
+                            if (weapon instanceof ShadowObsidianWeaponItem) {
+                                obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
+                                        .defaultBlockState()
+                                        .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                            } else {
+                                obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
+                                        .defaultBlockState()
+                                        .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                            }
+                            HerobrineUtil.summonObsidianBlocksInfrontOf(serverLevel, livingEntity, obsidian, 2, Armatures.BIPED.get().toolR);
+                        } else if (weapon instanceof ShadowObsidianPillarItem) {
+                            HerobrineUtil.summonShadowObsidianShortPillarShootToward(serverLevel, livingEntity, 3, Armatures.BIPED.get().toolR);
                         }
-                        HerobrineUtil.summonObsidianBlocksInfrontOf(serverLevel, livingEntity, obsidian, 2, Armatures.BIPED.get().toolR);
                     }
                 };
         private static final AnimationEvent.E0 SUMMON_2_OBSIDIAN_HAND_LEFT =
@@ -2732,35 +2836,21 @@ public class AVAnimations {
                     LivingEntity livingEntity = livingEntityPatch.getOriginal();
                     if (livingEntity.level() instanceof ServerLevel serverLevel) {
                         Item weapon = livingEntity.getMainHandItem().getItem();
-                        BlockState obsidian;
-                        if (weapon instanceof ShadowObsidianWeaponItem) {
-                            obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
-                                    .defaultBlockState()
-                                    .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
-                        } else {
-                            obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
-                                    .defaultBlockState()
-                                    .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                        if (weapon instanceof ShadowObsidianWeaponItem || weapon instanceof ObsidianWeaponItem) {
+                            BlockState obsidian;
+                            if (weapon instanceof ShadowObsidianWeaponItem) {
+                                obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
+                                        .defaultBlockState()
+                                        .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                            } else {
+                                obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
+                                        .defaultBlockState()
+                                        .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                            }
+                            HerobrineUtil.summonObsidianBlocksInfrontOf(serverLevel, livingEntity, obsidian, 2, Armatures.BIPED.get().toolL);
+                        } else if (weapon instanceof ShadowObsidianPillarItem) {
+                            HerobrineUtil.summonShadowObsidianShortPillarShootToward(serverLevel, livingEntity, 3, Armatures.BIPED.get().toolL);
                         }
-                        HerobrineUtil.summonObsidianBlocksInfrontOf(serverLevel, livingEntity, obsidian, 2, Armatures.BIPED.get().toolL);
-                    }
-                };
-        private static final AnimationEvent.E0 SUMMON_3_OBSIDIAN_HAND_RIGHT =
-                (livingEntityPatch, staticAnimation, object) -> {
-                    LivingEntity livingEntity = livingEntityPatch.getOriginal();
-                    if (livingEntity.level() instanceof ServerLevel serverLevel) {
-                        Item weapon = livingEntity.getMainHandItem().getItem();
-                        BlockState obsidian;
-                        if (weapon instanceof ShadowObsidianWeaponItem) {
-                            obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
-                                    .defaultBlockState()
-                                    .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
-                        } else {
-                            obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
-                                    .defaultBlockState()
-                                    .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
-                        }
-                        HerobrineUtil.summonObsidianBlocksInfrontOf(serverLevel, livingEntity, obsidian, 3, Armatures.BIPED.get().toolR);
                     }
                 };
         private static final AnimationEvent.E0 SUMMON_3_OBSIDIAN_HAND_LEFT =
@@ -2768,17 +2858,21 @@ public class AVAnimations {
                     LivingEntity livingEntity = livingEntityPatch.getOriginal();
                     if (livingEntity.level() instanceof ServerLevel serverLevel) {
                         Item weapon = livingEntity.getMainHandItem().getItem();
-                        BlockState obsidian;
-                        if (weapon instanceof ShadowObsidianWeaponItem) {
-                            obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
-                                    .defaultBlockState()
-                                    .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
-                        } else {
-                            obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
-                                    .defaultBlockState()
-                                    .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                        if (weapon instanceof ShadowObsidianWeaponItem || weapon instanceof ObsidianWeaponItem) {
+                            BlockState obsidian;
+                            if (weapon instanceof ShadowObsidianWeaponItem) {
+                                obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
+                                        .defaultBlockState()
+                                        .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                            } else {
+                                obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
+                                        .defaultBlockState()
+                                        .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                            }
+                            HerobrineUtil.summonObsidianBlocksInfrontOf(serverLevel, livingEntity, obsidian, 3, Armatures.BIPED.get().toolL);
+                        } else if (weapon instanceof ShadowObsidianPillarItem) {
+                            HerobrineUtil.summonShadowObsidianShortPillarShootToward(serverLevel, livingEntity, 4, Armatures.BIPED.get().toolL);
                         }
-                        HerobrineUtil.summonObsidianBlocksInfrontOf(serverLevel, livingEntity, obsidian, 3, Armatures.BIPED.get().toolL);
                     }
                 };
         private static final AnimationEvent.E0 SUMMON_6_OBSIDIAN_HAND_RIGHT =
@@ -2786,17 +2880,28 @@ public class AVAnimations {
                     LivingEntity livingEntity = livingEntityPatch.getOriginal();
                     if (livingEntity.level() instanceof ServerLevel serverLevel) {
                         Item weapon = livingEntity.getMainHandItem().getItem();
-                        BlockState obsidian;
-                        if (weapon instanceof ShadowObsidianWeaponItem) {
-                            obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
-                                    .defaultBlockState()
-                                    .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
-                        } else {
-                            obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
-                                    .defaultBlockState()
-                                    .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                        if (weapon instanceof ShadowObsidianWeaponItem || weapon instanceof ObsidianWeaponItem) {
+                            BlockState obsidian;
+                            if (weapon instanceof ShadowObsidianWeaponItem) {
+                                obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
+                                        .defaultBlockState()
+                                        .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                            } else {
+                                obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
+                                        .defaultBlockState()
+                                        .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                            }
+                            HerobrineUtil.summonObsidianBlocksInfrontOf(serverLevel, livingEntity, obsidian, 6, Armatures.BIPED.get().toolR);
+                        } else if (weapon instanceof ShadowObsidianPillarItem) {
+                            HerobrineUtil.summonShadowObsidianShortPillarShootToward(serverLevel, livingEntity, 7, Armatures.BIPED.get().toolR);
                         }
-                        HerobrineUtil.summonObsidianBlocksInfrontOf(serverLevel, livingEntity, obsidian, 6, Armatures.BIPED.get().toolR);
+                    }
+                };
+        private static final AnimationEvent.E0 SHOOT_MIDDLE_OBSIDIAN_PILLAR =
+                (livingEntityPatch, staticAnimation, object) -> {
+                    LivingEntity livingEntity = livingEntityPatch.getOriginal();
+                    if (livingEntity.level() instanceof ServerLevel serverLevel) {
+                        HerobrineUtil.summonShadowObsidianMiddlePillarShootToward(serverLevel, livingEntity, Armatures.BIPED.get().toolR);
                     }
                 };
         private static final AnimationEvent.E0 SUMMON_6_OBSIDIAN_LEG_RIGHT =
@@ -2804,17 +2909,21 @@ public class AVAnimations {
                     LivingEntity livingEntity = livingEntityPatch.getOriginal();
                     if (livingEntity.level() instanceof ServerLevel serverLevel) {
                         Item weapon = livingEntity.getMainHandItem().getItem();
-                        BlockState obsidian;
-                        if (weapon instanceof ShadowObsidianWeaponItem) {
-                            obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
-                                    .defaultBlockState()
-                                    .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
-                        } else {
-                            obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
-                                    .defaultBlockState()
-                                    .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                        if (weapon instanceof ShadowObsidianWeaponItem || weapon instanceof ObsidianWeaponItem) {
+                            BlockState obsidian;
+                            if (weapon instanceof ShadowObsidianWeaponItem) {
+                                obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
+                                        .defaultBlockState()
+                                        .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                            } else {
+                                obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
+                                        .defaultBlockState()
+                                        .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                            }
+                            HerobrineUtil.summonObsidianBlocksInfrontOf(serverLevel, livingEntity, obsidian, 6, Armatures.BIPED.get().legR);
+                        } else if (weapon instanceof ShadowObsidianPillarItem) {
+                            HerobrineUtil.summonShadowObsidianShortPillarShootToward(serverLevel, livingEntity, 7, Armatures.BIPED.get().legR);
                         }
-                        HerobrineUtil.summonObsidianBlocksInfrontOf(serverLevel, livingEntity, obsidian, 6, Armatures.BIPED.get().legR);
                     }
                 };
         private static final AnimationEvent.E0 SUMMON_OBSIDIAN_PILLAR =
@@ -2822,17 +2931,21 @@ public class AVAnimations {
                     LivingEntity livingEntity = livingEntityPatch.getOriginal();
                     if (livingEntity.level() instanceof ServerLevel serverLevel) {
                         Item weapon = livingEntity.getMainHandItem().getItem();
-                        BlockState obsidian;
-                        if (weapon instanceof ShadowObsidianWeaponItem) {
-                            obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
-                                    .defaultBlockState()
-                                    .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
-                        } else {
-                            obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
-                                    .defaultBlockState()
-                                    .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                        if (weapon instanceof ShadowObsidianWeaponItem || weapon instanceof ObsidianWeaponItem) {
+                            BlockState obsidian;
+                            if (weapon instanceof ShadowObsidianWeaponItem) {
+                                obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
+                                        .defaultBlockState()
+                                        .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                            } else {
+                                obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
+                                        .defaultBlockState()
+                                        .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                            }
+                            HerobrineUtil.summonObsidianPillar(serverLevel, livingEntity, obsidian);
+                        } else if (weapon instanceof ShadowObsidianPillarItem) {
+                            HerobrineUtil.summonShadowObsidianLongPillarShootToward(serverLevel, livingEntity);
                         }
-                        HerobrineUtil.summonObsidianPillar(serverLevel, livingEntity, obsidian);
                     }
                 };
         private static final AnimationEvent.E0 SUMMON_OBSIDIAN_WALL =
@@ -2840,17 +2953,21 @@ public class AVAnimations {
                     LivingEntity livingEntity = livingEntityPatch.getOriginal();
                     if (livingEntity.level() instanceof ServerLevel serverLevel) {
                         Item weapon = livingEntity.getMainHandItem().getItem();
-                        BlockState obsidian;
-                        if (weapon instanceof ShadowObsidianWeaponItem) {
-                            obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
-                                    .defaultBlockState()
-                                    .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
-                        } else {
-                            obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
-                                    .defaultBlockState()
-                                    .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                        if (weapon instanceof ShadowObsidianWeaponItem || weapon instanceof ObsidianWeaponItem) {
+                            BlockState obsidian;
+                            if (weapon instanceof ShadowObsidianWeaponItem) {
+                                obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
+                                        .defaultBlockState()
+                                        .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                            } else {
+                                obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
+                                        .defaultBlockState()
+                                        .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                            }
+                            HerobrineUtil.summonObsidianWall(serverLevel, livingEntity, obsidian);
+                        } else if (weapon instanceof ShadowObsidianPillarItem) {
+                            HerobrineUtil.summonShadowObsidianLongPillarDefense(serverLevel, livingEntity);
                         }
-                        HerobrineUtil.summonObsidianWall(serverLevel, livingEntity, obsidian);
                     }
                 };
 
@@ -2859,17 +2976,45 @@ public class AVAnimations {
                     LivingEntity livingEntity = livingEntityPatch.getOriginal();
                     if (livingEntity.level() instanceof ServerLevel serverLevel) {
                         Item weapon = livingEntity.getMainHandItem().getItem();
+                        if (weapon instanceof ShadowObsidianWeaponItem || weapon instanceof ObsidianWeaponItem) {
+                            BlockState obsidian;
+                            if (weapon instanceof ShadowObsidianWeaponItem) {
+                                obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
+                                        .defaultBlockState()
+                                        .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                            } else {
+                                obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
+                                        .defaultBlockState()
+                                        .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                            }
+                            HerobrineUtil.summonObsidianCross(serverLevel, livingEntity, obsidian);
+                        } else if (weapon instanceof ShadowObsidianPillarItem) {
+                            HerobrineUtil.summonShadowObsidianLongPillarDefenseWide(serverLevel, livingEntity);
+                        }
+                    }
+                };
+
+        private static final AnimationEvent.E0 SUMMON_OBSIDIAN_SMALL_CROSS =
+                (livingEntityPatch, staticAnimation, object) -> {
+                    LivingEntity livingEntity = livingEntityPatch.getOriginal();
+                    if (livingEntity.level() instanceof ServerLevel serverLevel) {
+                        Item weapon = livingEntity.getMainHandItem().getItem();
                         BlockState obsidian;
                         if (weapon instanceof ShadowObsidianWeaponItem) {
                             obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
                                     .defaultBlockState()
                                     .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                        } else if (weapon instanceof ShadowObsidianPillarItem) {
+                            obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_LONG_PILLAR.get()
+                                    .defaultBlockState()
+                                    .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player)
+                                    .setValue(BlockStateProperties.HORIZONTAL_FACING, livingEntity.getDirection());
                         } else {
                             obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
                                     .defaultBlockState()
                                     .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
                         }
-                        HerobrineUtil.summonObsidianCross(serverLevel, livingEntity, obsidian);
+                        HerobrineUtil.summonObsidianSmallCross(serverLevel, livingEntity, obsidian);
                     }
                 };
 

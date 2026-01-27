@@ -9,16 +9,20 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.skill.ShadowObsidianPillarSkill;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -32,6 +36,8 @@ import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 public class ShadowObsidianShortPillarBlock extends HerobrineObsidianBlock implements EntityBlock {
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+
     public ShadowObsidianShortPillarBlock() {
         super(Properties.of()
                 .offsetType(OffsetType.XYZ)
@@ -43,6 +49,32 @@ public class ShadowObsidianShortPillarBlock extends HerobrineObsidianBlock imple
                 .isRedstoneConductor((state, getter, pos) -> false)
                 .dynamicShape()
         );
+        super.registerDefaultState(
+                super.getStateDefinition().any().setValue(FACING, Direction.NORTH)
+        );
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(FACING);
+    }
+
+    @Override
+    public BlockState rotate(BlockState state, Rotation rotation) {
+        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
+    }
+
+    @Override
+    public BlockState mirror(BlockState state, Mirror mirror) {
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
+    }
+
+    @Override
+    public BlockState getStateForPlacement(@NotNull BlockPlaceContext blockPlaceContext) {
+        BlockState state = super.getStateForPlacement(blockPlaceContext);
+        if (state == null) state = this.defaultBlockState();
+        return state.setValue(FACING, blockPlaceContext.getHorizontalDirection().getOpposite());
     }
 
     public @NotNull VoxelShape getShape(@NotNull BlockState blockstate, @NotNull BlockGetter blockgetter, @NotNull BlockPos blockpos, @NotNull CollisionContext collisioncontext) {
@@ -112,7 +144,7 @@ public class ShadowObsidianShortPillarBlock extends HerobrineObsidianBlock imple
         if (owner != null) {
             if (owner instanceof Player player) {
                 entity.hurt(entity.level().damageSources().playerAttack(player), 1.0F);
-                increaseSkillPoint(player, 1.0F);
+                increaseSkillPoint(player, 0.2F);
             } else {
                 entity.hurt(entity.level().damageSources().mobAttack((LivingEntity) owner), 1.0F);
             }
