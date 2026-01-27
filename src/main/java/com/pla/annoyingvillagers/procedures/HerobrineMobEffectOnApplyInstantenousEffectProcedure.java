@@ -20,7 +20,7 @@ public class HerobrineMobEffectOnApplyInstantenousEffectProcedure {
             }
 
             if (Math.random() <= 0.05D) {
-                entity.hurt(entity.level().damageSources().generic(), 3.5F);
+                entity.hurt(entity.level().damageSources().generic(), 1.5F);
             }
 
             if (!entity.level().isClientSide()) {

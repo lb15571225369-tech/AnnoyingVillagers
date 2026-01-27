@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.event;
 
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.item.ObsidianWeaponItem;
 import com.pla.annoyingvillagers.item.ShadowObsidianPillarItem;
 import com.pla.annoyingvillagers.item.ShadowObsidianWeaponItem;
@@ -8,6 +9,7 @@ import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.LevelAccessor;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
@@ -32,7 +34,7 @@ public class KickOnKeyPressedEvent {
                 AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
 
                 if (EpicfightUtil.isLongHitAnimation(dynamicAnimation)) {
-                    if (entity.getPersistentData().getInt(NBT_STUN_ESCAPE_CD) != 0) return;
+                    if (entity.getPersistentData().getInt(NBT_STUN_ESCAPE_CD) != 0 || (entity instanceof Mob mob && mob.hasEffect(AnnoyingVillagersModMobEffects.HEROBRINE.get()))) return;
                     entity.getPersistentData().putInt(NBT_STUN_ESCAPE_CD, 1);
 
                     if (strafe < 0) {

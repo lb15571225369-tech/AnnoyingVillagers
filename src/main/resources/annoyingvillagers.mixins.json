@@ -26,7 +26,8 @@
     "EnsureSafeFlyingVehicleMixin",
     "BasicAttackMixin",
     "AbstractArrowBreakMixin",
-    "OpenMatrix4fInvertFixMixin"
+    "OpenMatrix4fInvertFixMixin",
+    "ActionAnimationMixin"
   ],
   "client": [
     "client.ModelPartMixin"

@@ -5,6 +5,7 @@ import java.util.Random;
 import com.pla.annoyingvillagers.blockentity.ShadowObsidianMiddlePillarBlockEntity;
 import com.pla.annoyingvillagers.clazz.HerobrineObsidianBlock;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.skill.ShadowObsidianPillarSkill;
@@ -142,10 +143,11 @@ public class ShadowObsidianMiddlePillarBlock extends HerobrineObsidianBlock impl
         );
         if (entity instanceof Mob mob) {
             LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+            mob.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.HEROBRINE.get(), 2, 2, false, false));
+            mob.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 2, 8, false, false));
             if (livingEntityPatch != null && !livingEntityPatch.isStunned()) {
                 livingEntityPatch.applyStun(StunType.SHORT, 1.0F);
             }
-            mob.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 2, 8, false, false));
         }
         if (owner != null) {
             if (owner instanceof Player player) {

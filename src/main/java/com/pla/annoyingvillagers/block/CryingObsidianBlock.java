@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.block;
 
 import com.pla.annoyingvillagers.blockentity.CryingObsidianBlockEntity;
 import com.pla.annoyingvillagers.clazz.HerobrineObsidianBlock;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import net.minecraft.core.BlockPos;
@@ -9,8 +10,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -134,8 +137,9 @@ public class CryingObsidianBlock extends HerobrineObsidianBlock implements Entit
             new DelayedTask(1) {
                 @Override
                 public void run() {
-                    if (entity.level() instanceof ServerLevel) {
+                    if (entity.level() instanceof ServerLevel && entity instanceof Mob mob) {
                         LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                        mob.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.HEROBRINE.get(), 15, 2, false, false));
                         if (livingEntityPatch != null && !livingEntityPatch.isStunned()) {
                             livingEntityPatch.applyStun(StunType.LONG, 10.0F);
                         }
@@ -147,8 +151,9 @@ public class CryingObsidianBlock extends HerobrineObsidianBlock implements Entit
                 new DelayedTask(1) {
                     @Override
                     public void run() {
-                        if (entity.level() instanceof ServerLevel) {
+                        if (entity.level() instanceof ServerLevel && entity instanceof Mob mob) {
                             LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
+                            mob.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.HEROBRINE.get(), 15, 2, false, false));
                             if (livingEntityPatch != null && !livingEntityPatch.isStunned()) {
                                 livingEntityPatch.applyStun(StunType.KNOCKDOWN, 10.0F);
                             }

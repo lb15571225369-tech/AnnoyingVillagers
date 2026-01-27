@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.event;
 
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.util.Mth;
@@ -25,6 +26,7 @@ public class MobStunEscapeEvent {
         LivingEntity victim = event.getEntity();
 
         if (victim.level().isClientSide) return;
+        if (victim.hasEffect(AnnoyingVillagersModMobEffects.HEROBRINE.get())) return;
 
         LivingEntityPatch<?> victimLivingEntityPatch = EpicFightCapabilities.getEntityPatch(victim, LivingEntityPatch.class);
         if (victimLivingEntityPatch instanceof CustomExecuteEntity customExecuteEntity
