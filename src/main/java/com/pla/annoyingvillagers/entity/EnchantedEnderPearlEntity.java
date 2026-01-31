@@ -7,6 +7,7 @@ import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
@@ -38,8 +39,8 @@ import org.jetbrains.annotations.NotNull;
 @OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
 public class EnchantedEnderPearlEntity extends AbstractArrow implements ItemSupplier {
 
-    public EnchantedEnderPearlEntity(SpawnEntity spawnentity, Level level) {
-        super((EntityType) AnnoyingVillagersModEntities.ENCHANTED_ENDER_PEARL_PROJECTILE.get(), level);
+    public EnchantedEnderPearlEntity(SpawnEntity spawnEntity, Level level) {
+        super(AnnoyingVillagersModEntities.ENCHANTED_ENDER_PEARL_PROJECTILE.get(), level);
     }
 
     public EnchantedEnderPearlEntity(EntityType<? extends EnchantedEnderPearlEntity> entitytype, Level level) {
@@ -118,6 +119,11 @@ public class EnchantedEnderPearlEntity extends AbstractArrow implements ItemSupp
                         16, 0, 0, 0, 0.5);
             }
         }
+    }
+
+    @Override
+    protected @NotNull SoundEvent getDefaultHitGroundSoundEvent() {
+        return SoundEvents.ENDERMAN_TELEPORT;
     }
 
     public void tick() {

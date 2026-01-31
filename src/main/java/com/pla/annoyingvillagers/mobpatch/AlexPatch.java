@@ -139,7 +139,7 @@ public class AlexPatch extends CEHumanoidPatch implements CustomExecuteEntity {
     }
 
     public void playGuardBreakSound() {
-        this.playSound(EpicFightSounds.NEUTRALIZE_BOSSES.get(), 0.0F, 0.0F);
+        this.playSound(EpicFightSounds.NEUTRALIZE_MOBS.get(), 0.0F, 0.0F);
     }
 
     public AttackResult attack(EpicFightDamageSource epicFightDamageSource, Entity entity, InteractionHand interactionhand) {
@@ -189,18 +189,18 @@ public class AlexPatch extends CEHumanoidPatch implements CustomExecuteEntity {
         };
     }
 
-    @Override
+     @Override
     public boolean canBeExecuted(LivingEntityPatch<?> livingEntityPatch) {
-        return false;
+        return true;
     }
 
     @Override
     public boolean canUseCustomType(LivingEntityPatch<?> livingEntityPatch) {
-        return false;
+        return true;
     }
 
     @Override
     public ExecutionTypeManager.Type getExecutionType() {
-        return null;
+        return ExecutionTypeManager.DEFAULT_TYPE;
     }
 }

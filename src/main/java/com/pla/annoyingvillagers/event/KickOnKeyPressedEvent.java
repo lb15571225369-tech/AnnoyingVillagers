@@ -1,19 +1,26 @@
 package com.pla.annoyingvillagers.event;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.item.ObsidianWeaponItem;
 import com.pla.annoyingvillagers.item.ShadowObsidianPillarItem;
 import com.pla.annoyingvillagers.item.ShadowObsidianWeaponItem;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LevelAccessor;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
@@ -26,7 +33,7 @@ public class KickOnKeyPressedEvent {
     private static final String NBT_STUN_ESCAPE_CD = "StunEscapeCooldown";
     private static final String NBT_KICK_COMBO = "KickCombo";
 
-    public static void execute(LevelAccessor levelAccessor, final Entity entity, int strafe) {
+    public static void execute(final Entity entity, int strafe) {
         if (entity instanceof LivingEntity) {
             LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 
@@ -34,9 +41,19 @@ public class KickOnKeyPressedEvent {
                 AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
 
                 if (EpicfightUtil.isLongHitAnimation(dynamicAnimation)) {
-                    if (entity.getPersistentData().getInt(NBT_STUN_ESCAPE_CD) != 0 || (entity instanceof Mob mob && mob.hasEffect(AnnoyingVillagersModMobEffects.HEROBRINE.get()))) return;
-                    entity.getPersistentData().putInt(NBT_STUN_ESCAPE_CD, 1);
+                    if (entity.getPersistentData().getInt(NBT_STUN_ESCAPE_CD) != 0) return;
+                    entity.getPersistentData().putInt(NBT_STUN_ESCAPE_CD, 5);
 
+                    if (entity.level() instanceof ServerLevel serverLevel && entity instanceof Player player) {
+                        serverLevel.sendParticles(
+                                EpicFightParticles.WHITE_AFTERIMAGE.get(),
+                                entity.getX(), entity.getY(), entity.getZ(),
+                                1, 0.0D, 0.0D, 0.0D, Double.longBitsToDouble(entity.getId())
+                        );
+                        player.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 60, 1, false, false));
+                        player.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 60, 1, false, false));
+                        player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 1, false, false));
+                    }
                     if (strafe < 0) {
                         livingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_LEFT, 0.0F);
                     } else if (strafe > 0) {
@@ -45,6 +62,12 @@ public class KickOnKeyPressedEvent {
                         livingEntityPatch.playAnimationSynchronized(Animations.BIPED_ROLL_BACKWARD, 0.0F);
                     }
                     return;
+                }
+
+                if (entity.level() instanceof ServerLevel) {
+                    if (dynamicAnimation != Animations.EMPTY_ANIMATION) {
+                        return;
+                    }
                 }
 
                 if (entity.getPersistentData().getInt(NBT_KICK_CD) != 0) return;

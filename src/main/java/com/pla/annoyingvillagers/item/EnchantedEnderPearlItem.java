@@ -19,6 +19,7 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 public class EnchantedEnderPearlItem extends Item {
 
@@ -26,39 +27,37 @@ public class EnchantedEnderPearlItem extends Item {
         super((new Properties()).stacksTo(1).durability(100));
     }
 
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand interactionhand) {
         player.startUsingItem(interactionhand);
-        return new InteractionResultHolder(InteractionResult.SUCCESS, player.getItemInHand(interactionhand));
+        return new InteractionResultHolder<>(InteractionResult.SUCCESS, player.getItemInHand(interactionhand));
     }
 
-    public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
+    public void appendHoverText(@NotNull ItemStack itemstack, Level level, @NotNull List<Component> list, @NotNull TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
         list.add(Component.translatable("tooltip.annoyingvillagers.enchanted_ender_pearl"));
     }
 
-    public UseAnim getUseAnimation(ItemStack itemstack) {
+    public @NotNull UseAnim getUseAnimation(@NotNull ItemStack itemstack) {
         return UseAnim.BOW;
     }
 
-    public int getUseDuration(ItemStack itemstack) {
+    public int getUseDuration(@NotNull ItemStack itemstack) {
         return 72000;
     }
 
     @OnlyIn(Dist.CLIENT)
-    public boolean isFoil(ItemStack itemstack) {
+    public boolean isFoil(@NotNull ItemStack itemstack) {
         return true;
     }
 
-    public void releaseUsing(ItemStack itemstack, Level level, LivingEntity livingentity, int i) {
-        if (!level.isClientSide() && livingentity instanceof ServerPlayer) {
-            ServerPlayer serverplayer = (ServerPlayer) livingentity;
-            EnchantedEnderPearlEntity enchantedEnderPearl = EnchantedEnderPearlEntity.shoot(level, serverplayer, RandomSource.create(), 1.3F, 0.0D, 0);
-
-            itemstack.hurtAndBreak(1, serverplayer, (serverplayer1) -> {
-                serverplayer1.broadcastBreakEvent(serverplayer.getUsedItemHand());
+    public void releaseUsing(@NotNull ItemStack itemstack, Level level, @NotNull LivingEntity livingentity, int i) {
+        if (!level.isClientSide() && livingentity instanceof ServerPlayer serverPlayer) {
+            EnchantedEnderPearlEntity enchantedEnderPearl = EnchantedEnderPearlEntity.shoot(level, serverPlayer, RandomSource.create(), 1.3F, 0.0D, 0);
+            itemstack.hurtAndBreak(1, serverPlayer, (serverplayer1) -> {
+                serverplayer1.broadcastBreakEvent(serverPlayer.getUsedItemHand());
             });
             enchantedEnderPearl.pickup = Pickup.DISALLOWED;
-            serverplayer.getCooldowns().addCooldown(itemstack.getItem(), 20);
+            serverPlayer.getCooldowns().addCooldown(itemstack.getItem(), 20);
         }
     }
 }

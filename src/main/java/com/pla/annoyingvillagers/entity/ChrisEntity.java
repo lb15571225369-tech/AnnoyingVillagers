@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
+import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
@@ -37,9 +38,13 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.function.Consumer;
 
@@ -115,8 +120,12 @@ public class ChrisEntity extends AVNpc {
         if (this.getUnableToDamageCooldown() > 0) {
             return false;
         }
-        
-        if (this.getEnderPearlCooldown() == 0) {
+
+        AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(this.getLivingEntityPatch().getAnimator().getPlayerFor(null)).getAnimation();
+
+        if (damageSource.getEntity() != null && this.getEnderPearlCooldown() == 0
+                && !EpicfightUtil.isLongHitAnimation(dynamicAnimation)
+                && CombatCommon.canPerformNormalAttackLogic((MobPatch<?>) this.getLivingEntityPatch())) {
             AVNpc entity = this;
 
             if (entity.getLivingEntityPatch() != null) {

@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.entity;
 import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
@@ -34,6 +35,9 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 
 import java.util.Objects;
 import java.util.Random;
@@ -88,7 +92,11 @@ public class VillagerScoutEntity extends AVNpc {
     }
 
     public boolean hurt(DamageSource damageSource, float f) {
-        if (damageSource.getEntity() != null && this.getEnderPearlCooldown() == 0) {
+        AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(this.getLivingEntityPatch().getAnimator().getPlayerFor(null)).getAnimation();
+
+        if (damageSource.getEntity() != null && this.getEnderPearlCooldown() == 0
+                && !EpicfightUtil.isLongHitAnimation(dynamicAnimation)
+                && CombatCommon.canPerformNormalAttackLogic((MobPatch<?>) this.getLivingEntityPatch())) {
             AVNpc entity = this;
 
             if (entity.getLivingEntityPatch() != null) {

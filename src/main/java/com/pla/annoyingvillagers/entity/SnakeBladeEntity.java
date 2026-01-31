@@ -1,10 +1,12 @@
 package com.pla.annoyingvillagers.entity;
 
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
+import com.pla.annoyingvillagers.util.EpicfightUtil;
 import com.pla.annoyingvillagers.util.HerobrineUtil;
 import com.pla.annoyingvillagers.skill.DemoniacVoltageReaverSkill;
 import com.pla.annoyingvillagers.util.SnakeBladeHit;
@@ -39,6 +41,7 @@ import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
+import yesman.epicfight.world.damagesource.StunType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -180,7 +183,6 @@ public class SnakeBladeEntity extends Entity {
         final float damage = this.getBaseDamage();
 
         LivingEntity owner = (creator instanceof LivingEntity living) ? living : null;
-        Random random = new Random();
 
         for (LivingEntity target : this.level().getEntitiesOfClass(
                 LivingEntity.class,
@@ -208,10 +210,6 @@ public class SnakeBladeEntity extends Entity {
             this.playSound(AnnoyingVillagersModSounds.OBSIDIAN_HIT.get(), 1.0F, (float) (0.5 + Math.random() * 0.5));
 
             LivingEntityPatch<?> targetPatch = EpicFightCapabilities.getEntityPatch(target, LivingEntityPatch.class);
-            if (targetPatch != null) {
-                targetPatch.playAnimationSynchronized(Animations.BIPED_COMMON_NEUTRALIZED, 0.0F);
-            }
-
             DamageSource src = (owner != null)
                     ? this.level().damageSources().indirectMagic(this, owner)
                     : this.level().damageSources().generic();
@@ -225,10 +223,8 @@ public class SnakeBladeEntity extends Entity {
             double kbZ = this.getZ() - target.getZ();
             target.knockback(knockBackStrength, kbX, kbZ);
 
-            if (random.nextBoolean()) {
-                if (targetPatch != null) {
-                    targetPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN, 0.0F);
-                }
+            if (targetPatch != null) {
+                targetPatch.applyStun(StunType.SHORT, 5.0F);
             }
         }
     }
@@ -324,10 +320,10 @@ public class SnakeBladeEntity extends Entity {
             }
 
             this.playSound(AnnoyingVillagersModSounds.OBSIDIAN_HIT.get(), 1.0F, (float) (0.5 + Math.random() * 0.5));
-
             LivingEntityPatch<?> targetPatch = EpicFightCapabilities.getEntityPatch(target, LivingEntityPatch.class);
             if (targetPatch != null) {
-                targetPatch.playAnimationSynchronized(AVAnimations.GUARD_BREAK_ATTACK, 0.0F);
+                EpicfightUtil.dealStaminaDamageByPercentage(
+                        this.level().damageSources().indirectMagic(this, creator), targetPatch, 0.5D, true);
             }
 
             if (target instanceof LivingEntity livingTarget) {
@@ -335,12 +331,6 @@ public class SnakeBladeEntity extends Entity {
                 double dx = this.getX() - target.getX();
                 double dz = this.getZ() - target.getZ();
                 livingTarget.knockback(strength, dx, dz);
-            }
-
-            if (new Random().nextBoolean()) {
-                if (targetPatch != null) {
-                    targetPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN, 0.0F);
-                }
             }
         }
     }

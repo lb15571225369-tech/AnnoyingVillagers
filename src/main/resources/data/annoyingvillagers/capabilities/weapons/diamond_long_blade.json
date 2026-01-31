@@ -2,7 +2,7 @@
 	"type": "annoyingvillagers:av_tachi",
 	"attributes": {
 		"common": {
-  			"impact": 6.7,
+  			"impact": 0.7,
 			"max_strikes": 0
 		}
 	}

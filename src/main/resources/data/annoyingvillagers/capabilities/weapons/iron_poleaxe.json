@@ -4,10 +4,10 @@
 		"two_hand":
 		{
 			"armor_negation":20.2,
-			"impact":3.6,
+			"impact": 0.6,
 			"max_strikes":4,
                   "speed_bonus": 0.9
 		}
 	},
-	"type":"falchionmoveset:falchion"
+	"type":"epicfight:spear"
 }

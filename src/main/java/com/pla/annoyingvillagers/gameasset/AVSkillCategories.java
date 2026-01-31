@@ -4,7 +4,8 @@ import yesman.epicfight.skill.SkillCategory;
 
 public enum AVSkillCategories implements SkillCategory {
 
-    AV_KICK(true, true, true);
+    AV_KICK(true, true, true),
+    AV_STUN_ESCAPE(true, true, true);
 
     final boolean shouldSave;
     final boolean shouldSyncronize;

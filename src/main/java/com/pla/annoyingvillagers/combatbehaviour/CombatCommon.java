@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.combatbehaviour;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.AVNpc;
 import com.pla.annoyingvillagers.entity.*;
@@ -73,17 +74,8 @@ public class CombatCommon {
 
     public static boolean canExecute(LivingEntity attacker, LivingEntity victim, LivingEntityPatch<?> victimEntityPatch) {
         float maxDist = ExecutionHandler.EXECUTION_DISTANCE;
-        if (attacker instanceof AegisHerobrineEntity) {
-            maxDist = 4.0F;
-        }
-        if (attacker instanceof SwordsmanHerobrineEntity
-                || attacker instanceof AngrySteveEntity
-                || attacker instanceof SteveEntity steveEntity && steveEntity.getMainWeaponItem().getItem() instanceof LegendarySwordItem) {
-            maxDist = 5.0F;
-        }
         return attacker.isAlive() && victim.isAlive()
-                && !(victim instanceof Player)
-                && ExecutionHandler.isExecutingTarget(attacker, victim)
+                && !ExecutionHandler.isExecutingTarget(attacker, victim)
                 && ExecutionHandler.isTargetSupported(victimEntityPatch)
                 && isHoldingWeapon(attacker)
                 && targetIsInRange(attacker, victim, 0, maxDist, 180);
@@ -767,7 +759,9 @@ public class CombatCommon {
     public static void performExecute(MobPatch<?> mobPatch) {
         final Mob attacker = mobPatch.getOriginal();
         final LivingEntity victim = attacker.getTarget();
+        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] performing execution for {}", attacker.getDisplayName().getString());
         if (victim == null) return;
+        if (attacker.isPassenger()) attacker.stopRiding();
 
         final LivingEntityPatch<?> victimPatch = EpicFightCapabilities.getEntityPatch(victim, LivingEntityPatch.class);
         if (victimPatch == null) return;

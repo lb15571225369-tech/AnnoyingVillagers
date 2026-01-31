@@ -5,7 +5,8 @@ import yesman.epicfight.skill.SkillSlot;
 
 public enum AVSkillSlots implements SkillSlot {
 
-    AV_KICK(AVSkillCategories.AV_KICK);
+    AV_KICK(AVSkillCategories.AV_KICK),
+    AV_STUN_ESCAPE(AVSkillCategories.AV_STUN_ESCAPE);
 
     final AVSkillCategories category;
     final int id;

@@ -10,8 +10,7 @@ public class AnnoyingVillagersConfig {
     public static ForgeConfigSpec.ConfigValue<Boolean> PHYSIC_MOD_COMPAT;
     public static ForgeConfigSpec.ConfigValue<Integer> HEROBRINE_RECALL_MIN_TIME;
     public static ForgeConfigSpec.ConfigValue<Integer> HEROBRINE_RECALL_MAX_TIME;
-    public static ForgeConfigSpec.ConfigValue<Double> KICK_GUARD_BREAK_MIN_CHANCE;
-    public static ForgeConfigSpec.ConfigValue<Double> KICK_GUARD_BREAK_MAX_CHANCE;
+    public static ForgeConfigSpec.ConfigValue<Double> KICK_STAMINA_DECREASE_PERCENTAGE;
     public static ForgeConfigSpec.ConfigValue<Double> MOB_GUARD_BREAK_WAKE_UP_MIN_CHANCE;
     public static ForgeConfigSpec.ConfigValue<Double> MOB_GUARD_BREAK_WAKE_UP_MAX_CHANCE;
     public static ForgeConfigSpec.ConfigValue<Boolean> TURN_ON_NPC_CHAT;
@@ -44,13 +43,9 @@ public class AnnoyingVillagersConfig {
                                 "After a random time between min and max, Herobrine will vanish and return to the Herobrine dimension.")
                 .defineInRange("herobrineRecallMaxTime", 300, 1, 10080);
 
-        KICK_GUARD_BREAK_MIN_CHANCE = BUILDER.comment(
-                        "Min chance for mob and player can guard break enemy on kick")
-                .defineInRange("kickGuardBreakMinChance", 0.05D, 0.0D, 1.0D);
-
-        KICK_GUARD_BREAK_MAX_CHANCE = BUILDER.comment(
-                        "Max chance for mob and player can guard break enemy on kick")
-                .defineInRange("kickGuardBreakMaxChance", 0.4D, 0.0D, 1.0D);
+        KICK_STAMINA_DECREASE_PERCENTAGE = BUILDER.comment(
+                        "Mob's stamina will be decreased by this percentage when get hit by Kick")
+                .defineInRange("kickStaminaDecreasePercentage", 0.3D, 0.0D, 1.0D);
 
         MOB_GUARD_BREAK_WAKE_UP_MIN_CHANCE = BUILDER.comment(
                         "Min chance for mob can wake up automatically on guard break")

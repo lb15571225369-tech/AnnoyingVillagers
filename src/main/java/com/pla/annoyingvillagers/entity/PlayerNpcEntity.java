@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.entity;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.clazz.PlayerNpcTarget;
+import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
@@ -19,6 +20,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -46,8 +48,12 @@ import net.minecraftforge.network.PlayMessages;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
+import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
+import yesman.epicfight.world.item.EpicFightItems;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -66,6 +72,15 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     private boolean useBow = true;
     private Entity blockDamage = null;
     private double placeBlockToParryChance;
+    private int stunEscapeCooldown = 0;
+
+    public int getStunEscapeCooldown() {
+        return stunEscapeCooldown;
+    }
+
+    public void setStunEscapeCooldown(int stunEscapeCooldown) {
+        this.stunEscapeCooldown = stunEscapeCooldown;
+    }
 
     public double getPlaceBlockToParryChance() {
         return placeBlockToParryChance;
@@ -310,11 +325,13 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     }
 
     public boolean hurt(@NotNull DamageSource damageSource, float f) {
-        if (damageSource.getEntity() != null && this.getEnderPearlCooldown() == 0) {
-            LivingEntityPatch<?> livingEntityPatch =  EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
-            if (livingEntityPatch != null) {
-                livingEntityPatch.playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F);
-            }
+        LivingEntityPatch<?> livingEntityPatch =  EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
+        AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
+
+        if (damageSource.getEntity() != null && this.getEnderPearlCooldown() == 0
+                && !EpicfightUtil.isLongHitAnimation(dynamicAnimation)
+                && CombatCommon.canPerformNormalAttackLogic((MobPatch<?>) livingEntityPatch)) {
+            livingEntityPatch.playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F);
             CombatBehaviour.throwEnderPearl(this, 180.0F);
             Entity entity = this;
 
@@ -473,6 +490,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         if (gapCooldown > 0) gapCooldown--;
         if (enderPearlCooldown > 0) enderPearlCooldown--;
         if (swapToBowCooldown > 0) swapToBowCooldown--;
+        if (stunEscapeCooldown > 0) stunEscapeCooldown--;
 
         if ((tickCount + getId()) % 20 != 0) {
             return;
@@ -525,7 +543,8 @@ public class PlayerNpcEntity extends PlayerMobEntity {
             }
         }
 
-//        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_SWORD));
+//        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(EpicFightItems.GLOVE.get()));
+//        this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(EpicFightItems.GLOVE.get()));
 //        this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.DIAMOND_HELMET));
 //        this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.DIAMOND_CHESTPLATE));
 //        this.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.DIAMOND_LEGGINGS));

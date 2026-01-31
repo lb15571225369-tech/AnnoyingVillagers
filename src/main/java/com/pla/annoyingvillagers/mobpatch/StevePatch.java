@@ -67,7 +67,7 @@ public class StevePatch extends CEHumanoidPatch implements CustomExecuteEntity {
                                 )));
         this.weaponAttackMotions
                 .put(WeaponCategories.NOT_WEAPON,
-                        ImmutableMap.of(Styles.ONE_HAND, PlayerNpcFist.FIST));
+                        ImmutableMap.of(Styles.ONE_HAND, SteveFist.FIST));
 
         this.weaponLivingMotions
                 .put(WeaponCategories.FIST,
@@ -81,7 +81,7 @@ public class StevePatch extends CEHumanoidPatch implements CustomExecuteEntity {
                                 )));
         this.weaponAttackMotions
                 .put(WeaponCategories.FIST,
-                        ImmutableMap.of(Styles.ONE_HAND, PlayerNpcFist.FIST));
+                        ImmutableMap.of(Styles.ONE_HAND, SteveFist.FIST));
 
         this.weaponLivingMotions
                 .put(WeaponCategories.RANGED,
@@ -208,7 +208,7 @@ public class StevePatch extends CEHumanoidPatch implements CustomExecuteEntity {
     }
 
     public void playGuardBreakSound() {
-        this.playSound(EpicFightSounds.NEUTRALIZE_BOSSES.get(), 0.0F, 0.0F);
+        this.playSound(EpicFightSounds.NEUTRALIZE_MOBS.get(), 0.0F, 0.0F);
     }
 
     public AttackResult attack(EpicFightDamageSource epicFightDamageSource, Entity entity, InteractionHand interactionhand) {
@@ -258,18 +258,18 @@ public class StevePatch extends CEHumanoidPatch implements CustomExecuteEntity {
         };
     }
 
-    @Override
+     @Override
     public boolean canBeExecuted(LivingEntityPatch<?> livingEntityPatch) {
-        return false;
+        return true;
     }
 
     @Override
     public boolean canUseCustomType(LivingEntityPatch<?> livingEntityPatch) {
-        return false;
+        return true;
     }
 
     @Override
     public ExecutionTypeManager.Type getExecutionType() {
-        return null;
+        return ExecutionTypeManager.DEFAULT_TYPE;
     }
 }

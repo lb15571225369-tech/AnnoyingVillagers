@@ -41,6 +41,15 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
     private double placeBlockToParryChance;
     private boolean swapBackToBow = false;
     private int unableToDamageCooldown = 0;
+    private int stunEscapeCooldown = 0;
+
+    public int getStunEscapeCooldown() {
+        return stunEscapeCooldown;
+    }
+
+    public void setStunEscapeCooldown(int stunEscapeCooldown) {
+        this.stunEscapeCooldown = stunEscapeCooldown;
+    }
 
     public void setUnableToDamageCooldown(int unableToDamageCooldown) {
         this.unableToDamageCooldown = unableToDamageCooldown;
@@ -381,6 +390,7 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
         if (enderPearlCooldown > 0) enderPearlCooldown--;
         if (swapToBowCooldown > 0) swapToBowCooldown--;
         if (unableToDamageCooldown > 0) unableToDamageCooldown--;
+        if (stunEscapeCooldown > 0) stunEscapeCooldown--;
 
         if ((tickCount + getId()) % 20 == 0) {
             if (!isInventoryFull()) {

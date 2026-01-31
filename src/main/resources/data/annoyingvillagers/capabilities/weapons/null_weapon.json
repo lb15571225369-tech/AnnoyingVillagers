@@ -2,7 +2,7 @@
 	"type": "annoyingvillagers:null_weapon",
 	"attributes": {
 		"common": {
-  			"impact": 2.7,
+  			"impact": 0.7,
 			"max_strikes": 0,
                   "speed_bonus": 0.9
 		}

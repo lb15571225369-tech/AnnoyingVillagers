@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
 
 @Mod.EventBusSubscriber
 public class AddStarterSkillEvent {
-    private static final String KEY = AnnoyingVillagers.MODID + ":av_1_4_has_joined_before";
+    private static final String KEY = AnnoyingVillagers.MODID + ":av_1_4_1_has_joined_before";
     @SubscribeEvent
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent playerloggedinevent) {
         execute(playerloggedinevent, playerloggedinevent.getEntity().level(), playerloggedinevent.getEntity().getX(), playerloggedinevent.getEntity().getY(), playerloggedinevent.getEntity().getZ(), playerloggedinevent.getEntity());
@@ -89,6 +89,7 @@ public class AddStarterSkillEvent {
                     if (playerPatch == null) return;
 
                     giveSkill(serverPlayer, playerPatch, AVSkillSlots.AV_KICK, AVSkills.KICK);
+                    giveSkill(serverPlayer, playerPatch, AVSkillSlots.AV_STUN_ESCAPE, AVSkills.STUN_ESCAPE);
                     giveSkill(serverPlayer, playerPatch, EFClashBladeSkillSlots.CLASH_BLADE, EFClashBladeSkills.CLASH_BLADE);
                     giveSkill(serverPlayer, playerPatch, SkillSlots.GUARD, EpicFightSkills.GUARD);
                     giveSkill(serverPlayer, playerPatch, SkillSlots.DODGE, EpicFightSkills.ROLL);

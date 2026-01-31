@@ -1,21 +1,20 @@
 package com.pla.annoyingvillagers.skill;
 
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import yesman.epicfight.client.gui.BattleModeGui;
-import yesman.epicfight.skill.passive.PassiveSkill;
-
-import net.minecraft.nbt.CompoundTag;
 import yesman.epicfight.skill.SkillBuilder;
 import yesman.epicfight.skill.SkillContainer;
+import yesman.epicfight.skill.passive.PassiveSkill;
 
-public class KickSkill extends PassiveSkill {
-    public static final String NBT_KICK_CD = "KickAttackCooldown";
+public class StunEscapeSkill extends PassiveSkill {
+    public static final String NBT_STUN_ESCAPE_CD = "StunEscapeCooldown";
 
     private int lastSynced = Integer.MIN_VALUE;
 
-    public KickSkill(SkillBuilder<? extends PassiveSkill> builder) {
+    public StunEscapeSkill(SkillBuilder<? extends PassiveSkill> builder) {
         super(builder);
     }
 
@@ -26,7 +25,7 @@ public class KickSkill extends PassiveSkill {
         if (container.getExecutor().isLogicalClient()) return;
 
         CompoundTag data = container.getExecutor().getOriginal().getPersistentData();
-        int remain = data.contains(NBT_KICK_CD) ? data.getInt(NBT_KICK_CD) - 1 : 0;
+        int remain = data.contains(NBT_STUN_ESCAPE_CD) ? data.getInt(NBT_STUN_ESCAPE_CD) - 1 : 0;
         if (container.getExecutor().getOriginal().tickCount % 20 != 0) return;
 
         if (remain == lastSynced) return;

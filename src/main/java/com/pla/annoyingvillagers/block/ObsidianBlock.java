@@ -162,7 +162,6 @@ public class ObsidianBlock extends HerobrineObsidianBlock implements EntityBlock
                 public void run() {
                     if (entity.level() instanceof ServerLevel && entity instanceof Mob mob) {
                         LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
-                        mob.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.HEROBRINE.get(), 15, 2, false, false));
                         if (livingEntityPatch != null && !livingEntityPatch.isStunned()) {
                             livingEntityPatch.applyStun(StunType.LONG, 10.0F);
                         }
@@ -176,7 +175,6 @@ public class ObsidianBlock extends HerobrineObsidianBlock implements EntityBlock
                     public void run() {
                         if (entity.level() instanceof ServerLevel && entity instanceof Mob mob) {
                             LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
-                            mob.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.HEROBRINE.get(), 15, 2, false, false));
                             if (livingEntityPatch != null && !livingEntityPatch.isStunned()) {
                                 livingEntityPatch.applyStun(StunType.KNOCKDOWN, 10.0F);
                             }

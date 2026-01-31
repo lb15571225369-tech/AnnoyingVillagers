@@ -35,7 +35,7 @@ public class KickMessage {
         }
 
         ctx.enqueueWork(() -> {
-            KickOnKeyPressedEvent.execute(sender.level(), sender, msg.strafe);
+            KickOnKeyPressedEvent.execute(sender, msg.strafe);
         });
 
         ctx.setPacketHandled(true);

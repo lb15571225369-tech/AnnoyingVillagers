@@ -4,7 +4,6 @@ import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.block.ObsidianBlock;
 import com.pla.annoyingvillagers.blockentity.CryingObsidianBlockEntity;
 import com.pla.annoyingvillagers.blockentity.ObsidianBlockEntity;
 import com.pla.annoyingvillagers.blockentity.ShadowObsidianBlockEntity;
@@ -39,7 +38,6 @@ import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -92,6 +90,16 @@ public class HerobrineMob extends Monster {
     private boolean healing = false;
     private int healingCooldown;
     private final LivingEntityPatch<?> livingEntityPatch =  EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
+
+    private int stunEscapeCooldown = 0;
+
+    public int getStunEscapeCooldown() {
+        return stunEscapeCooldown;
+    }
+
+    public void setStunEscapeCooldown(int stunEscapeCooldown) {
+        this.stunEscapeCooldown = stunEscapeCooldown;
+    }
 
     private Entity firstPossessedHerobrine;
     private UUID firstPossessedHerobrineUuid;
@@ -777,6 +785,8 @@ public class HerobrineMob extends Monster {
         this.floatOnAnyFluid();
         this.checkInsideBlocks();
         if (this.level() instanceof ServerLevel serverLevel) {
+            if (stunEscapeCooldown > 0) stunEscapeCooldown--;
+
             if (this.state == 2 && (this instanceof AegisHerobrineEntity
                     || this instanceof SledgehammerHerobrineEntity
                     || this instanceof SwordsmanHerobrineEntity

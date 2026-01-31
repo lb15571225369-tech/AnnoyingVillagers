@@ -5,6 +5,7 @@ import com.pla.annoyingvillagers.animations.KickAttackAnimation;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.AVNpc;
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
@@ -378,9 +379,10 @@ public class MobClashBladeMixin {
                         return;
                     }
                     if (attackerDynamicAnimation.get() instanceof KickAttackAnimation) {
-                        attacker.playSound(AnnoyingVillagersModSounds.KICK_GUARD_BREAK.get());
-                        attackerLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_COMMON_NEUTRALIZED, 0.0F);
-                        attacker.hurt(serverLevel.damageSources().generic(), 1.0F);
+                        EpicfightUtil.dealStaminaDamageByPercentage(livingAttackEvent.getSource(),
+                                attackerLivingEntityPatch,
+                                AnnoyingVillagersConfig.KICK_STAMINA_DECREASE_PERCENTAGE.get(),
+                                true);
                     }
                 }
             }

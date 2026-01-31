@@ -147,7 +147,6 @@ public class ShadowObsidianLongPillarBlock extends HerobrineObsidianBlock implem
         if (entity instanceof Mob mob) {
             LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
             mob.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 2, 8, false, false));
-            mob.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.HEROBRINE.get(), 2, 2, false, false));
             if (livingEntityPatch != null && !livingEntityPatch.isStunned()) {
                 livingEntityPatch.applyStun(StunType.SHORT, 1.0F);
             }

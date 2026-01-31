@@ -3,8 +3,10 @@ package com.pla.annoyingvillagers.clazz;
 import java.util.*;
 
 import com.pla.annoyingvillagers.blockentity.*;
+import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
 import com.pla.annoyingvillagers.util.HerobrineUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -27,6 +29,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
+
+import static com.pla.annoyingvillagers.skill.StunEscapeSkill.NBT_STUN_ESCAPE_CD;
 
 public class HerobrineObsidianBlock extends Block {
     public static final BooleanProperty FROM_PLAYER = BooleanProperty.create("from_player");
@@ -195,6 +199,33 @@ public class HerobrineObsidianBlock extends Block {
                     } else {
                         owner = serverLevel.getEntity(ownerUuid);
                     }
+                }
+            }
+            if (entity instanceof Player player) {
+                CompoundTag data = player.getPersistentData();
+                if (data.contains(NBT_STUN_ESCAPE_CD)) {
+                    int coolDownValue = data.getInt(NBT_STUN_ESCAPE_CD);
+                    if (coolDownValue < 5) {
+                        data.putInt(NBT_STUN_ESCAPE_CD, coolDownValue + 1);
+                    }
+                }
+            }
+            if (entity instanceof PlayerNpcEntity playerNpcEntity) {
+                int currentValue = playerNpcEntity.getStunEscapeCooldown();
+                if (currentValue < 100) {
+                    playerNpcEntity.setStunEscapeCooldown(currentValue + 20);
+                }
+            }
+            if (entity instanceof HerobrineMob herobrineMob) {
+                int currentValue = herobrineMob.getStunEscapeCooldown();
+                if (currentValue < 100) {
+                    herobrineMob.setStunEscapeCooldown(currentValue + 20);
+                }
+            }
+            if (entity instanceof AVNpc avNpc) {
+                int currentValue = avNpc.getStunEscapeCooldown();
+                if (currentValue < 100) {
+                    avNpc.setStunEscapeCooldown(currentValue + 20);
                 }
             }
             customHurtLogic(entity, owner, serverLevel, blockPos);

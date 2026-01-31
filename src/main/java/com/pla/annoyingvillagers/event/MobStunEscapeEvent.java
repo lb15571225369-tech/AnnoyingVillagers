@@ -1,10 +1,14 @@
 package com.pla.annoyingvillagers.event;
 
+import com.pla.annoyingvillagers.clazz.AVNpc;
+import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
+import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -24,9 +28,11 @@ public class MobStunEscapeEvent {
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
         LivingEntity victim = event.getEntity();
+        if (!((victim instanceof PlayerNpcEntity playerNpcEntity && playerNpcEntity.getStunEscapeCooldown() != 0)
+                || (victim instanceof HerobrineMob herobrineMob && herobrineMob.getStunEscapeCooldown() != 0)
+                || (victim instanceof AVNpc avNpc && avNpc.getStunEscapeCooldown() != 0))) return;
 
         if (victim.level().isClientSide) return;
-        if (victim.hasEffect(AnnoyingVillagersModMobEffects.HEROBRINE.get())) return;
 
         LivingEntityPatch<?> victimLivingEntityPatch = EpicFightCapabilities.getEntityPatch(victim, LivingEntityPatch.class);
         if (victimLivingEntityPatch instanceof CustomExecuteEntity customExecuteEntity
@@ -59,7 +65,7 @@ public class MobStunEscapeEvent {
                 }
 
                 if (victim.getRandom().nextFloat() < chance) {
-                    new DelayedTask(10) {
+                    new DelayedTask(5) {
                         @Override
                         public void run() {
                             double chooseAnimation = new Random().nextDouble(0.0D, 1.0D);
@@ -70,6 +76,18 @@ public class MobStunEscapeEvent {
                             } else {
                                 victimLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_ROLL_BACKWARD, 0.0F);
                             }
+                            if (victim instanceof PlayerNpcEntity playerNpcEntity) {
+                                playerNpcEntity.setStunEscapeCooldown(100);
+                            }
+                            if (victim instanceof HerobrineMob herobrineMob) {
+                                herobrineMob.setStunEscapeCooldown(100);
+                            }
+                            if (victim instanceof AVNpc avNpc) {
+                                avNpc.setStunEscapeCooldown(100);
+                            }
+                            victim.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 60, 1, false, false));
+                            victim.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 60, 1, false, false));
+                            victim.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 1, false, false));
                         }
                     };
                 }
