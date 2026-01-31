@@ -85,23 +85,6 @@ public class AnnoyingVillagersModEntities {
     public static final RegistryObject<EntityType<ObsidianSledgehammerProjectileEntity>> OBSIDIAN_SLEDGEHAMMER_PROJECTILE = register("obsidian_sledgehammer_projectile", Builder.<ObsidianSledgehammerProjectileEntity>of(ObsidianSledgehammerProjectileEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(2000).setUpdateInterval(3).setCustomClientFactory(ObsidianSledgehammerProjectileEntity::new).fireImmune().sized(1.0F, 1.0F));
     public static final RegistryObject<EntityType<ShockWaveBlockEntity>> SHOCKWAVE_BLOCK = register("shockwave_block", Builder.<ShockWaveBlockEntity>of(ShockWaveBlockEntity::new, MobCategory.MISC).setTrackingRange(10).setUpdateInterval(20).fireImmune().sized(0.98F, 0.98F));
 
-    public static final RegistryObject<EntityType<AlexDeadEntity>> ALEX_DEAD = register("alex_dead", Builder.<AlexDeadEntity>of(AlexDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(AlexDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
-    public static final RegistryObject<EntityType<SteveDeadEntity>> STEVE_DEAD = register("steve_dead", Builder.<SteveDeadEntity>of(SteveDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(SteveDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
-    public static final RegistryObject<EntityType<ChrisDeadEntity>> CHRIS_DEAD = register("chris_dead", Builder.<ChrisDeadEntity>of(ChrisDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(ChrisDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
-    public static final RegistryObject<EntityType<InfectedChrisDeadEntity>> INFECTED_CHRIS_DEAD = register("infected_chris_dead", Builder.<InfectedChrisDeadEntity>of(InfectedChrisDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(InfectedChrisDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
-    public static final RegistryObject<EntityType<JevDeadEntity>> JEV_DEAD = register("jev_dead", Builder.<JevDeadEntity>of(JevDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(JevDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
-    public static final RegistryObject<EntityType<VillagerScoutDeadEntity>> VILLAGER_SCOUT_DEAD = register("villager_scout_dead", Builder.<VillagerScoutDeadEntity>of(VillagerScoutDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(VillagerScoutDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
-    public static final RegistryObject<EntityType<RedVillagerGeneralDeadEntity>> RED_VILLAGER_GENERAL_DEAD = register("red_villager_general_dead", Builder.<RedVillagerGeneralDeadEntity>of(RedVillagerGeneralDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(RedVillagerGeneralDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
-    public static final RegistryObject<EntityType<BlueVillagerGeneralDeadEntity>> BLUE_VILLAGER_GENERAL_DEAD = register("blue_villager_general_dead", Builder.<BlueVillagerGeneralDeadEntity>of(BlueVillagerGeneralDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(BlueVillagerGeneralDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
-    public static final RegistryObject<EntityType<GreenVillagerGeneralDeadEntity>> GREEN_VILLAGER_GENERAL_DEAD = register("green_villager_general_dead", Builder.<GreenVillagerGeneralDeadEntity>of(GreenVillagerGeneralDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(GreenVillagerGeneralDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
-    public static final RegistryObject<EntityType<PurpleVillagerGeneralDeadEntity>> PURPLE_VILLAGER_GENERAL_DEAD = register("purple_villager_general_dead", Builder.<PurpleVillagerGeneralDeadEntity>of(PurpleVillagerGeneralDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(PurpleVillagerGeneralDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
-    public static final RegistryObject<EntityType<BlueDemonDeadEntity>> BLUE_DEMON_DEAD = register("blue_demon_dead", Builder.<BlueDemonDeadEntity>of(BlueDemonDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(BlueDemonDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
-    public static final RegistryObject<EntityType<HerobrineDeadEntity>> HEROBRINE_DEAD = register("herobrine_dead", Builder.<HerobrineDeadEntity>of(HerobrineDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(HerobrineDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
-    public static final RegistryObject<EntityType<ShadowHerobrineDeadEntity>> SHADOW_HEROBRINE_DEAD = register("shadow_herobrine_dead", Builder.<ShadowHerobrineDeadEntity>of(ShadowHerobrineDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(ShadowHerobrineDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
-    public static final RegistryObject<EntityType<PlayerMobDeadEntity>> PLAYER_MOB_DEAD = register("player_mob_dead", Builder.<PlayerMobDeadEntity>of(PlayerMobDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(PlayerMobDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
-    public static final RegistryObject<EntityType<InfectedTheMostMoistBurrit0DeadEntity>> INFECTED_THEMOSTMOISTBURRIT0_DEAD = register("infected_the_moi_moist_burrit0_dead", Builder.<InfectedTheMostMoistBurrit0DeadEntity>of(InfectedTheMostMoistBurrit0DeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(InfectedTheMostMoistBurrit0DeadEntity::new).fireImmune().sized(0.6F, 1.8F));
-    public static final RegistryObject<EntityType<EliteHerobrineDeadEntity>> ELITE_HEROBRINE_DEAD = register("elite_herobrine_dead", Builder.<EliteHerobrineDeadEntity>of(EliteHerobrineDeadEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(EliteHerobrineDeadEntity::new).fireImmune().sized(0.6F, 1.8F));
-
     private static <T extends Entity> RegistryObject<EntityType<T>> register(String s, Builder<T> builder) {
         return AnnoyingVillagersModEntities.REGISTRY.register(s, () -> {
             return builder.build(s);
@@ -291,7 +274,6 @@ public class AnnoyingVillagersModEntities {
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.GREEN_VILLAGER_GENERAL.get(), PurpleVillagerGeneralEntity.createAttributes().build());
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.RED_VILLAGER_GENERAL.get(), RedVillagerGeneralEntity.createAttributes().build());
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.PURPLE_VILLAGER_GENERAL.get(), GreenVillagerGeneralEntity.createAttributes().build());
-        entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.ALEX_DEAD.get(), AlexDeadEntity.createAttributes().build());
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.ALEX.get(), AlexEntity.createAttributes().build());
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.JEV.get(), JevEntity.createAttributes().build());
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.BBQ.get(), BbqEntity.createAttributes().build());
@@ -299,23 +281,9 @@ public class AnnoyingVillagersModEntities {
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.INJECTED_CHRIS.get(), InfectedChrisEntity.createAttributes().build());
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.HEROBRINE_CHRIS.get(), HerobrineChrisEntity.createAttributes().build());
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.ARMORED_HEROBRINE.get(), ArmoredHerobrineEntity.createAttributes().build());
-        entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.STEVE_DEAD.get(), SteveDeadEntity.createAttributes().build());
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.STEVE.get(), SteveEntity.createAttributes().build());
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.ANGRY_STEVE.get(), AngrySteveEntity.createAttributes().build());
-        entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.CHRIS_DEAD.get(), SteveDeadEntity.createAttributes().build());
-        entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.INFECTED_CHRIS_DEAD.get(), SteveDeadEntity.createAttributes().build());
-        entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.VILLAGER_SCOUT_DEAD.get(), SteveDeadEntity.createAttributes().build());
-        entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.JEV_DEAD.get(), SteveDeadEntity.createAttributes().build());
-        entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.RED_VILLAGER_GENERAL_DEAD.get(), SteveDeadEntity.createAttributes().build());
-        entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.GREEN_VILLAGER_GENERAL_DEAD.get(), SteveDeadEntity.createAttributes().build());
-        entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.BLUE_VILLAGER_GENERAL_DEAD.get(), SteveDeadEntity.createAttributes().build());
-        entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.PURPLE_VILLAGER_GENERAL_DEAD.get(), SteveDeadEntity.createAttributes().build());
-        entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.BLUE_DEMON_DEAD.get(), SteveDeadEntity.createAttributes().build());
-        entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.HEROBRINE_DEAD.get(), SteveDeadEntity.createAttributes().build());
-        entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.SHADOW_HEROBRINE_DEAD.get(), SteveDeadEntity.createAttributes().build());
-        entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.PLAYER_MOB_DEAD.get(), PlayerMobDeadEntity.createAttributes().build());
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.INFECTED_THEMOSTMOISTBURRIT0.get(), InfectedTheMostMoistBurrit0Entity.createAttributes().build());
-        entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.INFECTED_THEMOSTMOISTBURRIT0_DEAD.get(), InfectedTheMostMoistBurrit0DeadEntity.createAttributes().build());
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.SHADOW_HEROBRINE.get(), ShadowHerobrineEntity.createAttributes().build());
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.GLAIVE_HEROBRINE.get(), GlaiveHerobrineEntity.createAttributes().build());
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.INFECTED_PLAYER_MOB.get(), InfectedPlayerMobEntity.createAttributes().build());
@@ -324,7 +292,6 @@ public class AnnoyingVillagersModEntities {
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.SLEDGEHAMMER_HEROBRINE.get(), SledgehammerHerobrineEntity.createAttributes().build());
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.AEGIS_HEROBRINE.get(), AegisHerobrineEntity.createAttributes().build());
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.ELITE_HEROBRINE_KNOCKED.get(), EliteHerobrineKnockedEntity.createAttributes().build());
-        entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.ELITE_HEROBRINE_DEAD.get(), EliteHerobrineDeadEntity.createAttributes().build());
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.LOW_HEROBRINE_CLONE.get(), LowHerobrineCloneEntity.createAttributes().build());
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.LOW_SHADOW_HEROBRINE_CLONE.get(), LowShadowHerobrineCloneEntity.createAttributes().build());
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.NULL.get(), NullEntity.createAttributes().build());

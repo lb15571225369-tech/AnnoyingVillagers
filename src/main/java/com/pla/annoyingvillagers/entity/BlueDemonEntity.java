@@ -7,6 +7,7 @@ import com.pla.annoyingvillagers.spawnhandler.BluedemonData;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -98,6 +99,9 @@ public class BlueDemonEntity extends Monster {
     public void tick() {
         super.tick();
         if (!level().isClientSide) {
+            if (this.tickCount == 1) {
+                this.discard();
+            }
             if (!spawnBbq) {
                 this.spawnBbq = true;
                 spawnBbq();
@@ -203,10 +207,8 @@ public class BlueDemonEntity extends Monster {
             BlockPos spawnPos = new BlockPos(blockPos.getX(), surfaceY, blockPos.getZ());
             this.moveTo(spawnPos, this.getYRot(), this.getXRot());
         }
-
-        SpawnGroupData spawngroupdata1 = super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
         BlueDemonOnEntityInitialSpawnProcedure.execute(this.level(), this);
-        return spawngroupdata1;
+        return super.finalizeSpawn(serverlevelaccessor, difficultyinstance, mobspawntype, spawngroupdata, compoundtag);
     }
 
     public void awardKillScore(Entity entity, int i, DamageSource damagesource) {
@@ -220,12 +222,13 @@ public class BlueDemonEntity extends Monster {
     }
 
     public static boolean canSpawn(EntityType<BlueDemonEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
-        ServerLevel serverLevel = level.getLevel();
-        if (!serverLevel.isThundering()) return false;
-        if (BluedemonData.get(serverLevel).isOccupied(serverLevel)) {
-            return false;
-        }
-        return Monster.checkAnyLightMonsterSpawnRules(entityType, level, spawnType, position, random);
+        return false;
+//        ServerLevel serverLevel = level.getLevel();
+//        if (!serverLevel.isThundering()) return false;
+//        if (BluedemonData.get(serverLevel).isOccupied(serverLevel)) {
+//            return false;
+//        }
+//        return Monster.checkAnyLightMonsterSpawnRules(entityType, level, spawnType, position, random);
     }
 
     @Override

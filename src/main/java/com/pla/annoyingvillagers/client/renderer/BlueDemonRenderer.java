@@ -8,19 +8,20 @@ import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.resources.ResourceLocation;
 import com.pla.annoyingvillagers.entity.BlueDemonEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class BlueDemonRenderer extends HumanoidMobRenderer<BlueDemonEntity, HumanoidModel<BlueDemonEntity>> {
 
     public BlueDemonRenderer(Context context) {
-        super(context, new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER)), 0.5F);
-        this.addLayer(new HumanoidArmorLayer(
+        super(context, new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER)), 0.5F);
+        this.addLayer(new HumanoidArmorLayer<>(
                 this,
                 new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)),
                 new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)),
                 context.getModelManager()));
     }
 
-    public ResourceLocation getTextureLocation(BlueDemonEntity bluedemonentity) {
+    public @NotNull ResourceLocation getTextureLocation(@NotNull BlueDemonEntity blueDemonEntity) {
         return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/blue_demon.png");
     }
 }

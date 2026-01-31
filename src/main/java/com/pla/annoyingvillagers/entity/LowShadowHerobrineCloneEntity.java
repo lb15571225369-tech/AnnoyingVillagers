@@ -1,7 +1,6 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
@@ -336,17 +335,6 @@ public class LowShadowHerobrineCloneEntity extends Monster {
             } else {
                 if (this.healing || this.sacrificing) {
                     this.kill();
-                }
-
-                if (AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-                    ShadowHerobrineDeadEntity corpse = new ShadowHerobrineDeadEntity(AnnoyingVillagersModEntities.SHADOW_HEROBRINE_DEAD.get(), serverLevel);
-                    corpse.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
-                    corpse.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()),
-                            MobSpawnType.MOB_SUMMONED, null, null);
-                    this.setInvisible(true);
-                    this.remove(RemovalReason.KILLED);
-                    serverLevel.addFreshEntity(corpse);
-                    corpse.kill();
                 }
             }
 

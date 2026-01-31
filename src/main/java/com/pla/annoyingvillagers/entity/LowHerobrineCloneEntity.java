@@ -1,7 +1,6 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
@@ -10,7 +9,6 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.network.ClientboundHerobrinePortalFx;
 import com.pla.annoyingvillagers.network.ClientboundLitePortalFx;
 import com.pla.annoyingvillagers.util.*;
-import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -285,24 +283,8 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
                 corpse.setItemSlot(EquipmentSlot.LEGS, this.getItemBySlot(EquipmentSlot.LEGS).copy());
                 corpse.setItemSlot(EquipmentSlot.FEET, this.getItemBySlot(EquipmentSlot.FEET).copy());
                 serverLevel.addFreshEntity(corpse);
-            } else {
-                if (AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-                    PlayerMobDeadEntity corpse = new PlayerMobDeadEntity(AnnoyingVillagersModEntities.PLAYER_MOB_DEAD.get(), serverLevel);
-                    corpse.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
-                    corpse.setUsername(this.getUsername());
-                    corpse.setProfile(this.getProfile());
-                    corpse.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
-                    this.setInvisible(true);
-                    this.remove(Entity.RemovalReason.KILLED);
-                    serverLevel.addFreshEntity(corpse);
-                    new DelayedTask(3) {
-                        @Override
-                        public void run() {
-                            corpse.kill();
-                        }
-                    };
-                }
             }
+
             ItemEntity itemEntity;
             ItemStack itemstack;
 

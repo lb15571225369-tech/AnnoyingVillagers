@@ -2,7 +2,6 @@ package com.pla.annoyingvillagers.entity;
 
 import com.pla.annoyingvillagers.clazz.AVNpc;
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
-import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
@@ -300,16 +299,6 @@ public class AngrySteveEntity extends AVNpc {
                 dropStack.accept(new ItemStack(itemLike));
             }
             dropArrows.accept(new Random().nextInt(10, 30));
-
-            if (AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-                SteveDeadEntity steveDeadEntity = new SteveDeadEntity(AnnoyingVillagersModEntities.STEVE_DEAD.get(), serverLevel);
-
-                steveDeadEntity.moveTo(this.getX(), this.getY(), this.getZ(), serverLevel.getRandom().nextFloat() * 360.0F, 0.0F);
-                steveDeadEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(steveDeadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
-                this.remove(RemovalReason.KILLED);
-                serverLevel.addFreshEntity(steveDeadEntity);
-                steveDeadEntity.kill();
-            }
         }
     }
 

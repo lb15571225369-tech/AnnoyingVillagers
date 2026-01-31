@@ -13,18 +13,19 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.NotNull;
 
 public class BlueDemonTridentRenderer extends EntityRenderer<BlueDemonTridentEntity> {
 
     private static final ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/bluedemontrident.png");
-    private final ModelBlueDemonTrident model;
+    private final ModelBlueDemonTrident<?> model;
 
     public BlueDemonTridentRenderer(Context context) {
         super(context);
         this.model = new ModelBlueDemonTrident<>(context.bakeLayer(ModelBlueDemonTrident.LAYER_LOCATION));
     }
 
-    public void render(BlueDemonTridentEntity bluedemontridententity, float f, float f1, PoseStack posestack, MultiBufferSource multibuffersource, int i) {
+    public void render(@NotNull BlueDemonTridentEntity bluedemontridententity, float f, float f1, PoseStack posestack, MultiBufferSource multibuffersource, int i) {
         VertexConsumer vertexconsumer = multibuffersource.getBuffer(RenderType.entityCutout(this.getTextureLocation(bluedemontridententity)));
 
         posestack.pushPose();
@@ -35,7 +36,7 @@ public class BlueDemonTridentRenderer extends EntityRenderer<BlueDemonTridentEnt
         super.render(bluedemontridententity, f, f1, posestack, multibuffersource, i);
     }
 
-    public ResourceLocation getTextureLocation(BlueDemonTridentEntity bluedemontridententity) {
+    public @NotNull ResourceLocation getTextureLocation(@NotNull BlueDemonTridentEntity bluedemontridententity) {
         return BlueDemonTridentRenderer.texture;
     }
 }

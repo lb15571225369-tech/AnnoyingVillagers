@@ -21,7 +21,7 @@ public class SteveRenderer extends HumanoidMobRenderer<SteveEntity, HumanoidMode
                 context.getModelManager()));
     }
 
-    public @NotNull ResourceLocation getTextureLocation(SteveEntity steveEntity) {
+    public @NotNull ResourceLocation getTextureLocation(@NotNull SteveEntity steveEntity) {
         return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/steve.png");
     }
 }

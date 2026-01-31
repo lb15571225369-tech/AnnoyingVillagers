@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.entity;
 
-import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
@@ -239,15 +238,6 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
         if (this.getPersistentData().contains("FromElite")) {
             String fromElite = this.getPersistentData().getString("FromElite");
             EliteHerobrineOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, fromElite);
-        }
-        if (this.level() instanceof ServerLevel serverLevel && AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-            EliteHerobrineDeadEntity eliteHerobrineDeadEntity = new EliteHerobrineDeadEntity(AnnoyingVillagersModEntities.ELITE_HEROBRINE_DEAD.get(), serverLevel);
-
-            eliteHerobrineDeadEntity.moveTo(this.getX(), this.getY(), this.getZ(), serverLevel.getRandom().nextFloat() * 360.0F, 0.0F);
-            eliteHerobrineDeadEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(eliteHerobrineDeadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
-            this.remove(RemovalReason.KILLED);
-            serverLevel.addFreshEntity(eliteHerobrineDeadEntity);
-            eliteHerobrineDeadEntity.kill();
         }
     }
 

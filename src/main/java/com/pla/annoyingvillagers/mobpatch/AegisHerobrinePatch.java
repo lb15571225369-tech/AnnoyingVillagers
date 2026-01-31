@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.combatbehaviour.HerobrineEnderAegis;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.item.EnderAegisItem;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -137,7 +138,7 @@ public class AegisHerobrinePatch extends CEHumanoidPatch implements CustomExecut
 
     @Override
     public boolean canBeExecuted(LivingEntityPatch<?> livingEntityPatch) {
-        return true;
+        return AnnoyingVillagersConfig.CAN_EXECUTE_AV_MOB.get();
     }
 
     @Override

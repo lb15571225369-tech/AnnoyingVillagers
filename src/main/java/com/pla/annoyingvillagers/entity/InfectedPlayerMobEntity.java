@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.entity;
 
-import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.procedures.*;
@@ -118,18 +117,6 @@ public class InfectedPlayerMobEntity extends PlayerMobEntity {
             itementity = new ItemEntity(serverLevel, this.getX(), this.getY() + 1.0D, this.getZ(), itemstack);
             itementity.setPickUpDelay(10);
             serverLevel.addFreshEntity(itementity);
-
-            if (AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-                PlayerMobDeadEntity corpse = new PlayerMobDeadEntity(AnnoyingVillagersModEntities.PLAYER_MOB_DEAD.get(), serverLevel);
-                corpse.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
-                corpse.setUsername(this.getUsername());
-                corpse.setProfile(this.getProfile());
-                corpse.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
-                this.setInvisible(true);
-                this.remove(Entity.RemovalReason.KILLED);
-                serverLevel.addFreshEntity(corpse);
-                corpse.kill();
-            }
         }
     }
 

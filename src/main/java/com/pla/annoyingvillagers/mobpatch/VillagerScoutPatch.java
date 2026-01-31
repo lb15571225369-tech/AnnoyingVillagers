@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.mobpatch;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import com.pla.annoyingvillagers.combatbehaviour.*;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -188,9 +189,9 @@ public class VillagerScoutPatch extends CEHumanoidPatch implements CustomExecute
         };
     }
 
-     @Override
+    @Override
     public boolean canBeExecuted(LivingEntityPatch<?> livingEntityPatch) {
-        return true;
+        return AnnoyingVillagersConfig.CAN_EXECUTE_AV_MOB.get();
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.pla.annoyingvillagers.entity;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.clazz.PlayerNpcTarget;
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
-import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.task.DelayedTask;
@@ -20,7 +19,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -53,7 +51,6 @@ import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
-import yesman.epicfight.world.item.EpicFightItems;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -396,16 +393,6 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         if (this.level() instanceof ServerLevel serverLevel) {
             if (this.getPersistentData().getBoolean("die_by_possess")) {
                 this.remove(Entity.RemovalReason.KILLED);
-            } else if (AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-                PlayerMobDeadEntity corpse = new PlayerMobDeadEntity(AnnoyingVillagersModEntities.PLAYER_MOB_DEAD.get(), serverLevel);
-                corpse.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
-                corpse.setUsername(this.getUsername());
-                corpse.setProfile(this.getProfile());
-                corpse.setInvisible(true);
-                corpse.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, (SpawnGroupData) null, (CompoundTag) null);
-                serverLevel.addFreshEntity(corpse);
-                this.remove(Entity.RemovalReason.KILLED);
-                corpse.kill();
             }
         }
     }

@@ -2,7 +2,6 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
-import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
@@ -87,16 +86,6 @@ public class InfectedChrisEntity extends PathfinderMob {
                 ItemEntity drop = new ItemEntity(serverLevel, x, y + 1.0D, z, new ItemStack(item));
                 drop.setPickUpDelay(10);
                 serverLevel.addFreshEntity(drop);
-            }
-
-            if (AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-                InfectedChrisDeadEntity deadEntity = new InfectedChrisDeadEntity(AnnoyingVillagersModEntities.INFECTED_CHRIS_DEAD.get(), serverLevel);
-                deadEntity.moveTo(x, y, z, serverLevel.getRandom().nextFloat() * 360.0F, 0.0F);
-                deadEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
-                this.remove(RemovalReason.KILLED);
-                serverLevel.addFreshEntity(deadEntity);
-                deadEntity.setPose(Pose.DYING);
-                deadEntity.kill();
             }
         }
     }

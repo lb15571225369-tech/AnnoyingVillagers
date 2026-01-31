@@ -7,7 +7,6 @@ public class AnnoyingVillagersConfig {
     public static final ForgeConfigSpec SPEC;
 
     public static ForgeConfigSpec.ConfigValue<Double> HEROBRINE_POSSESS_RATE;
-    public static ForgeConfigSpec.ConfigValue<Boolean> PHYSIC_MOD_COMPAT;
     public static ForgeConfigSpec.ConfigValue<Integer> HEROBRINE_RECALL_MIN_TIME;
     public static ForgeConfigSpec.ConfigValue<Integer> HEROBRINE_RECALL_MAX_TIME;
     public static ForgeConfigSpec.ConfigValue<Double> KICK_STAMINA_DECREASE_PERCENTAGE;
@@ -15,6 +14,8 @@ public class AnnoyingVillagersConfig {
     public static ForgeConfigSpec.ConfigValue<Double> MOB_GUARD_BREAK_WAKE_UP_MAX_CHANCE;
     public static ForgeConfigSpec.ConfigValue<Boolean> TURN_ON_NPC_CHAT;
     public static ForgeConfigSpec.ConfigValue<Boolean> ARROW_CAN_BREAK_BLOCK;
+    public static ForgeConfigSpec.ConfigValue<Boolean> CAN_EXECUTE_AV_MOB;
+    public static ForgeConfigSpec.ConfigValue<Boolean> AV_MOB_CAN_EXECUTE;
 
     // ==== NPC Behaviour ====
     public static ForgeConfigSpec.ConfigValue<Double> NPC_TARGET_WEIGHT_MONSTER_HUNTER;
@@ -28,10 +29,6 @@ public class AnnoyingVillagersConfig {
         HEROBRINE_POSSESS_RATE = BUILDER.comment(
                         "Chance for Herobrine possess another player npc into Herobrine #5 and Herobrine #6")
                 .defineInRange("herobrinePossessRate", 0.5, 0, 1);
-        PHYSIC_MOD_COMPAT = BUILDER.comment(
-                        "Spawn dead body for the mob on killed",
-                        "Install Physic Mod to see the effect")
-                .define("physicModCompat", false);
 
         HEROBRINE_RECALL_MIN_TIME = BUILDER.comment(
                         "The minimum value (in minutes) for Herobrine's random recall time. This value should be lower than or equal the maximum. " +
@@ -63,6 +60,13 @@ public class AnnoyingVillagersConfig {
                         "Make arrow can break block")
                 .define("arrowCanBreakBlock", true);
 
+        CAN_EXECUTE_AV_MOB = BUILDER.comment(
+                        "Make all of AV NPCs and Mobs can be executed")
+                .define("canExecuteAvMob", true);
+        AV_MOB_CAN_EXECUTE = BUILDER.comment(
+                        "Enable execute ability for all of Av NPCs and Mobs")
+                .define("AvMobCanExecute", true);
+
         // ===== NPC Behaviour =====
         BUILDER.comment(
                 "==== NPC Behaviour ===="
@@ -70,7 +74,7 @@ public class AnnoyingVillagersConfig {
 
         NPC_TARGET_WEIGHT_MONSTER_HUNTER = BUILDER.comment(
                         "Weight for Player NPC to target and attack all monsters in the world")
-                .defineInRange("npcTargetWeightMosnterHunter", 1.0D, 0.0D, 10.0D);
+                .defineInRange("npcTargetWeightMonsterHunter", 1.0D, 0.0D, 10.0D);
 
         NPC_TARGET_WEIGHT_VILLAGER_HUNTER = BUILDER.comment(
                         "Weight for Player NPC to target and attack all villagers in the world")

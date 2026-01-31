@@ -6,6 +6,7 @@ import com.pla.annoyingvillagers.combatbehaviour.NpcBow;
 import com.pla.annoyingvillagers.combatbehaviour.NpcFist;
 import com.pla.annoyingvillagers.combatbehaviour.NpcSword;
 import com.pla.annoyingvillagers.combatbehaviour.NullSkeletonSword;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -133,9 +134,9 @@ public class NullSkeletonPatch extends CEHumanoidPatch implements CustomExecuteE
         };
     }
 
-     @Override
+    @Override
     public boolean canBeExecuted(LivingEntityPatch<?> livingEntityPatch) {
-        return true;
+        return AnnoyingVillagersConfig.CAN_EXECUTE_AV_MOB.get();
     }
 
     @Override

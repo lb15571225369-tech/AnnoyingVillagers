@@ -6,6 +6,7 @@ import com.pla.annoyingvillagers.combatbehaviour.NpcBow;
 import com.pla.annoyingvillagers.combatbehaviour.NpcFist;
 import com.pla.annoyingvillagers.combatbehaviour.NpcSword;
 import com.pla.annoyingvillagers.combatbehaviour.NullWeaponSword;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -249,9 +250,9 @@ public class NullWeaponPatch extends CEHumanoidPatch implements CustomExecuteEnt
         };
     }
 
-     @Override
+    @Override
     public boolean canBeExecuted(LivingEntityPatch<?> livingEntityPatch) {
-        return true;
+        return AnnoyingVillagersConfig.CAN_EXECUTE_AV_MOB.get();
     }
 
     @Override

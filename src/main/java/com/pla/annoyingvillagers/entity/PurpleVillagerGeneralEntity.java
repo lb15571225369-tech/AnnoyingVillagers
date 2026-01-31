@@ -3,7 +3,6 @@ package com.pla.annoyingvillagers.entity;
 import javax.annotation.Nullable;
 
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
-import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
@@ -201,15 +200,6 @@ public class PurpleVillagerGeneralEntity extends AVNpc {
 
             for (ItemStack stack : drops) {
                 dropStack.accept(stack);
-            }
-
-            if (AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-                PurpleVillagerGeneralDeadEntity deadEntity = new PurpleVillagerGeneralDeadEntity(AnnoyingVillagersModEntities.PURPLE_VILLAGER_GENERAL_DEAD.get(), serverLevel);
-                deadEntity.moveTo(this.getX(), this.getY(), this.getZ(), serverLevel.getRandom().nextFloat() * 360.0F, 0.0F);
-                deadEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(deadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
-                this.remove(RemovalReason.KILLED);
-                serverLevel.addFreshEntity(deadEntity);
-                deadEntity.kill();
             }
         }
     }

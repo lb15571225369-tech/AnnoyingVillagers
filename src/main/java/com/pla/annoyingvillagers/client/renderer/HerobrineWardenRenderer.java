@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.WardenEmissiveLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.NotNull;
 
 public class HerobrineWardenRenderer extends MobRenderer<HerobrineWardenEntity, ModelHerobrineWarden> {
     private static final ResourceLocation BASE =
@@ -51,7 +52,7 @@ public class HerobrineWardenRenderer extends MobRenderer<HerobrineWardenEntity, 
     }
 
     @Override
-    public ResourceLocation getTextureLocation(HerobrineWardenEntity e) {
+    public @NotNull ResourceLocation getTextureLocation(@NotNull HerobrineWardenEntity herobrineWardenEntity) {
         return BASE;
     }
 }

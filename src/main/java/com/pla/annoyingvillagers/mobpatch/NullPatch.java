@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.mobpatch;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import com.pla.annoyingvillagers.combatbehaviour.HerobrineNullWeapon;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -129,9 +130,9 @@ public class NullPatch extends CEHumanoidPatch implements CustomExecuteEntity {
         };
     }
 
-     @Override
+    @Override
     public boolean canBeExecuted(LivingEntityPatch<?> livingEntityPatch) {
-        return true;
+        return AnnoyingVillagersConfig.CAN_EXECUTE_AV_MOB.get();
     }
 
     @Override

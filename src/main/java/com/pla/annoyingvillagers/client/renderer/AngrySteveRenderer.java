@@ -22,6 +22,10 @@ public class AngrySteveRenderer extends HumanoidMobRenderer<AngrySteveEntity, Hu
     }
 
     public @NotNull ResourceLocation getTextureLocation(@NotNull AngrySteveEntity angrySteveEntity) {
-        return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/angry_steve.png");
+        if (angrySteveEntity.isDeadOrDying()) {
+            return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/steve_dead.png");
+        } else {
+            return ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "textures/entities/angry_steve.png");
+        }
     }
 }

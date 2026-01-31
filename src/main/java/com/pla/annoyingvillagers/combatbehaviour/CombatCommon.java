@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.combatbehaviour;
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.AVNpc;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.item.LegendarySwordItem;
@@ -75,6 +76,7 @@ public class CombatCommon {
     public static boolean canExecute(LivingEntity attacker, LivingEntity victim, LivingEntityPatch<?> victimEntityPatch) {
         float maxDist = ExecutionHandler.EXECUTION_DISTANCE;
         return attacker.isAlive() && victim.isAlive()
+                && AnnoyingVillagersConfig.AV_MOB_CAN_EXECUTE.get()
                 && !ExecutionHandler.isExecutingTarget(attacker, victim)
                 && ExecutionHandler.isTargetSupported(victimEntityPatch)
                 && isHoldingWeapon(attacker)

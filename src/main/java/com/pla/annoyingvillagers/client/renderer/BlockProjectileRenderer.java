@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 public class BlockProjectileRenderer extends EntityRenderer<BlockProjectileEntity> {
     public BlockProjectileRenderer(EntityRendererProvider.Context ctx) {
@@ -19,7 +20,7 @@ public class BlockProjectileRenderer extends EntityRenderer<BlockProjectileEntit
 
     @Override
     public void render(BlockProjectileEntity entity, float yaw, float partialTicks,
-                       PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+                       PoseStack poseStack, @NotNull MultiBufferSource buffer, int packedLight) {
         BlockState block = entity.getCarriedBlock();
 
         poseStack.pushPose();
@@ -39,7 +40,7 @@ public class BlockProjectileRenderer extends EntityRenderer<BlockProjectileEntit
     }
 
     @Override
-    public ResourceLocation getTextureLocation(BlockProjectileEntity entity) {
+    public @NotNull ResourceLocation getTextureLocation(@NotNull BlockProjectileEntity blockProjectileEntity) {
         return TextureAtlas.LOCATION_BLOCKS;
     }
 }

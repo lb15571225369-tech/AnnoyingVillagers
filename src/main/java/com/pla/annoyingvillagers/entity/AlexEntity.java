@@ -3,7 +3,6 @@ package com.pla.annoyingvillagers.entity;
 import javax.annotation.Nullable;
 
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
-import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.spawnhandler.AlexData;
@@ -289,16 +288,6 @@ public class AlexEntity extends AVNpc {
                 dropStack.accept(stack);
             }
             dropArrows.accept(new Random().nextInt(10, 20));
-
-            if (AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-                AlexDeadEntity alexDeadEntity = new AlexDeadEntity(AnnoyingVillagersModEntities.ALEX_DEAD.get(), serverLevel);
-
-                alexDeadEntity.moveTo(this.getX(), this.getY(), this.getZ(), serverLevel.getRandom().nextFloat() * 360.0F, 0.0F);
-                alexDeadEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(alexDeadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
-                this.remove(RemovalReason.KILLED);
-                serverLevel.addFreshEntity(alexDeadEntity);
-                alexDeadEntity.kill();
-            }
         }
     }
 

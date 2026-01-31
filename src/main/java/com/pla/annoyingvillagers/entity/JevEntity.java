@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.entity;
 
-import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.util.CombatBehaviour;
@@ -119,16 +118,6 @@ public class JevEntity extends AVNpc {
     @Override
     public void die(@NotNull DamageSource pDamageSource) {
         super.die(pDamageSource);
-        if (this.level() instanceof ServerLevel serverLevel) {
-            if (AnnoyingVillagersConfig.PHYSIC_MOD_COMPAT.get()) {
-                JevDeadEntity jevDeadEntity = new JevDeadEntity(AnnoyingVillagersModEntities.JEV_DEAD.get(), serverLevel);
-                jevDeadEntity.moveTo(this.getX(), this.getY(), this.getZ(), serverLevel.getRandom().nextFloat() * 360.0F, 0.0F);
-                jevDeadEntity.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(jevDeadEntity.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
-                this.remove(RemovalReason.KILLED);
-                serverLevel.addFreshEntity(jevDeadEntity);
-                jevDeadEntity.kill();
-            }
-        }
     }
 
     @Override
