@@ -1,36 +1,13 @@
 package com.pla.annoyingvillagers.item;
 
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
 
-public class HardGreatSwordSkillItem extends SwordItem {
-
+public class HardGreatSwordSkillItem extends Item {
     public HardGreatSwordSkillItem() {
-        super(new Tier() {
-            public int getUses() {
-                return 1650;
-            }
-
-            public float getSpeed() {
-                return 4.0F;
-            }
-
-            public float getAttackDamageBonus() {
-                return 10.0F;
-            }
-
-            public int getLevel() {
-                return 4;
-            }
-
-            public int getEnchantmentValue() {
-                return 5;
-            }
-
-            public Ingredient getRepairIngredient() {
-                return Ingredient.of();
-            }
-        }, 3, -2.0F, (new Properties()).fireResistant());
+        super((new Properties()).stacksTo(1).rarity(Rarity.UNCOMMON));
     }
 }

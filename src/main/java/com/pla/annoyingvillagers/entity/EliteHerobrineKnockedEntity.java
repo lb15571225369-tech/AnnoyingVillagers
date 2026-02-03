@@ -3,7 +3,7 @@ package com.pla.annoyingvillagers.entity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.procedures.EliteHerobrineOnDeathProcedure;
+import com.pla.annoyingvillagers.util.HerobrineUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -237,7 +237,7 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
         super.die(damageSource);
         if (this.getPersistentData().contains("FromElite")) {
             String fromElite = this.getPersistentData().getString("FromElite");
-            EliteHerobrineOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this, fromElite);
+            HerobrineUtil.dropEliteHerobrineLoot(this.level(), this.getX(), this.getY(), this.getZ(), fromElite);
         }
     }
 

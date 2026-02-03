@@ -148,7 +148,6 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> SHADOW_OBSIDIAN_SHORT_PILLAR = block(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_SHORT_PILLAR, null);
     public static final RegistryObject<Item> SHADOW_OBSIDIAN_MIDDLE_PILLAR = block(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_MIDDLE_PILLAR, null);
     public static final RegistryObject<Item> SHADOW_OBSIDIAN_LONG_PILLAR = block(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_LONG_PILLAR, null);
-    public static final RegistryObject<Item> NONEOB = block(AnnoyingVillagersModBlocks.NONEOB, null);
     public static final RegistryObject<Item> HEAVY_ATTACK_LEGENDARY_SWORD = AnnoyingVillagersModItems.REGISTRY.register("heavy_attack_legendary_sword", HeavyAttackLegendarySwordItem::new);
 
     public static final RegistryObject<Item> HARD_GREATSWORD_SKILL = AnnoyingVillagersModItems.REGISTRY.register("hard_greatsword_skill", HardGreatSwordSkillItem::new);

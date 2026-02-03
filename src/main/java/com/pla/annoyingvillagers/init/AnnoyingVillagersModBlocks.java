@@ -15,7 +15,6 @@ public class AnnoyingVillagersModBlocks {
 
     public static final DeferredRegister<Block> REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCKS, AnnoyingVillagers.MODID);
     public static final RegistryObject<Block> ENCHANT_BED = AnnoyingVillagersModBlocks.REGISTRY.register("enchant_bed", EnchantBedBlock::new);
-    public static final RegistryObject<Block> NONEOB = AnnoyingVillagersModBlocks.REGISTRY.register("noneob", NoneObBlock::new);
     public static final RegistryObject<Block> SHADOW_OBSIDIAN_SHORT_PILLAR = AnnoyingVillagersModBlocks.REGISTRY.register("shadow_obsidian_short_pillar", ShadowObsidianShortPillarBlock::new);
     public static final RegistryObject<Block> SHADOW_OBSIDIAN_MIDDLE_PILLAR = AnnoyingVillagersModBlocks.REGISTRY.register("shadow_obsidian_middle_pillar", ShadowObsidianMiddlePillarBlock::new);
     public static final RegistryObject<Block> SHADOW_OBSIDIAN_LONG_PILLAR = AnnoyingVillagersModBlocks.REGISTRY.register("shadow_obsidian_long_pillar", ShadowObsidianLongPillarBlock::new);

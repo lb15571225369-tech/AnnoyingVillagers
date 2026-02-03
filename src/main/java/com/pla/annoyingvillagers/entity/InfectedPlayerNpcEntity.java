@@ -4,6 +4,7 @@ import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.procedures.*;
+import com.pla.annoyingvillagers.util.HerobrineUtil;
 import com.pla.annoyingvillagers.util.TeamUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -91,17 +92,12 @@ public class InfectedPlayerNpcEntity extends PlayerMobEntity {
         super.die(damageSource);
         String possessedBy = this.getPersistentData().getString("possessed_by");
         switch (possessedBy) {
-            case "herobrine_clone" ->
-                    ShadowHerobrineCloneDieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
-            case "shadow_herobrine_clone" ->
-                    HerobrineCloneDieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
-            case "low_herobrine_clone", "low_shadow_herobrine_clone" ->
-                    LowHerobrineCloneDieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
-            case "herobrine_7" ->
-                    Herobrine7DieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
-            case "shadow_herobrine" ->
-                    DarkHerobrineOnDeathProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
-            case "null" -> NullDieProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+            case "herobrine_clone" -> HerobrineUtil.dropHerobrineCloneLoot(this.level(), this.getX(), this.getY(), this.getZ());
+            case "shadow_herobrine_clone" -> HerobrineUtil.dropShadowHerobrineCloneLoot(this.level(), this.getX(), this.getY(), this.getZ());
+            case "low_herobrine_clone", "low_shadow_herobrine_clone" -> HerobrineUtil.dropLowHerobrineCloneLoot(this.level(), this.getX(), this.getY(), this.getZ());
+            case "herobrine_7" -> HerobrineUtil.dropHerobrine7Loot(this.level(), this.getX(), this.getY(), this.getZ());
+            case "shadow_herobrine" -> HerobrineUtil.dropShadowHerobrineLoot(this.level(), this.getX(), this.getY(), this.getZ());
+            case "null" -> HerobrineUtil.dropNullLoot(this.level(), this.getX(), this.getY(), this.getZ());
         }
         if (this.level() instanceof ServerLevel serverLevel) {
             ItemStack itemstack;
