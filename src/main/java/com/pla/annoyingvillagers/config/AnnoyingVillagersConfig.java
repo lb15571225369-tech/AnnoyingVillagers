@@ -16,6 +16,7 @@ public class AnnoyingVillagersConfig {
     public static ForgeConfigSpec.ConfigValue<Boolean> ARROW_CAN_BREAK_BLOCK;
     public static ForgeConfigSpec.ConfigValue<Boolean> CAN_EXECUTE_AV_MOB;
     public static ForgeConfigSpec.ConfigValue<Boolean> AV_MOB_CAN_EXECUTE;
+    public static ForgeConfigSpec.ConfigValue<Boolean> AV_MOB_CAN_BURN_ITEM;
 
     // ==== NPC Behaviour ====
     public static ForgeConfigSpec.ConfigValue<Double> NPC_TARGET_WEIGHT_MONSTER_HUNTER;
@@ -66,6 +67,9 @@ public class AnnoyingVillagersConfig {
         AV_MOB_CAN_EXECUTE = BUILDER.comment(
                         "Enable execute ability for all of Av NPCs and Mobs")
                 .define("AvMobCanExecute", true);
+        AV_MOB_CAN_BURN_ITEM = BUILDER.comment(
+                        "Enable burning items ability for all of Av NPCs and Mobs")
+                .define("AvMobCanBurnItem", true);
 
         // ===== NPC Behaviour =====
         BUILDER.comment(

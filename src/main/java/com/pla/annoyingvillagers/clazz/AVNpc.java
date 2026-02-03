@@ -1,5 +1,7 @@
 package com.pla.annoyingvillagers.clazz;
 
+import com.pla.annoyingvillagers.entity.goal.BurnNearbyItemGoal;
+import com.pla.annoyingvillagers.entity.goal.PlayIdleAnimationGoal;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -20,9 +22,12 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import yesman.epicfight.api.animation.types.StaticAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
@@ -42,6 +47,51 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
     private boolean swapBackToBow = false;
     private int unableToDamageCooldown = 0;
     private int stunEscapeCooldown = 0;
+    @Nullable
+    private IdleAnimation idleAnimationChoice;
+    @Nullable private AssetAccessor<? extends StaticAnimation> idleAnimationAsset;
+    private boolean idleMessageBroadcast = false;
+    private boolean playingIdle;
+
+    public boolean isPlayingIdle() {
+        return playingIdle;
+    }
+
+    public void setPlayingIdle(boolean playingIdle) {
+        this.playingIdle = playingIdle;
+    }
+
+    @Nullable
+    public IdleAnimation getIdleAnimationChoice() {
+        return idleAnimationChoice;
+    }
+
+    public void setIdleAnimationChoice(@Nullable IdleAnimation choice) {
+        this.idleAnimationChoice = choice;
+    }
+
+    @Nullable
+    public AssetAccessor<? extends StaticAnimation> getIdleAnimation() {
+        return idleAnimationAsset;
+    }
+
+    public void setIdleAnimation(@Nullable AssetAccessor<? extends StaticAnimation> anim) {
+        this.idleAnimationAsset = anim;
+    }
+
+    public boolean isIdleMessageBroadcast() {
+        return idleMessageBroadcast;
+    }
+
+    public void setIdleMessageBroadcast(boolean idleMessageBroadcast) {
+        this.idleMessageBroadcast = idleMessageBroadcast;
+    }
+
+    public void clearIdleAnimationState() {
+        this.idleAnimationChoice = null;
+        this.idleAnimationAsset = null;
+        this.idleMessageBroadcast = false;
+    }
 
     public int getStunEscapeCooldown() {
         return stunEscapeCooldown;
@@ -158,7 +208,7 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
+    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.put("Inventory", this.inventory.createTag());
         tag.putInt("GapCooldown", this.gapCooldown);
@@ -190,10 +240,16 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
             this.offWeaponItem = pNewItem.copy();
         }
         super.onEquipItem(pSlot, pOldItem, pNewItem);
+        if (level() instanceof ServerLevel
+                && isPlayingIdle()
+                && livingEntityPatch != null
+                && idleAnimationAsset != null) {
+            livingEntityPatch.playAnimationSynchronized(idleAnimationAsset, 0.0F);
+        }
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
+    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.contains("Inventory", Tag.TAG_COMPOUND)) {
             this.inventory.fromTag(tag.getList("Inventory", Tag.TAG_COMPOUND));
@@ -217,7 +273,7 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
     }
 
     @Override
-    protected void dropCustomDeathLoot(DamageSource source, int looting, boolean recentlyHit) {
+    protected void dropCustomDeathLoot(@NotNull DamageSource source, int looting, boolean recentlyHit) {
         super.dropCustomDeathLoot(source, looting, recentlyHit);
 
         for (int i = 0; i < this.inventory.getContainerSize(); i++) {
@@ -235,28 +291,24 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
         if (this.getMainHandItem().getItem() instanceof BowItem) {
             this.goalSelector.addGoal(4, new RangedBowAttackGoal<>(this, 1.0D, 20, 10.0F));
         }
+        this.goalSelector.addGoal(1, new BurnNearbyItemGoal(this, 1.0D, 10.0D));
+        this.goalSelector.addGoal(1, new PlayIdleAnimationGoal(this, new Random().nextInt(3000, 6000)));
     }
 
     @Override
-    public boolean canFireProjectileWeapon(ProjectileWeaponItem item) {
+    public boolean canFireProjectileWeapon(@NotNull ProjectileWeaponItem item) {
         return item instanceof BowItem;
     }
 
-    public boolean canFireProjectileWeapon(Item item) {
-        boolean var10000;
+    public boolean canFireProjectileWeapon(@NotNull Item item) {
         if (item instanceof ProjectileWeaponItem weaponItem) {
-            if (this.canFireProjectileWeapon(weaponItem)) {
-                var10000 = true;
-                return var10000;
-            }
+            return this.canFireProjectileWeapon(weaponItem);
         }
-
-        var10000 = false;
-        return var10000;
+        return false;
     }
 
     @Override
-    public void performRangedAttack(LivingEntity pTarget, float pVelocity) {
+    public void performRangedAttack(@NotNull LivingEntity pTarget, float pVelocity) {
         ItemStack weaponStack = this.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this, this::canFireProjectileWeapon));
         ItemStack itemstack = this.getProjectile(weaponStack);
         AbstractArrow mobArrow = ProjectileUtil.getMobArrow(this, itemstack, pVelocity);
@@ -332,7 +384,7 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
             new DelayedTask(5) {
                 @Override
                 public void run() {
-                    if (!entity.isAlive() || entity.isRemoved() || entity.level() == null) return;
+                    if (!entity.isAlive() || entity.isRemoved()) return;
                     itemEntity.discard();
                     entity.level().playSound(null, entity.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.HOSTILE, 0.2F, 1.0F);
                 }

@@ -171,7 +171,7 @@ public class JevEntity extends AVNpc {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
+    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         if (followTargetUUID != null) {
             tag.putUUID("FollowTarget", followTargetUUID);
@@ -180,7 +180,7 @@ public class JevEntity extends AVNpc {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
+    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.hasUUID("FollowTarget")) {
             followTargetUUID = tag.getUUID("FollowTarget");

@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.UUID;
 import javax.annotation.Nullable;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.entity.NullEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
@@ -515,7 +516,7 @@ public class NullWeapon extends Monster {
         if (this.releaseCooldown > 0) {
             this.releaseCooldown = this.releaseCooldown - 1;
         }
-        if (this.releaseCooldown == 0 && this.released) {
+        if (this.releaseCooldown == 0 && this.nullEntity != null && this.released) {
             this.released = false;
         }
     }

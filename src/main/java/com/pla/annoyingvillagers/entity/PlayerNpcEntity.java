@@ -1,8 +1,11 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.clazz.IdleAnimation;
 import com.pla.annoyingvillagers.clazz.PlayerNpcTarget;
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
+import com.pla.annoyingvillagers.entity.goal.BurnNearbyItemGoal;
+import com.pla.annoyingvillagers.entity.goal.PlayIdleAnimationGoal;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.task.DelayedTask;
@@ -47,6 +50,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
@@ -70,6 +74,55 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     private Entity blockDamage = null;
     private double placeBlockToParryChance;
     private int stunEscapeCooldown = 0;
+    @Nullable private IdleAnimation idleAnimationChoice;
+    @Nullable private AssetAccessor<? extends StaticAnimation> idleAnimationAsset;
+    private boolean idleMessageBroadcast = false;
+    final LivingEntityPatch<?> livingEntityPatch =  EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
+    private boolean playingIdle;
+
+    public boolean isPlayingIdle() {
+        return playingIdle;
+    }
+
+    public void setPlayingIdle(boolean playingIdle) {
+        this.playingIdle = playingIdle;
+    }
+
+    @Nullable
+    public IdleAnimation getIdleAnimationChoice() {
+        return idleAnimationChoice;
+    }
+
+    public void setIdleAnimationChoice(@Nullable IdleAnimation choice) {
+        this.idleAnimationChoice = choice;
+    }
+
+    @Nullable
+    public AssetAccessor<? extends StaticAnimation> getIdleAnimation() {
+        return idleAnimationAsset;
+    }
+
+    public void setIdleAnimation(@Nullable AssetAccessor<? extends StaticAnimation> anim) {
+        this.idleAnimationAsset = anim;
+    }
+
+    public boolean isIdleMessageBroadcast() {
+        return idleMessageBroadcast;
+    }
+
+    public void setIdleMessageBroadcast(boolean idleMessageBroadcast) {
+        this.idleMessageBroadcast = idleMessageBroadcast;
+    }
+
+    public void clearIdleAnimationState() {
+        this.idleAnimationChoice = null;
+        this.idleAnimationAsset = null;
+        this.idleMessageBroadcast = false;
+    }
+
+    public LivingEntityPatch<?> getLivingEntityPatch() {
+        return livingEntityPatch;
+    }
 
     public int getStunEscapeCooldown() {
         return stunEscapeCooldown;
@@ -282,6 +335,8 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new OpenDoorGoal(this, true));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.goalSelector.addGoal(1, new BurnNearbyItemGoal(this, 1.0D, 10.0D));
+        this.goalSelector.addGoal(1, new PlayIdleAnimationGoal(this, new Random().nextInt(3000, 6000)));
         if (this.getMainHandItem().getItem() instanceof BowItem) {
             this.goalSelector.addGoal(4, new RangedBowAttackGoal<>(this, 1.0D, 20, 48.0F));
         }
@@ -322,7 +377,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     }
 
     public boolean hurt(@NotNull DamageSource damageSource, float f) {
-        LivingEntityPatch<?> livingEntityPatch =  EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
+        if (livingEntityPatch == null) return super.hurt(damageSource, f);
         AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
 
         if (damageSource.getEntity() != null && this.getEnderPearlCooldown() == 0
@@ -337,9 +392,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
                     @Override
                     public void run() {
                         if (entity.isAlive()) {
-                            if (livingEntityPatch != null) {
-                                livingEntityPatch.playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F);
-                            }
+                            livingEntityPatch.playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F);
                             CombatBehaviour.throwEnderPearl(entity, 90.0F);
                         }
                     }
@@ -352,25 +405,19 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     }
 
     @Override
-    public boolean canFireProjectileWeapon(ProjectileWeaponItem item) {
+    public boolean canFireProjectileWeapon(@NotNull ProjectileWeaponItem item) {
         return item instanceof BowItem;
     }
 
-    public boolean canFireProjectileWeapon(Item item) {
-        boolean var10000;
+    public boolean canFireProjectileWeapon(@NotNull Item item) {
         if (item instanceof ProjectileWeaponItem weaponItem) {
-            if (this.canFireProjectileWeapon(weaponItem)) {
-                var10000 = true;
-                return var10000;
-            }
+            return this.canFireProjectileWeapon(weaponItem);
         }
-
-        var10000 = false;
-        return var10000;
+        return false;
     }
 
     @Override
-    public void performRangedAttack(LivingEntity pTarget, float pVelocity) {
+    public void performRangedAttack(@NotNull LivingEntity pTarget, float pVelocity) {
         ItemStack weaponStack = this.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this, this::canFireProjectileWeapon));
         ItemStack itemstack = this.getProjectile(weaponStack);
         AbstractArrow mobArrow = ProjectileUtil.getMobArrow(this, itemstack, pVelocity);
@@ -540,12 +587,11 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         List<String> commands = EquipmentDataLoader.getEquipCommands(0.85f, this);
         for (String cmd : commands) {
             try {
-                this.getServer().getCommands().getDispatcher().execute(
+                Objects.requireNonNull(this.getServer()).getCommands().getDispatcher().execute(
                         cmd,
                         this.createCommandSourceStack().withSuppressedOutput().withPermission(4)
                 );
-            } catch (CommandSyntaxException e) {
-
+            } catch (CommandSyntaxException ignored) {
             }
         }
 
@@ -587,6 +633,12 @@ public class PlayerNpcEntity extends PlayerMobEntity {
             this.offWeaponItem = pNewItem.copy();
         }
         super.onEquipItem(pSlot, pOldItem, pNewItem);
+        if (level() instanceof ServerLevel
+                && isPlayingIdle()
+                && livingEntityPatch != null
+                && idleAnimationAsset != null) {
+            livingEntityPatch.playAnimationSynchronized(idleAnimationAsset, 0.0F);
+        }
     }
 
     public static boolean canSpawn(EntityType<PlayerNpcEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {

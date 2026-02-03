@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.util;
+package com.pla.annoyingvillagers.clazz;
 
 public enum IdleAnimation {
     SIT,

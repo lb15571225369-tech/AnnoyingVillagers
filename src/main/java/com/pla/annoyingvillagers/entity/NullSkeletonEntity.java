@@ -1,7 +1,6 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.util.TeamUtil;
@@ -14,6 +13,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -316,6 +316,13 @@ public class NullSkeletonEntity extends AbstractSkeleton {
     public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
         if (player != null && pSource.getEntity() == player) return false;
         if (nullEntity != null && pSource.getEntity() == nullEntity) return false;
+        if (!pSource.is(DamageTypes.FELL_OUT_OF_WORLD)) {
+            float health = this.getHealth();
+            if (health - pAmount <= 5.0F) {
+                this.kill();
+                return false;
+            }
+        }
         return super.hurt(pSource, pAmount);
     }
 

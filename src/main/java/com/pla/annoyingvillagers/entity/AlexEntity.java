@@ -98,7 +98,7 @@ public class AlexEntity extends AVNpc {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
+    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         if (jevUUID != null) {
             tag.putUUID("JevUUID", jevUUID);
@@ -109,7 +109,7 @@ public class AlexEntity extends AVNpc {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
+    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.hasUUID("JevUUID")) {
             jevUUID = tag.getUUID("JevUUID");
