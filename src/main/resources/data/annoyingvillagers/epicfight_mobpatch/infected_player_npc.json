@@ -17,10 +17,10 @@
 		"can_block_projectile": true
 	},
 	"default_livingmotions": {
-		"idle": "annoyingvillagers:biped/other/death_idle",
-		"walk": "annoyingvillagers:biped/other/death_idle",
-		"chase": "annoyingvillagers:biped/other/death_idle",
-		"death": "annoyingvillagers:biped/other/death_idle"
+		"idle": "epicfight:biped/living/idle",
+		"walk": "epicfight:biped/living/walk",
+		"chase": "epicfight:biped/living/run",
+		"death": "annoyingvillagers:biped/pugilist_steve/death_idle"
 	},
 	"humanoid_weapon_motions": [
 	],

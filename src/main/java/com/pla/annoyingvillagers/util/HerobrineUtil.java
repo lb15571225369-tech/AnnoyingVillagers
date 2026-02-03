@@ -46,7 +46,7 @@ public class HerobrineUtil {
                 || e instanceof HerobrineGregEntity
                 || e instanceof LowHerobrineCloneEntity
                 || e instanceof LowShadowHerobrineCloneEntity
-                || e instanceof InfectedPlayerMobEntity
+                || e instanceof InfectedPlayerNpcEntity
                 || e instanceof InfectedTheMostMoistBurrit0Entity
                 || e instanceof InfectedChrisEntity
                 || e instanceof NullSwordEntity

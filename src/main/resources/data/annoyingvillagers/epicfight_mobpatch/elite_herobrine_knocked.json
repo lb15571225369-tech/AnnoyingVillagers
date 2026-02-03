@@ -8,7 +8,7 @@
 		"impact": 0.0,
 		"armor_negation": 0.0,
 		"max_strikes": 5,
-		"chasing_speed": 1.5,
+		"chasing_speed": 1.9,
 		"scale": 1.0,
 		"counter_chance": 0.6,
 		"counter_cost": 20.0,
@@ -17,9 +17,9 @@
 		"can_block_projectile": true
 	},
 	"default_livingmotions": {
-		"idle": "annoyingvillagers:biped/other/knocked_elite",
-		"walk": "annoyingvillagers:biped/other/knocked_elite",
-		"chase": "annoyingvillagers:biped/other/knocked_elite",
+		"idle": "annoyingvillagers:biped/pla/knocked_elite",
+		"walk": "annoyingvillagers:biped/pla/knocked_elite",
+		"chase": "annoyingvillagers:biped/pla/knocked_elite",
 		"death": "epicfight:biped/living/death"
 	},
 	"humanoid_weapon_motions": [

@@ -1,12 +1,15 @@
 package com.pla.annoyingvillagers.potion;
 
-import com.pla.annoyingvillagers.procedures.HerobrineMobEffectOnApplyInstantenousEffectProcedure;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Random;
 
 public class HerobrineMobEffect extends MobEffect {
 
@@ -22,12 +25,37 @@ public class HerobrineMobEffect extends MobEffect {
         return true;
     }
 
-    public void applyInstantenousEffect(Entity entity, Entity entity1, @NotNull LivingEntity livingentity, int i, double d0) {
-        HerobrineMobEffectOnApplyInstantenousEffectProcedure.execute(livingentity.level(), livingentity);
-    }
+    public void applyEffectTick(@NotNull LivingEntity livingEntity, int i) {
+        if (livingEntity instanceof Player player) {
+            player.causeFoodExhaustion(0.1F);
+        }
 
-    public void applyEffectTick(@NotNull LivingEntity livingentity, int i) {
-        HerobrineMobEffectOnApplyInstantenousEffectProcedure.execute(livingentity.level(), livingentity);
+        if (Math.random() <= 0.05D) {
+            float damage = Math.min(livingEntity.getHealth(), new Random().nextFloat(0.5F, 1.5F));
+            if (damage == livingEntity.getHealth()) {
+                livingEntity.kill();
+            } else {
+                livingEntity.hurt(livingEntity.level().damageSources().generic(), damage);
+            }
+        }
+
+        if (livingEntity.level() instanceof ServerLevel serverLevel) {
+            Random random = new Random();
+
+            double dx = random.nextInt(-3, 3);
+            double dy = random.nextInt(-3, 3);
+            double dz = random.nextInt(-3, 3);
+            int count = random.nextInt(50, 200);
+            serverLevel.sendParticles(
+                    AnnoyingVillagersModParticleTypes.GLOWINGEYES.get(),
+                    livingEntity.getX() + dx,
+                    livingEntity.getY() + dy,
+                    livingEntity.getZ() + dz,
+                    count,
+                    0.0, 0.0, 0.0,
+                    0.1
+            );
+        }
     }
 
     public void removeAttributeModifiers(@NotNull LivingEntity livingentity, @NotNull AttributeMap attributemap, int i) {

@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.entity;
 
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.procedures.*;
@@ -23,15 +24,20 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.shelmarow.combat_evolution.effect.CEMobEffects;
 import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.entity.PlayerMobEntity;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.effect.EpicFightMobEffects;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
 
-public class InfectedPlayerMobEntity extends PlayerMobEntity {
+public class InfectedPlayerNpcEntity extends PlayerMobEntity {
+    final LivingEntityPatch<?> livingEntityPatch =  EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
 
-    public InfectedPlayerMobEntity(EntityType<? extends InfectedPlayerMobEntity> type, Level level) {
+    public InfectedPlayerNpcEntity(EntityType<? extends InfectedPlayerNpcEntity> type, Level level) {
         super(type, level);
         this.xpReward = 300;
         this.setMaxUpStep(0.6F);
@@ -40,8 +46,8 @@ public class InfectedPlayerMobEntity extends PlayerMobEntity {
         this.setCustomNameVisible(true);
     }
 
-    public InfectedPlayerMobEntity(PlayMessages.SpawnEntity spawnEntity, Level level) {
-        this(AnnoyingVillagersModEntities.INFECTED_PLAYER_MOB.get(), level);
+    public InfectedPlayerNpcEntity(PlayMessages.SpawnEntity spawnEntity, Level level) {
+        this(AnnoyingVillagersModEntities.INFECTED_PLAYER_NPC.get(), level);
     }
 
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -72,8 +78,11 @@ public class InfectedPlayerMobEntity extends PlayerMobEntity {
     @Override
     public void tick() {
         super.tick();
-        if (!this.level().isClientSide() && this.tickCount % 20 == 0) {
-            this.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.HEROBRINE.get(), 30, 0, false, false));
+        if (!this.level().isClientSide() && this.livingEntityPatch != null) {
+            this.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.HEROBRINE.get(), 2, 0, false, false));
+            this.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 2, 0, false, false));
+            this.addEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 2, 0, false, false));
+            livingEntityPatch.playAnimationSynchronized(AVAnimations.DEATH_IDLE, 0.0F);
         }
     }
 
@@ -118,6 +127,7 @@ public class InfectedPlayerMobEntity extends PlayerMobEntity {
             itementity.setPickUpDelay(10);
             serverLevel.addFreshEntity(itementity);
         }
+        this.discard();
     }
 
     @Override

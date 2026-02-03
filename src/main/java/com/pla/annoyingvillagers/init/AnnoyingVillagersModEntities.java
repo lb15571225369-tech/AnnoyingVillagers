@@ -44,7 +44,7 @@ public class AnnoyingVillagersModEntities {
     public static final RegistryObject<EntityType<PlayerNpcEntity>> PLAYER_NPC = register("player_npc", Builder.<PlayerNpcEntity>of(PlayerNpcEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(256).setUpdateInterval(3).setCustomClientFactory(PlayerNpcEntity::new).sized(0.6F, 1.8F));
 
     public static final RegistryObject<EntityType<InfectedTheMostMoistBurrit0Entity>> INFECTED_THEMOSTMOISTBURRIT0 = register("infected_the_most_moist_burrit0", Builder.<InfectedTheMostMoistBurrit0Entity>of(InfectedTheMostMoistBurrit0Entity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(InfectedTheMostMoistBurrit0Entity::new).sized(0.6F, 1.8F));
-    public static final RegistryObject<EntityType<InfectedPlayerMobEntity>> INFECTED_PLAYER_MOB = register("infected_player_mob", Builder.<InfectedPlayerMobEntity>of(InfectedPlayerMobEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(InfectedPlayerMobEntity::new).sized(0.6F, 1.8F));
+    public static final RegistryObject<EntityType<InfectedPlayerNpcEntity>> INFECTED_PLAYER_NPC = register("infected_player_npc", Builder.<InfectedPlayerNpcEntity>of(InfectedPlayerNpcEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(InfectedPlayerNpcEntity::new).sized(0.6F, 1.8F));
     public static final RegistryObject<EntityType<InfectedChrisEntity>> INJECTED_CHRIS = register("infected_chris", Builder.<InfectedChrisEntity>of(InfectedChrisEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(InfectedChrisEntity::new).sized(0.6F, 1.8F));
 
     public static final RegistryObject<EntityType<StealthAttackEntity>> STEALTH_ATTACK_PROJECTILE = register("projectile_stealth_attack", Builder.<StealthAttackEntity>of(StealthAttackEntity::new, MobCategory.MISC).setCustomClientFactory(StealthAttackEntity::new).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).sized(0.5F, 0.5F));
@@ -286,7 +286,7 @@ public class AnnoyingVillagersModEntities {
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.INFECTED_THEMOSTMOISTBURRIT0.get(), InfectedTheMostMoistBurrit0Entity.createAttributes().build());
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.SHADOW_HEROBRINE.get(), ShadowHerobrineEntity.createAttributes().build());
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.GLAIVE_HEROBRINE.get(), GlaiveHerobrineEntity.createAttributes().build());
-        entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.INFECTED_PLAYER_MOB.get(), InfectedPlayerMobEntity.createAttributes().build());
+        entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.INFECTED_PLAYER_NPC.get(), InfectedPlayerNpcEntity.createAttributes().build());
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.REAPER_HEROBRINE.get(), ReaperHerobrineEntity.createAttributes().build());
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.SWORDSMAN_HEROBRINE.get(), SwordsmanHerobrineEntity.createAttributes().build());
         entityAttributeCreationEvent.put(AnnoyingVillagersModEntities.SLEDGEHAMMER_HEROBRINE.get(), SledgehammerHerobrineEntity.createAttributes().build());

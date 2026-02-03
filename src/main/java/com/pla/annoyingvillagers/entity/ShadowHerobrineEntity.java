@@ -114,7 +114,7 @@ public class ShadowHerobrineEntity extends HerobrineMob {
             this.darkObLeft.discard();
         }
         if (this.level() instanceof ServerLevel serverLevel) {
-            InfectedPlayerMobEntity corpse = new InfectedPlayerMobEntity(AnnoyingVillagersModEntities.INFECTED_PLAYER_MOB.get(), serverLevel);
+            InfectedPlayerNpcEntity corpse = new InfectedPlayerNpcEntity(AnnoyingVillagersModEntities.INFECTED_PLAYER_NPC.get(), serverLevel);
             corpse.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
             String killedName = this.getPersistentData().getString("killed_name");
             corpse.getPersistentData().putString("possessed_by", "shadow_herobrine");

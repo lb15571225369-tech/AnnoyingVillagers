@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.entity;
 
 import javax.annotation.Nullable;
 
+import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
@@ -30,9 +31,14 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.shelmarow.combat_evolution.effect.CEMobEffects;
 import org.jetbrains.annotations.NotNull;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.effect.EpicFightMobEffects;
 
 public class InfectedTheMostMoistBurrit0Entity extends PathfinderMob {
+    final LivingEntityPatch<?> livingEntityPatch =  EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
 
     public InfectedTheMostMoistBurrit0Entity(SpawnEntity spawnEntity, Level level) {
         this(AnnoyingVillagersModEntities.INFECTED_THEMOSTMOISTBURRIT0.get(), level);
@@ -72,8 +78,11 @@ public class InfectedTheMostMoistBurrit0Entity extends PathfinderMob {
     @Override
     public void tick() {
         super.tick();
-        if (!this.level().isClientSide() && this.tickCount % 20 == 0) {
-            this.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.HEROBRINE.get(), 30, 0, false, false));
+        if (!this.level().isClientSide() && this.livingEntityPatch != null) {
+            this.addEffect(new MobEffectInstance(AnnoyingVillagersModMobEffects.HEROBRINE.get(), 2, 0, false, false));
+            this.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 2, 0, false, false));
+            this.addEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 2, 0, false, false));
+            livingEntityPatch.playAnimationSynchronized(AVAnimations.DEATH_IDLE, 0.0F);
         }
     }
 
@@ -109,6 +118,7 @@ public class InfectedTheMostMoistBurrit0Entity extends PathfinderMob {
                 serverLevel.addFreshEntity(drop);
             }
         }
+        this.discard();
     }
 
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor serverLevelAccessor, @NotNull DifficultyInstance difficultyInstance, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {

@@ -19,18 +19,10 @@
 	"default_livingmotions": {
 		"idle": "epicfight:biped/living/idle",
 		"walk": "epicfight:biped/living/walk",
-		"chase": "wom:biped/living/moonless_run",
+		"chase": "epicfight:biped/living/run",
 		"death": "epicfight:biped/living/death"
 	},
 	"humanoid_weapon_motions": [
-		  {
-			  "weapon_categories": ["fist"],
-			  "style":"common",
-			  "livingmotions": {
-					"chase": "wom:biped/living/moonless_run",
-					"walk": "epicfight:biped/living/walk"
-			  }
-		  }
 	],
 	"stun_animations": {
 		"short": "epicfight:biped/combat/hit_short",

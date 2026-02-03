@@ -46,7 +46,7 @@ public class AnnoyingVillagersModEntityRenderers {
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.ARMORED_HEROBRINE.get(), ArmoredHerobrineRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.STEVE.get(), SteveRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.ANGRY_STEVE.get(), AngrySteveRenderer::new);
-        registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.INFECTED_PLAYER_MOB.get(), PlayerMobRenderer::new);
+        registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.INFECTED_PLAYER_NPC.get(), PlayerMobRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.INFECTED_THEMOSTMOISTBURRIT0.get(), InfectedTheMostMoistBurrit0Renderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.SHADOW_HEROBRINE.get(), ShadowHerobrineRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.GLAIVE_HEROBRINE.get(), EliteHerobrineRenderer::new);

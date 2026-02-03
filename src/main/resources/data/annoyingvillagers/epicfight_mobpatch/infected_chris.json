@@ -8,7 +8,7 @@
 		"impact": 0.0,
 		"armor_negation": 0.0,
 		"max_strikes": 3,
-		"chasing_speed": 1.5,
+		"chasing_speed": 1.9,
         "scale": 1.0,
 		"counter_chance": 0.6,
 		"counter_cost": 2.0,
@@ -17,10 +17,10 @@
 		"can_block_projectile": true
 	},
 	"default_livingmotions": {
-		"idle": "annoyingvillagers:biped/other/death_idle",
-		"walk": "annoyingvillagers:biped/other/death_idle",
-		"chase": "annoyingvillagers:biped/other/death_idle",
-		"death": "annoyingvillagers:biped/other/death_idle"
+		"idle": "epicfight:biped/living/idle",
+		"walk": "epicfight:biped/living/walk",
+		"chase": "epicfight:biped/living/run",
+		"death": "annoyingvillagers:biped/pugilist_steve/death_idle"
 	},
 	"humanoid_weapon_motions": [
 	],

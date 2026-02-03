@@ -193,7 +193,7 @@
   "entity.annoyingvillagers.chris": "Chris",
   "entity.annoyingvillagers.infected_chris": "已感染Chris",
   "entity.annoyingvillagers.infected_the_most_moist_burrit0": "已感染TheMostMoistBurrit0",
-  "entity.annoyingvillagers.infected_player_mob": "受感染的玩家",
+  "entity.annoyingvillagers.infected_player_npc": "受感染的玩家",
   "entity.annoyingvillagers.steve": "Steve",
   "entity.annoyingvillagers.angry_steve": "Steve",
   "effect.annoyingvillagers.enchant_bed_effect": "附魔床",
