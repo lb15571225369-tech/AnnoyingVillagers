@@ -8,6 +8,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.skill.ShadowObsidianPillarSkill;
+import com.pla.annoyingvillagers.skill.ShadowObsidianSwordSkill;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -38,6 +39,7 @@ import yesman.epicfight.api.animation.types.LinkAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.skill.SkillContainer;
+import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
@@ -122,11 +124,19 @@ public class ShadowObsidianLongPillarBlock extends HerobrineObsidianBlock implem
         PlayerPatch<?> playerPatch = EpicFightCapabilities.getEntityPatch(pEntity, PlayerPatch.class);
         if (!(playerPatch instanceof ServerPlayerPatch serverPlayerPatch)) return;
 
-        SkillContainer skillContainer = serverPlayerPatch.getSkill(AVSkills.SHADOW_OBSIDIAN_PILLAR);
-        if (skillContainer == null) return;
+        SkillContainer skillContainer = null;
+        WeaponInnateSkill skill = null;
+        if (serverPlayerPatch.getSkill(AVSkills.SHADOW_OBSIDIAN_PILLAR) != null) {
+            skillContainer = serverPlayerPatch.getSkill(AVSkills.SHADOW_OBSIDIAN_PILLAR);
+            if (skillContainer == null) return;
+            skill = (ShadowObsidianPillarSkill) skillContainer.getSkill();
+        } else if (serverPlayerPatch.getSkill(AVSkills.SHADOW_OBSIDIAN_SWORD) != null) {
+            skillContainer = serverPlayerPatch.getSkill(AVSkills.SHADOW_OBSIDIAN_SWORD);
+            if (skillContainer == null) return;
+            skill = (ShadowObsidianSwordSkill) skillContainer.getSkill();
+        }
 
-        ShadowObsidianPillarSkill skill = (ShadowObsidianPillarSkill) skillContainer.getSkill();
-
+        if (skillContainer == null || skill == null) return;
         float currentResource = skillContainer.getResource();
         float neededResource = skillContainer.getNeededResource();
         float addResource = Math.min(value, neededResource);

@@ -1,9 +1,11 @@
 package com.pla.annoyingvillagers.entity;
 
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.util.AAAParticlesUtil;
+import com.pla.annoyingvillagers.util.EpicfightUtil;
 import com.pla.annoyingvillagers.util.ScreenShakeUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -36,6 +38,8 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
+import yesman.epicfight.world.capabilities.EpicFightCapabilities;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -486,6 +490,8 @@ public class DragonBeamEntity extends Entity {
             if (!this.level().isClientSide) {
                 for (LivingEntity target : hit) {
                     target.hurt(damageSources().indirectMagic(this, this.caster.getSummoner()), (float) this.power);
+                    LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(target, LivingEntityPatch.class);
+                    EpicfightUtil.dealStaminaDamage(damageSources().indirectMagic(this, this.caster.getSummoner()), 0.1F, livingEntityPatch, false);
                     target.hurtMarked = true;
                     target.setDeltaMovement(0.0, 0.0, 0.0);
                     target.lerpMotion(0.0, 0.0, 0.0);

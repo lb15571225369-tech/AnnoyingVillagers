@@ -7,6 +7,7 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class ShadowObsidianSwordItem  extends SwordItem {
             }
 
             public float getAttackDamageBonus() {
-                return 8.0F;
+                return 3.0F;
             }
 
             public int getLevel() {
@@ -33,14 +34,14 @@ public class ShadowObsidianSwordItem  extends SwordItem {
                 return 0;
             }
 
-            public Ingredient getRepairIngredient() {
+            public @NotNull Ingredient getRepairIngredient() {
                 return Ingredient.of();
             }
-        }, 3, -1.0F, (new Properties()));
+        }, 3, -2.5F, (new Properties()));
     }
 
     @Override
-    public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
+    public void appendHoverText(@NotNull ItemStack itemstack, Level level, @NotNull List<Component> list, @NotNull TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
         list.add(Component.translatable("tooltip.annoyingvillagers.shadow_obsidian_sword"));
     }

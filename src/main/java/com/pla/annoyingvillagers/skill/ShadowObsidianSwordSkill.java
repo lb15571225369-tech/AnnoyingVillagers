@@ -20,7 +20,7 @@ public class ShadowObsidianSwordSkill extends WeaponInnateSkill {
         if (!this.isActivated(skillContainer)) {
             super.executeOnServer(skillContainer, friendlyByteBuf);
             skillContainer.activate();
-            skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.POSE_UP, 0.0F);
+            skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.SHADOW_OBSIDIAN_SWORD_TORMENT_BERSERK_DASH, 0.0F);
         }
     }
 

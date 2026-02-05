@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.util;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.particles.ParticleOptions;
@@ -90,6 +91,7 @@ public class EpicfightUtil {
 
     public static void dealStaminaDamage(DamageSource damageSource, float amount, LivingEntityPatch<?> livingEntityPatch, boolean playStunAnimation) {
         if (livingEntityPatch instanceof CEHumanoidPatch ceHumanoidPatch) {
+            AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] stamina for mob {} is {}", ceHumanoidPatch.getOriginal().getDisplayName().getString() ,CEPatchUtils.getStamina(ceHumanoidPatch));
             if (!ceHumanoidPatch.dealStaminaDamage(damageSource, amount) && playStunAnimation) {
                 livingEntityPatch.playAnimationSynchronized(AVAnimations.GUARD_BREAK_ATTACK, 0.0F);
             }

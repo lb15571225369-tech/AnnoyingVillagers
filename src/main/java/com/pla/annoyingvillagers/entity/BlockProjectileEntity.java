@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.entity;
 
+import com.pla.annoyingvillagers.block.ObsidianBlock;
 import com.pla.annoyingvillagers.block.ShadowObsidianLongPillarBlock;
 import com.pla.annoyingvillagers.block.ShadowObsidianBlock;
 import com.pla.annoyingvillagers.blockentity.ShadowObsidianLongPillarBlockEntity;
@@ -163,7 +164,8 @@ public class BlockProjectileEntity extends ThrowableProjectile {
                 UUID owner = this.playerUUID;
 
                 BlockState placeState;
-                if (getCarriedBlock().is(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_SHORT_PILLAR.get())) {
+                if (getCarriedBlock().is(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_SHORT_PILLAR.get())
+                        || getCarriedBlock().is(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_MIDDLE_PILLAR.get())) {
                     placeState = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_LONG_PILLAR.get().defaultBlockState();
                     if (owner != null && placeState.hasProperty(ShadowObsidianLongPillarBlock.FROM_PLAYER)) {
                         placeState = placeState.setValue(ShadowObsidianLongPillarBlock.FROM_PLAYER, true);
@@ -172,6 +174,11 @@ public class BlockProjectileEntity extends ThrowableProjectile {
                     placeState = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().defaultBlockState();
                     if (owner != null && placeState.hasProperty(ShadowObsidianBlock.FROM_PLAYER)) {
                         placeState = placeState.setValue(ShadowObsidianBlock.FROM_PLAYER, true);
+                    }
+                } else if (getCarriedBlock().is(AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get())) {
+                    placeState = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get().defaultBlockState();
+                    if (owner != null && placeState.hasProperty(ObsidianBlock.FROM_PLAYER)) {
+                        placeState = placeState.setValue(ObsidianBlock.FROM_PLAYER, true);
                     }
                 } else {
                     placeState = getCarriedBlock();

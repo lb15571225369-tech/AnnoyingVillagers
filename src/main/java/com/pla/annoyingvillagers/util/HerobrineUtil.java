@@ -25,6 +25,7 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -1000,6 +1001,53 @@ public class HerobrineUtil {
             ItemEntity drop = new ItemEntity(level, x, y, z, new ItemStack(item));
             drop.setPickUpDelay(10);
             level.addFreshEntity(drop);
+        }
+    }
+
+    public static void dropHerobrineChrisLoot(LevelAccessor world, double x, double y, double z) {
+        if (world instanceof ServerLevel serverLevel) {
+            Item[] items = new Item[] {
+                    AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get().asItem(), AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get().asItem(),
+                    AnnoyingVillagersModItems.BEDROCK_WEAPON.get(), AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get().asItem(), Blocks.OAK_SIGN.asItem(), Blocks.OBSIDIAN.asItem(), Blocks.OBSIDIAN.asItem(), Items.NETHERITE_INGOT, Items.ENDER_PEARL, Items.ENCHANTED_GOLDEN_APPLE, Items.ENDER_EYE, Items.ENDER_EYE, AnnoyingVillagersModItems.ENCHANTED_ENDER_PEARL.get()
+            };
+
+            for (Item item : items) {
+                ItemEntity drop = new ItemEntity(serverLevel, x, y + 1.0D, z, new ItemStack(item));
+                drop.setPickUpDelay(10);
+                serverLevel.addFreshEntity(drop);
+            }
+        }
+    }
+
+    public static void dropArmoredHerobrineLoot(LevelAccessor world, double x, double y, double z) {
+        if (!(world instanceof Level level) || level.isClientSide()) return;
+        if (level instanceof ServerLevel serverLevel) {
+            serverLevel.getServer().getPlayerList().broadcastSystemMessage(
+                    Component.translatable("subtitles.herobrine_clone_die"),
+                    false
+            );
+
+            Item[] items = new Item[] {
+                    AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().asItem(),
+                    AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().asItem(),
+                    AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().asItem(),
+                    AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().asItem(),
+                    AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().asItem(),
+                    Items.ENDER_EYE,
+                    Items.ENDER_EYE,
+                    Items.SPLASH_POTION,
+                    Blocks.DIAMOND_BLOCK.asItem(),
+                    Items.IRON_SWORD,
+                    AnnoyingVillagersModItems.ENCHANTED_ENDER_PEARL.get(),
+                    AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get(),
+                    AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()
+            };
+
+            for (Item item : items) {
+                ItemEntity drop = new ItemEntity(serverLevel, x, y + 1.0D, z, new ItemStack(item));
+                drop.setPickUpDelay(10);
+                serverLevel.addFreshEntity(drop);
+            }
         }
     }
 

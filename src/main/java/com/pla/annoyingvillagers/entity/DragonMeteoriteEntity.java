@@ -255,9 +255,9 @@ public class DragonMeteoriteEntity extends PathfinderMob {
 
                     entity.setDeltaMovement(entity.getDeltaMovement().add(push));
                     if (this.owner != null && this.owner.getSummoner() != null) {
-                        entity.hurt(damageSources().indirectMagic(this, this.owner.getSummoner()), 24.0F);
+                        entity.hurt(damageSources().indirectMagic(this, this.owner.getSummoner()), 12.0F);
                     } else {
-                        entity.hurt(damageSource, 24.0F);
+                        entity.hurt(damageSource, 12.0F);
                     }
                     entity.hasImpulse = true;
                 }

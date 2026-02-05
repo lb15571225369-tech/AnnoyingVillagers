@@ -7,6 +7,7 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModMobEffects;
+import com.pla.annoyingvillagers.util.HerobrineUtil;
 import com.pla.annoyingvillagers.util.TeamUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -88,36 +89,7 @@ public class InfectedTheMostMoistBurrit0Entity extends PathfinderMob {
 
     public void die(@NotNull DamageSource damageSource) {
         super.die(damageSource);
-        double x = this.getX();
-        double y = this.getY();
-        double z = this.getZ();
-        if (this.level() instanceof ServerLevel serverLevel) {
-            serverLevel.getServer().getPlayerList().broadcastSystemMessage(
-                    Component.translatable("subtitles.herobrine_clone_die"),
-                    false
-            );
-
-            Item[] items = new Item[] {
-                    AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().asItem(),
-                    AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().asItem(),
-                    AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().asItem(),
-                    AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().asItem(),
-                    AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().asItem(),
-                    Items.ENDER_EYE,
-                    Items.ENDER_EYE,
-                    Items.SPLASH_POTION,
-                    Blocks.DIAMOND_BLOCK.asItem(),
-                    Items.IRON_SWORD,
-                    AnnoyingVillagersModItems.ENCHANTED_ENDER_PEARL.get(),
-                    AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()
-            };
-
-            for (Item item : items) {
-                ItemEntity drop = new ItemEntity(serverLevel, x, y + 1.0D, z, new ItemStack(item));
-                drop.setPickUpDelay(10);
-                serverLevel.addFreshEntity(drop);
-            }
-        }
+        HerobrineUtil.dropArmoredHerobrineLoot(this.level(), this.getX(), this.getY(), this.getZ());
         this.discard();
     }
 

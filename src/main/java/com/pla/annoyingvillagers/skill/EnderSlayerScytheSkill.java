@@ -146,10 +146,10 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
                             }
 
                             LivingEntity target = player.getLastHurtMob();
-                            if (target == null || !target.isAlive()) {
+                            if (target == null || !target.isAlive() || target == player) {
                                 target = player.getLastHurtByMob();
                             }
-                            if (target == null || !target.isAlive()) {
+                            if (target == null || !target.isAlive() || target == player) {
                                 target = HerobrineDragonEntity.getNearestLivingEntity(player.level(), player, 48.0D);
                             }
                             if (entity instanceof HerobrineDragonEntity herobrineDragonEntity && target != null && target.isAlive()) {
@@ -202,12 +202,14 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
                             }
 
                             LivingEntity target = player.getLastHurtMob();
-                            if (target == null || !target.isAlive()) {
+                            if (target == null || !target.isAlive() || target == player) {
                                 target = player.getLastHurtByMob();
                             }
-                            if (target == null || !target.isAlive()) {
+                            if (target == null || !target.isAlive() || target == player) {
                                 target = HerobrineDragonEntity.getNearestLivingEntity(player.level(), player, 40.0D);
                             }
+                            ItemCooldowns cooldowns = event.getPlayerPatch().getOriginal().getCooldowns();
+                            cooldowns.addCooldown(itemStack.getItem(), 20);
                             if (entity instanceof HerobrineDragonEntity herobrineDragonEntity && target != null && target.isAlive()) {
                                 skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F);
                                 LivingEntity finalTarget = target;
@@ -215,8 +217,6 @@ public class EnderSlayerScytheSkill extends WeaponInnateSkill {
                                     @Override
                                     public void run() {
                                         herobrineDragonEntity.shootMeteoriteAtTarget(finalTarget);
-                                        ItemCooldowns cooldowns = event.getPlayerPatch().getOriginal().getCooldowns();
-                                        cooldowns.addCooldown(itemStack.getItem(), 20);
                                     }
                                 };
                             }

@@ -169,7 +169,7 @@ public class PlayIdleAnimationGoal extends Goal {
     public boolean canUse() {
         if (mob.level().isClientSide) return false;
         if (mob.tickCount <= 30) return false;
-        if (!mob.isAlive() || mob.isRemoved()) return false;
+        if (!mob.isAlive() || mob.isRemoved() || mob.isDeadOrDying()) return false;
         if (mob.isPassenger()) return false;
         if (mob.getTarget() != null) return false;
         LivingEntityPatch<?> patch = null;
@@ -195,7 +195,7 @@ public class PlayIdleAnimationGoal extends Goal {
     public boolean canContinueToUse() {
         if (mob.level().isClientSide) return false;
         if (mob.tickCount <= 30) return false;
-        if (!mob.isAlive() || mob.isRemoved()) return false;
+        if (!mob.isAlive() || mob.isRemoved() || mob.isDeadOrDying()) return false;
         if (mob.isPassenger()) return false;
         if (mob.getTarget() != null) return false;
 

@@ -7,6 +7,7 @@ import com.pla.annoyingvillagers.item.WoopieTheSwordItem;
 import com.pla.annoyingvillagers.skill.EnderGlaiveSkill;
 import com.pla.annoyingvillagers.skill.WoopieTheSwordSkill;
 import com.pla.annoyingvillagers.task.DelayedTask;
+import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -69,6 +70,7 @@ public class ExplosionDamageEvent {
                         }
 
                         entity.hurt(entity.level().damageSources().mobAttack(livingEntity), 12.0F);
+                        EpicfightUtil.dealStaminaDamageByPercentage(detonate.getExplosion().getDamageSource(), explodedPatch, 0.2F, false);
                     }
                 }
             }

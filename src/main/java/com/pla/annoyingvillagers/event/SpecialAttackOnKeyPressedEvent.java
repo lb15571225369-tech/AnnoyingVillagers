@@ -155,8 +155,6 @@ public class SpecialAttackOnKeyPressedEvent {
                                     herobrineDragonEntity.recallAndLand(true);
                                     player.getCooldowns().addCooldown(holdingItem.getItem(), 60);
                                 }
-                            } else {
-                                livingEntityPatch.playAnimationSynchronized(WOMAnimations.KICK_AUTO_2, 0.0F);
                             }
                         }
                     }
@@ -245,6 +243,16 @@ public class SpecialAttackOnKeyPressedEvent {
                         livingEntityPatch.playAnimationSynchronized(AVAnimations.OBSIDIAN_ANTITHEUS_ASCENDED_DEATHFALL, 0.0F);
                     } else {
                         livingEntityPatch.playAnimationSynchronized(AVAnimations.OBSIDIAN_INFERNAL_AUTO_2, 0.0F);
+                    }
+                    return;
+                }
+            }
+            if (holdingItem.getItem().equals(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get())) {
+                if (entity.level() instanceof ServerLevel) {
+                    if (offHandItem.getItem().equals(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get())) {
+                        livingEntityPatch.playAnimationSynchronized(AnimsHerrscher.GESETZ_AUTO_3, 0.0F);
+                    } else {
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.OBSIDIAN_FIST_DASH, 0.0F);
                     }
                     return;
                 }

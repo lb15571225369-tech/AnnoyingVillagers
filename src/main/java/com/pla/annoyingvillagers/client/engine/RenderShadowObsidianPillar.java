@@ -48,8 +48,7 @@ public class RenderShadowObsidianPillar extends RenderItemBase {
             EntityState entityState = (dynamicAnimation.get()).getState(livingEntityPatch, elapsedTimeFloat);
             ItemStack itemstack;
 
-            if (dynamicAnimation == AVAnimations.OLD_MOONLESS_RUN
-                    || dynamicAnimation == AVAnimations.OBSIDIAN_ANTITHEUS_ASCENDED_DEATHFALL
+            if (dynamicAnimation == AVAnimations.OBSIDIAN_ANTITHEUS_ASCENDED_DEATHFALL
                     || dynamicAnimation == AVAnimations.OBSIDIAN_ZOMBIE_ATTACK3
                     || dynamicAnimation == AVAnimations.OBSIDIAN_KICK_AUTO_1
                     || dynamicAnimation == AVAnimations.OBSIDIAN_KICK_AUTO_3
