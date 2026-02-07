@@ -259,7 +259,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> LONGSWORD_AUTO1;
     public static AnimationManager.AnimationAccessor<MovementAnimation> RUN_DUAL_BIG;
     public static AnimationManager.AnimationAccessor<MovementAnimation> RUN_HOLD;
-    public static AnimationManager.AnimationAccessor<LongHitAnimation> LONGEST_HIT;
+    public static AnimationManager.AnimationAccessor<KnockdownAnimation> LONGEST_HIT;
     public static AnimationManager.AnimationAccessor<StaticAnimation> HARD_GREATSWORD_GUARD;
     public static AnimationManager.AnimationAccessor<GuardAnimation> HARD_GREATSWORD_GUARD_HIT;
     public static AnimationManager.AnimationAccessor<ActionAnimation> HARD_GREATSWORD_GUARD_SKILL;
@@ -286,7 +286,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<DashAttackAnimation> TACHI_DASH;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> DUAL_SWORD_SKILL;
     public static AnimationManager.AnimationAccessor<ActionAnimation> DUAL_END;
-    public static AnimationManager.AnimationAccessor<LongHitAnimation> TRIED;
+    public static AnimationManager.AnimationAccessor<KnockdownAnimation> TRIED;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> GREATSWORD_SKILL;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> LEGENDARY_SWORD_WAKE_UP_ATTACK;
     public static AnimationManager.AnimationAccessor<ActionAnimation> DUAL_E_END;
@@ -1089,7 +1089,7 @@ public class AVAnimations {
         AVAnimations.RUN_DUAL_BIG = builder.nextAccessor("biped/pugilist_steve/run_dual_big",
                 (accessor) -> new MovementAnimation(true, accessor, humanoidArmature));
         AVAnimations.LONGEST_HIT = builder.nextAccessor("biped/pugilist_steve/longest_hit",
-                (accessor) -> (new LongHitAnimation(0.1F, accessor, humanoidArmature))
+                (accessor) -> (new KnockdownAnimation(0.1F, accessor, humanoidArmature))
                         .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
                         .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true)
                         .addProperty(ActionAnimationProperty.MOVE_VERTICAL, false)
@@ -1282,7 +1282,7 @@ public class AVAnimations {
                         .addState(EntityState.LOCKON_ROTATE, true)
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
         AVAnimations.TRIED = builder.nextAccessor("biped/pugilist_steve/tried",
-                (accessor) -> (new LongHitAnimation(0.2F, accessor, humanoidArmature))
+                (accessor) -> (new KnockdownAnimation(0.2F, accessor, humanoidArmature))
                         .addState(EntityState.CAN_SKILL_EXECUTION, false)
                         .addState(EntityState.CAN_BASIC_ATTACK, false)
                         .addState(EntityState.TURNING_LOCKED, true)

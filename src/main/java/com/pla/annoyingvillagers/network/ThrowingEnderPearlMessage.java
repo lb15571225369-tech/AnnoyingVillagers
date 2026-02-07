@@ -48,7 +48,7 @@ public class ThrowingEnderPearlMessage {
 
         if (level.hasChunkAt(player.blockPosition()) && !level.isClientSide()) {
             if (i == 0) {
-                ThrowingPearlKeyPressedEvent.execute(level, player);
+                ThrowingPearlKeyPressedEvent.execute(player);
             }
         }
     }

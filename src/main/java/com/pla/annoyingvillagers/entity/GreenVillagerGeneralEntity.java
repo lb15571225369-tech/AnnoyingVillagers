@@ -35,6 +35,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 
 import java.util.Objects;
@@ -90,6 +91,7 @@ public class GreenVillagerGeneralEntity extends AVNpc {
 
         if (damageSource.getEntity() != null && this.getEnderPearlCooldown() == 0
                 && !EpicfightUtil.isLongHitAnimation(dynamicAnimation)
+                && (this.level() instanceof ServerLevel && dynamicAnimation == Animations.EMPTY_ANIMATION)
                 && CombatCommon.canPerformNormalAttackLogic((MobPatch<?>) this.getLivingEntityPatch())) {
             AVNpc entity = this;
 

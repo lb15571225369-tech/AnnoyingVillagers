@@ -52,6 +52,7 @@ import se.gory_moon.player_mobs.entity.PlayerMobEntity;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
@@ -382,6 +383,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
 
         if (damageSource.getEntity() != null && this.getEnderPearlCooldown() == 0
                 && !EpicfightUtil.isLongHitAnimation(dynamicAnimation)
+                && (this.level() instanceof ServerLevel && dynamicAnimation == Animations.EMPTY_ANIMATION)
                 && CombatCommon.canPerformNormalAttackLogic((MobPatch<?>) livingEntityPatch)) {
             livingEntityPatch.playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F);
             CombatBehaviour.throwEnderPearl(this, 180.0F);
@@ -577,7 +579,6 @@ public class PlayerNpcEntity extends PlayerMobEntity {
             }
         }
 
-//        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(EpicFightItems.GLOVE.get()));
 //        this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(EpicFightItems.GLOVE.get()));
 //        this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.DIAMOND_HELMET));
 //        this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.DIAMOND_CHESTPLATE));

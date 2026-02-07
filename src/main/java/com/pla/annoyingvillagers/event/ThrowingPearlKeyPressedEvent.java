@@ -22,6 +22,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
@@ -53,7 +54,7 @@ public class ThrowingPearlKeyPressedEvent {
         return base.add(forwardH.scale(0.35)).add(left.scale(0.25));
     }
 
-    public static void execute(LevelAccessor levelaccessor, final Entity entity) {
+    public static void execute(final Entity entity) {
         if (entity != null) {
             if (!(entity.level() instanceof ServerLevel)) return;
 
@@ -63,37 +64,29 @@ public class ThrowingPearlKeyPressedEvent {
             if (EpicfightUtil.isLongHitAnimation(dynamicAnimation)) {
                 return;
             }
+            if (dynamicAnimation != Animations.EMPTY_ANIMATION) {
+                return;
+            }
 
             if (entity instanceof Player player) {
                 boolean used = player.getInventory().items.stream()
                         .filter(s -> !s.isEmpty() && s.is(AnnoyingVillagersModItems.ENCHANTED_ENDER_PEARL.get()))
                         .findFirst()
                         .map(stack -> {
-                            if (!entity.getPersistentData().getBoolean("ender_pearl_used")) {
-                                entity.getPersistentData().putBoolean("ender_pearl_used", true);
-                                livingEntityPatch.playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_TOP, 0.0F);
-                                Level level = entity.level();
-                                var projectile = new EnchantedEnderPearlEntity(
-                                        AnnoyingVillagersModEntities.ENCHANTED_ENDER_PEARL_PROJECTILE.get(), level);
-                                projectile.setOwner(entity);
-                                Vec3 handPos = getFrontLeftPos(entity);
+                            livingEntityPatch.playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_TOP, 0.0F);
+                            Level level = entity.level();
+                            var projectile = new EnchantedEnderPearlEntity(
+                                    AnnoyingVillagersModEntities.ENCHANTED_ENDER_PEARL_PROJECTILE.get(), level);
+                            projectile.setOwner(entity);
+                            Vec3 handPos = getFrontLeftPos(entity);
 
-                                projectile.setPos(handPos.x, handPos.y, handPos.z);
-                                projectile.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, 1.5F, 0.0F);
-                                level.addFreshEntity(projectile);
-                                entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (entity.level().getRandom().nextFloat() * 0.4F + 0.8F));
-                                stack.hurtAndBreak(1, player, p -> {
-                                });
-
-                                new DelayedTask(20) {
-                                    @Override
-                                    public void run() {
-                                        entity.getPersistentData().putBoolean("ender_pearl_used", false);
-                                    }
-                                };
-                                return true;
-                            }
-                            return false;
+                            projectile.setPos(handPos.x, handPos.y, handPos.z);
+                            projectile.shoot(entity.getLookAngle().x, entity.getLookAngle().y, entity.getLookAngle().z, 1.5F, 0.0F);
+                            level.addFreshEntity(projectile);
+                            entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (entity.level().getRandom().nextFloat() * 0.4F + 0.8F));
+                            stack.hurtAndBreak(1, player, p -> {
+                            });
+                            return true;
                         }).orElse(false);
 
                 if (used) {
@@ -106,8 +99,7 @@ public class ThrowingPearlKeyPressedEvent {
 
             if (entity instanceof Player player) {
 
-                if (player.getInventory().contains(new ItemStack(Items.ENDER_PEARL)) && !entity.getPersistentData().getBoolean("ender_pearl_used")) {
-                    entity.getPersistentData().putBoolean("ender_pearl_used", true);
+                if (player.getInventory().contains(new ItemStack(Items.ENDER_PEARL))) {
                     livingEntityPatch.playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_TOP, 0.0F);
                     level = entity.level();
                     projectile = new ThrownEnderpearl(EntityType.ENDER_PEARL, level);
@@ -119,19 +111,10 @@ public class ThrowingPearlKeyPressedEvent {
                     level.addFreshEntity(projectile);
 
                     entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (entity.level().getRandom().nextFloat() * 0.4F + 0.8F));
-
-                    new DelayedTask(15) {
-                        @Override
-                        public void run() {
-                            entity.getPersistentData().putBoolean("ender_pearl_used", false);
-                        }
-                    };
                     Player player2 = (Player) entity;
                     ItemStack itemStack = new ItemStack(Items.ENDER_PEARL);
 
-                    player2.getInventory().clearOrCountMatchingItems((stack) -> {
-                        return itemStack.getItem() == stack.getItem();
-                    }, 1, player2.inventoryMenu.getCraftSlots());
+                    player2.getInventory().clearOrCountMatchingItems((stack) -> itemStack.getItem() == stack.getItem(), 1, player2.inventoryMenu.getCraftSlots());
                 }
             }
         }

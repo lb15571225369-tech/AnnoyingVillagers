@@ -97,7 +97,6 @@ public class AddStarterSkillEvent {
                     markJoined((Player) entity);
                 }
             }
-            entity.getPersistentData().putBoolean("ender_pearl_used", false);
         }
     }
 }
