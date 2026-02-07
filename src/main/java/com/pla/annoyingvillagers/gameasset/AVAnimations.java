@@ -148,6 +148,8 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<AirSlashAnimation> SHADOW_OBSIDIAN_FIST_AIR_SLASH;
     public static AnimationManager.AnimationAccessor<AttackAnimation> OBSIDIAN_BIPED_LANDING;
     public static AnimationManager.AnimationAccessor<AttackAnimation> OBSIDIAN_ZOMBIE_ATTACK3;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> SHADOW_OBSIDIAN_FIST_AUTO1;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> SHADOW_OBSIDIAN_FIST_AUTO3;
 
     // Animation from EpicFight Infernal Gainer
     public static AnimationManager.AnimationAccessor<KickAttackAnimation> KICK_C;
@@ -155,6 +157,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> INFERNAL_AUTO_1;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> INFERNAL_AUTO_2;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> INFERNAL_AUTO_3;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> OBSIDIAN_INFERNAL_AUTO_1;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> OBSIDIAN_INFERNAL_AUTO_2;
 
     // Animation from EpicFight ACG
@@ -184,6 +187,13 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> GREATSWORD_DUAL_DASH;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> GREATSWORD_DUAL_AIRSLASH;
     public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> GREATSWORD_DUAL_EARTHQUAKE;
+
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_1;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_2;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AUTO_3;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AIRSLASH;
+    public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_EARTHQUAKE;
+    public static AnimationManager.AnimationAccessor<SpecialAttackAnimation> SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_EARTHQUAKE_PILLAR;
 
     // Animation from Pugilist Steve Annoying Villagers 1.18.2
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> COUNTER;
@@ -285,6 +295,8 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> OBSIDIAN_FIST_DASH;
     public static AnimationManager.AnimationAccessor<KickAttackAnimation> OBSIDIAN_WHIRLWIND_KICK;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> SHADOW_OBSIDIAN_SWORD_ONEHAND_LONG;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO4;
+    public static AnimationManager.AnimationAccessor<BasicAttackAnimation> SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO5;
 
     // Animation made by me
     public static AnimationManager.AnimationAccessor<StaticAnimation> PORTAL_SUMMON;
@@ -360,6 +372,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> OBSIDIAN_ENDERBLASTER_TWOHAND_TISHNAW;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> SHADOW_OBSIDIAN_SWORD_TORMENT_AIRSLAM;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> SHADOW_OBSIDIAN_SWORD_TORMENT_BERSERK_DASH;
+    public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_3;
 
     @SubscribeEvent
     public static void registerAnimations(AnimationManager.AnimationRegistryEvent event) {
@@ -406,6 +419,20 @@ public class AVAnimations {
                 (accessor) -> (new BasicAttackAnimation(0.08F, 0.05F, 0.15F, 0.5F, InteractionHand.OFF_HAND, null, Armatures.BIPED.get().toolL, accessor, Armatures.BIPED))
                         .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 3.2F)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.1F, ReuseableEvents.SUMMON_3_OBSIDIAN_HAND_LEFT, Side.SERVER)
+                        ));
+        AVAnimations.SHADOW_OBSIDIAN_FIST_AUTO1 = builder.nextAccessor("biped/epicfight_clone/shadow_obsidian_fist_auto1",
+                (accessor) -> (new BasicAttackAnimation(0.08F, 0.05F, 0.15F, 0.15F, InteractionHand.OFF_HAND, null, Armatures.BIPED.get().toolL, accessor, Armatures.BIPED))
+                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.2F)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.1F, ReuseableEvents.SUMMON_2_OBSIDIAN_HAND_LEFT, Side.SERVER)
+                        ));
+        AVAnimations.SHADOW_OBSIDIAN_FIST_AUTO3 = builder.nextAccessor("biped/epicfight_clone/shadow_obsidian_fist_auto3",
+                (accessor) -> (new BasicAttackAnimation(0.08F, 0.05F, 0.15F, 0.5F, InteractionHand.OFF_HAND, null, Armatures.BIPED.get().toolL, accessor, Armatures.BIPED))
+                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.2F)
                         .addEvents(
                                 AnimationEvent.InTimeEvent.create(0.1F, ReuseableEvents.SUMMON_3_OBSIDIAN_HAND_LEFT, Side.SERVER)
                         ));
@@ -495,6 +522,15 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.4F)));
+        AVAnimations.OBSIDIAN_INFERNAL_AUTO_1 = builder.nextAccessor("biped/epicfight_infernal_gainer/obsidian_infernal_auto_1",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.1F, 0.3F, 0.4F, 0.5F, AVCollider.SHADOW_OBSIDIAN_PILLAR, humanoidArmature.get().toolL, accessor, humanoidArmature))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.0F))
+                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 5.4F)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.2F, ReuseableEvents.SUMMON_6_OBSIDIAN_HAND_LEFT, Side.SERVER)
+                        ));
         AVAnimations.OBSIDIAN_INFERNAL_AUTO_2 = builder.nextAccessor("biped/epicfight_infernal_gainer/obsidian_infernal_auto_2",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.2F, 0.1F, 0.2F, 0.25F, ColliderPreset.FIST, humanoidArmature.get().toolR, accessor, humanoidArmature))
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.0F))
@@ -635,6 +671,66 @@ public class AVAnimations {
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.05F)
                         .addEvents(
                                 AnimationEvent.InTimeEvent.create(1.25F, reascer.wom.gameasset.ReuseableEvents.SOLAR_GROUNDSLAM_SMALL, Side.CLIENT)
+                        ));
+        AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_1 = builder.nextAccessor("biped/epicfight_dual_greatsword/shadow_obsidian_sword_greatsword_twohand_auto_1",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.25F, accessor, humanoidArmature,
+                        new Phase(0.0F, 0.2F, 0.4F, 0.45F, 0.45F, InteractionHand.OFF_HAND, humanoidArmature.get().toolL, null),
+                        new AttackAnimation.Phase(0.45F, 0.5F, 0.7F, 0.8F, Float.MAX_VALUE, humanoidArmature.get().toolR, null)))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.7F))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.7F), 1)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.55F));
+        AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_2 = builder.nextAccessor("biped/epicfight_dual_greatsword/shadow_obsidian_sword_greatsword_twohand_auto_2",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.15F, 0.35F, 0.85F, 0.85F, ColliderPreset.DUAL_SWORD, humanoidArmature.get().toolR, accessor, humanoidArmature))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.7F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(0.7F))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.FALL)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.05F));
+        AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AUTO_3 = builder.nextAccessor("biped/epicfight_dual_greatsword/shadow_obsidian_sword_greatsword_dual_auto_3",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.15F, accessor, humanoidArmature,
+                        new Phase(0.0F, 0.2F, 0.4F, 0.45F, 0.45F, humanoidArmature.get().toolR, null),
+                        new AttackAnimation.Phase(0.45F, 0.55F, 0.7F, 0.7F, Float.MAX_VALUE, InteractionHand.OFF_HAND, humanoidArmature.get().toolL, AVCollider.SHADOW_OBSIDIAN_PILLAR)))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.6F))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.0F), 1)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.5F), 1)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.05F)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.45F, reascer.wom.gameasset.ReuseableEvents.SOLAR_GROUNDSLAM_SMALL, Side.CLIENT)
+                        ));
+        AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AIRSLASH = builder.nextAccessor("biped/epicfight_dual_greatsword/shadow_obsidian_sword_greatsword_dual_airslash",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.05F, 0.25F, 0.4F, 0.45F, InteractionHand.OFF_HAND, AVCollider.SHADOW_OBSIDIAN_PILLAR, humanoidArmature.get().toolR, accessor, humanoidArmature))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.8F))
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.05F)
+                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
+                        .addProperty(ActionAnimationProperty.NO_GRAVITY_TIME, TimePairList.create(0.0F, 0.2F))
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(0.4F, reascer.wom.gameasset.ReuseableEvents.SOLAR_GROUNDSLAM_SMALL, Side.CLIENT)
+                        ));
+        AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_EARTHQUAKE = builder.nextAccessor("biped/epicfight_dual_greatsword/shadow_obsidian_sword_greatsword_dual_earthquake",
+                (accessor) -> (new SpecialAttackAnimation(0.15F, accessor, humanoidArmature,
+                        new Phase(0.0F, 1.1F, 1.1F, 1.25F, 1.25F, humanoidArmature.get().toolR, AVCollider.SHADOW_OBSIDIAN_PILLAR),
+                        new Phase(1.25F, 1.3F, 1.4F, 1.5F, Float.MAX_VALUE, humanoidArmature.get().toolL, AVCollider.SHADOW_OBSIDIAN_PILLAR)))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.2F))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2.4F), 1)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(2.0F), 1)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.SHORT, 1)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.05F)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(1.25F, reascer.wom.gameasset.ReuseableEvents.SOLAR_GROUNDSLAM_SMALL, Side.CLIENT),
+                                AnimationEvent.InTimeEvent.create(1.25F, ReuseableEvents.SUMMON_OBSIDIAN_CIRCLE, Side.SERVER)
+                        ));
+
+        AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_EARTHQUAKE_PILLAR = builder.nextAccessor("biped/epicfight_dual_greatsword/shadow_obsidian_sword_greatsword_dual_earthquake_pillar",
+                (accessor) -> (new SpecialAttackAnimation(0.15F, accessor, humanoidArmature,
+                        new Phase(0.0F, 1.1F, 1.1F, 1.25F, 1.25F, humanoidArmature.get().toolR, AVCollider.SHADOW_OBSIDIAN_PILLAR),
+                        new Phase(1.25F, 1.3F, 1.4F, 1.5F, Float.MAX_VALUE, humanoidArmature.get().toolL, AVCollider.SHADOW_OBSIDIAN_PILLAR)))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.2F))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(2.4F), 1)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(2.0F), 1)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.SHORT, 1)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 2.05F)
+                        .addEvents(
+                                AnimationEvent.InTimeEvent.create(1.25F, reascer.wom.gameasset.ReuseableEvents.SOLAR_GROUNDSLAM_SMALL, Side.CLIENT),
+                                AnimationEvent.InTimeEvent.create(1.25F, ReuseableEvents.SUMMON_OBSIDIAN_CIRCLE, Side.SERVER)
                         ));
 
         // Animation from Pugilist Steve Annoying Villagers 1.18.2
@@ -1345,6 +1441,14 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.0F)
                         .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true));
+        AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO4 = builder.nextAccessor("biped/pugilist_steve/shadow_obsidian_sword_dual_sword_auto4",
+                (accessor) -> (new BasicAttackAnimation(0.1F, accessor, humanoidArmature, new Phase(0.0F, 0.633F, 0.69F, 0.8F, 1.167F, 1.65F, InteractionHand.MAIN_HAND, humanoidArmature.get().toolR, AVCollider.SHADOW_OBSIDIAN_PILLAR), new Phase(0.2F, 0.7F, 0.8F, 0.9F, 1.3F, humanoidArmature.get().toolL, AVCollider.SHADOW_OBSIDIAN_PILLAR)))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.2F));
+        AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO5 = builder.nextAccessor("biped/pugilist_steve/shadow_obsidian_sword_dual_sword_auto5",
+                (accessor) -> (new BasicAttackAnimation(0.1F, accessor, humanoidArmature, new Phase(0.0F, 0.633F, 0.69F, 0.8F, 1.167F, 1.65F, InteractionHand.MAIN_HAND, humanoidArmature.get().toolR, AVCollider.SHADOW_OBSIDIAN_PILLAR), new Phase(0.2F, 0.7F, 0.8F, 0.9F, 1.3F, humanoidArmature.get().toolL, AVCollider.SHADOW_OBSIDIAN_PILLAR)))
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.LONG)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.2F));
 
         // Animation made by me
         AVAnimations.HEROBRINE_ANIMATE = builder.nextAccessor("biped/pla/herobrine_animate",
@@ -2915,6 +3019,30 @@ public class AVAnimations {
                                 AnimationEvent.InTimeEvent.create(1.4F, reascer.wom.gameasset.ReuseableEvents.TORMENT_GROUNDSLAM_SMALL, Side.CLIENT),
                                 AnimationEvent.InTimeEvent.create(1.4F, ReuseableEvents.SUMMON_OBSIDIAN_WALL, Side.SERVER)
                         }));
+        AVAnimations.SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_3 = builder.nextAccessor("biped/wom_clone/shadow_obsidian_sword_gezets_auto_3",
+                (accessor) -> (new BasicMultipleAttackAnimation(0.15F, accessor, humanoidArmature, new Phase(0.0F, 0.3F, 0.5F, 0.55F, 0.55F, InteractionHand.OFF_HAND, humanoidArmature.get().handL, WOMWeaponColliders.PUNCH), new Phase(0.55F, 0.7F, 0.85F, 1.0F, Float.MAX_VALUE, InteractionHand.OFF_HAND, humanoidArmature.get().toolL, WOMWeaponColliders.GESETZ)))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(0.6F))
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1.33F))
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.multiplier(1.0F))
+                        .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(3.4F), 1)
+                        .addProperty(AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(0.84F), 1)
+                        .addProperty(AttackPhaseProperty.MAX_STRIKES_MODIFIER, ValueModifier.multiplier(1.0F), 1)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.HOLD)
+                        .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE, 1)
+                        .addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH_BIG.get())
+                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT_HARD.get())
+                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLUNT)
+                        .addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH_BIG.get(), 1)
+                        .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLADE_HIT.get(), 1)
+                        .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLADE, 1)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.5F)
+                        .addEvents(
+                                new AnimationEvent[] {
+                                        AnimationEvent.InTimeEvent.create(0.8F, (livingEntityPatch, self, params) -> livingEntityPatch.getOriginal().level().playSound(null, livingEntityPatch.getOriginal(), SoundEvents.ANVIL_LAND, SoundSource.MASTER, 0.3F, 1.2F - ((new Random()).nextFloat() - 0.5F) * 0.2F), Side.CLIENT),
+                                        AnimationEvent.InTimeEvent.create(0.8F, ReuseableEvents.THROW_OBSIDIAN_OFFHAND, Side.SERVER)
+                                }
+                        )
+        );
     }
 
     private static @NotNull Vec3 getVec3(LivingEntity owner) {
@@ -2931,7 +3059,7 @@ public class AVAnimations {
     private static class ReuseableEvents {
         public static final AnimationEvent.E0 FAST_SPINING =
                 (livingentitypatch, staticAnimation, aobject) -> livingentitypatch.getOriginal().level().playSound((Player) livingentitypatch.getOriginal(), livingentitypatch.getOriginal(), EpicFightSounds.WHOOSH.get(), SoundSource.NEUTRAL, 0.5F, 1.1F - ((new Random()).nextFloat() - 0.5F) * 0.2F);
-        private static final AnimationEvent.E0 SUMMON_2_OBSIDIAN_LEG_RIGHT =
+        public static final AnimationEvent.E0 SUMMON_2_OBSIDIAN_LEG_RIGHT =
                 (livingEntityPatch, staticAnimation, object) -> {
                     LivingEntity livingEntity = livingEntityPatch.getOriginal();
                     if (livingEntity.level() instanceof ServerLevel serverLevel) {
@@ -2953,7 +3081,7 @@ public class AVAnimations {
                         }
                     }
                 };
-        private static final AnimationEvent.E0 SUMMON_2_OBSIDIAN_LEG_LEFT =
+        public static final AnimationEvent.E0 SUMMON_2_OBSIDIAN_LEG_LEFT =
                 (livingEntityPatch, staticAnimation, object) -> {
                     LivingEntity livingEntity = livingEntityPatch.getOriginal();
                     if (livingEntity.level() instanceof ServerLevel serverLevel) {
@@ -2975,7 +3103,7 @@ public class AVAnimations {
                         }
                     }
                 };
-        private static final AnimationEvent.E0 SUMMON_2_OBSIDIAN_HAND_RIGHT =
+        public static final AnimationEvent.E0 SUMMON_2_OBSIDIAN_HAND_RIGHT =
                 (livingEntityPatch, staticAnimation, object) -> {
                     LivingEntity livingEntity = livingEntityPatch.getOriginal();
                     if (livingEntity.level() instanceof ServerLevel serverLevel) {
@@ -2994,10 +3122,12 @@ public class AVAnimations {
                             HerobrineUtil.summonObsidianBlocksInfrontOf(serverLevel, livingEntity, obsidian, 2, Armatures.BIPED.get().toolR);
                         } else if (weapon instanceof ShadowObsidianPillarItem) {
                             HerobrineUtil.summonShadowObsidianShortPillarShootToward(serverLevel, livingEntity, 3, Armatures.BIPED.get().toolR);
+                        } else if (livingEntity.getOffhandItem().getItem() instanceof ShadowObsidianSwordItem) {
+                            HerobrineUtil.summonShadowObsidianMiddlePillarShootToward(serverLevel, livingEntity, 3, Armatures.BIPED.get().toolR);
                         }
                     }
                 };
-        private static final AnimationEvent.E0 SUMMON_2_OBSIDIAN_HAND_LEFT =
+        public static final AnimationEvent.E0 SUMMON_2_OBSIDIAN_HAND_LEFT =
                 (livingEntityPatch, staticAnimation, object) -> {
                     LivingEntity livingEntity = livingEntityPatch.getOriginal();
                     if (livingEntity.level() instanceof ServerLevel serverLevel) {
@@ -3014,12 +3144,14 @@ public class AVAnimations {
                                         .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
                             }
                             HerobrineUtil.summonObsidianBlocksInfrontOf(serverLevel, livingEntity, obsidian, 2, Armatures.BIPED.get().toolL);
+                        } else if (livingEntity.getOffhandItem().getItem() instanceof ShadowObsidianSwordItem) {
+                            HerobrineUtil.summonShadowObsidianMiddlePillarShootToward(serverLevel, livingEntity, 3, Armatures.BIPED.get().toolL);
                         } else if (weapon instanceof ShadowObsidianPillarItem) {
                             HerobrineUtil.summonShadowObsidianShortPillarShootToward(serverLevel, livingEntity, 3, Armatures.BIPED.get().toolL);
                         }
                     }
                 };
-        private static final AnimationEvent.E0 SUMMON_3_OBSIDIAN_HAND_LEFT =
+        public static final AnimationEvent.E0 SUMMON_3_OBSIDIAN_HAND_LEFT =
                 (livingEntityPatch, staticAnimation, object) -> {
                     LivingEntity livingEntity = livingEntityPatch.getOriginal();
                     if (livingEntity.level() instanceof ServerLevel serverLevel) {
@@ -3036,12 +3168,38 @@ public class AVAnimations {
                                         .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
                             }
                             HerobrineUtil.summonObsidianBlocksInfrontOf(serverLevel, livingEntity, obsidian, 3, Armatures.BIPED.get().toolL);
+                        } else if (livingEntity.getOffhandItem().getItem() instanceof ShadowObsidianSwordItem) {
+                            HerobrineUtil.summonShadowObsidianMiddlePillarShootToward(serverLevel, livingEntity, 4, Armatures.BIPED.get().toolL);
                         } else if (weapon instanceof ShadowObsidianPillarItem) {
                             HerobrineUtil.summonShadowObsidianShortPillarShootToward(serverLevel, livingEntity, 4, Armatures.BIPED.get().toolL);
                         }
                     }
                 };
-        private static final AnimationEvent.E0 SUMMON_6_OBSIDIAN_HAND_RIGHT =
+        public static final AnimationEvent.E0 SUMMON_6_OBSIDIAN_HAND_LEFT =
+                (livingEntityPatch, staticAnimation, object) -> {
+                    LivingEntity livingEntity = livingEntityPatch.getOriginal();
+                    if (livingEntity.level() instanceof ServerLevel serverLevel) {
+                        Item weapon = livingEntity.getMainHandItem().getItem();
+                        if (weapon instanceof ShadowObsidianWeaponItem || weapon instanceof ObsidianWeaponItem) {
+                            BlockState obsidian;
+                            if (weapon instanceof ShadowObsidianWeaponItem) {
+                                obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
+                                        .defaultBlockState()
+                                        .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                            } else {
+                                obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
+                                        .defaultBlockState()
+                                        .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                            }
+                            HerobrineUtil.summonObsidianBlocksInfrontOf(serverLevel, livingEntity, obsidian, 6, Armatures.BIPED.get().toolL);
+                        } else if (livingEntity.getOffhandItem().getItem() instanceof ShadowObsidianSwordItem) {
+                            HerobrineUtil.summonShadowObsidianMiddlePillarShootToward(serverLevel, livingEntity, 7, Armatures.BIPED.get().toolL);
+                        } else if (weapon instanceof ShadowObsidianPillarItem) {
+                            HerobrineUtil.summonShadowObsidianShortPillarShootToward(serverLevel, livingEntity, 7, Armatures.BIPED.get().toolL);
+                        }
+                    }
+                };
+        public static final AnimationEvent.E0 SUMMON_6_OBSIDIAN_HAND_RIGHT =
                 (livingEntityPatch, staticAnimation, object) -> {
                     LivingEntity livingEntity = livingEntityPatch.getOriginal();
                     if (livingEntity.level() instanceof ServerLevel serverLevel) {
@@ -3060,17 +3218,12 @@ public class AVAnimations {
                             HerobrineUtil.summonObsidianBlocksInfrontOf(serverLevel, livingEntity, obsidian, 6, Armatures.BIPED.get().toolR);
                         } else if (weapon instanceof ShadowObsidianPillarItem) {
                             HerobrineUtil.summonShadowObsidianShortPillarShootToward(serverLevel, livingEntity, 7, Armatures.BIPED.get().toolR);
+                        } else if (livingEntity.getOffhandItem().getItem() instanceof ShadowObsidianSwordItem) {
+                            HerobrineUtil.summonShadowObsidianMiddlePillarShootToward(serverLevel, livingEntity, 7, Armatures.BIPED.get().toolR);
                         }
                     }
                 };
-        private static final AnimationEvent.E0 SHOOT_MIDDLE_OBSIDIAN_PILLAR =
-                (livingEntityPatch, staticAnimation, object) -> {
-                    LivingEntity livingEntity = livingEntityPatch.getOriginal();
-                    if (livingEntity.level() instanceof ServerLevel serverLevel) {
-                        HerobrineUtil.summonShadowObsidianMiddlePillarShootToward(serverLevel, livingEntity, Armatures.BIPED.get().toolR);
-                    }
-                };
-        private static final AnimationEvent.E0 SUMMON_6_OBSIDIAN_LEG_RIGHT =
+        public static final AnimationEvent.E0 SUMMON_6_OBSIDIAN_LEG_RIGHT =
                 (livingEntityPatch, staticAnimation, object) -> {
                     LivingEntity livingEntity = livingEntityPatch.getOriginal();
                     if (livingEntity.level() instanceof ServerLevel serverLevel) {
@@ -3092,7 +3245,7 @@ public class AVAnimations {
                         }
                     }
                 };
-        private static final AnimationEvent.E0 SUMMON_OBSIDIAN_PILLAR =
+        public static final AnimationEvent.E0 SUMMON_OBSIDIAN_PILLAR =
                 (livingEntityPatch, staticAnimation, object) -> {
                     LivingEntity livingEntity = livingEntityPatch.getOriginal();
                     if (livingEntity.level() instanceof ServerLevel serverLevel) {
@@ -3114,7 +3267,7 @@ public class AVAnimations {
                         }
                     }
                 };
-        private static final AnimationEvent.E0 SUMMON_OBSIDIAN_WALL =
+        public static final AnimationEvent.E0 SUMMON_OBSIDIAN_WALL =
                 (livingEntityPatch, staticAnimation, object) -> {
                     LivingEntity livingEntity = livingEntityPatch.getOriginal();
                     if (livingEntity.level() instanceof ServerLevel serverLevel) {
@@ -3137,7 +3290,18 @@ public class AVAnimations {
                     }
                 };
 
-        private static final AnimationEvent.E0 SUMMON_OBSIDIAN_CROSS =
+        public static final AnimationEvent.E0 SUMMON_OBSIDIAN_CIRCLE =
+                (livingEntityPatch, staticAnimation, object) -> {
+                    LivingEntity livingEntity = livingEntityPatch.getOriginal();
+                    if (livingEntity.level() instanceof ServerLevel serverLevel) {
+                        HerobrineUtil.summonShadowObsidianLongPillarCircle(serverLevel, livingEntity, livingEntity.getOnPos());
+                        if (livingEntity.getMainHandItem().getItem() instanceof ShadowObsidianPillarItem) {
+                            HerobrineUtil.summonShadowObsidianLongPillarShootToward(serverLevel, livingEntity);
+                        }
+                    }
+                };
+
+        public static final AnimationEvent.E0 SUMMON_OBSIDIAN_CROSS =
                 (livingEntityPatch, staticAnimation, object) -> {
                     LivingEntity livingEntity = livingEntityPatch.getOriginal();
                     if (livingEntity.level() instanceof ServerLevel serverLevel) {
@@ -3160,7 +3324,7 @@ public class AVAnimations {
                     }
                 };
 
-        private static final AnimationEvent.E0 SUMMON_OBSIDIAN_SMALL_CROSS =
+        public static final AnimationEvent.E0 SUMMON_OBSIDIAN_SMALL_CROSS =
                 (livingEntityPatch, staticAnimation, object) -> {
                     LivingEntity livingEntity = livingEntityPatch.getOriginal();
                     if (livingEntity.level() instanceof ServerLevel serverLevel) {
@@ -3184,7 +3348,7 @@ public class AVAnimations {
                     }
                 };
 
-        private static final AnimationEvent.E0 THROW_OBSIDIAN =
+        public static final AnimationEvent.E0 THROW_OBSIDIAN =
                 (livingEntityPatch, staticAnimation, object) -> {
                     LivingEntity livingEntity = livingEntityPatch.getOriginal();
                     if (livingEntity.level() instanceof ServerLevel serverLevel) {
@@ -3221,7 +3385,51 @@ public class AVAnimations {
                     }
                 };
 
-        private static final AnimationEvent.E0 SLEDGEHAMMER_SHOOT =
+        public static final AnimationEvent.E0 THROW_OBSIDIAN_OFFHAND =
+                (livingEntityPatch, staticAnimation, object) -> {
+                    LivingEntity livingEntity = livingEntityPatch.getOriginal();
+                    if (livingEntity.level() instanceof ServerLevel serverLevel) {
+                        Vec3 jointVec = EpicfightUtil.getJointWithTranslation(
+                                livingEntity, new Vec3f(0, 0, 0),
+                                Armatures.BIPED.get().toolL, 2.0F, 0.0F
+                        );
+                        Item weapon = livingEntity.getMainHandItem().getItem();
+                        BlockState obsidian;
+                        if (weapon instanceof ShadowObsidianWeaponItem) {
+                            obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get()
+                                    .defaultBlockState()
+                                    .setValue(ShadowObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                        } else if (weapon instanceof ShadowObsidianSwordItem) {
+                            obsidian = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_MIDDLE_PILLAR.get()
+                                    .defaultBlockState()
+                                    .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                        } else {
+                            obsidian = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get()
+                                    .defaultBlockState()
+                                    .setValue(ObsidianBlock.FROM_PLAYER, livingEntity instanceof Player);
+                        }
+                        LivingEntity attacker = livingEntityPatch.getOriginal();
+                        Vec3 to = attacker.getEyePosition().add(attacker.getLookAngle().scale(16.0));
+                        if (attacker instanceof Mob mob && mob.getTarget() != null) {
+                            to = mob.getTarget().getEyePosition(1.0F);
+                        }
+                        BlockProjectileEntity throwingObsidian = new BlockProjectileEntity(
+                                attacker.level(),
+                                attacker,
+                                obsidian
+                        );
+                        serverLevel.addFreshEntity(throwingObsidian);
+                        if (jointVec != null) {
+                            throwingObsidian.moveTo(jointVec);
+                        }
+                        Vec3 dir = to.subtract(throwingObsidian.position());
+                        if (dir.lengthSqr() < 1.0e-6) dir = attacker.getLookAngle();
+                        Vec3 vel = dir.normalize().scale(2.0F);
+                        throwingObsidian.setDeltaMovement(vel);
+                    }
+                };
+
+        public static final AnimationEvent.E0 SLEDGEHAMMER_SHOOT =
                 (livingEntityPatch, staticAnimation, object) -> {
                     if (livingEntityPatch.getOriginal().level() instanceof ServerLevel serverLevel) {
                         LivingEntity shooterEntity = livingEntityPatch.getOriginal();
@@ -3253,7 +3461,7 @@ public class AVAnimations {
                         }
                     }
                 };
-        private static final AnimationEvent.E0 SHOCK_WAVE =
+        public static final AnimationEvent.E0 SHOCK_WAVE =
                 (livingEntityPatch, staticAnimation, object) -> {
 
                     Vec3 legendarySwordPos = EpicfightUtil.getJointWithTranslation(livingEntityPatch.getOriginal(), new Vec3f(0, 0, 0),
@@ -3274,7 +3482,7 @@ public class AVAnimations {
                     }
                 };
 
-        private static final AnimationEvent.E0 LEGENDARY_SWORD_GROUND_SLAM =
+        public static final AnimationEvent.E0 LEGENDARY_SWORD_GROUND_SLAM =
                 (livingEntityPatch, staticAnimation, object) -> {
                     Vec3 vec3 = livingEntityPatch.getOriginal().position();
                     OpenMatrix4f openmatrix4f = livingEntityPatch.getArmature()
@@ -3296,7 +3504,7 @@ public class AVAnimations {
                     LevelUtil.circleSlamFracture(livingEntityPatch.getOriginal(), level, vec3, 3.5D, true, false);
                 };
 
-        private static final AnimationEvent.E0 END_ATTACK =
+        public static final AnimationEvent.E0 END_ATTACK =
                 (livingentitypatch, staticAnimation, object) -> {
                     if (livingentitypatch instanceof PlayerPatch) {
                         livingentitypatch.playAnimationSynchronized(AVAnimations.DUAL_END, 0.1F);

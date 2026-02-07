@@ -11,7 +11,7 @@
             ]
         },
         "composite": {
-            "priority":"HIGH",
+            "priority":"MIDDLE",
             "masks":
             [
                 {

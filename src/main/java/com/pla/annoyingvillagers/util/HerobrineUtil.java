@@ -29,6 +29,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -617,14 +618,14 @@ public class HerobrineUtil {
         summonPillarsTowardJoint(level, ownerEntity, baseState, Math.max(2, maxDistance), joint);
     }
 
-    public static void summonShadowObsidianMiddlePillarShootToward(ServerLevel level, Entity ownerEntity, Joint joint) {
+    public static void summonShadowObsidianMiddlePillarShootToward(ServerLevel level, Entity ownerEntity, int maxDistance, Joint joint) {
         if (level == null || ownerEntity == null) return;
 
         BlockState baseState = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_MIDDLE_PILLAR.get()
                 .defaultBlockState()
                 .setValue(HerobrineObsidianBlock.FROM_PLAYER, ownerEntity instanceof Player)
                 .setValue(BlockStateProperties.HORIZONTAL_FACING, ownerEntity.getDirection());
-        summonPillarsTowardJoint(level, ownerEntity, baseState, 10, joint);
+        summonPillarsTowardJoint(level, ownerEntity, baseState, maxDistance, joint);
     }
 
     private static void summonPillarsTowardJoint(ServerLevel level,
@@ -845,6 +846,66 @@ public class HerobrineUtil {
                             .add(basis.fwd().scale(z));
 
                     placeIfReplaceable(level, BlockPos.containing(world), stateNow, ownerEntity);
+                }
+            }
+        };
+    }
+
+    public static void summonShadowObsidianLongPillarCircle(ServerLevel level, Entity ownerEntity, BlockPos centerPos) {
+        if (level == null || ownerEntity == null || centerPos == null) return;
+        if (!ownerEntity.isAlive()) return;
+        if (ownerEntity.level() != level) return;
+
+        BlockState longPillarState = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_LONG_PILLAR.get()
+                .defaultBlockState()
+                .setValue(HerobrineObsidianBlock.FROM_PLAYER, ownerEntity instanceof Player)
+                .setValue(BlockStateProperties.HORIZONTAL_FACING, ownerEntity.getDirection());
+        
+        scheduleRing(level, ownerEntity, centerPos, longPillarState,
+                0, 6,  2.5D, (float) (Math.PI * 2F / 5F));
+        scheduleRing(level, ownerEntity, centerPos, longPillarState,
+                2, 11, 3.5D, (float) (Math.PI * 2F / 10F));
+        scheduleRing(level, ownerEntity, centerPos, longPillarState,
+                4, 14, 4.5D, (float) (Math.PI * 2F / 20F));
+        scheduleRing(level, ownerEntity, centerPos, longPillarState,
+                6, 19, 5.5D, (float) (Math.PI * 2F / 25F));
+    }
+
+    private static void scheduleRing(ServerLevel level,
+                                     Entity ownerEntity,
+                                     BlockPos centerPos,
+                                     BlockState blockState,
+                                     int delayTicks,
+                                     int points,
+                                     double radius,
+                                     float angleOffset) {
+
+        new DelayedTask(delayTicks) {
+            @Override
+            public void run() {
+                if (!ownerEntity.isAlive()) return;
+                if (ownerEntity.level() != level) return;
+
+                int centerX = centerPos.getX();
+                int centerZ = centerPos.getZ();
+
+                for (int k = 0; k < points; k++) {
+                    float angle = (float) k * ((float) Math.PI * 2.0F / (float) points) + angleOffset;
+
+                    double worldX = centerX + (double) Mth.cos(angle) * radius;
+                    double worldZ = centerZ + (double) Mth.sin(angle) * radius;
+
+                    int x = Mth.floor(worldX);
+                    int z = Mth.floor(worldZ);
+
+                    int groundY = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z) - 1;
+
+                    BlockPos placePos = new BlockPos(x, groundY, z);
+                    if (!level.getBlockState(placePos).canBeReplaced()) {
+                        placePos = placePos.above();
+                    }
+
+                    placeIfReplaceable(level, placePos, blockState, ownerEntity);
                 }
             }
         };

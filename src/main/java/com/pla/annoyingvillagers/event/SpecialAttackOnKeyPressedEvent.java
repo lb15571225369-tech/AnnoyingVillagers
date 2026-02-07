@@ -250,7 +250,7 @@ public class SpecialAttackOnKeyPressedEvent {
             if (holdingItem.getItem().equals(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get())) {
                 if (entity.level() instanceof ServerLevel) {
                     if (offHandItem.getItem().equals(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get())) {
-                        livingEntityPatch.playAnimationSynchronized(AnimsHerrscher.GESETZ_AUTO_3, 0.0F);
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_3, 0.0F);
                     } else {
                         livingEntityPatch.playAnimationSynchronized(AVAnimations.OBSIDIAN_FIST_DASH, 0.0F);
                     }

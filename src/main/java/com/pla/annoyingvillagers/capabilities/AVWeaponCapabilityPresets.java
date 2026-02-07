@@ -250,17 +250,17 @@ public class AVWeaponCapabilityPresets {
                             AVAnimations.OBSIDIAN_STRONG_PUNCH,
                             AVAnimations.OBSIDIAN_ENDERBLASTER_TWOHAND_TISHNAW)
                     .newStyleCombo(Styles.OCHS,
-                            AVAnimations.OBSIDIAN_FIST_AUTO1,
+                            AVAnimations.SHADOW_OBSIDIAN_FIST_AUTO1,
                             AVAnimations.OBSIDIAN_FIST_AUTO2,
-                            AVAnimations.OBSIDIAN_FIST_AUTO3,
+                            AVAnimations.SHADOW_OBSIDIAN_FIST_AUTO3,
                             AVAnimations.OBSIDIAN_FIST_AIR_SLASH,
-                            AVAnimations.OBSIDIAN_ZOMBIE_ATTACK3,
+                            AVAnimations.OBSIDIAN_INFERNAL_AUTO_1,
                             AVAnimations.OBSIDIAN_STRONG_PUNCH,
                             AVAnimations.OBSIDIAN_ENDERBLASTER_TWOHAND_TISHNAW)
                     .innateSkill(Styles.TWO_HAND,
                             (itemstack) -> AVSkills.SHADOW_OBSIDIAN_PILLAR)
                     .innateSkill(Styles.OCHS,
-                            (itemstack) -> AVSkills.SHADOW_OBSIDIAN_PILLAR)
+                            (itemstack) -> AVSkills.SHADOW_OBSIDIAN_PILLAR_SWORD)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.WALK, Animations.BIPED_WALK)
                     .livingMotionModifier(Styles.TWO_HAND, LivingMotions.RUN, AVAnimations.OLD_MOONLESS_RUN)
@@ -285,24 +285,24 @@ public class AVWeaponCapabilityPresets {
                             (livingentitypatch) -> livingentitypatch.getOriginal().getItemInHand(InteractionHand.OFF_HAND).getItem().equals(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()) ? Styles.TWO_HAND : Styles.ONE_HAND)
                     .collider(ColliderPreset.SWORD)
                     .newStyleCombo(Styles.ONE_HAND,
-                            AVAnimations.GREATSWORD_TWOHAND_AUTO_1,
-                            AVAnimations.GREATSWORD_TWOHAND_AUTO_2,
+                            AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_1,
+                            AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_2,
                             AVAnimations.SHADOW_OBSIDIAN_SWORD_ONEHAND_LONG,
                             AVAnimations.SHADOW_OBSIDIAN_FIST_AIR_SLASH,
                             AVAnimations.SWORD_HEAVY_AUTO_1,
                             AVAnimations.SHADOW_OBSIDIAN_SWORD_TORMENT_AIRSLAM)
                     .newStyleCombo(Styles.TWO_HAND,
-                            AVAnimations.GREATSWORD_DUAL_AUTO_1,
-                            AVAnimations.DUAL_SWORD_AUTO4,
-                            AVAnimations.DUAL_SWORD_AUTO5,
+                            AnimsHerrscher.GESETZ_AUTO_2,
+                            AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO4,
+                            AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO5,
                             AVAnimations.GREATSWORD_DUAL_AUTO_2,
-                            AVAnimations.GREATSWORD_DUAL_AUTO_3,
+                            AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AUTO_3,
                             WOMAnimations.TORMENT_DASH,
-                            AVAnimations.GREATSWORD_DUAL_AIRSLASH)
+                            AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AIRSLASH)
                     .innateSkill(Styles.ONE_HAND,
                             (itemstack) -> AVSkills.SHADOW_OBSIDIAN_SWORD)
                     .innateSkill(Styles.TWO_HAND,
-                            (itemstack) -> EpicFightSkills.DANCING_EDGE)
+                            (itemstack) -> AVSkills.SHADOW_OBSIDIAN_SWORD_DUAL)
                     .livingMotionModifier(Styles.ONE_HAND, LivingMotions.IDLE, Animations.BIPED_IDLE)
                     .livingMotionModifier(Styles.ONE_HAND, LivingMotions.BLOCK, AnimsMoonless.MOONLESS_GUARD)
                     .livingMotionModifier(Styles.ONE_HAND, LivingMotions.RUN, AVAnimations.OLD_MOONLESS_RUN)
