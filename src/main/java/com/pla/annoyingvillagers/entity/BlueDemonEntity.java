@@ -100,6 +100,7 @@ public class BlueDemonEntity extends Monster {
         super.tick();
         if (!level().isClientSide) {
             if (this.tickCount == 1) {
+                Objects.requireNonNull(this.getServer()).getPlayerList().broadcastSystemMessage(Component.literal("Blue Demon need to take a rest right now, he will comeback in the future !!!"), false);
                 this.discard();
             }
             if (!spawnBbq) {

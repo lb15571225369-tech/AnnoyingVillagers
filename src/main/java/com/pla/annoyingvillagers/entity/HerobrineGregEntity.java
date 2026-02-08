@@ -495,7 +495,7 @@ public class HerobrineGregEntity extends Monster {
                 }
                 AnnoyingVillagers.PACKET_HANDLER.send(
                         PacketDistributor.TRACKING_ENTITY.with(() -> this),
-                        new ClientboundHerobrinePortalFx(this.getOnPos().getCenter())
+                        new ClientboundHerobrinePortalFx(this.getOnPos().getCenter().add(0.0, 0.5, 0.0))
                 );
             }
             if (this.escapeTiming == 40) {
@@ -694,7 +694,7 @@ public class HerobrineGregEntity extends Monster {
         this.escapeTiming = 70;
         AnnoyingVillagers.PACKET_HANDLER.send(
                 PacketDistributor.TRACKING_ENTITY.with(() -> this),
-                new ClientboundHerobrinePortalFx(this.getOnPos().getCenter())
+                new ClientboundHerobrinePortalFx(this.getOnPos().getCenter().add(0.0, 0.5, 0.0))
         );
 
         double yawRad = Math.toRadians(this.getYRot());
@@ -742,7 +742,7 @@ public class HerobrineGregEntity extends Monster {
         this.escapeTiming = 70;
         AnnoyingVillagers.PACKET_HANDLER.send(
                 PacketDistributor.TRACKING_ENTITY.with(() -> this),
-                new ClientboundHerobrinePortalFx(this.getOnPos().getCenter())
+                new ClientboundHerobrinePortalFx(this.getOnPos().getCenter().add(0.0, 0.5, 0.0))
         );
 
         List<String> herobrines = new ArrayList<>();

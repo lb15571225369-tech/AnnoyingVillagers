@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.pla.annoyingvillagers.spawnhandler.BluedemonData;
 import com.pla.annoyingvillagers.util.CommonGoals;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -182,6 +183,7 @@ public class BlueDemon2Entity extends Monster {
         super.tick();
         if (!level().isClientSide) {
             if (this.tickCount == 1) {
+                Objects.requireNonNull(this.getServer()).getPlayerList().broadcastSystemMessage(Component.literal("Blue Demon need to take a rest right now, he will comeback in the future !!!"), false);
                 this.discard();
             }
             if (!spawnBbq) {
