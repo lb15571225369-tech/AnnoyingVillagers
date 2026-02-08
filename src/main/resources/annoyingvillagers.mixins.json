@@ -7,7 +7,6 @@
     "PlayerMobMixin",
     "PlayerMobMixin2",
     "MobMixin",
-    "EntityMixin",
     "SkeletonMixin",
     "ZombieMixin",
     "GuardSkillMixin",
@@ -27,7 +26,8 @@
     "BasicAttackMixin",
     "AbstractArrowBreakMixin",
     "OpenMatrix4fInvertFixMixin",
-    "ActionAnimationMixin"
+    "ActionAnimationMixin",
+    "LivingEntityPatchMixin"
   ],
   "client": [
     "client.ModelPartMixin"

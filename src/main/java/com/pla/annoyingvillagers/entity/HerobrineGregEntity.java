@@ -51,6 +51,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -58,6 +59,8 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraftforge.network.NetworkHooks;
@@ -492,7 +495,7 @@ public class HerobrineGregEntity extends Monster {
                 }
                 AnnoyingVillagers.PACKET_HANDLER.send(
                         PacketDistributor.TRACKING_ENTITY.with(() -> this),
-                        new ClientboundHerobrinePortalFx(HerobrinePortalUtil.finalSurfacePos(this))
+                        new ClientboundHerobrinePortalFx(this.getOnPos().getCenter())
                 );
             }
             if (this.escapeTiming == 40) {
@@ -691,7 +694,7 @@ public class HerobrineGregEntity extends Monster {
         this.escapeTiming = 70;
         AnnoyingVillagers.PACKET_HANDLER.send(
                 PacketDistributor.TRACKING_ENTITY.with(() -> this),
-                new ClientboundHerobrinePortalFx(HerobrinePortalUtil.finalSurfacePos(this))
+                new ClientboundHerobrinePortalFx(this.getOnPos().getCenter())
         );
 
         double yawRad = Math.toRadians(this.getYRot());
@@ -739,7 +742,7 @@ public class HerobrineGregEntity extends Monster {
         this.escapeTiming = 70;
         AnnoyingVillagers.PACKET_HANDLER.send(
                 PacketDistributor.TRACKING_ENTITY.with(() -> this),
-                new ClientboundHerobrinePortalFx(HerobrinePortalUtil.finalSurfacePos(this))
+                new ClientboundHerobrinePortalFx(this.getOnPos().getCenter())
         );
 
         List<String> herobrines = new ArrayList<>();
@@ -794,6 +797,35 @@ public class HerobrineGregEntity extends Monster {
             return ElitePattern.ONEE_PLUS_1S;
         } else {
             return ElitePattern.SOLO_1E;
+        }
+    }
+
+    private void clearSummonSpace(ServerLevel serverLevel) {
+        BlockPos center = this.getOnPos();
+        final int feetY = center.getY();
+
+        for (int dy = 1; dy <= 2; dy++) {
+            for (int dx = -2; dx <= 2; dx++) {
+                for (int dz = -2; dz <= 2; dz++) {
+                    BlockPos pos = center.offset(dx, dy, dz);
+
+                    BlockState state = serverLevel.getBlockState(pos);
+                    if (state.isAir()) continue;
+                    if (state.getDestroySpeed(serverLevel, pos) < 0.0F) continue;
+
+                    serverLevel.destroyBlock(pos, true, this);
+                }
+            }
+        }
+
+        for (int dx = -2; dx <= 2; dx++) {
+            for (int dz = -2; dz <= 2; dz++) {
+                BlockPos pos = new BlockPos(center.getX() + dx, feetY, center.getZ() + dz);
+
+                if (serverLevel.getBlockState(pos).isAir()) {
+                    serverLevel.setBlockAndUpdate(pos, Blocks.CRYING_OBSIDIAN.defaultBlockState());
+                }
+            }
         }
     }
 
@@ -891,6 +923,9 @@ public class HerobrineGregEntity extends Monster {
         if (livingentitypatch != null) {
             livingentitypatch.playAnimationSynchronized(AVAnimations.PORTAL_SUMMON, 0.0F);
         }
+        if (this.level() instanceof ServerLevel serverLevel) {
+            this.clearSummonSpace(serverLevel);
+        }
         this.setCustomNameVisible(false);
         setUseHerobrineTexture(true);
         summonAtNight();
@@ -900,6 +935,9 @@ public class HerobrineGregEntity extends Monster {
     private void summonHerobrinesAndEscape() {
         if (livingentitypatch != null) {
             livingentitypatch.playAnimationSynchronized(AVAnimations.PORTAL_SUMMON, 0.0F);
+        }
+        if (this.level() instanceof ServerLevel serverLevel) {
+            this.clearSummonSpace(serverLevel);
         }
         if (isDay(this.level())) {
             summonEscapeAtDay();

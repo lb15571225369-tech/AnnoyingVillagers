@@ -54,6 +54,10 @@ public class DragonOrbitLeaderGoal extends Goal {
     private double yJitterCurrent;
     private double yJitterDesired;
 
+//    private Vec3 lastPos = Vec3.ZERO;
+//    private double lastDistToTarget = Double.NaN;
+//    private int stuckTicks = 0;
+
     public DragonOrbitLeaderGoal(
             HerobrineDragonEntity dragon,
             double baseSpeed,
@@ -69,6 +73,79 @@ public class DragonOrbitLeaderGoal extends Goal {
         this.farCatchUpDistance = farCatchUpDistance;
         setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
+
+//    private boolean isLineBlocked(Vec3 from, Vec3 to) {
+//        if (level instanceof ServerLevel serverLevel) {
+//
+//            ClipContext clipContext = new ClipContext(
+//                    from, to,
+//                    ClipContext.Block.COLLIDER,
+//                    ClipContext.Fluid.NONE,
+//                    dragon
+//            );
+//
+//            HitResult hitResult = serverLevel.clip(clipContext);
+//            return hitResult.getType() != HitResult.Type.MISS;
+//        }
+//        return false;
+//    }
+//
+//    private boolean isStuck(Vec3 target) {
+//        double moved = dragon.position().distanceTo(lastPos);
+//        double dist = dragon.position().distanceTo(target);
+//
+//        boolean notMoving = moved < 0.05;
+//        boolean stillFar  = dist > 4.0;
+//        boolean notClosing = !Double.isNaN(lastDistToTarget) && (dist > lastDistToTarget - 0.02);
+//
+//        if ((notMoving && stillFar) || notClosing) stuckTicks++;
+//        else stuckTicks = Math.max(0, stuckTicks - 1);
+//
+//        lastPos = dragon.position();
+//        lastDistToTarget = dist;
+//
+//        return stuckTicks > 10;
+//    }
+//
+//    private Vec3 pickDetour(Vec3 target) {
+//        Vec3 from = dragon.position().add(0.0, dragon.getBbHeight() * 0.5, 0.0);
+//        Vec3 to = target.add(0.0, dragon.getBbHeight() * 0.5, 0.0);
+//
+//        Vec3 dir = to.subtract(from);
+//        double len = dir.length();
+//        if (len < 1e-4) return target;
+//
+//        dir = dir.scale(1.0 / len);
+//
+//        Vec3 left  = new Vec3(-dir.z, 0.0, dir.x);
+//        Vec3 right = new Vec3(dir.z, 0.0, -dir.x);
+//
+//        boolean preferDown = hasCeiling();
+//        double up1 = preferDown ? -6.0 : 6.0;
+//        double up2 = preferDown ? -10.0 : 10.0;
+//
+//        Vec3[] candidates = new Vec3[] {
+//                target.add(0.0, up1, 0.0),
+//                target.add(0.0, up2, 0.0),
+//                target.add(left.scale(8.0)),
+//                target.add(right.scale(8.0)),
+//                target.add(left.scale(12.0)).add(0.0, up1, 0.0),
+//                target.add(right.scale(12.0)).add(0.0, up1, 0.0),
+//        };
+//
+//        for (Vec3 candidate : candidates) {
+//            double yClamp = clampYForWorld(candidate.x, candidate.z, candidate.y);
+//            Vec3 vec3CandidateClamp = new Vec3(candidate.x, yClamp, candidate.z);
+//            if (canMoveTo(vec3CandidateClamp)) {
+//                Vec3 vec3CandidateClampMid = vec3CandidateClamp.add(0.0, dragon.getBbHeight() * 0.5, 0.0);
+//                if (!isLineBlocked(from, vec3CandidateClampMid)) return vec3CandidateClamp;
+//            }
+//        }
+//
+//        Vec3 leaderPos = leader.position();
+//        double y = clampYForWorld(leaderPos.x, leaderPos.z, leaderPos.y + 24.0);
+//        return new Vec3(leaderPos.x, y, leaderPos.z);
+//    }
 
     @Nullable
     private LivingEntity resolveOrbitCenter(HerobrineDragonEntity herobrineDragonEntity) {
@@ -255,6 +332,17 @@ public class DragonOrbitLeaderGoal extends Goal {
                 }
             }
         }
+
+//        Vec3 from = dragon.position().add(0.0, dragon.getBbHeight() * 0.5, 0.0);
+//        Vec3 to = targetPosition.add(0.0, dragon.getBbHeight() * 0.5, 0.0);
+//
+//        boolean blocked = isLineBlocked(from, to);
+//        boolean stuck = isStuck(targetPosition);
+//
+//        if (blocked || stuck) {
+//            targetPosition = pickDetour(targetPosition);
+//            stuckTicks = 0;
+//        }
 
         setMoveTarget(targetPosition, baseSpeed);
         yJitterCurrent = Mth.lerp(0.05, yJitterCurrent, yJitterDesired);

@@ -350,7 +350,7 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
                     if (this.renderPortal) {
                         AnnoyingVillagers.PACKET_HANDLER.send(
                                 PacketDistributor.TRACKING_ENTITY.with(() -> this),
-                                new ClientboundHerobrinePortalFx(HerobrinePortalUtil.finalSurfacePos(this))
+                                new ClientboundHerobrinePortalFx(this.getOnPos().getCenter())
                         );
                         renderPortal = false;
                     }
@@ -428,7 +428,7 @@ public class LowHerobrineCloneEntity extends PlayerMobEntity {
                     this.kill();
                 }
                 this.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 1, 3, false, false));
-                if (this.livingentitypatch != null) {
+                if (this.livingentitypatch != null && !this.isDeadOrDying() && this.isAlive()) {
                     this.livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_SACRIFICING, 0.0F);
                 }
                 if (this.tickCount % 140 == 0 && this.possessedByEntity.getHealth() < this.possessedByEntity.getMaxHealth() * 0.8) {

@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.entity.goal;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.clazz.AVNpc;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
@@ -204,6 +203,7 @@ public class PlayIdleAnimationGoal extends Goal {
 
     @Override
     public void start() {
+        if (!mob.isAlive() || mob.isRemoved() || mob.isDeadOrDying()) return;
         ticksLeft = minDurationTicks;
 
         mob.getNavigation().stop();
@@ -305,6 +305,7 @@ public class PlayIdleAnimationGoal extends Goal {
     }
 
     private void playIdleAnimation(AssetAccessor<? extends StaticAnimation> anim) {
+        if (!mob.isAlive() || mob.isRemoved() || mob.isDeadOrDying()) return;
         LivingEntityPatch<?> patch = null;
         if (mob instanceof PlayerNpcEntity playerNpcEntity) {
             patch = playerNpcEntity.getLivingEntityPatch();

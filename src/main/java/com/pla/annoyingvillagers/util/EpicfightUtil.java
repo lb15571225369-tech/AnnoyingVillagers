@@ -66,10 +66,13 @@ public class EpicfightUtil {
     public static boolean isLongHitAnimation(AssetAccessor<? extends DynamicAnimation> dynamicAnimation) {
         return dynamicAnimation.get() instanceof LongHitAnimation ||
                 (dynamicAnimation.get() instanceof LinkAnimation linkAnimation
-                        && linkAnimation.getRealAnimation().get() instanceof LongHitAnimation &&
+                        && (linkAnimation.getRealAnimation().get() instanceof LongHitAnimation
+                        || linkAnimation.getRealAnimation().get() instanceof KnockdownAnimation) &&
                         (linkAnimation.getRealAnimation() == Animations.BIPED_COMMON_NEUTRALIZED
                                 || linkAnimation.getRealAnimation() == Animations.GREATSWORD_GUARD_BREAK
                                 || linkAnimation.getRealAnimation() == Animations.BIPED_KNOCKDOWN
+                                || linkAnimation.getRealAnimation() == AVAnimations.TRIED
+                                || linkAnimation.getRealAnimation() == AVAnimations.LONGEST_HIT
                                 || linkAnimation.getRealAnimation() == ExecutionSkillAnimations.EXECUTED_FULL));
     }
 
@@ -91,7 +94,6 @@ public class EpicfightUtil {
 
     public static void dealStaminaDamage(DamageSource damageSource, float amount, LivingEntityPatch<?> livingEntityPatch, boolean playStunAnimation) {
         if (livingEntityPatch instanceof CEHumanoidPatch ceHumanoidPatch) {
-            AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] stamina for mob {} is {}", ceHumanoidPatch.getOriginal().getDisplayName().getString() ,CEPatchUtils.getStamina(ceHumanoidPatch));
             if (!ceHumanoidPatch.dealStaminaDamage(damageSource, amount) && playStunAnimation) {
                 livingEntityPatch.playAnimationSynchronized(AVAnimations.GUARD_BREAK_ATTACK, 0.0F);
             }

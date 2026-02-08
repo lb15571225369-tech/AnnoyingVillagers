@@ -30,7 +30,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.registries.ForgeRegistries;
 
 @EventBusSubscriber
-public class FireworkUseProcedure {
+public class FireworkUseEvent {
 
     @SubscribeEvent
     public static void onRightClickBlock(RightClickBlock rightclickblock) {

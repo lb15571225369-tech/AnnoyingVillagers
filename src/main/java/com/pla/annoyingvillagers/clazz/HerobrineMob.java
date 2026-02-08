@@ -830,7 +830,7 @@ public class HerobrineMob extends Monster {
                 if (this.renderPortal) {
                     AnnoyingVillagers.PACKET_HANDLER.send(
                             PacketDistributor.TRACKING_ENTITY.with(() -> this),
-                            new ClientboundHerobrinePortalFx(HerobrinePortalUtil.finalSurfacePos(this))
+                            new ClientboundHerobrinePortalFx(this.getOnPos().getCenter())
                     );
                     this.renderPortal = false;
                 }

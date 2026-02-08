@@ -222,9 +222,8 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> FIST_UP;
     public static AnimationManager.AnimationAccessor<RushSwordAnimation> RUSH_SWORD;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> DUAL_DANCING_EDGE;
-    public static AnimationManager.AnimationAccessor<KnockdownAnimation> LEFT_KNOCKDOWN;
     public static AnimationManager.AnimationAccessor<AttackAnimation> SWEEPING_EDGE;
-    public static AnimationManager.AnimationAccessor<LongHitAnimation> HIT_C;
+    public static AnimationManager.AnimationAccessor<LongHitAnimation> HIT_BACKWARD;
     public static AnimationManager.AnimationAccessor<GuardAnimation> SPEAR_GUARD_HIT;
     public static AnimationManager.AnimationAccessor<StaticAnimation> LEGENDARY_SWORD_GUARD;
     public static AnimationManager.AnimationAccessor<GuardAnimation> LEGENDARY_SWORD_GUARD_HIT;
@@ -245,9 +244,9 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> KNIFE_CHECK;
     public static AnimationManager.AnimationAccessor<StaticAnimation> CARRY;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> FIST_LEFT;
-    public static AnimationManager.AnimationAccessor<LongHitAnimation> KNOCKDOWN_FORWARD;
-    public static AnimationManager.AnimationAccessor<LongHitAnimation> KNOCKDOWN_RIGHT;
-    public static AnimationManager.AnimationAccessor<LongHitAnimation> KNOCKDOWN_LEFT;
+    public static AnimationManager.AnimationAccessor<KnockdownAnimation> KNOCKDOWN_FORWARD;
+    public static AnimationManager.AnimationAccessor<KnockdownAnimation> KNOCKDOWN_RIGHT;
+    public static AnimationManager.AnimationAccessor<KnockdownAnimation> KNOCKDOWN_LEFT;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> AXE_HEAVY_AUTO_1;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> AXE_HEAVY_AUTO_2;
     public static AnimationManager.AnimationAccessor<BasicMultipleAttackAnimation> SWORD_HEAVY_AUTO_1;
@@ -263,8 +262,8 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> HARD_GREATSWORD_GUARD;
     public static AnimationManager.AnimationAccessor<GuardAnimation> HARD_GREATSWORD_GUARD_HIT;
     public static AnimationManager.AnimationAccessor<ActionAnimation> HARD_GREATSWORD_GUARD_SKILL;
-    public static AnimationManager.AnimationAccessor<ActionAnimation> HIT_LEFT;
-    public static AnimationManager.AnimationAccessor<ActionAnimation> HIT_RIGHT;
+    public static AnimationManager.AnimationAccessor<LongHitAnimation> HIT_LEFT;
+    public static AnimationManager.AnimationAccessor<LongHitAnimation> HIT_RIGHT;
     public static AnimationManager.AnimationAccessor<ActionAnimation> SHAKE_HAND_TRY;
     public static AnimationManager.AnimationAccessor<ActionAnimation> SHAKE_HAND;
     public static AnimationManager.AnimationAccessor<StaticAnimation> FUNNY_IDLE;
@@ -921,8 +920,6 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.NONE, 2)
                         .addProperty(ActionAnimationProperty.MOVE_VERTICAL, true)
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.6F));
-        AVAnimations.LEFT_KNOCKDOWN = builder.nextAccessor("biped/pugilist_steve/left_kd",
-                (accessor) -> new KnockdownAnimation(0.08F, accessor, humanoidArmature));
         AVAnimations.SWEEPING_EDGE = builder.nextAccessor("biped/pugilist_steve/sweeping_edge",
                 (accessor) -> (new AttackAnimation(0.2F, 0.1F, 0.35F, 0.46F, 0.79F, ColliderPreset.BIPED_BODY_COLLIDER, humanoidArmature.get().toolR, accessor, humanoidArmature))
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN)
@@ -931,7 +928,7 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.PARTICLE, EpicFightParticles.HIT_BLADE)
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.45F)
                         .addProperty(AttackAnimationProperty.FIXED_MOVE_DISTANCE, true));
-        AVAnimations.HIT_C = builder.nextAccessor("biped/pugilist_steve/hit_c",
+        AVAnimations.HIT_BACKWARD = builder.nextAccessor("biped/pugilist_steve/hit_backward",
                 (accessor) -> new LongHitAnimation(0.08F, accessor, humanoidArmature));
         AVAnimations.SPEAR_GUARD_HIT = builder.nextAccessor("biped/pugilist_steve/spear_guard_hit",
                 (accessor) -> (new GuardAnimation(0.05F, 0.2F, accessor, humanoidArmature))
@@ -994,7 +991,7 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN)
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
         AVAnimations.KNOCKDOWN_FORWARD = builder.nextAccessor("biped/pugilist_steve/knockdown_forward",
-                (accessor) -> (new LongHitAnimation(0.1F, accessor, humanoidArmature))
+                (accessor) -> (new KnockdownAnimation(0.1F, accessor, humanoidArmature))
                         .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
                         .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true)
                         .addProperty(ActionAnimationProperty.MOVE_VERTICAL, false)
@@ -1005,7 +1002,7 @@ public class AVAnimations {
                         .addState(EntityState.CAN_BASIC_ATTACK, false)
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
         AVAnimations.KNOCKDOWN_RIGHT = builder.nextAccessor("biped/pugilist_steve/knockdown_right",
-                (accessor) -> (new LongHitAnimation(0.1F, accessor, humanoidArmature))
+                (accessor) -> (new KnockdownAnimation(0.1F, accessor, humanoidArmature))
                         .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
                         .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true)
                         .addProperty(ActionAnimationProperty.MOVE_VERTICAL, false)
@@ -1016,7 +1013,7 @@ public class AVAnimations {
                         .addState(EntityState.CAN_BASIC_ATTACK, false)
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
         AVAnimations.KNOCKDOWN_LEFT = builder.nextAccessor("biped/pugilist_steve/knockdown_left",
-                (accessor) -> (new LongHitAnimation(0.1F, accessor, humanoidArmature))
+                (accessor) -> (new KnockdownAnimation(0.1F, accessor, humanoidArmature))
                         .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
                         .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true)
                         .addProperty(ActionAnimationProperty.MOVE_VERTICAL, false)
@@ -1107,27 +1104,9 @@ public class AVAnimations {
                 (accessor) -> (new ActionAnimation(0.05F, Float.MAX_VALUE, accessor, humanoidArmature))
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
         AVAnimations.HIT_LEFT = builder.nextAccessor("biped/pugilist_steve/hit_left",
-                (accessor) -> (new ActionAnimation(0.1F, accessor, humanoidArmature))
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true)
-                        .addProperty(ActionAnimationProperty.MOVE_VERTICAL, false)
-                        .addState(EntityState.MOVEMENT_LOCKED, true)
-                        .addState(EntityState.TURNING_LOCKED, true)
-                        .addState(EntityState.LOCKON_ROTATE, true)
-                        .addState(EntityState.CAN_SKILL_EXECUTION, false)
-                        .addState(EntityState.CAN_BASIC_ATTACK, false)
-                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
+                (accessor) -> (new LongHitAnimation(0.1F, accessor, humanoidArmature)));
         AVAnimations.HIT_RIGHT = builder.nextAccessor("biped/pugilist_steve/hit_right",
-                (accessor) -> (new ActionAnimation(0.1F, accessor, humanoidArmature))
-                        .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
-                        .addProperty(ActionAnimationProperty.STOP_MOVEMENT, true)
-                        .addProperty(ActionAnimationProperty.MOVE_VERTICAL, false)
-                        .addState(EntityState.MOVEMENT_LOCKED, true)
-                        .addState(EntityState.TURNING_LOCKED, true)
-                        .addState(EntityState.LOCKON_ROTATE, true)
-                        .addState(EntityState.CAN_SKILL_EXECUTION, false)
-                        .addState(EntityState.CAN_BASIC_ATTACK, false)
-                        .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
+                (accessor) -> (new LongHitAnimation(0.1F, accessor, humanoidArmature)));
         AVAnimations.SHAKE_HAND_TRY = builder.nextAccessor("biped/pugilist_steve/shake_hand_try",
                 (accessor) -> (new ActionAnimation(0.05F, Float.MAX_VALUE, accessor, humanoidArmature))
                         .addState(EntityState.CAN_SKILL_EXECUTION, false)

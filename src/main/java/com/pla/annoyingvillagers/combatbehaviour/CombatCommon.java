@@ -37,6 +37,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.shelmarow.combat_evolution.execution.ExecutionHandler;
 import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
 import net.shelmarow.combat_evolution.tickTask.TickTaskManager;
+import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.animation.types.KnockdownAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.Animations;
@@ -121,6 +123,19 @@ public class CombatCommon {
         return false;
     }
 
+    public static boolean isTargetKnockedDown(MobPatch<?> mobpatch) {
+        LivingEntity victim = mobpatch.getOriginal().getTarget();
+        if (victim != null) {
+            LivingEntityPatch<?> victimPatch = EpicFightCapabilities.getEntityPatch(victim, LivingEntityPatch.class);
+            if (victimPatch != null) {
+                AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(victimPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
+                return dynamicAnimation.get() instanceof KnockdownAnimation;
+            }
+            return false;
+        }
+        return false;
+    }
+
     public static boolean canPerformNormalAttackLogic(MobPatch<?> mobpatch) {
         LivingEntity attacker = mobpatch.getOriginal();
         LivingEntity victim = mobpatch.getOriginal().getTarget();
@@ -133,7 +148,11 @@ public class CombatCommon {
             return false;
         }
         if (victim != null) {
-            return !ExecutionHandler.isExecutingTarget(attacker, victim);
+            if (isTargetKnockedDown(mobpatch)) {
+                return false;
+            } else {
+                return !ExecutionHandler.isExecutingTarget(attacker, victim);
+            }
         }
         return false;
     }

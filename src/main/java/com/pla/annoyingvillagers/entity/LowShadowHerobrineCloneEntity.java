@@ -381,7 +381,7 @@ public class LowShadowHerobrineCloneEntity extends Monster {
                 if (this.renderPortal) {
                     AnnoyingVillagers.PACKET_HANDLER.send(
                             PacketDistributor.TRACKING_ENTITY.with(() -> this),
-                            new ClientboundHerobrinePortalFx(HerobrinePortalUtil.finalSurfacePos(this))
+                            new ClientboundHerobrinePortalFx(this.getOnPos().getCenter())
                     );
                     renderPortal = false;
                 }
@@ -472,7 +472,7 @@ public class LowShadowHerobrineCloneEntity extends Monster {
                     this.kill();
                 }
                 this.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 1, 3, false, false));
-                if (this.livingentitypatch != null) {
+                if (this.livingentitypatch != null && !this.isDeadOrDying() && this.isAlive()) {
                     if (this.sacrificing) {
                         this.livingentitypatch.playAnimationSynchronized(AVAnimations.HEROBRINE_ASSISTANCE, 0.0F);
                     } else if (this.healing) {

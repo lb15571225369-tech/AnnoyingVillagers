@@ -9,7 +9,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = AnnoyingVillagers.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class AttackCooldownEvent {
+public class NbtCooldownEvent {
     private static final String NBT_KICK_CD = "KickAttackCooldown";
     private static final String NBT_STUN_ESCAPE_CD = "StunEscapeCooldown";
 

@@ -240,10 +240,10 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
             this.offWeaponItem = pNewItem.copy();
         }
         super.onEquipItem(pSlot, pOldItem, pNewItem);
-        if (level() instanceof ServerLevel
-                && isPlayingIdle()
-                && livingEntityPatch != null
-                && idleAnimationAsset != null) {
+        if (this.level().isClientSide) return;
+        if (!this.isAlive() || this.isDeadOrDying() || this.getHealth() <= 0.0F) return;
+
+        if (isPlayingIdle() && livingEntityPatch != null && idleAnimationAsset != null) {
             livingEntityPatch.playAnimationSynchronized(idleAnimationAsset, 0.0F);
         }
     }
@@ -337,7 +337,7 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
     }
 
     private void pickupNearbyItems() {
-        if (!isAlive() || isRemoved()) return;
+        if (!isAlive() || isRemoved() || this.isDeadOrDying()) return;
 
         var box = getBoundingBox().inflate(1.5D);
         List<ItemEntity> items = level().getEntitiesOfClass(
@@ -380,11 +380,11 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
                     (this.getZ() - itemEntity.getZ()) * 0.25
             );
             itemEntity.setPickUpDelay(0);
-            Entity entity = this;
+            LivingEntity entity = this;
             new DelayedTask(5) {
                 @Override
                 public void run() {
-                    if (!entity.isAlive() || entity.isRemoved()) return;
+                    if (!entity.isAlive() || entity.isRemoved() || entity.isDeadOrDying()) return;
                     itemEntity.discard();
                     entity.level().playSound(null, entity.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.HOSTILE, 0.2F, 1.0F);
                 }

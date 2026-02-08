@@ -457,7 +457,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     }
 
     private void pickupNearbyItems() {
-        if (!isAlive() || isRemoved()) return;
+        if (!isAlive() || isRemoved() || this.isDeadOrDying()) return;
 
         var box = getBoundingBox().inflate(1.5D);
         List<ItemEntity> items = level().getEntitiesOfClass(
@@ -500,11 +500,11 @@ public class PlayerNpcEntity extends PlayerMobEntity {
                     (this.getZ() - itemEntity.getZ()) * 0.25
             );
             itemEntity.setPickUpDelay(0);
-            Entity entity = this;
+            LivingEntity entity = this;
             new DelayedTask(5) {
                 @Override
                 public void run() {
-                    if (!entity.isAlive() || entity.isRemoved()) {
+                    if (!entity.isAlive() || entity.isRemoved() || entity.isDeadOrDying()) {
                         return;
                     } else {
                         entity.level();
@@ -634,10 +634,10 @@ public class PlayerNpcEntity extends PlayerMobEntity {
             this.offWeaponItem = pNewItem.copy();
         }
         super.onEquipItem(pSlot, pOldItem, pNewItem);
-        if (level() instanceof ServerLevel
-                && isPlayingIdle()
-                && livingEntityPatch != null
-                && idleAnimationAsset != null) {
+        if (this.level().isClientSide) return;
+        if (!this.isAlive() || this.isDeadOrDying() || this.getHealth() <= 0.0F) return;
+
+        if (isPlayingIdle() && livingEntityPatch != null && idleAnimationAsset != null) {
             livingEntityPatch.playAnimationSynchronized(idleAnimationAsset, 0.0F);
         }
     }

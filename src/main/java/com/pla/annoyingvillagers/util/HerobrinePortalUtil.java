@@ -41,15 +41,6 @@ public class HerobrinePortalUtil {
         }
     }
 
-    public static Vec3 finalSurfacePos(Entity entity) {
-        ServerLevel serverLevel = (ServerLevel) entity.level();
-        BlockPos top = serverLevel.getHeightmapPos(
-               Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                BlockPos.containing(entity.getX(), 0, entity.getZ())
-        );
-        return new Vec3(top.getX() + 0.5, top.getY() + 0.02, top.getZ() + 0.5);
-    }
-
     public static <T extends LivingEntity> void spawnRising(ServerLevel level, T entity, double x, double z, double speedPerTick) {
         double groundY = entity.getY();
         double startY = groundY - 2.0;

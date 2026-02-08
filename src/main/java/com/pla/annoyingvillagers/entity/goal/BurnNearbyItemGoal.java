@@ -3,7 +3,6 @@ package com.pla.annoyingvillagers.entity.goal;
 import com.pla.annoyingvillagers.clazz.AVNpc;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
-import com.pla.annoyingvillagers.task.DelayedTask;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -73,8 +72,8 @@ public class BurnNearbyItemGoal extends Goal {
 
     @Override
     public void tick() {
+        if (!mob.isAlive() || mob.isRemoved() || mob.isDeadOrDying()) return;
         if (!(mob.level() instanceof ServerLevel serverLevel)) return;
-
         if (targetItem == null || !targetItem.isAlive() || targetItem.getItem().isEmpty()) {
             return;
         }
@@ -125,7 +124,6 @@ public class BurnNearbyItemGoal extends Goal {
                 String msg = "<" + mob.getDisplayName().getString() + "> " + getRandomBurnLine(rawName);
                 serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.literal(msg), false);
             }
-            return;
         }
     }
 
