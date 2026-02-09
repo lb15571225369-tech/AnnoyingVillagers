@@ -93,7 +93,7 @@ public class KickOnKeyPressedEvent {
                         livingEntityPatch.playAnimationSynchronized(AVAnimations.OBSIDIAN_KICK_AUTO_1, 0.0F);
                         entity.getPersistentData().putDouble(NBT_KICK_COMBO, 3);
                     } else if (combo == 3.0) {
-                        livingEntityPatch.playAnimationSynchronized(AVAnimations.OBSIDIAN_KICK_AUTO_1, 0.0F);
+                        livingEntityPatch.playAnimationSynchronized(AVAnimations.OBSIDIAN_KICK_AUTO_3, 0.0F);
                         entity.getPersistentData().putDouble(NBT_KICK_COMBO, 4);
                     } else {
                         livingEntityPatch.playAnimationSynchronized(AVAnimations.OBSIDIAN_WHIRLWIND_KICK, 0.0F);

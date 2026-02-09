@@ -3,16 +3,13 @@ package com.pla.annoyingvillagers.entity;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.procedures.*;
-import com.pla.annoyingvillagers.task.DelayedTask;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
+import com.pla.annoyingvillagers.util.HerobrineUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -20,20 +17,14 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.utils.NameManager;
-import yesman.epicfight.world.capabilities.EpicFightCapabilities;
-import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
-import java.util.Objects;
 import java.util.UUID;
 
 
@@ -50,8 +41,8 @@ public class ShadowHerobrineEntity extends HerobrineMob {
     public BlockProjectileEntity darkObRight;
     public UUID darkObRightUUID;
 
-    public ShadowHerobrineEntity(SpawnEntity spawnentity, Level level) {
-        this((EntityType) AnnoyingVillagersModEntities.SHADOW_HEROBRINE.get(), level);
+    public ShadowHerobrineEntity(SpawnEntity spawnEntity, Level level) {
+        this(AnnoyingVillagersModEntities.SHADOW_HEROBRINE.get(), level);
     }
 
     public ShadowHerobrineEntity(EntityType<ShadowHerobrineEntity> entitytype, Level level) {
@@ -63,46 +54,32 @@ public class ShadowHerobrineEntity extends HerobrineMob {
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
         this.setChatName(this.getDisplayName().getString());
+        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get()));
+        this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
     }
 
-    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
-    }
-
-    public @NotNull MobType getMobType() {
-        return MobType.UNDEAD;
-    }
-
-    public boolean removeWhenFarAway(double d0) {
-        return false;
-    }
-
-    public double getMyRidingOffset() {
-        return -0.35D;
-    }
-
-    public @NotNull SoundEvent getHurtSound(@NotNull DamageSource damagesource) {
-        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.hurt")));
-    }
-
-    public @NotNull SoundEvent getDeathSound() {
-        return (SoundEvent) Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.death")));
-    }
-
-    public boolean hurt(@NotNull DamageSource damagesource, float f) {
+    public boolean hurt(@NotNull DamageSource damageSource, float f) {
         if (!this.isSacrificing()) {
-            DarkHerobrineOnHurtProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+            if (Math.random() <= 0.5D
+                    && !damageSource.is(DamageTypes.IN_WALL)
+                    && !damageSource.is(DamageTypes.IN_FIRE)
+                    && !damageSource.is(DamageTypes.ON_FIRE)) {
+                if (this.level() instanceof ServerLevel serverLevel) {
+                    serverLevel.playSound(null, this.blockPosition(), AnnoyingVillagersModSounds.OBSIDIAN_PLACE.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                    HerobrineUtil.spawnObsidianEyeLineStaggered(serverLevel, this, AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().defaultBlockState(), 1);
+                }
+            }
         }
-        if (damagesource.is(DamageTypes.FALL)) return false;
-        if (damagesource.is(DamageTypes.CACTUS)) return false;
-        if (damagesource.is(DamageTypes.WITHER)) return false;
-        if (damagesource.is(DamageTypes.DROWN)) return false;
-        if (damagesource.is(DamageTypes.WITHER_SKULL)) return false;
-        if (damagesource.is(DamageTypes.DRAGON_BREATH)) return false;
-        return super.hurt(damagesource, f);
+        if (damageSource.is(DamageTypes.FALL)) return false;
+        if (damageSource.is(DamageTypes.CACTUS)) return false;
+        if (damageSource.is(DamageTypes.WITHER)) return false;
+        if (damageSource.is(DamageTypes.DROWN)) return false;
+        if (damageSource.is(DamageTypes.WITHER_SKULL)) return false;
+        if (damageSource.is(DamageTypes.DRAGON_BREATH)) return false;
+        return super.hurt(damageSource, f);
     }
 
-    public void die(DamageSource damagesource) {
+    public void die(@NotNull DamageSource damagesource) {
         super.die(damagesource);
         if (this.darkObUp != null) {
             this.darkObUp.discard();
@@ -165,26 +142,15 @@ public class ShadowHerobrineEntity extends HerobrineMob {
         }
     }
 
-    public void baseTick() {
-        super.baseTick();
-    }
-
-    public void playerTouch(Player player) {
-        super.playerTouch(player);
-        if (!this.isSacrificing()) {
-            DarkHerobrineOnPlayerTouchProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
-        }
-    }
-
     private Vec3 getUpBlockPos() {
-        final double upY     = 2.0;
+        final double upY = 2.0;
         Vec3 eye = this.getEyePosition(1.0F);
         return eye.add(0.0, upY, 0.0);
     }
 
     private Vec3 getRightBlockPos() {
         final double lateral = 2.0;
-        final double sideY   = 0.0;
+        final double sideY = 0.0;
 
         Vec3 eye = this.getEyePosition(1.0F);
         Vec3 look = this.getViewVector(1.0F);
@@ -299,39 +265,6 @@ public class ShadowHerobrineEntity extends HerobrineMob {
         }
     }
 
-    private static String currentEfAnimIdOrNull(LivingEntity self) {
-        try {
-            var patch = EpicFightCapabilities
-                    .getEntityPatch(self, LivingEntityPatch.class);
-            if (patch == null) return null;
-
-            var player = patch.getAnimator().getPlayerFor(null);
-            if (player == null) return null;
-
-            var anim = player.getAnimation();
-            if (anim == null) return null;
-            try {
-                var m = anim.getClass().getMethod("getLocation");
-                var rl = (net.minecraft.resources.ResourceLocation) m.invoke(anim);
-                return rl != null ? rl.getPath().toLowerCase(java.util.Locale.ROOT) : null;
-            } catch (Exception ignored) {
-                return anim.toString().toLowerCase(java.util.Locale.ROOT);
-            }
-        } catch (Throwable t) {
-            return null;
-        }
-    }
-
-    private static boolean isLandAnimId(String id) {
-        if (id == null) return false;
-        return id.contains("biped/living/landing") || id.endsWith("/landing") || id.contains("landing");
-    }
-
-    private static boolean isAiming(String id) {
-        if (id == null) return false;
-        return id.contains("biped/combat/fist_dash") || id.endsWith("/fist_dash") || id.contains("fist_dash");
-    }
-
     private void shootOne(BlockProjectileEntity ob, Vec3 to, double speed, String position, ShadowHerobrineEntity shadowHerobrineEntity) {
         if (ob == null || !ob.isAlive()) return;
         Vec3 dir = to.subtract(ob.position());
@@ -378,25 +311,23 @@ public class ShadowHerobrineEntity extends HerobrineMob {
     public void tick() {
         super.tick();
         if (!this.level().isClientSide) {
-            String animId = currentEfAnimIdOrNull(this);
-            boolean isLandingNow = isLandAnimId(animId);
+//            spawnDarkObEntities();
+//            ShadowHerobrineEntity shadowHerobrineEntity = this;
+//            new DelayedTask(10) {
+//                @Override
+//                public void run() {
+//                    if (shadowHerobrineEntity.isAlive()) {
+//                        shootDarkObsAtTarget(2.0F, shadowHerobrineEntity);
+//                    }
+//                }
+//            };
 
-            if (isLandingNow && !wasLanding) {
-                this.getPersistentData().putInt("Shooting", 15);
-            }
-            wasLanding = isLandingNow;
-
-            int shooting = this.getPersistentData().getInt("Shooting");
-            if (shooting > 0) {
-                BlockState block = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().defaultBlockState();
-                setDeltaMovement(Vec3.ZERO);
-                shootChain(this, block, 2.5F, 5);
-                this.getPersistentData().putInt("Shooting", shooting - 1);
-            } else {
-                if (this.getMainHandItem().getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get())) {
-                    this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
-                }
-            }
+//            BlockState block = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().defaultBlockState();
+//            setDeltaMovement(Vec3.ZERO);
+//            shootChain(this, block, 2.5F, 5);
+//            if (this.getMainHandItem().getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get())) {
+//                this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+//            }
 
             if (darkObUp == null && darkObUpUUID != null) {
                 Entity entity = ((ServerLevel) this.level()).getEntity(darkObUpUUID);
@@ -431,21 +362,6 @@ public class ShadowHerobrineEntity extends HerobrineMob {
             if (this.darkObLeft != null) {
                 this.darkObLeft.moveTo(getLeftBlockPos());
             }
-
-            boolean aimingNow = isAiming(animId);
-            if (aimingNow && !wasAiming) {
-                spawnDarkObEntities();
-                ShadowHerobrineEntity shadowHerobrineEntity = this;
-                new DelayedTask(10) {
-                    @Override
-                    public void run() {
-                        if (shadowHerobrineEntity.isAlive()) {
-                            shootDarkObsAtTarget(2.0F, shadowHerobrineEntity);
-                        }
-                    }
-                };
-            }
-            wasAiming = aimingNow;
         }
     }
 
@@ -466,7 +382,7 @@ public class ShadowHerobrineEntity extends HerobrineMob {
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();
 
-        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.35D);
+        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.45D);
         builder = builder.add(Attributes.MAX_HEALTH, 120.0D);
         builder = builder.add(Attributes.ARMOR, 25.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 4.0D);

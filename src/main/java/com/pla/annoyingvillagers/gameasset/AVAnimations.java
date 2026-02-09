@@ -171,6 +171,8 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> VALOUR_HOLD_GREATSWORD;
     public static AnimationManager.AnimationAccessor<MovementAnimation> VALOUR_WALK_GREATSWORD;
     public static AnimationManager.AnimationAccessor<MovementAnimation> VALOUR_RUN_GREATSWORD;
+    public static AnimationManager.AnimationAccessor<StaticAnimation> VALOUR_FIST_GUARD;
+    public static AnimationManager.AnimationAccessor<GuardAnimation> VALOUR_FIST_GUARD_HIT;
 
     // Animation from EpicFight x Iron's Spells
     public static AnimationManager.AnimationAccessor<StaticAnimation> CASTING_ONE_HAND_TOP;
@@ -584,6 +586,10 @@ public class AVAnimations {
                 (accessor) -> new MovementAnimation(true, accessor, Armatures.BIPED));
         AVAnimations.VALOUR_WALK_GREATSWORD = builder.nextAccessor("biped/epicfight_valour_guard/valour_walk_greatsword",
                 (accessor) -> new MovementAnimation(true, accessor, Armatures.BIPED));
+        AVAnimations.VALOUR_FIST_GUARD = builder.nextAccessor("biped/epicfight_valour_guard/valour_fist_guard",
+                (accessor) -> new StaticAnimation(true, accessor, humanoidArmature));
+        AVAnimations.VALOUR_FIST_GUARD_HIT = builder.nextAccessor("biped/epicfight_valour_guard/valour_fist_guard_hit",
+                (accessor) -> new GuardAnimation(0.05F, accessor, humanoidArmature));
 
         // Animation from EpicFight x Iron's Spells
         AVAnimations.CASTING_ONE_HAND_TOP = builder.nextAccessor("biped/epicfight_ironspell/casting_one_hand_top",

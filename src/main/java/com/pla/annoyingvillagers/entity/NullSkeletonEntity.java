@@ -319,8 +319,9 @@ public class NullSkeletonEntity extends AbstractSkeleton {
         if (!pSource.is(DamageTypes.FELL_OUT_OF_WORLD)) {
             float health = this.getHealth();
             if (health - pAmount <= 5.0F) {
-                this.kill();
-                return false;
+                this.setHealth(0.0F);
+                this.die(this.damageSources().fellOutOfWorld());
+                return true;
             }
         }
         return super.hurt(pSource, pAmount);
