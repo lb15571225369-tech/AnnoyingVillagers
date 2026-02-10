@@ -1,7 +1,9 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.pla.annoyingvillagers.clazz.AVNpc;
+import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
+import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
@@ -10,6 +12,7 @@ import com.pla.annoyingvillagers.spawnhandler.SteveData;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.*;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -49,6 +52,21 @@ import java.util.Random;
 import java.util.function.Consumer;
 
 public class AngrySteveEntity extends AVNpc {
+    private boolean neverLeave = false;
+    private int leaveTicks = 0;
+
+    public void setLeaveTicks(int leaveTicks) {
+        this.leaveTicks = leaveTicks;
+    }
+
+    public int getLeaveTicks() {
+        return leaveTicks;
+    }
+
+    public void setNeverLeave(boolean neverLeave) {
+        this.neverLeave = neverLeave;
+    }
+
     public AngrySteveEntity(SpawnEntity spawnEntity, Level level) {
         this(AnnoyingVillagersModEntities.ANGRY_STEVE.get(), level);
     }
@@ -71,6 +89,20 @@ public class AngrySteveEntity extends AVNpc {
     protected void registerGoals() {
         super.registerGoals();
         CommonGoals.registerGoalForCrazyNpc(this);
+    }
+
+    @Override
+    public void readAdditionalSaveData(@NotNull CompoundTag pCompound) {
+        super.readAdditionalSaveData(pCompound);
+        leaveTicks = pCompound.getInt("LeaveTicks");
+        neverLeave = pCompound.getBoolean("NeverLeave");
+    }
+
+    @Override
+    public void addAdditionalSaveData(@NotNull CompoundTag pCompound) {
+        super.addAdditionalSaveData(pCompound);
+        pCompound.putInt("LeaveTicks", leaveTicks);
+        pCompound.putBoolean("NeverLeave", neverLeave);
     }
 
     public @NotNull MobType getMobType() {
@@ -323,8 +355,21 @@ public class AngrySteveEntity extends AVNpc {
     @Override
     public void tick() {
         super.tick();
-        if (!this.level().isClientSide()) {
+        if (this.level() instanceof ServerLevel serverLevel) {
             this.addEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 3, 3));
+            if (!neverLeave) {
+                this.leaveTicks = this.leaveTicks - 1;
+                int remaining = this.leaveTicks;
+
+                if (remaining == 40) {
+                    this.setNoAi(true);
+                    Objects.requireNonNull(this.getLivingEntityPatch()).playAnimationSynchronized(AVAnimations.TRIED, 0.0F);
+                }
+                if (remaining <= 0) {
+                    Objects.requireNonNull(this.level().getServer()).getPlayerList().broadcastSystemMessage(Component.literal("<Steve> I'm feeling so exhausted"), false);
+                    this.discard();
+                }
+            }
         }
     }
 
@@ -337,6 +382,11 @@ public class AngrySteveEntity extends AVNpc {
         this.setItemSlot(EquipmentSlot.MAINHAND, legendarySword);
         this.setMainWeaponItem(legendarySword);
         TeamUtil.addOrJoinTeam(this, "steve");
+        int min = AnnoyingVillagersConfig.ANGRY_STEVE_LEAVE_MIN_TIME.get();
+        int max = AnnoyingVillagersConfig.ANGRY_STEVE_LEAVE_MAX_TIME.get();
+        int randomMin = Math.min(min, max);
+        int randomMax = Math.max(min, max);
+        this.leaveTicks = (randomMin + new Random().nextInt(randomMax - randomMin + 1)) * 60 * 20;
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawngroupdata, compoundtag);
     }
 

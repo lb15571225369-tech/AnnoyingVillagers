@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.client.engine;
 
 import com.google.gson.JsonElement;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import net.minecraft.client.Minecraft;
@@ -10,8 +11,11 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import reascer.wom.gameasset.animations.weapons.AnimsEnderblaster;
+import reascer.wom.gameasset.animations.weapons.AnimsMoonless;
 import yesman.epicfight.api.animation.AnimationPlayer;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.EntityState;
@@ -63,8 +67,14 @@ public class RenderObsidianWeapon extends RenderItemBase {
                 MathUtils.mulStack(poseStack, openmatrix4f);
                 Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, livingEntityPatch.getOriginal().level(), 0);
                 poseStack.popPose();
-            }  else if (dynamicAnimation == AVAnimations.OBSIDIAN_FIST_DASH && entityState.getLevel() > 1) {
+            } else if (dynamicAnimation == AVAnimations.OBSIDIAN_FIST_DASH && entityState.getLevel() > 1) {
                 itemstack = ItemStack.EMPTY;
+                poseStack.pushPose();
+                MathUtils.mulStack(poseStack, openmatrix4f);
+                Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, livingEntityPatch.getOriginal().level(), 0);
+                poseStack.popPose();
+            } else if (dynamicAnimation == AnimsEnderblaster.ENDERBLASTER_ONEHAND_RELOAD || dynamicAnimation == AnimsMoonless.MOONLESS_GUARD_HIT_1) {
+                itemstack = new ItemStack(Items.BEDROCK);
                 poseStack.pushPose();
                 MathUtils.mulStack(poseStack, openmatrix4f);
                 Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, livingEntityPatch.getOriginal().level(), 0);

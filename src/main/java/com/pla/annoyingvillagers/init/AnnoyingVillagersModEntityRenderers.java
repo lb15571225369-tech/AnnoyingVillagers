@@ -35,7 +35,7 @@ public class AnnoyingVillagersModEntityRenderers {
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.PURPLE_VILLAGER_GENERAL.get(), GreenVillagerGeneralRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.ENCHANTED_ENDER_PEARL_PROJECTILE.get(), ThrownItemRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.THROWN_POISON_EGG.get(), ThrownItemRenderer::new);
-        registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.STEALTH_ATTACK_PROJECTILE.get(), ThrownItemRenderer::new);
+        registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.ENDER_AEGIS_PROJECTILE.get(), ThrownItemRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.ALEX.get(), AlexRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.JEV.get(), JevRenderer::new);
         registerrenderers.registerEntityRenderer(AnnoyingVillagersModEntities.BBQ.get(), BbqRenderer::new);

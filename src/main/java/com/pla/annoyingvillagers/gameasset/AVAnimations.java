@@ -3332,7 +3332,10 @@ public class AVAnimations {
         public static final AnimationEvent.E0 SUMMON_OBSIDIAN_CROSS_FIX_DELAY_SHADOW_HEROBRINE =
                 (livingEntityPatch, staticAnimation, object) -> {
                     LivingEntity livingEntity = livingEntityPatch.getOriginal();
-                    if (livingEntity.level() instanceof ServerLevel serverLevel && !(livingEntity instanceof Player)) {
+                    Item weapon = livingEntity.getMainHandItem().getItem();
+                    if (livingEntity.level() instanceof ServerLevel serverLevel
+                            && !(livingEntity instanceof Player)
+                            && weapon instanceof ShadowObsidianPillarItem) {
                         HerobrineUtil.summonShadowObsidianLongPillarDefenseWide(serverLevel, livingEntity);
                     }
                 };

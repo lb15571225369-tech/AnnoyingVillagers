@@ -20,7 +20,7 @@ import net.minecraftforge.network.PlayMessages;
 
 public class ThrownPoisonEggEntity extends ThrowableItemProjectile {
     public ThrownPoisonEggEntity(PlayMessages.SpawnEntity spawnentity, Level level) {
-        super((EntityType) AnnoyingVillagersModEntities.THROWN_POISON_EGG.get(), level);
+        super(AnnoyingVillagersModEntities.THROWN_POISON_EGG.get(), level);
     }
 
     public ThrownPoisonEggEntity(EntityType<? extends ThrownPoisonEggEntity> entitytype, Level level) {

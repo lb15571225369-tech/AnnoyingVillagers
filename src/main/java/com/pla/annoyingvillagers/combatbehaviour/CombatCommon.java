@@ -308,7 +308,7 @@ public class CombatCommon {
         if (mobpatch.getOriginal() instanceof SteveEntity steveEntity) {
             return steveEntity.getBlockDamage() == null && steveEntity.getSwapWeaponCooldown() == 0 || (steveEntity.getState() == 0 && steveEntity.getHealth() <= 20 && !steveEntity.getMainHandItem().getItem().equals(Items.DIAMOND_SWORD));
         } else if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
-            return (herobrineMob instanceof HerobrineChrisEntity || herobrineMob instanceof ArmoredHerobrineEntity || herobrineMob instanceof ShadowHerobrineEntity) && herobrineMob.getSwapWeaponCooldown() == 0 ;
+            return (herobrineMob instanceof ArmoredHerobrineEntity || herobrineMob instanceof ShadowHerobrineEntity) && herobrineMob.getSwapWeaponCooldown() == 0 ;
         }
 
         return false;

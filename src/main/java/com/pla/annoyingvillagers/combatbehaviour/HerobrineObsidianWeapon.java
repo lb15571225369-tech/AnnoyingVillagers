@@ -6,9 +6,7 @@ import net.shelmarow.combat_evolution.ai.CECombatBehaviors.Behavior;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors.BehaviorRoot;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors.Builder;
 import net.shelmarow.combat_evolution.ai.condition.HealthCheck;
-import reascer.wom.gameasset.WOMAnimations;
-import reascer.wom.gameasset.animations.weapons.AnimsHerrscher;
-import reascer.wom.gameasset.animations.weapons.AnimsSolar;
+import reascer.wom.gameasset.animations.weapons.AnimsEnderblaster;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 
@@ -84,6 +82,20 @@ public class HerobrineObsidianWeapon {
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
+                            .weight(15.0D)
+                            .maxCooldown(600)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(HerobrineCommon::canChangeToSecondForm)
+                                            .withinDistance(0.0D, 8.0D)
+                                            .animationBehavior(AnimsEnderblaster.ENDERBLASTER_ONEHAND_RELOAD, 0.0F)
+                                            .addExBehavior(HerobrineCommon::changeToSecondForm)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
                             .weight(40.0D)
                             .maxCooldown(20)
                             .addFirstBehavior(
@@ -143,7 +155,7 @@ public class HerobrineObsidianWeapon {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .withinDistance(0.0D, 5.0D)
+                                            .withinDistance(0.0D, 10.0D)
                                             .animationBehavior(AVAnimations.OBSIDIAN_ENDERBLASTER_TWOHAND_TISHNAW, 0.0F)
                             )
             )
@@ -222,7 +234,7 @@ public class HerobrineObsidianWeapon {
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
+                                            .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()

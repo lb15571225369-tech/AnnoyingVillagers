@@ -1,10 +1,12 @@
 package com.pla.annoyingvillagers.entity;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.combatbehaviour.HerobrineCommon;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.item.ObsidianWeaponItem;
 import com.pla.annoyingvillagers.spawnhandler.HerobrineMobData;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
+import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -21,6 +23,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import org.jetbrains.annotations.NotNull;
+import reascer.wom.gameasset.animations.weapons.AnimsMoonless;
+import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
+
+import java.util.Objects;
 
 
 public class HerobrineChrisEntity extends HerobrineMob {
@@ -45,18 +54,17 @@ public class HerobrineChrisEntity extends HerobrineMob {
         if (damagesource.is(DamageTypes.DROWN)) return false;
         if (damagesource.is(DamageTypes.WITHER_SKULL)) return false;
         if (damagesource.is(DamageTypes.DRAGON_BREATH)) return false;
-        return super.hurt(damagesource, f);
-    }
-
-    @Override
-    public void rollItem() {
-        super.rollItem();
-        ItemStack mainHand = this.getMainHandItem();
-        if (mainHand.getItem() instanceof ObsidianWeaponItem) {
-            this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.BEDROCK_WEAPON.get()));
-        } else {
-            this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.OBSIDIAN_WEAPON.get()));
+        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] Herobrine Chris State is {}", this.getState());
+        if (HerobrineCommon.canPlaySecondFormAnimation((MobPatch<?>) Objects.requireNonNull(this.getLivingEntityPatch()))) {
+            AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(this.getLivingEntityPatch().getAnimator().getPlayerFor(null)).getAnimation();
+            if (!EpicfightUtil.isLongHitAnimation(dynamicAnimation)
+                    && (this.level() instanceof ServerLevel && dynamicAnimation == Animations.EMPTY_ANIMATION)) {
+                Objects.requireNonNull(this.getLivingEntityPatch()).playAnimationSynchronized(AnimsMoonless.MOONLESS_GUARD_HIT_1, 0.0F);
+                HerobrineCommon.playSecondFormAnimation((MobPatch<?>) Objects.requireNonNull(this.getLivingEntityPatch()));
+                return false;
+            }
         }
+        return super.hurt(damagesource, f);
     }
 
     public void die(@NotNull DamageSource damagesource) {

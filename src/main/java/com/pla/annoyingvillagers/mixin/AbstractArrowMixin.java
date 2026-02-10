@@ -1,6 +1,6 @@
 package com.pla.annoyingvillagers.mixin;
 
-import com.pla.annoyingvillagers.entity.StealthAttackEntity;
+import com.pla.annoyingvillagers.entity.EnderAegisProjectile;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
@@ -29,7 +29,7 @@ public abstract class AbstractArrowMixin {
             )
     )
     private DamageSource av$redirectArrowDamage(DamageSources sources, AbstractArrow arrow, @Nullable Entity shooter) {
-        if (arrow instanceof StealthAttackEntity stealth) {
+        if (arrow instanceof EnderAegisProjectile stealth) {
             ResourceKey<DamageType> key =
                     (shooter instanceof Player) ? DamageTypes.PLAYER_ATTACK :
                             (shooter instanceof LivingEntity) ? DamageTypes.MOB_ATTACK :

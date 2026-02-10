@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.combatbehaviour;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.NullWeapon;
 import com.pla.annoyingvillagers.entity.*;
@@ -76,6 +77,10 @@ public class HerobrineCommon {
             }
             if (herobrineMob instanceof ReaperHerobrineEntity reaperHerobrineEntity
                     && reaperHerobrineEntity.getThunderHerobrineDragon() == null) {
+                return false;
+            }
+            if (herobrineMob instanceof HerobrineCloneEntity || herobrineMob instanceof ShadowHerobrineEntity
+                    || herobrineMob instanceof Herobrine7Entity || herobrineMob instanceof ArmoredHerobrineEntity) {
                 return false;
             }
             return herobrineMob.getState() == 0;
@@ -233,11 +238,7 @@ public class HerobrineCommon {
     public static void changeToSecondForm(MobPatch<?> mobpatch) {
         if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
             herobrineMob.setState(1);
-            if (herobrineMob instanceof HerobrineChrisEntity) {
-                herobrineMob.setSecondFormHitLeft(new Random().nextInt(2, 8));
-            } else {
-                herobrineMob.setSecondFormHitLeft(new Random().nextInt(2, 3));
-            }
+            herobrineMob.setSecondFormHitLeft(new Random().nextInt(2, 3));
             if (herobrineMob instanceof AegisHerobrineEntity || herobrineMob instanceof SwordsmanHerobrineEntity
                     || herobrineMob instanceof SledgehammerHerobrineEntity || herobrineMob instanceof ReaperHerobrineEntity
                     || herobrineMob instanceof GlaiveHerobrineEntity) {
@@ -258,6 +259,7 @@ public class HerobrineCommon {
         if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
             ItemStack item = herobrineMob.getMainHandItem();
             if (herobrineMob.getState() < 2) {
+                AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] herobrine chris SECOND FORM HIT LEFT {}", herobrineMob.getSecondFormHitLeft());
                 herobrineMob.setSecondFormHitLeft(herobrineMob.getSecondFormHitLeft() - 1);
             }
             if (herobrineMob instanceof SwordsmanHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {

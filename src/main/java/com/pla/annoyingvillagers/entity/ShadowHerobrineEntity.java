@@ -44,6 +44,10 @@ public class ShadowHerobrineEntity extends HerobrineMob {
     public BlockProjectileEntity darkObRight;
     public UUID darkObRightUUID;
 
+    public boolean isDarkObReady() {
+        return darkObUp != null && darkObLeft != null && darkObRight != null;
+    }
+
     public ShadowHerobrineEntity(SpawnEntity spawnEntity, Level level) {
         this(AnnoyingVillagersModEntities.SHADOW_HEROBRINE.get(), level);
     }
@@ -115,48 +119,48 @@ public class ShadowHerobrineEntity extends HerobrineMob {
     @Override
     public void rollItem() {
         super.rollItem();
-        ItemStack mainHand = this.getMainHandItem();
-        if (mainHand.getItem() instanceof ShadowObsidianWeaponItem) {
-            if (new Random().nextBoolean()) {
-                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get()));
-                if (new Random().nextBoolean()) {
-                    this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
-                } else {
-                    this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
-                }
-            } else {
-                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
-                if (new Random().nextBoolean()) {
-                    this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
-                } else {
-                    this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
-                }
-            }
-        } else if (mainHand.getItem() instanceof ShadowObsidianPillarItem) {
-            if (new Random().nextBoolean()) {
-                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get()));
-                this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
-            } else {
-                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
-                if (new Random().nextBoolean()) {
-                    this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
-                } else {
-                    this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
-                }
-            }
-        } else if (mainHand.getItem() instanceof ShadowObsidianSwordItem) {
-            if (new Random().nextBoolean()) {
-                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get()));
-                this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
-            } else {
-                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get()));
-                if (new Random().nextBoolean()) {
-                    this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
-                } else {
-                    this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
-                }
-            }
-        }
+//        ItemStack mainHand = this.getMainHandItem();
+//        if (mainHand.getItem() instanceof ShadowObsidianWeaponItem) {
+//            if (new Random().nextBoolean()) {
+//                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get()));
+//                if (new Random().nextBoolean()) {
+//                    this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
+//                } else {
+//                    this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+//                }
+//            } else {
+//                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
+//                if (new Random().nextBoolean()) {
+//                    this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
+//                } else {
+//                    this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+//                }
+//            }
+//        } else if (mainHand.getItem() instanceof ShadowObsidianPillarItem) {
+//            if (new Random().nextBoolean()) {
+//                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get()));
+//                this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+//            } else {
+//                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
+//                if (new Random().nextBoolean()) {
+//                    this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
+//                } else {
+//                    this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+//                }
+//            }
+//        } else if (mainHand.getItem() instanceof ShadowObsidianSwordItem) {
+//            if (new Random().nextBoolean()) {
+//                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get()));
+//                this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+//            } else {
+//                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get()));
+//                if (new Random().nextBoolean()) {
+//                    this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
+//                } else {
+//                    this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+//                }
+//            }
+//        }
     }
 
     @Override

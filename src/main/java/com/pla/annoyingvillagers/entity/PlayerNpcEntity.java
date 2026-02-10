@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.entity;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.IdleAnimation;
 import com.pla.annoyingvillagers.clazz.PlayerNpcTarget;
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;

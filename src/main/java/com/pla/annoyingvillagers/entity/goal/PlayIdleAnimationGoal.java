@@ -292,14 +292,12 @@ public class PlayIdleAnimationGoal extends Goal {
     public void stop() {
         if (mob instanceof PlayerNpcEntity playerNpcEntity) {
             playerNpcEntity.clearIdleAnimationState();
-        }
-        if (mob instanceof AVNpc avNpc) {
-            avNpc.clearIdleAnimationState();
-        }
-        if (mob instanceof PlayerNpcEntity playerNpcEntity) {
+            Objects.requireNonNull(playerNpcEntity.getLivingEntityPatch()).playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
             playerNpcEntity.setPlayingIdle(false);
         }
         if (mob instanceof AVNpc avNpc) {
+            avNpc.clearIdleAnimationState();
+            Objects.requireNonNull(avNpc.getLivingEntityPatch()).playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
             avNpc.setPlayingIdle(false);
         }
     }

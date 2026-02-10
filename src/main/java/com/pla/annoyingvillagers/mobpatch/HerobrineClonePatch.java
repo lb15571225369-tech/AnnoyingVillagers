@@ -3,7 +3,6 @@ package com.pla.annoyingvillagers.mobpatch;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
-import com.pla.annoyingvillagers.combatbehaviour.HerobrineBedrockWeapon;
 import com.pla.annoyingvillagers.combatbehaviour.HerobrineCommon;
 import com.pla.annoyingvillagers.combatbehaviour.HerobrineObsidianWeapon;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
@@ -20,7 +19,6 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
 import net.shelmarow.combat_evolution.ai.iml.CustomExecuteEntity;
 import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
-import reascer.wom.gameasset.animations.weapons.AnimsMoonless;
 import yesman.epicfight.api.animation.AnimationManager.AnimationAccessor;
 import yesman.epicfight.api.animation.Animator;
 import yesman.epicfight.api.animation.LivingMotions;
@@ -64,15 +62,6 @@ public class HerobrineClonePatch extends CEHumanoidPatch implements CustomExecut
         this.weaponLivingMotions
                 .put(WeaponCategories.SWORD,
                         ImmutableMap.of(
-                                Styles.ONE_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.BLOCK, AnimsMoonless.MOONLESS_GUARD),
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
-                                        Pair.of(LivingMotions.RUN, AVAnimations.OLD_MOONLESS_RUN),
-                                        Pair.of(LivingMotions.CHASE, AVAnimations.OLD_MOONLESS_RUN),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
-                                ),
                                 Styles.TWO_HAND,
                                 Set.of(
                                         Pair.of(LivingMotions.BLOCK, AVAnimations.FIST_GUARD),
@@ -86,17 +75,11 @@ public class HerobrineClonePatch extends CEHumanoidPatch implements CustomExecut
         this.weaponAttackMotions
                 .put(WeaponCategories.SWORD,
                         ImmutableMap.of(
-                                Styles.ONE_HAND, HerobrineBedrockWeapon.BEDROCK_WEAPON,
                                 Styles.TWO_HAND, HerobrineObsidianWeapon.OBSIDIAN_WEAPON
                         ));
         
         this.guardHitMotions.put(WeaponCategories.SWORD,
                 ImmutableMap.of(
-                        Styles.ONE_HAND, List.of(
-                                AnimsMoonless.MOONLESS_GUARD_HIT_1,
-                                AnimsMoonless.MOONLESS_GUARD_HIT_2,
-                                AnimsMoonless.MOONLESS_GUARD_HIT_3
-                        ),
                         Styles.TWO_HAND, List.of(
                                 Animations.SWORD_GUARD_ACTIVE_HIT1,
                                 Animations.SWORD_GUARD_ACTIVE_HIT2,
@@ -109,13 +92,10 @@ public class HerobrineClonePatch extends CEHumanoidPatch implements CustomExecut
     @Override
     public AttackResult tryHurt(DamageSource damageSource, float amount) {
         AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(this.getAnimator().getPlayerFor(null)).getAnimation();
-        if (!this.getOriginal().isPassenger()
+        if (HerobrineCommon.canPlaySecondFormAnimation(this)
                 && !EpicfightUtil.isLongHitAnimation(dynamicAnimation)
                 && (this.getOriginal().level() instanceof ServerLevel && dynamicAnimation == Animations.EMPTY_ANIMATION)) {
-            if (HerobrineCommon.canPlaySecondFormAnimation(this)) {
-                this.playAnimationSynchronized(AnimsMoonless.MOONLESS_GUARD_HIT_1, 0.0F);
-                HerobrineCommon.playSecondFormAnimation(this);
-            }
+            return AttackResult.blocked(amount);
         }
         return super.tryHurt(damageSource, amount);
     }

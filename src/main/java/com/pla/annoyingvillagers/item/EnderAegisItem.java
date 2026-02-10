@@ -1,6 +1,6 @@
 package com.pla.annoyingvillagers.item;
 
-import com.pla.annoyingvillagers.entity.StealthAttackEntity;
+import com.pla.annoyingvillagers.entity.EnderAegisProjectile;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
@@ -97,15 +97,14 @@ public class EnderAegisItem extends SwordItem {
             Vec3 spawnPos = eye.add(forward.scale(spawnForward)).add(off.scale(0.15D));
             Vec3 dir = forward.add(off.scale(spread)).normalize();
 
-            StealthAttackEntity proj = new StealthAttackEntity(
-                    AnnoyingVillagersModEntities.STEALTH_ATTACK_PROJECTILE.get(), level
+            EnderAegisProjectile proj = new EnderAegisProjectile(
+                    AnnoyingVillagersModEntities.ENDER_AEGIS_PROJECTILE.get(), level
             );
             proj.setOwner(entity);
             proj.setBaseDamage(15.0F);
             proj.setKnockback(5);
             proj.setSilent(true);
             proj.setPierceLevel((byte) 5);
-            proj.fromAegis = true;
 
             proj.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
             proj.shoot(dir.x, dir.y, dir.z, velocity, inaccuracy);

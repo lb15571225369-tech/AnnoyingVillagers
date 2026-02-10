@@ -128,7 +128,7 @@ public class HerobrineShadowObsidianPillar {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .withinDistance(0.0D, 5.0D)
+                                            .withinDistance(0.0D, 10.0D)
                                             .animationBehavior(AVAnimations.OBSIDIAN_ENDERBLASTER_TWOHAND_TISHNAW, 0.0F)
                             )
                             .addFirstBehavior(
@@ -155,7 +155,12 @@ public class HerobrineShadowObsidianPillar {
                                             .withinDistance(0.0D, 5.0D)
                                             .animationBehavior(AVAnimations.OBSIDIAN_ANTITHEUS_ASCENDED_DEATHFALL, 0.0F)
                             )
-
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 5.0D)
+                                            .animationBehavior(AVAnimations.CASTING_ONE_HAND_TOP, 0.0F)
+                            )
             )
             .newBehaviorRoot(
                     BehaviorRoot.builder()
@@ -213,7 +218,7 @@ public class HerobrineShadowObsidianPillar {
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
+                                            .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
@@ -373,7 +378,7 @@ public class HerobrineShadowObsidianPillar {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .withinDistance(0.0D, 5.0D)
+                                            .withinDistance(0.0D, 10.0D)
                                             .animationBehavior(AVAnimations.OBSIDIAN_ENDERBLASTER_TWOHAND_TISHNAW, 0.0F)
                             )
                             .addFirstBehavior(
@@ -458,7 +463,7 @@ public class HerobrineShadowObsidianPillar {
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
+                                            .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()

@@ -185,7 +185,7 @@ public class HerobrineShadowObsidianSword {
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
+                                            .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
@@ -400,7 +400,7 @@ public class HerobrineShadowObsidianSword {
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
+                                            .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
