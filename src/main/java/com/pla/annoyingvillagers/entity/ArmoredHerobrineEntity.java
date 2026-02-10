@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.entity;
 
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.item.ShadowObsidianSwordItem;
 import com.pla.annoyingvillagers.spawnhandler.HerobrineMobData;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import net.minecraft.core.BlockPos;
@@ -49,6 +50,17 @@ public class ArmoredHerobrineEntity extends HerobrineMob {
         return super.hurt(damagesource, f);
     }
 
+    @Override
+    public void rollItem() {
+        super.rollItem();
+        ItemStack offHand = this.getOffhandItem();
+        if (offHand.getItem() instanceof ShadowObsidianSwordItem) {
+            this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+        } else {
+            this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
+        }
+    }
+
     public void die(@NotNull DamageSource damagesource) {
         super.die(damagesource);
         if (this.level() instanceof ServerLevel serverLevel) {
@@ -80,7 +92,7 @@ public class ArmoredHerobrineEntity extends HerobrineMob {
     public static Builder createAttributes() {
         Builder builder = Mob.createMobAttributes();
 
-        builder = builder.add(Attributes.MOVEMENT_SPEED, 045D);
+        builder = builder.add(Attributes.MOVEMENT_SPEED, 0.45D);
         builder = builder.add(Attributes.MAX_HEALTH, 100.0D);
         builder = builder.add(Attributes.ARMOR, 10.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 4.0D);

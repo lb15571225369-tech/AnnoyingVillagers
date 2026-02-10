@@ -6,9 +6,9 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-public class ShadowObsidianBurstItem extends Item {
+public class ShadowObsidianStraightItem extends Item {
 
-    public ShadowObsidianBurstItem() {
+    public ShadowObsidianStraightItem() {
         super((new Properties()).stacksTo(1).fireResistant().rarity(Rarity.EPIC));
     }
 

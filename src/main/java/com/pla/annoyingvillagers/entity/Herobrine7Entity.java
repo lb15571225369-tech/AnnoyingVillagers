@@ -36,7 +36,7 @@ public class Herobrine7Entity extends HerobrineMob {
         this.setCustomName(this.getDisplayName());
         this.setCustomNameVisible(true);
         this.setPersistenceRequired();
-        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack((ItemLike) AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get()));
+        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get()));
         this.setChatName(this.getDisplayName().getString());
     }
 

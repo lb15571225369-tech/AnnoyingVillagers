@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.util;
 
+import com.pla.annoyingvillagers.clazz.HerobrineObsidianBlock;
 import com.pla.annoyingvillagers.combatbehaviour.*;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors;
@@ -75,6 +76,32 @@ public class MobPatchCommon {
         if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.TRAPDOOR.get().getDefaultInstance())) {
             if (style == CapabilityItem.Styles.TWO_HAND) {
                 return PlayerNpcTrapdoor.TRAPDOOR;
+            }
+        }
+
+        return null;
+    }
+
+    public static CECombatBehaviors.Builder<MobPatch<?>> overideCustomWeaponMotionBuilderForShadowHerobrine(CapabilityItem mainHandCap, Style style) {
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.TWO_HAND) {
+                return HerobrineObsidianWeapon.OBSIDIAN_WEAPON;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.TWO_HAND) {
+                return HerobrineShadowObsidianPillar.SHADOW_OBSIDIAN_PILLAR_WEAPON;
+            } else if (style == CapabilityItem.Styles.OCHS) {
+                return HerobrineShadowObsidianPillar.SHADOW_OBSIDIAN_PILLAR_SWORD_WEAPON;
+            }
+        }
+
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get().getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.TWO_HAND) {
+                return HerobrineShadowObsidianSword.SHADOW_OBSIDIAN_SWORD;
+            } else if (style == CapabilityItem.Styles.ONE_HAND) {
+                return HerobrineShadowObsidianSword.SHADOW_OBSIDIAN_DUAL_SWORD;
             }
         }
 

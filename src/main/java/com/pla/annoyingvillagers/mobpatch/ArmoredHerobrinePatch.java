@@ -4,12 +4,12 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.combatbehaviour.HerobrineBedrockWeapon;
-import com.pla.annoyingvillagers.combatbehaviour.HerobrineCommon;
 import com.pla.annoyingvillagers.combatbehaviour.HerobrineObsidianWeapon;
+import com.pla.annoyingvillagers.combatbehaviour.HerobrineShadowObsidianPillar;
+import com.pla.annoyingvillagers.combatbehaviour.HerobrineShadowObsidianSword;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
-import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
@@ -24,9 +24,7 @@ import reascer.wom.gameasset.animations.weapons.AnimsMoonless;
 import yesman.epicfight.api.animation.AnimationManager.AnimationAccessor;
 import yesman.epicfight.api.animation.Animator;
 import yesman.epicfight.api.animation.LivingMotions;
-import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
-import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.AttackResult;
 import yesman.epicfight.api.utils.AttackResult.ResultType;
 import yesman.epicfight.gameasset.Animations;
@@ -41,12 +39,11 @@ import yesman.epicfight.world.damagesource.EpicFightDamageSource;
 import yesman.epicfight.world.damagesource.StunType;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
-public class HerobrineClonePatch extends CEHumanoidPatch implements CustomExecuteEntity {
-    public HerobrineClonePatch() {
+public class ArmoredHerobrinePatch extends CEHumanoidPatch implements CustomExecuteEntity {
+    public ArmoredHerobrinePatch() {
         super(Factions.NEUTRAL);
     }
 
@@ -75,7 +72,7 @@ public class HerobrineClonePatch extends CEHumanoidPatch implements CustomExecut
                                 ),
                                 Styles.TWO_HAND,
                                 Set.of(
-                                        Pair.of(LivingMotions.BLOCK, AVAnimations.FIST_GUARD),
+                                        Pair.of(LivingMotions.BLOCK, Animations.SWORD_DUAL_GUARD),
                                         Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
                                         Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
                                         Pair.of(LivingMotions.RUN, AVAnimations.OLD_MOONLESS_RUN),
@@ -86,40 +83,24 @@ public class HerobrineClonePatch extends CEHumanoidPatch implements CustomExecut
         this.weaponAttackMotions
                 .put(WeaponCategories.SWORD,
                         ImmutableMap.of(
-                                Styles.ONE_HAND, HerobrineBedrockWeapon.BEDROCK_WEAPON,
-                                Styles.TWO_HAND, HerobrineObsidianWeapon.OBSIDIAN_WEAPON
+                                Styles.ONE_HAND, HerobrineShadowObsidianSword.SHADOW_OBSIDIAN_SWORD,
+                                Styles.TWO_HAND, HerobrineShadowObsidianSword.SHADOW_OBSIDIAN_DUAL_SWORD
                         ));
-        
+
         this.guardHitMotions.put(WeaponCategories.SWORD,
                 ImmutableMap.of(
                         Styles.ONE_HAND, List.of(
-                                AnimsMoonless.MOONLESS_GUARD_HIT_1,
-                                AnimsMoonless.MOONLESS_GUARD_HIT_2,
-                                AnimsMoonless.MOONLESS_GUARD_HIT_3
-                        ),
-                        Styles.TWO_HAND, List.of(
                                 Animations.SWORD_GUARD_ACTIVE_HIT1,
                                 Animations.SWORD_GUARD_ACTIVE_HIT2,
                                 Animations.SWORD_GUARD_ACTIVE_HIT3
+                        ),
+                        Styles.TWO_HAND, List.of(
+                                Animations.SWORD_DUAL_GUARD_HIT
                         )
                 )
         );
     }
-
-    @Override
-    public AttackResult tryHurt(DamageSource damageSource, float amount) {
-        AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(this.getAnimator().getPlayerFor(null)).getAnimation();
-        if (!this.getOriginal().isPassenger()
-                && !EpicfightUtil.isLongHitAnimation(dynamicAnimation)
-                && (this.getOriginal().level() instanceof ServerLevel && dynamicAnimation == Animations.EMPTY_ANIMATION)) {
-            if (HerobrineCommon.canPlaySecondFormAnimation(this)) {
-                this.playAnimationSynchronized(AnimsMoonless.MOONLESS_GUARD_HIT_1, 0.0F);
-                HerobrineCommon.playSecondFormAnimation(this);
-            }
-        }
-        return super.tryHurt(damageSource, amount);
-    }
-
+    
     public void playGuardBreakSound() {
         this.playSound(EpicFightSounds.NEUTRALIZE_MOBS.get(), 0.0F, 0.0F);
     }

@@ -26,7 +26,6 @@
     "BasicAttackMixin",
     "AbstractArrowBreakMixin",
     "OpenMatrix4fInvertFixMixin",
-    "ActionAnimationMixin",
     "LivingEntityPatchMixin"
   ],
   "client": [

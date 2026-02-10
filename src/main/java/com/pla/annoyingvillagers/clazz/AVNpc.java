@@ -41,7 +41,6 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
     private boolean healing = false;
     private boolean initialSpawn = false;
     private boolean useBow = true;
-    private final LivingEntityPatch<?> livingEntityPatch =  EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
     private Entity blockDamage = null;
     private double placeBlockToParryChance;
     private boolean swapBackToBow = false;
@@ -149,8 +148,9 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
         this.swapToBowCooldown = random.nextInt(100, 300);
     }
 
+    @Nullable
     public LivingEntityPatch<?> getLivingEntityPatch() {
-        return livingEntityPatch;
+        return EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
     }
 
     public int getGapCooldown() {
@@ -243,8 +243,8 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
         if (this.level().isClientSide) return;
         if (!this.isAlive() || this.isDeadOrDying() || this.getHealth() <= 0.0F) return;
 
-        if (isPlayingIdle() && livingEntityPatch != null && idleAnimationAsset != null) {
-            livingEntityPatch.playAnimationSynchronized(idleAnimationAsset, 0.0F);
+        if (isPlayingIdle() && getLivingEntityPatch() != null && idleAnimationAsset != null) {
+            getLivingEntityPatch().playAnimationSynchronized(idleAnimationAsset, 0.0F);
         }
     }
 

@@ -1,23 +1,16 @@
 package com.pla.annoyingvillagers.util;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.phys.Vec3;
 import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
-import net.shelmarow.combat_evolution.ai.StaminaStatus;
 import net.shelmarow.combat_evolution.ai.util.CEPatchUtils;
 import net.shelmarow.combat_evolution.effect.CEMobEffects;
 import net.shelmarow.combat_evolution.gameassets.ExecutionSkillAnimations;
-import net.shelmarow.combat_evolution.gameassets.animation.ExecutionAttackAnimation;
 import yesman.epicfight.api.animation.Joint;
 import yesman.epicfight.api.animation.types.*;
 import yesman.epicfight.api.asset.AssetAccessor;

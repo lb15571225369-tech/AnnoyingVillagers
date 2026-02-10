@@ -58,7 +58,7 @@ public class HerobrineUtil {
                 || e instanceof EliteHerobrineKnockedEntity;
     }
 
-    private static void placeIfReplaceable(ServerLevel level, BlockPos pos, BlockState state, Entity ownerEntity) {
+    public static void placeIfReplaceable(ServerLevel level, BlockPos pos, BlockState state, Entity ownerEntity) {
         if (!level.isLoaded(pos)) return;
 
         BlockState existingState = level.getBlockState(pos);

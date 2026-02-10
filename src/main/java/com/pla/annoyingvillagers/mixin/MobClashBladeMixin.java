@@ -2,13 +2,14 @@ package com.pla.annoyingvillagers.mixin;
 
 import com.pla.annoyingvillagers.animations.BowAttackAnimation;
 import com.pla.annoyingvillagers.animations.KickAttackAnimation;
+import com.pla.annoyingvillagers.block.ShadowObsidianBlock;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.AVNpc;
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
 import com.pla.efclash_blade.event.MobClashBladeEvent;
@@ -40,6 +41,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import reascer.wom.gameasset.WOMAnimations;
 import reascer.wom.gameasset.animations.weapons.AnimsAgony;
+import reascer.wom.gameasset.animations.weapons.AnimsMoonless;
 import reascer.wom.gameasset.animations.weapons.AnimsSolar;
 import yesman.epicfight.api.animation.types.*;
 import yesman.epicfight.api.asset.AssetAccessor;
@@ -97,6 +99,12 @@ public class MobClashBladeMixin {
             return;
         }
 
+        if (defender instanceof HerobrineChrisEntity
+                && (defenderDynamicAnimation == AnimsMoonless.MOONLESS_GUARD_HIT_1)) {
+            cir.setReturnValue(true);
+            return;
+        }
+
         if (livingAttackEvent.getSource().getDirectEntity() instanceof Projectile projectile
                 && defender.onGround()
                 && !defender.isPassenger()
@@ -128,8 +136,15 @@ public class MobClashBladeMixin {
                 return;
             }
 
-            if (defender instanceof HerobrineMob) {
-                if (!(projectile instanceof AbstractArrow)) {
+            if (defender instanceof HerobrineMob herobrineMob) {
+                if ((defender instanceof HerobrineCloneEntity
+                        || defender instanceof ShadowHerobrineCloneEntity
+                        || defender instanceof HerobrineChrisEntity
+                        || defender instanceof Herobrine7Entity
+                        || defender instanceof ArmoredHerobrineEntity)) {
+                    herobrineMob.setBlockDamage(projectile);
+                    cir.setReturnValue(true);
+                } else if (!(projectile instanceof AbstractArrow)) {
                     cir.setReturnValue(true);
                     return;
                 }
@@ -174,6 +189,13 @@ public class MobClashBladeMixin {
                     cir.setReturnValue(true);
                     return;
                 }
+
+                if (defender instanceof HerobrineMob herobrineMob
+                        && herobrineMob.getBlockDamage() == null) {
+                    herobrineMob.setBlockDamage(livingAttackEvent.getSource().getDirectEntity());
+                    cir.setReturnValue(true);
+                    return;
+                }
             }
         }
     }
@@ -189,7 +211,8 @@ public class MobClashBladeMixin {
                 && defender.level() instanceof ServerLevel serverLevel) {
             // Herobrine playing animation
             if (clashBy != 0) {
-                if (defender instanceof AegisHerobrineEntity || defender instanceof GlaiveHerobrineEntity || defender instanceof SledgehammerHerobrineEntity) {
+                if (defender instanceof AegisHerobrineEntity || defender instanceof GlaiveHerobrineEntity
+                        || defender instanceof SledgehammerHerobrineEntity || defender instanceof ReaperHerobrineEntity) {
                     defenderLivingEntityPatch.playAnimationSynchronized(AnimsAgony.AGONY_GUARD_HIT_1, 0.0F);
                 }
                 if (defender instanceof SwordsmanHerobrineEntity) {
@@ -204,6 +227,8 @@ public class MobClashBladeMixin {
                     projectile = AVNpc.getBlockDamage();
                 } else if (defender instanceof PlayerNpcEntity playerNpcEntity) {
                     projectile = playerNpcEntity.getBlockDamage();
+                } else if (defender instanceof HerobrineMob herobrineMob) {
+                    projectile = herobrineMob.getBlockDamage();
                 }
                 if (projectile != null) {
                     Random random = new Random();
@@ -212,10 +237,18 @@ public class MobClashBladeMixin {
 
                     BiFunction<Integer, Integer, int[]> toWorld = getIntegerIntegerBiFunction(defender, rot);
 
-                    ItemStack handStack = livingEntity.getItemInHand(InteractionHand.MAIN_HAND);
-                    BlockState placeState = Blocks.COBBLESTONE.defaultBlockState();
-                    if (handStack.getItem() instanceof BlockItem blockItem) {
-                        placeState = blockItem.getBlock().defaultBlockState();
+
+                    BlockState placeState;
+                    if (livingEntity instanceof HerobrineChrisEntity || livingEntity instanceof HerobrineCloneEntity) {
+                        placeState = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get().defaultBlockState().setValue(ShadowObsidianBlock.FROM_PLAYER, false);
+                    } else if (livingEntity instanceof Herobrine7Entity || livingEntity instanceof ArmoredHerobrineEntity || livingEntity instanceof ShadowHerobrineCloneEntity) {
+                        placeState = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().defaultBlockState().setValue(ShadowObsidianBlock.FROM_PLAYER, false);
+                    } else {
+                        ItemStack handStack = livingEntity.getItemInHand(InteractionHand.MAIN_HAND);
+                        placeState = Blocks.COBBLESTONE.defaultBlockState();
+                        if (handStack.getItem() instanceof BlockItem blockItem) {
+                            placeState = blockItem.getBlock().defaultBlockState();
+                        }
                     }
 
                     BlockPos baseXZ;

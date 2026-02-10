@@ -58,7 +58,7 @@ public class AnnoyingVillagersModItems {
     public static final RegistryObject<Item> POISON_EGG_ITEM = AnnoyingVillagersModItems.REGISTRY.register("poison_egg", PoisonEggItem::new);
     public static final RegistryObject<Item> STEALTH_ATTACK_ITEM = AnnoyingVillagersModItems.REGISTRY.register("stealth_attack_item", StealthAttackItem::new);
     public static final RegistryObject<Item> SHADOW_OBSIDIAN_BURST = AnnoyingVillagersModItems.REGISTRY.register("shadow_obsidian_burst", ShadowObsidianBurstItem::new);
-    public static final RegistryObject<Item> SHADOW_OBSIDIAN_STRAIGHT = AnnoyingVillagersModItems.REGISTRY.register("shadow_obsidian_straight", ShadowObsidianStraighttem::new);
+    public static final RegistryObject<Item> SHADOW_OBSIDIAN_STRAIGHT = AnnoyingVillagersModItems.REGISTRY.register("shadow_obsidian_straight", ShadowObsidianStraightItem::new);
     public static final RegistryObject<Item> DEMONIAC_VOLTAGE_REAVER_BLADE = AnnoyingVillagersModItems.REGISTRY.register("demoniac_voltage_reaver_blade", DemoniacVoltageReaverBladeItem::new);
     public static final RegistryObject<Item> DEMONIAC_VOLTAGE_REAVER_FRAGMENT = AnnoyingVillagersModItems.REGISTRY.register("demoniac_voltage_reaver_fragment", DemoniacVoltageReaverFragmentItem::new);
     public static final RegistryObject<Item> DEMONIAC_VOLTAGE_REAVER_HILT = AnnoyingVillagersModItems.REGISTRY.register("demoniac_voltage_reaver_hilt", DemoniacVoltageReaverHiltItem::new);

@@ -3,13 +3,11 @@ package com.pla.annoyingvillagers.mobpatch;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
-import com.pla.annoyingvillagers.combatbehaviour.HerobrineBedrockWeapon;
-import com.pla.annoyingvillagers.combatbehaviour.HerobrineCommon;
-import com.pla.annoyingvillagers.combatbehaviour.HerobrineObsidianWeapon;
+import com.pla.annoyingvillagers.combatbehaviour.HerobrineShadowObsidianPillar;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
-import com.pla.annoyingvillagers.util.EpicfightUtil;
+import com.pla.annoyingvillagers.util.MobPatchCommon;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
@@ -17,16 +15,14 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
+import net.shelmarow.combat_evolution.ai.CECombatBehaviors;
 import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
 import net.shelmarow.combat_evolution.ai.iml.CustomExecuteEntity;
 import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
-import reascer.wom.gameasset.animations.weapons.AnimsMoonless;
 import yesman.epicfight.api.animation.AnimationManager.AnimationAccessor;
 import yesman.epicfight.api.animation.Animator;
 import yesman.epicfight.api.animation.LivingMotions;
-import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
-import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.AttackResult;
 import yesman.epicfight.api.utils.AttackResult.ResultType;
 import yesman.epicfight.gameasset.Animations;
@@ -35,18 +31,19 @@ import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.world.capabilities.entitypatch.Factions;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
+import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.Styles;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
 import yesman.epicfight.world.damagesource.EpicFightDamageSource;
 import yesman.epicfight.world.damagesource.StunType;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
-public class HerobrineClonePatch extends CEHumanoidPatch implements CustomExecuteEntity {
-    public HerobrineClonePatch() {
+public class ShadowHerobrinePatch extends CEHumanoidPatch implements CustomExecuteEntity {
+    public ShadowHerobrinePatch() {
         super(Factions.NEUTRAL);
     }
 
@@ -64,15 +61,6 @@ public class HerobrineClonePatch extends CEHumanoidPatch implements CustomExecut
         this.weaponLivingMotions
                 .put(WeaponCategories.SWORD,
                         ImmutableMap.of(
-                                Styles.ONE_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.BLOCK, AnimsMoonless.MOONLESS_GUARD),
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
-                                        Pair.of(LivingMotions.RUN, AVAnimations.OLD_MOONLESS_RUN),
-                                        Pair.of(LivingMotions.CHASE, AVAnimations.OLD_MOONLESS_RUN),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
-                                ),
                                 Styles.TWO_HAND,
                                 Set.of(
                                         Pair.of(LivingMotions.BLOCK, AVAnimations.FIST_GUARD),
@@ -86,69 +74,19 @@ public class HerobrineClonePatch extends CEHumanoidPatch implements CustomExecut
         this.weaponAttackMotions
                 .put(WeaponCategories.SWORD,
                         ImmutableMap.of(
-                                Styles.ONE_HAND, HerobrineBedrockWeapon.BEDROCK_WEAPON,
-                                Styles.TWO_HAND, HerobrineObsidianWeapon.OBSIDIAN_WEAPON
+                                Styles.TWO_HAND, HerobrineShadowObsidianPillar.SHADOW_OBSIDIAN_PILLAR_WEAPON
                         ));
-        
-        this.guardHitMotions.put(WeaponCategories.SWORD,
-                ImmutableMap.of(
-                        Styles.ONE_HAND, List.of(
-                                AnimsMoonless.MOONLESS_GUARD_HIT_1,
-                                AnimsMoonless.MOONLESS_GUARD_HIT_2,
-                                AnimsMoonless.MOONLESS_GUARD_HIT_3
-                        ),
-                        Styles.TWO_HAND, List.of(
-                                Animations.SWORD_GUARD_ACTIVE_HIT1,
-                                Animations.SWORD_GUARD_ACTIVE_HIT2,
-                                Animations.SWORD_GUARD_ACTIVE_HIT3
-                        )
-                )
-        );
     }
 
     @Override
-    public AttackResult tryHurt(DamageSource damageSource, float amount) {
-        AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(this.getAnimator().getPlayerFor(null)).getAnimation();
-        if (!this.getOriginal().isPassenger()
-                && !EpicfightUtil.isLongHitAnimation(dynamicAnimation)
-                && (this.getOriginal().level() instanceof ServerLevel && dynamicAnimation == Animations.EMPTY_ANIMATION)) {
-            if (HerobrineCommon.canPlaySecondFormAnimation(this)) {
-                this.playAnimationSynchronized(AnimsMoonless.MOONLESS_GUARD_HIT_1, 0.0F);
-                HerobrineCommon.playSecondFormAnimation(this);
-            }
-        }
-        return super.tryHurt(damageSource, amount);
+    protected CECombatBehaviors.Builder<MobPatch<?>> getCustomWeaponMotionBuilder() {
+        CapabilityItem mainHandCap = this.getHoldingItemCapability(InteractionHand.MAIN_HAND);
+        CECombatBehaviors.Builder<MobPatch<?>> customOverride = MobPatchCommon.overideCustomWeaponMotionBuilderForShadowHerobrine(mainHandCap, mainHandCap.getStyle(this));
+        return customOverride != null ? customOverride : super.getCustomWeaponMotionBuilder();
     }
 
     public void playGuardBreakSound() {
         this.playSound(EpicFightSounds.NEUTRALIZE_MOBS.get(), 0.0F, 0.0F);
-    }
-
-    public AttackResult attack(EpicFightDamageSource epicFightDamageSource, Entity entity, InteractionHand interactionhand) {
-        AttackResult attackresult = super.attack(epicFightDamageSource, entity, interactionhand);
-
-        if (attackresult.resultType == ResultType.SUCCESS
-                && entity.isAlive()
-                && this.getOriginal() instanceof HerobrineMob herobrineMob
-                && herobrineMob.getVoiceDooldown() == 0) {
-            herobrineMob.setVoiceCooldown();
-            SoundEvent soundEvent;
-            float chance = new Random().nextFloat();
-            if (chance <= 0.2) {
-                soundEvent = AnnoyingVillagersModSounds.HEROBRINE_ENOUGH.get();
-            } else if (chance <= 0.4) {
-                soundEvent = AnnoyingVillagersModSounds.HEROBRINE_ATTACK_1.get();
-            } else if (chance <= 0.6) {
-                soundEvent = AnnoyingVillagersModSounds.HEROBRINE_ATTACK_2.get();
-            } else if (chance <= 0.8) {
-                soundEvent = AnnoyingVillagersModSounds.HEROBRINE_YOU_ARE_WEAK.get();
-            } else {
-                soundEvent = AnnoyingVillagersModSounds.HEROBRINE_HOWFOOLISH.get();
-            }
-            this.getOriginal().playSound(soundEvent, 1.0F, 1.0F);
-        }
-
-        return attackresult;
     }
 
     public void tick(LivingTickEvent livingTickEvent) {

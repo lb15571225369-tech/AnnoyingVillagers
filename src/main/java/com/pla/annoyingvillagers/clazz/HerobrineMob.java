@@ -89,9 +89,10 @@ public class HerobrineMob extends Monster {
     private boolean sacrificing = false;
     private boolean healing = false;
     private int healingCooldown;
-    private final LivingEntityPatch<?> livingEntityPatch =  EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
-
+    private int voiceCooldown = 0;
     private int stunEscapeCooldown = 0;
+    private Entity blockDamage = null;
+    private int swapWeaponCooldown;
 
     public int getStunEscapeCooldown() {
         return stunEscapeCooldown;
@@ -99,6 +100,26 @@ public class HerobrineMob extends Monster {
 
     public void setStunEscapeCooldown(int stunEscapeCooldown) {
         this.stunEscapeCooldown = stunEscapeCooldown;
+    }
+
+    public void setVoiceCooldown() {
+        this.voiceCooldown = new Random().nextInt(60, 200);
+    }
+
+    public int getVoiceDooldown() {
+        return voiceCooldown;
+    }
+
+    public void setBlockDamage(Entity blockDamage) {
+        this.blockDamage = blockDamage;
+    }
+
+    public Entity getBlockDamage() {
+        return blockDamage;
+    }
+
+    public int getSwapWeaponCooldown() {
+        return swapWeaponCooldown;
     }
 
     private Entity firstPossessedHerobrine;
@@ -123,8 +144,9 @@ public class HerobrineMob extends Monster {
         return state;
     }
 
+    @Nullable
     public LivingEntityPatch<?> getLivingEntityPatch() {
-        return livingEntityPatch;
+        return EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
     }
 
     public void setState(int state) {
@@ -165,6 +187,10 @@ public class HerobrineMob extends Monster {
 
     public int getSacrificingAnimationCooldown() {
         return sacrificingAnimationCooldown;
+    }
+
+    public void rollItem() {
+        this.swapWeaponCooldown = new Random().nextInt(100, 200);
     }
 
     public boolean isAvailableSlot() {
@@ -523,6 +549,7 @@ public class HerobrineMob extends Monster {
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
+        swapWeaponCooldown = pCompound.getInt("SwapWeaponCooldown");
         recallTicks = pCompound.getInt("RecallTicks");
         renderPortal = pCompound.getBoolean("RenderPortal");
         neverRecall = pCompound.getBoolean("NeverRecall");
@@ -569,6 +596,7 @@ public class HerobrineMob extends Monster {
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
+        pCompound.putInt("SwapWeaponCooldown", this.swapWeaponCooldown);
         pCompound.putInt("RecallTicks", recallTicks);
         pCompound.putBoolean("RenderPortal", renderPortal);
         pCompound.putBoolean("NeverRecall", neverRecall);
@@ -689,8 +717,8 @@ public class HerobrineMob extends Monster {
         this.sacrificing = false;
         this.setNoAi(false);
         this.removeAllEffects();
-        if (this.livingEntityPatch != null) {
-            this.livingEntityPatch.applyStun(StunType.FALL, 0.0F);
+        if (this.getLivingEntityPatch() != null) {
+            this.getLivingEntityPatch().applyStun(StunType.FALL, 0.0F);
         }
         if (this instanceof AegisHerobrineEntity) {
             ItemStack enderAegis = new ItemStack(AnnoyingVillagersModItems.ENDER_AEGIS.get());
@@ -786,6 +814,8 @@ public class HerobrineMob extends Monster {
         this.checkInsideBlocks();
         if (this.level() instanceof ServerLevel serverLevel) {
             if (stunEscapeCooldown > 0) stunEscapeCooldown--;
+            if (voiceCooldown > 0) voiceCooldown--;
+            if (swapWeaponCooldown > 0) swapWeaponCooldown--;
 
             if (this.state == 2 && (this instanceof AegisHerobrineEntity
                     || this instanceof SledgehammerHerobrineEntity
@@ -836,14 +866,14 @@ public class HerobrineMob extends Monster {
                 }
                 if (this.initialSpawn) {
                     this.setNoAi(true);
-                    if (livingEntityPatch != null && !this.level().isClientSide()) {
+                    if (getLivingEntityPatch() != null && !this.level().isClientSide()) {
                         if (this instanceof ReaperHerobrineEntity || this instanceof GlaiveHerobrineEntity) {
-                            livingEntityPatch.playAnimationSynchronized(AVAnimations.GLOWING_AGONY_GUARD, 0.0F);
+                            getLivingEntityPatch().playAnimationSynchronized(AVAnimations.GLOWING_AGONY_GUARD, 0.0F);
                         } else if (this instanceof AegisHerobrineEntity aegisHerobrineEntity) {
                             // For some reason the block animation can't be played inside finalize spawn
                             aegisHerobrineEntity.getPersistentData().putBoolean("init_animation", true);
                         } else if (!(this instanceof SledgehammerHerobrineEntity) && !(this instanceof SwordsmanHerobrineEntity)) {
-                            livingEntityPatch.playAnimationSynchronized(AVAnimations.HEROBRINE_ANIMATE, 0.0F);
+                            getLivingEntityPatch().playAnimationSynchronized(AVAnimations.HEROBRINE_ANIMATE, 0.0F);
                         }
                     }
                     this.initialSpawn = false;
@@ -946,8 +976,8 @@ public class HerobrineMob extends Monster {
                     this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
                     this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
                 }
-                if (this.livingEntityPatch != null) {
-                    this.livingEntityPatch.playAnimationSynchronized(AVAnimations.HEROBRINE_STAGE_CHANGE, 0.0F);
+                if (this.getLivingEntityPatch() != null) {
+                    this.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.HEROBRINE_STAGE_CHANGE, 0.0F);
                 }
                 AnnoyingVillagers.PACKET_HANDLER.send(
                         PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this),
@@ -963,8 +993,8 @@ public class HerobrineMob extends Monster {
                 if (this.gregUUID != null) {
                     Entity entity = serverLevel.getEntity(this.gregUUID);
                     if (entity instanceof HerobrineGregEntity herobrineGregEntity && entity.isAlive()) {
-                        if (herobrineGregEntity.getLivingentitypatch() != null) {
-                            herobrineGregEntity.getLivingentitypatch().playAnimationSynchronized(AVAnimations.PORTAL_SUMMON, 0.0F);
+                        if (herobrineGregEntity.getLivingEntityPatch() != null) {
+                            herobrineGregEntity.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.PORTAL_SUMMON, 0.0F);
                         }
                     }
                 }
@@ -1022,8 +1052,8 @@ public class HerobrineMob extends Monster {
                     return;
                 }
                 this.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 5, 3, false, false));
-                if (this.livingEntityPatch != null) {
-                    this.livingEntityPatch.playAnimationSynchronized(AVAnimations.HEROBRINE_STAGE_CHANGE, 0.0F);
+                if (this.getLivingEntityPatch() != null) {
+                    this.getLivingEntityPatch().playAnimationSynchronized(AVAnimations.HEROBRINE_STAGE_CHANGE, 0.0F);
                 }
                 if (this instanceof NullEntity nullEntity && this.tickCount % 100 == 0) {
                     nullEntity.setSpinningToAllWeaponsAvailableFor5seconds();

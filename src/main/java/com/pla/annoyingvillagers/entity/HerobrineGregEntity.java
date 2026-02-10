@@ -85,7 +85,6 @@ public class HerobrineGregEntity extends Monster {
     private boolean summoning = false;
     private int summonTiming = -1;
     private int escapeTiming = -1;
-    private final LivingEntityPatch<?> livingentitypatch = EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
     private int summonTimestamp = -1;
     private boolean combatMode = false;
     private int recallTime;
@@ -122,8 +121,9 @@ public class HerobrineGregEntity extends Monster {
             AnnoyingVillagersModItems.DIAMOND_DOUBLE_BIT_AXE.get()
     ));
 
-    public LivingEntityPatch<?> getLivingentitypatch() {
-        return livingentitypatch;
+    @Nullable
+    public LivingEntityPatch<?> getLivingEntityPatch() {
+        return EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
     }
 
     public void setWhiteEye(boolean whiteEye) {
@@ -490,8 +490,8 @@ public class HerobrineGregEntity extends Monster {
             }
             if (this.escapeTiming == 60 && this.combatMode) {
                 this.playSound(AnnoyingVillagersModSounds.PORTAL_NATURAL.get());
-                if (livingentitypatch != null) {
-                    livingentitypatch.playAnimationSynchronized(AVAnimations.PORTAL_SUMMON, 0.0F);
+                if (getLivingEntityPatch() != null) {
+                    getLivingEntityPatch().playAnimationSynchronized(AVAnimations.PORTAL_SUMMON, 0.0F);
                 }
                 AnnoyingVillagers.PACKET_HANDLER.send(
                         PacketDistributor.TRACKING_ENTITY.with(() -> this),
@@ -920,8 +920,8 @@ public class HerobrineGregEntity extends Monster {
     }
 
     private void summonHerobrines() {
-        if (livingentitypatch != null) {
-            livingentitypatch.playAnimationSynchronized(AVAnimations.PORTAL_SUMMON, 0.0F);
+        if (getLivingEntityPatch() != null) {
+            getLivingEntityPatch().playAnimationSynchronized(AVAnimations.PORTAL_SUMMON, 0.0F);
         }
         if (this.level() instanceof ServerLevel serverLevel) {
             this.clearSummonSpace(serverLevel);
@@ -933,8 +933,8 @@ public class HerobrineGregEntity extends Monster {
     }
 
     private void summonHerobrinesAndEscape() {
-        if (livingentitypatch != null) {
-            livingentitypatch.playAnimationSynchronized(AVAnimations.PORTAL_SUMMON, 0.0F);
+        if (getLivingEntityPatch() != null) {
+            getLivingEntityPatch().playAnimationSynchronized(AVAnimations.PORTAL_SUMMON, 0.0F);
         }
         if (this.level() instanceof ServerLevel serverLevel) {
             this.clearSummonSpace(serverLevel);

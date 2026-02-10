@@ -60,7 +60,6 @@ public class SteveLadder {
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canSwitchWeapon)
-                                            .withinDistance(1.0D, 14.0D)
                                             .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
                                             .addExBehavior(CombatCommon::switchWeapon)
                             )
@@ -73,7 +72,6 @@ public class SteveLadder {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .custom(CombatCommon::canPerformEating)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
                                             .addExBehavior(CombatCommon::performEatingAnimation)

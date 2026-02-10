@@ -2779,7 +2779,7 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.PARTICLE, WOMParticles.ANTITHEUS_PUNCH_HIT)
                         .addProperty(AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLUNT_HIT_HARD.get())
                         .addProperty(StaticAnimationProperty.POSE_MODIFIER, null)
-                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 1.9F)
+                        .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 3.8F)
                         .addProperty(ActionAnimationProperty.MOVE_VERTICAL, true)
                         .addProperty(ActionAnimationProperty.STOP_MOVEMENT, false)
                         .addProperty(ActionAnimationProperty.CANCELABLE_MOVE, false)
@@ -2787,7 +2787,8 @@ public class AVAnimations {
                         .addEvents(AnimationEvent.InTimeEvent.create(0.05F, (livingEntityPatch, assetaccessor, animationparameters) -> {
                             livingEntityPatch.getOriginal().level().playSound(null, livingEntityPatch.getOriginal().blockPosition(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.NEUTRAL, 0.7F, 0.7F);
                             livingEntityPatch.getOriginal().level().playSound(null, livingEntityPatch.getOriginal().blockPosition(), EpicFightSounds.WHOOSH_BIG.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
-
+                            Vec3 position = new Vec3(0.0F, 3.0F, 0.0F);
+                            livingEntityPatch.getOriginal().move(MoverType.SELF, position);
                         }, Side.CLIENT), AnimationEvent.InTimeEvent.create(0.35F, (livingEntityPatch, assetaccessor, animationparameters) -> {
                             livingEntityPatch.getOriginal().resetFallDistance();
                         }, Side.SERVER), AnimationEvent.InTimeEvent.create(0.45F, (livingEntityPatch, assetaccessor, animationparameters) -> {
@@ -2835,7 +2836,8 @@ public class AVAnimations {
                             livingEntityPatch.getOriginal().resetFallDistance();
                         }, Side.SERVER))
                         .addEvents(
-                                AnimationEvent.InTimeEvent.create(0.5F, ReuseableEvents.SUMMON_OBSIDIAN_CROSS, Side.SERVER)
+                                AnimationEvent.InTimeEvent.create(0.5F, ReuseableEvents.SUMMON_OBSIDIAN_CROSS, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.6F, ReuseableEvents.SUMMON_OBSIDIAN_CROSS_FIX_DELAY_SHADOW_HEROBRINE, Side.SERVER)
                         )
         );
         AVAnimations.OLD_MOONLESS_RUN = builder.nextAccessor("biped/wom_clone/old_moonless_run",
@@ -2847,7 +2849,12 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH.get())
                         .addProperty(AttackAnimationProperty.ATTACK_SPEED_FACTOR, 0.0F)
                         .addEvents(
-                                AnimationEvent.InTimeEvent.create(0.1F, ReuseableEvents.SUMMON_2_OBSIDIAN_LEG_RIGHT, Side.SERVER)
+                                AnimationEvent.InTimeEvent.create(0.1F, ReuseableEvents.SUMMON_2_OBSIDIAN_LEG_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.5F, (livingEntityPatch, self, p) -> {
+                                    if (!livingEntityPatch.isLogicalClient()) {
+                                        livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
+                                    }
+                                }, Side.SERVER)
                         ));
         AVAnimations.OBSIDIAN_KICK_AUTO_3 = builder.nextAccessor("biped/wom_clone/obsidian_kick_3",
                 (accessor) -> (new KickAttackAnimation(0.2F, 0.45F, 0.0F, 0.55F, 0.9F, WOMWeaponColliders.KICK, humanoidArmature.get().legL, accessor, humanoidArmature))
@@ -2859,7 +2866,12 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH_BIG.get())
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 2.0F)
                         .addEvents(
-                                AnimationEvent.InTimeEvent.create(0.6F, ReuseableEvents.SUMMON_2_OBSIDIAN_LEG_LEFT, Side.SERVER)
+                                AnimationEvent.InTimeEvent.create(0.6F, ReuseableEvents.SUMMON_2_OBSIDIAN_LEG_LEFT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.8F, (livingEntityPatch, self, p) -> {
+                                    if (!livingEntityPatch.isLogicalClient()) {
+                                        livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
+                                    }
+                                }, Side.SERVER)
                         ));
         AVAnimations.OBSIDIAN_KICK_AUTO_1 = builder.nextAccessor("biped/wom_clone/obsidian_kick_1",
                 (accessor) -> (new KickAttackAnimation(0.2F, 0.2F, 0.0F, 0.35F, 0.5F, WOMWeaponColliders.KICK, humanoidArmature.get().legR, accessor, humanoidArmature))
@@ -2870,7 +2882,12 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.SWING_SOUND, EpicFightSounds.WHOOSH_SMALL.get())
                         .addProperty(AttackAnimationProperty.BASIS_ATTACK_SPEED, 2.0F)
                         .addEvents(
-                                AnimationEvent.InTimeEvent.create(0.3F, ReuseableEvents.SUMMON_2_OBSIDIAN_LEG_RIGHT, Side.SERVER)
+                                AnimationEvent.InTimeEvent.create(0.3F, ReuseableEvents.SUMMON_2_OBSIDIAN_LEG_RIGHT, Side.SERVER),
+                                AnimationEvent.InTimeEvent.create(0.6F, (livingEntityPatch, self, p) -> {
+                                    if (!livingEntityPatch.isLogicalClient()) {
+                                        livingEntityPatch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
+                                    }
+                                }, Side.SERVER)
                         ));
         AVAnimations.OBSIDIAN_STRONG_PUNCH = builder.nextAccessor("biped/wom_clone/obsidian_strong_punch",
                 (accessor) -> (new BasicMultipleAttackAnimation(0.3F, 0.1F, 0.15F, 0.35F, WOMWeaponColliders.PUNCH, humanoidArmature.get().handL, accessor, humanoidArmature))
@@ -3304,8 +3321,19 @@ public class AVAnimations {
                             }
                             HerobrineUtil.summonObsidianCross(serverLevel, livingEntity, obsidian);
                         } else if (weapon instanceof ShadowObsidianPillarItem) {
-                            HerobrineUtil.summonShadowObsidianLongPillarDefenseWide(serverLevel, livingEntity);
+                            // has delay with mob
+                            if (livingEntity instanceof Player) {
+                                HerobrineUtil.summonShadowObsidianLongPillarDefenseWide(serverLevel, livingEntity);
+                            }
                         }
+                    }
+                };
+
+        public static final AnimationEvent.E0 SUMMON_OBSIDIAN_CROSS_FIX_DELAY_SHADOW_HEROBRINE =
+                (livingEntityPatch, staticAnimation, object) -> {
+                    LivingEntity livingEntity = livingEntityPatch.getOriginal();
+                    if (livingEntity.level() instanceof ServerLevel serverLevel && !(livingEntity instanceof Player)) {
+                        HerobrineUtil.summonShadowObsidianLongPillarDefenseWide(serverLevel, livingEntity);
                     }
                 };
 

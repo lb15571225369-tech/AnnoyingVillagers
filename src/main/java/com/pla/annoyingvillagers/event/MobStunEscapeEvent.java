@@ -28,9 +28,9 @@ public class MobStunEscapeEvent {
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
         LivingEntity victim = event.getEntity();
-        if (!((victim instanceof PlayerNpcEntity playerNpcEntity && playerNpcEntity.getStunEscapeCooldown() != 0)
-                || (victim instanceof HerobrineMob herobrineMob && herobrineMob.getStunEscapeCooldown() != 0)
-                || (victim instanceof AVNpc avNpc && avNpc.getStunEscapeCooldown() != 0))) return;
+        if (victim instanceof PlayerNpcEntity playerNpcEntity && playerNpcEntity.getStunEscapeCooldown() != 0) return;
+        if (victim instanceof AVNpc avNpc && avNpc.getStunEscapeCooldown() != 0) return;
+        if (victim instanceof HerobrineMob herobrineMob && herobrineMob.getStunEscapeCooldown() != 0) return;
 
         if (victim.level().isClientSide) return;
 

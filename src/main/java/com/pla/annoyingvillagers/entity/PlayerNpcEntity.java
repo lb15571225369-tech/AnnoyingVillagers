@@ -20,6 +20,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.SimpleContainer;
@@ -78,7 +79,6 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     @Nullable private IdleAnimation idleAnimationChoice;
     @Nullable private AssetAccessor<? extends StaticAnimation> idleAnimationAsset;
     private boolean idleMessageBroadcast = false;
-    final LivingEntityPatch<?> livingEntityPatch =  EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
     private boolean playingIdle;
 
     public boolean isPlayingIdle() {
@@ -121,8 +121,9 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         this.idleMessageBroadcast = false;
     }
 
+    @Nullable
     public LivingEntityPatch<?> getLivingEntityPatch() {
-        return livingEntityPatch;
+        return EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);
     }
 
     public int getStunEscapeCooldown() {
@@ -377,15 +378,34 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         this.hasImpulse = true;
     }
 
+    public void shortPillarJump() {
+        if (!this.onGround()) return;
+        this.jumpFromGround();
+
+        Vec3 v = this.getDeltaMovement();
+        float yawRad = this.yBodyRot * Mth.DEG_TO_RAD;
+        Vec3 forwardFlat = new Vec3(-Mth.sin(yawRad), 0.0D, Mth.cos(yawRad)).normalize();
+        double backMag = 0.18D + this.getRandom().nextDouble() * 0.12D;
+        Vec3 backward = forwardFlat.scale(-backMag);
+        double yImpulse = Math.max(0.42D, v.y);
+        this.setDeltaMovement(
+                v.x * 0.6D + backward.x,
+                yImpulse,
+                v.z * 0.6D + backward.z
+        );
+
+        this.hasImpulse = true;
+    }
+
     public boolean hurt(@NotNull DamageSource damageSource, float f) {
-        if (livingEntityPatch == null) return super.hurt(damageSource, f);
-        AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
+        if (getLivingEntityPatch() == null) return super.hurt(damageSource, f);
+        AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(getLivingEntityPatch().getAnimator().getPlayerFor(null)).getAnimation();
 
         if (damageSource.getEntity() != null && this.getEnderPearlCooldown() == 0
                 && !EpicfightUtil.isLongHitAnimation(dynamicAnimation)
                 && (this.level() instanceof ServerLevel && dynamicAnimation == Animations.EMPTY_ANIMATION)
-                && CombatCommon.canPerformNormalAttackLogic((MobPatch<?>) livingEntityPatch)) {
-            livingEntityPatch.playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F);
+                && CombatCommon.canPerformNormalAttackLogic((MobPatch<?>) getLivingEntityPatch())) {
+            getLivingEntityPatch().playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F);
             CombatBehaviour.throwEnderPearl(this, 180.0F);
             Entity entity = this;
 
@@ -394,7 +414,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
                     @Override
                     public void run() {
                         if (entity.isAlive()) {
-                            livingEntityPatch.playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F);
+                            getLivingEntityPatch().playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F);
                             CombatBehaviour.throwEnderPearl(entity, 90.0F);
                         }
                     }
@@ -637,8 +657,8 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         if (this.level().isClientSide) return;
         if (!this.isAlive() || this.isDeadOrDying() || this.getHealth() <= 0.0F) return;
 
-        if (isPlayingIdle() && livingEntityPatch != null && idleAnimationAsset != null) {
-            livingEntityPatch.playAnimationSynchronized(idleAnimationAsset, 0.0F);
+        if (isPlayingIdle() && getLivingEntityPatch() != null && idleAnimationAsset != null) {
+            getLivingEntityPatch().playAnimationSynchronized(idleAnimationAsset, 0.0F);
         }
     }
 

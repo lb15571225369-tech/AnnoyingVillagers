@@ -22,7 +22,7 @@ public class HerobrineNullWeapon {
                                             .custom(CombatCommon::canEscape)
                                             .withinDistance(0.0D, 8.0D)
                                             .animationBehavior(WOMAnimations.SHADOWSTEP_BACKWARD, 0.0F)
-                                            .addExBehavior(HerobrineCommon::performEscapeRunAwayWithLowClone)
+                                            .addExBehavior(CombatCommon::performEscapeRunAway)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()

@@ -233,7 +233,11 @@ public class HerobrineCommon {
     public static void changeToSecondForm(MobPatch<?> mobpatch) {
         if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
             herobrineMob.setState(1);
-            herobrineMob.setSecondFormHitLeft(new Random().nextInt(2, 3));
+            if (herobrineMob instanceof HerobrineChrisEntity) {
+                herobrineMob.setSecondFormHitLeft(new Random().nextInt(2, 8));
+            } else {
+                herobrineMob.setSecondFormHitLeft(new Random().nextInt(2, 3));
+            }
             if (herobrineMob instanceof AegisHerobrineEntity || herobrineMob instanceof SwordsmanHerobrineEntity
                     || herobrineMob instanceof SledgehammerHerobrineEntity || herobrineMob instanceof ReaperHerobrineEntity
                     || herobrineMob instanceof GlaiveHerobrineEntity) {

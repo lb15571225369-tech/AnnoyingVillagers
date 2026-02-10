@@ -5,6 +5,9 @@ import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
+import com.pla.annoyingvillagers.item.ShadowObsidianPillarItem;
+import com.pla.annoyingvillagers.item.ShadowObsidianSwordItem;
+import com.pla.annoyingvillagers.item.ShadowObsidianWeaponItem;
 import com.pla.annoyingvillagers.util.HerobrineUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -12,11 +15,13 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -25,13 +30,11 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.utils.NameManager;
 
+import java.util.Random;
 import java.util.UUID;
 
 
 public class ShadowHerobrineEntity extends HerobrineMob {
-    private boolean wasLanding = false;
-    private boolean wasAiming = false;
-
     public BlockProjectileEntity darkObUp;
     public UUID darkObUpUUID;
 
@@ -76,6 +79,7 @@ public class ShadowHerobrineEntity extends HerobrineMob {
         if (damageSource.is(DamageTypes.DROWN)) return false;
         if (damageSource.is(DamageTypes.WITHER_SKULL)) return false;
         if (damageSource.is(DamageTypes.DRAGON_BREATH)) return false;
+        if (damageSource.getDirectEntity() instanceof AbstractArrow) return false;
         return super.hurt(damageSource, f);
     }
 
@@ -105,6 +109,53 @@ public class ShadowHerobrineEntity extends HerobrineMob {
             this.setInvisible(true);
             this.remove(RemovalReason.KILLED);
             serverLevel.addFreshEntity(corpse);
+        }
+    }
+
+    @Override
+    public void rollItem() {
+        super.rollItem();
+        ItemStack mainHand = this.getMainHandItem();
+        if (mainHand.getItem() instanceof ShadowObsidianWeaponItem) {
+            if (new Random().nextBoolean()) {
+                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get()));
+                if (new Random().nextBoolean()) {
+                    this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
+                } else {
+                    this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+                }
+            } else {
+                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
+                if (new Random().nextBoolean()) {
+                    this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
+                } else {
+                    this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+                }
+            }
+        } else if (mainHand.getItem() instanceof ShadowObsidianPillarItem) {
+            if (new Random().nextBoolean()) {
+                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get()));
+                this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+            } else {
+                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
+                if (new Random().nextBoolean()) {
+                    this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
+                } else {
+                    this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+                }
+            }
+        } else if (mainHand.getItem() instanceof ShadowObsidianSwordItem) {
+            if (new Random().nextBoolean()) {
+                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get()));
+                this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+            } else {
+                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get()));
+                if (new Random().nextBoolean()) {
+                    this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
+                } else {
+                    this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+                }
+            }
         }
     }
 

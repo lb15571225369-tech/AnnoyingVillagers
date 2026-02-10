@@ -216,7 +216,7 @@ public class AVWeaponCapabilityPresets {
     public static final Function<Item, CapabilityItem.Builder> BEDROCK_WEAPON = (item) ->
             WeaponCapability.builder().category(WeaponCategories.SWORD)
                     .styleProvider((livingEntityPatch) -> Styles.ONE_HAND)
-                    .collider(ColliderPreset.TOOLS)
+                    .collider(ColliderPreset.FIST)
                     .hitSound(EpicFightSounds.BLUNT_HIT_HARD.get())
                     .newStyleCombo(Styles.ONE_HAND,
                             Animations.FIST_AUTO1,

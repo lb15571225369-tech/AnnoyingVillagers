@@ -6,6 +6,7 @@ import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.combatbehaviour.HerobrineBedrockWeapon;
 import com.pla.annoyingvillagers.combatbehaviour.HerobrineCommon;
 import com.pla.annoyingvillagers.combatbehaviour.HerobrineObsidianWeapon;
+import com.pla.annoyingvillagers.combatbehaviour.HerobrineShadowObsidianPillar;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
@@ -45,8 +46,8 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
-public class HerobrineClonePatch extends CEHumanoidPatch implements CustomExecuteEntity {
-    public HerobrineClonePatch() {
+public class ShadowHerobrineClonePatch extends CEHumanoidPatch implements CustomExecuteEntity {
+    public ShadowHerobrineClonePatch() {
         super(Factions.NEUTRAL);
     }
 
@@ -64,15 +65,6 @@ public class HerobrineClonePatch extends CEHumanoidPatch implements CustomExecut
         this.weaponLivingMotions
                 .put(WeaponCategories.SWORD,
                         ImmutableMap.of(
-                                Styles.ONE_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.BLOCK, AnimsMoonless.MOONLESS_GUARD),
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
-                                        Pair.of(LivingMotions.RUN, AVAnimations.OLD_MOONLESS_RUN),
-                                        Pair.of(LivingMotions.CHASE, AVAnimations.OLD_MOONLESS_RUN),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
-                                ),
                                 Styles.TWO_HAND,
                                 Set.of(
                                         Pair.of(LivingMotions.BLOCK, AVAnimations.FIST_GUARD),
@@ -86,17 +78,11 @@ public class HerobrineClonePatch extends CEHumanoidPatch implements CustomExecut
         this.weaponAttackMotions
                 .put(WeaponCategories.SWORD,
                         ImmutableMap.of(
-                                Styles.ONE_HAND, HerobrineBedrockWeapon.BEDROCK_WEAPON,
-                                Styles.TWO_HAND, HerobrineObsidianWeapon.OBSIDIAN_WEAPON
+                                Styles.TWO_HAND, HerobrineShadowObsidianPillar.SHADOW_OBSIDIAN_PILLAR_WEAPON
                         ));
         
         this.guardHitMotions.put(WeaponCategories.SWORD,
                 ImmutableMap.of(
-                        Styles.ONE_HAND, List.of(
-                                AnimsMoonless.MOONLESS_GUARD_HIT_1,
-                                AnimsMoonless.MOONLESS_GUARD_HIT_2,
-                                AnimsMoonless.MOONLESS_GUARD_HIT_3
-                        ),
                         Styles.TWO_HAND, List.of(
                                 Animations.SWORD_GUARD_ACTIVE_HIT1,
                                 Animations.SWORD_GUARD_ACTIVE_HIT2,
@@ -104,20 +90,6 @@ public class HerobrineClonePatch extends CEHumanoidPatch implements CustomExecut
                         )
                 )
         );
-    }
-
-    @Override
-    public AttackResult tryHurt(DamageSource damageSource, float amount) {
-        AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(this.getAnimator().getPlayerFor(null)).getAnimation();
-        if (!this.getOriginal().isPassenger()
-                && !EpicfightUtil.isLongHitAnimation(dynamicAnimation)
-                && (this.getOriginal().level() instanceof ServerLevel && dynamicAnimation == Animations.EMPTY_ANIMATION)) {
-            if (HerobrineCommon.canPlaySecondFormAnimation(this)) {
-                this.playAnimationSynchronized(AnimsMoonless.MOONLESS_GUARD_HIT_1, 0.0F);
-                HerobrineCommon.playSecondFormAnimation(this);
-            }
-        }
-        return super.tryHurt(damageSource, amount);
     }
 
     public void playGuardBreakSound() {

@@ -17,11 +17,11 @@ import java.util.Set;
 
 public class EscapeUtil {
     private static final Set<String> DANGEROUS_ANIMATIONS = Set.of(
-            "annoyingvillagers:biped/skill/ender_aegis_bull_charge",
-            "annoyingvillagers:biped/combat/yellow_torment_charged_attack_3",
-            "annoyingvillagers:biped/skill/ender_glaive_napoleon_shoot_3",
-            "annoyingvillagers:biped/combat/ender_glaive_agony_auto_1",
-            "annoyingvillagers:biped/skill/aegis_shield_shoot",
+            "annoyingvillagers:biped/wom_clone/ender_aegis_bull_charge",
+            "annoyingvillagers:biped/wom_clone/yellow_torment_charged_attack_3",
+            "annoyingvillagers:biped/wom_clone/ender_glaive_napoleon_shoot_3",
+            "annoyingvillagers:biped/wom_clone/ender_glaive_agony_auto_1",
+            "annoyingvillagers:biped/wom_clone/aegis_shield_shoot",
             "efn:biped/ng_greatsword/ng_great_charge1ing",
             "efn:biped/ng_greatsword/ng_great_charge1max",
             "efn:biped/ng_greatsword/ng_great_charge1max_2",

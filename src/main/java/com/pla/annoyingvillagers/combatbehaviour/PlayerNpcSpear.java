@@ -53,7 +53,6 @@ public class PlayerNpcSpear {
                             .maxCooldown (0)
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
                                             .custom(CombatCommon::canPerformEating)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
@@ -1169,7 +1168,6 @@ public class PlayerNpcSpear {
                             .maxCooldown (0)
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
                                             .custom(CombatCommon::canPerformEating)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
@@ -2207,7 +2205,6 @@ public class PlayerNpcSpear {
                             .maxCooldown (0)
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
                                             .custom(CombatCommon::canPerformEating)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
@@ -3270,7 +3267,6 @@ public class PlayerNpcSpear {
                             .maxCooldown (0)
                             .addFirstBehavior(
                                     Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .health(2.0F / 3.0F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
                                             .custom(CombatCommon::canPerformEating)
                                             .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)

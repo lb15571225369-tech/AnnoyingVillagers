@@ -1,16 +1,19 @@
 package com.pla.annoyingvillagers.combatbehaviour;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.block.ShadowObsidianBlock;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.AVNpc;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
 import com.pla.annoyingvillagers.item.LegendarySwordItem;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.task.MobExecutionTask;
 import com.pla.annoyingvillagers.util.CombatBehaviour;
 import com.pla.annoyingvillagers.util.EscapeUtil;
+import com.pla.annoyingvillagers.util.HerobrineUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -29,6 +32,7 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
@@ -182,7 +186,12 @@ public class CombatCommon {
     public static boolean canEscape(MobPatch<?> mobpatch) {
         Mob entity = mobpatch.getOriginal();
         if (EscapeUtil.checkEscape(entity)) {
-            if (entity instanceof AVNpc AVNpc
+            if (entity instanceof HerobrineMob herobrineMob) {
+                if (herobrineMob instanceof HerobrineChrisEntity && herobrineMob.getState() > 0) {
+                    return false;
+                }
+                return true;
+            } else if (entity instanceof AVNpc AVNpc
                     && new Random().nextDouble() <= AVNpc.getPlaceBlockToParryChance()) {
                 return true;
             } else return entity instanceof PlayerNpcEntity playerNpcEntity
@@ -200,6 +209,7 @@ public class CombatCommon {
     }
 
     public static boolean canPerformEating(MobPatch<?> mobpatch) {
+        if (canExecute(mobpatch)) return false;
         if (mobpatch.getOriginal() instanceof PlayerNpcEntity playerNpcEntity) {
             if (playerNpcEntity.getGapCooldown() > 0) {
                 return false;
@@ -297,6 +307,8 @@ public class CombatCommon {
 
         if (mobpatch.getOriginal() instanceof SteveEntity steveEntity) {
             return steveEntity.getBlockDamage() == null && steveEntity.getSwapWeaponCooldown() == 0 || (steveEntity.getState() == 0 && steveEntity.getHealth() <= 20 && !steveEntity.getMainHandItem().getItem().equals(Items.DIAMOND_SWORD));
+        } else if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
+            return (herobrineMob instanceof HerobrineChrisEntity || herobrineMob instanceof ArmoredHerobrineEntity || herobrineMob instanceof ShadowHerobrineEntity) && herobrineMob.getSwapWeaponCooldown() == 0 ;
         }
 
         return false;
@@ -386,10 +398,17 @@ public class CombatCommon {
                 ? Direction.getNearest(target.getX() - mob.getX(), 0.0D, target.getZ() - mob.getZ())
                 : mob.getDirection();
 
-        final ItemStack handStack = mob.getItemInHand(InteractionHand.MAIN_HAND);
-        BlockState placeState = net.minecraft.world.level.block.Blocks.COBBLESTONE.defaultBlockState();
-        if (handStack.getItem() instanceof BlockItem blockItem) {
-            placeState = blockItem.getBlock().defaultBlockState();
+        BlockState placeState;
+        if (mob instanceof HerobrineChrisEntity || mob instanceof HerobrineCloneEntity) {
+            placeState = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get().defaultBlockState().setValue(ShadowObsidianBlock.FROM_PLAYER, false);
+        } else if (mob instanceof ShadowHerobrineCloneEntity || mob instanceof Herobrine7Entity || mob instanceof ArmoredHerobrineEntity || mob instanceof ShadowHerobrineEntity) {
+            placeState = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().defaultBlockState().setValue(ShadowObsidianBlock.FROM_PLAYER, false);
+        } else {
+            final ItemStack handStack = mob.getItemInHand(InteractionHand.MAIN_HAND);
+            placeState = Blocks.COBBLESTONE.defaultBlockState();
+            if (handStack.getItem() instanceof BlockItem blockItem) {
+                placeState = blockItem.getBlock().defaultBlockState();
+            }
         }
 
         final Random random = new Random();
@@ -457,7 +476,7 @@ public class CombatCommon {
         }
     }
 
-    static java.util.function.BiFunction<Integer, Integer, int[]> getIntegerIntegerBiFunction(Entity anchor, int rot) {
+    static BiFunction<Integer, Integer, int[]> getIntegerIntegerBiFunction(Entity anchor, int rot) {
         Direction facing = anchor.getDirection();
 
         int fx = facing.getStepX();
@@ -481,10 +500,14 @@ public class CombatCommon {
     }
 
     private static void placeIfReplaceable(ServerLevel level, BlockPos pos, BlockState state, MobPatch<?> mobpatch, Mob mob) {
-        if (!level.getBlockState(pos).canBeReplaced()) return;
-        mobpatch.playAnimationSynchronized(AVAnimations.PLACE_BLOCK, 0.0F);
-        mob.playSound(SoundEvents.STONE_PLACE, 2.0F, 1.0F);
-        level.setBlockAndUpdate(pos, state);
+        if (mob instanceof HerobrineMob) {
+            HerobrineUtil.placeIfReplaceable(level, pos, state, mob);
+        } else {
+            if (!level.getBlockState(pos).canBeReplaced()) return;
+            mobpatch.playAnimationSynchronized(AVAnimations.PLACE_BLOCK, 0.0F);
+            mob.playSound(SoundEvents.STONE_PLACE, 2.0F, 1.0F);
+            level.setBlockAndUpdate(pos, state);
+        }
     }
 
     public static void performEscapeRunAway(MobPatch<?> mobpatch) {
@@ -538,11 +561,14 @@ public class CombatCommon {
                 if (mob instanceof AVNpc AVNpc) {
                     AVNpc.shortPillarJump();
                 }
+                if (mob instanceof PlayerNpcEntity playerNpcEntity) {
+                    playerNpcEntity.shortPillarJump();
+                }
                 mobpatch.playAnimationSynchronized(Animations.BIPED_JUMP, 0.0F);
             }
         };
 
-        if (mob instanceof SteveEntity || mob instanceof AngrySteveEntity) {
+        if (mob instanceof SteveEntity || mob instanceof AngrySteveEntity || (mob instanceof HerobrineMob && !(mob instanceof NullEntity))) {
             new DelayedTask(1) {
                 @Override public void run() {
                     if (isGroundWithin(mob, 3.0)) {
@@ -696,6 +722,9 @@ public class CombatCommon {
         if (entity instanceof SteveEntity steveEntity) {
             steveEntity.rollItem();
         }
+        if (entity instanceof HerobrineMob herobrineMob) {
+            herobrineMob.rollItem();
+        }
     }
 
     public static void swapToMelee(MobPatch<?> mobpatch) {
@@ -780,7 +809,6 @@ public class CombatCommon {
     public static void performExecute(MobPatch<?> mobPatch) {
         final Mob attacker = mobPatch.getOriginal();
         final LivingEntity victim = attacker.getTarget();
-        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] performing execution for {}", attacker.getDisplayName().getString());
         if (victim == null) return;
         if (attacker.isPassenger()) attacker.stopRiding();
 

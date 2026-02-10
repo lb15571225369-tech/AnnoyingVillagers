@@ -7,13 +7,12 @@ import net.shelmarow.combat_evolution.ai.CECombatBehaviors.BehaviorRoot;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors.Builder;
 import net.shelmarow.combat_evolution.ai.condition.HealthCheck;
 import reascer.wom.gameasset.WOMAnimations;
-import reascer.wom.gameasset.animations.weapons.AnimsHerrscher;
-import reascer.wom.gameasset.animations.weapons.AnimsSolar;
+import reascer.wom.gameasset.animations.weapons.AnimsEnderblaster;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 
-public class HerobrineObsidianWeapon {
-    public static final Builder<MobPatch<?>> OBSIDIAN_WEAPON = CECombatBehaviors.builder()
+public class HerobrineBedrockWeapon {
+    public static final Builder<MobPatch<?>> BEDROCK_WEAPON = CECombatBehaviors.builder()
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(5.0D)
@@ -89,28 +88,28 @@ public class HerobrineObsidianWeapon {
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .withinDistance(0.0D, 4.0D)
-                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO1, 0.0F)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(Animations.FIST_AUTO1, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                                            .withinDistance(0.0D, 5.0D)
-                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO2, 0.0F)
+                                                            .withinDistance(0.0D, 3.0D)
+                                                            .animationBehavior(Animations.FIST_AUTO2, 0.0F)
                                                             .addNextBehavior(
                                                                     Behavior.builder()
                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                                                            .withinDistance(0.0D, 5.0D)
-                                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO3, 0.0F)
+                                                                            .withinDistance(0.0D, 3.0D)
+                                                                            .animationBehavior(Animations.FIST_AUTO3, 0.0F)
                                                                             .addNextBehavior(
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                                                                            .withinDistance(0.0D, 6.0D)
-                                                                                            .animationBehavior( AVAnimations.OBSIDIAN_FIST_AIR_SLASH, 0.0F)
+                                                                                            .withinDistance(0.0D, 3.0D)
+                                                                                            .animationBehavior(Animations.FIST_AIR_SLASH, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                                                                                            .withinDistance(0.0D, 6.0D)
-                                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_BIPED_LANDING, 0.0F)
+                                                                                                            .withinDistance(0.0D, 3.0D)
+                                                                                                            .animationBehavior(WOMAnimations.STRONG_PUNCH, 0.0F)
                                                                                             )
                                                                             )
                                                             )
@@ -121,79 +120,38 @@ public class HerobrineObsidianWeapon {
                     BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(30.0D)
-                            .maxCooldown(20)
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .withinDistance(5.0D, 10.0D)
-                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_DASH, 0.0F)
-                            )
-            )
-            .newBehaviorRoot(
-                    BehaviorRoot.builder()
-                            .priority(1.0D)
-                            .weight(30.0D)
                             .maxCooldown(100)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_PUNCH, 0.0F)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(Animations.FIST_DASH, 0.0F)
                             )
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(AVAnimations.OBSIDIAN_ENDERBLASTER_TWOHAND_TISHNAW, 0.0F)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(WOMAnimations.STRONG_KICK, 0.0F)
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SUPER_PUNCH, 0.0F)
                             )
             )
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
-                            .weight(20.0D)
-                            .maxCooldown(200)
+                            .weight(15.0D)
+                            .maxCooldown(600)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(AVAnimations.OBSIDIAN_ZOMBIE_ATTACK3, 0.0F)
-                            )
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(AVAnimations.OBSIDIAN_ANTITHEUS_ASCENDED_DEATHFALL, 0.0F)
-                            )
-
-            )
-            .newBehaviorRoot(
-                    BehaviorRoot.builder()
-                            .priority(1.0D)
-                            .weight(2.0D)
-                            .maxCooldown (100)
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_KICK, 0.0F)
-                            )
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_3, 0.0F)
-                            )
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_1, 0.0F)
-                            )
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .withinDistance(0.0D, 5.0D)
-                                            .animationBehavior(AVAnimations.OBSIDIAN_WHIRLWIND_KICK, 0.0F)
+                                            .custom(HerobrineCommon::canChangeToSecondForm)
+                                            .withinDistance(0.0D, 8.0D)
+                                            .animationBehavior(AnimsEnderblaster.ENDERBLASTER_ONEHAND_RELOAD, 0.0F)
+                                            .addExBehavior(HerobrineCommon::changeToSecondForm)
                             )
             )
             .newBehaviorRoot(

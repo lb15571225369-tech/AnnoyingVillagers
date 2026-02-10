@@ -2,6 +2,7 @@ package com.pla.annoyingvillagers.entity;
 
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.item.ObsidianWeaponItem;
 import com.pla.annoyingvillagers.spawnhandler.HerobrineMobData;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import net.minecraft.core.BlockPos;
@@ -45,6 +46,17 @@ public class HerobrineChrisEntity extends HerobrineMob {
         if (damagesource.is(DamageTypes.WITHER_SKULL)) return false;
         if (damagesource.is(DamageTypes.DRAGON_BREATH)) return false;
         return super.hurt(damagesource, f);
+    }
+
+    @Override
+    public void rollItem() {
+        super.rollItem();
+        ItemStack mainHand = this.getMainHandItem();
+        if (mainHand.getItem() instanceof ObsidianWeaponItem) {
+            this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.BEDROCK_WEAPON.get()));
+        } else {
+            this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.OBSIDIAN_WEAPON.get()));
+        }
     }
 
     public void die(@NotNull DamageSource damagesource) {
