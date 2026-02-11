@@ -4,7 +4,6 @@ import javax.annotation.Nullable;
 
 import com.pla.annoyingvillagers.spawnhandler.BluedemonData;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -35,8 +34,8 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.procedures.BlueDemonStagingOnEntityUpdateProcedure;
-import com.pla.annoyingvillagers.procedures.BlueDemonStagingOnEntityInitialSpawnProcedure;
+import com.pla.annoyingvillagers.tobe_removed.BlueDemonStagingOnEntityUpdateProcedure;
+import com.pla.annoyingvillagers.tobe_removed.BlueDemonStagingOnEntityInitialSpawnProcedure;
 
 import java.util.Objects;
 

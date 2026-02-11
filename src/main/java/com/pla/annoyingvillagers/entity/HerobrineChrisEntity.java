@@ -27,6 +27,9 @@ import reascer.wom.gameasset.animations.weapons.AnimsMoonless;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.gameasset.EpicFightSounds;
+import yesman.epicfight.particle.EpicFightParticles;
+import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 
 import java.util.Objects;
@@ -54,13 +57,16 @@ public class HerobrineChrisEntity extends HerobrineMob {
         if (damagesource.is(DamageTypes.DROWN)) return false;
         if (damagesource.is(DamageTypes.WITHER_SKULL)) return false;
         if (damagesource.is(DamageTypes.DRAGON_BREATH)) return false;
-        AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] Herobrine Chris State is {}", this.getState());
-        if (HerobrineCommon.canPlaySecondFormAnimation((MobPatch<?>) Objects.requireNonNull(this.getLivingEntityPatch()))) {
+        if (this.level() instanceof ServerLevel serverLevel && HerobrineCommon.canPlaySecondFormAnimation((MobPatch<?>) Objects.requireNonNull(this.getLivingEntityPatch()))) {
             AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(this.getLivingEntityPatch().getAnimator().getPlayerFor(null)).getAnimation();
             if (!EpicfightUtil.isLongHitAnimation(dynamicAnimation)
                     && (this.level() instanceof ServerLevel && dynamicAnimation == Animations.EMPTY_ANIMATION)) {
                 Objects.requireNonNull(this.getLivingEntityPatch()).playAnimationSynchronized(AnimsMoonless.MOONLESS_GUARD_HIT_1, 0.0F);
                 HerobrineCommon.playSecondFormAnimation((MobPatch<?>) Objects.requireNonNull(this.getLivingEntityPatch()));
+                this.heal(4.0F);
+                this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
+                EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO,
+                        this, this);
                 return false;
             }
         }

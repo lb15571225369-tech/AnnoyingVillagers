@@ -38,12 +38,6 @@ public class HerobrineObsidianWeapon {
                                             .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
                                             .addExBehavior(CombatCommon::performEscapeRunAway)
                             )
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .custom(CombatCommon::canEscape)
-                                            .withinDistance(8.0D, 48.0D)
-                                            .guard(40)
-                            )
             )
             .newBehaviorRoot(
                     BehaviorRoot.builder()
@@ -77,6 +71,19 @@ public class HerobrineObsidianWeapon {
                                             .custom(HerobrineCommon::canPerformHealing)
                                             .animationBehavior(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F)
                                             .addExBehavior(HerobrineCommon::performHealingAnimation)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(2.0D)
+                            .weight(70.0D)
+                            .maxCooldown (100)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(HerobrineCommon::canSummonDarkOb)
+                                            .animationBehavior(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F)
+                                            .addExBehavior(HerobrineCommon::performSummonDarkOb)
                             )
             )
             .newBehaviorRoot(
@@ -117,12 +124,763 @@ public class HerobrineObsidianWeapon {
                                                                                     Behavior.builder()
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 6.0D)
-                                                                                            .animationBehavior( AVAnimations.OBSIDIAN_FIST_AIR_SLASH, 0.0F)
+                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AIR_SLASH, 0.0F)
                                                                                             .addNextBehavior(
                                                                                                     Behavior.builder()
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                             .withinDistance(0.0D, 6.0D)
                                                                                                             .animationBehavior(AVAnimations.OBSIDIAN_BIPED_LANDING, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_DASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO2, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_KICK, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_PUNCH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO1, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_1, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(Animations.BIPED_STEP_LEFT, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO3, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(Animations.BIPED_STEP_FORWARD, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AIR_SLASH, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_ENDERBLASTER_TWOHAND_TISHNAW, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_KICK, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_3, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO3, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_PUNCH, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_DASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.OBSIDIAN_BIPED_LANDING, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_WHIRLWIND_KICK, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(Animations.BIPED_STEP_RIGHT, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+/* 6 */
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AIR_SLASH, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_PUNCH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO1, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_1, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.OBSIDIAN_BIPED_LANDING, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(Animations.BIPED_STEP_RIGHT, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO3, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_ENDERBLASTER_TWOHAND_TISHNAW, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_KICK, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.OBSIDIAN_WHIRLWIND_KICK, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO2, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_PUNCH, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(Animations.BIPED_STEP_LEFT, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO3, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_3, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_DASH, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO3, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_DASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO1, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_1, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(Animations.BIPED_STEP_FORWARD, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+/* 11 */
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_PUNCH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO2, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_WHIRLWIND_KICK, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.OBSIDIAN_ENDERBLASTER_TWOHAND_TISHNAW, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AIR_SLASH, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_KICK, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(Animations.BIPED_STEP_RIGHT, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO3, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.OBSIDIAN_BIPED_LANDING, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_PUNCH, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_3, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO2, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_KICK, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_DASH, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AIR_SLASH, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_DASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO3, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_WHIRLWIND_KICK, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(Animations.BIPED_STEP_LEFT, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+/* 16 */
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.OBSIDIAN_BIPED_LANDING, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_PUNCH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO1, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_1, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.OBSIDIAN_ENDERBLASTER_TWOHAND_TISHNAW, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO3, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_KICK, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(Animations.BIPED_STEP_FORWARD, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(Animations.BIPED_STEP_RIGHT, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO2, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_3, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_PUNCH, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO3, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_DASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO1, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_WHIRLWIND_KICK, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AIR_SLASH, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO2, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_KICK, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_PUNCH, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+/* 21 */
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_PUNCH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO3, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_1, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(Animations.BIPED_STEP_LEFT, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_DASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO1, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_WHIRLWIND_KICK, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(Animations.BIPED_STEP_RIGHT, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO3, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.OBSIDIAN_ENDERBLASTER_TWOHAND_TISHNAW, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.OBSIDIAN_BIPED_LANDING, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_KICK, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AIR_SLASH, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(Animations.BIPED_STEP_FORWARD, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_AUTO1, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_KICK_AUTO_3, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_STRONG_PUNCH, 0.0F)
                                                                                             )
                                                                             )
                                                             )
@@ -176,7 +934,27 @@ public class HerobrineObsidianWeapon {
                                             .withinDistance(0.0D, 5.0D)
                                             .animationBehavior(AVAnimations.OBSIDIAN_ANTITHEUS_ASCENDED_DEATHFALL, 0.0F)
                             )
-
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(HerobrineCommon::canShootDarkOb)
+                                            .withinDistance(5.0D, 10.0D)
+                                            .animationBehavior(AVAnimations.CASTING_ONE_HAND_TOP, 0.0F)
+                                            .addExBehavior(HerobrineCommon::performShootDarkOb)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
+                            .priority(1.0D)
+                            .weight(15.0D)
+                            .maxCooldown(200)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(HerobrineCommon::canPlayObsidianMachine)
+                                            .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
+                                            .addExBehavior(HerobrineCommon::performObsidianMachine)
+                            )
             )
             .newBehaviorRoot(
                     BehaviorRoot.builder()
@@ -206,18 +984,6 @@ public class HerobrineObsidianWeapon {
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 5.0D)
                                             .animationBehavior(AVAnimations.OBSIDIAN_WHIRLWIND_KICK, 0.0F)
-                            )
-            )
-            .newBehaviorRoot(
-                    BehaviorRoot.builder()
-                            .priority(1.0D)
-                            .weight(30.0D)
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .withinDistance(0.0D, 3.0D)
-                                            .custom(HerobrineCommon::canPerformGuarding)
-                                            .guard(40)
                             )
             )
             .newBehaviorRoot(

@@ -1,6 +1,5 @@
-package com.pla.annoyingvillagers.procedures;
+package com.pla.annoyingvillagers.tobe_removed;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;

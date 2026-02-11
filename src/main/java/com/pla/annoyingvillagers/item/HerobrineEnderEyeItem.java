@@ -100,7 +100,7 @@ public class HerobrineEnderEyeItem extends Item {
         blockProjectileEntity.setNoGravity(true);
         blockProjectileEntity.setNotReadyForShoot(true);
         blockProjectileEntity.moveTo(x, y, z, 0.0F, 0.0F);
-        if (owner instanceof Player player) blockProjectileEntity.setPlayerUUID(player.getUUID());
+        if (owner instanceof Player player) blockProjectileEntity.setOwnerUUID(player.getUUID());
         level.addFreshEntity(blockProjectileEntity);
         return blockProjectileEntity;
     }
@@ -140,7 +140,7 @@ public class HerobrineEnderEyeItem extends Item {
                     eyeY + forward.y + sideY,
                     shooter.getZ() + forward.z + sideZ
             );
-            if (shooter instanceof Player player) proj.setPlayerUUID(player.getUUID());
+            if (shooter instanceof Player player) proj.setOwnerUUID(player.getUUID());
             proj.setDeltaMovement(look.scale(velocity));
 
             level.addFreshEntity(proj);

@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.procedures;
+package com.pla.annoyingvillagers.tobe_removed;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

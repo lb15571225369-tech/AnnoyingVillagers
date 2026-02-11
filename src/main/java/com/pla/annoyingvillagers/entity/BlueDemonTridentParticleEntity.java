@@ -22,8 +22,8 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import com.pla.annoyingvillagers.procedures.BlueDemonTridentParticleOnEntityUpdate;
-import com.pla.annoyingvillagers.procedures.BlueDemonTridentParticleWhenEntityDiesProcedure;
+import com.pla.annoyingvillagers.tobe_removed.BlueDemonTridentParticleOnEntityUpdate;
+import com.pla.annoyingvillagers.tobe_removed.BlueDemonTridentParticleWhenEntityDiesProcedure;
 
 public class BlueDemonTridentParticleEntity extends PathfinderMob {
 

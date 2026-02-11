@@ -1,4 +1,4 @@
-package com.pla.annoyingvillagers.procedures;
+package com.pla.annoyingvillagers.tobe_removed;
 
 import com.pla.annoyingvillagers.entity.BbqEntity;
 import com.pla.annoyingvillagers.entity.BlueDemonEntity;

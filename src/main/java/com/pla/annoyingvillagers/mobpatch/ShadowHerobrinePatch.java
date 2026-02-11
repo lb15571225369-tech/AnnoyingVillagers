@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.mobpatch;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
+import com.pla.annoyingvillagers.combatbehaviour.HerobrineEnderEye;
 import com.pla.annoyingvillagers.combatbehaviour.HerobrineShadowObsidianPillar;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
@@ -58,6 +59,35 @@ public class ShadowHerobrinePatch extends CEHumanoidPatch implements CustomExecu
     }
 
     protected void setWeaponMotions() {
+        this.weaponLivingMotions
+                .put(WeaponCategories.NOT_WEAPON,
+                        ImmutableMap.of(Styles.ONE_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, AVAnimations.FIST_GUARD),
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
+                                        Pair.of(LivingMotions.RUN, AVAnimations.OLD_MOONLESS_RUN),
+                                        Pair.of(LivingMotions.CHASE, AVAnimations.OLD_MOONLESS_RUN),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )));
+        this.weaponAttackMotions
+                .put(WeaponCategories.NOT_WEAPON,
+                        ImmutableMap.of(Styles.ONE_HAND, HerobrineEnderEye.ENDER_EYE));
+
+        this.weaponLivingMotions
+                .put(WeaponCategories.FIST,
+                        ImmutableMap.of(Styles.ONE_HAND,
+                                Set.of(
+                                        Pair.of(LivingMotions.BLOCK, AVAnimations.FIST_GUARD),
+                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
+                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
+                                        Pair.of(LivingMotions.RUN, AVAnimations.OLD_MOONLESS_RUN),
+                                        Pair.of(LivingMotions.CHASE, AVAnimations.OLD_MOONLESS_RUN),
+                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH)
+                                )));
+        this.weaponAttackMotions
+                .put(WeaponCategories.FIST,
+                        ImmutableMap.of(Styles.ONE_HAND, HerobrineEnderEye.ENDER_EYE));
         this.weaponLivingMotions
                 .put(WeaponCategories.SWORD,
                         ImmutableMap.of(

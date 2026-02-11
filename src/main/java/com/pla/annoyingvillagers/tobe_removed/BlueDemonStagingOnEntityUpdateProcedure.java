@@ -1,7 +1,6 @@
-package com.pla.annoyingvillagers.procedures;
+package com.pla.annoyingvillagers.tobe_removed;
 
 import java.util.Objects;
-import java.util.Random;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pla.annoyingvillagers.AnnoyingVillagers;

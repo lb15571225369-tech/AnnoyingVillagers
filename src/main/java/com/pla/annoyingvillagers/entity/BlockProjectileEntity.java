@@ -48,10 +48,10 @@ public class BlockProjectileEntity extends ThrowableProjectile {
             SynchedEntityData.defineId(BlockProjectileEntity.class, EntityDataSerializers.FLOAT);
 
     private boolean notReadyForShoot = false;
-    private UUID playerUUID;
+    private UUID ownerUUID;
 
-    public void setPlayerUUID(UUID playerUUID) {
-        this.playerUUID = playerUUID;
+    public void setOwnerUUID(UUID ownerUUID) {
+        this.ownerUUID = ownerUUID;
     }
 
     public void setNotReadyForShoot(boolean notReadyForShoot) {
@@ -102,7 +102,7 @@ public class BlockProjectileEntity extends ThrowableProjectile {
         super.onHitEntity(result);
         if (this.notReadyForShoot) return;
         Entity target = result.getEntity();
-        final UUID ownerId = this.playerUUID;
+        final UUID ownerId = this.ownerUUID;
         final boolean isHerobrine = HerobrineUtil.isHerobrineFaction(target);
 
         boolean blockDamage =
@@ -161,7 +161,7 @@ public class BlockProjectileEntity extends ThrowableProjectile {
             if (level().getBlockState(placePos).isAir() ||
                     !level().getFluidState(placePos).isEmpty() ||
                     level().getBlockState(placePos).canBeReplaced()) {
-                UUID owner = this.playerUUID;
+                UUID owner = this.ownerUUID;
 
                 BlockState placeState;
                 if (getCarriedBlock().is(AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_SHORT_PILLAR.get())

@@ -1,10 +1,8 @@
-package com.pla.annoyingvillagers.procedures;
+package com.pla.annoyingvillagers.tobe_removed;
 
 import com.pla.annoyingvillagers.AnnoyingVillagers;
 
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;

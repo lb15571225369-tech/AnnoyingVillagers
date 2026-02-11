@@ -5,8 +5,8 @@ import java.util.Random;
 
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.procedures.BlueDemonTridentOnProjectileHitBlockProcedure;
-import com.pla.annoyingvillagers.procedures.BlueDemonTridentOnProjectileHitEntityProcedure;
+import com.pla.annoyingvillagers.tobe_removed.BlueDemonTridentOnProjectileHitBlockProcedure;
+import com.pla.annoyingvillagers.tobe_removed.BlueDemonTridentOnProjectileHitEntityProcedure;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;

@@ -477,6 +477,9 @@ public class HerobrineMob extends Monster {
             this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
             this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
         }
+        if (this instanceof ShadowHerobrineEntity shadowHerobrineEntity) {
+           shadowHerobrineEntity.clearDarkOb();
+        }
         this.addEffect(new MobEffectInstance(EpicFightMobEffects.STUN_IMMUNITY.get(), 80, 2));
 
         if (this.gregUUID != null) {
@@ -798,6 +801,14 @@ public class HerobrineMob extends Monster {
                 nullHoe.enchant(Enchantments.BLOCK_EFFICIENCY, 1);
                 nullEntity.getNullHoeEntity().setItemInHand(InteractionHand.MAIN_HAND, nullHoe);
             }
+        }
+        if (this instanceof ShadowHerobrineEntity shadowHerobrineEntity) {
+            ItemStack shadowObsidianPillar = new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get());
+            shadowObsidianPillar.enchant(Enchantments.SHARPNESS, 5);
+            shadowObsidianPillar.enchant(Enchantments.SWEEPING_EDGE, 5);
+            shadowObsidianPillar.enchant(Enchantments.KNOCKBACK, 3);
+            this.setItemInHand(InteractionHand.MAIN_HAND, shadowObsidianPillar);
+            shadowHerobrineEntity.setSummonDarkObCooldown(0);
         }
         this.state = 2;
     }
@@ -1195,5 +1206,6 @@ public class HerobrineMob extends Monster {
     public void awardKillScore(@NotNull Entity entity, int i, @NotNull DamageSource damagesource) {
         super.awardKillScore(entity, i, damagesource);
         HerobrineUtil.transformHerobrine(this.level(), this.getX(), this.getY(), this.getZ(), entity, this);
+        this.heal(this.getMaxHealth() / 10);
     }
 }

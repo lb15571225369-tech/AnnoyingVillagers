@@ -292,7 +292,7 @@ public class AVWeaponCapabilityPresets {
                             AVAnimations.SWORD_HEAVY_AUTO_1,
                             AVAnimations.SHADOW_OBSIDIAN_SWORD_TORMENT_AIRSLAM)
                     .newStyleCombo(Styles.TWO_HAND,
-                            AnimsHerrscher.GESETZ_AUTO_2,
+                            AVAnimations.SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_2,
                             AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO4,
                             AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO5,
                             AVAnimations.GREATSWORD_DUAL_AUTO_2,

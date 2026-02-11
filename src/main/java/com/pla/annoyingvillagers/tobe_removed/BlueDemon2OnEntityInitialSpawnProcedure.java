@@ -1,26 +1,23 @@
-package com.pla.annoyingvillagers.procedures;
+package com.pla.annoyingvillagers.tobe_removed;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
-import com.pla.annoyingvillagers.entity.AlexEntity;
-import com.pla.annoyingvillagers.entity.BbqEntity;
-import com.pla.annoyingvillagers.entity.BlueDemonEntity;
-import com.pla.annoyingvillagers.entity.JevEntity;
-import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.ServerLevelAccessor;
 
-public class BlueDemonOnEntityInitialSpawnProcedure {
+public class BlueDemon2OnEntityInitialSpawnProcedure {
 
     public static void execute(LevelAccessor levelaccessor, Entity entity) {
         if (entity != null) {
+            if (!entity.level().isClientSide() && entity.getServer() != null) {
+                try {
+                    entity.getServer().getCommands().getDispatcher().execute("item replace entity @s weapon.mainhand with annoyingvillagers:legendary_sword_mob", entity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
+                } catch (CommandSyntaxException e) {
+                    
+                }
+            }
+
             ItemStack itemstack;
 
             if (entity instanceof LivingEntity) {

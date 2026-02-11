@@ -12,9 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import com.pla.annoyingvillagers.procedures.BlueDemonChestplateEventProcedure;
-
-import static com.pla.annoyingvillagers.util.ArmorUtil.dropArmorSlot;
+import com.pla.annoyingvillagers.tobe_removed.BlueDemonChestplateEventProcedure;
 
 public abstract class BlueDemonChestplateItem extends ArmorItem {
 

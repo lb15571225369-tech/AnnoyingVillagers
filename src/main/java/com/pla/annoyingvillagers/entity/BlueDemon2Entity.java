@@ -31,10 +31,10 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
-import com.pla.annoyingvillagers.procedures.BlueDemon2OnEntityUpdateProcedure;
-import com.pla.annoyingvillagers.procedures.BlueDemon2OnEntityDeathProcedure;
-import com.pla.annoyingvillagers.procedures.BlueDemon2OnEntityInitialSpawnProcedure;
-import com.pla.annoyingvillagers.procedures.BlueDemonOnEntityKillOtherEntityProcedure;
+import com.pla.annoyingvillagers.tobe_removed.BlueDemon2OnEntityUpdateProcedure;
+import com.pla.annoyingvillagers.tobe_removed.BlueDemon2OnEntityDeathProcedure;
+import com.pla.annoyingvillagers.tobe_removed.BlueDemon2OnEntityInitialSpawnProcedure;
+import com.pla.annoyingvillagers.tobe_removed.BlueDemonOnEntityKillOtherEntityProcedure;
 
 import java.util.Objects;
 import java.util.Random;

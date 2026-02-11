@@ -103,7 +103,7 @@ public class KickOnKeyPressedEvent {
                 }
 
                 // Default kick
-                entity.getPersistentData().putInt(NBT_KICK_CD, 3);
+                entity.getPersistentData().putInt(NBT_KICK_CD, 2);
                 if (sneaking) {
                     if (sprinting && isFistPlayer(entity)) {
                         livingEntityPatch.playAnimationSynchronized(AVAnimations.KICK_COMBO, 0.0F);

@@ -6,6 +6,7 @@ import com.pla.annoyingvillagers.clazz.NullWeapon;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.util.SnakeBladeHit;
@@ -13,6 +14,7 @@ import com.pla.annoyingvillagers.util.TeamUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -58,6 +60,26 @@ public class HerobrineCommon {
         return false;
     }
 
+    public static boolean canSummonDarkOb(MobPatch<?> mobpatch) {
+        if (mobpatch.getOriginal() instanceof ShadowHerobrineEntity shadowHerobrineEntity) {
+            return !shadowHerobrineEntity.isDarkObReady() && shadowHerobrineEntity.getSummonDarkObCooldown() == 0;
+        }
+        return false;
+    }
+
+    public static boolean canShootDarkOb(MobPatch<?> mobpatch) {
+        if (mobpatch.getOriginal() instanceof ShadowHerobrineEntity shadowHerobrineEntity) {
+            return shadowHerobrineEntity.isDarkObReady();
+        }
+        return false;
+    }
+
+    public static boolean canPlayObsidianMachine(MobPatch<?> mobpatch) {
+        if (mobpatch.getOriginal() instanceof ShadowHerobrineEntity shadowHerobrineEntity) {
+            return shadowHerobrineEntity.getState() == 2 && shadowHerobrineEntity.getObsidianMachineGunCooldown() == 0 && shadowHerobrineEntity.getObsidianMachineGunTick() == 0;
+        }
+        return false;
+    }
 
     public static boolean canMountOrDismountDragon(MobPatch<?> mobpatch) {
         if (mobpatch.getOriginal() instanceof ReaperHerobrineEntity reaperHerobrineEntity) {
@@ -417,6 +439,25 @@ public class HerobrineCommon {
                     reaperHerobrineEntity.getMeteoriteHerobrineDragon().recallAndLand(true);
                 }
             }
+        }
+    }
+
+    public static void performSummonDarkOb(MobPatch<?> mobpatch) {
+        if (mobpatch.getOriginal() instanceof ShadowHerobrineEntity shadowHerobrineEntity) {
+            shadowHerobrineEntity.spawnDarkObEntities();
+        }
+    }
+
+    public static void performShootDarkOb(MobPatch<?> mobpatch) {
+        if (mobpatch.getOriginal() instanceof ShadowHerobrineEntity shadowHerobrineEntity) {
+            shadowHerobrineEntity.shootDarkObsAtTarget(2.0F);
+        }
+    }
+
+    public static void performObsidianMachine(MobPatch<?> mobpatch) {
+        if (mobpatch.getOriginal() instanceof ShadowHerobrineEntity shadowHerobrineEntity) {
+            shadowHerobrineEntity.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+            shadowHerobrineEntity.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get()));
         }
     }
 }

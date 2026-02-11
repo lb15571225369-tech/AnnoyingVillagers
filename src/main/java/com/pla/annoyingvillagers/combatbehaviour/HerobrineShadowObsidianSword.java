@@ -39,12 +39,6 @@ public class HerobrineShadowObsidianSword {
                                             .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
                                             .addExBehavior(CombatCommon::performEscapeRunAway)
                             )
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .custom(CombatCommon::canEscape)
-                                            .withinDistance(8.0D, 48.0D)
-                                            .guard(40)
-                            )
             )
             .newBehaviorRoot(
                     BehaviorRoot.builder()
@@ -82,6 +76,19 @@ public class HerobrineShadowObsidianSword {
             )
             .newBehaviorRoot(
                     BehaviorRoot.builder()
+                            .priority(2.0D)
+                            .weight(70.0D)
+                            .maxCooldown (100)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(HerobrineCommon::canSummonDarkOb)
+                                            .animationBehavior(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F)
+                                            .addExBehavior(HerobrineCommon::performSummonDarkOb)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(40.0D)
                             .maxCooldown(20)
@@ -105,6 +112,726 @@ public class HerobrineShadowObsidianSword {
                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                             .withinDistance(0.0D, 6.0D)
                                                                                             .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_FIST_AIR_SLASH, 0.0F)
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_DASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_ONEHAND_LONG, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_STEP_LEFT, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_2, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.SWORD_HEAVY_AUTO_1, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_FIST_AIR_SLASH, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_ONEHAND_LONG, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_ONEHAND_LONG, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(Animations.BIPED_STEP_FORWARD, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_1, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_TORMENT_BERSERK_DASH, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_2, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_FIST_AIR_SLASH, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_TORMENT_AIRSLAM, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_2, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_ONEHAND_LONG, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.SWORD_HEAVY_AUTO_1, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_2, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_STEP_RIGHT, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_FIST_AIR_SLASH, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+/* 6 */
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_ONEHAND_LONG, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_DASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_1, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_FIST_AIR_SLASH, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(Animations.BIPED_STEP_LEFT, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_ONEHAND_LONG, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_TORMENT_BERSERK_DASH, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_1, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_FIST_AIR_SLASH, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_2, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.SWORD_HEAVY_AUTO_1, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_ONEHAND_LONG, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_TORMENT_AIRSLAM, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_2, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_ONEHAND_LONG, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+/* 10 */
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_ONEHAND_LONG, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_TORMENT_BERSERK_DASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_1, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_STEP_FORWARD, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_FIST_AIR_SLASH, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_DASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_ONEHAND_LONG, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_STEP_RIGHT, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SWORD_HEAVY_AUTO_1, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_FIST_AIR_SLASH, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.SWORD_HEAVY_AUTO_1, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_1, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_TORMENT_AIRSLAM, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_ONEHAND_LONG, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_TORMENT_BERSERK_DASH, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_2, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_TORMENT_AIRSLAM, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_FIST_AIR_SLASH, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_STEP_LEFT, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_ONEHAND_LONG, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+/* 15 */
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_ONEHAND_LONG, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.SWORD_HEAVY_AUTO_1, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_1, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_STEP_FORWARD, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_TORMENT_BERSERK_DASH, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_FIST_AIR_SLASH, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(Animations.BIPED_STEP_RIGHT, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_2, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_TORMENT_AIRSLAM, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_ONEHAND_LONG, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_DASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_FIST_AIR_SLASH, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SWORD_HEAVY_AUTO_1, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_TORMENT_BERSERK_DASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_ONEHAND_LONG, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_FIST_AIR_SLASH, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_ONEHAND_LONG, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.SWORD_HEAVY_AUTO_1, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_2, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_STEP_LEFT, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_TORMENT_AIRSLAM, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+/* 20 */
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_FIST_AIR_SLASH, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.OBSIDIAN_FIST_DASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_ONEHAND_LONG, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_STEP_FORWARD, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SWORD_HEAVY_AUTO_1, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_1, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_TORMENT_AIRSLAM, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_2, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_STEP_RIGHT, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.OBSIDIAN_INFERNAL_AUTO_2, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_TORMENT_BERSERK_DASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_FIST_AIR_SLASH, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SWORD_HEAVY_AUTO_1, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_ONEHAND_LONG, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.SWORD_HEAVY_AUTO_1, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_TWOHAND_AUTO_1, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_TORMENT_AIRSLAM, 0.0F)
+                                                                                            )
                                                                             )
                                                             )
                                             )
@@ -157,18 +884,26 @@ public class HerobrineShadowObsidianSword {
                                                             .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_TORMENT_BERSERK_DASH, 0.0F)
                                             )
                             )
-
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(HerobrineCommon::canShootDarkOb)
+                                            .withinDistance(5.0D, 10.0D)
+                                            .animationBehavior(AVAnimations.CASTING_ONE_HAND_TOP, 0.0F)
+                                            .addExBehavior(HerobrineCommon::performShootDarkOb)
+                            )
             )
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
-                            .weight(30.0D)
+                            .weight(15.0D)
+                            .maxCooldown(200)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .withinDistance(0.0D, 3.0D)
-                                            .custom(HerobrineCommon::canPerformGuarding)
-                                            .guard(40)
+                                            .custom(HerobrineCommon::canPlayObsidianMachine)
+                                            .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
+                                            .addExBehavior(HerobrineCommon::performObsidianMachine)
                             )
             )
             .newBehaviorRoot(
@@ -254,12 +989,6 @@ public class HerobrineShadowObsidianSword {
                                             .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
                                             .addExBehavior(CombatCommon::performEscapeRunAway)
                             )
-                            .addFirstBehavior(
-                                    Behavior.builder()
-                                            .custom(CombatCommon::canEscape)
-                                            .withinDistance(8.0D, 48.0D)
-                                            .guard(40)
-                            )
             )
             .newBehaviorRoot(
                     BehaviorRoot.builder()
@@ -297,6 +1026,19 @@ public class HerobrineShadowObsidianSword {
             )
             .newBehaviorRoot(
                     BehaviorRoot.builder()
+                            .priority(2.0D)
+                            .weight(70.0D)
+                            .maxCooldown (100)
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(HerobrineCommon::canSummonDarkOb)
+                                            .animationBehavior(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F)
+                                            .addExBehavior(HerobrineCommon::performSummonDarkOb)
+                            )
+            )
+            .newBehaviorRoot(
+                    BehaviorRoot.builder()
                             .priority(1.0D)
                             .weight(40.0D)
                             .maxCooldown(20)
@@ -325,6 +1067,757 @@ public class HerobrineShadowObsidianSword {
                                                                                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                                                                                             .withinDistance(0.0D, 6.0D)
                                                                                                             .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AUTO_3, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO4, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_STEP_LEFT, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AUTO_3, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO5, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_3, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.GREATSWORD_DUAL_AUTO_2, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO4, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AUTO_3, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AIRSLASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_2, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO5, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.GREATSWORD_DUAL_AUTO_2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(Animations.BIPED_STEP_FORWARD, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO4, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_2, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO4, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_3, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AUTO_3, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_STEP_RIGHT, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO5, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+/* 6 */
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AIRSLASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.GREATSWORD_DUAL_AUTO_2, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO5, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(Animations.BIPED_STEP_LEFT, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_2, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_3, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AUTO_3, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AUTO_3, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO4, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.GREATSWORD_DUAL_AUTO_2, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.GREATSWORD_DUAL_AUTO_2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_3, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO5, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO4, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+/* 10 */
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO4, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AIRSLASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_2, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_STEP_FORWARD, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AUTO_3, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_STEP_RIGHT, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO5, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO5, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_3, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.GREATSWORD_DUAL_AUTO_2, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_STEP_LEFT, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AIRSLASH, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AUTO_3, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_3, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO4, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.GREATSWORD_DUAL_AUTO_2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AIRSLASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_2, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO5, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+/* 15 */
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO4, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AUTO_3, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_STEP_FORWARD, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_2, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO5, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(Animations.BIPED_STEP_RIGHT, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_2, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AIRSLASH, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.GREATSWORD_DUAL_AUTO_2, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_3, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO4, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AUTO_3, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO5, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_STEP_LEFT, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AIRSLASH, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.GREATSWORD_DUAL_AUTO_2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_3, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO4, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO5, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+/* 20 */
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO4, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_3, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AUTO_3, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_ROLL_FORWARD, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO5, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AIRSLASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_2, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_STEP_FORWARD, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_3, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.GREATSWORD_DUAL_AUTO_2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO4, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_STEP_RIGHT, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AIRSLASH, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AUTO_3, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_3, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO5, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_STEP_LEFT, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(WOMAnimations.TORMENT_DASH, 0.0F)
+                                                                                            )
+                                                                            )
+                                                            )
+                                            )
+                            )
+
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .withinDistance(0.0D, 3.0D)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_2, 0.0F)
+                                            .addNextBehavior(
+                                                    Behavior.builder()
+                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                            .withinDistance(0.0D, 4.0D)
+                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AIRSLASH, 0.0F)
+                                                            .addNextBehavior(
+                                                                    Behavior.builder()
+                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                            .withinDistance(0.0D, 5.0D)
+                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_AUTO_3, 0.0F)
+                                                                            .addNextBehavior(
+                                                                                    Behavior.builder()
+                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                            .withinDistance(0.0D, 5.0D)
+                                                                                            .animationBehavior(Animations.BIPED_ROLL_BACKWARD, 0.0F)
+                                                                                            .addNextBehavior(
+                                                                                                    Behavior.builder()
+                                                                                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                                                                                            .withinDistance(0.0D, 6.0D)
+                                                                                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_DUAL_SWORD_AUTO4, 0.0F)
                                                                                             )
                                                                             )
                                                             )
@@ -372,18 +1865,26 @@ public class HerobrineShadowObsidianSword {
                                             .withinDistance(0.0D, 5.0D)
                                             .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GREATSWORD_DUAL_EARTHQUAKE, 0.0F)
                             )
-
+                            .addFirstBehavior(
+                                    Behavior.builder()
+                                            .custom(CombatCommon::canPerformNormalAttackLogic)
+                                            .custom(HerobrineCommon::canShootDarkOb)
+                                            .withinDistance(5.0D, 10.0D)
+                                            .animationBehavior(AVAnimations.CASTING_ONE_HAND_TOP, 0.0F)
+                                            .addExBehavior(HerobrineCommon::performShootDarkOb)
+                            )
             )
             .newBehaviorRoot(
                     BehaviorRoot.builder()
                             .priority(1.0D)
-                            .weight(30.0D)
+                            .weight(15.0D)
+                            .maxCooldown(200)
                             .addFirstBehavior(
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
-                                            .withinDistance(0.0D, 3.0D)
-                                            .custom(HerobrineCommon::canPerformGuarding)
-                                            .guard(40)
+                                            .custom(HerobrineCommon::canPlayObsidianMachine)
+                                            .animationBehavior(Animations.BIPED_STEP_BACKWARD, 0.0F)
+                                            .addExBehavior(HerobrineCommon::performObsidianMachine)
                             )
             )
             .newBehaviorRoot(

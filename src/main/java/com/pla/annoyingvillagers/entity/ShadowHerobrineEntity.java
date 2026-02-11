@@ -23,29 +23,70 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.utils.NameManager;
+import yesman.epicfight.gameasset.EpicFightSounds;
+import yesman.epicfight.particle.EpicFightParticles;
+import yesman.epicfight.particle.HitParticleType;
 
 import java.util.Random;
 import java.util.UUID;
 
 
 public class ShadowHerobrineEntity extends HerobrineMob {
-    public BlockProjectileEntity darkObUp;
-    public UUID darkObUpUUID;
+    private BlockProjectileEntity darkObUp;
+    private UUID darkObUpUUID;
 
-    public BlockProjectileEntity darkObLeft;
-    public UUID darkObLeftUUID;
+    private BlockProjectileEntity darkObLeft;
+    private UUID darkObLeftUUID;
 
-    public BlockProjectileEntity darkObRight;
-    public UUID darkObRightUUID;
+    private BlockProjectileEntity darkObRight;
+    private UUID darkObRightUUID;
+
+    private int summonDarkObCooldown = 0;
+    private int obsidianMachineGunCooldown = 0;
+    private int darkObParryCooldown = 0;
+    private int obsidianMachineGunTick = 0;
+
+    public void clearDarkOb() {
+        darkObUp.discard();
+        darkObUpUUID = null;
+        darkObUp = null;
+        darkObRight.discard();
+        darkObRightUUID = null;
+        darkObRight = null;
+        darkObLeft.discard();
+        darkObLeftUUID = null;
+        darkObLeft = null;
+    }
+
+    public void setObsidianMachineGunTick() {
+        this.obsidianMachineGunTick = 20;
+    }
+
+    public int getObsidianMachineGunTick() {
+        return obsidianMachineGunTick;
+    }
 
     public boolean isDarkObReady() {
-        return darkObUp != null && darkObLeft != null && darkObRight != null;
+        return darkObUp != null || darkObLeft != null || darkObRight != null;
+    }
+
+    public int getSummonDarkObCooldown() {
+        return summonDarkObCooldown;
+    }
+
+    public void setSummonDarkObCooldown(int summonDarkObCooldown) {
+        this.summonDarkObCooldown = summonDarkObCooldown;
+    }
+
+    public int getObsidianMachineGunCooldown() {
+        return obsidianMachineGunCooldown;
     }
 
     public ShadowHerobrineEntity(SpawnEntity spawnEntity, Level level) {
@@ -62,18 +103,53 @@ public class ShadowHerobrineEntity extends HerobrineMob {
         this.setPersistenceRequired();
         this.setChatName(this.getDisplayName().getString());
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get()));
-        this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
+//        this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
     }
 
     public boolean hurt(@NotNull DamageSource damageSource, float f) {
-        if (!this.isSacrificing()) {
+        if (!this.isSacrificing() && this.level() instanceof ServerLevel serverLevel) {
             if (Math.random() <= 0.5D
                     && !damageSource.is(DamageTypes.IN_WALL)
                     && !damageSource.is(DamageTypes.IN_FIRE)
                     && !damageSource.is(DamageTypes.ON_FIRE)) {
-                if (this.level() instanceof ServerLevel serverLevel) {
                     serverLevel.playSound(null, this.blockPosition(), AnnoyingVillagersModSounds.OBSIDIAN_PLACE.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
                     HerobrineUtil.spawnObsidianEyeLineStaggered(serverLevel, this, AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().defaultBlockState(), 1);
+            } else if (this.getState() == 2
+                && damageSource.getEntity() instanceof LivingEntity livingEntity
+                && this.darkObParryCooldown == 0) {
+                if (this.darkObUp != null) {
+                    this.darkObUp.moveTo(livingEntity.blockPosition().getCenter());
+                    shootOne(this.darkObUp, livingEntity.getOnPos().getCenter(), 2.0F, "up", this);
+                    this.darkObParryCooldown = 40;
+                    this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
+                    EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO,
+                            this, this.darkObUp);
+                    if (!isDarkObReady()) {
+                        this.summonDarkObCooldown = new Random().nextInt(200, 600);
+                    }
+                    return false;
+                } else if (this.darkObRight != null) {
+                    this.darkObRight.moveTo(livingEntity.blockPosition().getCenter());
+                    shootOne(this.darkObRight, livingEntity.getOnPos().getCenter(), 2.0F, "right", this);
+                    this.darkObParryCooldown = 40;
+                    this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
+                    EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO,
+                            this, this.darkObRight);
+                    if (!isDarkObReady()) {
+                        this.summonDarkObCooldown = new Random().nextInt(200, 600);
+                    }
+                    return false;
+                } if (this.darkObLeft != null) {
+                    this.darkObLeft.moveTo(livingEntity.blockPosition().getCenter());
+                    shootOne(this.darkObLeft, livingEntity.getOnPos().getCenter(), 2.0F, "left", this);
+                    this.darkObParryCooldown = 40;
+                    this.playSound(EpicFightSounds.CLASH.get(), 1.0F, 1.0F);
+                    EpicFightParticles.HIT_BLADE.get().spawnParticleWithArgument(serverLevel, HitParticleType.FRONT_OF_EYES, HitParticleType.ZERO,
+                            this, this.darkObLeft);
+                    if (!isDarkObReady()) {
+                        this.summonDarkObCooldown = new Random().nextInt(200, 600);
+                    }
+                    return false;
                 }
             }
         }
@@ -116,51 +192,144 @@ public class ShadowHerobrineEntity extends HerobrineMob {
         }
     }
 
+    private void enchantGear(ItemStack itemStack) {
+        itemStack.enchant(Enchantments.SHARPNESS, 5);
+        itemStack.enchant(Enchantments.SWEEPING_EDGE, 5);
+        itemStack.enchant(Enchantments.KNOCKBACK, 3);
+    }
+
     @Override
     public void rollItem() {
         super.rollItem();
-//        ItemStack mainHand = this.getMainHandItem();
-//        if (mainHand.getItem() instanceof ShadowObsidianWeaponItem) {
-//            if (new Random().nextBoolean()) {
-//                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get()));
-//                if (new Random().nextBoolean()) {
-//                    this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
-//                } else {
-//                    this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
-//                }
-//            } else {
-//                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
-//                if (new Random().nextBoolean()) {
-//                    this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
-//                } else {
-//                    this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
-//                }
-//            }
-//        } else if (mainHand.getItem() instanceof ShadowObsidianPillarItem) {
-//            if (new Random().nextBoolean()) {
-//                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get()));
-//                this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
-//            } else {
-//                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
-//                if (new Random().nextBoolean()) {
-//                    this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
-//                } else {
-//                    this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
-//                }
-//            }
-//        } else if (mainHand.getItem() instanceof ShadowObsidianSwordItem) {
-//            if (new Random().nextBoolean()) {
-//                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get()));
-//                this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
-//            } else {
-//                this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get()));
-//                if (new Random().nextBoolean()) {
-//                    this.setItemInHand(InteractionHand.OFF_HAND, new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get()));
-//                } else {
-//                    this.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
-//                }
-//            }
-//        }
+        ItemStack mainHand = this.getMainHandItem();
+        ItemStack mainHandWeapon;
+        ItemStack offHandWeapon = ItemStack.EMPTY;
+        if (mainHand.getItem() instanceof ShadowObsidianWeaponItem) {
+            if (new Random().nextBoolean()) {
+                mainHandWeapon = new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get());
+                if (this.getState() == 2) {
+                    enchantGear(mainHandWeapon);
+                }
+                if (new Random().nextBoolean()) {
+                    offHandWeapon = new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get());
+                    if (this.getState() == 2) {
+                        enchantGear(offHandWeapon);
+                    }
+                }
+            } else {
+                mainHandWeapon = new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get());
+                if (this.getState() == 2) {
+                    enchantGear(mainHandWeapon);
+                }
+                if (new Random().nextBoolean()) {
+                    offHandWeapon = new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get());
+                    if (this.getState() == 2) {
+                        enchantGear(offHandWeapon);
+                    }
+                }
+            }
+        } else if (mainHand.getItem() instanceof ShadowObsidianPillarItem) {
+            if (new Random().nextBoolean()) {
+                mainHandWeapon = new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get());
+                if (this.getState() == 2) {
+                    enchantGear(mainHandWeapon);
+                }
+            } else {
+                mainHandWeapon = new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get());
+                if (this.getState() == 2) {
+                    enchantGear(mainHandWeapon);
+                }
+                if (new Random().nextBoolean()) {
+                    offHandWeapon = new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get());
+                    if (this.getState() == 2) {
+                        enchantGear(offHandWeapon);
+                    }
+                }
+            }
+        } else if (mainHand.getItem() instanceof ShadowObsidianSwordItem) {
+            if (new Random().nextBoolean()) {
+                mainHandWeapon = new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get());
+                if (this.getState() == 2) {
+                    enchantGear(mainHandWeapon);
+                }
+            } else {
+                mainHandWeapon = new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get());
+                if (this.getState() == 2) {
+                    enchantGear(mainHandWeapon);
+                }
+                if (new Random().nextBoolean()) {
+                    offHandWeapon = new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get());
+                    if (this.getState() == 2) {
+                        enchantGear(offHandWeapon);
+                    }
+                }
+            }
+        } else {
+            float chance = new Random().nextFloat();
+            if (chance <= 0.3F) {
+                if (new Random().nextBoolean()) {
+                    mainHandWeapon = new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get());
+                    if (this.getState() == 2) {
+                        enchantGear(mainHandWeapon);
+                    }
+                    if (new Random().nextBoolean()) {
+                        offHandWeapon = new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get());
+                        if (this.getState() == 2) {
+                            enchantGear(offHandWeapon);
+                        }
+                    }
+                } else {
+                    mainHandWeapon = new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get());
+                    if (this.getState() == 2) {
+                        enchantGear(mainHandWeapon);
+                    }
+                    if (new Random().nextBoolean()) {
+                        offHandWeapon = new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get());
+                        if (this.getState() == 2) {
+                            enchantGear(offHandWeapon);
+                        }
+                    }
+                }
+            } else if (chance <= 0.6F) {
+                if (new Random().nextBoolean()) {
+                    mainHandWeapon = new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get());
+                    if (this.getState() == 2) {
+                        enchantGear(mainHandWeapon);
+                    }
+                } else {
+                    mainHandWeapon = new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get());
+                    if (this.getState() == 2) {
+                        enchantGear(mainHandWeapon);
+                    }
+                    if (new Random().nextBoolean()) {
+                        offHandWeapon = new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get());
+                        if (this.getState() == 2) {
+                            enchantGear(offHandWeapon);
+                        }
+                    }
+                }
+            } else {
+                if (new Random().nextBoolean()) {
+                    mainHandWeapon = new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_WEAPON.get());
+                    if (this.getState() == 2) {
+                        enchantGear(mainHandWeapon);
+                    }
+                } else {
+                    mainHandWeapon = new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_PILLAR.get());
+                    if (this.getState() == 2) {
+                        enchantGear(mainHandWeapon);
+                    }
+                    if (new Random().nextBoolean()) {
+                        offHandWeapon = new ItemStack(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get());
+                        if (this.getState() == 2) {
+                            enchantGear(offHandWeapon);
+                        }
+                    }
+                }
+            }
+        }
+        this.setItemInHand(InteractionHand.MAIN_HAND, mainHandWeapon);
+        this.setItemInHand(InteractionHand.OFF_HAND, offHandWeapon);
     }
 
     @Override
@@ -253,6 +422,7 @@ public class ShadowHerobrineEntity extends HerobrineMob {
                 darkObbyUp.setNoGravity(true);
                 darkObbyUp.setNotReadyForShoot(true);
                 darkObbyUp.moveTo(getUpBlockPos());
+                darkObbyUp.setOwnerUUID(this.getUUID());
                 serverLevel.addFreshEntity(darkObbyUp);
                 this.darkObUpUUID = darkObbyUp.getUUID();
                 this.darkObUp = darkObbyUp;
@@ -266,6 +436,7 @@ public class ShadowHerobrineEntity extends HerobrineMob {
                 );
                 darkObbyRight.setNoGravity(true);
                 darkObbyRight.setNotReadyForShoot(true);
+                darkObbyRight.setOwnerUUID(this.getUUID());
                 darkObbyRight.moveTo(getRightBlockPos());
                 serverLevel.addFreshEntity(darkObbyRight);
                 this.darkObRightUUID = darkObbyRight.getUUID();
@@ -280,6 +451,7 @@ public class ShadowHerobrineEntity extends HerobrineMob {
                 );
                 darkObbyLeft.setNoGravity(true);
                 darkObbyLeft.setNotReadyForShoot(true);
+                darkObbyLeft.setOwnerUUID(this.getUUID());
                 darkObbyLeft.moveTo(getLeftBlockPos());
                 serverLevel.addFreshEntity(darkObbyLeft);
                 this.darkObLeftUUID = darkObbyLeft.getUUID();
@@ -288,7 +460,8 @@ public class ShadowHerobrineEntity extends HerobrineMob {
         }
     }
 
-    private static void shootChain(Entity shooter, BlockState block, float velocity, int length) {
+    public void shootChain(BlockState block, float velocity, int length) {
+        Entity shooter = this;
         Level level = shooter.level();
         if (level.isClientSide) return;
 
@@ -340,7 +513,8 @@ public class ShadowHerobrineEntity extends HerobrineMob {
         }
     }
 
-    public void shootDarkObsAtTarget(double speed, ShadowHerobrineEntity shadowHerobrineEntity) {
+    public void shootDarkObsAtTarget(double speed) {
+        ShadowHerobrineEntity shadowHerobrineEntity = this;
         if (shadowHerobrineEntity.level().isClientSide) return;
 
         Vec3 to;
@@ -360,29 +534,27 @@ public class ShadowHerobrineEntity extends HerobrineMob {
         if (shadowHerobrineEntity.darkObRight != null) {
             shootOne(shadowHerobrineEntity.darkObRight, to, speed, "right", shadowHerobrineEntity);
         }
+
+        this.summonDarkObCooldown = new Random().nextInt(200, 600);
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (!this.level().isClientSide) {
-//            spawnDarkObEntities();
-//            ShadowHerobrineEntity shadowHerobrineEntity = this;
-//            new DelayedTask(10) {
-//                @Override
-//                public void run() {
-//                    if (shadowHerobrineEntity.isAlive()) {
-//                        shootDarkObsAtTarget(2.0F, shadowHerobrineEntity);
-//                    }
-//                }
-//            };
-
-//            BlockState block = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().defaultBlockState();
-//            setDeltaMovement(Vec3.ZERO);
-//            shootChain(this, block, 2.5F, 5);
-//            if (this.getMainHandItem().getItem().equals(AnnoyingVillagersModItems.HEROBRINE_ENDER_EYE.get())) {
-//                this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
-//            }
+        if (this.level() instanceof ServerLevel) {
+            if (this.summonDarkObCooldown > 0) this.summonDarkObCooldown--;
+            if (this.darkObParryCooldown > 0) this.darkObParryCooldown--;
+            if (this.obsidianMachineGunCooldown > 0) this.obsidianMachineGunCooldown--;
+            if (this.obsidianMachineGunTick > 0) {
+                if (this.obsidianMachineGunTick == 1) {
+                    this.obsidianMachineGunCooldown = new Random().nextInt(200, 300);
+                    rollItem();
+                }
+                this.obsidianMachineGunTick--;
+                BlockState block = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().defaultBlockState();
+                setDeltaMovement(Vec3.ZERO);
+                shootChain(block, 2.5F, 5);
+            }
 
             if (darkObUp == null && darkObUpUUID != null) {
                 Entity entity = ((ServerLevel) this.level()).getEntity(darkObUpUUID);

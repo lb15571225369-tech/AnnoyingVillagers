@@ -10,7 +10,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
-import com.pla.annoyingvillagers.procedures.BlueDemonSkillLightingEffectDuringDurationProcedure;
+import com.pla.annoyingvillagers.tobe_removed.BlueDemonSkillLightingEffectDuringDurationProcedure;
 
 public class BlueDemonSkillLightingEffectMobEffect extends MobEffect {
 
