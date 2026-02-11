@@ -292,7 +292,7 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
             this.goalSelector.addGoal(4, new RangedBowAttackGoal<>(this, 1.0D, 20, 10.0F));
         }
         this.goalSelector.addGoal(1, new BurnNearbyItemGoal(this, 1.0D, 10.0D));
-        this.goalSelector.addGoal(1, new PlayIdleAnimationGoal(this, new Random().nextInt(3000, 6000)));
+        this.goalSelector.addGoal(2, new PlayIdleAnimationGoal(this, new Random().nextInt(3000, 6000)));
     }
 
     @Override
@@ -411,20 +411,9 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
 
     public void shortPillarJump() {
         if (!this.onGround()) return;
-        this.jumpFromGround();
-
         Vec3 v = this.getDeltaMovement();
-        float yawRad = this.yBodyRot * Mth.DEG_TO_RAD;
-        Vec3 forwardFlat = new Vec3(-Mth.sin(yawRad), 0.0D, Mth.cos(yawRad)).normalize();
-        double backMag = 0.18D + this.getRandom().nextDouble() * 0.12D;
-        Vec3 backward = forwardFlat.scale(-backMag);
-        double yImpulse = Math.max(0.42D, v.y);
-        this.setDeltaMovement(
-                v.x * 0.6D + backward.x,
-                yImpulse,
-                v.z * 0.6D + backward.z
-        );
-
+        double keepH = 0.02D;
+        this.setDeltaMovement(v.x * keepH, 0.42D, v.z * keepH);
         this.hasImpulse = true;
     }
 

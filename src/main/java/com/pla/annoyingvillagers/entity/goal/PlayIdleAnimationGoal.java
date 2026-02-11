@@ -171,6 +171,7 @@ public class PlayIdleAnimationGoal extends Goal {
         if (!mob.isAlive() || mob.isRemoved() || mob.isDeadOrDying()) return false;
         if (mob.isPassenger()) return false;
         if (mob.getTarget() != null) return false;
+        if (mob.getNavigation().isInProgress()) return false;
         LivingEntityPatch<?> patch = null;
         if (!mob.onGround()) return false;
         if (mob instanceof PlayerNpcEntity playerNpcEntity && playerNpcEntity.isHealing()) {
@@ -196,7 +197,11 @@ public class PlayIdleAnimationGoal extends Goal {
         if (mob.tickCount <= 30) return false;
         if (!mob.isAlive() || mob.isRemoved() || mob.isDeadOrDying()) return false;
         if (mob.isPassenger()) return false;
+        if (!mob.onGround()) return false;
         if (mob.getTarget() != null) return false;
+        if (mob.getNavigation().isInProgress()) return false;
+        if (mob instanceof PlayerNpcEntity p && p.isHealing()) return false;
+        if (mob instanceof AVNpc a && a.isHealing()) return false;
 
         return ticksLeft > 0;
     }
@@ -244,6 +249,8 @@ public class PlayIdleAnimationGoal extends Goal {
         new DelayedTask(30) {
             @Override
             public void run() {
+                if (mob.getTarget() != null) return;
+                if (!mob.isAlive() || mob.isRemoved() || mob.isDeadOrDying()) return;
                 playIdleAnimation(anim);
                 tryBroadcastIdleMessage(finalChoice);
             }
@@ -252,6 +259,11 @@ public class PlayIdleAnimationGoal extends Goal {
 
     @Override
     public void tick() {
+        if (mob.getTarget() != null || mob.getNavigation().isInProgress() || !mob.onGround()) {
+            ticksLeft = 0;
+            return;
+        }
+
         if (!(mob.level() instanceof ServerLevel)) return;
 
         mob.getNavigation().stop();
@@ -290,15 +302,16 @@ public class PlayIdleAnimationGoal extends Goal {
 
     @Override
     public void stop() {
-        if (mob instanceof PlayerNpcEntity playerNpcEntity) {
-            playerNpcEntity.clearIdleAnimationState();
-            Objects.requireNonNull(playerNpcEntity.getLivingEntityPatch()).playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
-            playerNpcEntity.setPlayingIdle(false);
-        }
         if (mob instanceof AVNpc avNpc) {
             avNpc.clearIdleAnimationState();
-            Objects.requireNonNull(avNpc.getLivingEntityPatch()).playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
+            LivingEntityPatch<?> patch = avNpc.getLivingEntityPatch();
+            if (patch != null) patch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
             avNpc.setPlayingIdle(false);
+        } else if (mob instanceof PlayerNpcEntity playerNpcEntity) {
+            playerNpcEntity.clearIdleAnimationState();
+            LivingEntityPatch<?> patch = playerNpcEntity.getLivingEntityPatch();
+            if (patch != null) patch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
+            playerNpcEntity.setPlayingIdle(false);
         }
     }
 
@@ -346,10 +359,10 @@ public class PlayIdleAnimationGoal extends Goal {
                 .get(new Random().nextInt(idleMessages.get(idle).size()));
         serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.literal(msg), false);
 
-        if (mob instanceof PlayerNpcEntity playerNpcEntity && playerNpcEntity.isIdleMessageBroadcast()) {
+        if (mob instanceof PlayerNpcEntity playerNpcEntity) {
             playerNpcEntity.setIdleMessageBroadcast(true);
         }
-        if (mob instanceof AVNpc avNpc && avNpc.isIdleMessageBroadcast()) {
+        if (mob instanceof AVNpc avNpc) {
             avNpc.setIdleMessageBroadcast(true);
         }
     }
