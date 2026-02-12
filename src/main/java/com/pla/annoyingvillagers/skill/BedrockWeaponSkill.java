@@ -1,12 +1,16 @@
 package com.pla.annoyingvillagers.skill;
 
+import com.google.common.collect.Lists;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import reascer.wom.gameasset.animations.weapons.AnimsEnderblaster;
 import reascer.wom.gameasset.animations.weapons.AnimsMoonless;
@@ -19,8 +23,10 @@ import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
+import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.entity.eventlistener.PlayerEventListener.EventType;
 
+import java.util.List;
 import java.util.UUID;
 
 public class BedrockWeaponSkill extends WeaponInnateSkill {

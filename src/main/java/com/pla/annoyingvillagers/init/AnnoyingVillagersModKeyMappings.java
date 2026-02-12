@@ -49,7 +49,7 @@ public class AnnoyingVillagersModKeyMappings {
     }
 
     public static final KeyMapping WEAPONS_MORE_ATTACK = new KeyMapping(
-            "key.annoyingvillagers.weapons_more_attack",
+            "key.annoyingvillagers.special_attack",
             GLFW.GLFW_KEY_C,
             "key.categories.annoyingvillagers") {
         private boolean isDownOld = false;

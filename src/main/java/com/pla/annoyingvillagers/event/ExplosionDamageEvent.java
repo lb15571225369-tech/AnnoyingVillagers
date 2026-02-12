@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.event;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.item.EnderGlaiveItem;
@@ -48,7 +49,7 @@ public class ExplosionDamageEvent {
                 for (Entity entity : detonate.getAffectedEntities()) {
                     if (entity.isAlive() && entity != detonate.getExplosion().getIndirectSourceEntity()
                             && entity instanceof LivingEntity livingExploded && !(entity instanceof EnderHand)
-                            && (entity instanceof Player player && !player.isCreative())) {
+                            && !(entity instanceof Player player && player.isCreative())) {
                         LivingEntityPatch<?> explodedPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                         if (explodedPatch != null) {
                             explodedPatch.playAnimationSynchronized(AVAnimations.GUARD_BREAK_ATTACK, 0.0F);
@@ -83,7 +84,7 @@ public class ExplosionDamageEvent {
                 for (Entity entity : detonate.getAffectedEntities()) {
                     if (entity.isAlive() && entity != detonate.getExplosion().getIndirectSourceEntity()
                             && entity instanceof LivingEntity livingExploded && !(entity instanceof EnderHand)
-                            && (entity instanceof Player player && !player.isCreative())) {
+                            && !(entity instanceof Player player && player.isCreative())) {
                         LivingEntityPatch<?> explodedPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                         if (explodedPatch != null) {
                             explodedPatch.playAnimationSynchronized(AVAnimations.LONGEST_HIT, 0.0F);

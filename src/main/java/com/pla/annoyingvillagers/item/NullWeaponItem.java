@@ -50,6 +50,6 @@ public class NullWeaponItem extends SwordItem {
     @Override
     public void appendHoverText(@NotNull ItemStack itemstack, Level level, @NotNull List<Component> list, @NotNull TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.translatable("tooltip.annoyingvillagers.null_weapon"));
+        list.add(Component.translatable("tooltip.annoyingvillagers.null_weapon_full"));
     }
 }

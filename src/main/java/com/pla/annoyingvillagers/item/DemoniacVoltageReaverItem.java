@@ -51,7 +51,7 @@ public class DemoniacVoltageReaverItem extends SwordItem {
 
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal(Component.translatable("tooltip.annoyingvillagers.demoniac_voltage_reaver").getString() + ")§r"));
+        list.add(Component.literal(Component.translatable("tooltip.annoyingvillagers.demoniac_voltage_reaver").getString()));
     }
 
     public void inventoryTick(ItemStack itemstack, Level level, Entity entity, int i, boolean flag) {

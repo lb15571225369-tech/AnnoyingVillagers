@@ -154,6 +154,6 @@ public class EnderAegisItem extends SwordItem {
 
     public void appendHoverText(@NotNull ItemStack itemstack, Level level, @NotNull List<Component> list, @NotNull TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal(Component.translatable("tooltip.annoyingvillagers.ender_aegis").getString() + ")§r"));
+        list.add(Component.literal(Component.translatable("tooltip.annoyingvillagers.ender_aegis").getString()));
     }
 }

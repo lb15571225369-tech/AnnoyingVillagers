@@ -84,6 +84,6 @@ public class EnderGlaiveItem extends SwordItem {
     @Override
     public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
-        list.add(Component.literal(Component.translatable("tooltip.annoyingvillagers.ender_glaive").getString() + ")§r"));
+        list.add(Component.literal(Component.translatable("tooltip.annoyingvillagers.ender_glaive").getString()));
     }
 }
