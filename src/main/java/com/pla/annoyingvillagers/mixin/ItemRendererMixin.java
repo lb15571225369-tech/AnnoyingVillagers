@@ -10,7 +10,7 @@
  * Required upstream notices must be preserved.
  *
  * License texts:
- *   - licenses/CC-BY-NC-SA-3.0.md
+ *   - third_party/licenses/CC-BY-NC-SA-3.0.md
  *
  * Modifications and integration:
  *   Copyright (c) 2025 pla_is_me

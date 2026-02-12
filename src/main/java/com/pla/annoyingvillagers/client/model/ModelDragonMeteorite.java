@@ -10,8 +10,8 @@
  * Required upstream notices must be preserved (including Apache-2.0 NOTICE if provided).
  *
  * License texts:
- *   - licenses/GPL-3.0.md
- *   - licenses/Apache-2.0.md
+ *   - third_party/licenses/GPL-3.0.md
+ *   - third_party/licenses/Apache-2.0.md
  *
  * Modifications:
  *   Copyright (c) 2026 pla_is_me

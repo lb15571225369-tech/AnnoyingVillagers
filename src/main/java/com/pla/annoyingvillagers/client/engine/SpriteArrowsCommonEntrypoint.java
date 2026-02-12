@@ -10,7 +10,7 @@
  * Required upstream notices must be preserved.
  *
  * License texts:
- *   - licenses/MIT.md
+ *   - third_party/licenses/MIT.md
  *
  * Modifications:
  *   Copyright (c) 2026 pla_is_me

@@ -10,7 +10,7 @@
  * Required upstream notices must be preserved.
  *
  * License texts:
- *   - licenses/GPL-3.0.md
+ *   - third_party/licenses/GPL-3.0.md
  *
  * Modifications:
  *   Copyright (c) 2026 pla_is_me

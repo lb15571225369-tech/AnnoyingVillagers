@@ -10,7 +10,7 @@
  * Required upstream notices must be preserved.
  *
  * License texts:
- *   - licenses/GPL-3.0.txt
+ *   - third_party/licenses/GPL-3.0.txt
  *
  * Notes:
  * - Portions of this file include/derive from particle implementation(s) originating in

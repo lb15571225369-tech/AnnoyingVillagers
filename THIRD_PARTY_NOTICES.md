@@ -19,7 +19,7 @@ All required upstream notices must be preserved.
 
 ### A1) EpicACG - dfdyz - GPL-3.0
 - Type: assets adapted from upstream
-- License text: `licenses/GPL-3.0.md`
+- License text: `third_party/licenses/GPL-3.0.md`
 - Source: https://github.com/dfdyz/epicacg-1.20
 
 **Paths / Files**
@@ -27,7 +27,7 @@ All required upstream notices must be preserved.
 
 ### A2) Explosive Enhancement: Reforged - Xylonity - GPL-3.0
 - Type: code/assets adapted (notably particle implementations)
-- License text: `licenses/GPL-3.0.md`
+- License text: `third_party/licenses/GPL-3.0.md`
 - Source: https://github.com/Xylonity/Explosive-Enhancement-Reforged
 
 **Paths / Files**
@@ -44,7 +44,7 @@ All required upstream notices must be preserved.
 
 ### A3) Dragon Mounts: Legacy - Nico Bergemann (BarracudaATA), Kay9, contributors - GPL-3.0-or-later
 - Type: code/assets adapted
-- License text: `licenses/GPL-3.0.md`
+- License text: `third_party/licenses/GPL-3.0.md`
 - Source: https://github.com/MWall541/Dragon-Mounts-Legacy
 
 **Paths / Files**
@@ -62,7 +62,7 @@ All required upstream notices must be preserved.
 
 ### A4) Epic Fight - Infernal Gainer - reascer - GPL-3.0
 - Type: assets adapted from upstream
-- License text: `licenses/GPL-3.0.md`
+- License text: `third_party/licenses/GPL-3.0.md`
 - Source: https://www.curseforge.com/minecraft/mc-mods/epic-fight-infernal-gainer
 
 **Paths / Files**
@@ -74,7 +74,7 @@ All required upstream notices must be preserved.
 
 ### B1) Epic Fight - Valour Guard - namelesslk - LGPL-2.1
 - Type: assets/data derived (e.g., animations) and/or LGPL-governed parts
-- License text: `licenses/LGPL-2.1.md`
+- License text: `third_party/licenses/LGPL-2.1.md`
 - Source: https://github.com/Cyber2049/valour-guard
 
 **Paths / Files**
@@ -86,7 +86,7 @@ All required upstream notices must be preserved.
 
 ### C1) Sprite Arrows - iliandev - MIT
 - Type: code adapted
-- License text: `licenses/MIT.md`
+- License text: `third_party/licenses/MIT.md`
 - Source: https://github.com/justliliandev/arrow-sprites
 
 **Paths / Files**
@@ -95,7 +95,7 @@ All required upstream notices must be preserved.
 
 ### C2) Epic Fight x Iron's Spells: Enhanced Animations - YukamiNeeSan - MIT
 - Type: derived assets/data with attribution
-- License text: `licenses/MIT.md`
+- License text: `third_party/licenses/MIT.md`
 - Source: https://github.com/domanhthang2110/efiscompat
 
 **Paths / Files**
@@ -103,7 +103,7 @@ All required upstream notices must be preserved.
 
 ### C3) Epic Fight - Dual GreatSword - reascer - MIT
 - Type: code/assets adapted
-- License text: `licenses/MIT.md`
+- License text: `third_party/licenses/MIT.md`
 - Source: https://www.curseforge.com/minecraft/mc-mods/epicfight-dual-greatsword
 
 **Paths / Files**
@@ -115,7 +115,7 @@ All required upstream notices must be preserved.
 
 ### D1) Skyfall: Meteorites - Yoshi01111 - Apache-2.0
 - Type: code adapted
-- License text: `licenses/Apache-2.0.md`
+- License text: `third_party/licenses/Apache-2.0.md`
 - Source: https://www.curseforge.com/minecraft/mc-mods/skyfall-meteorites
 
 **Paths / Files**
@@ -160,7 +160,7 @@ All required upstream notices must be preserved.
 
 ### E1) Annoying Villagers - Pugilist Steve - AFL-3.0
 - Type: assets
-- License text: `licenses/AFL-3.0.md`
+- License text: `third_party/licenses/AFL-3.0.md`
 - Source: https://space.bilibili.com/1337039598/dynamic
 
 **Paths / Files**
@@ -172,7 +172,7 @@ All required upstream notices must be preserved.
 
 ### F1) Quark - Vazkii and contributors - CC BY-NC-SA 3.0
 - Type: code adapted (colored enchantment rendering)
-- License text: `licenses/CC-BY-NC-SA-3.0.md`
+- License text: `third_party/licenses/CC-BY-NC-SA-3.0.md`
 - Source: https://github.com/VazkiiMods/Quark
 
 **Paths / Files**
@@ -186,7 +186,7 @@ All required upstream notices must be preserved.
 
 ### G1) WOM (dependency mod) - reacer - Proprietary / All Rights Reserved
 - Type: cloned/copied assets (animations) from a dependency mod for reuse
-- License text: `licenses/LicenseRef-WOM-Proprietary.md`
+- License text: `third_party/licenses/LicenseRef-WOM-Proprietary.md`
 - Source: assets/annoyingvillagers/animmodels/animations/biped/wom_clone
 
 **Paths / Files**
@@ -225,7 +225,7 @@ may be subject to the repository’s licensing policy (see `LICENSE` and this `T
 ---
 
 ## I) Compliance Notes (Important)
-- Keep upstream license texts in `/licenses/`.
+- Keep upstream license texts in `/third_party/licenses/`.
 - Keep upstream copyright and permission notices where required (MIT/Apache/CC).
 - GPL/LGPL portions may require additional obligations if you distribute binaries or modified source for those portions.
 - AV-RO applies only to Original Materials and cannot restrict rights granted by upstream licenses for third-party portions.

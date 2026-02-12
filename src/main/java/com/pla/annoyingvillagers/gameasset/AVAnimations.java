@@ -11,43 +11,43 @@
  *   [1] EpicACG - dfdyz
  *       License: GPL-3.0-only
  *       Source: https://github.com/dfdyz/epicacg-1.20
- *       Local license text: licenses/GPL-3.0.md
+ *       Local license text: third_party/licenses/GPL-3.0.md
  *       Scope: assets (possible adapted portions)
  *
  *   [2] Epic Fight - Valour Guard - namelesslk
  *       License: LGPL-2.1-only
  *       Source: https://github.com/Cyber2049/valour-guard
- *       Local license text: licenses/LGPL-2.1.md
+ *       Local license text: third_party/licenses/LGPL-2.1.md
  *       Scope: assets (possible derived portions)
  *
  *   [3] Epic Fight x Iron's Spells: Enhanced Animations - YukamiNeeSan
  *       License: MIT
  *       Source: https://github.com/domanhthang2110/efiscompat
- *       Local license text: licenses/MIT.md
+ *       Local license text: third_party/licenses/MIT.md
  *       Scope: assets (possible derived portions)
  *
  *   [4] Epic Fight - Infernal Gainer - reascer
  *       License: GPL-3.0-only
  *       Source: https://www.curseforge.com/minecraft/mc-mods/epic-fight-infernal-gainer
- *       Local license text: licenses/GPL-3.0.md
+ *       Local license text: third_party/licenses/GPL-3.0.md
  *       Scope: assets (possible adapted portions)
  *
  *   [5] Epic Fight - Dual GreatSword - reascer
  *       License: MIT
  *       Source: https://www.curseforge.com/minecraft/mc-mods/epicfight-dual-greatsword
- *       Local license text: licenses/MIT.md
+ *       Local license text: third_party/licenses/MIT.md
  *       Scope: assets (possible adapted portions)
  *
  *   [6] Annoying Villagers - Pugilist Steve
  *       License: AFL-3.0
  *       Source: https://space.bilibili.com/1337039598/dynamic
- *       Local license text: licenses/AFL-3.0.md
+ *       Local license text: third_party/licenses/AFL-3.0.md
  *       Scope: assets (possible adapted portions)
  *
  *   [7] Weapons of Miracles (dependency mod) - reacer
  *       License: Proprietary / All Rights Reserved
  *       Source: https://www.curseforge.com/minecraft/mc-mods/weapons-of-miracles-epicfight
- *       Local license text: licenses/LicenseRef-WOM-Proprietary.md
+ *       Local license text: third_party/licenses/LicenseRef-WOM-Proprietary.md
  *       Scope: assets (cloned/copied animations due to limitation in reusing animations from EpicFight)
  *
  * Notes:
