@@ -1,4 +1,4 @@
-# LICENSE_POLICY.md
+# LICENSING.md
 
 ## Annoying Villagers – Licensing Policy (Repository Rules)
 
