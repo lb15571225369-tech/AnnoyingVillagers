@@ -88,7 +88,7 @@ public class SledgehammerHerobrineEntity extends HerobrineMob {
 
         builder = builder.add(Attributes.MOVEMENT_SPEED, 0.45D);
         builder = builder.add(Attributes.MAX_HEALTH, 250.0D);
-        builder = builder.add(Attributes.ARMOR, 50.0D);
+        builder = builder.add(Attributes.ARMOR, 75.0D);
         builder = builder.add(Attributes.ATTACK_DAMAGE, 4.0D);
         builder = builder.add(Attributes.FOLLOW_RANGE, 48.0D);
         return builder;
