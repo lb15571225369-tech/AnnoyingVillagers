@@ -1,36 +1,64 @@
 /*
- * Annoying Villagers - Unified Attribution & License Notice
+ * AnnoyingVillagers - Unified Third-Party Attribution & License Notice (6-in-1)
  *
- * This file may include or adapt code/assets from third-party projects listed below.
- * Keep this notice and all upstream notices.
+ * SPDX-License-Identifier: GPL-3.0-only AND LGPL-2.1-only AND MIT AND AFL-3.0 AND LicenseRef-UNKNOWN
  *
- * [1] EpicACG - author: dfdyz - License: GPL-3.0
- *     - Portions of this file are adapted from the EpicACG mod.
- *     - See: licenses/GPL-3.0.txt and https://www.gnu.org/licenses/gpl-3.0.html
+ * This file may include code and/or assets adapted from one or more third-party projects listed below.
+ * Keep this notice and all required upstream notices.
  *
- * [2] Epic Fight - Valour Guard - author: namelesslk - License: LGPL-2.1
- *     - Derived assets (e.g., animations).
- *     - See: licenses/LGPL-2.1.txt
+ * Upstream projects:
  *
- * [3] Epic Fight x Iron's Spells: Enhanced Animations - author: YukamiNeeSan - License: MIT
- *     - Derived assets/data used with attribution.
- *     - Source: https://www.curseforge.com/minecraft/mc-mods/epic-fight-x-irons-spells-enhanced-animations
- *     - See: licenses/MIT-YukamiNeeSan.txt
+ *   [1] EpicACG - dfdyz
+ *       License: GPL-3.0-only
+ *       Source: https://github.com/dfdyz/epicacg-1.20
+ *       Local license text: licenses/GPL-3.0.md
+ *       Scope: assets (possible adapted portions)
  *
- * [4] Epic Fight - Infernal Gainer - author: reascer - License: GNU
- *     - Code and/or assets referenced/derived.
- *     - Source: https://www.curseforge.com/minecraft/mc-mods/epic-fight-infernal-gainer
- *     - See: http://www.gnu.org/licenses
+ *   [2] Epic Fight - Valour Guard - namelesslk
+ *       License: LGPL-2.1-only
+ *       Source: https://github.com/Cyber2049/valour-guard
+ *       Local license text: licenses/LGPL-2.1.md
+ *       Scope: assets (possible derived portions)
  *
- * [5] Epic Fight - Dual GreatSword - author: reascer - License: MIT
- *     - Code and/or assets referenced/derived.
- *     - Source: https://www.curseforge.com/minecraft/mc-mods/epicfight-dual-greatsword
- *     - See: https://opensource.org/license/mit
+ *   [3] Epic Fight x Iron's Spells: Enhanced Animations - YukamiNeeSan
+ *       License: MIT
+ *       Source: https://github.com/domanhthang2110/efiscompat
+ *       Local license text: licenses/MIT.md
+ *       Scope: assets (possible derived portions)
+ *
+ *   [4] Epic Fight - Infernal Gainer - reascer
+ *       License: GPL-3.0-only
+ *       Source: https://www.curseforge.com/minecraft/mc-mods/epic-fight-infernal-gainer
+ *       Local license text: licenses/GPL-3.0.md
+ *       Scope: assets (possible adapted portions)
+ *
+ *   [5] Epic Fight - Dual GreatSword - reascer
+ *       License: MIT
+ *       Source: https://www.curseforge.com/minecraft/mc-mods/epicfight-dual-greatsword
+ *       Local license text: licenses/MIT.md
+ *       Scope: assets (possible adapted portions)
+ *
+ *   [6] Annoying Villagers - Pugilist Steve
+ *       License: AFL-3.0
+ *       Source: https://space.bilibili.com/1337039598/dynamic
+ *       Local license text: licenses/AFL-3.0.md
+ *       Scope: assets (possible adapted portions)
+ *
+ *   [7] Weapons of Miracles (dependency mod) - reacer
+ *       License: Proprietary / All Rights Reserved
+ *       Source: https://www.curseforge.com/minecraft/mc-mods/weapons-of-miracles-epicfight
+ *       Local license text: licenses/LicenseRef-WOM-Proprietary.md
+ *       Scope: assets (cloned/copied animations due to limitation in reusing animations from EpicFight)
  *
  * Notes:
- * - Where GPL-3.0/LGPL-2.1 applies, provide the corresponding license texts and
- *   make source changes available under the same license terms as required.
- * - MIT components require retaining the original MIT notice with copyright.
+ * - This notice does NOT replace any upstream license terms.
+ * - If a portion of this file is under GPL/LGPL/MIT/AFL, those terms apply to that portion.
+ * - MIT portions require preserving the MIT copyright + permission notice.
+ * - GPL/LGPL portions may require providing corresponding source when distributing binaries/modifications.
+ * - WOM portions are proprietary; redistribution may require permission from the WOM owner.
+ *
+ * Modifications and integration:
+ *   Copyright (c) 2026 pla_is_me
  */
 
 package com.pla.annoyingvillagers.gameasset;

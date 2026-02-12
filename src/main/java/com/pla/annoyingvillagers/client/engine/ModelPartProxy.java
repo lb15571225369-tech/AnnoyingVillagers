@@ -1,16 +1,20 @@
 /*
+ * AnnoyingVillagers - Third-Party Derived File Notice
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  *
- * This file is part of AnnoyingVillagers.
- * Contains code adapted from Dragon Mounts: Legacy.
+ * Upstream: Dragon Mounts: Legacy - Nico Bergemann (BarracudaATA), Kay9, contributors
+ * Source: https://github.com/MWall541/Dragon-Mounts-Legacy
  *
- * Copyright (C) 2026 pla_is_me
- * Original authors: Nico Bergemann (BarracudaATA), Kay9, and contributors.
+ * This file contains code adapted from the upstream project.
+ * Required upstream notices must be preserved.
  *
- * Licensed under the GNU General Public License v3.0 or later.
- * See the LICENSE file in the project root for details.
+ * License texts:
+ *   - licenses/GPL-3.0.md
+ *
+ * Modifications:
+ *   Copyright (c) 2026 pla_is_me
  */
-
 
 package com.pla.annoyingvillagers.client.engine;
 

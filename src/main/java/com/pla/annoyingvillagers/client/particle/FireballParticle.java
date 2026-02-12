@@ -1,17 +1,23 @@
 /*
- * This file is part of AnnoyingVillagers.
+ * AnnoyingVillagers - Third-Party Derived File Notice
  *
- * Contains code/assets adapted from:
- *   Explosive Enhancement: Reforged
- *   Copyright (C) Xylonity
+ * SPDX-License-Identifier: GPL-3.0-only
  *
- * The original work is licensed under the GNU General Public License v3.0 (GPL-3.0).
- * This file (and any modifications to the adapted portions) is distributed under the
- * terms of the GPL-3.0 license. You should have received a copy of the GNU GPL v3.0
- * along with this project. If not, see <https://www.gnu.org/licenses/>.
+ * Upstream: Explosive Enhancement: Reforged - Xylonity
+ * Source: https://github.com/Xylonity/Explosive-Enhancement-Reforged
  *
- * Note: Portions of this file include/derive from particle implementation(s)
- * originating in Explosive Enhancement: Reforged.
+ * This file contains code/assets adapted from the upstream project.
+ * Required upstream notices must be preserved.
+ *
+ * License texts:
+ *   - licenses/GPL-3.0.txt
+ *
+ * Notes:
+ * - Portions of this file include/derive from particle implementation(s) originating in
+ *   Explosive Enhancement: Reforged.
+ *
+ * Modifications and integration:
+ *   Copyright (c) 2026 pla_is_me
  */
 
 package com.pla.annoyingvillagers.client.particle;

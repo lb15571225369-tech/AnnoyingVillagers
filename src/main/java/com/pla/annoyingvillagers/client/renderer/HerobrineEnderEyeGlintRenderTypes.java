@@ -1,18 +1,19 @@
 /*
- * Colored enchantment rendering adapted from Quark.
+ * AnnoyingVillagers - Third-Party Derived File Notice
  *
- * Original work: Quark by Vazkii and contributors
- * https://github.com/VazkiiMods/Quark
+ * SPDX-License-Identifier: CC-BY-NC-SA-3.0
  *
- * Quark is licensed under the Creative Commons
- * Attribution-NonCommercial-ShareAlike 3.0 Unported License (CC BY-NC-SA 3.0):
- * https://creativecommons.org/licenses/by-nc-sa/3.0/
+ * Upstream: Quark - Vazkii and contributors
+ * Source: https://github.com/VazkiiMods/Quark
  *
- * This file contains a modified version of Quark's colored enchantment code,
- * adapted for use in the <your-mod-id> mod. In accordance with the original
- * license, this derivative work is also licensed under CC BY-NC-SA 3.0.
+ * This file contains code adapted from the upstream project (colored enchantment rendering).
+ * Required upstream notices must be preserved.
  *
- * Please give proper credit to Quark / Vazkii if you reuse this code.
+ * License texts:
+ *   - licenses/CC-BY-NC-SA-3.0.md
+ *
+ * Modifications and integration:
+ *   Copyright (c) 2025 pla_is_me
  */
 
 package com.pla.annoyingvillagers.client.renderer;
