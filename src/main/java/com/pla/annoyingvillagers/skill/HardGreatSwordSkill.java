@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
+import yesman.epicfight.api.utils.AttackResult;
 import yesman.epicfight.skill.SkillBuilder;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.skill.weaponinnate.WeaponInnateSkill;
@@ -124,6 +125,8 @@ public class HardGreatSwordSkill extends WeaponInnateSkill {
 
                     attacker.hurtMarked = true;
                     attacker.hurt(defender.damageSources().playerAttack(defender), COUNTER_DAMAGE);
+                    event.setCanceled(true);
+                    event.setResult(AttackResult.ResultType.BLOCKED);
                 },
                 10
         );

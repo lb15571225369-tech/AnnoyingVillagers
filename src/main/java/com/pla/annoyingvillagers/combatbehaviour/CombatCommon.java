@@ -565,7 +565,10 @@ public class CombatCommon {
             }
         };
 
-        if (mob instanceof SteveEntity || mob instanceof AngrySteveEntity || (mob instanceof HerobrineMob && !(mob instanceof NullEntity))) {
+        if (mob instanceof SteveEntity || mob instanceof AngrySteveEntity
+                || mob instanceof HerobrineCloneEntity || mob instanceof HerobrineChrisEntity
+                || mob instanceof ShadowHerobrineCloneEntity || mob instanceof Herobrine7Entity
+                || mob instanceof ArmoredHerobrineEntity || mob instanceof ShadowHerobrineEntity) {
             new DelayedTask(1) {
                 @Override public void run() {
                     if (isGroundWithin(mob, 3.0)) {

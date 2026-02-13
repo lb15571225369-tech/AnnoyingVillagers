@@ -102,6 +102,7 @@ public enum ProjectileBreakableBlocks {
         return s.is(Blocks.GRASS_BLOCK)
                 || s.is(Blocks.PODZOL)
                 || s.is(Blocks.MYCELIUM)
-                || s.is(Blocks.DIRT_PATH);
+                || s.is(Blocks.DIRT_PATH)
+                || s.is(Blocks.SAND);
     }
 }
