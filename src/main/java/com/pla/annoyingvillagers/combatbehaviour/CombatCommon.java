@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.combatbehaviour;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.block.ShadowObsidianBlock;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.clazz.AVNpc;
@@ -8,7 +7,6 @@ import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.entity.*;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModBlocks;
-import com.pla.annoyingvillagers.item.LegendarySwordItem;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import com.pla.annoyingvillagers.task.MobExecutionTask;
 import com.pla.annoyingvillagers.util.CombatBehaviour;
@@ -26,7 +24,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
@@ -692,16 +689,16 @@ public class CombatCommon {
         }
         if ((entity instanceof SteveEntity steveEntity && steveEntity.getState() == 1)
         || entity instanceof AngrySteveEntity) {
-            bow.enchant(Enchantments.POWER_ARROWS, 5);
-            bow.enchant(Enchantments.PUNCH_ARROWS, 5);
+            bow.enchant(Enchantments.POWER_ARROWS, 2);
+            bow.enchant(Enchantments.PUNCH_ARROWS, 2);
             if (entity instanceof AngrySteveEntity) {
                 bow.enchant(Enchantments.FLAMING_ARROWS, 2);
             }
         }
         if (entity instanceof AlexEntity alexEntity && alexEntity.getState() == 1) {
-            bow.enchant(Enchantments.PUNCH_ARROWS, 3);
-            bow.enchant(Enchantments.POWER_ARROWS, 3);
-            bow.enchant(Enchantments.FLAMING_ARROWS, 2);
+            bow.enchant(Enchantments.PUNCH_ARROWS, 2);
+            bow.enchant(Enchantments.POWER_ARROWS, 2);
+            bow.enchant(Enchantments.FLAMING_ARROWS, 1);
         }
         if (entity instanceof ChrisEntity chrisEntity && chrisEntity.getState() == 1) {
             bow.enchant(Enchantments.POWER_ARROWS, 2);
