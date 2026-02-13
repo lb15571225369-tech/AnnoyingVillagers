@@ -99,9 +99,9 @@ public class MobPatchCommon {
 
         if (mainHandCap == EpicFightCapabilities.getItemStackCapability(AnnoyingVillagersModItems.SHADOW_OBSIDIAN_SWORD.get().getDefaultInstance())) {
             if (style == CapabilityItem.Styles.TWO_HAND) {
-                return HerobrineShadowObsidianSword.SHADOW_OBSIDIAN_SWORD;
-            } else if (style == CapabilityItem.Styles.ONE_HAND) {
                 return HerobrineShadowObsidianSword.SHADOW_OBSIDIAN_DUAL_SWORD;
+            } else if (style == CapabilityItem.Styles.ONE_HAND) {
+                return HerobrineShadowObsidianSword.SHADOW_OBSIDIAN_SWORD;
             }
         }
 

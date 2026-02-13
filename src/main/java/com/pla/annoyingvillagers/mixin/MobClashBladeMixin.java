@@ -227,7 +227,7 @@ public class MobClashBladeMixin {
                     projectile = AVNpc.getBlockDamage();
                 } else if (defender instanceof PlayerNpcEntity playerNpcEntity) {
                     projectile = playerNpcEntity.getBlockDamage();
-                } else if (defender instanceof HerobrineMob herobrineMob) {
+                } else if (defender instanceof HerobrineMob herobrineMob && !(defender instanceof NullEntity)) {
                     projectile = herobrineMob.getBlockDamage();
                 }
                 if (projectile != null) {
@@ -237,12 +237,20 @@ public class MobClashBladeMixin {
 
                     BiFunction<Integer, Integer, int[]> toWorld = getIntegerIntegerBiFunction(defender, rot);
 
-
                     BlockState placeState;
                     if (livingEntity instanceof HerobrineChrisEntity || livingEntity instanceof HerobrineCloneEntity) {
                         placeState = AnnoyingVillagersModBlocks.OBSIDIAN_BLOCK.get().defaultBlockState().setValue(ShadowObsidianBlock.FROM_PLAYER, false);
-                    } else if (livingEntity instanceof Herobrine7Entity || livingEntity instanceof ArmoredHerobrineEntity || livingEntity instanceof ShadowHerobrineCloneEntity) {
+                    } else if (livingEntity instanceof Herobrine7Entity
+                            || livingEntity instanceof ArmoredHerobrineEntity
+                            || livingEntity instanceof ShadowHerobrineCloneEntity
+                            || livingEntity instanceof ShadowHerobrineEntity) {
                         placeState = AnnoyingVillagersModBlocks.SHADOW_OBSIDIAN_BLOCK.get().defaultBlockState().setValue(ShadowObsidianBlock.FROM_PLAYER, false);
+                    } else if (livingEntity instanceof AegisHerobrineEntity
+                            || livingEntity instanceof SwordsmanHerobrineEntity
+                            || livingEntity instanceof ReaperHerobrineEntity
+                            || livingEntity instanceof SledgehammerHerobrineEntity
+                            || livingEntity instanceof GlaiveHerobrineEntity) {
+                        placeState = AnnoyingVillagersModBlocks.CRYING_OBSIDIAN_BLOCK.get().defaultBlockState().setValue(ShadowObsidianBlock.FROM_PLAYER, false);
                     } else {
                         ItemStack handStack = livingEntity.getItemInHand(InteractionHand.MAIN_HAND);
                         placeState = Blocks.COBBLESTONE.defaultBlockState();
