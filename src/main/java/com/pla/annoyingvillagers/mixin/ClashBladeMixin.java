@@ -9,12 +9,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.EntityState;
+import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 
 @Mixin(value = ClashBladeSkill.class, remap = false)
 public class ClashBladeMixin {
     @Inject(method = "blacklistClashBladeAnimation", at = @At("HEAD"), cancellable = true)
-    private static void rejectClashBladeFromAnimationsCondition(AssetAccessor<? extends DynamicAnimation> dynamicAnimation,
+    private static void rejectClashBladeFromAnimationsCondition(AssetAccessor<? extends StaticAnimation> dynamicAnimation,
                                                                 EntityState entityState,
                                                                 ServerPlayer serverPlayer,
                                                                 CallbackInfoReturnable<Boolean> cir) {

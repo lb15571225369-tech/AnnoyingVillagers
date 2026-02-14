@@ -33,6 +33,7 @@ import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.utils.NameManager;
 import yesman.epicfight.api.animation.Pose;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.api.utils.math.Vec3f;
@@ -481,8 +482,8 @@ public class NullEntity extends HerobrineMob {
     public void baseTick() {
         super.baseTick();
         if (this.level() instanceof ServerLevel) {
-            AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(this.getLivingEntityPatch().getAnimator().getPlayerFor(null)).getAnimation();
-            if (this.getTarget() == null || EpicfightUtil.isLongHitAnimation(dynamicAnimation) || this.getLivingEntityPatch().isStunned()) {
+            AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(Objects.requireNonNull(this.getLivingEntityPatch()).getAnimator().getPlayerFor(null)).getRealAnimation();
+            if (this.getTarget() == null || EpicfightUtil.isLongHitAnimation(dynamicAnimation, getLivingEntityPatch()) || this.getLivingEntityPatch().isStunned()) {
                 this.getNavigation().stop();
                 this.setDeltaMovement(Vec3.ZERO);
             } else {

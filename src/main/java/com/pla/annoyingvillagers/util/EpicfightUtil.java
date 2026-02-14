@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.util;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.world.damagesource.DamageSource;
@@ -10,13 +11,13 @@ import net.minecraft.world.phys.Vec3;
 import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
 import net.shelmarow.combat_evolution.ai.util.CEPatchUtils;
 import net.shelmarow.combat_evolution.effect.CEMobEffects;
-import net.shelmarow.combat_evolution.gameassets.ExecutionSkillAnimations;
+import net.shelmarow.combat_evolution.execution.ExecutionHandler;
+import net.shelmarow.combat_evolution.gameassets.animation.ExecutionHitAnimation;
 import yesman.epicfight.api.animation.Joint;
 import yesman.epicfight.api.animation.types.*;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.api.utils.math.Vec3f;
-import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
@@ -56,17 +57,16 @@ public class EpicfightUtil {
         );
     }
 
-    public static boolean isLongHitAnimation(AssetAccessor<? extends DynamicAnimation> dynamicAnimation) {
-        return dynamicAnimation.get() instanceof LongHitAnimation ||
-                (dynamicAnimation.get() instanceof LinkAnimation linkAnimation
-                        && (linkAnimation.getRealAnimation().get() instanceof LongHitAnimation
-                        || linkAnimation.getRealAnimation().get() instanceof KnockdownAnimation) &&
-                        (linkAnimation.getRealAnimation() == Animations.BIPED_COMMON_NEUTRALIZED
-                                || linkAnimation.getRealAnimation() == Animations.GREATSWORD_GUARD_BREAK
-                                || linkAnimation.getRealAnimation() == Animations.BIPED_KNOCKDOWN
-                                || linkAnimation.getRealAnimation() == AVAnimations.TRIED
-                                || linkAnimation.getRealAnimation() == AVAnimations.LONGEST_HIT
-                                || linkAnimation.getRealAnimation() == ExecutionSkillAnimations.EXECUTED_FULL));
+    public static boolean isLongHitAnimationNotExecutedAnimation(AssetAccessor<? extends StaticAnimation> dynamicAnimation, LivingEntityPatch<?> livingEntityPatch) {
+        return !(dynamicAnimation.get() instanceof ExecutionHitAnimation) && (
+                dynamicAnimation.get() instanceof KnockdownAnimation
+                || ExecutionHandler.isTargetGuardBreak(dynamicAnimation, livingEntityPatch));
+    }
+
+    public static boolean isLongHitAnimation(AssetAccessor<? extends StaticAnimation> dynamicAnimation, LivingEntityPatch<?> livingEntityPatch) {
+        return dynamicAnimation.get() instanceof ExecutionHitAnimation
+                || dynamicAnimation.get() instanceof KnockdownAnimation
+                || ExecutionHandler.isTargetGuardBreak(dynamicAnimation, livingEntityPatch);
     }
 
     public static void dealStaminaDamageByPercentage(DamageSource damageSource, LivingEntityPatch<?> livingEntityPatch, double percentage, boolean playStunAnimation) {

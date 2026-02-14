@@ -2,14 +2,12 @@ package com.pla.annoyingvillagers.item;
 
 import java.util.List;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -22,7 +20,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
 public class DiamondSaberItem extends SwordItem {
 
@@ -48,13 +46,13 @@ public class DiamondSaberItem extends SwordItem {
                 return 10;
             }
 
-            public Ingredient getRepairIngredient() {
-                return Ingredient.of(new ItemStack[]{new ItemStack(Items.DIAMOND)});
+            public @NotNull Ingredient getRepairIngredient() {
+                return Ingredient.of(new ItemStack(Items.DIAMOND));
             }
         }, 3, -1.5F, (new Properties()));
     }
 
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionhand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand interactionhand) {
         InteractionResultHolder<ItemStack> interactionresultholder = super.use(level, player, interactionhand);
 
         ItemStack itemstack = interactionresultholder.getObject();
@@ -64,31 +62,50 @@ public class DiamondSaberItem extends SwordItem {
         if (player.isShiftKeyDown()) {
             player.getCooldowns().addCooldown(itemstack.getItem(), 60);
             player.setDeltaMovement(new Vec3(0.0D, 1.5D, 0.0D));
-            if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
-                itemstack.hurtAndBreak(2, serverPlayer, p -> p.broadcastBreakEvent(interactionhand));
-            }
-            level.addParticle(ParticleTypes.EXPLOSION, 0, d1, d2, 0.0D, 1.0D, 0.0D);
             if (level instanceof ServerLevel serverLevel) {
-                serverLevel.sendParticles(ParticleTypes.POOF, d0, d1, d2, 20, 0.0D, 0.0D, 0.0D, 1.0D);
-            }
+                if (player instanceof ServerPlayer serverPlayer) {
+                    itemstack.hurtAndBreak(2, serverPlayer, p -> p.broadcastBreakEvent(interactionhand));
+                }
+                serverLevel.sendParticles(
+                        ParticleTypes.EXPLOSION,
+                        d0, d1, d2,
+                        1,
+                        0.0D, 0.0D, 0.0D,
+                        0.0
+                );
 
-            if (!level.isClientSide()) {
-                level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "wing")), SoundSource.NEUTRAL, 1.0F, 1.0F);
-            } else {
-                level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "wing")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
-            }
+                serverLevel.sendParticles(
+                        ParticleTypes.POOF,
+                        d0, d1, d2,
+                        20,
+                        0.0D, 0.0D, 0.0D,
+                        1.0D
+                );
 
-            if (!level.isClientSide()) {
-                level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "cooldown")), SoundSource.NEUTRAL, 1.0F, 1.0F);
-            } else {
-                level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "cooldown")), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+                serverLevel.playSound(
+                        null,
+                        BlockPos.containing(d0, d1, d2),
+                        AnnoyingVillagersModSounds.WING.get(),
+                        SoundSource.NEUTRAL,
+                        1.0F,
+                        1.0F
+                );
+
+                serverLevel.playSound(
+                        null,
+                        BlockPos.containing(d0, d1, d2),
+                        AnnoyingVillagersModSounds.COOL_DOWN.get(),
+                        SoundSource.NEUTRAL,
+                        1.0F,
+                        1.0F
+                );
             }
         }
 
         return interactionresultholder;
     }
 
-    public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag tooltipflag) {
+    public void appendHoverText(@NotNull ItemStack itemstack, Level level, @NotNull List<Component> list, @NotNull TooltipFlag tooltipflag) {
         super.appendHoverText(itemstack, level, list, tooltipflag);
     }
 }

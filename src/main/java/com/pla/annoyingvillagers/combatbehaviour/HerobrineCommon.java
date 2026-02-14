@@ -281,7 +281,6 @@ public class HerobrineCommon {
         if (mobpatch.getOriginal() instanceof HerobrineMob herobrineMob) {
             ItemStack item = herobrineMob.getMainHandItem();
             if (herobrineMob.getState() < 2) {
-                AnnoyingVillagers.LOGGER.info("[AV MOD DEBUG] herobrine chris SECOND FORM HIT LEFT {}", herobrineMob.getSecondFormHitLeft());
                 herobrineMob.setSecondFormHitLeft(herobrineMob.getSecondFormHitLeft() - 1);
             }
             if (herobrineMob instanceof SwordsmanHerobrineEntity && herobrineMob.level() instanceof ServerLevel) {

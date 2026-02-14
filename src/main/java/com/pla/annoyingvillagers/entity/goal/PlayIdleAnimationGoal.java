@@ -2,10 +2,12 @@ package com.pla.annoyingvillagers.entity.goal;
 
 import com.pla.annoyingvillagers.clazz.AVNpc;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
+import com.pla.annoyingvillagers.entity.JevEntity;
 import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.clazz.IdleAnimation;
 import com.pla.annoyingvillagers.task.DelayedTask;
+import com.pla.annoyingvillagers.util.EpicfightUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Mob;
@@ -167,19 +169,26 @@ public class PlayIdleAnimationGoal extends Goal {
     @Override
     public boolean canUse() {
         if (mob.level().isClientSide) return false;
+        if (mob instanceof JevEntity) return false;
         if (mob.tickCount <= 30) return false;
         if (!mob.isAlive() || mob.isRemoved() || mob.isDeadOrDying()) return false;
         if (mob.isPassenger()) return false;
         if (mob.getTarget() != null) return false;
         if (mob.getNavigation().isInProgress()) return false;
-        LivingEntityPatch<?> patch = null;
         if (!mob.onGround()) return false;
-        if (mob instanceof PlayerNpcEntity playerNpcEntity && playerNpcEntity.isHealing()) {
+        if (mob instanceof PlayerNpcEntity playerNpcEntity
+                && (playerNpcEntity.isHealing()
+                || playerNpcEntity.getPlayingIdleCooldown() != 0
+                || playerNpcEntity.isStrolling())) {
             return false;
         }
-        if (mob instanceof AVNpc avNpc && avNpc.isHealing()) {
+        if (mob instanceof AVNpc avNpc
+                && (avNpc.isHealing()
+                || avNpc.getPlayingIdleCooldown() != 0
+                || avNpc.isStrolling())) {
             return false;
         }
+        LivingEntityPatch<?> patch = null;
         if (mob instanceof PlayerNpcEntity playerNpcEntity) {
             patch = playerNpcEntity.getLivingEntityPatch();
         }
@@ -187,22 +196,43 @@ public class PlayIdleAnimationGoal extends Goal {
             patch = avNpc.getLivingEntityPatch();
         }
         if (patch == null) return false;
-        AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(patch.getAnimator().getPlayerFor(null)).getAnimation();
+        AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(patch.getAnimator().getPlayerFor(null)).getRealAnimation();
+        if (EpicfightUtil.isLongHitAnimation(dynamicAnimation, patch)) return false;
         return dynamicAnimation == Animations.EMPTY_ANIMATION;
     }
 
     @Override
     public boolean canContinueToUse() {
         if (mob.level().isClientSide) return false;
+        if (mob instanceof JevEntity) return false;
         if (mob.tickCount <= 30) return false;
         if (!mob.isAlive() || mob.isRemoved() || mob.isDeadOrDying()) return false;
         if (mob.isPassenger()) return false;
         if (!mob.onGround()) return false;
         if (mob.getTarget() != null) return false;
         if (mob.getNavigation().isInProgress()) return false;
-        if (mob instanceof PlayerNpcEntity p && p.isHealing()) return false;
-        if (mob instanceof AVNpc a && a.isHealing()) return false;
-
+        if (mob instanceof PlayerNpcEntity playerNpcEntity
+                && (playerNpcEntity.isHealing()
+                || playerNpcEntity.getPlayingIdleCooldown() != 0
+                || playerNpcEntity.isStrolling())) {
+            return false;
+        }
+        if (mob instanceof AVNpc avNpc
+                && (avNpc.isHealing()
+                || avNpc.getPlayingIdleCooldown() != 0
+                || avNpc.isStrolling())) {
+            return false;
+        }
+        LivingEntityPatch<?> patch = null;
+        if (mob instanceof PlayerNpcEntity playerNpcEntity) {
+            patch = playerNpcEntity.getLivingEntityPatch();
+        }
+        if (mob instanceof AVNpc avNpc) {
+            patch = avNpc.getLivingEntityPatch();
+        }
+        if (patch == null) return false;
+        AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(patch.getAnimator().getPlayerFor(null)).getRealAnimation();
+        if (EpicfightUtil.isLongHitAnimation(dynamicAnimation, patch)) return false;
         return ticksLeft > 0;
     }
 
@@ -307,11 +337,13 @@ public class PlayIdleAnimationGoal extends Goal {
             LivingEntityPatch<?> patch = avNpc.getLivingEntityPatch();
             if (patch != null) patch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
             avNpc.setPlayingIdle(false);
+            avNpc.setPlayingIdleCooldown(new Random().nextInt(400, 1200));
         } else if (mob instanceof PlayerNpcEntity playerNpcEntity) {
             playerNpcEntity.clearIdleAnimationState();
             LivingEntityPatch<?> patch = playerNpcEntity.getLivingEntityPatch();
             if (patch != null) patch.playAnimationSynchronized(AVAnimations.IDLE_BREAK, 0.0F);
             playerNpcEntity.setPlayingIdle(false);
+            playerNpcEntity.setPlayingIdleCooldown(new Random().nextInt(400, 1200));
         }
     }
 

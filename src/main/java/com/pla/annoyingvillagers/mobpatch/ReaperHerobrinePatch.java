@@ -103,9 +103,9 @@ public class ReaperHerobrinePatch extends CEHumanoidPatch implements CustomExecu
 
     @Override
     public AttackResult tryHurt(DamageSource damageSource, float amount) {
-        AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(this.getAnimator().getPlayerFor(null)).getAnimation();
+        AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(this.getAnimator().getPlayerFor(null)).getRealAnimation();
         if (!this.getOriginal().isPassenger()
-                && !EpicfightUtil.isLongHitAnimation(dynamicAnimation)
+                && !EpicfightUtil.isLongHitAnimation(dynamicAnimation, this)
                 && (this.getOriginal().level() instanceof ServerLevel && dynamicAnimation == Animations.EMPTY_ANIMATION)) {
             if (new Random().nextFloat() <= 0.3F) {
                 float chance = new Random().nextFloat();

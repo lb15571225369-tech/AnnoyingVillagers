@@ -91,9 +91,9 @@ public class HerobrineClonePatch extends CEHumanoidPatch implements CustomExecut
 
     @Override
     public AttackResult tryHurt(DamageSource damageSource, float amount) {
-        AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(this.getAnimator().getPlayerFor(null)).getAnimation();
+        AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(this.getAnimator().getPlayerFor(null)).getRealAnimation();
         if (HerobrineCommon.canPlaySecondFormAnimation(this)
-                && !EpicfightUtil.isLongHitAnimation(dynamicAnimation)
+                && !EpicfightUtil.isLongHitAnimation(dynamicAnimation, this)
                 && (this.getOriginal().level() instanceof ServerLevel && dynamicAnimation == Animations.EMPTY_ANIMATION)) {
             return AttackResult.blocked(amount);
         }

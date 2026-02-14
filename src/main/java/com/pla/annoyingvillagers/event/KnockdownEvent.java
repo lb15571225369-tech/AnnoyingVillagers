@@ -7,6 +7,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import yesman.epicfight.api.animation.AnimationPlayer;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
@@ -24,7 +25,7 @@ public class KnockdownEvent {
             LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(livingHurtEvent.getEntity(), LivingEntityPatch.class);
             if (livingEntityPatch != null && livingHurtEvent.getEntity().level() instanceof ServerLevel) {
                 AnimationPlayer animationPlayer = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null));
-                AssetAccessor<? extends DynamicAnimation> dynamicAnimation = animationPlayer.getRealAnimation();
+                AssetAccessor<? extends StaticAnimation> dynamicAnimation = animationPlayer.getRealAnimation();
                 if (dynamicAnimation == Animations.BIPED_HIT_LONG) {
                     livingEntityPatch.playAnimationSynchronized(AVAnimations.HIT_BACKWARD, 0.0F);
                 } else if (dynamicAnimation == AVAnimations.HIT_BACKWARD) {

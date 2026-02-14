@@ -18,6 +18,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LevelAccessor;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.particle.EpicFightParticles;
@@ -38,9 +39,9 @@ public class KickOnKeyPressedEvent {
             LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
 
             if (livingEntityPatch != null) {
-                AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
+                AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
 
-                if (EpicfightUtil.isLongHitAnimation(dynamicAnimation)) {
+                if (EpicfightUtil.isLongHitAnimation(dynamicAnimation, livingEntityPatch)) {
                     if (entity.getPersistentData().getInt(NBT_STUN_ESCAPE_CD) != 0) return;
                     entity.getPersistentData().putInt(NBT_STUN_ESCAPE_CD, 5);
 

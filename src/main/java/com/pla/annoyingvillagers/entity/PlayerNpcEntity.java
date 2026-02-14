@@ -5,6 +5,7 @@ import com.pla.annoyingvillagers.clazz.IdleAnimation;
 import com.pla.annoyingvillagers.clazz.PlayerNpcTarget;
 import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
 import com.pla.annoyingvillagers.entity.goal.BurnNearbyItemGoal;
+import com.pla.annoyingvillagers.entity.goal.LockedRandomStrollGoal;
 import com.pla.annoyingvillagers.entity.goal.PlayIdleAnimationGoal;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
@@ -20,7 +21,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.SimpleContainer;
@@ -80,6 +80,16 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     @Nullable private AssetAccessor<? extends StaticAnimation> idleAnimationAsset;
     private boolean idleMessageBroadcast = false;
     private boolean playingIdle;
+    private int playingIdleCooldown = 1200;
+    private boolean isStrolling;
+
+    public boolean isStrolling() {
+        return isStrolling;
+    }
+
+    public void setStrolling(boolean strolling) {
+        this.isStrolling = strolling;
+    }
 
     public boolean isPlayingIdle() {
         return playingIdle;
@@ -113,6 +123,14 @@ public class PlayerNpcEntity extends PlayerMobEntity {
 
     public void setIdleMessageBroadcast(boolean idleMessageBroadcast) {
         this.idleMessageBroadcast = idleMessageBroadcast;
+    }
+
+    public int getPlayingIdleCooldown() {
+        return playingIdleCooldown;
+    }
+
+    public void setPlayingIdleCooldown(int playingIdleCooldown) {
+        this.playingIdleCooldown = playingIdleCooldown;
     }
 
     public void clearIdleAnimationState() {
@@ -294,10 +312,10 @@ public class PlayerNpcEntity extends PlayerMobEntity {
     private void villagerHunterPlayerMob() {
         CommonGoals.runAwayFromHerobrineGoals(this, 20.0F);
         if (!(this.getTarget() instanceof PlayerNpcEntity)) {
-            this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, PlayerNpcEntity.class, 12.0F, 1.2D, 1.8D));
+            this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, PlayerNpcEntity.class, 12.0F, 1.2D, 1.4D));
         }
         if (!(this.getTarget() instanceof Player)) {
-            this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Player.class, 12.0F, 1.2D, 1.8D));
+            this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Player.class, 12.0F, 1.2D, 1.4D));
         }
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Villager.class, true));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, JevEntity.class, true));
@@ -325,7 +343,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Animal.class, true));
         if (!(this.getTarget() instanceof PlayerNpcEntity)) {
             this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, PlayerNpcEntity.class, 12.0F, 1.2D,
-                    1.8D));
+                    1.4D));
         }
         if (!(this.getTarget() instanceof Player)) {
             this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Player.class, 12.0F, 1.2D, 1.8D));
@@ -334,11 +352,11 @@ public class PlayerNpcEntity extends PlayerMobEntity {
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(3, new OpenDoorGoal(this, true));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.goalSelector.addGoal(1, new BurnNearbyItemGoal(this, 1.0D, 10.0D));
-        this.goalSelector.addGoal(2, new PlayIdleAnimationGoal(this, new Random().nextInt(3000, 6000)));
+        this.goalSelector.addGoal(5, new BurnNearbyItemGoal(this, 1.0D, 10.0D));
+        this.goalSelector.addGoal(6, new PlayIdleAnimationGoal(this, new Random().nextInt(3000, 6000)));
+        this.goalSelector.addGoal(7, new LockedRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(5, new OpenDoorGoal(this, true));
         if (this.getMainHandItem().getItem() instanceof BowItem) {
             this.goalSelector.addGoal(4, new RangedBowAttackGoal<>(this, 1.0D, 20, 48.0F));
         }
@@ -388,10 +406,10 @@ public class PlayerNpcEntity extends PlayerMobEntity {
 
     public boolean hurt(@NotNull DamageSource damageSource, float f) {
         if (getLivingEntityPatch() == null) return super.hurt(damageSource, f);
-        AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(getLivingEntityPatch().getAnimator().getPlayerFor(null)).getAnimation();
+        AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(getLivingEntityPatch().getAnimator().getPlayerFor(null)).getRealAnimation();
 
         if (damageSource.getEntity() != null && this.getEnderPearlCooldown() == 0
-                && !EpicfightUtil.isLongHitAnimation(dynamicAnimation)
+                && !EpicfightUtil.isLongHitAnimation(dynamicAnimation, getLivingEntityPatch())
                 && (this.level() instanceof ServerLevel && dynamicAnimation == Animations.EMPTY_ANIMATION)
                 && CombatCommon.canPerformNormalAttackLogic((MobPatch<?>) getLivingEntityPatch())) {
             getLivingEntityPatch().playAnimationSynchronized(AVAnimations.CASTING_ONE_HAND_BUFF, 0.0F);
@@ -536,6 +554,7 @@ public class PlayerNpcEntity extends PlayerMobEntity {
         if (enderPearlCooldown > 0) enderPearlCooldown--;
         if (swapToBowCooldown > 0) swapToBowCooldown--;
         if (stunEscapeCooldown > 0) stunEscapeCooldown--;
+        if (playingIdleCooldown > 0) playingIdleCooldown--;
 
         if ((tickCount + getId()) % 20 != 0) {
             return;

@@ -4,6 +4,7 @@ import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import net.minecraft.network.FriendlyByteBuf;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.skill.SkillBuilder;
 import yesman.epicfight.skill.SkillContainer;
@@ -40,7 +41,7 @@ public class ObsidianSledgeHammerSkill extends WeaponInnateSkill {
                     if (skillContainer.isActivated()) {
                         event.setCanceled(true);
                         final PlayerPatch<?> playerPatch = event.getPlayerPatch();
-                        AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(playerPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
+                        AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(playerPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
                         if (dynamicAnimation != null && dynamicAnimation == AVAnimations.SLEDGEHAMMER_TORMENT_BERSERK_AUTO_1) {
                             skillContainer.getExecutor().playAnimationSynchronized(AVAnimations.SLEDGEHAMMER_TORMENT_BERSERK_AUTO_2, 0.0F);
                         } else {

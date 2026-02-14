@@ -308,7 +308,7 @@ public class AVAnimations {
     public static AnimationManager.AnimationAccessor<StaticAnimation> PUSH_UP_IDLE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> SIT_IDLE;
     public static AnimationManager.AnimationAccessor<StaticAnimation> SLIGHT_IDLE;
-    public static AnimationManager.AnimationAccessor<LongHitAnimation> GUARD_BREAK_ATTACK;
+    public static AnimationManager.AnimationAccessor<KnockdownAnimation> GUARD_BREAK_ATTACK;
     public static AnimationManager.AnimationAccessor<DashAttackAnimation> SWORD_DASH;
     public static AnimationManager.AnimationAccessor<DashAttackAnimation> TACHI_DASH;
     public static AnimationManager.AnimationAccessor<BasicAttackAnimation> DUAL_SWORD_SKILL;
@@ -1231,7 +1231,7 @@ public class AVAnimations {
                         .addProperty(AttackPhaseProperty.STUN_TYPE, StunType.KNOCKDOWN)
                         .addProperty(StaticAnimationProperty.PLAY_SPEED_MODIFIER, ReusableSources.CONSTANT_ONE));
         AVAnimations.GUARD_BREAK_ATTACK = builder.nextAccessor("biped/pugilist_steve/guard_break_attack",
-                (accessor) -> new LongHitAnimation(0.05F, accessor, humanoidArmature));
+                (accessor) -> new KnockdownAnimation(0.05F, accessor, humanoidArmature));
         AVAnimations.SWORD_DASH = builder.nextAccessor("biped/pugilist_steve/sword_dash",
                 (accessor) -> (new DashAttackAnimation(0.12F, 0.1F, 0.25F, 0.4F, 0.65F, null, humanoidArmature.get().toolR, accessor, humanoidArmature))
                         .addProperty(AttackPhaseProperty.DAMAGE_MODIFIER, ValueModifier.multiplier(1.2F))

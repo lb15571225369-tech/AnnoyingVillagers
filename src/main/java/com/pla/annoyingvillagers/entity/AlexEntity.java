@@ -39,6 +39,7 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
@@ -146,10 +147,10 @@ public class AlexEntity extends AVNpc {
             return false;
         }
 
-        AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(this.getLivingEntityPatch().getAnimator().getPlayerFor(null)).getAnimation();
+        AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(Objects.requireNonNull(this.getLivingEntityPatch()).getAnimator().getPlayerFor(null)).getRealAnimation();
 
         if (damageSource.getEntity() != null && this.getEnderPearlCooldown() == 0
-                && !EpicfightUtil.isLongHitAnimation(dynamicAnimation)
+                && !EpicfightUtil.isLongHitAnimation(dynamicAnimation, getLivingEntityPatch())
                 && (this.level() instanceof ServerLevel && dynamicAnimation == Animations.EMPTY_ANIMATION)
                 && CombatCommon.canPerformNormalAttackLogic((MobPatch<?>) this.getLivingEntityPatch())) {
             AVNpc entity = this;

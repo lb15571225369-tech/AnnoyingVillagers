@@ -129,7 +129,7 @@ public class CombatCommon {
         if (victim != null) {
             LivingEntityPatch<?> victimPatch = EpicFightCapabilities.getEntityPatch(victim, LivingEntityPatch.class);
             if (victimPatch != null) {
-                AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(victimPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
+                AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(victimPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
                 return dynamicAnimation.get() instanceof KnockdownAnimation;
             }
             return false;

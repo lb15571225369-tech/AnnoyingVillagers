@@ -8,6 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import reascer.wom.gameasset.WOMAnimations;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
@@ -70,7 +71,7 @@ public class EscapeUtil {
         LivingEntity target = mob.getTarget();
         LivingEntityPatch<?> targetLivingEntityPatch = EpicFightCapabilities.getEntityPatch(target, LivingEntityPatch.class);
         if (target == null || targetLivingEntityPatch == null) return false;
-        AssetAccessor<? extends DynamicAnimation> targetDynamicAnimation = Objects.requireNonNull(targetLivingEntityPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
+        AssetAccessor<? extends StaticAnimation> targetDynamicAnimation = Objects.requireNonNull(targetLivingEntityPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
         if (target instanceof HerobrineMob herobrineMob) {
             if (herobrineMob instanceof SwordsmanHerobrineEntity) {
                 return (herobrineMob.getState() > 0 && targetDynamicAnimation == AVAnimations.SNAKE_BLADE_GUARD)
@@ -83,7 +84,7 @@ public class EscapeUtil {
         return isAnimationDangerous(targetDynamicAnimation);
     }
 
-    public static boolean isAnimationDangerous(AssetAccessor<? extends DynamicAnimation> targetDynamicAnimation) {
+    public static boolean isAnimationDangerous(AssetAccessor<? extends StaticAnimation> targetDynamicAnimation) {
         if (targetDynamicAnimation != null && targetDynamicAnimation.get().getRegistryName() != null) {
             String animation = targetDynamicAnimation.get().getRegistryName().toString();
             return DANGEROUS_ANIMATIONS.contains(animation);

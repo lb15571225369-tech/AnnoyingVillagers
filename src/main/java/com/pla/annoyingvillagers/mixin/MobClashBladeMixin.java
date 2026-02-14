@@ -59,10 +59,10 @@ public class MobClashBladeMixin {
     @Inject(method = "customAdditionClashBladeLogic", at = @At("HEAD"), cancellable = true)
     private static void addMoreClashBladeCondition(LivingAttackEvent livingAttackEvent,
                                                    LivingEntityPatch<?> defenderLivingEntityPatch,
-                                                   AssetAccessor<? extends DynamicAnimation> defenderDynamicAnimation,
+                                                   AssetAccessor<? extends StaticAnimation> defenderDynamicAnimation,
                                                    EntityState defenderEntityState, Entity attacker, Entity defender,
                                                    CallbackInfoReturnable<Boolean> cir) {
-        if (EpicfightUtil.isLongHitAnimation(defenderDynamicAnimation)) {
+        if (EpicfightUtil.isLongHitAnimation(defenderDynamicAnimation, defenderLivingEntityPatch)) {
             cir.setReturnValue(false);
             return;
         }
@@ -203,7 +203,7 @@ public class MobClashBladeMixin {
     @Inject(method = "customPreAdditionClashBlade", at = @At("HEAD"), cancellable = true)
     private static void customLogicBeforeClashing(LivingAttackEvent livingAttackEvent,
                                                   LivingEntityPatch<?> defenderLivingEntityPatch,
-                                                  AssetAccessor<? extends DynamicAnimation> defenderDynamicAnimation,
+                                                  AssetAccessor<? extends StaticAnimation> defenderDynamicAnimation,
                                                   EntityState defenderEntityState, Entity attacker,
                                                   Entity defender, int clashBy,
                                                   CallbackInfo ci) {
@@ -378,7 +378,7 @@ public class MobClashBladeMixin {
     @Inject(method = "blacklistClashBladeAnimation", at = @At("HEAD"), cancellable = true)
     private static void rejectClashBladeFromAnimationsCondition(LivingAttackEvent livingAttackEvent,
                                                    LivingEntityPatch<?> defenderLivingEntityPatch,
-                                                   AssetAccessor<? extends DynamicAnimation> defenderDynamicAnimation,
+                                                   AssetAccessor<? extends StaticAnimation> defenderDynamicAnimation,
                                                    EntityState defenderEntityState, Entity attacker, Entity defender,
                                                    CallbackInfoReturnable<Boolean> cir) {
         if (defenderDynamicAnimation.get() instanceof BowAttackAnimation) {
@@ -389,7 +389,7 @@ public class MobClashBladeMixin {
     @Inject(method = "conditionToPlayClashSound", at = @At("HEAD"), cancellable = true)
     private static void disableClashSoundFromProjectileBlock(LivingAttackEvent livingAttackEvent,
                                                                 LivingEntityPatch<?> defenderLivingEntityPatch,
-                                                                AssetAccessor<? extends DynamicAnimation> defenderDynamicAnimation,
+                                                                AssetAccessor<? extends StaticAnimation> defenderDynamicAnimation,
                                                                 EntityState defenderEntityState, Entity attacker, Entity defender,
                                                                 CallbackInfoReturnable<Boolean> cir) {
         if (defender instanceof AVNpc AVNpc
@@ -402,7 +402,7 @@ public class MobClashBladeMixin {
     @Inject(method = "customPostAdditionClashBlade", at = @At("HEAD"), cancellable = true)
     private static void revertWeaponAfterClashing(LivingAttackEvent livingAttackEvent,
                                                   LivingEntityPatch<?> defenderLivingEntityPatch,
-                                                  AssetAccessor<? extends DynamicAnimation> defenderDynamicAnimation,
+                                                  AssetAccessor<? extends StaticAnimation> defenderDynamicAnimation,
                                                   EntityState defenderEntityState, Entity attacker,
                                                   Entity defender, int clashBy,
                                                   CallbackInfo ci) {
@@ -413,7 +413,7 @@ public class MobClashBladeMixin {
         // Clash kick post
         if (clashBy == 0) {
             if (attackerLivingEntityPatch != null) {
-                AssetAccessor<? extends DynamicAnimation> attackerDynamicAnimation = Objects.requireNonNull(attackerLivingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
+                AssetAccessor<? extends StaticAnimation> attackerDynamicAnimation = Objects.requireNonNull(attackerLivingEntityPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
                 if (attackerDynamicAnimation != null) {
                     if ((defender instanceof AVNpc AVNpc && AVNpc.getBlockDamage() != null)
                             || (defender instanceof PlayerNpcEntity playerNpcEntity && playerNpcEntity.getBlockDamage() != null)) {

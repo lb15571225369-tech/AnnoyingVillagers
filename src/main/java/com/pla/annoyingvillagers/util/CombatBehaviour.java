@@ -7,7 +7,10 @@ import com.pla.annoyingvillagers.combatbehaviour.CombatCommon;
 import com.pla.annoyingvillagers.entity.PlayerNpcEntity;
 import com.pla.annoyingvillagers.entity.SteveEntity;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import com.pla.annoyingvillagers.task.DelayedTask;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -127,9 +130,9 @@ public class CombatBehaviour {
     private static void performEatingGoldenAppleActionMainHand(Entity entity,
                                                                LevelAccessor levelaccessor,
                                                                LivingEntityPatch<?> livingEntityPatch) {
-        AssetAccessor<? extends DynamicAnimation> currentAnim = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
+        AssetAccessor<? extends StaticAnimation> currentAnim = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
         if (currentAnim.get() instanceof AttackAnimation
-                || EpicfightUtil.isLongHitAnimation(currentAnim)
+                || EpicfightUtil.isLongHitAnimation(currentAnim, livingEntityPatch)
                 || CombatCommon.canEscape((MobPatch<?>) livingEntityPatch)) {
             recoverItemDueToFailure(entity);
             return;
@@ -139,43 +142,39 @@ public class CombatBehaviour {
             livingEntityPatch.playAnimationSynchronized(Animations.BIPED_EAT, 0.0F);
         }
 
-        if (levelaccessor instanceof Level level) {
-            SoundEvent eat = ForgeRegistries.SOUND_EVENTS.getValue(
-                    ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat")
-            );
-            if (eat != null) {
-                if (!level.isClientSide()) {
-                    level.playSound(null,
-                            entity.blockPosition(),
-                            eat,
-                            SoundSource.NEUTRAL,
-                            1.0F, 1.0F);
-                } else {
-                    level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(),
-                            eat,
-                            SoundSource.NEUTRAL,
-                            1.0F, 1.0F,
-                            false);
-                }
-            }
+        if (levelaccessor instanceof ServerLevel serverLevel) {
+            serverLevel.playSound(null,
+                    entity.blockPosition(),
+                    SoundEvents.GENERIC_EAT,
+                    SoundSource.NEUTRAL,
+                    1.0F, 1.0F);
         }
 
-        if (!entity.level().isClientSide() && entity.getServer() != null) {
-            try {
-                entity.getServer().getCommands().getDispatcher().execute(
-                        "execute at @s run particle minecraft:item golden_apple ^ ^1.5 ^0.5 0 0 0 0.01 10",
-                        entity.createCommandSourceStack().withSuppressedOutput().withPermission(4)
-                );
-            } catch (CommandSyntaxException ignored) {}
+        if (entity.level() instanceof ServerLevel serverLevel) {
+            Vec3 forward = entity.getViewVector(1.0F);
+            Vec3 up = entity.getUpVector(1.0F);
+            Vec3 left = up.cross(forward).normalize();
+            Vec3 spawnPos = entity.position()
+                    .add(left.scale(0.0D))
+                    .add(up.scale(1.5D))
+                    .add(forward.scale(0.5D));
+
+            serverLevel.sendParticles(
+                    new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.GOLDEN_APPLE)),
+                    spawnPos.x, spawnPos.y, spawnPos.z,
+                    10,
+                    0.0D, 0.0D, 0.0D,
+                    0.01D
+            );
         }
     }
 
     private static void performDrinkingHealingPotionActionMainhand(Entity entity,
                                                                    LevelAccessor levelaccessor,
                                                                    LivingEntityPatch<?> livingEntityPatch) {
-        AssetAccessor<? extends DynamicAnimation> currentAnim = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
+        AssetAccessor<? extends StaticAnimation> currentAnim = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
         if (currentAnim.get() instanceof AttackAnimation
-                || EpicfightUtil.isLongHitAnimation(currentAnim)
+                || EpicfightUtil.isLongHitAnimation(currentAnim, livingEntityPatch)
                 || CombatCommon.canEscape((MobPatch<?>) livingEntityPatch)) {
             recoverItemDueToFailure(entity);
             return;
@@ -185,25 +184,12 @@ public class CombatBehaviour {
             livingEntityPatch.playAnimationSynchronized(Animations.BIPED_DRINK, 0.0F);
         }
 
-        if (levelaccessor instanceof Level level) {
-            SoundEvent eat = ForgeRegistries.SOUND_EVENTS.getValue(
-                    ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.drink")
-            );
-            if (eat != null) {
-                if (!level.isClientSide()) {
-                    level.playSound(null,
-                            entity.blockPosition(),
-                            eat,
-                            SoundSource.NEUTRAL,
-                            1.0F, 1.0F);
-                } else {
-                    level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(),
-                            eat,
-                            SoundSource.NEUTRAL,
-                            1.0F, 1.0F,
-                            false);
-                }
-            }
+        if (levelaccessor instanceof ServerLevel serverLevel) {
+            serverLevel.playSound(null,
+                    entity.blockPosition(),
+                    SoundEvents.GENERIC_DRINK,
+                    SoundSource.NEUTRAL,
+                    1.0F, 1.0F);
         }
     }
 
@@ -241,9 +227,9 @@ public class CombatBehaviour {
 
                     LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                     if (patch == null) return;
-                    AssetAccessor<? extends DynamicAnimation> currentAnim = Objects.requireNonNull(patch.getAnimator().getPlayerFor(null)).getAnimation();
+                    AssetAccessor<? extends StaticAnimation> currentAnim = Objects.requireNonNull(patch.getAnimator().getPlayerFor(null)).getRealAnimation();
                     if (currentAnim.get() instanceof AttackAnimation
-                            || EpicfightUtil.isLongHitAnimation(currentAnim)
+                            || EpicfightUtil.isLongHitAnimation(currentAnim, patch)
                             || CombatCommon.canEscape((MobPatch<?>) livingEntityPatch)) {
                         recoverItemDueToFailure(entity);
                         return;
@@ -268,25 +254,12 @@ public class CombatBehaviour {
                         @Override
                         public void run() {
                             if (!entity.isAlive()) return;
-                            if (levelaccessor instanceof Level level) {
-                                SoundEvent burp = ForgeRegistries.SOUND_EVENTS.getValue(
-                                        ResourceLocation.fromNamespaceAndPath("minecraft", "entity.player.burp")
-                                );
-                                if (burp != null) {
-                                    if (!level.isClientSide()) {
-                                        level.playSound(null,
-                                                entity.blockPosition(),
-                                                burp,
-                                                SoundSource.NEUTRAL,
-                                                1.5F, 1.0F);
-                                    } else {
-                                        level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(),
-                                                burp,
-                                                SoundSource.NEUTRAL,
-                                                1.5F, 1.0F,
-                                                false);
-                                    }
-                                }
+                            if (levelaccessor instanceof ServerLevel serverLevel) {
+                                serverLevel.playSound(null,
+                                        entity.blockPosition(),
+                                        SoundEvents.PLAYER_BURP,
+                                        SoundSource.NEUTRAL,
+                                        1.5F, 1.0F);
                             }
                         }
                     };
@@ -370,9 +343,9 @@ public class CombatBehaviour {
 
                     LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(entity, LivingEntityPatch.class);
                     if (patch == null) return;
-                    AssetAccessor<? extends DynamicAnimation> currentAnim = Objects.requireNonNull(patch.getAnimator().getPlayerFor(null)).getAnimation();
+                    AssetAccessor<? extends StaticAnimation> currentAnim = Objects.requireNonNull(patch.getAnimator().getPlayerFor(null)).getRealAnimation();
                     if (currentAnim.get() instanceof AttackAnimation
-                            || EpicfightUtil.isLongHitAnimation(currentAnim)
+                            || EpicfightUtil.isLongHitAnimation(currentAnim, patch)
                             || CombatCommon.canEscape((MobPatch<?>) livingEntityPatch)) {
                         recoverItemDueToFailure(entity);
                         return;
@@ -397,25 +370,12 @@ public class CombatBehaviour {
                         @Override
                         public void run() {
                             if (!entity.isAlive()) return;
-                            if (levelaccessor instanceof Level level) {
-                                SoundEvent burp = ForgeRegistries.SOUND_EVENTS.getValue(
-                                        ResourceLocation.fromNamespaceAndPath("minecraft", "entity.player.burp")
-                                );
-                                if (burp != null) {
-                                    if (!level.isClientSide()) {
-                                        level.playSound(null,
-                                                entity.blockPosition(),
-                                                burp,
-                                                SoundSource.NEUTRAL,
-                                                1.5F, 1.0F);
-                                    } else {
-                                        level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(),
-                                                burp,
-                                                SoundSource.NEUTRAL,
-                                                1.5F, 1.0F,
-                                                false);
-                                    }
-                                }
+                            if (levelaccessor instanceof ServerLevel serverLevel) {
+                                serverLevel.playSound(null,
+                                        entity.blockPosition(),
+                                        SoundEvents.PLAYER_BURP,
+                                        SoundSource.NEUTRAL,
+                                        1.5F, 1.0F);
                             }
                         }
                     };

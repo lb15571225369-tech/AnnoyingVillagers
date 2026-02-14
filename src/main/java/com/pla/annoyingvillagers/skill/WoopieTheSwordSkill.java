@@ -16,6 +16,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 import reascer.wom.gameasset.animations.weapons.AnimsHerrscher;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.math.Vec3f;
 import yesman.epicfight.gameasset.Armatures;
@@ -79,7 +80,7 @@ public class WoopieTheSwordSkill extends WeaponInnateSkill {
                     if (event.getPlayerPatch().isLogicalClient()) return;
 
                     final PlayerPatch<?> playerPatch = event.getPlayerPatch();
-                    AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(playerPatch.getAnimator().getPlayerFor(null)).getAnimation();
+                    AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(playerPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
                     if (dynamicAnimation == null) return;
 
                     if (dynamicAnimation == AVAnimations.RUSH_SWORD && container.getStack() < 1) {

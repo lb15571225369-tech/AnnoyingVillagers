@@ -1,6 +1,7 @@
 package com.pla.annoyingvillagers.clazz;
 
 import com.pla.annoyingvillagers.entity.goal.BurnNearbyItemGoal;
+import com.pla.annoyingvillagers.entity.goal.LockedRandomStrollGoal;
 import com.pla.annoyingvillagers.entity.goal.PlayIdleAnimationGoal;
 import com.pla.annoyingvillagers.task.DelayedTask;
 import net.minecraft.nbt.CompoundTag;
@@ -8,7 +9,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -51,6 +51,16 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
     @Nullable private AssetAccessor<? extends StaticAnimation> idleAnimationAsset;
     private boolean idleMessageBroadcast = false;
     private boolean playingIdle;
+    private int playingIdleCooldown = 1200;
+    private boolean isStrolling;
+
+    public boolean isStrolling() {
+        return isStrolling;
+    }
+
+    public void setStrolling(boolean strolling) {
+        this.isStrolling = strolling;
+    }
 
     public boolean isPlayingIdle() {
         return playingIdle;
@@ -58,6 +68,14 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
 
     public void setPlayingIdle(boolean playingIdle) {
         this.playingIdle = playingIdle;
+    }
+
+    public int getPlayingIdleCooldown() {
+        return playingIdleCooldown;
+    }
+
+    public void setPlayingIdleCooldown(int playingIdleCooldown) {
+        this.playingIdleCooldown = playingIdleCooldown;
     }
 
     @Nullable
@@ -291,8 +309,9 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
         if (this.getMainHandItem().getItem() instanceof BowItem) {
             this.goalSelector.addGoal(4, new RangedBowAttackGoal<>(this, 1.0D, 20, 10.0F));
         }
-        this.goalSelector.addGoal(1, new BurnNearbyItemGoal(this, 1.0D, 10.0D));
-        this.goalSelector.addGoal(2, new PlayIdleAnimationGoal(this, new Random().nextInt(3000, 6000)));
+        this.goalSelector.addGoal(5, new BurnNearbyItemGoal(this, 1.0D, 10.0D));
+        this.goalSelector.addGoal(6, new PlayIdleAnimationGoal(this, new Random().nextInt(3000, 6000)));
+        this.goalSelector.addGoal(7, new LockedRandomStrollGoal(this, 1.0D));
     }
 
     @Override
@@ -432,6 +451,7 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
         if (swapToBowCooldown > 0) swapToBowCooldown--;
         if (unableToDamageCooldown > 0) unableToDamageCooldown--;
         if (stunEscapeCooldown > 0) stunEscapeCooldown--;
+        if (playingIdleCooldown > 0) playingIdleCooldown--;
 
         if ((tickCount + getId()) % 20 == 0) {
             if (!isInventoryFull()) {

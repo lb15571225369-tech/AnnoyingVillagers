@@ -20,6 +20,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import reascer.wom.gameasset.WOMAnimations;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.AttackResult;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
@@ -147,7 +148,7 @@ public class NullWeaponSkill extends WeaponInnateSkill {
                     if (!skillContainer.isActivated()) {
                         event.setCanceled(true);
                         final PlayerPatch<?> playerPatch = event.getPlayerPatch();
-                        AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(playerPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
+                        AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(playerPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
                         if (dynamicAnimation != null && dynamicAnimation == WOMAnimations.ANTITHEUS_ASCENDED_AUTO_2) {
                             skillContainer.getExecutor().playAnimationSynchronized(WOMAnimations.ANTITHEUS_ASCENDED_AUTO_3, 0.0F);
                         } else if (dynamicAnimation != null && dynamicAnimation == WOMAnimations.ANTITHEUS_ASCENDED_AUTO_1) {

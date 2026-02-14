@@ -54,15 +54,21 @@ public class ShadowHerobrineEntity extends HerobrineMob {
     private int obsidianMachineGunTick = 0;
 
     public void clearDarkOb() {
-        darkObUp.discard();
-        darkObUpUUID = null;
-        darkObUp = null;
-        darkObRight.discard();
-        darkObRightUUID = null;
-        darkObRight = null;
-        darkObLeft.discard();
-        darkObLeftUUID = null;
-        darkObLeft = null;
+        if (darkObUp != null) {
+            darkObUp.discard();
+            darkObUpUUID = null;
+            darkObUp = null;
+        }
+        if (darkObRight != null) {
+            darkObRight.discard();
+            darkObRightUUID = null;
+            darkObRight = null;
+        }
+        if (darkObLeft != null) {
+            darkObLeft.discard();
+            darkObLeftUUID = null;
+            darkObLeft = null;
+        }
     }
 
     public void setObsidianMachineGunTick() {

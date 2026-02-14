@@ -1,5 +1,6 @@
 package com.pla.annoyingvillagers.event;
 
+import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.clazz.AVNpc;
 import com.pla.annoyingvillagers.clazz.HerobrineMob;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
@@ -13,8 +14,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.shelmarow.combat_evolution.ai.iml.CustomExecuteEntity;
-import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
@@ -28,22 +28,17 @@ public class MobStunEscapeEvent {
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
         LivingEntity victim = event.getEntity();
+        if (!(victim instanceof PlayerNpcEntity || victim instanceof AVNpc || victim instanceof HerobrineMob)) return;
         if (victim instanceof PlayerNpcEntity playerNpcEntity && playerNpcEntity.getStunEscapeCooldown() != 0) return;
         if (victim instanceof AVNpc avNpc && avNpc.getStunEscapeCooldown() != 0) return;
         if (victim instanceof HerobrineMob herobrineMob && herobrineMob.getStunEscapeCooldown() != 0) return;
-
         if (victim.level().isClientSide) return;
-
         LivingEntityPatch<?> victimLivingEntityPatch = EpicFightCapabilities.getEntityPatch(victim, LivingEntityPatch.class);
-        if (victimLivingEntityPatch instanceof CustomExecuteEntity customExecuteEntity
-                && customExecuteEntity.canBeExecuted(victimLivingEntityPatch)) {
-            return;
-        }
 
         if (victimLivingEntityPatch != null) {
-            AssetAccessor<? extends DynamicAnimation> victimDynamicAnimation = Objects.requireNonNull(victimLivingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
+            AssetAccessor<? extends StaticAnimation> victimDynamicAnimation = Objects.requireNonNull(victimLivingEntityPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
             if (victimDynamicAnimation != null
-                    && (EpicfightUtil.isLongHitAnimation(victimDynamicAnimation) && victim.isAlive())) {
+                    && (EpicfightUtil.isLongHitAnimationNotExecutedAnimation(victimDynamicAnimation, victimLivingEntityPatch) && victim.isAlive())) {
                 float hpPct = victim.getHealth() / victim.getMaxHealth();
 
                 double min = AnnoyingVillagersConfig.MOB_GUARD_BREAK_WAKE_UP_MIN_CHANCE.get();
@@ -65,29 +60,43 @@ public class MobStunEscapeEvent {
                 }
 
                 if (victim.getRandom().nextFloat() < chance) {
-                    new DelayedTask(5) {
+                    if (victim instanceof PlayerNpcEntity playerNpcEntity) {
+                        playerNpcEntity.setStunEscapeCooldown(100);
+                        playerNpcEntity.setPlayingIdleCooldown(playerNpcEntity.getPlayingIdleCooldown() + 100);
+                    }
+                    if (victim instanceof HerobrineMob herobrineMob) {
+                        herobrineMob.setStunEscapeCooldown(100);
+                    }
+                    if (victim instanceof AVNpc avNpc) {
+                        avNpc.setStunEscapeCooldown(100);
+                        avNpc.setPlayingIdleCooldown(avNpc.getPlayingIdleCooldown() + 100);
+                    }
+                    new DelayedTask(20) {
                         @Override
                         public void run() {
-                            double chooseAnimation = new Random().nextDouble(0.0D, 1.0D);
-                            if (chooseAnimation <= 0.4D) {
-                                victimLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_LEFT, 0.0F);
-                            } else if (chooseAnimation <= 0.8D) {
-                                victimLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_RIGHT, 0.0F);
+                            if (EpicfightUtil.isLongHitAnimationNotExecutedAnimation(victimDynamicAnimation, victimLivingEntityPatch) && victim.isAlive()) {
+                                double chooseAnimation = new Random().nextDouble(0.0D, 1.0D);
+                                if (chooseAnimation <= 0.4D) {
+                                    victimLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_LEFT, 0.0F);
+                                } else if (chooseAnimation <= 0.8D) {
+                                    victimLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_KNOCKDOWN_WAKEUP_RIGHT, 0.0F);
+                                } else {
+                                    victimLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_ROLL_BACKWARD, 0.0F);
+                                }
+                                victim.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 60, 1, false, false));
+                                victim.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 60, 1, false, false));
+                                victim.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 1, false, false));
                             } else {
-                                victimLivingEntityPatch.playAnimationSynchronized(Animations.BIPED_ROLL_BACKWARD, 0.0F);
+                                if (victim instanceof PlayerNpcEntity playerNpcEntity) {
+                                    playerNpcEntity.setStunEscapeCooldown(1);
+                                }
+                                if (victim instanceof HerobrineMob herobrineMob) {
+                                    herobrineMob.setStunEscapeCooldown(1);
+                                }
+                                if (victim instanceof AVNpc avNpc) {
+                                    avNpc.setStunEscapeCooldown(1);
+                                }
                             }
-                            if (victim instanceof PlayerNpcEntity playerNpcEntity) {
-                                playerNpcEntity.setStunEscapeCooldown(100);
-                            }
-                            if (victim instanceof HerobrineMob herobrineMob) {
-                                herobrineMob.setStunEscapeCooldown(100);
-                            }
-                            if (victim instanceof AVNpc avNpc) {
-                                avNpc.setStunEscapeCooldown(100);
-                            }
-                            victim.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 60, 1, false, false));
-                            victim.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 60, 1, false, false));
-                            victim.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 1, false, false));
                         }
                     };
                 }

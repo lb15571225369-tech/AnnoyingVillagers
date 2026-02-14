@@ -21,6 +21,7 @@ import net.minecraftforge.fml.common.Mod;
 import reascer.wom.gameasset.animations.weapons.AnimsHerrscher;
 import reascer.wom.world.entity.mob.EnderHand;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.skill.SkillContainer;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
@@ -39,7 +40,7 @@ public class ExplosionDamageEvent {
         if (livingEntity != null && livingEntity.isAlive() && livingEntity.level() instanceof ServerLevel serverLevel) {
             LivingEntityPatch<?> livingEntityPatch = EpicFightCapabilities.getEntityPatch(livingEntity, LivingEntityPatch.class);
             if (livingEntityPatch == null) return;
-            AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getAnimation();
+            AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(livingEntityPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
             if (livingEntity.getMainHandItem().getItem() instanceof EnderGlaiveItem
                     && (dynamicAnimation == AVAnimations.ENDER_GLAIVE_AGONY_AUTO_1 || dynamicAnimation == AVAnimations.ENDER_GLAIVE_NAPOLEON_SHOOT_3)) {
                 SkillContainer skillContainer = null;

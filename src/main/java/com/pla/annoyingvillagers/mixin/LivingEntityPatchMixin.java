@@ -6,6 +6,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.damagesource.StunType;
@@ -18,7 +19,7 @@ public abstract class LivingEntityPatchMixin {
     private void preventStunOveride(StunType stunType, float stunTime,
                                     CallbackInfoReturnable<Boolean> cir) {
         LivingEntityPatch<?> self = (LivingEntityPatch) (Object)this;
-        AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(self.getAnimator().getPlayerFor(null)).getRealAnimation();
+        AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(self.getAnimator().getPlayerFor(null)).getRealAnimation();
         if ((stunType == StunType.SHORT
                 || stunType == StunType.LONG
                 || stunType == StunType.HOLD)

@@ -13,6 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.AttackResult;
 import yesman.epicfight.skill.SkillBuilder;
@@ -99,7 +100,7 @@ public class HardGreatSwordSkill extends WeaponInnateSkill {
                     final PlayerPatch<?> playerPatch = event.getPlayerPatch();
                     final Player defender = playerPatch.getOriginal();
 
-                    AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(playerPatch.getAnimator().getPlayerFor(null)).getAnimation();
+                    AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(playerPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
                     if (dynamicAnimation == null || dynamicAnimation != AVAnimations.HARD_GREATSWORD_GUARD_SKILL) return;
 
                     Entity attacker = event.getDamageSource().getEntity();

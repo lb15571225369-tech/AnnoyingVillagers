@@ -140,9 +140,11 @@ public class BurnNearbyItemGoal extends Goal {
         ItemStack weapon = null;
         if (mob instanceof PlayerNpcEntity playerNpcEntity) {
             weapon = playerNpcEntity.getMainWeaponItem();
+            playerNpcEntity.setPlayingIdleCooldown(playerNpcEntity.getPlayingIdleCooldown() + 40);
         }
         if (mob instanceof AVNpc avNpc) {
             weapon = avNpc.getMainWeaponItem();
+            avNpc.setPlayingIdleCooldown(avNpc.getPlayingIdleCooldown() + 40);
         }
         if (weapon != null && !weapon.isEmpty()) {
             mob.setItemSlot(EquipmentSlot.MAINHAND, weapon.copy());

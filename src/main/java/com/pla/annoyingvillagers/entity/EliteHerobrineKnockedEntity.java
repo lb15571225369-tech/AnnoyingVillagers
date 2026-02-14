@@ -12,6 +12,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -132,10 +133,15 @@ public class EliteHerobrineKnockedEntity extends PathfinderMob {
     public boolean hurt(DamageSource pSource, float pAmount) {
         if (pSource.getEntity() instanceof HerobrineWardenEntity) {
             eatCount = eatCount + 1;
-            if (!this.level().isClientSide()) {
-                this.level().playSound(null, new BlockPos((int) this.getX(), (int) this.getY(), (int) this.getZ()), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat"))), SoundSource.NEUTRAL, 1.0F, 1.0F);
-            } else {
-                this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath("minecraft", "entity.generic.eat"))), SoundSource.NEUTRAL, 1.0F, 1.0F, false);
+            if (this.level() instanceof ServerLevel serverLevel) {
+                serverLevel.playSound(
+                        null,
+                        BlockPos.containing(this.getX(), this.getY(), this.getZ()),
+                        SoundEvents.GENERIC_EAT,
+                        SoundSource.NEUTRAL,
+                        1.0F,
+                        1.0F
+                );
             }
             if (eatCount == 10) {
                 this.remove(RemovalReason.DISCARDED);

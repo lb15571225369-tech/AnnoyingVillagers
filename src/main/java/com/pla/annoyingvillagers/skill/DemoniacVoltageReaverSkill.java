@@ -8,6 +8,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.AttackResult;
 import yesman.epicfight.skill.Skill;
@@ -82,7 +83,7 @@ public class DemoniacVoltageReaverSkill extends WeaponInnateSkill {
             if (pre.getPlayerPatch().isLogicalClient()) return;
 
             final PlayerPatch<?> playerPatch = pre.getPlayerPatch();
-            AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(playerPatch.getAnimator().getPlayerFor(null)).getAnimation();
+            AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(playerPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
             if (dynamicAnimation == null) return;
 
             if (dynamicAnimation == AVAnimations.SNAKE_BLADE_GUARD) {

@@ -1,19 +1,15 @@
 package com.pla.annoyingvillagers.potion;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.pla.annoyingvillagers.AnnoyingVillagers;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModParticleTypes;
+import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
 public class ElectifyMobEffect extends MobEffect {
 
@@ -21,7 +17,7 @@ public class ElectifyMobEffect extends MobEffect {
         super(MobEffectCategory.HARMFUL, -16711681);
     }
 
-    public String getDescriptionId() {
+    public @NotNull String getDescriptionId() {
         return "effect.annoyingvillagers.electify";
     }
 
@@ -30,21 +26,27 @@ public class ElectifyMobEffect extends MobEffect {
         double d1 = livingentity.getY();
         double d2 = livingentity.getZ();
         if (Math.random() <= 0.1D) {
-            if (!livingentity.level().isClientSide() && livingentity.getServer() != null) {
-                try {
-                    livingentity.getServer().getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:electric_spark ^ ^ ^ 0.3 1.2 0.3 0 1", livingentity.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException e) {
+            if (livingentity.level() instanceof ServerLevel serverLevel) {
+                serverLevel.sendParticles(
+                        AnnoyingVillagersModParticleTypes.ELECTRIC_SPARK.get(),
+                        livingentity.getX(), livingentity.getY(), livingentity.getZ(),
+                        1,
+                        0.3D, 1.2D, 0.3D,
+                        0.0D
+                );
 
-                }
-            }
+                if (serverLevel.random.nextDouble() <= 0.8D) {
+                    float volume = (float) Mth.nextDouble(serverLevel.random, 0.05D, 0.5D);
+                    float pitch  = (float) Mth.nextDouble(serverLevel.random, 0.8D, 1.1D);
 
-            if (Math.random() <= 0.8D) {
-                Level level = (Level) livingentity.level();
-
-                if (!level.isClientSide()) {
-                    level.playSound((Player) null, new BlockPos((int) d0, (int) d1, (int) d2), (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "electify")), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.05D, 0.5D), (float) Mth.nextDouble(RandomSource.create(), 0.8D, 1.1D));
-                } else {
-                    level.playLocalSound(d0, d1, d2, (SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.fromNamespaceAndPath(AnnoyingVillagers.MODID, "electify")), SoundSource.NEUTRAL, (float) Mth.nextDouble(RandomSource.create(), 0.05D, 0.5D), (float) Mth.nextDouble(RandomSource.create(), 0.8D, 1.1D), false);
+                    serverLevel.playSound(
+                            null,
+                            BlockPos.containing(d0, d1, d2),
+                            AnnoyingVillagersModSounds.ELECTIFY.get(),
+                            SoundSource.NEUTRAL,
+                            volume,
+                            pitch
+                    );
                 }
             }
         }

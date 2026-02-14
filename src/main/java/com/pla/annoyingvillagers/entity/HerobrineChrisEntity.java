@@ -25,6 +25,7 @@ import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import org.jetbrains.annotations.NotNull;
 import reascer.wom.gameasset.animations.weapons.AnimsMoonless;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
+import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.EpicFightSounds;
@@ -58,8 +59,8 @@ public class HerobrineChrisEntity extends HerobrineMob {
         if (damagesource.is(DamageTypes.WITHER_SKULL)) return false;
         if (damagesource.is(DamageTypes.DRAGON_BREATH)) return false;
         if (this.level() instanceof ServerLevel serverLevel && HerobrineCommon.canPlaySecondFormAnimation((MobPatch<?>) Objects.requireNonNull(this.getLivingEntityPatch()))) {
-            AssetAccessor<? extends DynamicAnimation> dynamicAnimation = Objects.requireNonNull(this.getLivingEntityPatch().getAnimator().getPlayerFor(null)).getAnimation();
-            if (!EpicfightUtil.isLongHitAnimation(dynamicAnimation)
+            AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(this.getLivingEntityPatch().getAnimator().getPlayerFor(null)).getRealAnimation();
+            if (!EpicfightUtil.isLongHitAnimation(dynamicAnimation, getLivingEntityPatch())
                     && (this.level() instanceof ServerLevel && dynamicAnimation == Animations.EMPTY_ANIMATION)) {
                 Objects.requireNonNull(this.getLivingEntityPatch()).playAnimationSynchronized(AnimsMoonless.MOONLESS_GUARD_HIT_1, 0.0F);
                 HerobrineCommon.playSecondFormAnimation((MobPatch<?>) Objects.requireNonNull(this.getLivingEntityPatch()));

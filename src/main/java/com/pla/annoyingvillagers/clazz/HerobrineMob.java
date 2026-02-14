@@ -34,6 +34,8 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.OpenDoorGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -422,6 +424,7 @@ public class HerobrineMob extends Monster {
             }
         });
         CommonGoals.registerGoalForHostileNpc(this);
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
     }
 
     public @NotNull MobType getMobType() {
@@ -860,10 +863,13 @@ public class HerobrineMob extends Monster {
             if (this.hasEffect(MobEffects.DAMAGE_BOOST) && this.hasEffect(MobEffects.MOVEMENT_SPEED) &&
             this.hasEffect(MobEffects.JUMP) && this.hasEffect(MobEffects.DAMAGE_RESISTANCE)) {
                 if (new Random().nextBoolean()) {
-                    try {
-                        Objects.requireNonNull(this.getServer()).getCommands().getDispatcher().execute("execute at @s run particle annoyingvillagers:full_cowl ^ ^ ^ 0.3 1.2 0.3 0 1", this.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                    } catch (CommandSyntaxException ignored) {
-                    }
+                    serverLevel.sendParticles(
+                            AnnoyingVillagersModParticleTypes.FULL_COWL.get(),
+                            this.getX(), this.getY(), this.getZ(),
+                            1,
+                            0.3D, 1.2D, 0.3D,
+                            0.0D
+                    );
                 }
             }
 

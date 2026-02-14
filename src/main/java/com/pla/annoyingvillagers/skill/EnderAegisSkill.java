@@ -17,6 +17,7 @@ import net.minecraft.world.phys.Vec3;
 import yesman.epicfight.api.animation.AnimationPlayer;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.EntityState;
+import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.AttackResult;
 import yesman.epicfight.gameasset.EpicFightSounds;
@@ -101,7 +102,7 @@ public class EnderAegisSkill extends WeaponInnateSkill {
             if (skillContainer == null) return;
             EnderAegisSkill enderAegisSkill = (EnderAegisSkill) skillContainer.getSkill();
             AnimationPlayer animationPlayer = Objects.requireNonNull(playerPatch.getAnimator().getPlayerFor(null));
-            AssetAccessor<? extends DynamicAnimation> dynamicAnimation = animationPlayer.getAnimation();
+            AssetAccessor<? extends StaticAnimation> dynamicAnimation = animationPlayer.getRealAnimation();
             float elapsedTimeFloat = animationPlayer.getElapsedTime();
             EntityState entityState = dynamicAnimation.get().getState(playerPatch, elapsedTimeFloat);
 
