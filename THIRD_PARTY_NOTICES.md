@@ -184,19 +184,19 @@ All required upstream notices must be preserved.
 
 ## G) Proprietary / All Rights Reserved (Dependency Assets)
 
-### G1) WOM (dependency mod) - reacer - Proprietary / All Rights Reserved
+### G1) Weapon Of Miracle (dependency mod) - reacer - Proprietary / All Rights Reserved
 - Type: cloned/copied assets (animations) from a dependency mod for reuse
 - License text: `third_party/licenses/LicenseRef-WOM-Proprietary.md`
-- Source: assets/annoyingvillagers/animmodels/animations/biped/wom_clone
+- Source: https://www.curseforge.com/minecraft/mc-mods/weapons-of-miracles-epicfight
 
 **Paths / Files**
 - assets/annoyingvillagers/animmodels/animations/biped/wom_clone
 
 **Notes**
 - These files are NOT AnnoyingVillagers Original Materials (AV-RO does not apply).
-- Copyright remains with the WOM owner and contributors.
-- Redistribution of these assets may require explicit permission from the WOM owner.
-- Users should obtain WOM via its official distribution channel and comply with its terms.
+- Copyright remains with the reacer and contributors.
+- Redistribution of these assets may require explicit permission from the reacer.
+- Users should obtain Weapon Of Miracle via its official distribution channel and comply with its terms.
 
 ---
 

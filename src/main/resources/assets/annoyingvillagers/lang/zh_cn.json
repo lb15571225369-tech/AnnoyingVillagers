@@ -236,7 +236,6 @@
   "tooltip.annoyingvillagers.demoniac_voltage_reaver_blade": "惡魔電壓掠奪者的碎片，由鐵和混合黑曜石的磁性合金鍛造而成。",
   "tooltip.annoyingvillagers.demoniac_voltage_reaver_fragment": "惡魔電壓掠奪者的碎片，由鐵和混合黑曜石的磁性合金鍛造而成。",
   "tooltip.annoyingvillagers.demoniac_voltage_reaver_hilt": "惡魔電壓掠奪者的劍柄，由混合黑曜石鍛造而成。",
-
   "tooltip.annoyingvillagers.ender_glaive": "§5Him§r的传奇武器之一。",
   "tooltip.annoyingvillagers.ender_slayer_scythe": "§5Him§r的传奇武器之一。",
   "tooltip.annoyingvillagers.demoniac_voltage_reaver": "§5Him§r的传奇武器之一。",
@@ -244,17 +243,14 @@
   "tooltip.annoyingvillagers.ender_aegis": "§5Him§r的传奇武器之一。",
   "tooltip.annoyingvillagers.null_weapon": "§5Null§r的权力之一。",
   "tooltip.annoyingvillagers.null_weapon_full": "它充满了§5Null§r的所有力量。",
-
   "tooltip.annoyingvillagers.compressessed_diamond": "壓縮鑽石：最高品質，最大硬度",
   "tooltip.annoyingvillagers.woopie_the_sword": "特殊武器，命中敵人後，跑步時右鍵釋放技能。",
   "tooltip.annoyingvillagers.diamond_shear": "右鍵點選可清除敵人的所有效果。",
   "tooltip.annoyingvillagers.legendary_sword": "傳奇武器之一。",
-
   "tooltip.annoyingvillagers.wooden_door": "这是一扇造型非常独特的木门，连新手都说它很棒。",
   "tooltip.annoyingvillagers.trapdoor": "这只是一扇普通的活板门。",
   "tooltip.annoyingvillagers.ladder": "你应该把这个放回家里。",
   "tooltip.annoyingvillagers.crafting_table": "你携带了什么？",
-
   "tooltip.annoyingvillagers.enchanted_ender_pearl": "這是一顆可以忽略掉落傷害的魔法末影珍珠。",
   "tooltip.annoyingvillagers.poison_egg": "從§5BBQ酱§r拋出。",
   "tooltip.annoyingvillagers.jev_glasses": "右鍵點選即可裝備。",
@@ -262,7 +258,6 @@
   "tooltip.annoyingvillagers.enchanted_bed": "右鍵點選附魔床一次即可設定重生點。死亡後，物品不會掉落。每次使用後必須再次右鍵點擊才能重新啟動效果。此效果與不死圖騰衝突。",
   "tooltip.annoyingvillagers.obsidian": "Him克隆体发射的黑曜石",
   "tooltip.annoyingvillagers.shadow_obsidian": "由暗影Him克隆体发射的暗影黑曜石",
-
   "epicfight.skill_slot.av_kick": "踢",
   "epicfight.skill_slot.av_stun_escape": "眩晕逃脱",
   "skill.epicfight.av_kick.category": "被动的",
