@@ -234,7 +234,7 @@ public class AngrySteveEntity extends AVNpc {
                 damagedStacks.add(diamondSword);
             }
 
-            ItemStack bow = new ItemStack(Items.BOW);
+            ItemStack bow = this.getBowItem();
             bow.enchant(Enchantments.POWER_ARROWS, 5);
             bow.enchant(Enchantments.PUNCH_ARROWS, 5);
             damagedStacks.add(bow);

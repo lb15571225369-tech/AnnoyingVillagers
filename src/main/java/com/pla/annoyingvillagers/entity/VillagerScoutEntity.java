@@ -34,7 +34,6 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
-import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.Animations;
@@ -234,7 +233,7 @@ public class VillagerScoutEntity extends AVNpc {
         TeamUtil.addOrJoinTeam(this, "villagers");
 
         if (new Random().nextBoolean()) {
-            this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.BOW));
+            this.setItemInHand(InteractionHand.MAIN_HAND, this.getBowItem());
         } else {
             this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.IRON_SWORD));
             if (new Random().nextBoolean()) {

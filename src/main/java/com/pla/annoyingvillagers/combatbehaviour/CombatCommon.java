@@ -24,6 +24,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
@@ -38,7 +39,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.shelmarow.combat_evolution.execution.ExecutionHandler;
 import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
 import net.shelmarow.combat_evolution.tickTask.TickTaskManager;
-import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.KnockdownAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
@@ -672,6 +672,7 @@ public class CombatCommon {
     public static void swapToBow(MobPatch<?> mobpatch) {
         LivingEntity entity = mobpatch.getOriginal();
         ItemStack bow = new ItemStack(Items.BOW);
+        if (entity instanceof AVNpc avNpc) bow = avNpc.getBowItem();
 
         if (entity instanceof VillagerScoutCaptainEntity) {
             bow.enchant(Enchantments.POWER_ARROWS, 1);
@@ -775,6 +776,16 @@ public class CombatCommon {
         }
         if (entity instanceof AVNpc AVNpc) {
             AVNpc.jump();
+        }
+    }
+
+    public static void shortPillarJump(MobPatch<?> mobpatch) {
+        Entity entity = mobpatch.getOriginal();
+        if (entity instanceof PlayerNpcEntity playerNpcEntity) {
+            playerNpcEntity.shortPillarJump();
+        }
+        if (entity instanceof AVNpc AVNpc) {
+            AVNpc.shortPillarJump();
         }
     }
 

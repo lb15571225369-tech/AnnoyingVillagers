@@ -254,7 +254,7 @@ public class AlexEntity extends AVNpc {
             sword.enchant(Enchantments.UNBREAKING, 5);
             damagedStacks.add(sword);
 
-            ItemStack bow = new ItemStack(Items.BOW);
+            ItemStack bow = this.getBowItem();
             bow.enchant(Enchantments.PUNCH_ARROWS, 3);
             bow.enchant(Enchantments.POWER_ARROWS, 3);
             bow.enchant(Enchantments.FLAMING_ARROWS, 2);

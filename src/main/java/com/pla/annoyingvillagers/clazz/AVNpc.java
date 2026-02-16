@@ -166,6 +166,10 @@ public class AVNpc extends PathfinderMob implements RangedAttackMob {
         this.swapToBowCooldown = random.nextInt(100, 300);
     }
 
+    public ItemStack getBowItem() {
+        return new ItemStack(Items.BOW);
+    }
+
     @Nullable
     public LivingEntityPatch<?> getLivingEntityPatch() {
         return EpicFightCapabilities.getEntityPatch(this, LivingEntityPatch.class);

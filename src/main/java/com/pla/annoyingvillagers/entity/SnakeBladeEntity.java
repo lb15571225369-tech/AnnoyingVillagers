@@ -5,6 +5,7 @@ import com.pla.annoyingvillagers.gameasset.AVSkills;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModEntities;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModSounds;
+import com.pla.annoyingvillagers.item.DemoniacVoltageReaverItem;
 import com.pla.annoyingvillagers.util.EpicfightUtil;
 import com.pla.annoyingvillagers.util.HerobrineUtil;
 import com.pla.annoyingvillagers.skill.DemoniacVoltageReaverSkill;
@@ -149,6 +150,12 @@ public class SnakeBladeEntity extends Entity {
 
     @Override
     public void tick() {
+        if (getCreatorEntity() != null
+                && getCreatorEntity() instanceof LivingEntity livingEntity
+                && !(livingEntity.getMainHandItem().getItem() instanceof DemoniacVoltageReaverItem)) {
+            this.discard();
+            return;
+        }
         HerobrineUtil.spawnEliteEffect(this.level(), this.getX(), this.getY(), this.getZ(), this);
 
         float progressBefore = this.getProgress();

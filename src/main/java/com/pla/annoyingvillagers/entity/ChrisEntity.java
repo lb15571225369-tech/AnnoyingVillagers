@@ -238,7 +238,7 @@ public class ChrisEntity extends AVNpc {
             diamondBoots.enchant(Enchantments.UNBREAKING, 5);
             damagedStacks.add(diamondBoots);
 
-            ItemStack bow = new ItemStack(Items.BOW);
+            ItemStack bow = this.getBowItem();
             bow.enchant(Enchantments.POWER_ARROWS, 2);
             bow.enchant(Enchantments.PUNCH_ARROWS, 2);
             damagedStacks.add(bow);

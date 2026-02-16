@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.util;
 
-import com.pla.annoyingvillagers.clazz.HerobrineObsidianBlock;
 import com.pla.annoyingvillagers.combatbehaviour.*;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
 import net.minecraft.world.item.Items;
@@ -111,11 +110,7 @@ public class MobPatchCommon {
 
     public static CECombatBehaviors.Builder<MobPatch<?>> overideBowMotionBuilderForNpc(CapabilityItem mainHandCap, Style style) {
         if (mainHandCap == EpicFightCapabilities.getItemStackCapability(Items.BOW.getDefaultInstance())) {
-            if (style == CapabilityItem.Styles.ONE_HAND) {
-                return NpcBow.BOW;
-            } else if (style == CapabilityItem.Styles.TWO_HAND) {
-                return NpcBow.BOW;
-            }
+            return NpcBow.BOW;
         }
 
         return null;
@@ -123,11 +118,7 @@ public class MobPatchCommon {
 
     public static CECombatBehaviors.Builder<MobPatch<?>> overideBowMotionBuilderForPlayerNpc(CapabilityItem mainHandCap, Style style) {
         if (mainHandCap == EpicFightCapabilities.getItemStackCapability(Items.BOW.getDefaultInstance())) {
-            if (style == CapabilityItem.Styles.ONE_HAND) {
-                return PlayerNpcBow.BOW;
-            } else if (style == CapabilityItem.Styles.TWO_HAND) {
-                return PlayerNpcBow.BOW;
-            }
+            return PlayerNpcBow.BOW;
         }
 
         return null;
