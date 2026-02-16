@@ -78,6 +78,11 @@ dependencies {
     implementation fg.deobf("curse.maven:epicfight-clash-blade-1408812:7622640")
     implementation fg.deobf("curse.maven:weapons-of-miracles-epicfight-918614:7517612")
 
+    implementation fg.deobf("curse.maven:p1neros-epic-bow-1338443:7144823")
+    implementation fg.deobf("curse.maven:epicfight-resurrection-1151542:6931390")
+    implementation fg.deobf("curse.maven:epic-fight-dual-axes-1174112:6955515")
+    implementation fg.deobf("curse.maven:epic-fight-dual-greatswords-updated-1224015:7425556")
+
     implementation fg.deobf("curse.maven:player-mobs-430513:5780869")
     implementation fg.deobf("curse.maven:aaa-particles-979809:6616719")
     implementation fg.deobf("curse.maven:architectury-api-419699:5137938")

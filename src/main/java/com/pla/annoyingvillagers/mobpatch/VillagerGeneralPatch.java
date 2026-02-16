@@ -7,12 +7,14 @@ import com.pla.annoyingvillagers.combatbehaviour.NpcFist;
 import com.pla.annoyingvillagers.combatbehaviour.NpcSword;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
+import com.pla.annoyingvillagers.util.MobPatchCommon;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
+import net.shelmarow.combat_evolution.ai.CECombatBehaviors;
 import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
 import net.shelmarow.combat_evolution.ai.iml.CustomExecuteEntity;
 import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
@@ -28,6 +30,8 @@ import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.world.capabilities.entitypatch.Factions;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
+import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.Styles;
 import yesman.epicfight.world.capabilities.item.CapabilityItem.WeaponCategories;
 import yesman.epicfight.world.damagesource.EpicFightDamageSource;
@@ -99,24 +103,6 @@ public class VillagerGeneralPatch extends CEHumanoidPatch implements CustomExecu
                                 Styles.ONE_HAND, NpcSword.AV_SWORD
                         ));
 
-        this.weaponAttackMotions
-                .put(WeaponCategories.RANGED,
-                        ImmutableMap.of(
-                                Styles.ONE_HAND, NpcBow.BOW
-                        ));
-        this.weaponLivingMotions
-                .put(WeaponCategories.RANGED,
-                        ImmutableMap.of(Styles.ONE_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
-                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN),
-                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_RUN),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH),
-                                        Pair.of(LivingMotions.AIM, Animations.BIPED_BOW_AIM),
-                                        Pair.of(LivingMotions.SHOT, Animations.BIPED_BOW_SHOT)
-                                )));
-
         this.guardHitMotions.put(WeaponCategories.SWORD,
                 ImmutableMap.of(
                         Styles.ONE_HAND, List.of(
@@ -126,6 +112,13 @@ public class VillagerGeneralPatch extends CEHumanoidPatch implements CustomExecu
                         )
                 )
         );
+    }
+
+    @Override
+    protected CECombatBehaviors.Builder<MobPatch<?>> getCustomWeaponMotionBuilder() {
+        CapabilityItem mainHandCap = this.getHoldingItemCapability(InteractionHand.MAIN_HAND);
+        CECombatBehaviors.Builder<MobPatch<?>> customOverride = MobPatchCommon.overideBowMotionBuilderForNpc(mainHandCap, mainHandCap.getStyle(this));
+        return customOverride != null ? customOverride : super.getCustomWeaponMotionBuilder();
     }
 
     public void playGuardBreakSound() {

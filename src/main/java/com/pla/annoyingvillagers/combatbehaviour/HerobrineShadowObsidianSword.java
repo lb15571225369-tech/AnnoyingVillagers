@@ -1046,7 +1046,7 @@ public class HerobrineShadowObsidianSword {
                                     Behavior.builder()
                                             .custom(CombatCommon::canPerformNormalAttackLogic)
                                             .withinDistance(0.0D, 4.0D)
-                                            .animationBehavior(AnimsHerrscher.GESETZ_AUTO_2, 0.0F)
+                                            .animationBehavior(AVAnimations.SHADOW_OBSIDIAN_SWORD_GESETZ_AUTO_2, 0.0F)
                                             .addNextBehavior(
                                                     Behavior.builder()
                                                             .custom(CombatCommon::canPerformNormalAttackLogic)

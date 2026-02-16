@@ -81,23 +81,6 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
         this.weaponAttackMotions
                 .put(WeaponCategories.FIST,
                         ImmutableMap.of(Styles.ONE_HAND, PlayerNpcFist.FIST));
-        this.weaponAttackMotions
-                .put(WeaponCategories.RANGED,
-                        ImmutableMap.of(
-                                Styles.ONE_HAND, PlayerNpcBow.BOW
-                        ));
-        this.weaponLivingMotions
-                .put(WeaponCategories.RANGED,
-                        ImmutableMap.of(Styles.ONE_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
-                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN),
-                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_RUN),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH),
-                                        Pair.of(LivingMotions.AIM, Animations.BIPED_BOW_AIM),
-                                        Pair.of(LivingMotions.SHOT, Animations.BIPED_BOW_SHOT)
-                                )));
 
         this.weaponAttackMotions
                 .put(WeaponCategories.AXE,
@@ -251,6 +234,7 @@ public class PlayerNpcPatch extends CEHumanoidPatch implements CustomExecuteEnti
     protected CECombatBehaviors.Builder<MobPatch<?>> getCustomWeaponMotionBuilder() {
         CapabilityItem mainHandCap = this.getHoldingItemCapability(InteractionHand.MAIN_HAND);
         CECombatBehaviors.Builder<MobPatch<?>> customOverride = MobPatchCommon.overideCustomWeaponMotionBuilderForPlayerNpc(mainHandCap, mainHandCap.getStyle(this));
+        if (customOverride == null) customOverride = MobPatchCommon.overideBowMotionBuilderForPlayerNpc(mainHandCap, mainHandCap.getStyle(this));
         return customOverride != null ? customOverride : super.getCustomWeaponMotionBuilder();
     }
 

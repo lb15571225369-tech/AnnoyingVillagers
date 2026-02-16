@@ -6,6 +6,7 @@ import com.pla.annoyingvillagers.combatbehaviour.*;
 import com.pla.annoyingvillagers.config.AnnoyingVillagersConfig;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import com.pla.annoyingvillagers.util.MobPatchCommon;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -83,24 +84,6 @@ public class StevePatch extends CEHumanoidPatch implements CustomExecuteEntity {
         this.weaponAttackMotions
                 .put(WeaponCategories.FIST,
                         ImmutableMap.of(Styles.ONE_HAND, SteveFist.FIST));
-
-        this.weaponLivingMotions
-                .put(WeaponCategories.RANGED,
-                        ImmutableMap.of(Styles.ONE_HAND,
-                                Set.of(
-                                        Pair.of(LivingMotions.IDLE, Animations.BIPED_IDLE),
-                                        Pair.of(LivingMotions.WALK, Animations.BIPED_WALK),
-                                        Pair.of(LivingMotions.RUN, Animations.BIPED_RUN),
-                                        Pair.of(LivingMotions.CHASE, Animations.BIPED_RUN),
-                                        Pair.of(LivingMotions.DEATH, Animations.BIPED_DEATH),
-                                        Pair.of(LivingMotions.AIM, Animations.BIPED_BOW_AIM),
-                                        Pair.of(LivingMotions.SHOT, Animations.BIPED_BOW_SHOT)
-                                )));
-        this.weaponAttackMotions
-                .put(WeaponCategories.RANGED,
-                        ImmutableMap.of(
-                                Styles.ONE_HAND, PlayerNpcBow.BOW
-                        ));
 
         this.weaponLivingMotions
                 .put(WeaponCategories.SWORD,
@@ -205,7 +188,8 @@ public class StevePatch extends CEHumanoidPatch implements CustomExecuteEntity {
             }
         }
 
-        return super.getCustomWeaponMotionBuilder();
+        CECombatBehaviors.Builder<MobPatch<?>> customOverride = MobPatchCommon.overideBowMotionBuilderForNpc(mainHandCap, mainHandCap.getStyle(this));
+        return customOverride != null ? customOverride : super.getCustomWeaponMotionBuilder();
     }
 
     public void playGuardBreakSound() {

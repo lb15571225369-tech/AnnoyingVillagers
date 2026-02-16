@@ -3,6 +3,7 @@ package com.pla.annoyingvillagers.util;
 import com.pla.annoyingvillagers.clazz.HerobrineObsidianBlock;
 import com.pla.annoyingvillagers.combatbehaviour.*;
 import com.pla.annoyingvillagers.init.AnnoyingVillagersModItems;
+import net.minecraft.world.item.Items;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
@@ -102,6 +103,30 @@ public class MobPatchCommon {
                 return HerobrineShadowObsidianSword.SHADOW_OBSIDIAN_DUAL_SWORD;
             } else if (style == CapabilityItem.Styles.ONE_HAND) {
                 return HerobrineShadowObsidianSword.SHADOW_OBSIDIAN_SWORD;
+            }
+        }
+
+        return null;
+    }
+
+    public static CECombatBehaviors.Builder<MobPatch<?>> overideBowMotionBuilderForNpc(CapabilityItem mainHandCap, Style style) {
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(Items.BOW.getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.ONE_HAND) {
+                return NpcBow.BOW;
+            } else if (style == CapabilityItem.Styles.TWO_HAND) {
+                return NpcBow.BOW;
+            }
+        }
+
+        return null;
+    }
+
+    public static CECombatBehaviors.Builder<MobPatch<?>> overideBowMotionBuilderForPlayerNpc(CapabilityItem mainHandCap, Style style) {
+        if (mainHandCap == EpicFightCapabilities.getItemStackCapability(Items.BOW.getDefaultInstance())) {
+            if (style == CapabilityItem.Styles.ONE_HAND) {
+                return PlayerNpcBow.BOW;
+            } else if (style == CapabilityItem.Styles.TWO_HAND) {
+                return PlayerNpcBow.BOW;
             }
         }
 
