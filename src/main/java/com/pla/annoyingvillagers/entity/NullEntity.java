@@ -31,16 +31,19 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import org.jetbrains.annotations.NotNull;
 import se.gory_moon.player_mobs.utils.NameManager;
+import yesman.epicfight.api.animation.AnimationPlayer;
 import yesman.epicfight.api.animation.Pose;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.api.utils.math.Vec3f;
+import yesman.epicfight.gameasset.Animations;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.particle.EpicFightParticles;
 import yesman.epicfight.particle.HitParticleType;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 
 public class NullEntity extends HerobrineMob {
     private NullWeapon nullSwordEntity;
@@ -482,7 +485,15 @@ public class NullEntity extends HerobrineMob {
     public void baseTick() {
         super.baseTick();
         if (this.level() instanceof ServerLevel) {
-            AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(Objects.requireNonNull(this.getLivingEntityPatch()).getAnimator().getPlayerFor(null)).getRealAnimation();
+            LivingEntityPatch<?> livingEntityPatch = this.getLivingEntityPatch();
+            AssetAccessor<? extends StaticAnimation> dynamicAnimation = Animations.EMPTY_ANIMATION;
+            if (livingEntityPatch != null) {
+                AnimationPlayer animationPlayer = livingEntityPatch.getAnimator().getPlayerFor(null);
+                if (animationPlayer != null) {
+                    dynamicAnimation = animationPlayer.getRealAnimation();
+                }
+            }
+
             if (this.getTarget() == null || EpicfightUtil.isLongHitAnimation(dynamicAnimation, getLivingEntityPatch()) || this.getLivingEntityPatch().isStunned()) {
                 this.getNavigation().stop();
                 this.setDeltaMovement(Vec3.ZERO);

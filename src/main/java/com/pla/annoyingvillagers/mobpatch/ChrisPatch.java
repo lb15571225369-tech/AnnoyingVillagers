@@ -191,12 +191,12 @@ public class ChrisPatch extends CEHumanoidPatch implements CustomExecuteEntity {
     }
 
     @Override
-    public boolean canUseCustomType(LivingEntityPatch<?> livingEntityPatch) {
+    public boolean canUseCustomType(LivingEntityPatch<?> livingEntityPatch, ExecutionTypeManager.Type type) {
         return true;
     }
 
     @Override
-    public ExecutionTypeManager.Type getExecutionType() {
+    public ExecutionTypeManager.Type getExecutionType(LivingEntityPatch<?> livingEntityPatch, ExecutionTypeManager.Type type) {
         return ExecutionTypeManager.DEFAULT_TYPE;
     }
 }

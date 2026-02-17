@@ -71,7 +71,7 @@ public class MobStunEscapeEvent {
                         avNpc.setStunEscapeCooldown(100);
                         avNpc.setPlayingIdleCooldown(avNpc.getPlayingIdleCooldown() + 100);
                     }
-                    new DelayedTask(20) {
+                    new DelayedTask(new Random().nextInt(5, 10)) {
                         @Override
                         public void run() {
                             if (EpicfightUtil.isLongHitAnimationNotExecutedAnimation(victimDynamicAnimation, victimLivingEntityPatch) && victim.isAlive()) {

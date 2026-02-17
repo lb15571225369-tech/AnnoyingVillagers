@@ -1,6 +1,5 @@
 package com.pla.annoyingvillagers.util;
 
-import com.pla.annoyingvillagers.AnnoyingVillagers;
 import com.pla.annoyingvillagers.gameasset.AVAnimations;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.world.damagesource.DamageSource;

@@ -74,13 +74,15 @@ mixin {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     implementation fg.deobf("curse.maven:epic-fight-mod-405076:7617763")
-    implementation fg.deobf("curse.maven:combat-evolution-1377795:7554699")
+    implementation fg.deobf("curse.maven:combat-evolution-1377795:7634287")
     implementation fg.deobf("curse.maven:epicfight-clash-blade-1408812:7622640")
     implementation fg.deobf("curse.maven:weapons-of-miracles-epicfight-918614:7517612")
 
     implementation fg.deobf("curse.maven:player-mobs-430513:5780869")
     implementation fg.deobf("curse.maven:aaa-particles-979809:6616719")
     implementation fg.deobf("curse.maven:architectury-api-419699:5137938")
+
+    implementation fg.deobf("curse.maven:epicfight-resurrection-1151542:6931390")
 
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0"))
 

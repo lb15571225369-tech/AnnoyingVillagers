@@ -33,10 +33,12 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages.SpawnEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import yesman.epicfight.api.animation.AnimationPlayer;
 import yesman.epicfight.api.animation.types.DynamicAnimation;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.gameasset.Animations;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 
 import java.util.Objects;
@@ -87,7 +89,14 @@ public class PurpleVillagerGeneralEntity extends AVNpc {
     }
 
     public boolean hurt(@NotNull DamageSource damageSource, float f) {
-        AssetAccessor<? extends StaticAnimation> dynamicAnimation = Objects.requireNonNull(Objects.requireNonNull(this.getLivingEntityPatch()).getAnimator().getPlayerFor(null)).getRealAnimation();
+        LivingEntityPatch<?> livingEntityPatch = this.getLivingEntityPatch();
+        AssetAccessor<? extends StaticAnimation> dynamicAnimation = Animations.EMPTY_ANIMATION;
+        if (livingEntityPatch != null) {
+            AnimationPlayer animationPlayer = livingEntityPatch.getAnimator().getPlayerFor(null);
+            if (animationPlayer != null) {
+                dynamicAnimation = animationPlayer.getRealAnimation();
+            }
+        }
 
         if (damageSource.getEntity() != null && this.getEnderPearlCooldown() == 0
                 && !EpicfightUtil.isLongHitAnimation(dynamicAnimation, getLivingEntityPatch())

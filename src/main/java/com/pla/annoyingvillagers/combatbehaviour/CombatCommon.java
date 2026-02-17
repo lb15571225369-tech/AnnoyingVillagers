@@ -76,12 +76,12 @@ public class CombatCommon {
         return angle <= maxAngleDegrees;
     }
 
-    public static boolean canExecute(LivingEntity attacker, LivingEntity victim, LivingEntityPatch<?> victimEntityPatch) {
+    public static boolean canExecute(LivingEntity attacker, LivingEntity victim, LivingEntityPatch<?> attackerEntityPatch, LivingEntityPatch<?> victimEntityPatch) {
         float maxDist = ExecutionHandler.EXECUTION_DISTANCE;
         return attacker.isAlive() && victim.isAlive()
                 && AnnoyingVillagersConfig.AV_MOB_CAN_EXECUTE.get()
                 && !ExecutionHandler.isExecutingTarget(attacker, victim)
-                && ExecutionHandler.isTargetSupported(victimEntityPatch)
+                && ExecutionHandler.isTargetSupported(attackerEntityPatch, victimEntityPatch)
                 && isHoldingWeapon(attacker)
                 && targetIsInRange(attacker, victim, 0, maxDist, 180);
     }
@@ -114,7 +114,7 @@ public class CombatCommon {
             AssetAccessor<? extends StaticAnimation> currentAnimation =
                     Objects.requireNonNull(victimEntityPatch.getAnimator().getPlayerFor(null)).getRealAnimation();
 
-            if (ExecutionHandler.isTargetGuardBreak(currentAnimation, victimEntityPatch) && canExecute(attacker, victim, victimEntityPatch)) {
+            if (ExecutionHandler.isTargetGuardBreak(currentAnimation, victimEntityPatch) && canExecute(attacker, victim, mobPatch, victimEntityPatch)) {
                 ExecutionTypeManager.Type executionType = ExecutionHandler.getExecutionType(mobPatch, victimEntityPatch);
                 Level level = attacker.level();
                 Vec3 frontPos = calculateExecutionPosition(victim, executionType.offset());
