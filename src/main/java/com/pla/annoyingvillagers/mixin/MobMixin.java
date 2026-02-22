@@ -1,7 +1,9 @@
 package com.pla.annoyingvillagers.mixin;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.pla.annoyingvillagers.util.TeamUtil;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
@@ -20,36 +22,8 @@ public class MobMixin {
     @Inject(method = "finalizeSpawn", at = @At("RETURN"))
     private void villagerTeamJoin(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag, CallbackInfoReturnable<SpawnGroupData> cir) {
         Mob self = (Mob) (Object) this;
-        if (self instanceof AbstractGolem abstractGolem) {
-            if (!abstractGolem.level().isClientSide() && self.getServer() != null) {
-                try {
-                    abstractGolem.getServer().getCommands().getDispatcher().execute(
-                            "team add villagers",
-                            abstractGolem.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException e) {
-
-                }
-            }
-
-            if (!abstractGolem.level().isClientSide() && abstractGolem.getServer() != null) {
-                try {
-                    abstractGolem.getServer().getCommands().getDispatcher().execute(
-                            "team modify villagers friendlyFire false",
-                            abstractGolem.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException e) {
-
-                }
-            }
-
-            if (!abstractGolem.level().isClientSide() && abstractGolem.getServer() != null) {
-                try {
-                    abstractGolem.getServer().getCommands().getDispatcher().execute(
-                            "team join villagers @s",
-                            abstractGolem.createCommandSourceStack().withSuppressedOutput().withPermission(4));
-                } catch (CommandSyntaxException e) {
-
-                }
-            }
+        if (self instanceof AbstractGolem && self.level() instanceof ServerLevel) {
+            TeamUtil.addOrJoinTeam(self, "villagers");
         }
     }
 }

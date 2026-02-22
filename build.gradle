@@ -81,7 +81,6 @@ dependencies {
     implementation fg.deobf("curse.maven:player-mobs-430513:5780869")
     implementation fg.deobf("curse.maven:aaa-particles-979809:6616719")
     implementation fg.deobf("curse.maven:architectury-api-419699:5137938")
-    implementation fg.deobf("curse.maven:config-menus-forge-544048:4672356")
 
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0"))
 

@@ -153,9 +153,10 @@ public class MobClashBladeMixin {
         } else if (!(livingAttackEvent.getSource().getDirectEntity() instanceof Projectile)
                 && defender.onGround()
                 && !defender.isPassenger()
+                && livingAttackEvent.getSource().getDirectEntity() != null
                 && defender.level() instanceof ServerLevel) {
             // Non-projectile clashing
-            ResourceLocation indirectEntity = BuiltInRegistries.ENTITY_TYPE.getKey(Objects.requireNonNull(livingAttackEvent.getSource().getDirectEntity()).getType());
+            ResourceLocation indirectEntity = BuiltInRegistries.ENTITY_TYPE.getKey(livingAttackEvent.getSource().getDirectEntity().getType());
             boolean isDamageFromGunKnight = indirectEntity.getNamespace().equals("torchesbecomesunlight")
                     && (indirectEntity.getPath().equals("gun_knight_patriot") || indirectEntity.getPath().equals("turret"));
             boolean ignisFileBall = indirectEntity.getNamespace().equals("cataclysm")
